@@ -1,0 +1,2473 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Курс — от пользователя к разработчику ИИ за 72 урока</title>
+<meta name="description" content="Бесплатный курс по искусственному интеллекту на русском. 72 урока: от промптов до создания агентов и обучения нейросетей. Основан на курсах Microsoft.">
+<meta name="keywords" content="ИИ, AI, искусственный интеллект, нейросети, ChatGPT, LLM, машинное обучение, промпт-инжиниринг, агенты, курс, обучение, бесплатно, на русском">
+<meta name="author" content="AI Course">
+
+<!-- Open Graph / соцсети -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="AI Курс — от пользователя к разработчику ИИ">
+<meta property="og:description" content="72 урока по искусственному интеллекту на русском. Бесплатно. От промптов до создания агентов.">
+<meta property="og:locale" content="ru_RU">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Курс — от пользователя к разработчику ИИ">
+<meta name="twitter:description" content="72 урока по ИИ на русском. От промптов до агентов и нейросетей.">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🤖%3C/text%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-sidebar: #f7f7f5;
+  --bg-card: #ffffff;
+  --bg-code: #f4f4f4;
+  --text: #1a1a1a;
+  --text-muted: #6b6b6b;
+  --border: #e5e5e5;
+  --accent: #2563eb;
+  --accent-soft: #dbeafe;
+  --success: #16a34a;
+  --success-soft: #dcfce7;
+  --warning: #ea580c;
+  --warning-soft: #fed7aa;
+  --danger: #dc2626;
+  --danger-soft: #fee2e2;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+[data-theme="dark"] {
+  --bg: #0f0f10;
+  --bg-sidebar: #18181b;
+  --bg-card: #1f1f23;
+  --bg-code: #2a2a2e;
+  --text: #f4f4f5;
+  --text-muted: #a1a1aa;
+  --border: #2a2a2e;
+  --accent: #60a5fa;
+  --accent-soft: #1e3a8a;
+  --success: #4ade80;
+  --success-soft: #14532d;
+  --warning: #fb923c;
+  --warning-soft: #7c2d12;
+  --danger: #f87171;
+  --danger-soft: #7f1d1d;
+  --shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  display: flex;
+  min-height: 100vh;
+  font-size: 16px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  padding: 1.5rem 1rem;
+  overflow-y: auto;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 100;
+}
+
+.sidebar-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.sidebar-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.search-box {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.search-box:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.7rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text);
+  margin-bottom: 1rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.theme-toggle:hover { background: var(--accent-soft); }
+
+.global-progress {
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  background: var(--bg-card);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.global-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.progress-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s;
+}
+
+.phase {
+  margin-bottom: 1.25rem;
+}
+
+.phase-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.phase-header:hover { background: var(--bg-card); }
+
+.phase-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.phase-progress-mini {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.phase-lessons {
+  margin-top: 0.25rem;
+}
+
+.lesson-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.45rem 0.5rem 0.45rem 0.75rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.875rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  line-height: 1.35;
+  transition: background 0.15s;
+}
+
+.lesson-link:hover { background: var(--bg-card); }
+
+.lesson-link.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.lesson-link .num {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  width: 22px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.lesson-link.active .num { color: var(--accent); }
+
+.lesson-link .title { flex: 1; }
+
+.lesson-link .status {
+  flex-shrink: 0;
+  width: 16px; height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
+.lesson-link.completed .status { color: var(--success); }
+.lesson-link.completed .title { text-decoration: line-through; opacity: 0.6; }
+.lesson-link.draft { opacity: 0.5; }
+.lesson-link.draft::after {
+  content: "✏️";
+  font-size: 0.7rem;
+  margin-left: 0.25rem;
+}
+
+main {
+  margin-left: 320px;
+  flex: 1;
+  padding: 3rem 4rem;
+  max-width: 900px;
+}
+
+.lesson-content {
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.lesson-content h1 {
+  font-size: 2.2rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.lesson-content h2 {
+  font-size: 1.5rem;
+  margin: 2.5rem 0 1rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.lesson-content h3 {
+  font-size: 1.2rem;
+  margin: 2rem 0 0.75rem;
+}
+
+.lesson-content h4 {
+  font-size: 1rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.lesson-content p { margin-bottom: 1rem; }
+
+.lesson-content ul, .lesson-content ol {
+  margin: 0.75rem 0 1.25rem 1.5rem;
+}
+
+.lesson-content li { margin-bottom: 0.4rem; }
+
+.lesson-content code {
+  background: var(--bg-code);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-family: "SF Mono", Monaco, "Cascadia Code", monospace;
+  font-size: 0.9em;
+}
+
+.lesson-content pre {
+  background: var(--bg-code);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1rem 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.lesson-content pre code {
+  background: none;
+  padding: 0;
+}
+
+.lesson-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0 1.5rem;
+  font-size: 0.92rem;
+}
+
+.lesson-content th, .lesson-content td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+.lesson-content th {
+  background: var(--bg-sidebar);
+  font-weight: 600;
+}
+
+.lesson-content blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 0.5rem 1rem;
+  margin: 1rem 0;
+  background: var(--accent-soft);
+  border-radius: 0 6px 6px 0;
+  font-style: italic;
+}
+
+.lesson-content blockquote p:last-child { margin-bottom: 0; }
+
+.lesson-content hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+.lesson-meta {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  background: var(--bg-sidebar);
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.lesson-meta strong { color: var(--text); }
+
+.callout {
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  margin: 1.25rem 0;
+  border-left: 3px solid;
+}
+
+.callout-info { background: var(--accent-soft); border-color: var(--accent); }
+.callout-success { background: var(--success-soft); border-color: var(--success); }
+.callout-warning { background: var(--warning-soft); border-color: var(--warning); }
+.callout-danger { background: var(--danger-soft); border-color: var(--danger); }
+
+.lesson-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin: 2.5rem 0;
+  padding: 1.25rem;
+  background: var(--bg-sidebar);
+  border-radius: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.complete-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  user-select: none;
+}
+
+.complete-checkbox input { width: 18px; height: 18px; cursor: pointer; }
+
+.nav-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.nav-btn {
+  padding: 0.5rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 0.9rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.nav-btn:hover:not(:disabled) { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+.nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.welcome { text-align: center; padding: 2rem; }
+.welcome h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+.welcome p { color: var(--text-muted); max-width: 600px; margin: 0 auto 1.5rem; }
+
+.welcome-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  max-width: 700px;
+  margin: 2rem auto;
+}
+
+.stat-card {
+  padding: 1.25rem;
+  background: var(--bg-sidebar);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.stat-num {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  display: block;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.draft-notice {
+  padding: 2rem;
+  background: var(--warning-soft);
+  border-radius: 12px;
+  border-left: 4px solid var(--warning);
+}
+
+.draft-notice h3 { margin-bottom: 0.5rem; color: var(--warning); }
+
+@media (max-width: 768px) {
+  body { flex-direction: column; }
+  .sidebar { position: relative; width: 100%; height: auto; max-height: 50vh; }
+  main { margin-left: 0; padding: 1.5rem; }
+}
+
+.kbd {
+  background: var(--bg-code);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  font-family: monospace;
+  font-size: 0.85em;
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-title">AI Курс</div>
+    <div class="sidebar-subtitle">От пользователя к разработчику</div>
+  </div>
+
+  <button class="theme-toggle" onclick="toggleTheme()">
+    <span id="theme-icon">🌙</span>
+    <span id="theme-label">Тёмная тема</span>
+  </button>
+
+  <input type="text" class="search-box" placeholder="Поиск по урокам..." oninput="filterLessons(this.value)">
+
+  <div class="global-progress">
+    <div class="global-progress-label">
+      <span>Общий прогресс</span>
+      <span id="global-progress-text">0 / 72</span>
+    </div>
+    <div class="progress-bar"><div class="progress-bar-fill" id="global-progress-bar" style="width: 0%"></div></div>
+  </div>
+
+  <nav id="lesson-nav"></nav>
+</aside>
+
+<main>
+  <div class="lesson-content" id="lesson-content"></div>
+</main>
+
+<script>
+// ============================================================
+// Данные курса. Каждый урок — объект с полями:
+//   id: номер урока (1..72)
+//   phase: фаза (1..4)
+//   title: название
+//   duration: примерное время в минутах
+//   draft: true если урок ещё не написан полностью
+//   content: HTML-содержимое урока
+// ============================================================
+
+const PHASES = [
+  { id: 1, title: "Фаза 1. Пользователь", subtitle: "Стать продвинутым юзером ИИ" },
+  { id: 2, title: "Фаза 2. Строитель", subtitle: "Приложения и агенты" },
+  { id: 3, title: "Фаза 3. Практик", subtitle: "Что под капотом ИИ" },
+  { id: 4, title: "Фаза 4. Инженер", subtitle: "Классический ML, fine-tuning, продакшен" },
+];
+
+const LESSONS = [
+  // ===== ФАЗА 1: Пользователь =====
+  { id: 1, phase: 1, title: "Что такое генеративный ИИ и как он работает", duration: 50 },
+  { id: 2, phase: 1, title: "Семейства LLM: GPT, Claude, Gemini, Llama, Mistral", duration: 45 },
+  { id: 3, phase: 1, title: "Ответственное использование ИИ — риски и как с ними жить", duration: 50 },
+  { id: 4, phase: 1, title: "Основы промпт-инжиниринга", duration: 50, draft: true },
+  { id: 5, phase: 1, title: "Продвинутые техники промптов: CoT, ReAct, chaining", duration: 50, draft: true },
+  { id: 6, phase: 1, title: "Первое приложение — генерация текста через API", duration: 60, draft: true },
+  { id: 7, phase: 1, title: "Чат-приложение с памятью", duration: 60, draft: true },
+  { id: 8, phase: 1, title: "Поиск с эмбеддингами (semantic search)", duration: 60, draft: true },
+  { id: 9, phase: 1, title: "Генерация изображений", duration: 45, draft: true },
+  { id: 10, phase: 1, title: "Low-code приложения с ИИ", duration: 50, draft: true },
+  { id: 11, phase: 1, title: "UX для ИИ-приложений", duration: 45, draft: true },
+  { id: 12, phase: 1, title: "Безопасность ИИ-приложений", duration: 60, draft: true },
+
+  // ===== ФАЗА 2: Строитель =====
+  { id: 13, phase: 2, title: "Function Calling — ИИ вызывает твои функции", duration: 60, draft: true },
+  { id: 14, phase: 2, title: "RAG и векторные БД", duration: 70, draft: true },
+  { id: 15, phase: 2, title: "Жизненный цикл GenAI-приложения", duration: 50, draft: true },
+  { id: 16, phase: 2, title: "Что такое ИИ-агенты", duration: 45, draft: true },
+  { id: 17, phase: 2, title: "Обзор агентских фреймворков", duration: 55, draft: true },
+  { id: 18, phase: 2, title: "Паттерны проектирования агентов", duration: 60, draft: true },
+  { id: 19, phase: 2, title: "Использование инструментов агентами", duration: 60, draft: true },
+  { id: 20, phase: 2, title: "Agentic RAG", duration: 55, draft: true },
+  { id: 21, phase: 2, title: "Доверие и безопасность агентов", duration: 60, draft: true },
+  { id: 22, phase: 2, title: "Планирование задач агентом", duration: 55, draft: true },
+  { id: 23, phase: 2, title: "Мульти-агентные системы", duration: 70, draft: true },
+  { id: 24, phase: 2, title: "Метакогниция и саморефлексия агентов", duration: 50, draft: true },
+  { id: 25, phase: 2, title: "Контекст-инжиниринг и память агентов", duration: 60, draft: true },
+  { id: 26, phase: 2, title: "Microsoft Agent Framework", duration: 55, draft: true },
+  { id: 27, phase: 2, title: "Browser-use агенты", duration: 60, draft: true },
+  { id: 28, phase: 2, title: "Агентские протоколы (MCP)", duration: 50, draft: true },
+  { id: 29, phase: 2, title: "Агенты в продакшене", duration: 70, draft: true },
+  { id: 30, phase: 2, title: "Повторение фазы 2: чек-лист агента", duration: 30, draft: true },
+
+  // ===== ФАЗА 3: Практик =====
+  { id: 31, phase: 3, title: "Введение в ИИ как науку", duration: 45, draft: true },
+  { id: 32, phase: 3, title: "Символьный ИИ и графы знаний", duration: 50, draft: true },
+  { id: 33, phase: 3, title: "Перцептрон — самая простая нейросеть", duration: 60, draft: true },
+  { id: 34, phase: 3, title: "Свой framework для нейросетей на NumPy", duration: 90, draft: true },
+  { id: 35, phase: 3, title: "Знакомство с PyTorch / TensorFlow", duration: 70, draft: true },
+  { id: 36, phase: 3, title: "Введение в компьютерное зрение", duration: 50, draft: true },
+  { id: 37, phase: 3, title: "Свёрточные нейросети (CNN)", duration: 70, draft: true },
+  { id: 38, phase: 3, title: "Transfer Learning", duration: 60, draft: true },
+  { id: 39, phase: 3, title: "Автоэнкодеры", duration: 55, draft: true },
+  { id: 40, phase: 3, title: "GAN — генеративно-состязательные сети", duration: 70, draft: true },
+  { id: 41, phase: 3, title: "Object Detection", duration: 60, draft: true },
+  { id: 42, phase: 3, title: "Сегментация изображений", duration: 60, draft: true },
+  { id: 43, phase: 3, title: "Представление текста (BoW, TF-IDF)", duration: 50, draft: true },
+  { id: 44, phase: 3, title: "Эмбеддинги слов (Word2Vec, GloVe)", duration: 60, draft: true },
+  { id: 45, phase: 3, title: "Языковое моделирование", duration: 55, draft: true },
+  { id: 46, phase: 3, title: "Рекуррентные сети (RNN, LSTM)", duration: 70, draft: true },
+  { id: 47, phase: 3, title: "Генеративные сети для текста (seq2seq, attention)", duration: 70, draft: true },
+  { id: 48, phase: 3, title: "Трансформеры", duration: 90, draft: true },
+  { id: 49, phase: 3, title: "Извлечение сущностей (NER)", duration: 50, draft: true },
+  { id: 50, phase: 3, title: "Большие языковые модели изнутри", duration: 70, draft: true },
+
+  // ===== ФАЗА 4: Инженер =====
+  { id: 51, phase: 4, title: "Что такое машинное обучение", duration: 45, draft: true },
+  { id: 52, phase: 4, title: "История ML", duration: 40, draft: true },
+  { id: 53, phase: 4, title: "Этика и справедливость в ML", duration: 50, draft: true },
+  { id: 54, phase: 4, title: "Техники ML: train/test/val, метрики, кросс-валидация", duration: 60, draft: true },
+  { id: 55, phase: 4, title: "Инструменты регрессии (scikit-learn, pandas)", duration: 55, draft: true },
+  { id: 56, phase: 4, title: "Подготовка и очистка данных", duration: 60, draft: true },
+  { id: 57, phase: 4, title: "Линейная и полиномиальная регрессия", duration: 60, draft: true },
+  { id: 58, phase: 4, title: "Логистическая регрессия", duration: 60, draft: true },
+  { id: 59, phase: 4, title: "Веб-приложение с ML-моделью", duration: 70, draft: true },
+  { id: 60, phase: 4, title: "Введение в классификацию", duration: 50, draft: true },
+  { id: 61, phase: 4, title: "Классификаторы: kNN, SVM, Decision Tree", duration: 65, draft: true },
+  { id: 62, phase: 4, title: "Random Forest, Gradient Boosting, XGBoost", duration: 70, draft: true },
+  { id: 63, phase: 4, title: "Прикладная классификация — сквозной проект", duration: 90, draft: true },
+  { id: 64, phase: 4, title: "Кластеризация (k-means, DBSCAN)", duration: 60, draft: true },
+  { id: 65, phase: 4, title: "NLP в классическом ML", duration: 55, draft: true },
+  { id: 66, phase: 4, title: "Временные ряды (ARIMA, Prophet)", duration: 65, draft: true },
+  { id: 67, phase: 4, title: "Reinforcement Learning — основы", duration: 70, draft: true },
+  { id: 68, phase: 4, title: "RL с OpenAI Gym", duration: 70, draft: true },
+  { id: 69, phase: 4, title: "Real-world кейсы и MLOps", duration: 60, draft: true },
+  { id: 70, phase: 4, title: "Fine-tuning LLM (SFT, LoRA, QLoRA)", duration: 80, draft: true },
+  { id: 71, phase: 4, title: "Маленькие языковые модели (SLM)", duration: 50, draft: true },
+  { id: 72, phase: 4, title: "Open-source модели и экосистема", duration: 55, draft: true },
+];
+
+// ============================================================
+// Содержимое уроков. Подгружается отдельно через registerLesson.
+// Это позволяет добавлять уроки инкрементально, не переписывая
+// весь файл.
+// ============================================================
+
+function registerLesson(id, htmlContent) {
+  const lesson = LESSONS.find(l => l.id === id);
+  if (lesson) {
+    lesson.content = htmlContent;
+    lesson.draft = false;
+  }
+}
+
+// ============================================================
+// Урок 1
+// ============================================================
+registerLesson(1, `
+<h1>Урок 1. Что такое генеративный ИИ и как он работает</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> построить правильную ментальную модель LLM</span>
+  <span><strong>Время:</strong> ~50 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/01</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Прежде чем учиться промптам, агентам и нейросетям, нужно построить <strong>верную ментальную модель</strong> того, что такое LLM. Большинство ошибок начинающих пользователей ИИ — от неверной модели:</p>
+<ul>
+<li>Думают, что ChatGPT «понимает» как человек → удивляются галлюцинациям и обижаются на ответы.</li>
+<li>Думают, что бот «помнит» их → шокированы, что он не помнит вчерашнюю переписку.</li>
+<li>Думают, что модель ищет в интернете → не понимают, почему она не знает свежие новости.</li>
+<li>Думают, что ИИ — «как поиск, только умнее» → используют его как Google и получают вранье.</li>
+</ul>
+<p>К концу этого урока у тебя будет <strong>рабочая модель</strong> того, как именно LLM устроена внутри, и ты сможешь предсказывать, что она выдаст и почему. Это фундамент всего остального обучения.</p>
+
+<h2>1. Что такое генеративный ИИ — и чем он отличается от «обычного» ИИ</h2>
+
+<h3>Краткая история, чтобы не путать понятия</h3>
+<p>Слово «искусственный интеллект» придумали в 1956 году на Дартмутской конференции. С тех пор оно означало очень разные вещи:</p>
+<p><strong>Эра 1: Символьный ИИ (1950–1980-е).</strong> Компьютер = логика. Закодируем правила экспертов в систему — получим «эксперта в коробке». Работало для шахмат, не работало для распознавания кошки на картинке.</p>
+<p><strong>Эра 2: Машинное обучение (1990–2010-е).</strong> Компьютер сам учится из данных. Дай 10 000 писем со спам/не-спам — он построит классификатор. Это <strong>различающий ИИ</strong> (discriminative AI): получил вход → выдал метку из заранее известных вариантов.</p>
+<p><strong>Эра 3: Глубокое обучение (2012–2017).</strong> Те же ML-задачи, но через нейросети с миллионами параметров. Распознавание лиц, перевод, голосовые ассистенты.</p>
+<p><strong>Эра 4: Трансформеры и LLM (2017 — наши дни).</strong> Прорывная статья Google «Attention Is All You Need» в 2017 году дала архитектуру, которая масштабируется. Чем больше данных и параметров — тем умнее модель. В 2018-м появился GPT-1 (117M параметров), в 2020-м GPT-3 (175B), в 2023-м GPT-4 (по слухам ~1.7T). Так появился <strong>генеративный ИИ</strong> — он не выбирает из вариантов, а <strong>создаёт новый контент</strong>: текст, картинки, код, аудио.</p>
+
+<h3>Ключевая разница: классификация vs генерация</h3>
+<table>
+<tr><th>Свойство</th><th>Discriminative AI (старое)</th><th>Generative AI (новое)</th></tr>
+<tr><td>Что делает</td><td>Выбирает метку из заданных</td><td>Создаёт новый контент</td></tr>
+<tr><td>Пример</td><td>«Это спам» / «Не спам»</td><td>«Напиши письмо отказа»</td></tr>
+<tr><td>Ответы</td><td>Один из N</td><td>Бесконечное число</td></tr>
+<tr><td>Детерминирован</td><td>Да</td><td>Нет (есть случайность)</td></tr>
+<tr><td>«Правильный ответ»</td><td>Обычно есть</td><td>Часто субъективно</td></tr>
+</table>
+
+<h3>Где GenAI реально полезен</h3>
+<div class="callout callout-success">
+<strong>✅ Хорошо работает:</strong>
+<ul>
+<li>Черновики текстов (письма, посты, описания, спецификации).</li>
+<li>Перевод и пересказ.</li>
+<li>Написание и объяснение кода.</li>
+<li>Структурирование неструктурированных данных.</li>
+<li>Поиск по своим документам (через RAG, урок 14).</li>
+<li>Брейнсторм идей, контр-аргументы.</li>
+<li>Объяснение сложного на простом языке.</li>
+</ul>
+</div>
+<div class="callout callout-warning">
+<strong>⚠️ Работает, но осторожно:</strong>
+<ul>
+<li>Анализ цифр и таблиц (часто ошибается без CoT).</li>
+<li>Юридические и медицинские темы (галлюцинации опасны).</li>
+<li>Поиск свежей информации (нужен поиск + LLM).</li>
+</ul>
+</div>
+<div class="callout callout-danger">
+<strong>❌ Плохо работает:</strong>
+<ul>
+<li>Принятие решений с серьёзными последствиями без человека.</li>
+<li>Точные факты, которых модель не видела (узкие домены).</li>
+<li>Игры с детерминированными правилами (шахматы — старый ИИ сильнее).</li>
+<li>Задачи с требованием 100% воспроизводимости.</li>
+</ul>
+</div>
+
+<h2>2. Что такое LLM и как она устроена изнутри</h2>
+
+<h3>Принцип работы в одном предложении</h3>
+<blockquote><strong>LLM — это функция, которая на основе входного текста предсказывает, какой токен будет следующим.</strong></blockquote>
+<p>Всё. Серьёзно — это всё. Вся магия ChatGPT построена на этом одном принципе. Дальше разберём, как из этой простой штуки получается «умное общение».</p>
+
+<h3>Что такое токен</h3>
+<p><strong>Токен — это атомарный кусочек текста</strong> для модели. Не буква, не слово — что-то посередине. Длина токена в среднем 3–4 символа в английском, 1–2 в русском (русский «дороже»).</p>
+<p>Примеры разбиения на токены (GPT-4, английский):</p>
+<ul>
+<li><code>"Hello"</code> → <code>["Hello"]</code> — одно слово, один токен.</li>
+<li><code>"unbelievable"</code> → <code>["un", "believable"]</code> — два токена.</li>
+<li><code>"GPT-4 is amazing"</code> → <code>["G", "PT", "-", "4", " is", " amazing"]</code> — шесть токенов.</li>
+</ul>
+<p>В русском:</p>
+<ul>
+<li><code>"Привет"</code> → <code>["При", "вет"]</code> — два токена.</li>
+<li><code>"программист"</code> → <code>["прог", "раммис", "т"]</code> — три токена.</li>
+</ul>
+<p><strong>Почему это важно лично тебе:</strong></p>
+<ul>
+<li>Ты платишь за токены. Русский текст в 2–3 раза дороже английского при той же информации.</li>
+<li>Контекстное окно меряется в токенах. 128k ≈ 90k английских слов ≈ 35k русских слов ≈ 200 страниц книги.</li>
+<li>Длина ответа меряется в токенах. <code>max_tokens=500</code> ≈ 1–1.5 страницы английского, 0.5–1 страница русского.</li>
+</ul>
+<p><strong>Проверь сам:</strong> зайди на <a href="https://tiktokenizer.vercel.app" target="_blank">tiktokenizer.vercel.app</a>, вставь любую фразу — увидишь токены своими глазами.</p>
+
+<h3>Что значит «предсказать следующий токен»</h3>
+<p>Возьмём вход: <code>"Столица Франции —"</code>.</p>
+<p>Модель смотрит на этот вход и для <strong>каждого возможного следующего токена</strong> из своего словаря (~100k вариантов) считает <strong>вероятность</strong>:</p>
+<pre><code>" Париж"      → 0.87
+" город"      → 0.04
+" одно"       → 0.02
+" Лондон"     → 0.001
+" банан"      → 0.0000001
+... ещё ~100к токенов</code></pre>
+<p>Дальше — она <strong>выбирает</strong> один. Если <code>temperature=0</code>, всегда выбирает самый вероятный (<code>" Париж"</code>). Если <code>temperature&gt;0</code>, делает случайный выбор пропорционально вероятностям. Это и есть «креативность».</p>
+<p>Выбранный токен <strong>дописывается</strong> ко входу: <code>"Столица Франции — Париж"</code>. Модель снова считает вероятности для следующего токена. И так слово за словом.</p>
+<p><strong>Это и есть весь алгоритм генерации.</strong> Никакого «понимания» в человеческом смысле — только статистика следующего токена.</p>
+
+<h3>Откуда у модели «знания»</h3>
+<p>Модель учится на гигантском корпусе текста — оценочно для GPT-4 это <strong>триллионы токенов</strong>: вся открытая часть интернета, книги, статьи, код, википедия. Во время обучения модели показывают кусок текста, обрезают последний токен и спрашивают: «угадай, что было там?». Если она ошибается — её <strong>миллиарды весов</strong> чуть-чуть подправляются.</p>
+<p>После многомиллиардных таких итераций веса настраиваются так, что они <strong>запомнили статистические закономерности языка и знаний</strong>, которые были в корпусе.</p>
+<p><strong>«Запомнили» — в каком смысле?</strong> Не как база данных. Скорее как <strong>сжатую модель мира</strong>. Если в обучении тебе тысячу раз попалось «столица Франции — Париж» в разных формулировках, ты запомнишь это намертво. Если про какой-то факт было одно упоминание — может запомниться, может нет. Если упоминаний нет совсем — модель <strong>придумает что-то правдоподобное</strong>.</p>
+
+<blockquote><strong>LLM — это не база знаний. Это статистический предиктор следующего токена, который случайно много знает, потому что много читал.</strong></blockquote>
+
+<h3>Детальный пример: почему модель угадает столицу</h3>
+<p>В обучающих данных модель видела миллиарды текстов вида:</p>
+<ul>
+<li>«Париж — столица Франции»</li>
+<li>«Столицей Франции является Париж»</li>
+<li>«Когда мы поехали в Париж, столицу Франции, ...»</li>
+<li>«Paris is the capital of France»</li>
+</ul>
+<p>После обучения её внутреннее представление <strong>сильно связывает</strong> последовательности «столица Франции» и токен <code>" Париж"</code>. Когда она видит вход «Столица Франции —», нейросеть прокачивает его через свои слои, и на выходе получает вероятность <code>" Париж"</code> ≈ 0.87.</p>
+
+<h3>Детальный пример: почему модель ошибётся в редком факте</h3>
+<p>Спроси: «Какая столица у штата Вермонт?». В корпусе этот факт встречался реже. Модель видела упоминания:</p>
+<ul>
+<li>Бёрлингтон (крупнейший город) — часто рядом с «Вермонт».</li>
+<li>Монтпилиер (настоящая столица) — упоминался реже.</li>
+</ul>
+<p>Когда модель считает вероятности для следующего токена после «столица Вермонта —»:</p>
+<pre><code>" Бёрлингтон"  → 0.4
+" Монтпилиер"  → 0.35
+" Бостон"      → 0.05
+...</code></pre>
+<p>И с заметной вероятностью <strong>уверенно выдаст «Бёрлингтон»</strong> — что неправильно. <strong>И она этого не знает.</strong></p>
+
+<h2>3. Почему модель галлюцинирует</h2>
+
+<h3>Что такое галлюцинация</h3>
+<p><strong>Галлюцинация — это когда модель уверенно генерирует фактически неправильную информацию.</strong> Не «отказывается отвечать», не «говорит, что не уверена», а уверенно врёт.</p>
+
+<h3>4 причины галлюцинаций</h3>
+<p><strong>1. Целевая функция модели — правдоподобие, а не правда.</strong> Её хвалили за то, что её текст похож на корпус. Никто её не учил отдельно «говорить правду» — только «говорить как люди».</p>
+<p><strong>2. Нет внутреннего сигнала уверенности.</strong> Когда вероятность правильного ответа 0.4 и неправильного 0.4 — модель всё равно выберет один и <strong>выдаст его так же уверенно</strong>, как «Париж — столица Франции».</p>
+<p><strong>3. Ассоциативная природа памяти.</strong> Модель путает похожие сущности. Двух авторов с фамилией Иванов она может «склеить».</p>
+<p><strong>4. RLHF делает её более угодливой.</strong> В пост-тренировке моделей их учат давать <strong>полезные</strong> ответы, а не уклоняться. Это полезно, но иногда модель скорее придумает ответ, чем скажет «не знаю».</p>
+
+<h3>Как распознать галлюцинацию</h3>
+<div class="callout callout-danger">
+<strong>🚩 Красные флаги:</strong>
+<ul>
+<li>Точные числа («в 1973 году») и имена («доктор Алексей Петров») — особенно проверяй.</li>
+<li>Цитаты из книг и статей — почти всегда выдуманные.</li>
+<li>Ссылки на источники (URL) — модель часто галлюцинирует URL, которых не существует.</li>
+<li>Конкретные шаги в специфическом ПО.</li>
+<li>Фамилии, даты рождения, цены, юридические термины.</li>
+</ul>
+</div>
+<div class="callout callout-success">
+<strong>🟢 Где обычно надёжно:</strong>
+<ul>
+<li>Общие концепции и определения.</li>
+<li>Объяснение механики (как работает X).</li>
+<li>Структурирование уже данной тебе информации.</li>
+<li>Перевод. Грамматика.</li>
+</ul>
+</div>
+
+<h3>Как бороться</h3>
+<ol>
+<li><strong>Перепроверяй критичные факты</strong> в первоисточниках.</li>
+<li><strong>Проси модель ссылаться</strong> на источники — увидишь, что половина выдуманы.</li>
+<li><strong>Используй RAG</strong> (урок 14) — даёшь модели документы и просишь отвечать только по ним.</li>
+<li><strong>Используй веб-поиск + LLM</strong> (Perplexity, ChatGPT с включённым search).</li>
+<li><strong>Снижай temperature</strong> до 0 на фактических задачах.</li>
+<li><strong>Спроси трижды</strong> разными формулировками — если ответы разные, что-то не то.</li>
+</ol>
+
+<h2>4. Почему LLM ничего не помнит между сессиями</h2>
+
+<h3>Stateless природа</h3>
+<p><strong>API LLM — это stateless функция.</strong> Ты передаёшь вход → получаешь выход. Между вызовами модель <strong>не сохраняет ничего</strong>. Это не баг, это архитектура.</p>
+<pre><code>Запрос 1:  "Меня зовут Иван"  →  "Приятно познакомиться, Иван!"
+Запрос 2:  "Как меня зовут?"   →  "Я не знаю."</code></pre>
+
+<h3>Тогда почему ChatGPT «помнит»?</h3>
+<p><strong>Это иллюзия, созданная интерфейсом.</strong> Когда ты пишешь сообщение в ChatGPT, веб-приложение <strong>подставляет всю предыдущую переписку</strong> в текущий запрос. Модели кажется, что она «помнит», но она каждый раз заново читает весь разговор.</p>
+<p>Что из этого следует:</p>
+<ul>
+<li><strong>Длинные диалоги дорогие.</strong> Через 50 сообщений каждое следующее обходится в 5–10 раз дороже первого.</li>
+<li><strong>Контекст ограничен.</strong> Если переписка вышла за лимит окна — старое начнёт обрезаться.</li>
+<li><strong>«Память между чатами» в ChatGPT</strong> — это отдельная фича: ChatGPT хранит факты о тебе в своей базе.</li>
+</ul>
+
+<h3>Почему модель не знает свежие новости</h3>
+<p>Каждая модель имеет <strong>knowledge cutoff</strong> — дату, на которой остановились её обучающие данные. У GPT-4o это ~октябрь 2023. У Claude 3.5 Sonnet ~апрель 2024.</p>
+
+<h2>5. Параметры модели: размер, контекст, температура</h2>
+
+<h3>Размер модели (B параметров)</h3>
+<ul>
+<li><strong>0.5B–4B</strong>: tiny модели, для on-device (Phi-3, TinyLlama).</li>
+<li><strong>7B–14B</strong>: маленькие, для локального запуска.</li>
+<li><strong>30B–70B</strong>: рабочие лошадки.</li>
+<li><strong>100B+</strong>: топовые проприетарные.</li>
+</ul>
+
+<h3>Контекстное окно</h3>
+<p>Сколько токенов модель видит за раз. Сейчас стандарт:</p>
+<ul>
+<li>GPT-4o: 128k.</li>
+<li>Claude 3.5 Sonnet: 200k.</li>
+<li>Gemini 1.5 Pro: 1M.</li>
+</ul>
+<p><strong>Lost in the middle:</strong> модель <strong>лучше всего помнит начало и конец</strong> контекста, и <strong>хуже середину</strong>. Размещай главное на краях.</p>
+
+<h3>Температура</h3>
+<table>
+<tr><th>Задача</th><th>Temperature</th><th>Зачем</th></tr>
+<tr><td>JSON, structured</td><td>0</td><td>Стабильность</td></tr>
+<tr><td>Перевод</td><td>0–0.3</td><td>Минимум вариаций</td></tr>
+<tr><td>Код</td><td>0–0.3</td><td>Точность</td></tr>
+<tr><td>Деловые письма</td><td>0.5–0.7</td><td>Чуть разнообразия</td></tr>
+<tr><td>Брейнсторм идей</td><td>0.8–1.0</td><td>Разные углы</td></tr>
+<tr><td>Поэзия, креатив</td><td>1.0–1.3</td><td>Неожиданные сочетания</td></tr>
+</table>
+
+<h2>6. Живой пример: разбираем ответ ChatGPT на цифрах</h2>
+<p><strong>Промпт:</strong> «Меня зовут Анна. Мне 28 лет, я работаю фронтенд-разработчиком в Яндексе. Напиши короткое представление обо мне для конференции по UX.»</p>
+<p><strong>Ответ модели:</strong> «Знакомьтесь, Анна — фронтенд-разработчик с 5-летним опытом из команды Яндекса, где она ежедневно влияет на UX-решения миллионов пользователей. На конференции она поделится своим взглядом на пересечение кода и пользовательского опыта.»</p>
+<p><strong>Разбор:</strong></p>
+<ul>
+<li>✅ Имя, возраст, компания, роль — взяты из промпта.</li>
+<li>⚠️ «5-летним опытом» — <strong>придумано</strong>.</li>
+<li>⚠️ «ежедневно влияет на UX-решения миллионов пользователей» — пафосная вода.</li>
+<li>⚠️ «поделится своим взглядом на пересечение кода и UX» — придумано.</li>
+</ul>
+<p><strong>Урок:</strong> когда LLM пишет «представление» — она <strong>дополняет</strong> скелетом до правдоподобной формы. Если важна точность — давай в промпте все факты, и явно пиши: «не добавляй фактов, которых нет во входе».</p>
+
+<h2>7. Частые заблуждения новичков</h2>
+<p><strong>❌ «ChatGPT думает».</strong> Нет. Он генерирует текст по статистике.</p>
+<p><strong>❌ «Если задам тот же вопрос — получу тот же ответ».</strong> Нет, при temperature&gt;0 ответы будут разные.</p>
+<p><strong>❌ «ChatGPT учится на моих сообщениях прямо сейчас».</strong> Нет. Веса модели зафиксированы. Но твои сообщения <strong>могут</strong> попасть в корпус следующей версии.</p>
+<p><strong>❌ «Модель всё знает, просто иногда ленится».</strong> Нет. Если модель не знает — она не знает.</p>
+<p><strong>❌ «Если переключить на GPT-4 — точно не будет галлюцинаций».</strong> GPT-4 ошибается реже, но всё равно ошибается.</p>
+<p><strong>❌ «LLM понимает контекст так же, как человек».</strong> Нет. У LLM нет ощущений, опыта, целей.</p>
+
+<h2>8. Глоссарий</h2>
+<ul>
+<li><strong>AI (Artificial Intelligence)</strong> — общий термин.</li>
+<li><strong>ML (Machine Learning)</strong> — подмножество AI: системы, обучающиеся на данных.</li>
+<li><strong>Deep Learning</strong> — подмножество ML: нейросети с большим числом слоёв.</li>
+<li><strong>GenAI</strong> — модели, генерирующие контент.</li>
+<li><strong>LLM</strong> — Large Language Model.</li>
+<li><strong>Токен</strong> — атомарный кусочек текста для модели.</li>
+<li><strong>Параметр</strong> — настраиваемое число внутри нейросети.</li>
+<li><strong>Контекстное окно</strong> — максимум токенов, видимых модели за раз.</li>
+<li><strong>Temperature</strong> — параметр случайности при генерации.</li>
+<li><strong>Hallucination</strong> — уверенно неправильный ответ.</li>
+<li><strong>Stateless</strong> — без сохранения состояния между вызовами.</li>
+<li><strong>Knowledge cutoff</strong> — дата, до которой модель знает факты.</li>
+<li><strong>RLHF</strong> — Reinforcement Learning from Human Feedback.</li>
+<li><strong>Attention</strong> — механизм трансформера, фокусирующий внимание.</li>
+<li><strong>BPE</strong> — Byte-Pair Encoding, алгоритм токенизации.</li>
+</ul>
+
+<h2>9. Практика урока (60 минут)</h2>
+
+<h3>Упражнение 1. Токены своими глазами (10 минут)</h3>
+<ol>
+<li>Открой <a href="https://tiktokenizer.vercel.app" target="_blank">tiktokenizer.vercel.app</a>.</li>
+<li>Вставь свою короткую заметку (1 абзац) на русском.</li>
+<li>Скопируй ту же мысль на английский.</li>
+<li>Сравни количество токенов.</li>
+<li>Попробуй эмодзи 🚀, кусок кода.</li>
+</ol>
+
+<h3>Упражнение 2. Спровоцируй галлюцинацию (15 минут)</h3>
+<ol>
+<li>Спроси ChatGPT: «Расскажи биографию [придуманное имя], автора книги [придуманное название]».</li>
+<li>Изучи ответ. Модель напишет уверенную правдоподобную биографию <strong>выдуманного человека</strong>.</li>
+<li>Спроси: «Откуда ты это знаешь? Дай ссылку».</li>
+<li>Открой ссылки — большинство 404.</li>
+<li>Запиши в <code>progress.md</code>.</li>
+</ol>
+
+<h3>Упражнение 3. Проверь stateless (10 минут)</h3>
+<ol>
+<li>В новом чате ChatGPT напиши: «Меня зовут [имя]».</li>
+<li>Закрой вкладку. Открой новый чат.</li>
+<li>Спроси: «Как меня зовут?»</li>
+<li>Если у тебя ChatGPT с Memory — зайди в Settings → Personalization.</li>
+</ol>
+
+<h3>Упражнение 4. Темпераментный эксперимент (15 минут)</h3>
+<ol>
+<li>Запрос: «Напиши слоган для кофейни в трёх словах».</li>
+<li>Прогоняй 5 раз с <code>temperature=0</code> — увидишь одинаковый ответ.</li>
+<li>Прогоняй 5 раз с <code>temperature=1</code> — разные.</li>
+<li>Прогоняй 5 раз с <code>temperature=1.7</code> — иногда бессмыслица.</li>
+</ol>
+
+<h3>Упражнение 5. Карта применений (10 минут)</h3>
+<p>В <code>progress.md</code> напиши таблицу 5+ задач: «Моя задача / Подходит GenAI? / Почему».</p>
+
+<h2>10. Проверь себя</h2>
+<p><strong>1. В чём фундаментальная разница между discriminative и generative AI?</strong><br>
+Discriminative выбирает из заданного набора меток. Generative создаёт новый контент.</p>
+
+<p><strong>2. Что такое токен и почему это не слово?</strong><br>
+Токен — атомарный кусочек текста (3–4 символа в среднем). Длинные/редкие слова разбиваются на части. Это эффективнее для модели.</p>
+
+<p><strong>3. Если модель не знает фактов, почему она угадывает столицу Франции?</strong><br>
+Не «угадывает» — статистически. В обучающих данных «Париж» миллионы раз стоял рядом со «столицей Франции».</p>
+
+<p><strong>4. Почему модель уверенно врёт на редких темах?</strong><br>
+Её цель — генерировать правдоподобный текст, а не правду. На редком факте у неё нет сильной ассоциации, но генерировать она всё равно обязана.</p>
+
+<p><strong>5. ChatGPT помнит наш предыдущий разговор. Что происходит технически?</strong><br>
+Веб-приложение при каждом сообщении подставляет всю предыдущую переписку в запрос. Сама LLM stateless.</p>
+
+<p><strong>6. У меня важная фактическая задача. Какие 3 вещи я сделаю?</strong><br>
+(а) Понижу temperature до 0–0.3. (б) Использую RAG или веб-поиск. (в) Перепроверю критичные факты.</p>
+
+<p><strong>7. Что такое контекстное окно и где засада?</strong><br>
+Сколько токенов модель видит за раз. Засада: «lost in the middle» — середину помнит хуже краёв.</p>
+
+<p><strong>8. Почему русский текст «дороже» английского?</strong><br>
+BPE-токенизаторы обучены на английском. Русские слова режутся на больше токенов.</p>
+
+<p><strong>9. У модели temperature=0. Можно ли получить разный ответ?</strong><br>
+Технически — нет, при идентичном входе ответ детерминирован.</p>
+
+<p><strong>10. Если модель не знает свежие новости, как мне дать ей актуальные данные?</strong><br>
+(а) Указать в промпте; (б) использовать веб-поиск; (в) собрать RAG над свежей коллекцией.</p>
+
+<h2>11. Что должно остаться в голове</h2>
+<ol>
+<li><strong>LLM = предиктор следующего токена.</strong> Не магия — статистика.</li>
+<li><strong>Знания</strong> в LLM зашиты в веса; редкие факты — ненадёжно.</li>
+<li><strong>Галлюцинация</strong> — не баг, а свойство архитектуры.</li>
+<li><strong>Stateless:</strong> память — это всегда явное хранилище.</li>
+<li><strong>Knowledge cutoff</strong> — модель не знает, что было после её обучения.</li>
+<li><strong>Temperature</strong> управляет случайностью.</li>
+<li><strong>Размер ≠ всё:</strong> контекст и качество данных тренировки часто важнее.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> напиши в <code>progress.md</code> от первого лица 3–5 предложений в формате «До этого урока я думал X, теперь понимаю Y».
+</div>
+`);
+
+// ============================================================
+// Урок 2
+// ============================================================
+registerLesson(2, `
+<h1>Урок 2. Семейства LLM: GPT, Claude, Gemini, Llama, Mistral</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> научиться выбирать LLM под задачу</span>
+  <span><strong>Время:</strong> ~45 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/02</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>К концу 2025 года рынок LLM — это не «есть ChatGPT и есть всё остальное». Это десятки моделей с разными сильными сторонами, ценами и лицензиями. Если ты выбираешь модель <strong>наугад</strong>, ты:</p>
+<ul>
+<li>Переплачиваешь в 10–30 раз за задачи, где хватило бы дешёвой модели.</li>
+<li>Получаешь хуже качество там, где другая модель сильнее.</li>
+<li>Не можешь использовать ИИ там, где данные нельзя выпускать в облако.</li>
+<li>Привязываешься к одному вендору.</li>
+</ul>
+<p>Цель — научить тебя <strong>за 30 секунд выбирать правильную модель</strong> под задачу. Это не «знать всё», это иметь рабочую матрицу решений.</p>
+
+<h2>1. Карта рынка: кто есть кто</h2>
+
+<h3>Большая четвёрка проприетарных моделей</h3>
+
+<p><strong>OpenAI (GPT, ChatGPT).</strong> Партнёр Microsoft. Линейка: GPT-4o, GPT-4o-mini, o1, o3, o4-mini.</p>
+<ul>
+<li>GPT-4o — флагман, мультимодальный (текст + картинки + аудио).</li>
+<li>o1/o3 — «reasoning» модели со встроенным CoT; медленнее и дороже, но решают то, что флагманы не вывозят.</li>
+</ul>
+
+<p><strong>Anthropic (Claude).</strong> Конкурент №1. Акцент на безопасности и качестве рассуждений. Линейка: Claude Opus, Sonnet, Haiku.</p>
+<ul>
+<li>Opus — флагман, силён в анализе документов и коде.</li>
+<li>Sonnet — рабочая лошадка, лучший баланс цена/качество на 2025.</li>
+<li>Haiku — самая быстрая.</li>
+</ul>
+
+<p><strong>Google (Gemini).</strong> Сильно интегрирован с Google ecosystem.</p>
+<ul>
+<li>Gemini 1.5 Pro — окно контекста до <strong>1 миллиона токенов</strong>.</li>
+<li>Flash — быстрая дешёвая.</li>
+</ul>
+
+<p><strong>Microsoft (Phi и Copilot).</strong> Phi — «маленькие но умные» (3.5–14B). Копилоты в Office, GitHub — это GPT-4 + кастомизации.</p>
+
+<h3>Большая тройка open-source</h3>
+
+<p><strong>Meta (Llama).</strong> Llama 3.1, 3.2, 3.3. Размеры: 1B, 3B, 8B, 70B, 405B. Llama 3.1 405B сравнима с GPT-4o.</p>
+
+<p><strong>Mistral AI (Франция).</strong> Mistral 7B, Mixtral 8x7B (MoE), Mistral Large. Часть открытые (Apache 2.0), часть проприетарные.</p>
+
+<p><strong>DeepSeek (Китай).</strong> DeepSeek-V3, DeepSeek-R1 (reasoning). Полностью open-source (MIT). R1 показал результаты сопоставимые с o1 при кратно меньшей цене.</p>
+
+<h3>Специализированные модели</h3>
+<ul>
+<li><strong>Whisper</strong> — распознавание речи (open-source).</li>
+<li><strong>DALL·E 3, Stable Diffusion, Flux, Midjourney</strong> — генерация картинок.</li>
+<li><strong>ElevenLabs, Cartesia</strong> — синтез голоса.</li>
+<li><strong>CodeLlama, DeepSeek-Coder, Qwen2.5-Coder</strong> — модели для кода.</li>
+<li><strong>text-embedding-3, BGE, E5</strong> — эмбеддинги для поиска.</li>
+</ul>
+
+<h2>2. Что отличает модели — 7 ключевых параметров</h2>
+
+<h3>1. Размер (B параметров)</h3>
+<ul>
+<li><strong>0.5–4B</strong> — tiny, для on-device.</li>
+<li><strong>7–14B</strong> — small, для локального запуска на 1 GPU.</li>
+<li><strong>30–70B</strong> — mid-large, нужен сервер.</li>
+<li><strong>100B+</strong> — large, через API облачных провайдеров.</li>
+</ul>
+
+<h3>2. Контекстное окно</h3>
+<table>
+<tr><th>Модель</th><th>Контекст</th></tr>
+<tr><td>GPT-3.5 (старая)</td><td>16k</td></tr>
+<tr><td>GPT-4o</td><td>128k</td></tr>
+<tr><td>Claude 3.5 Sonnet</td><td>200k</td></tr>
+<tr><td>Llama 3.1</td><td>128k</td></tr>
+<tr><td>Gemini 1.5 Pro</td><td>1M (миллион)</td></tr>
+<tr><td>DeepSeek-V3</td><td>128k</td></tr>
+</table>
+<p>На практике: 128k ≈ среднего размера роман. 200k ≈ длинный технический документ + переписка.</p>
+
+<h3>3. Качество (бенчмарки)</h3>
+<p>Главные: MMLU (общие знания), GPQA, HumanEval/MBPP (программирование), MATH (математика).</p>
+<p>Бенчмарки врут — смотри живые сравнения: <a href="https://chat.lmsys.org" target="_blank">Chatbot Arena</a>, где модели оценивают вслепую люди.</p>
+
+<h3>4. Скорость (тоkens/sec)</h3>
+<ul>
+<li>Haiku/Flash/4o-mini: <strong>80–150 tok/s</strong> — почти мгновенно.</li>
+<li>Sonnet/4o: <strong>40–80 tok/s</strong> — комфортно.</li>
+<li>Opus/o1: <strong>15–40 tok/s</strong> — заметно тормозит.</li>
+<li>Reasoning модели: первые <strong>5–60 секунд</strong> на «thinking».</li>
+</ul>
+
+<h3>5. Цена (за миллион токенов)</h3>
+<table>
+<tr><th>Модель</th><th>Input</th><th>Output</th></tr>
+<tr><td>GPT-4o</td><td>$2.50</td><td>$10.00</td></tr>
+<tr><td>GPT-4o-mini</td><td>$0.15</td><td>$0.60</td></tr>
+<tr><td>o1</td><td>$15.00</td><td>$60.00</td></tr>
+<tr><td>Claude Opus 4</td><td>$15.00</td><td>$75.00</td></tr>
+<tr><td>Claude Sonnet 4</td><td>$3.00</td><td>$15.00</td></tr>
+<tr><td>Claude Haiku</td><td>$0.25</td><td>$1.25</td></tr>
+<tr><td>Gemini 1.5 Pro</td><td>$1.25</td><td>$5.00</td></tr>
+<tr><td>Gemini 1.5 Flash</td><td>$0.075</td><td>$0.30</td></tr>
+<tr><td>Llama 3.1 70B</td><td>$0.35</td><td>$0.40</td></tr>
+<tr><td>DeepSeek-V3</td><td>$0.14</td><td>$0.28</td></tr>
+</table>
+
+<p><strong>Реальный пример:</strong> промпт 1000 токенов + ответ 500. GPT-4o = $0.0075 (~70 коп). GPT-4o-mini = $0.00045 (~4 коп). Разница 100x на массовых задачах.</p>
+
+<h3>6. Мультимодальность</h3>
+<ul>
+<li>Картинки на вход: GPT-4o, Claude 3.5+, Gemini, Llama 3.2 Vision.</li>
+<li>Аудио на вход: GPT-4o, Gemini.</li>
+<li>Видео на вход: Gemini 1.5 Pro.</li>
+<li>Картинки на выход: DALL·E, Imagen, Flux. (LLM сама не рисует — вызывает image-модель.)</li>
+</ul>
+
+<h3>7. Лицензия и приватность</h3>
+<ul>
+<li><strong>Closed (proprietary):</strong> OpenAI, Anthropic, Google. Данные летят в облако вендора.</li>
+<li><strong>Open weights (Llama, Mistral, DeepSeek):</strong> скачиваешь .safetensors, запускаешь у себя. Полная приватность.</li>
+<li><strong>Полностью open (OLMo, Pythia):</strong> открыты не только веса, но и код тренировки и данные.</li>
+</ul>
+
+<h2>3. Типы моделей — это не одна вещь</h2>
+<ul>
+<li><strong>Chat models</strong> — то, что ты привык называть LLM. GPT-4o, Claude Sonnet.</li>
+<li><strong>Embedding models</strong> — превращают текст в числовой вектор. text-embedding-3, BGE-M3.</li>
+<li><strong>Image models</strong> — DALL·E 3, Stable Diffusion XL, Flux.1.</li>
+<li><strong>Audio models</strong> — STT (Whisper, Deepgram) и TTS (ElevenLabs).</li>
+<li><strong>Reasoning models</strong> — со встроенным CoT. o1, o3, DeepSeek-R1, Gemini 2.0 Thinking.</li>
+<li><strong>Specialised:</strong> code (CodeLlama, Qwen-Coder), math.</li>
+</ul>
+
+<h2>4. Open-source vs Proprietary</h2>
+
+<div class="callout callout-info">
+<strong>Преимущества Proprietary (GPT, Claude, Gemini):</strong>
+<ul>
+<li>✅ Лучшее качество на топовых задачах.</li>
+<li>✅ Не нужна инфраструктура — заплатил, дёрнул API.</li>
+<li>✅ Готовая мультимодальность.</li>
+<li>✅ Поддержка вендора, SLA.</li>
+</ul>
+<strong>Минусы:</strong>
+<ul>
+<li>❌ Данные уходят в облако вендора.</li>
+<li>❌ Vendor lock-in.</li>
+<li>❌ Ценообразование не в твоих руках.</li>
+<li>❌ Rate limits.</li>
+</ul>
+</div>
+
+<div class="callout callout-success">
+<strong>Преимущества Open-source (Llama, Mistral):</strong>
+<ul>
+<li>✅ Полная приватность — данные не выходят за периметр.</li>
+<li>✅ Бесплатно после развёртки.</li>
+<li>✅ Полный fine-tuning.</li>
+<li>✅ Нет rate limits.</li>
+</ul>
+<strong>Минусы:</strong>
+<ul>
+<li>❌ Качество хуже топов на самых сложных задачах.</li>
+<li>❌ Нужна инфра: GPU, deployment.</li>
+<li>❌ Слабее с мультимодальностью.</li>
+</ul>
+</div>
+
+<h3>Когда что брать</h3>
+<table>
+<tr><th>Сценарий</th><th>Выбор</th></tr>
+<tr><td>Прототип</td><td>Proprietary mini (4o-mini, Haiku)</td></tr>
+<tr><td>Продакшен, простые задачи</td><td>Proprietary mini или OS на инфре</td></tr>
+<tr><td>Сложные рассуждения, code</td><td>Topовая proprietary (Opus, GPT-4o, o1)</td></tr>
+<tr><td>Конфиденциальные данные</td><td>Self-host OS или Azure OpenAI с DPA</td></tr>
+<tr><td>Регулируемая отрасль</td><td>Self-host OS или вендор с compliance</td></tr>
+<tr><td>Офлайн / on-device</td><td>Маленькая OS-модель (Phi, Llama 3.2 1B/3B)</td></tr>
+</table>
+
+<h2>5. Как читать бенчмарки и не сесть в лужу</h2>
+<p><strong>Что не так с бенчмарками:</strong></p>
+<ol>
+<li><strong>Натаскивание на тест.</strong> Если данные бенчмарка попали в обучение — contamination.</li>
+<li><strong>Уход в нишу.</strong> Модель может быть топ-1 в MMLU, но плохо писать письма.</li>
+<li><strong>Маленькая разница в цифрах = шум.</strong> 88.7% vs 88.3% MMLU — не значит ничего.</li>
+</ol>
+<p><strong>Что полезно:</strong></p>
+<ol>
+<li><a href="https://chat.lmsys.org" target="_blank">Chatbot Arena</a> — реальные люди голосуют вслепую.</li>
+<li><a href="https://artificialanalysis.ai" target="_blank">Artificial Analysis</a> — сравнение по качеству, скорости, цене.</li>
+<li><strong>Свои evals:</strong> для твоей задачи прогони 20–50 запросов через модели и оцени руками.</li>
+</ol>
+
+<h2>6. Реальные сценарии — как я бы выбрал</h2>
+
+<h3>Сценарий 1: чат-бот поддержки</h3>
+<p>10 000 диалогов в месяц. 100 000 ответов × 500 токенов = 50M output. При $10/M (4o) = $500. При $0.6/M (4o-mini) = $30. Качество: для FAQ-бота оба справятся.</p>
+<p><strong>Выбор: GPT-4o-mini или Claude Haiku</strong> + RAG.</p>
+
+<h3>Сценарий 2: ассистент юриста</h3>
+<p>Длинные документы, точность критична, конфиденциальные данные.</p>
+<p><strong>Выбор: Claude Sonnet 4 на AWS Bedrock</strong> (с DPA) или <strong>Llama 3.1 70B self-hosted</strong>.</p>
+
+<h3>Сценарий 3: автокатегоризация писем</h3>
+<p>5000 писем в день, 20 категорий, важны скорость и цена.</p>
+<p><strong>Выбор: GPT-4o-mini или Llama 3.1 8B</strong> в режиме structured output.</p>
+
+<h3>Сценарий 4: код-ревьюер в CI/CD</h3>
+<p>Большой контекст, качество понимания кода критично.</p>
+<p><strong>Выбор: Claude Sonnet 4</strong> или <strong>DeepSeek-Coder</strong>.</p>
+
+<h3>Сценарий 5: креативные сценарии для маркетинга</h3>
+<p>Креатив &gt; точность. Объём небольшой.</p>
+<p><strong>Выбор: Claude Opus или GPT-4o с temperature=1.</strong></p>
+
+<h3>Сценарий 6: ассистент медицинского диагноста</h3>
+<p>PHI, HIPAA, точность критична.</p>
+<p><strong>Выбор: Llama 3.1 70B self-hosted on-prem</strong> + RAG + human-in-the-loop.</p>
+
+<h2>7. Глоссарий</h2>
+<ul>
+<li><strong>Параметр</strong> — настраиваемое число в нейросети.</li>
+<li><strong>Контекст</strong> — токены, видимые модели за раз.</li>
+<li><strong>MMLU</strong> — Massive Multitask Language Understanding.</li>
+<li><strong>Chatbot Arena</strong> — слепое голосование за ответы.</li>
+<li><strong>Pareto-frontier</strong> — оптимальные модели по соотношению цены/качества.</li>
+<li><strong>MoE</strong> — Mixture of Experts. Mixtral, DeepSeek-V3.</li>
+<li><strong>Reasoning model</strong> — LLM со встроенной длинной CoT.</li>
+<li><strong>Embedding model</strong> — превращает текст в вектор.</li>
+<li><strong>Self-hosted</strong> — модель на твоей инфраструктуре.</li>
+<li><strong>DPA / BAA</strong> — соглашения о работе с данными.</li>
+<li><strong>TTFT</strong> — Time to First Token.</li>
+</ul>
+
+<h2>8. Практика (60 минут)</h2>
+
+<h3>Упражнение 1. Свой бенчмарк (20 минут)</h3>
+<ol>
+<li>Сформулируй <strong>5 типичных задач</strong> для ИИ.</li>
+<li>Прогони через 3 модели: дешёвую, среднюю, топовую.</li>
+<li>Поставь оценку 1–5 каждому ответу.</li>
+<li>Запиши таблицу в <code>progress.md</code>.</li>
+</ol>
+
+<h3>Упражнение 2. Чтение Arena (10 минут)</h3>
+<p>Зайди на <a href="https://chat.lmsys.org" target="_blank">chat.lmsys.org</a> в режиме Battle, голосуй вслепую 10 раз.</p>
+
+<h3>Упражнение 3. Расчёт стоимости (10 минут)</h3>
+<p>Возьми один кейс. Прикинь объём. Посчитай месячную стоимость для трёх моделей. Формула: <code>запросов × 30 × (input_токенов × input_цена + output_токенов × output_цена) / 1М</code>.</p>
+
+<h3>Упражнение 4. Локальный запуск (бонус)</h3>
+<p>На Mac M1+ или ПК с GPU 8+ ГБ:</p>
+<ol>
+<li>Установи <a href="https://ollama.com" target="_blank">Ollama</a>.</li>
+<li><code>ollama pull llama3.2:3b</code></li>
+<li><code>ollama run llama3.2:3b</code></li>
+</ol>
+
+<h3>Упражнение 5. Матрица выбора (10 минут)</h3>
+<p>Составь таблицу: «Тип задачи / Модель / Почему» — минимум 5 строк.</p>
+
+<h2>9. Проверь себя</h2>
+
+<p><strong>1. Чем reasoning model (o1) отличается от обычной (4o)?</strong><br>
+Перед финальным ответом генерирует длинный «черновик мышления» (CoT). Резко повышает качество на сложных задачах, но медленнее и дороже.</p>
+
+<p><strong>2. У меня 1 миллион токенов входа. Какие модели подходят?</strong><br>
+Только Gemini 1.5 Pro (1M context). Альтернатива: chunking + любая модель.</p>
+
+<p><strong>3. Через интерфейс или через API?</strong><br>
+Через интерфейс — разовые задачи, исследовательский креатив. Через API — автоматизация, ассистенты, скрипты, programmatic-control.</p>
+
+<p><strong>4. «Open weights, но не open data» — что значит?</strong><br>
+Веса опубликованы, можно скачать, дообучать. Но <strong>обучающие данные</strong> не публиковались.</p>
+
+<p><strong>5. Я в России и нет доступа к OpenAI. Что делать?</strong><br>
+(а) Anthropic — работает; (б) YandexGPT, GigaChat; (в) self-host (Llama, DeepSeek через Ollama).</p>
+
+<p><strong>6. Бенчмарки против моих личных тестов — кто прав?</strong><br>
+Ты. На твоих задачах твои evals главнее любого бенчмарка.</p>
+
+<p><strong>7. Mixture of Experts — что это?</strong><br>
+Архитектура, где router выбирает 1–2 эксперта на токен. Mixtral 8x7B = 47B параметров, активны ~13B.</p>
+
+<p><strong>8. Topовая модель или дешёвая для классификации 100 категорий?</strong><br>
+Дешёвая. Объём важнее качества — за миллион писем экономия в 30 раз.</p>
+
+<p><strong>9. Что такое Chatbot Arena?</strong><br>
+Платформа от LMSYS, где люди голосуют за ответы вслепую. Aggregate Elo-рейтинг.</p>
+
+<p><strong>10. 200k контекст — всегда хорошо?</strong><br>
+Не всегда. Цена линейна с длиной, lost in the middle, RAG часто лучше.</p>
+
+<h2>10. Что должно остаться в голове</h2>
+<ol>
+<li>Нет одной «лучшей модели» — есть лучшая под задачу.</li>
+<li>Цена и качество не линейны — 90% задач решает mini-модель в 30 раз дешевле.</li>
+<li>Open-source уже хорош — для большинства задач Llama 70B хватает.</li>
+<li>Бенчмарки шумны — делай свои evals.</li>
+<li>Reasoning models — отдельный класс.</li>
+<li>Контекст — не всегда нужен большой; RAG часто лучше.</li>
+<li>Приватность определяет архитектуру.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> в <code>progress.md</code> запиши свою «матрицу выбора» — 5 строк «тип задачи → модель → почему».
+</div>
+`);
+
+// ============================================================
+// Урок 3
+// ============================================================
+registerLesson(3, `
+<h1>Урок 3. Ответственное использование ИИ — риски и как с ними жить</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> увидеть риски GenAI и систематически их снижать</span>
+  <span><strong>Время:</strong> ~50 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/03</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Большинство курсов прячут этику в финальную главу, которую все пролистывают. Это плохо, потому что:</p>
+<ol>
+<li><strong>Ты как пользователь</strong> — рискуешь утечкой персональных и корпоративных данных.</li>
+<li><strong>Ты как будущий разработчик</strong> — продукты с GenAI будут падать на проде из-за галлюцинаций, инжекшен-атак и bias.</li>
+<li><strong>Регуляция нарастает</strong> — EU AI Act с 2026, AI Act США, российский закон об ИИ.</li>
+</ol>
+
+<h2>1. Карта рисков GenAI</h2>
+<p>Все риски делятся на 4 группы:</p>
+<ul>
+<li><strong>A. Качество вывода:</strong> галлюцинации, bias, устаревшие данные, низкое качество на узких темах.</li>
+<li><strong>B. Приватность и безопасность:</strong> утечки секретов, PII, хранение у вендора.</li>
+<li><strong>C. Юридическое и этическое:</strong> авторские права, дезинформация, решения с последствиями.</li>
+<li><strong>D. Социальные:</strong> замена рабочих мест, эрозия навыков, концентрация власти.</li>
+</ul>
+
+<h2>2. Группа A — качество вывода</h2>
+
+<h3>A1. Галлюцинации — реальные кейсы</h3>
+<ul>
+<li><strong>2023:</strong> юрист в Нью-Йорке сослался на 6 «прецедентов», которые ChatGPT придумал. Получил штраф.</li>
+<li><strong>2024:</strong> Google AI Overview советовал «есть один камень в день» и «приклеивать сыр на пиццу клеем».</li>
+<li><strong>Air Canada:</strong> их чат-бот придумал политику возврата, и суд <strong>обязал</strong> компанию её исполнять.</li>
+</ul>
+<p><strong>Что делать:</strong> RAG, явные инструкции «не выдумывай», проверка цифр и ссылок.</p>
+
+<h3>A2. Bias — системная предвзятость</h3>
+<p>Модель учится на интернете. В интернете много стереотипов.</p>
+<ul>
+<li>«Инженер» → DALL·E чаще генерит мужчин.</li>
+<li>Медицинские диагнозы хуже работают на симптоматике женщин и не-европейцев.</li>
+<li>LLM работают на русском хуже английского.</li>
+</ul>
+<p><strong>Виды bias:</strong> representation, historical, measurement, aggregation.</p>
+<p><strong>Что делать:</strong> не использовать ИИ для решений с защищёнными признаками; тестировать на разных входах; для серьёзных систем — формальные fairness-метрики.</p>
+
+<h3>A3. Устаревшие данные</h3>
+<p>LLM знает мир до своего knowledge cutoff. После — либо не знает, либо обрывочно.</p>
+<p><strong>Что делать:</strong> передавай дату в system prompt; для свежих данных — поиск (Perplexity, ChatGPT Browsing).</p>
+
+<h3>A4. Низкое качество на узкой теме</h3>
+<p>Узкие технические темы, локальные законы, специфические нормативки — модель часто плавает.</p>
+<p><strong>Что делать:</strong> ищи независимое подтверждение; используй модель для формы, а содержание проверяй; RAG над специальным корпусом.</p>
+
+<h2>3. Группа B — приватность</h2>
+
+<h3>B1. Утечка корпоративных секретов</h3>
+<p><strong>Кейсы:</strong> 2023 Samsung — инженер скопировал внутренний код в ChatGPT. Samsung запретил ChatGPT для сотрудников.</p>
+
+<div class="callout callout-danger">
+<strong>Никогда не вводи в публичные ChatGPT/Claude/Gemini:</strong>
+<ul>
+<li>Внутренние документы компании.</li>
+<li>Клиентские базы.</li>
+<li>Контракты с реальными именами.</li>
+<li>Финансовые отчёты до публикации.</li>
+<li>Исходный код, особенно коммерческий.</li>
+<li>Списки сотрудников и зарплат.</li>
+<li>Стратегические планы.</li>
+</ul>
+</div>
+
+<p><strong>Что делать:</strong> Enterprise тарифы (OpenAI, Anthropic), Azure OpenAI, или self-host OS-моделей.</p>
+
+<h3>B2. Утечка PII</h3>
+<p><strong>PII:</strong> имена, email, телефоны, паспорта, СНИЛС, адреса, биометрия, медданные.</p>
+<p><strong>Юридический контекст:</strong> 152-ФЗ (РФ), GDPR (EU, штрафы до 4% оборота!), CCPA (Калифорния).</p>
+<p><strong>Что делать:</strong> анонимизация перед отправкой; готовые библиотеки (Presidio, AWS Comprehend); шифрование логов.</p>
+
+<h3>B3. Misclassification</h3>
+<p>Маркетолог копирует пост, в котором мимоходом упоминается ещё-не-анонсированная функция. Это уже инсайдерская информация.</p>
+<p><strong>Что делать:</strong> внутрикорпоративные политики, обучение, технические DLP-фильтры.</p>
+
+<h3>B4. Хранение у вендора</h3>
+<p>Данные хранятся у вендора до 30 дней для модерации. У вендора может случиться breach (как у OpenAI в 2023).</p>
+
+<h2>4. Группа C — юридические риски</h2>
+
+<h3>C1. Авторские права</h3>
+<p><strong>На входе:</strong> модели учились на копирайтных книгах, статьях, коде. Идут процессы: NYT vs OpenAI, Authors Guild vs OpenAI, Getty vs Stability.</p>
+<p><strong>На выходе:</strong> модель может генерировать текст, похожий на конкретное произведение.</p>
+<p><strong>Что делать:</strong> не публикуй чисто-сгенерированный контент без проверки; не проси «в стиле живого автора» для коммерции.</p>
+
+<h3>C2. Дезинформация</h3>
+<p>GenAI делает производство фейков на порядок дешевле. Deepfake, фейковые новости, astroturfing, фишинг.</p>
+<p><strong>Этическая позиция:</strong> не делай ботов, имитирующих реальных людей; явно указывай, что собеседник — бот.</p>
+
+<h3>C3. Решения с последствиями</h3>
+<p>Найм, кредитный скоринг, правосудие, медицина, контент-модерация. Случаи дискриминации (Amazon HR-инструмент штрафовал «women», COMPAS был расово-предвзятым).</p>
+<p><strong>Принцип:</strong> в решениях с серьёзными последствиями ИИ — <strong>помощник</strong>, а не <strong>решающий</strong>. Human-in-the-loop.</p>
+
+<h3>C4. Использование чужой личности</h3>
+<p>Voice cloning из 5 секунд аудио. Уже использовалось в мошенничествах. Никогда не клонируй живого человека без согласия.</p>
+
+<h2>5. Группа D — социальные риски</h2>
+<ul>
+<li><strong>D1. Замена работы</strong> — ИИ не «забирает работу», но меняет её. Адаптируйся.</li>
+<li><strong>D2. Эрозия навыков</strong> — держи «зону без ИИ»; иногда переписывай руками для тренировки.</li>
+<li><strong>D3. Концентрация власти</strong> — поддерживай open-source, не сажай критическую инфру на одного вендора.</li>
+<li><strong>D4. Списывание</strong> — для обучения ИИ — враг; для исполнения — друг.</li>
+</ul>
+
+<h2>6. Microsoft Responsible AI — формальная рамка</h2>
+<ol>
+<li><strong>Fairness</strong> — справедливость.</li>
+<li><strong>Reliability & Safety</strong> — надёжность.</li>
+<li><strong>Privacy & Security</strong> — приватность.</li>
+<li><strong>Inclusiveness</strong> — доступность для всех.</li>
+<li><strong>Transparency</strong> — прозрачность.</li>
+<li><strong>Accountability</strong> — ответственность за последствия.</li>
+</ol>
+<p>Эти принципы — чек-лист для ревью продукта.</p>
+
+<h2>7. Защитные техники</h2>
+
+<h3>Технические</h3>
+<ul>
+<li><strong>Content moderation API</strong> (OpenAI Moderation, Azure Content Safety).</li>
+<li><strong>PII detection</strong> до отправки в LLM.</li>
+<li><strong>Prompt injection mitigation</strong> — разделение данных и инструкций.</li>
+<li><strong>Rate limiting.</strong></li>
+<li><strong>Logging & audit.</strong></li>
+</ul>
+
+<h3>Архитектурные</h3>
+<ul>
+<li><strong>Human-in-the-loop</strong> для критичных действий.</li>
+<li><strong>Принцип наименьших привилегий.</strong></li>
+<li><strong>Read-only по умолчанию.</strong></li>
+<li><strong>Sandbox-исполнение</strong> сгенерированного кода.</li>
+</ul>
+
+<h3>Процессные</h3>
+<ul>
+<li>Policy документ.</li>
+<li>Тренинги.</li>
+<li>Red team.</li>
+<li>Incident response plan.</li>
+</ul>
+
+<h2>8. Глоссарий</h2>
+<ul>
+<li><strong>Hallucination</strong> — уверенный неправильный ответ.</li>
+<li><strong>Bias</strong> — системная предвзятость.</li>
+<li><strong>PII</strong> — Personally Identifiable Information.</li>
+<li><strong>GDPR</strong> — General Data Protection Regulation (EU).</li>
+<li><strong>152-ФЗ</strong> — закон о персданных РФ.</li>
+<li><strong>DPA</strong> — Data Processing Agreement.</li>
+<li><strong>DLP</strong> — Data Loss Prevention.</li>
+<li><strong>High-risk AI</strong> — категория в EU AI Act.</li>
+<li><strong>Deepfake</strong> — синтетический фейк.</li>
+<li><strong>Red team</strong> — группа атакующих.</li>
+<li><strong>HITL</strong> — Human-in-the-loop.</li>
+</ul>
+
+<h2>9. Практика (60 минут)</h2>
+
+<h3>Упражнение 1. Аудит реального использования</h3>
+<p>Возьми 5 последних диалогов с ИИ. Проверь: PII третьих лиц? Корпоративные секреты? Регулируемые данные?</p>
+
+<h3>Упражнение 2. Список запретов</h3>
+<p>Составь личный список «никогда не делаю с ИИ». Минимум 10 пунктов.</p>
+
+<h3>Упражнение 3. Ты — red team</h3>
+<p>Попробуй сломать своего бота: попроси сказать что-то, чего создатель не хотел; раскрыть system prompt; выполнить инжекшен.</p>
+
+<h3>Упражнение 4. Принципы Responsible AI</h3>
+<p>Возьми идею ИИ-продукта. Пройди по 6 принципам Microsoft Responsible AI.</p>
+
+<h2>10. Проверь себя</h2>
+
+<p><strong>1. Bias vs hallucination?</strong><br>
+Hallucination — модель сочинила факт. Bias — систематическое смещение.</p>
+
+<p><strong>2. Промпт «оцени резюме» — главный риск?</strong><br>
+Bias в найме. По EU AI Act — high-risk, особый режим.</p>
+
+<p><strong>3. Кусок исходного кода в ChatGPT — можно?</strong><br>
+В публичный — рискованно. Нужен Enterprise/Team или Azure OpenAI с DPA.</p>
+
+<p><strong>4. Midjourney «в стиле Hayao Miyazaki» на коммерческом сайте?</strong><br>
+Серая зона/нарушение. Лучше — оригинальный стиль.</p>
+
+<p><strong>5. EU AI Act — что важно?</strong><br>
+High-risk категория с особыми требованиями. Запрет social scoring. Маркировка ИИ-контента. Штрафы до €35M или 7% оборота.</p>
+
+<p><strong>6. Что значит human-in-the-loop?</strong><br>
+В критическом цикле обязательно есть человек, видящий данные и принимающий финальное решение.</p>
+
+<p><strong>7. ChatGPT отказался отвечать на невинный вопрос — это bias?</strong><br>
+Скорее overcautious safety filter. Решается переформулировкой.</p>
+
+<p><strong>8. C2PA — что это?</strong><br>
+Стандарт криптографических подписей для ИИ-картинок. Поддерживают Adobe, Microsoft, OpenAI.</p>
+
+<p><strong>9. Основная защита от prompt injection?</strong><br>
+Разделение данных и инструкций + валидация выхода + наименьшие привилегии. Defence in depth.</p>
+
+<p><strong>10. Я в РФ работаю с OpenAI через VPN — риски?</strong><br>
+ToS-блокировка, 152-ФЗ нарушения, риски для клиентов. Альтернативы — российские модели или self-host.</p>
+
+<h2>11. Что должно остаться в голове</h2>
+<ol>
+<li>4 группы рисков: качество, приватность, юр/этика, социум.</li>
+<li>Не вводи в публичный ChatGPT секреты и PII.</li>
+<li>Bias реален.</li>
+<li>Решения с последствиями — HITL.</li>
+<li>Авторские права — серая зона.</li>
+<li>Регуляции растут.</li>
+<li>Эрозия навыков — держи зону без ИИ.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> добавь в <code>progress.md</code>: 10-пунктовый список «никогда не делаю», принципы Responsible AI на одной идее, главный риск и план его смягчения.
+</div>
+`);
+
+// ============================================================
+// Урок 4
+// ============================================================
+registerLesson(4, `
+<h1>Урок 4. Основы промпт-инжиниринга</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> писать промпты, которые стабильно дают нужный результат</span>
+  <span><strong>Время:</strong> ~50 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/04</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Промпт — это твой главный инструмент работы с LLM. Разница между «средним юзером» и «продвинутым» — на 90% в качестве промптов. Когда ты пишешь сильный промпт, модель отдаёт готовый результат с первой попытки. Когда слабый — ты получаешь воду, которую долго правишь, или вообще выкидываешь.</p>
+<p>Это не «магия». Это <strong>инженерная дисциплина</strong> со своими паттернами, антипаттернами и измеримыми параметрами. К концу урока ты сможешь брать любую расплывчатую задачу и превращать её в промпт, который даёт стабильное качество.</p>
+
+<h2>1. Почему один промпт даёт хороший ответ, а другой — мусор</h2>
+<p>Вспомни урок 1: модель — это статистический предиктор следующего токена. Качество ответа полностью определяется тем, какие токены окажутся в её контекстном окне до того, как она начнёт генерировать.</p>
+<p>Если в контексте только «Напиши пост про продуктивность» — модель видит миллиарды текстов в обучающем корпусе, начинающихся похожим образом. Она усреднит и выдаст самое банальное.</p>
+<p>Если в контексте — роль, аудитория, формат, ограничения — модель сужает пространство возможных продолжений до того, что нужно тебе.</p>
+<blockquote><strong>Плохой промпт = широкая воронка. Хороший промпт = узкая воронка, направляющая модель к нужному ответу.</strong></blockquote>
+
+<h2>2. Пять компонентов сильного промпта</h2>
+<p>Это базовая структура. Не все 5 нужны всегда — обычно достаточно 3–4.</p>
+
+<h3>1. Роль</h3>
+<p>Кем модель должна быть. Это меняет регистр ответа, словарь, фокус.</p>
+<ul>
+<li>«Ты опытный технический редактор» → формальный, структурный.</li>
+<li>«Ты дружелюбный учитель английского для подростков» → простой, тёплый.</li>
+<li>«Ты циничный разработчик с 20-летним стажем» → прямой, без сахара.</li>
+</ul>
+
+<h3>2. Контекст</h3>
+<p>Фоновая информация. Что модель должна знать о ситуации.</p>
+<ul>
+<li>Кто аудитория ответа.</li>
+<li>Какая компания / индустрия.</li>
+<li>Какие ограничения реальной жизни.</li>
+<li>Что уже было сделано / решено.</li>
+</ul>
+
+<h3>3. Задача</h3>
+<p>Что конкретно сделать. Один глагол, одна цель.</p>
+<ul>
+<li>«Перепиши этот абзац короче».</li>
+<li>«Извлеки из текста все упомянутые компании».</li>
+<li>«Напиши 5 заголовков для этого поста».</li>
+</ul>
+
+<h3>4. Формат вывода</h3>
+<p>В каком виде ответ. Это та часть, которую игнорируют 90% юзеров — а зря. Без явного формата модель импровизирует.</p>
+<ul>
+<li>«Верни JSON со полями <code>title</code>, <code>summary</code>, <code>tags</code>».</li>
+<li>«Дай 3 варианта, каждый — одно предложение».</li>
+<li>«Markdown с заголовками H2».</li>
+<li>«Только сам ответ, без вводных слов».</li>
+</ul>
+
+<h3>5. Ограничения</h3>
+<p>Чего избегать. Что нельзя. Какой длины.</p>
+<ul>
+<li>«Не более 200 слов».</li>
+<li>«Без слов: "решение", "кейс", "уникальный"».</li>
+<li>«Не используй маркетинговый стиль».</li>
+<li>«Если не знаешь — скажи "не знаю", не выдумывай».</li>
+</ul>
+
+<h2>3. Слабый промпт vs сильный — на конкретном примере</h2>
+
+<h3>Слабый промпт</h3>
+<pre><code>Напиши пост про продуктивность.</code></pre>
+<p>Ответ модели: 800 слов общих советов про «утренние ритуалы», «помодоро», «зону потока». Половина правится, остальное выкидывается.</p>
+
+<h3>Сильный промпт</h3>
+<pre><code>Ты опытный автор LinkedIn-постов в B2B-сегменте.
+
+Напиши пост на 800 знаков (около 130 слов) на тему:
+«3 ошибки тайм-менеджмента у руководителей стартапов».
+
+Аудитория: CEO стартапов 30–45 лет, технические основатели,
+которые в первый раз масштабируются с 10 до 50 человек.
+
+Тон: прямой, без воды. Один конкретный пример из жизни.
+Один открытый вопрос в конце для вовлечения.
+
+Никаких хэштегов, эмодзи, маркетинговых клише
+(«game-changer», «next level», «unlock»).
+
+Структура:
+- 1 фраза-крючок
+- 3 ошибки с короткими описаниями
+- Пример
+- Вопрос</code></pre>
+<p>Ответ модели: пост, который можно сразу постить с минимальными правками.</p>
+<p><strong>Разница в усилиях</strong> при написании промпта: 30 секунд vs 3 минуты. <strong>Разница в результате:</strong> 5 минут правок vs 30 минут переделок. Чистая выгода.</p>
+
+<h2>4. Zero-shot vs Few-shot</h2>
+
+<h3>Zero-shot — без примеров</h3>
+<p>Просто инструкция. Хорошо для простых задач, где формат очевиден.</p>
+<pre><code>Классифицируй отзыв как positive / negative / neutral:
+"Доставка быстрая, всё ок"</code></pre>
+
+<h3>Few-shot — с примерами</h3>
+<p>Даёшь модели 2–5 примеров вход→выход. Это резко повышает качество для:</p>
+<ul>
+<li>Сложных или нестандартных форматов вывода.</li>
+<li>Узкоспециальных задач.</li>
+<li>Тонкого тона голоса.</li>
+<li>Структурированных извлечений.</li>
+</ul>
+<pre><code>Классифицируй отзывы по тональности.
+
+Отзыв: "Доставка быстрая, всё ок"
+Тональность: positive
+
+Отзыв: "Курьер опоздал на 3 часа"
+Тональность: negative
+
+Отзыв: "Заказ пришёл"
+Тональность: neutral
+
+Отзыв: "Первый раз заказывал, попробуем ещё"
+Тональность:</code></pre>
+<p>Без примеров модель часто путалась бы между «neutral» и «positive» — после примеров она калибрует своё «понимание» под твою шкалу.</p>
+
+<h3>Сколько примеров оптимально?</h3>
+<ul>
+<li><strong>0</strong> — для очевидных задач (перевод, классификация по бренд-ассоциациям).</li>
+<li><strong>1–2</strong> — формат и стиль ответа.</li>
+<li><strong>3–5</strong> — сложные классификации, edge cases.</li>
+<li><strong>10+</strong> — задачи требующие fine-tune (промпт уже не справляется).</li>
+</ul>
+
+<h2>5. System prompt vs User prompt</h2>
+<p>В API чат-моделей (OpenAI, Anthropic, Google) есть два типа сообщений.</p>
+
+<h3>System prompt</h3>
+<p>Задаётся <strong>один раз</strong> в начале диалога. Описывает поведение модели на весь разговор:</p>
+<ul>
+<li>Кто бот и чем занимается.</li>
+<li>Какие правила соблюдает.</li>
+<li>Какой стиль общения держит.</li>
+<li>Что делать в граничных случаях.</li>
+</ul>
+
+<h3>User prompt</h3>
+<p>Сам запрос. То, что пишешь в чат каждый раз.</p>
+
+<h3>В разных интерфейсах</h3>
+<table>
+<tr><th>Где</th><th>Что считается system prompt</th></tr>
+<tr><td>OpenAI API</td><td><code>{"role": "system", "content": "..."}</code></td></tr>
+<tr><td>ChatGPT (UI)</td><td>Settings → Personalization → Custom Instructions</td></tr>
+<tr><td>Claude API</td><td>Параметр <code>system</code> отдельно от <code>messages</code></td></tr>
+<tr><td>Claude.ai</td><td>Projects: «Project knowledge» + «System prompt»</td></tr>
+</table>
+
+<h3>Пример хорошего system prompt</h3>
+<pre><code>Ты помощник по русскому языку для редакторов.
+
+Правила:
+- Отвечай только по существу, без вступлений «Конечно!»
+- Если в тексте есть ошибка — указывай её и предлагай вариант.
+- Если ошибки нет — пиши «текст корректен».
+- Не используй слова: «безусловно», «несомненно», «однозначно».
+- Если вопрос не про русский язык — отвечай: «Я отвечаю только на вопросы по русскому языку».
+
+Формат ответа:
+- При исправлении: «Исправление: [текст]. Причина: [правило]».
+- При корректном тексте: одно слово «Корректно».</code></pre>
+
+<h2>6. Параметры генерации: temperature, top_p, max_tokens</h2>
+
+<h3>Temperature (0–2)</h3>
+<p>Управляет случайностью. Влияет, насколько модель «рискует» с менее вероятными токенами.</p>
+<ul>
+<li><strong>0</strong> — детерминированно, всегда самый вероятный токен. Для фактов, JSON, классификации.</li>
+<li><strong>0.3</strong> — слегка случайно. Для большинства фактических задач.</li>
+<li><strong>0.7</strong> — стандарт ChatGPT. Для общения, писем.</li>
+<li><strong>1.0+</strong> — креативно. Для брейнсторма, идей.</li>
+<li><strong>1.5+</strong> — близко к случайности. Эксперименты.</li>
+</ul>
+
+<h3>Top_p / nucleus sampling (0–1)</h3>
+<p>Альтернатива temperature. Модель выбирает из токенов, чья суммарная вероятность ≥ p.</p>
+<ul>
+<li><strong>top_p=1</strong> (по умолчанию) — никакого ограничения, работает только temperature.</li>
+<li><strong>top_p=0.9</strong> — отрезает «хвост» маловероятных. Часто полезно с temperature&gt;1.</li>
+<li><strong>top_p=0.1</strong> — почти как temperature=0.</li>
+</ul>
+<p><strong>Практика:</strong> крути что-то одно. Я рекомендую держать top_p=1 и менять только temperature — её эффект понятнее.</p>
+
+<h3>Max tokens</h3>
+<p>Жёсткий лимит длины ответа. Модель остановится при достижении даже на полуслове.</p>
+<ul>
+<li>Защищает от «зацикливания» (когда модель повторяется).</li>
+<li>Контролирует стоимость на массовых вызовах.</li>
+<li>Ставь чуть больше реально нужного — иначе ответ обрежется.</li>
+</ul>
+
+<h3>Другие полезные параметры</h3>
+<ul>
+<li><strong>stop</strong> — список строк, при появлении которых генерация останавливается. Полезно для structured output: <code>stop: ["\\n\\n"]</code>.</li>
+<li><strong>frequency_penalty / presence_penalty</strong> (-2 до 2) — штрафы за повторение токенов. От 0.5 модель меньше повторяется.</li>
+<li><strong>seed</strong> (OpenAI) — для воспроизводимости с temperature&gt;0.</li>
+<li><strong>response_format: {"type": "json_object"}</strong> — гарантирует валидный JSON на выходе.</li>
+</ul>
+
+<h2>7. Антипаттерны — как не надо писать промпты</h2>
+
+<h3>❌ «Сделай хорошо»</h3>
+<p>Слово «хорошо» субъективно. Модель не знает твоей шкалы.</p>
+<p>Замени на: «короче 200 слов», «более прямым тоном», «без маркетинговых клише».</p>
+
+<h3>❌ «Не делай Х» без альтернативы</h3>
+<p>Парадокс: чтобы не делать Х, модель должна о нём подумать. Это активирует Х в её весах.</p>
+<p>Замени: вместо «Не используй пассивный залог» → «Используй активный залог».</p>
+
+<h3>❌ Несколько задач в одном промпте</h3>
+<p>«Прочитай этот текст, исправь ошибки, переведи на английский, найди все имена, и вкратце опиши о чём» — модель размажется. Сделай 4 отдельных промпта.</p>
+
+<h3>❌ Длинная преамбула без четкого вопроса</h3>
+<p>Когда у тебя на 500 слов «контекста и истории» и потом маленький вопрос в конце, модель часто фокусируется не на том. Размещай задачу <strong>в начале и в конце</strong> промпта.</p>
+
+<h3>❌ Двусмысленность</h3>
+<p>«Сделай это короче» — короче на сколько? «Перепиши официально» — насколько официально?</p>
+<p>Конкретизируй цифрами и примерами.</p>
+
+<h3>❌ Игнорирование формата вывода</h3>
+<p>Если ты будешь использовать ответ программно — обязательно явный формат. Иначе будешь парсить непонятный текст.</p>
+
+<h3>❌ «Мысли как [Илон Маск]» для критических решений</h3>
+<p>Модель не «становится» этим человеком. Она генерирует стилистически похожий текст. Содержательно это всё ещё её галлюцинации с уклоном в стиль.</p>
+
+<h2>8. Фреймворки промптов — готовые шаблоны</h2>
+<p>Несколько проверенных структур, которые можно адаптировать под свои задачи.</p>
+
+<h3>RACE</h3>
+<ul>
+<li><strong>R</strong>ole — кто модель.</li>
+<li><strong>A</strong>ction — что делает.</li>
+<li><strong>C</strong>ontext — фон.</li>
+<li><strong>E</strong>xpectation — формат и ограничения.</li>
+</ul>
+
+<h3>RTF</h3>
+<ul>
+<li><strong>R</strong>ole — роль.</li>
+<li><strong>T</strong>ask — задача.</li>
+<li><strong>F</strong>ormat — формат.</li>
+</ul>
+<p>Минимальный шаблон, для быстрых задач.</p>
+
+<h3>CO-STAR (для маркетинга)</h3>
+<ul>
+<li><strong>C</strong>ontext — контекст.</li>
+<li><strong>O</strong>bjective — цель.</li>
+<li><strong>S</strong>tyle — стиль.</li>
+<li><strong>T</strong>one — тон.</li>
+<li><strong>A</strong>udience — аудитория.</li>
+<li><strong>R</strong>esponse — формат ответа.</li>
+</ul>
+
+<h2>9. Глоссарий</h2>
+<ul>
+<li><strong>Prompt</strong> — текст-инструкция, отправляемая модели.</li>
+<li><strong>System prompt</strong> — инструкция на уровень всего диалога.</li>
+<li><strong>User prompt</strong> — конкретный запрос пользователя.</li>
+<li><strong>Zero-shot</strong> — промпт без примеров.</li>
+<li><strong>Few-shot</strong> — промпт с примерами вход→выход.</li>
+<li><strong>Temperature</strong> — параметр случайности (0–2).</li>
+<li><strong>Top_p</strong> — параметр nucleus sampling (0–1).</li>
+<li><strong>Max tokens</strong> — лимит длины ответа.</li>
+<li><strong>Stop sequence</strong> — строка, при появлении которой генерация останавливается.</li>
+<li><strong>Frequency / presence penalty</strong> — штрафы за повторения.</li>
+<li><strong>Token budget</strong> — общий лимит токенов на запрос+ответ.</li>
+<li><strong>Structured output</strong> — формат, который можно парсить программно.</li>
+<li><strong>RACE / RTF / CO-STAR</strong> — мнемонические шаблоны промптов.</li>
+</ul>
+
+<h2>10. Практика (60 минут)</h2>
+
+<h3>Упражнение 1. Слабый → сильный (20 минут)</h3>
+<p>Возьми 3 свои реальные задачи. Для каждой:</p>
+<ol>
+<li>Напиши <strong>слабый</strong> промпт (как ты обычно пишешь).</li>
+<li>Прогони через ChatGPT/Claude. Запиши ответ.</li>
+<li>Перепиши с использованием 5 компонентов: роль, контекст, задача, формат, ограничения.</li>
+<li>Прогони снова. Сравни.</li>
+<li>Сохрани сильные промпты в файл <code>prompts.md</code>.</li>
+</ol>
+
+<h3>Упражнение 2. Few-shot калибровка (15 минут)</h3>
+<p>Возьми задачу классификации (например: тональность отзывов, приоритет тикетов, тип email).</p>
+<ol>
+<li>Сделай zero-shot промпт. Прогони на 5 примерах.</li>
+<li>Добавь 3 few-shot примера. Прогони те же 5.</li>
+<li>Сравни консистентность ответов.</li>
+</ol>
+
+<h3>Упражнение 3. Эксперимент с temperature (15 минут)</h3>
+<p>Если есть API: возьми один промпт «Напиши слоган для X». Прогони 5 раз с разными temperature: 0, 0.3, 0.7, 1.0, 1.5. Запиши, как меняется характер ответов.</p>
+
+<h3>Упражнение 4. Шаблон под себя (10 минут)</h3>
+<p>Составь свой шаблон промпта под твою основную задачу (рерайт писем, ревью кода, генерация постов — что чаще делаешь). Сохрани в <code>prompts.md</code> в виде:</p>
+<pre><code>### Шаблон: [название]
+
+Используется когда: ...
+
+Промпт:
+"""
+Ты ...
+[Контекст]
+[Задача]
+Формат: ...
+Ограничения: ...
+"""</code></pre>
+
+<h2>11. Проверь себя</h2>
+
+<p><strong>1. Назови 5 компонентов сильного промпта.</strong><br>
+Роль, контекст, задача, формат вывода, ограничения.</p>
+
+<p><strong>2. Когда использовать temperature=0?</strong><br>
+Для фактических задач, structured output, классификации, кода — где нужна стабильность и нет места «креативу».</p>
+
+<p><strong>3. Чем system prompt отличается от user prompt?</strong><br>
+System задаётся один раз в начале диалога и описывает роль/правила. User — конкретный запрос. У моделей system имеет больший вес, чем user.</p>
+
+<p><strong>4. Что такое few-shot и когда он нужен?</strong><br>
+Few-shot = промпт с 2–5 примерами вход→выход. Нужен для нестандартных форматов, тонких классификаций, когда инструкции одной не хватает.</p>
+
+<p><strong>5. Почему «не делай Х» — слабая инструкция?</strong><br>
+Чтобы не делать Х, модель «думает» о Х. Это активирует Х в её весах. Лучше формулировать позитивно: что делать.</p>
+
+<p><strong>6. Что лучше: длинный детальный промпт или короткий с few-shot примерами?</strong><br>
+Зависит. Для редких форматов few-shot работает быстрее (модель видит как надо). Для общих задач — детальный промпт. Можно комбинировать.</p>
+
+<p><strong>7. Параметр top_p=0.9 что даёт?</strong><br>
+Модель сэмплирует только из 90% самых вероятных токенов, отрезая «хвост». Помогает не уехать в бессмыслицу при высоких temperature.</p>
+
+<p><strong>8. Я делаю прод-приложение, ответ модели парсится в JSON. Что включить?</strong><br>
+(а) Явный формат в промпте с примером JSON. (б) Параметр <code>response_format: {"type": "json_object"}</code>. (в) <code>temperature=0</code>. (г) Валидация на стороне кода с retry при невалидном JSON.</p>
+
+<p><strong>9. Один и тот же промпт даёт разные ответы. Это нормально?</strong><br>
+Да, при temperature&gt;0 модель сэмплирует случайно. Чтобы получить один и тот же — temperature=0 + (для OpenAI) фиксированный seed.</p>
+
+<p><strong>10. Зачем вообще нужны мнемоники RACE / CO-STAR, если можно просто писать?</strong><br>
+Они не «правильнее». Это checklist чтобы не забыть компонент. Когда привыкнешь — пишешь свободно, но первое время помогают не упускать важное.</p>
+
+<h2>12. Что должно остаться в голове</h2>
+<ol>
+<li><strong>Узкая воронка → точный ответ.</strong> Сильный промпт сужает пространство возможных продолжений.</li>
+<li><strong>5 компонентов:</strong> роль, контекст, задача, формат, ограничения.</li>
+<li><strong>Few-shot</strong> бьёт zero-shot на нестандартных задачах.</li>
+<li><strong>System prompt</strong> — для устойчивого характера на весь диалог.</li>
+<li><strong>Temperature</strong> — главный параметр случайности.</li>
+<li><strong>Антипаттерны:</strong> субъективные слова, «не делай», много задач, длинные преамбулы.</li>
+<li><strong>Сохраняй удачные промпты</strong> в личной библиотеке — пригодятся снова.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> заведи файл <code>prompts.md</code> рядом с этим курсом. Туда складывай все рабочие шаблоны промптов с пометкой «когда использовать». Через месяц у тебя будет ценная библиотека.
+</div>
+`);
+
+// ============================================================
+// Урок 5
+// ============================================================
+registerLesson(5, `
+<h1>Урок 5. Продвинутые техники промптов: CoT, ReAct, chaining</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> выжимать из модели сложные многошаговые рассуждения</span>
+  <span><strong>Время:</strong> ~50 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/05</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Базовые промпты из урока 4 покрывают 80% задач. Но есть 20%, где обычный промпт ломается:</p>
+<ul>
+<li>Многошаговые рассуждения (математика, логика).</li>
+<li>Задачи, требующие плана и стратегии.</li>
+<li>Случаи, когда нужно «передумать» при ошибке.</li>
+<li>Цепочки обработки данных, где один промпт не справляется.</li>
+<li>Задачи, требующие действий во внешнем мире.</li>
+</ul>
+<p>Этот урок — арсенал техник для этих сложных задач. Ты узнаешь:</p>
+<ul>
+<li><strong>Chain-of-Thought</strong> — пошаговое рассуждение, повышает точность на 20–60% на сложных задачах.</li>
+<li><strong>Self-consistency</strong> — голосование между несколькими попытками.</li>
+<li><strong>Tree-of-Thoughts</strong> — ветвление решений.</li>
+<li><strong>ReAct</strong> — паттерн для агентов: рассуждай и действуй.</li>
+<li><strong>Prompt chaining</strong> — цепочки промптов вместо одного длинного.</li>
+</ul>
+
+<h2>1. Chain-of-Thought (CoT) — пошаговое рассуждение</h2>
+
+<h3>Магия в одной фразе</h3>
+<p>В 2022 Google опубликовал статью «Chain-of-Thought Prompting Elicits Reasoning in Large Language Models». Открытие было странным: достаточно добавить в промпт фразу <strong>«Let's think step by step»</strong> — и точность модели на математических задачах вырастает на 20–60%.</p>
+
+<h3>Почему это работает</h3>
+<p>Когда модель сразу пишет финальный ответ, она по сути «угадывает» его за один токен. Если задача требует промежуточных вычислений, у неё нет места для них.</p>
+<p>Когда ты просишь рассуждать пошагово, модель использует <strong>свой собственный текст как черновик мышления</strong>. Промежуточные шаги становятся частью контекста, и каждый следующий токен генерируется уже с учётом них.</p>
+<p>Это эффект «внешней памяти». Модель не «думает» в человеческом смысле, но способность пошагово раскладывать ход рассуждения значительно повышает её точность.</p>
+
+<h3>Пример</h3>
+<p><strong>Задача:</strong> «У Маши было 5 яблок. Она съела 2 и купила ещё 3. Потом отдала половину Лене. Сколько у неё осталось?»</p>
+<p><strong>Без CoT (GPT-3.5):</strong> часто отвечает «3» (неправильно).</p>
+<p><strong>С CoT</strong> («Рассуждай пошагово»):</p>
+<pre><code>Шаг 1: было 5 яблок.
+Шаг 2: съела 2 → стало 5 - 2 = 3.
+Шаг 3: купила 3 → стало 3 + 3 = 6.
+Шаг 4: отдала половину = 6 / 2 = 3.
+Шаг 5: осталось 6 - 3 = 3.
+
+Ответ: 3.</code></pre>
+<p>В этом примере получилось «3» в обоих случаях, но это совпадение — на более сложных задачах разница существенная.</p>
+
+<h3>Когда применять CoT</h3>
+<ul>
+<li>✅ Математика и вычисления.</li>
+<li>✅ Логические задачи.</li>
+<li>✅ Многошаговая обработка (извлечь → проверить → классифицировать).</li>
+<li>✅ Анализ кода и багов.</li>
+<li>✅ Юридические и медицинские рассуждения (но не для финального решения!).</li>
+<li>❌ Простые фактические запросы — лишний оверхед.</li>
+<li>❌ Креативные задачи (поэзия, стиль) — может «убить» спонтанность.</li>
+</ul>
+
+<h3>Как включать CoT в промпт</h3>
+<p><strong>Вариант 1. Прямая инструкция:</strong></p>
+<pre><code>... Рассуждай пошагово, прежде чем дать финальный ответ.
+В конце выдели итог фразой "Ответ:".</code></pre>
+
+<p><strong>Вариант 2. Few-shot с примерами рассуждений:</strong></p>
+<pre><code>Пример:
+Вопрос: Если 3 рубашки сохнут 1 час...
+Рассуждение: Сушка — параллельный процесс...
+Ответ: 1 час.
+
+Вопрос: [твой вопрос]
+Рассуждение:</code></pre>
+
+<p><strong>Вариант 3. Reasoning-модели (o1, o3, R1):</strong></p>
+<p>У них CoT встроен в архитектуру — ты пишешь обычный промпт, а внутри они сами думают по шагам. Не нужно явно просить.</p>
+
+<h2>2. Self-consistency — голосование между попытками</h2>
+
+<h3>Идея</h3>
+<p>Прогоняешь один и тот же промпт <strong>несколько раз с temperature&gt;0</strong> — получаешь несколько разных ответов. Если задача с однозначно правильным ответом, берёшь самый частый (мажорное голосование).</p>
+
+<h3>Когда полезно</h3>
+<ul>
+<li>Сложные задачи, где модель ошибается в 30–40% случаев.</li>
+<li>Можешь себе позволить запустить 5–20 раз (это в 5–20 раз дороже).</li>
+<li>Есть «правильный ответ», который можно сравнить.</li>
+</ul>
+
+<h3>Псевдокод</h3>
+<pre><code>answers = []
+for i in range(10):
+    response = llm(prompt, temperature=0.7)
+    answers.append(extract_answer(response))
+
+final_answer = most_common(answers)</code></pre>
+
+<h3>Реальный кейс</h3>
+<p>На задаче GSM8K (математика для младших классов) Self-consistency повышает точность GPT-3 с ~50% до ~70%. Дорогая, но иногда оправданная техника.</p>
+
+<h2>3. Tree-of-Thoughts (ToT) — ветвление мышления</h2>
+
+<h3>Идея</h3>
+<p>Модель не идёт по одному пути решения, а генерирует <strong>несколько вариантов</strong> на каждом шаге, оценивает их и продолжает лучший. Получается дерево возможных решений.</p>
+
+<h3>Структура</h3>
+<pre><code>Шаг 1: Сгенерируй 3 варианта первого хода.
+Шаг 2: Для каждого оцени, насколько он перспективен (1-10).
+Шаг 3: Возьми лучший. Сгенерируй 3 варианта следующего хода.
+... (повторить N раз)
+Шаг финал: Выдай решение по лучшему пути.</code></pre>
+
+<h3>Когда применять</h3>
+<ul>
+<li>Творческие задачи с большим пространством решений (стратегии, сценарии).</li>
+<li>Игры, головоломки.</li>
+<li>Программирование — пробовать несколько подходов к багу.</li>
+<li>Принятие решений с трейд-оффами.</li>
+</ul>
+<p>В чистом виде ToT обычно реализуется в коде, а не одним промптом, потому что каждый «узел дерева» — отдельный вызов LLM.</p>
+
+<h2>4. ReAct — Reasoning + Acting</h2>
+
+<h3>Идея</h3>
+<p>Базовый паттерн для <strong>агентов</strong>. Модель чередует:</p>
+<ul>
+<li><strong>Thought</strong> — рассуждение, что нужно сделать.</li>
+<li><strong>Action</strong> — вызов инструмента (поиск, расчёт, API).</li>
+<li><strong>Observation</strong> — результат вызова, добавленный в контекст.</li>
+<li>...повторить пока не получен ответ.</li>
+</ul>
+
+<h3>Пример диалога с ReAct</h3>
+<pre><code>Вопрос: Какая текущая температура в столице Уругвая?
+
+Thought: Мне нужно узнать столицу Уругвая, потом погоду там.
+Action: search("столица Уругвая")
+Observation: Монтевидео.
+
+Thought: Теперь нужна температура в Монтевидео.
+Action: weather("Монтевидео")
+Observation: +18°C, облачно.
+
+Thought: Достаточно информации для ответа.
+Final Answer: Текущая температура в Монтевидео (столице
+Уругвая) — +18°C, облачно.</code></pre>
+
+<h3>Что важно</h3>
+<ul>
+<li>Каждое <code>Action</code> — это вызов реальной функции в коде. Модель не «делает» поиск сама — она просит твой код запустить поиск.</li>
+<li>Результат функции возвращается в контекст как <code>Observation</code>.</li>
+<li>Цикл продолжается, пока модель не выдаст <code>Final Answer</code>.</li>
+</ul>
+
+<p>Подробно ReAct и агенты будут в фазе 2 (уроки 16+). Здесь главное — понять механику.</p>
+
+<h2>5. Prompt chaining — цепочки промптов</h2>
+
+<h3>Идея</h3>
+<p>Сложную задачу режем на этапы. На каждом этапе — отдельный промпт. Выход одного — вход следующего.</p>
+
+<h3>Когда полезно</h3>
+<ul>
+<li>Задача требует разных инструкций на разных этапах.</li>
+<li>Промежуточные результаты нужно проверять/фильтровать.</li>
+<li>Результат одного шага влияет на стратегию следующего.</li>
+<li>Хочется отлаживать каждый этап отдельно.</li>
+</ul>
+
+<h3>Пример: пайплайн анализа писем</h3>
+<p><strong>Задача:</strong> «Из 100 писем составь сводку по приоритетным запросам клиентов».</p>
+
+<p><strong>Плохо (одним промптом):</strong> «Прочитай эти 100 писем и сделай сводку приоритетных запросов» — модель размажется, ошибётся в классификации, упустит детали.</p>
+
+<p><strong>Хорошо (chain):</strong></p>
+<pre><code>Промпт 1 (для каждого письма): извлеки тип запроса и срочность.
+→ JSON {request_type, urgency}
+
+Промпт 2 (агрегация): сгруппируй извлечённые JSON по типам.
+→ Список групп с count и примерами.
+
+Промпт 3 (саммари): по группам с urgency&gt;7 напиши сводку
+для руководителя. Структура: тип, количество, пример,
+рекомендация.
+→ Готовый отчёт.</code></pre>
+
+<p>Каждый промпт делает <strong>одно</strong>. Проще отлаживать, легче масштабировать, выше итоговое качество.</p>
+
+<h3>Структура «map-reduce» в LLM</h3>
+<p>Частный случай chaining, очень популярный:</p>
+<ul>
+<li><strong>Map</strong> — обрабатываем каждый кусок данных независимо одним промптом.</li>
+<li><strong>Reduce</strong> — агрегируем результаты вторым промптом.</li>
+</ul>
+<p>Например, суммаризация книги: суммаризируем каждую главу (map), потом суммаризируем все саммари (reduce).</p>
+
+<h2>6. Какой паттерн когда</h2>
+<table>
+<tr><th>Задача</th><th>Паттерн</th></tr>
+<tr><td>Математика, логика</td><td>CoT</td></tr>
+<tr><td>Критическая точность, можно платить</td><td>Self-consistency</td></tr>
+<tr><td>Творчество, стратегия</td><td>Tree-of-Thoughts</td></tr>
+<tr><td>Нужны действия (поиск, API)</td><td>ReAct</td></tr>
+<tr><td>Сложный pipeline данных</td><td>Prompt chaining</td></tr>
+<tr><td>Обработка большого корпуса</td><td>Map-reduce</td></tr>
+<tr><td>Простой запрос</td><td>Обычный промпт без оверхеда</td></tr>
+</table>
+
+<h2>7. Тонкости и подводные камни</h2>
+
+<h3>CoT не всегда лучше</h3>
+<p>На простых задачах CoT добавляет шум: модель «рассуждает» там, где надо просто ответить. Это:</p>
+<ul>
+<li>Удлиняет ответ → дороже.</li>
+<li>Может внести ошибки в простой ответ.</li>
+<li>Замедляет real-time приложения.</li>
+</ul>
+<p>Применяй CoT <strong>селективно</strong>, не везде по умолчанию.</p>
+
+<h3>Reasoning-модели (o1, o3) vs CoT</h3>
+<p>У o1/o3 chain-of-thought зашит в архитектуру — они тратят время на «thinking» перед ответом. Если ты используешь их:</p>
+<ul>
+<li>НЕ нужно явно просить «think step by step» — это уже происходит.</li>
+<li>Промпт должен быть кратким — лишние инструкции мешают.</li>
+<li>Стоят дороже обычных моделей и медленнее.</li>
+<li>Подходят для задач, где обычные модели не справляются.</li>
+</ul>
+
+<h3>Hidden chain в reasoning-моделях</h3>
+<p>OpenAI <strong>не показывает</strong> внутренний CoT моделей o1 — только финальный ответ. Это сделано против reverse-engineering. Anthropic в Claude показывает «extended thinking», DeepSeek-R1 тоже открыто пишет рассуждения.</p>
+
+<h3>Стоимость chaining vs длинного промпта</h3>
+<p>3 промпта по 500 токенов != 1 промпт на 1500 токенов. У chaining дороже:</p>
+<ul>
+<li>Каждый запрос — отдельные накладные расходы (latency, network, system prompt).</li>
+<li>Промежуточный output становится новым input — токены считаются дважды.</li>
+</ul>
+<p>Но качество обычно выше, и отладка проще. Считай экономику для своей задачи.</p>
+
+<h3>Структурированный CoT</h3>
+<p>Полезный приём: попроси модель использовать конкретные тэги в рассуждениях, тогда легче парсить.</p>
+<pre><code>Используй формат:
+&lt;analysis&gt;[твой анализ]&lt;/analysis&gt;
+&lt;answer&gt;[финальный ответ]&lt;/answer&gt;</code></pre>
+<p>В коде потом извлекаешь только <code>&lt;answer&gt;</code> для пользователя, а <code>&lt;analysis&gt;</code> сохраняешь в логах.</p>
+
+<h2>8. Глоссарий</h2>
+<ul>
+<li><strong>CoT (Chain-of-Thought)</strong> — пошаговое рассуждение в промпте.</li>
+<li><strong>Self-consistency</strong> — несколько прогонов + голосование.</li>
+<li><strong>ToT (Tree-of-Thoughts)</strong> — ветвление путей решения.</li>
+<li><strong>ReAct</strong> — Reasoning + Acting, паттерн агентов.</li>
+<li><strong>Prompt chaining</strong> — цепочка из нескольких промптов.</li>
+<li><strong>Map-reduce</strong> — обработать каждый элемент → агрегировать.</li>
+<li><strong>Reasoning model</strong> — LLM со встроенным CoT (o1, o3, R1).</li>
+<li><strong>Decomposition</strong> — разбиение задачи на подзадачи.</li>
+<li><strong>Tool use / function calling</strong> — вызов внешних функций моделью.</li>
+<li><strong>Thought / Action / Observation</strong> — компоненты ReAct-цикла.</li>
+</ul>
+
+<h2>9. Практика (60 минут)</h2>
+
+<h3>Упражнение 1. CoT vs обычный промпт (15 минут)</h3>
+<p>Возьми 3 сложные задачи. Например:</p>
+<ul>
+<li>«Если кран наполняет ванну за 6 минут, а слив опустошает за 9 минут, за сколько ванна наполнится при открытом сливе?»</li>
+<li>«Команда из 5 человек должна закрыть 12 задач за 3 дня. Один уходит в отпуск на день. Хватит ли времени, если каждый делает 1 задачу в день?»</li>
+<li>«У меня бюджет 500 000 на год. Подписки 8000/мес, налоги 25%. Сколько остаётся на жизнь в месяц?»</li>
+</ul>
+<ol>
+<li>Прогони каждую без CoT. Запиши ответы.</li>
+<li>Прогони с «Рассуждай пошагово, потом дай ответ». Сравни.</li>
+<li>Оцени, в каких случаях CoT помог.</li>
+</ol>
+
+<h3>Упражнение 2. Структурированный CoT (10 минут)</h3>
+<p>Возьми задачу «оцени резюме на соответствие позиции». Напиши промпт со структурой:</p>
+<pre><code>&lt;evaluation&gt;
+[пошаговая оценка по критериям]
+&lt;/evaluation&gt;
+&lt;score&gt;[1-10]&lt;/score&gt;
+&lt;recommendation&gt;[hire / no-hire / interview]&lt;/recommendation&gt;</code></pre>
+<p>Прогони на 3 разных «резюме». Заметь, как структура помогает консистентности.</p>
+
+<h3>Упражнение 3. Prompt chain (20 минут)</h3>
+<p>Реализуй пайплайн «вытащи из 10 коротких писем все запросы на встречу → сгруппируй по приоритету → составь календарь предложений»:</p>
+<ol>
+<li>Промпт 1: для каждого письма извлеки <code>{has_meeting_request, suggested_date, urgency}</code>.</li>
+<li>Промпт 2: возьми результаты, сгруппируй по urgency.</li>
+<li>Промпт 3: сделай красивый календарь с рекомендациями.</li>
+</ol>
+<p>Сравни с попыткой сделать всё одним длинным промптом.</p>
+
+<h3>Упражнение 4. Эксперимент с reasoning-моделью (15 минут)</h3>
+<p>Если есть доступ к o1, o3, R1 (DeepSeek), Gemini 2.0 Thinking:</p>
+<ol>
+<li>Возьми задачу, на которой обычная модель плавала.</li>
+<li>Напиши <strong>краткий</strong> промпт без «think step by step».</li>
+<li>Прогони. Заметь, сколько модель «думала» (если показывает).</li>
+<li>Сравни ответ с обычной моделью + CoT.</li>
+</ol>
+
+<h2>10. Проверь себя</h2>
+
+<p><strong>1. Что значит «think step by step»?</strong><br>
+Инструкция модели рассуждать пошагово, прежде чем дать ответ. Это позволяет ей использовать собственный текст как «черновик мышления». Резко повышает точность на сложных задачах.</p>
+
+<p><strong>2. Self-consistency: что и зачем?</strong><br>
+Прогоняем один промпт N раз с temperature&gt;0, выбираем самый частый ответ. Полезно на задачах с однозначно правильным ответом, где модель часто ошибается.</p>
+
+<p><strong>3. ReAct — что за паттерн?</strong><br>
+Цикл Thought → Action → Observation для агентов. Модель чередует рассуждение и вызов внешних функций (поиск, API), пока не получит достаточно информации для финального ответа.</p>
+
+<p><strong>4. Зачем разбивать сложный промпт на цепочку?</strong><br>
+Каждый промпт делает одно — проще отлаживать, выше итоговое качество, можно проверять промежуточные результаты, легче масштабировать.</p>
+
+<p><strong>5. Что общего у reasoning-моделей с CoT?</strong><br>
+У них CoT встроен в архитектуру: они сами генерируют длинный «черновик мышления» перед ответом. Не нужно явно просить.</p>
+
+<p><strong>6. Когда CoT — лишний?</strong><br>
+На простых задачах: фактические вопросы, перевод, простая классификация. Там CoT добавляет шум, удлиняет ответ и удорожает запрос.</p>
+
+<p><strong>7. Что такое map-reduce в контексте LLM?</strong><br>
+Частный случай chaining: одним промптом обрабатываем каждый элемент данных независимо (map), вторым агрегируем результаты (reduce). Классика для суммаризации больших корпусов.</p>
+
+<p><strong>8. У меня задача требует поиска в интернете в процессе. Какой паттерн?</strong><br>
+ReAct + tool use. Модель рассуждает, вызывает поиск как инструмент, обрабатывает результат и продолжает.</p>
+
+<p><strong>9. У моей задачи 5 этапов обработки. Один промпт или chain?</strong><br>
+Почти всегда chain. Один промпт на 5 разных задач даст хуже качество, чем 5 фокусированных. Исключение — если этапы тривиальны и модели легко.</p>
+
+<p><strong>10. Что такое hidden chain в reasoning-моделях?</strong><br>
+Внутренние рассуждения модели, которые она генерирует, но не показывает пользователю. У OpenAI o1 — скрыты, у DeepSeek R1 — открыты, у Claude — частично («extended thinking»).</p>
+
+<h2>11. Что должно остаться в голове</h2>
+<ol>
+<li><strong>CoT</strong> — самая полезная техника. Знай, когда добавлять «рассуждай пошагово».</li>
+<li><strong>Reasoning-модели</strong> — отдельный класс. Используй на сложных задачах, не «приклеивай» к ним CoT.</li>
+<li><strong>Self-consistency</strong> — когда точность важнее цены.</li>
+<li><strong>ReAct</strong> — основа всех агентов. Будем углубляться в фазе 2.</li>
+<li><strong>Chaining</strong> — спасает на сложных пайплайнах. Структура «map-reduce» — самая частая.</li>
+<li><strong>Не лей CoT везде</strong> — на простых задачах он мешает.</li>
+<li><strong>Структурируй ответы</strong> через теги, чтобы парсить программно.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> в <code>progress.md</code> запиши «таблицу принятия решений»: для каждой из своих 5 типичных задач — какая техника подходит лучше. Возвращайся и обновляй после практики.
+</div>
+`);
+
+// ============================================================
+// Состояние и UI
+// ============================================================
+
+const STORAGE_KEY = 'ai-course-progress';
+const THEME_KEY = 'ai-course-theme';
+
+let currentLessonId = null;
+let progress = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+function saveProgress() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+  updateProgressUI();
+}
+
+function isCompleted(id) {
+  return progress[id] === true;
+}
+
+function toggleCompleted(id) {
+  if (isCompleted(id)) {
+    delete progress[id];
+  } else {
+    progress[id] = true;
+  }
+  saveProgress();
+  renderLesson(currentLessonId);
+}
+
+function buildNav() {
+  const nav = document.getElementById('lesson-nav');
+  nav.innerHTML = '';
+  PHASES.forEach(phase => {
+    const phaseLessons = LESSONS.filter(l => l.phase === phase.id);
+    const completedCount = phaseLessons.filter(l => isCompleted(l.id)).length;
+    const phaseEl = document.createElement('div');
+    phaseEl.className = 'phase';
+    phaseEl.innerHTML = `
+      <div class="phase-header">
+        <div>
+          <div class="phase-title">${phase.title}</div>
+          <div class="phase-progress-mini">${phase.subtitle}</div>
+        </div>
+        <div class="phase-progress-mini">${completedCount}/${phaseLessons.length}</div>
+      </div>
+      <div class="phase-lessons" id="phase-${phase.id}-lessons"></div>
+    `;
+    nav.appendChild(phaseEl);
+    const lessonsContainer = phaseEl.querySelector(`#phase-${phase.id}-lessons`);
+    phaseLessons.forEach(lesson => {
+      const link = document.createElement('button');
+      const completed = isCompleted(lesson.id);
+      link.className = 'lesson-link' + (completed ? ' completed' : '') + (lesson.draft ? ' draft' : '') + (lesson.id === currentLessonId ? ' active' : '');
+      link.dataset.lessonId = lesson.id;
+      link.dataset.title = lesson.title.toLowerCase();
+      link.innerHTML = `
+        <span class="num">${lesson.id}.</span>
+        <span class="title">${lesson.title}</span>
+        <span class="status">${completed ? '✓' : ''}</span>
+      `;
+      link.onclick = () => openLesson(lesson.id);
+      lessonsContainer.appendChild(link);
+    });
+  });
+}
+
+function updateProgressUI() {
+  const total = LESSONS.length;
+  const done = LESSONS.filter(l => isCompleted(l.id)).length;
+  document.getElementById('global-progress-text').textContent = `${done} / ${total}`;
+  document.getElementById('global-progress-bar').style.width = `${(done / total * 100).toFixed(1)}%`;
+  buildNav();
+}
+
+function openLesson(id) {
+  currentLessonId = id;
+  renderLesson(id);
+  history.replaceState(null, '', `#lesson-${id}`);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  buildNav();
+}
+
+function renderLesson(id) {
+  const lesson = LESSONS.find(l => l.id === id);
+  const container = document.getElementById('lesson-content');
+  if (!lesson) {
+    renderWelcome();
+    return;
+  }
+
+  const completed = isCompleted(id);
+  const prevLesson = LESSONS.find(l => l.id === id - 1);
+  const nextLesson = LESSONS.find(l => l.id === id + 1);
+
+  let body;
+  if (lesson.content) {
+    body = lesson.content;
+  } else {
+    body = `
+      <h1>Урок ${lesson.id}. ${lesson.title}</h1>
+      <div class="lesson-meta">
+        <span><strong>Фаза:</strong> ${lesson.phase}</span>
+        <span><strong>Время:</strong> ~${lesson.duration} минут</span>
+        <span><strong>Статус:</strong> черновик</span>
+      </div>
+      <div class="draft-notice">
+        <h3>✏️ Этот урок ещё пишется</h3>
+        <p>Подробное содержание появится в одной из следующих итераций. Когда будет готово — урок автоматически появится тут.</p>
+        <p>Уже готовы уроки 1–3 в Фазе 1. Возвращайся за обновлениями.</p>
+      </div>
+    `;
+  }
+
+  const actions = `
+    <div class="lesson-actions">
+      <label class="complete-checkbox">
+        <input type="checkbox" ${completed ? 'checked' : ''} onchange="toggleCompleted(${id})">
+        <span>${completed ? 'Урок пройден' : 'Отметить как пройденный'}</span>
+      </label>
+      <div class="nav-buttons">
+        <button class="nav-btn" ${!prevLesson ? 'disabled' : ''} onclick="${prevLesson ? `openLesson(${prevLesson.id})` : ''}">← Предыдущий</button>
+        <button class="nav-btn" ${!nextLesson ? 'disabled' : ''} onclick="${nextLesson ? `openLesson(${nextLesson.id})` : ''}">Следующий →</button>
+      </div>
+    </div>
+  `;
+
+  container.innerHTML = body + actions;
+}
+
+function renderWelcome() {
+  const total = LESSONS.length;
+  const done = LESSONS.filter(l => isCompleted(l.id)).length;
+  const written = LESSONS.filter(l => l.content).length;
+  const totalDuration = LESSONS.reduce((s, l) => s + l.duration, 0);
+  const hours = Math.round(totalDuration / 60);
+
+  document.getElementById('lesson-content').innerHTML = `
+    <div class="welcome">
+      <h1>AI Курс</h1>
+      <p>От пользователя к разработчику. 72 урока в 4 фазах на основе курсов Microsoft.</p>
+      <div class="welcome-stats">
+        <div class="stat-card"><span class="stat-num">${total}</span><span class="stat-label">уроков всего</span></div>
+        <div class="stat-card"><span class="stat-num">4</span><span class="stat-label">фазы</span></div>
+        <div class="stat-card"><span class="stat-num">~${hours}</span><span class="stat-label">часов курса</span></div>
+        <div class="stat-card"><span class="stat-num">${done}</span><span class="stat-label">пройдено</span></div>
+      </div>
+      <p style="margin-top: 2rem;">Начни с <button class="nav-btn" onclick="openLesson(1)">Урока 1: Что такое генеративный ИИ</button></p>
+      <p style="margin-top: 2rem; font-size: 0.85rem; color: var(--text-muted);">Готово полных уроков: <strong>${written}</strong> из ${total}. Остальные — со структурой и кратким описанием.</p>
+    </div>
+    <div class="callout callout-info" style="margin-top: 3rem;">
+      <h3>Как заниматься</h3>
+      <ol>
+        <li><strong>Не больше 1 урока в день.</strong> Делай дайджест в конце каждого.</li>
+        <li><strong>Каждый урок = микро-результат.</strong> Без своего кода/скриншота — урок не закрыт.</li>
+        <li><strong>Веди журнал</strong> в файле <code>progress.md</code> рядом.</li>
+        <li><strong>Возвращайся.</strong> В конце каждой фазы — устный пересказ ключевых пунктов.</li>
+        <li><strong>Один проект сквозь все фазы.</strong> Возьми реальную задачу и наращивай её.</li>
+      </ol>
+    </div>
+    <div class="callout callout-success">
+      <h3>Структура</h3>
+      <p><strong>Фаза 1. Пользователь</strong> (12 уроков) — LLM, промпты, RAG, безопасность.</p>
+      <p><strong>Фаза 2. Строитель</strong> (18 уроков) — function calling, агенты, продакшен.</p>
+      <p><strong>Фаза 3. Практик</strong> (20 уроков) — нейросети с нуля, CV, NLP, трансформеры.</p>
+      <p><strong>Фаза 4. Инженер</strong> (22 урока) — ML, RL, MLOps, fine-tuning.</p>
+    </div>
+  `;
+}
+
+function filterLessons(query) {
+  const q = query.toLowerCase().trim();
+  document.querySelectorAll('.lesson-link').forEach(link => {
+    const matches = !q || link.dataset.title.includes(q);
+    link.style.display = matches ? '' : 'none';
+  });
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  document.getElementById('theme-icon').textContent = next === 'dark' ? '☀️' : '🌙';
+  document.getElementById('theme-label').textContent = next === 'dark' ? 'Светлая тема' : 'Тёмная тема';
+  localStorage.setItem(THEME_KEY, next);
+}
+
+// Init
+const savedTheme = localStorage.getItem(THEME_KEY);
+if (savedTheme) {
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  document.getElementById('theme-icon').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+  document.getElementById('theme-label').textContent = savedTheme === 'dark' ? 'Светлая тема' : 'Тёмная тема';
+}
+
+buildNav();
+updateProgressUI();
+
+// Open from hash if present
+const hashMatch = window.location.hash.match(/lesson-(\d+)/);
+if (hashMatch) {
+  openLesson(parseInt(hashMatch[1]));
+} else {
+  renderWelcome();
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowLeft' && currentLessonId) {
+    const prev = LESSONS.find(l => l.id === currentLessonId - 1);
+    if (prev) openLesson(prev.id);
+  }
+  if (e.key === 'ArrowRight' && currentLessonId) {
+    const next = LESSONS.find(l => l.id === currentLessonId + 1);
+    if (next) openLesson(next.id);
+  }
+});
+</script>
+</body>
+</html>
