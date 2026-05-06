@@ -261,6 +261,72 @@ body {
 .admin-stat .label { color: var(--text-muted); }
 .admin-stat .value { font-weight: 600; }
 
+.glossary-terms {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.glossary-term {
+  padding: 1rem 1.25rem;
+  background: var(--bg-sidebar);
+  border-radius: 8px;
+  border-left: 3px solid var(--border);
+  transition: background 0.2s;
+}
+
+.glossary-term:target {
+  background: var(--accent-soft);
+  border-left-color: var(--accent);
+  animation: highlight 1.2s ease;
+}
+
+@keyframes highlight {
+  0% { background: var(--accent); color: white; }
+  100% { background: var(--accent-soft); }
+}
+
+.glossary-term-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.4rem;
+  gap: 0.5rem;
+}
+
+.glossary-term h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.glossary-term p {
+  margin: 0 0 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.glossary-anchor {
+  text-decoration: none;
+  font-size: 0.85rem;
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+
+.glossary-anchor:hover { opacity: 1; }
+
+.glossary-lessons {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.glossary-lessons a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.glossary-lessons a:hover { text-decoration: underline; }
+
 .sidebar-header {
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
@@ -939,8 +1005,8 @@ main {
     <a href="#section-industry" data-section="industry" onclick="openSection('industry'); return false;">Индустрии</a>
   </nav>
   <div class="top-nav-right">
+    <a href="#glossary" onclick="openGlossary(); return false;">Глоссарий</a>
     <a href="#resources" onclick="openStaticPage('resources'); return false;">Источники</a>
-    <a href="#changelog" onclick="openStaticPage('changelog'); return false;">Что нового</a>
     <a href="https://t.me/madzhitov" target="_blank" class="tg-link">@madzhitov</a>
   </div>
 </header>
@@ -989,6 +1055,10 @@ main {
       <button class="lesson-link static-link" data-static="faq" onclick="openStaticPage('faq')">
         <span class="num">❓</span>
         <span class="title">FAQ</span>
+      </button>
+      <button class="lesson-link static-link" data-static="glossary" onclick="openGlossary()">
+        <span class="num">📖</span>
+        <span class="title">Глоссарий</span>
       </button>
       <button class="lesson-link static-link" data-static="changelog" onclick="openStaticPage('changelog')">
         <span class="num">📰</span>
@@ -1231,7 +1301,7 @@ registerLesson(1, `
 <div class="callout callout-warning">
 <strong>⚠️ Работает, но осторожно:</strong>
 <ul>
-<li>Анализ цифр и таблиц (часто ошибается без CoT).</li>
+<li>Анализ цифр и таблиц (часто ошибается без <a href="#glossary-cot" onclick="openGlossary('cot'); return false;">CoT</a> — пошагового рассуждения, подробно в Уроке 5).</li>
 <li>Юридические и медицинские темы (галлюцинации опасны).</li>
 <li>Поиск свежей информации (нужен поиск + LLM).</li>
 </ul>
@@ -1561,7 +1631,7 @@ registerLesson(2, `
 <p><strong>OpenAI (GPT, ChatGPT).</strong> Партнёр Microsoft. Линейка: GPT-4o, GPT-4o-mini, o1, o3, o4-mini.</p>
 <ul>
 <li>GPT-4o — флагман, мультимодальный (текст + картинки + аудио).</li>
-<li>o1/o3 — «reasoning» модели со встроенным CoT; медленнее и дороже, но решают то, что флагманы не вывозят.</li>
+<li>o1/o3 — «reasoning» модели со встроенным Chain-of-Thought (пошаговое рассуждение перед ответом); медленнее и дороже, но решают то, что флагманы не вывозят.</li>
 </ul>
 
 <p><strong>Anthropic (Claude).</strong> Конкурент №1. Акцент на безопасности и качестве рассуждений. Линейка: Claude Opus, Sonnet, Haiku.</p>
@@ -1668,7 +1738,7 @@ registerLesson(2, `
 <li><strong>Embedding models</strong> — превращают текст в числовой вектор. text-embedding-3, BGE-M3.</li>
 <li><strong>Image models</strong> — DALL·E 3, Stable Diffusion XL, Flux.1.</li>
 <li><strong>Audio models</strong> — STT (Whisper, Deepgram) и TTS (ElevenLabs).</li>
-<li><strong>Reasoning models</strong> — со встроенным CoT. o1, o3, DeepSeek-R1, Gemini 2.0 Thinking.</li>
+<li><strong>Reasoning models</strong> — со встроенным Chain-of-Thought (CoT, пошаговое рассуждение). o1, o3, DeepSeek-R1, Gemini 2.0 Thinking.</li>
 <li><strong>Specialised:</strong> code (CodeLlama, Qwen-Coder), math.</li>
 </ul>
 
@@ -5872,6 +5942,404 @@ function openStaticPage(name) {
   else if (name === 'admin') renderAdmin();
 }
 
+// ============================================================
+// ГЛОССАРИЙ — единый словарь всех терминов и аббревиатур
+// ============================================================
+
+const GLOSSARY_CATEGORIES = [
+  { id: "basics", title: "Базовые понятия" },
+  { id: "models", title: "Модели и архитектуры" },
+  { id: "params", title: "Параметры генерации" },
+  { id: "prompting", title: "Промптинг" },
+  { id: "behavior", title: "Поведение моделей" },
+  { id: "memory", title: "Память и контекст" },
+  { id: "rag", title: "Эмбеддинги и RAG" },
+  { id: "agents", title: "Агенты" },
+  { id: "benchmarks", title: "Бенчмарки и сравнение" },
+  { id: "safety", title: "Безопасность" },
+  { id: "legal", title: "Юридическое" },
+  { id: "api", title: "API и разработка" },
+  { id: "tools", title: "Инструменты" },
+];
+
+const GLOSSARY = [
+  // ===== Базовые =====
+  { id: "ai", term: "AI / ИИ", aliases: ["искусственный интеллект", "artificial intelligence"], category: "basics",
+    short: "Общий термин для систем, имитирующих интеллектуальное поведение. Зонтик над ML, DL, GenAI.",
+    lessons: [1] },
+  { id: "ml", term: "ML (Machine Learning)", aliases: ["машинное обучение"], category: "basics",
+    short: "Подмножество AI: системы, которые учатся на данных, а не следуют жёстким правилам.",
+    lessons: [1, 51] },
+  { id: "dl", term: "Deep Learning / DL", aliases: ["глубокое обучение"], category: "basics",
+    short: "Подмножество ML: нейросети с большим числом слоёв. Распознавание лиц, перевод, LLM — всё DL.",
+    lessons: [1] },
+  { id: "genai", term: "GenAI / Generative AI", aliases: ["генеративный ии"], category: "basics",
+    short: "Модели, которые создают новый контент (текст, картинки, код), а не только классифицируют.",
+    lessons: [1] },
+  { id: "llm", term: "LLM (Large Language Model)", aliases: ["большая языковая модель"], category: "basics",
+    short: "Большая нейросеть, обученная предсказывать следующий токен. GPT, Claude, Gemini, Llama.",
+    lessons: [1, 2] },
+  { id: "token", term: "Токен", aliases: ["token"], category: "basics",
+    short: "Атомарный кусочек текста для модели — обычно 3–4 символа. Не буква и не слово.",
+    lessons: [1] },
+  { id: "param", term: "Параметр (B параметров)", aliases: ["parameter", "weights", "веса"], category: "basics",
+    short: "Настраиваемое число внутри нейросети. Llama 70B = 70 миллиардов параметров.",
+    lessons: [1, 2] },
+
+  // ===== Модели =====
+  { id: "moe", term: "MoE (Mixture of Experts)", aliases: ["смесь экспертов"], category: "models",
+    short: "Архитектура, где router выбирает 1–2 из N «экспертов» на каждый токен. Mixtral, DeepSeek-V3.",
+    lessons: [2] },
+  { id: "reasoning-model", term: "Reasoning model", aliases: ["модель рассуждений"], category: "models",
+    short: "LLM со встроенным длинным CoT перед ответом. o1, o3, DeepSeek-R1, Gemini 2.0 Thinking. Медленнее и дороже, но решают сложную логику.",
+    lessons: [2, 5] },
+  { id: "embedding-model", term: "Embedding model", aliases: ["модель эмбеддингов"], category: "models",
+    short: "Превращает текст в числовой вектор. Не для общения — для поиска и кластеризации. text-embedding-3, BGE-M3.",
+    lessons: [2, 8] },
+  { id: "multimodal", term: "Multimodal", aliases: ["мультимодальная"], category: "models",
+    short: "Принимает несколько типов входа: текст + картинки + аудио. GPT-4o, Claude 3.5+, Gemini.",
+    lessons: [2] },
+  { id: "rlhf", term: "RLHF", aliases: ["reinforcement learning from human feedback"], category: "models",
+    short: "Reinforcement Learning from Human Feedback. Дообучение модели на оценках людей — делает её полезнее.",
+    lessons: [1] },
+  { id: "attention", term: "Attention", aliases: ["внимание"], category: "models",
+    short: "Механизм трансформера, фокусирующий внимание на релевантных токенах контекста.",
+    lessons: [1, 48] },
+  { id: "bpe", term: "BPE (Byte-Pair Encoding)", aliases: ["токенизация"], category: "models",
+    short: "Алгоритм разбиения текста на токены. Учится на корпусе, какие пары символов часто идут вместе.",
+    lessons: [1] },
+  { id: "context-window", term: "Контекстное окно", aliases: ["context window"], category: "models",
+    short: "Сколько токенов модель видит за раз. GPT-4o — 128k, Claude — 200k, Gemini — до 1M.",
+    lessons: [1, 2] },
+  { id: "knowledge-cutoff", term: "Knowledge cutoff", aliases: ["дата обучения"], category: "models",
+    short: "Дата, на которой остановились обучающие данные модели. После неё модель ничего не знает без поиска.",
+    lessons: [1] },
+
+  // ===== Параметры генерации =====
+  { id: "temperature", term: "Temperature", aliases: ["температура"], category: "params",
+    short: "Параметр случайности при генерации (0–2). 0 = детерминированно, 1 = стандарт, 1.5+ = креативно.",
+    lessons: [1, 4] },
+  { id: "top-p", term: "Top-p / nucleus sampling", aliases: [], category: "params",
+    short: "Альтернатива temperature. Сэмплируем только из p% самых вероятных токенов.",
+    lessons: [4] },
+  { id: "max-tokens", term: "Max tokens", aliases: ["maxtokens"], category: "params",
+    short: "Жёсткий лимит длины ответа. Остановит даже на полуслове.",
+    lessons: [4] },
+  { id: "freq-penalty", term: "Frequency / Presence penalty", aliases: [], category: "params",
+    short: "Штрафы за повторы (-2..2). Frequency — за частоту токена. Presence — за сам факт упоминания.",
+    lessons: [4] },
+  { id: "stop", term: "Stop sequence", aliases: ["стоп-последовательность"], category: "params",
+    short: "Строка, при появлении которой генерация останавливается.",
+    lessons: [4] },
+  { id: "seed", term: "Seed", aliases: [], category: "params",
+    short: "Число для воспроизводимости генерации с temperature>0 (только OpenAI).",
+    lessons: [6] },
+
+  // ===== Промптинг =====
+  { id: "prompt", term: "Prompt", aliases: ["промпт"], category: "prompting",
+    short: "Текст-инструкция, отправляемая модели.",
+    lessons: [4] },
+  { id: "system-prompt", term: "System prompt", aliases: ["системный промпт"], category: "prompting",
+    short: "Инструкция на весь диалог: роль, правила, стиль. Задаётся один раз в начале.",
+    lessons: [4, 7] },
+  { id: "user-prompt", term: "User prompt", aliases: ["пользовательский промпт"], category: "prompting",
+    short: "Конкретное сообщение пользователя в чате.",
+    lessons: [4] },
+  { id: "zero-shot", term: "Zero-shot", aliases: [], category: "prompting",
+    short: "Промпт без примеров — только инструкция.",
+    lessons: [4] },
+  { id: "few-shot", term: "Few-shot", aliases: [], category: "prompting",
+    short: "Промпт с 2–5 примерами вход→выход. Резко повышает качество для нестандартных форматов.",
+    lessons: [4] },
+  { id: "cot", term: "CoT (Chain-of-Thought)", aliases: ["цепочка рассуждений", "пошаговое рассуждение"], category: "prompting",
+    short: "Техника промпта: «рассуждай пошагово». Модель использует свой текст как черновик мышления — точность на математике/логике растёт на 20–60%.",
+    lessons: [5] },
+  { id: "self-consistency", term: "Self-consistency", aliases: [], category: "prompting",
+    short: "Прогон одного промпта N раз с temperature>0 + голосование за самый частый ответ.",
+    lessons: [5] },
+  { id: "tot", term: "ToT (Tree-of-Thoughts)", aliases: ["дерево рассуждений"], category: "prompting",
+    short: "Модель генерирует несколько путей решения, оценивает их, продолжает лучший. Дерево вариантов.",
+    lessons: [5] },
+  { id: "react", term: "ReAct", aliases: ["reasoning + acting"], category: "prompting",
+    short: "Цикл Thought → Action → Observation для агентов. Модель чередует рассуждение и вызов инструментов.",
+    lessons: [5, 16] },
+  { id: "prompt-chaining", term: "Prompt chaining", aliases: ["цепочка промптов"], category: "prompting",
+    short: "Сложную задачу режем на этапы, каждый — отдельный промпт. Выход одного — вход следующего.",
+    lessons: [5] },
+  { id: "map-reduce", term: "Map-reduce (LLM)", aliases: [], category: "prompting",
+    short: "Частный случай chaining: одним промптом обрабатываем каждый кусок данных, вторым агрегируем.",
+    lessons: [5] },
+  { id: "structured-output", term: "Structured output", aliases: ["структурированный вывод", "json mode"], category: "prompting",
+    short: "Гарантированно валидный JSON в ответе модели. У OpenAI: response_format={'type':'json_object'}.",
+    lessons: [4, 6] },
+
+  // ===== Поведение =====
+  { id: "hallucination", term: "Hallucination / Галлюцинация", aliases: [], category: "behavior",
+    short: "Уверенно неправильный ответ. Модель не врёт намеренно — её цель правдоподобие, не правда.",
+    lessons: [1, 3] },
+  { id: "stateless", term: "Stateless", aliases: [], category: "behavior",
+    short: "Без сохранения состояния между вызовами. LLM API — stateless, «память» создаётся приложением.",
+    lessons: [1, 7] },
+  { id: "lost-in-the-middle", term: "Lost in the middle", aliases: [], category: "behavior",
+    short: "Свойство LLM: модель лучше помнит начало и конец длинного контекста, хуже — середину.",
+    lessons: [1] },
+  { id: "bias", term: "Bias", aliases: ["предвзятость"], category: "behavior",
+    short: "Систематическое смещение модели — повторяет стереотипы из обучающего корпуса.",
+    lessons: [3] },
+
+  // ===== Память =====
+  { id: "conversation-history", term: "Conversation history", aliases: ["история диалога"], category: "memory",
+    short: "Массив сообщений диалога, который приложение ведёт и шлёт LLM при каждом запросе.",
+    lessons: [7] },
+  { id: "sliding-window", term: "Sliding window", aliases: ["скользящее окно"], category: "memory",
+    short: "Стратегия памяти: храним только последние N сообщений, остальное выбрасываем.",
+    lessons: [7] },
+  { id: "summary-memory", term: "Summary memory", aliases: ["саммари-память"], category: "memory",
+    short: "Старые сообщения сжимаем в краткое summary и заменяем им детальную историю.",
+    lessons: [7] },
+  { id: "vector-memory", term: "Vector memory", aliases: ["векторная память"], category: "memory",
+    short: "Храним сообщения в векторной БД, при запросе достаём релевантные через эмбеддинги. Это RAG.",
+    lessons: [7, 14] },
+
+  // ===== RAG =====
+  { id: "embedding", term: "Embedding / Эмбеддинг", aliases: [], category: "rag",
+    short: "Числовой вектор фиксированной длины (1536, 3072, ...), представляющий смысл текста.",
+    lessons: [8] },
+  { id: "cosine", term: "Cosine similarity", aliases: ["косинусное сходство"], category: "rag",
+    short: "Мера близости двух векторов от -1 до 1. Стандарт для сравнения эмбеддингов.",
+    lessons: [8] },
+  { id: "chunk", term: "Chunk", aliases: ["чанк"], category: "rag",
+    short: "Кусок исходного документа, нарезанный для эмбеддинга. Обычно 200–800 токенов с overlap.",
+    lessons: [8] },
+  { id: "vector-db", term: "Vector DB", aliases: ["векторная бд"], category: "rag",
+    short: "Хранилище векторов с быстрым поиском ближайших. Chroma, Qdrant, Pinecone, pgvector, Milvus.",
+    lessons: [8] },
+  { id: "knn", term: "k-NN", aliases: ["k-nearest neighbors"], category: "rag",
+    short: "k-Nearest Neighbors — поиск k ближайших векторов. Линейный, точный, медленный на больших БД.",
+    lessons: [8] },
+  { id: "ann", term: "ANN (Approximate Nearest Neighbor)", aliases: [], category: "rag",
+    short: "Приближённый поиск ближайших. Жертвует точностью ради скорости. HNSW — популярный алгоритм.",
+    lessons: [8] },
+  { id: "bm25", term: "BM25", aliases: [], category: "rag",
+    short: "Классический алгоритм keyword-поиска. Используется в hybrid search вместе с эмбеддингами.",
+    lessons: [8] },
+  { id: "hybrid-search", term: "Hybrid search", aliases: ["гибридный поиск"], category: "rag",
+    short: "Combo semantic (эмбеддинги) + keyword (BM25). На проде почти всегда побеждает чистый semantic.",
+    lessons: [8] },
+  { id: "reranking", term: "Reranking", aliases: ["переранжирование"], category: "rag",
+    short: "Пересортировка топ-K результатов второй моделью (cross-encoder). Сильно повышает качество.",
+    lessons: [8] },
+  { id: "rag", term: "RAG (Retrieval-Augmented Generation)", aliases: [], category: "rag",
+    short: "Шаблон: даём модели документы из векторной БД и просим ответить на их основе. Борется с галлюцинациями.",
+    lessons: [14] },
+
+  // ===== Агенты =====
+  { id: "agent", term: "Агент", aliases: ["AI agent"], category: "agents",
+    short: "LLM + инструменты + цикл «подумай-сделай-проверь». В отличие от чат-бота умеет действовать в мире.",
+    lessons: [16] },
+  { id: "tool-use", term: "Tool use / Function calling", aliases: ["вызов инструментов"], category: "agents",
+    short: "Модель решает вызвать определённую функцию (поиск, API, БД) и получает результат в контекст.",
+    lessons: [13, 19] },
+  { id: "mcp", term: "MCP (Model Context Protocol)", aliases: [], category: "agents",
+    short: "Открытый протокол Anthropic для подключения LLM к внешним системам стандартным способом.",
+    lessons: [28] },
+
+  // ===== Бенчмарки =====
+  { id: "mmlu", term: "MMLU", aliases: ["massive multitask"], category: "benchmarks",
+    short: "Massive Multitask Language Understanding — стандартный бенчмарк общих знаний (57 предметов).",
+    lessons: [2] },
+  { id: "lmsys", term: "Chatbot Arena (LMSYS)", aliases: [], category: "benchmarks",
+    short: "Платформа, где люди вслепую сравнивают пары ответов разных моделей. Самая близкая к практике метрика.",
+    lessons: [2] },
+  { id: "pareto", term: "Pareto-frontier", aliases: ["парето-граница"], category: "benchmarks",
+    short: "Набор моделей, для которых нет более дешёвой того же качества и более качественной той же цены.",
+    lessons: [2] },
+  { id: "ttft", term: "TTFT (Time to First Token)", aliases: [], category: "benchmarks",
+    short: "Задержка между запросом и первым токеном ответа. Важно для real-time приложений.",
+    lessons: [2] },
+
+  // ===== Безопасность =====
+  { id: "prompt-injection", term: "Prompt injection", aliases: ["инжекшен"], category: "safety",
+    short: "Атака: внедрение инструкций через данные, которые модель принимает за указания.",
+    lessons: [3, 12] },
+  { id: "jailbreak", term: "Jailbreak", aliases: [], category: "safety",
+    short: "Обход safety-фильтров модели через хитрые промпты («представь что ты эксперт по...»).",
+    lessons: [12] },
+  { id: "moderation", term: "Moderation API", aliases: ["модерация"], category: "safety",
+    short: "Готовый фильтр вредного контента (OpenAI Moderation, Azure Content Safety).",
+    lessons: [12] },
+  { id: "red-team", term: "Red team / Red teaming", aliases: ["красная команда"], category: "safety",
+    short: "Группа, специально пытающаяся «сломать» систему — найти уязвимости до релиза.",
+    lessons: [3, 12] },
+  { id: "hitl", term: "HITL (Human-in-the-loop)", aliases: ["человек в петле"], category: "safety",
+    short: "Обязательное участие человека в критичных решениях ИИ-системы. Найм, медицина, финансы.",
+    lessons: [3, 21] },
+  { id: "defense-in-depth", term: "Defense in depth", aliases: ["многослойная защита"], category: "safety",
+    short: "Принцип: защита из нескольких слоёв (фильтры + валидация + права + мониторинг). Ни один слой не панацея.",
+    lessons: [12] },
+
+  // ===== Юридическое =====
+  { id: "pii", term: "PII (Personally Identifiable Information)", aliases: ["персданные"], category: "legal",
+    short: "Данные, по которым можно идентифицировать человека. Имя, email, телефон, паспорт, адрес, биометрия.",
+    lessons: [3] },
+  { id: "gdpr", term: "GDPR", aliases: [], category: "legal",
+    short: "General Data Protection Regulation (EU). Штрафы до 4% годового оборота за нарушения.",
+    lessons: [3] },
+  { id: "152fz", term: "152-ФЗ", aliases: ["закон о персональных данных"], category: "legal",
+    short: "Российский закон о персональных данных. Требует хранения данных граждан РФ в РФ.",
+    lessons: [3] },
+  { id: "dpa", term: "DPA (Data Processing Agreement)", aliases: [], category: "legal",
+    short: "Юридическое соглашение с вендором об обработке данных. Нужно для GDPR-compliance.",
+    lessons: [3] },
+  { id: "ai-act", term: "EU AI Act", aliases: [], category: "legal",
+    short: "Регуляция ИИ в EU. High-risk категории (найм, образование, правосудие) — особые требования.",
+    lessons: [3] },
+  { id: "high-risk-ai", term: "High-risk AI", aliases: [], category: "legal",
+    short: "Категория в EU AI Act: системы с серьёзным влиянием на жизнь людей. Требуют документации, аудита, HITL.",
+    lessons: [3] },
+
+  // ===== API =====
+  { id: "api", term: "API", aliases: [], category: "api",
+    short: "Application Programming Interface — программный интерфейс для общения с сервисом по HTTP.",
+    lessons: [6] },
+  { id: "api-key", term: "API key", aliases: ["ключ api"], category: "api",
+    short: "Секретный токен авторизации запросов. Никогда не клади в код или git — только в .env.",
+    lessons: [6] },
+  { id: "endpoint", term: "Endpoint", aliases: [], category: "api",
+    short: "Конкретный URL API. Для OpenAI чата: https://api.openai.com/v1/chat/completions.",
+    lessons: [6] },
+  { id: "sdk", term: "SDK (Software Development Kit)", aliases: [], category: "api",
+    short: "Библиотека-обёртка над API. openai, anthropic — официальные SDK.",
+    lessons: [6] },
+  { id: "rate-limit", term: "Rate limit", aliases: ["лимит запросов"], category: "api",
+    short: "Лимит запросов в единицу времени. У OpenAI обычно тысячи RPM.",
+    lessons: [6] },
+  { id: "streaming", term: "Streaming", aliases: ["стриминг"], category: "api",
+    short: "Постепенный вывод ответа модели по мере генерации (а не вся пачка в конце).",
+    lessons: [6, 7] },
+  { id: "finish-reason", term: "finish_reason", aliases: [], category: "api",
+    short: "Причина остановки генерации: stop (норма), length (упёрлось в max_tokens), tool_calls, content_filter.",
+    lessons: [6] },
+  { id: "exp-backoff", term: "Exponential backoff", aliases: [], category: "api",
+    short: "Стратегия retry с растущей задержкой (1, 2, 4, 8 сек). Для временных ошибок (rate limit, network).",
+    lessons: [6] },
+
+  // ===== Инструменты =====
+  { id: "tiktoken", term: "tiktoken", aliases: [], category: "tools",
+    short: "Python-библиотека OpenAI для подсчёта токенов в тексте перед отправкой в API.",
+    lessons: [7] },
+  { id: "streamlit", term: "Streamlit", aliases: [], category: "tools",
+    short: "Python-фреймворк для быстрых веб-интерфейсов к ML-моделям. Чат-бот за 30 строк.",
+    lessons: [7] },
+  { id: "ollama", term: "Ollama", aliases: [], category: "tools",
+    short: "Самый простой способ запускать open-source LLM локально (Llama, Mistral, Phi).",
+    lessons: [2] },
+  { id: "chroma", term: "Chroma", aliases: [], category: "tools",
+    short: "Лёгкая локальная векторная БД. Идеальна для прототипов и обучения RAG.",
+    lessons: [8] },
+  { id: "qdrant", term: "Qdrant", aliases: [], category: "tools",
+    short: "Open-source векторная БД для production. Self-hosted или managed cloud.",
+    lessons: [8] },
+  { id: "langchain", term: "LangChain", aliases: [], category: "tools",
+    short: "Стандарт-де-факто фреймворк для LLM-приложений на Python. Альтернатива — LlamaIndex.",
+    lessons: [17] },
+];
+
+function renderGlossary(highlightId = null) {
+  const total = GLOSSARY.length;
+
+  let html = `
+    <h1>📖 Глоссарий</h1>
+    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+      ${total} терминов и аббревиатур из всех уроков. На каждый термин можно дать прямую ссылку — например, <code>${location.origin}${location.pathname}#glossary-cot</code>.
+    </p>
+
+    <input type="text" class="search-box" id="glossary-search" placeholder="Найти термин..." style="width: 100%; padding: 0.75rem 1rem; font-size: 1rem; margin-bottom: 1.5rem;" oninput="filterGlossary(this.value)">
+
+    <div id="glossary-content">
+  `;
+
+  GLOSSARY_CATEGORIES.forEach(cat => {
+    const terms = GLOSSARY.filter(t => t.category === cat.id);
+    if (terms.length === 0) return;
+
+    html += `<h2 style="margin-top: 2rem;" data-cat="${cat.id}">${cat.title}</h2>`;
+    html += '<div class="glossary-terms">';
+
+    terms.forEach(t => {
+      const lessonsLinks = (t.lessons || []).map(lid => {
+        const l = findLesson(lid);
+        if (!l) return '';
+        return `<a href="#lesson-${lid}" onclick="openLesson(${typeof lid === 'string' ? `'${lid}'` : lid}); return false;" style="font-size: 0.85rem;">Урок ${lid}</a>`;
+      }).filter(Boolean).join(' · ');
+
+      const allText = `${t.term} ${(t.aliases || []).join(' ')} ${t.short}`.toLowerCase();
+      const isHighlighted = t.id === highlightId;
+
+      html += `
+        <div class="glossary-term" id="glossary-${t.id}" data-search="${allText}" data-cat="${cat.id}" style="${isHighlighted ? 'background: var(--accent-soft); border-left-color: var(--accent);' : ''}">
+          <div class="glossary-term-header">
+            <h3>${t.term}</h3>
+            <a href="#glossary-${t.id}" class="glossary-anchor" onclick="copyAnchor('${t.id}'); return false;" title="Скопировать ссылку">🔗</a>
+          </div>
+          <p>${t.short}</p>
+          ${lessonsLinks ? `<div class="glossary-lessons">${lessonsLinks}</div>` : ''}
+        </div>
+      `;
+    });
+
+    html += '</div>';
+  });
+
+  html += '</div>';
+
+  document.getElementById('lesson-content').innerHTML = html;
+
+  // Прокрутить к выделенному термину
+  if (highlightId) {
+    setTimeout(() => {
+      const el = document.getElementById(`glossary-${highlightId}`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+  }
+}
+
+function filterGlossary(query) {
+  const q = query.toLowerCase().trim();
+  document.querySelectorAll('.glossary-term').forEach(el => {
+    const text = el.dataset.search;
+    el.style.display = !q || text.includes(q) ? '' : 'none';
+  });
+  // скрываем заголовки пустых категорий
+  document.querySelectorAll('h2[data-cat]').forEach(h => {
+    const cat = h.dataset.cat;
+    const hasVisible = Array.from(document.querySelectorAll(`.glossary-term[data-cat="${cat}"]`)).some(el => el.style.display !== 'none');
+    h.style.display = hasVisible ? '' : 'none';
+  });
+}
+
+function openGlossary(termId = null) {
+  currentLessonId = null;
+  setActiveStaticLink('glossary');
+  setActiveTopNav(null);
+  buildNav();
+  setActiveStaticLink('glossary');
+  history.replaceState(null, '', termId ? `#glossary-${termId}` : '#glossary');
+  trackEvent(termId ? `glossary-${termId}` : 'glossary', `Glossary: ${termId || 'all'}`);
+  renderGlossary(termId);
+}
+
+function copyAnchor(termId) {
+  const url = `${location.origin}${location.pathname}#glossary-${termId}`;
+  navigator.clipboard.writeText(url).then(() => {
+    const note = document.createElement('div');
+    note.textContent = '✓ Ссылка скопирована';
+    note.style.cssText = 'position: fixed; bottom: 2rem; right: 2rem; background: var(--success); color: white; padding: 0.5rem 1rem; border-radius: 6px; z-index: 1000; font-size: 0.9rem;';
+    document.body.appendChild(note);
+    setTimeout(() => note.remove(), 1500);
+  });
+}
+
 function renderResources() {
   document.getElementById('lesson-content').innerHTML = `
     <h1>📚 Источники и где учиться дальше</h1>
@@ -6781,6 +7249,7 @@ const hashMatch = window.location.hash.match(/lesson-(\d+)/);
 const trackHash = window.location.hash.match(/lesson-([cpi]\d+)/);
 const quizHash = window.location.hash.match(/quiz-(\d+)/);
 const sectionHash = window.location.hash.match(/section-(main|claude|projects|industry)/);
+const glossaryTermHash = window.location.hash.match(/^#glossary-(.+)$/);
 const staticHash = window.location.hash.replace('#', '');
 if (hashMatch) {
   openLesson(parseInt(hashMatch[1]));
@@ -6790,6 +7259,10 @@ if (hashMatch) {
   openQuiz(parseInt(quizHash[1]));
 } else if (sectionHash) {
   openSection(sectionHash[1]);
+} else if (glossaryTermHash) {
+  openGlossary(glossaryTermHash[1]);
+} else if (staticHash === 'glossary') {
+  openGlossary();
 } else if (['home', 'about', 'howto', 'faq', 'changelog', 'resources', 'admin'].includes(staticHash)) {
   openStaticPage(staticHash);
 } else {
