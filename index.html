@@ -21,11 +21,8 @@
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🤖%3C/text%3E%3C/svg%3E">
 
-<!-- GoatCounter Analytics — замени YOURSITE на свой домен после регистрации на goatcounter.com -->
-<!-- Инструкция: 1) Зайди на goatcounter.com → Sign up → выбери поддомен (например, aicourse). -->
-<!-- 2) Замени строку ниже: data-goatcounter="https://AICOURSE.goatcounter.com/count" -->
-<!-- 3) Дашборд будет на https://AICOURSE.goatcounter.com -->
-<script data-goatcounter="https://YOURSITE.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <style>
 :root {
   --bg: #ffffff;
@@ -5774,9 +5771,9 @@ function renderAdmin() {
     </p>
 
     <div class="callout callout-info">
-      <strong>📈 Глобальная аналитика:</strong>
-      <a href="https://AICOURSE.goatcounter.com" target="_blank">Дашборд GoatCounter</a>
-      (замени AICOURSE на свой поддомен после регистрации). Там видны все посетители, страницы, страны, устройства.
+      <strong>📈 Глобальная аналитика подключена.</strong>
+      <a href="https://mltply.goatcounter.com" target="_blank">Открыть дашборд GoatCounter →</a><br>
+      Там видны все посетители, страницы, страны, устройства, кастомные события (lesson-open, lesson-complete, section-*).
     </div>
 
     <h2>Общий прогресс</h2>
@@ -5805,16 +5802,14 @@ function renderAdmin() {
         '<p>' + subscribers.map(e => `<code>${e}</code>`).join(', ') + '</p>'}
     </div>
 
-    <div class="callout callout-warning" style="margin-top: 2rem;">
-      <h3>⚠️ Как настроить настоящую аналитику</h3>
+    <div class="callout callout-success" style="margin-top: 2rem;">
+      <h3>✅ Аналитика работает</h3>
+      <p>Подключен GoatCounter (поддомен <code>mltply</code>). Бесплатно, без cookies, без баннера согласия.</p>
+      <p><strong>Что нужно сделать однократно в дашборде GoatCounter:</strong></p>
       <ol>
-        <li>Зайди на <a href="https://www.goatcounter.com" target="_blank">goatcounter.com</a> → Sign up.</li>
-        <li>Выбери поддомен (например, <code>aicourse</code>).</li>
-        <li>В файле <code>index.html</code> найди строку с <code>YOURSITE.goatcounter.com</code> и замени <code>YOURSITE</code> на свой поддомен.</li>
-        <li>Запушь обновление в GitHub. Через минуту начнут собираться данные.</li>
-        <li>Дашборд: <code>https://AICOURSE.goatcounter.com</code> — там все события и переходы.</li>
+        <li>Зайди в <a href="https://mltply.goatcounter.com/settings/main" target="_blank">Settings → Sites</a> и добавь домен <code>madzhitov.github.io</code>, чтобы события не отбрасывались.</li>
+        <li>В <a href="https://mltply.goatcounter.com/settings/main#tab-allow_admin" target="_blank">Settings → Domain</a> можно добавить псевдонимы, если будешь использовать свой домен.</li>
       </ol>
-      <p>Бесплатно до 200 000 просмотров/мес. Без cookies. Без баннера согласия.</p>
     </div>
 
     <div style="margin-top: 2rem;">
