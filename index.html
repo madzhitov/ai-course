@@ -1036,7 +1036,7 @@ const PHASES = [
   { id: 4, title: "Фаза 4. Инженер", subtitle: "Классический ML, fine-tuning, продакшен" },
 ];
 
-// Спецветки — отдельные курсы внутри курса
+// Параллельные тропинки — отдельные ветки рядом с главным путём
 const TRACKS = [
   { id: "claude", title: "🟣 Claude Deep Dive", subtitle: "Всё что важно про Claude", icon: "🟣" },
   { id: "projects", title: "🛠 Мини-проекты «За 1 час»", subtitle: "Рабочие пет-проекты", icon: "🛠" },
@@ -5349,7 +5349,7 @@ function buildNav() {
     }
   });
 
-  // Спецветки
+  // Параллельные тропинки
   const trackNav = document.getElementById('track-nav');
   trackNav.innerHTML = '';
 
@@ -5358,7 +5358,7 @@ function buildNav() {
   tracksHeader.innerHTML = `
     <div class="phase-header" style="cursor: default; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 0.5rem; margin-top: 1rem;">
       <div>
-        <div class="phase-title" style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Спецветки</div>
+        <div class="phase-title" style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Параллельные тропинки</div>
       </div>
     </div>
   `;
@@ -5787,7 +5787,7 @@ function renderAdmin() {
     <h2>По фазам</h2>
     <div class="quiz-card">${phaseStats}</div>
 
-    <h2>По спецветкам</h2>
+    <h2>По тропинкам</h2>
     <div class="quiz-card">${trackStats}</div>
 
     <h2>Квизы</h2>
@@ -6356,7 +6356,7 @@ function renderHome() {
     </div>
 
     <h2>Две параллельные плоскости обучения</h2>
-    <p style="margin-bottom: 1.5rem;">У этого курса две оси. <strong>Главный путь</strong> — последовательное углубление от пользователя до инженера. <strong>Спецветки</strong> — специализированные углы, в которые можно нырять параллельно или вместо части основного пути.</p>
+    <p style="margin-bottom: 1.5rem;">У этого курса две оси. <strong>Главный путь</strong> — последовательное углубление от пользователя до инженера. <strong>Параллельные тропинки</strong> — отдельные ветки, в которые можно нырять параллельно с главным путём или вместо части основного маршрута.</p>
 
     <div class="feature-grid" style="grid-template-columns: 1fr 1fr;">
       <div class="feature-card" style="border-left: 4px solid var(--accent);">
@@ -6373,7 +6373,7 @@ function renderHome() {
 
       <div class="feature-card" style="border-left: 4px solid var(--success);">
         <div class="feature-icon">🌟</div>
-        <h3>Спецветки — параллельные углы</h3>
+        <h3>Параллельные тропинки</h3>
         <p style="margin-bottom: 0.75rem;">Углублённые серии по темам, которых нет в главном пути. Идти параллельно или вместо части основы.</p>
         <ul style="margin-left: 1rem; font-size: 0.9rem; color: var(--text-muted);">
           <li>🟣 <strong>Claude Deep Dive</strong> (8 уроков) — Artifacts, Projects, MCP, Computer Use, Claude Code</li>
@@ -6384,7 +6384,7 @@ function renderHome() {
     </div>
 
     <div class="callout callout-info" style="margin-top: 2rem;">
-      <strong>📚 Спецветка про Claude — самая активно растущая.</strong> Я (Руслан) сам строю на Claude, поэтому здесь будет глубже, чем где-либо в русскоязычном пространстве. Источники для ветки: <a href="https://docs.claude.com" target="_blank">официальная документация</a>, <a href="https://github.com/anthropics/anthropic-cookbook" target="_blank">cookbook</a>, <a href="https://anthropic.com/news" target="_blank">блог Anthropic</a>, <a href="https://github.com/anthropics/courses" target="_blank">официальные курсы</a>, плюс материалы практиков — <a href="https://www.youtube.com/@AndrejKarpathy" target="_blank">Karpathy</a>, <a href="https://simonwillison.net" target="_blank">Simon Willison</a>, <a href="https://magazine.sebastianraschka.com" target="_blank">Sebastian Raschka</a>. <a href="#resources" onclick="openStaticPage('resources'); return false;">Полный список источников</a>.
+      <strong>📚 Тропинка про Claude — самая активно растущая.</strong> Я (Руслан) сам строю на Claude, поэтому здесь будет глубже, чем где-либо в русскоязычном пространстве. Источники для ветки: <a href="https://docs.claude.com" target="_blank">официальная документация</a>, <a href="https://github.com/anthropics/anthropic-cookbook" target="_blank">cookbook</a>, <a href="https://anthropic.com/news" target="_blank">блог Anthropic</a>, <a href="https://github.com/anthropics/courses" target="_blank">официальные курсы</a>, плюс материалы практиков — <a href="https://www.youtube.com/@AndrejKarpathy" target="_blank">Karpathy</a>, <a href="https://simonwillison.net" target="_blank">Simon Willison</a>, <a href="https://magazine.sebastianraschka.com" target="_blank">Sebastian Raschka</a>. <a href="#resources" onclick="openStaticPage('resources'); return false;">Полный список источников</a>.
     </div>
 
     <h2>Как это устроено</h2>
@@ -6417,7 +6417,7 @@ function renderHome() {
     </ul>
 
     <h2>Откуда контент</h2>
-    <p>Базой служат четыре открытых курса Microsoft (MIT-лицензия) — тысячи часов работы их команды. Я переработал материал в один последовательный путь, дополнил недостающим (Claude, актуальные модели 2026, российский контекст), и добавил то, что в их курсах нет: спецветки, мини-проекты, темы под индустрии.</p>
+    <p>Базой служат четыре открытых курса Microsoft (MIT-лицензия) — тысячи часов работы их команды. Я переработал материал в один последовательный путь, дополнил недостающим (Claude, актуальные модели 2026, российский контекст), и добавил то, что в их курсах нет: параллельные тропинки, мини-проекты, темы под индустрии.</p>
     <p>Источники для ветки про Claude: официальная документация <a href="https://docs.claude.com" target="_blank">docs.claude.com</a>, <a href="https://github.com/anthropics/anthropic-cookbook" target="_blank">cookbook</a>, <a href="https://anthropic.com/news" target="_blank">блог Anthropic</a>, <a href="https://github.com/anthropics/courses" target="_blank">официальные курсы</a>.</p>
 
     <div style="text-align: center; margin: 3rem 0; padding: 2rem; background: var(--bg-sidebar); border-radius: 12px;">
