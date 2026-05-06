@@ -1330,13 +1330,21 @@ body.sidebar-open .sidebar-backdrop { display: block; }
 }
 
 main {
-  margin-left: 300px;
+  margin-left: 0;          /* mobile-first: для мобильных margin = 0 */
   flex: 1;
-  padding: 2.5rem 3.5rem 4rem;
-  max-width: 1080px;
-  min-width: 0;          /* критично: позволяет flex-item сжиматься */
+  padding: 1rem;           /* mobile-first */
+  max-width: 100%;
+  min-width: 0;            /* критично: позволяет flex-item сжиматься */
   width: 100%;
   box-sizing: border-box;
+}
+
+@media (min-width: 769px) {
+  main {
+    margin-left: 300px;
+    padding: 2.5rem 3.5rem 4rem;
+    max-width: 1080px;
+  }
 }
 
 .update-banner {
