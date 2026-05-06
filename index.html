@@ -245,6 +245,8 @@ body {
 .lesson-link.completed .status { color: var(--success); }
 .lesson-link.completed .title { text-decoration: line-through; opacity: 0.6; }
 .lesson-link.draft { opacity: 0.5; }
+.lesson-link.static-link .num { font-size: 1rem; }
+.lesson-link.static-link.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
 .lesson-link.draft::after {
   content: "✏️";
   font-size: 0.7rem;
@@ -502,6 +504,29 @@ main {
       <span id="global-progress-text">0 / 72</span>
     </div>
     <div class="progress-bar"><div class="progress-bar-fill" id="global-progress-bar" style="width: 0%"></div></div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-header" style="cursor: default;">
+      <div>
+        <div class="phase-title">Введение</div>
+        <div class="phase-progress-mini">Начни здесь</div>
+      </div>
+    </div>
+    <div class="phase-lessons">
+      <button class="lesson-link static-link" data-static="about" onclick="openStaticPage('about')">
+        <span class="num">📖</span>
+        <span class="title">О курсе</span>
+      </button>
+      <button class="lesson-link static-link" data-static="howto" onclick="openStaticPage('howto')">
+        <span class="num">🎯</span>
+        <span class="title">Как заниматься</span>
+      </button>
+      <button class="lesson-link static-link" data-static="faq" onclick="openStaticPage('faq')">
+        <span class="num">❓</span>
+        <span class="title">FAQ</span>
+      </button>
+    </div>
   </div>
 
   <nav id="lesson-nav"></nav>
@@ -996,7 +1021,7 @@ registerLesson(2, `
 </div>
 
 <h2>Зачем тебе этот урок</h2>
-<p>К концу 2025 года рынок LLM — это не «есть ChatGPT и есть всё остальное». Это десятки моделей с разными сильными сторонами, ценами и лицензиями. Если ты выбираешь модель <strong>наугад</strong>, ты:</p>
+<p>К 2026 году рынок LLM — это не «есть ChatGPT и есть всё остальное». Это десятки моделей с разными сильными сторонами, ценами и лицензиями. Если ты выбираешь модель <strong>наугад</strong>, ты:</p>
 <ul>
 <li>Переплачиваешь в 10–30 раз за задачи, где хватило бы дешёвой модели.</li>
 <li>Получаешь хуже качество там, где другая модель сильнее.</li>
@@ -1018,7 +1043,7 @@ registerLesson(2, `
 <p><strong>Anthropic (Claude).</strong> Конкурент №1. Акцент на безопасности и качестве рассуждений. Линейка: Claude Opus, Sonnet, Haiku.</p>
 <ul>
 <li>Opus — флагман, силён в анализе документов и коде.</li>
-<li>Sonnet — рабочая лошадка, лучший баланс цена/качество на 2025.</li>
+<li>Sonnet — рабочая лошадка, лучший баланс цена/качество на 2026.</li>
 <li>Haiku — самая быстрая.</li>
 </ul>
 
@@ -2252,6 +2277,1439 @@ ReAct + tool use. Модель рассуждает, вызывает поиск
 `);
 
 // ============================================================
+// Урок 6
+// ============================================================
+registerLesson(6, `
+<h1>Урок 6. Первое приложение — генерация текста через API</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> перейти от чата в браузере к программному вызову LLM</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/06</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>До сих пор ты работал с LLM через ChatGPT/Claude.ai — браузерные интерфейсы. Это нормально для разовых задач. Но как только ты хочешь:</p>
+<ul>
+<li>Автоматизировать что-то (обработать 1000 писем, не открывая чат каждый раз).</li>
+<li>Встроить ИИ в свой продукт (приложение, бот, скрипт).</li>
+<li>Контролировать temperature, формат, retries программно.</li>
+<li>Логировать запросы и ответы.</li>
+<li>Платить только за то, что используешь — без подписки на $20/мес.</li>
+</ul>
+<p>...тебе нужен <strong>API</strong>. Это база всего, что мы будем делать дальше — чат-боты, поиск, RAG, агенты. К концу урока у тебя будет рабочий Python-скрипт, который вызывает GPT и возвращает ответ. Это последний барьер между «юзером ИИ» и «тем, кто строит на ИИ».</p>
+
+<h2>1. Что такое API и зачем он</h2>
+
+<h3>API в одном предложении</h3>
+<p><strong>API (Application Programming Interface)</strong> — это интерфейс для общения программ между собой. Веб-API — это URL, на который ты шлёшь HTTP-запрос с данными, и получаешь ответ.</p>
+<p>В случае LLM-провайдеров: ты отправляешь POST-запрос на endpoint вида <code>https://api.openai.com/v1/chat/completions</code> с JSON-телом, описывающим что ты хочешь. В ответ получаешь JSON с сгенерированным текстом.</p>
+
+<h3>API ключ</h3>
+<p>Чтобы провайдер знал, кто ты и кому списывать деньги, к каждому запросу прикладывается <strong>API ключ</strong> — длинная строка вида <code>sk-...XYZ</code>. Это твой пароль и счётчик в одном.</p>
+
+<div class="callout callout-danger">
+<strong>⚠️ Правила безопасности с ключом:</strong>
+<ul>
+<li><strong>Никогда</strong> не пиши ключ прямо в коде.</li>
+<li><strong>Никогда</strong> не коммить в git (даже в private репо).</li>
+<li><strong>Никогда</strong> не показывай в скринах, видео, демо.</li>
+<li><strong>Никогда</strong> не используй в JavaScript-коде на фронтенде (любой пользователь увидит в DevTools).</li>
+<li><strong>Всегда</strong> храни в переменных окружения (<code>.env</code> файл) или в secret manager.</li>
+<li><strong>Сразу отзови ключ</strong>, если случайно засветил.</li>
+</ul>
+</div>
+
+<p>Реальный кейс 2023: разработчики случайно закоммитили ключи на GitHub, боты-сканеры тут же нашли их и начали гонять GPT-4 на полную, у людей утром были счета на $5000–$50000. OpenAI стал автоматически отзывать такие ключи, но не всегда успевает.</p>
+
+<h2>2. Получение ключа</h2>
+
+<h3>OpenAI</h3>
+<ol>
+<li>Зайди на <a href="https://platform.openai.com" target="_blank">platform.openai.com</a> (это <strong>не</strong> тот же что chat.openai.com — отдельный аккаунт для разработчиков).</li>
+<li>Зарегистрируйся или войди.</li>
+<li>Пополни баланс: Billing → Add to credit balance. Минимум $5. Этого хватит на тысячи запросов.</li>
+<li>Создай ключ: API keys → Create new secret key. Скопируй и сохрани в надёжное место — показывается один раз.</li>
+<li>Поставь ограничения: Settings → Limits → Monthly budget. Например, $20/мес. Это страховка от случайного слива денег.</li>
+</ol>
+
+<h3>Anthropic (Claude)</h3>
+<ol>
+<li>Зайди на <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>.</li>
+<li>Аналогично: пополни баланс, создай ключ, поставь лимиты.</li>
+</ol>
+
+<h3>Альтернативы для России</h3>
+<ul>
+<li><strong>Yandex GPT</strong> — yandex.cloud, оплата с российской карты.</li>
+<li><strong>GigaChat</strong> от Сбера — sberbank.ru, требуется регистрация юрлица для API.</li>
+<li><strong>OpenRouter</strong> — единый API к десяткам моделей, может работать через российские карты.</li>
+<li><strong>Прокси-провайдеры</strong> (есть, но не все легальны — на свой риск).</li>
+</ul>
+
+<h2>3. Подготовка окружения</h2>
+
+<h3>Установка Python (если нет)</h3>
+<p>Понадобится Python 3.8+. Проверь:</p>
+<pre><code>python3 --version</code></pre>
+<p>Если нет или версия старая — поставь через python.org или (на Mac) <code>brew install python</code>.</p>
+
+<h3>Виртуальное окружение</h3>
+<p>Хорошая практика — изолировать пакеты под проект:</p>
+<pre><code># Создаём папку проекта
+mkdir my-ai-app && cd my-ai-app
+
+# Создаём виртуальное окружение
+python3 -m venv venv
+
+# Активируем (Mac/Linux)
+source venv/bin/activate
+
+# Активируем (Windows)
+venv\\Scripts\\activate</code></pre>
+
+<h3>Установка библиотек</h3>
+<pre><code>pip install openai python-dotenv</code></pre>
+<ul>
+<li><code>openai</code> — официальный SDK OpenAI. Аналогично есть <code>anthropic</code>.</li>
+<li><code>python-dotenv</code> — для удобной работы с <code>.env</code> файлом.</li>
+</ul>
+
+<h3>Файл .env</h3>
+<p>Создай в папке проекта файл с именем <code>.env</code> (с точкой!):</p>
+<pre><code>OPENAI_API_KEY=sk-...твой ключ здесь...</code></pre>
+
+<h3>Файл .gitignore</h3>
+<p>Сразу же — чтобы случайно не закоммитить ключ:</p>
+<pre><code># .gitignore
+.env
+venv/
+__pycache__/
+*.pyc</code></pre>
+
+<h2>4. Первый запрос</h2>
+
+<h3>Минимальный пример</h3>
+<pre><code>import os
+from dotenv import load_dotenv
+from openai import OpenAI
+
+# Загружаем .env в переменные окружения
+load_dotenv()
+
+# Создаём клиента (он сам найдёт OPENAI_API_KEY в env)
+client = OpenAI()
+
+# Делаем запрос
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "Ты помощник по русскому языку."},
+        {"role": "user", "content": "Объясни, что такое деепричастие, в одном абзаце."}
+    ],
+    temperature=0.3,
+    max_tokens=300
+)
+
+# Извлекаем текст
+print(response.choices[0].message.content)</code></pre>
+
+<p>Сохрани как <code>hello_ai.py</code>, запусти:</p>
+<pre><code>python hello_ai.py</code></pre>
+<p>Получишь сгенерированный ответ в терминале. Поздравляю — ты только что вызвал LLM из своего кода.</p>
+
+<h2>5. Анатомия запроса</h2>
+
+<p>Разберём каждое поле:</p>
+
+<h3>model</h3>
+<p>Имя модели. Точные строки:</p>
+<ul>
+<li><code>gpt-4o</code>, <code>gpt-4o-mini</code> — флагман и эконом.</li>
+<li><code>gpt-4-turbo</code>, <code>gpt-3.5-turbo</code> — старые но дешёвые.</li>
+<li><code>o1-preview</code>, <code>o1-mini</code> — reasoning.</li>
+</ul>
+<p>Anthropic: <code>claude-3-5-sonnet-20241022</code>, <code>claude-3-haiku-20240307</code> и т.д. (точные имена меняются — смотри документацию).</p>
+
+<h3>messages</h3>
+<p>Массив сообщений диалога. Поддерживаемые роли:</p>
+<ul>
+<li><code>system</code> — инструкция модели на весь диалог.</li>
+<li><code>user</code> — сообщение пользователя.</li>
+<li><code>assistant</code> — предыдущий ответ модели (для контекста).</li>
+<li><code>tool</code> — результат вызова инструмента (для function calling — урок 13).</li>
+</ul>
+
+<h3>temperature</h3>
+<p>0–2. См. урок 4. Для фактических задач — 0–0.3, для креатива — 0.7–1.</p>
+
+<h3>max_tokens</h3>
+<p>Максимум токенов в ответе. Жёсткий лимит, остановит даже на полуслове. Считай чуть больше, чем нужно.</p>
+
+<h3>Другие полезные параметры</h3>
+<pre><code>response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[...],
+    temperature=0.3,
+    max_tokens=300,
+    top_p=1.0,
+    frequency_penalty=0.0,   # -2 до 2, штраф за повторы
+    presence_penalty=0.0,    # -2 до 2, штраф за упоминание темы
+    stop=["\\n\\n"],         # остановиться при появлении строки
+    response_format={"type": "json_object"},  # только валидный JSON
+    seed=42,                 # для воспроизводимости
+    n=1                      # сколько вариантов сгенерировать
+)</code></pre>
+
+<h2>6. Анатомия ответа</h2>
+
+<p>Объект <code>response</code> содержит много данных:</p>
+<pre><code>{
+  "id": "chatcmpl-abc123",
+  "object": "chat.completion",
+  "created": 1715000000,
+  "model": "gpt-4o-mini-2024-07-18",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Деепричастие — это особая форма глагола..."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 42,
+    "completion_tokens": 187,
+    "total_tokens": 229
+  }
+}</code></pre>
+
+<h3>Что брать в работу</h3>
+<ul>
+<li><code>response.choices[0].message.content</code> — сам сгенерированный текст.</li>
+<li><code>response.choices[0].finish_reason</code>:
+  <ul>
+    <li><code>stop</code> — модель закончила нормально.</li>
+    <li><code>length</code> — упёрлась в <code>max_tokens</code>, ответ обрезан.</li>
+    <li><code>content_filter</code> — заблокировано фильтром.</li>
+    <li><code>tool_calls</code> — попросила вызвать инструмент.</li>
+  </ul>
+</li>
+<li><code>response.usage</code> — твой счётчик стоимости.</li>
+</ul>
+
+<h2>7. Подсчёт стоимости</h2>
+
+<p>Цена считается отдельно для input и output по таблице из урока 2.</p>
+
+<h3>Расчёт на лету</h3>
+<pre><code>def calculate_cost(usage, model="gpt-4o-mini"):
+    prices = {
+        "gpt-4o-mini":   {"input": 0.15, "output": 0.60},
+        "gpt-4o":        {"input": 2.50, "output": 10.00},
+        "o1-mini":       {"input": 3.00, "output": 12.00},
+    }
+    p = prices.get(model, prices["gpt-4o-mini"])
+    cost = (
+        usage.prompt_tokens * p["input"] +
+        usage.completion_tokens * p["output"]
+    ) / 1_000_000
+    return cost
+
+response = client.chat.completions.create(...)
+print(f"Стоимость: \${calculate_cost(response.usage):.6f}")</code></pre>
+
+<h3>Реальные цифры</h3>
+<p>Запрос с промптом 100 токенов и ответом 200 токенов на gpt-4o-mini:</p>
+<ul>
+<li>Input: 100 × $0.15 / 1M = $0.000015</li>
+<li>Output: 200 × $0.60 / 1M = $0.00012</li>
+<li>Итого: ~$0.000135 = ~0.013 цента</li>
+</ul>
+<p>1000 таких запросов = ~$0.14. Очень дёшево.</p>
+
+<h2>8. Streaming — печать ответа по словам</h2>
+
+<p>По умолчанию ответ возвращается целиком в конце генерации. Для чат-интерфейса это плохо — ждёшь 5 секунд белого экрана. Решение — <strong>streaming</strong>:</p>
+
+<pre><code>stream = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "Напиши хайку про код"}],
+    stream=True  # ← включаем streaming
+)
+
+for chunk in stream:
+    delta = chunk.choices[0].delta.content
+    if delta:
+        print(delta, end="", flush=True)
+print()  # перенос строки в конце</code></pre>
+
+<p>Текст печатается по мере генерации — пользователь видит, что что-то происходит.</p>
+
+<h2>9. Обработка ошибок</h2>
+
+<p>В реальной жизни запросы падают. Сети нет, лимит исчерпан, модель перегружена, ключ невалидный. Обрабатывай:</p>
+
+<pre><code>from openai import OpenAI, OpenAIError, RateLimitError, APIConnectionError
+import time
+
+def safe_chat(messages, max_retries=3):
+    for attempt in range(max_retries):
+        try:
+            return client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=messages,
+                timeout=30
+            )
+        except RateLimitError:
+            wait = 2 ** attempt  # exponential backoff: 1, 2, 4 сек
+            print(f"Rate limit, ждём {wait} сек...")
+            time.sleep(wait)
+        except APIConnectionError:
+            print("Сеть упала, retry...")
+            time.sleep(1)
+        except OpenAIError as e:
+            print(f"Ошибка OpenAI: {e}")
+            return None
+    return None</code></pre>
+
+<p>Принципы:</p>
+<ul>
+<li><strong>Retry на временные ошибки</strong> (rate limit, network) с экспоненциальной задержкой.</li>
+<li><strong>Не retry на logical ошибки</strong> (невалидный запрос, кончились деньги).</li>
+<li><strong>Timeout</strong> на каждый запрос — иначе один зависший вызов положит весь скрипт.</li>
+<li><strong>Логирование</strong> — пиши в файл, что и когда вызывалось.</li>
+</ul>
+
+<h2>10. Полный пример: генератор постов</h2>
+
+<pre><code>import os
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv()
+client = OpenAI()
+
+def generate_post(topic: str, tone: str = "neutral", count: int = 3) -> list[str]:
+    """Генерирует N вариантов поста на заданную тему."""
+
+    system = f"""Ты автор LinkedIn-постов в B2B-сегменте.
+Тон: {tone}.
+Длина: 500-700 знаков.
+Формат: одна фраза-крючок, основная мысль, вывод.
+Без хэштегов и эмодзи."""
+
+    posts = []
+    for i in range(count):
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": system},
+                {"role": "user", "content": f"Напиши пост на тему: {topic}"}
+            ],
+            temperature=0.9,  # высокая для разнообразия
+            max_tokens=400
+        )
+        posts.append(response.choices[0].message.content.strip())
+
+    return posts
+
+if __name__ == "__main__":
+    topic = input("Тема поста: ")
+    tone = input("Тон (нейтральный / прямой / провокационный): ") or "нейтральный"
+
+    posts = generate_post(topic, tone, count=3)
+
+    for i, post in enumerate(posts, 1):
+        print(f"\\n--- Вариант {i} ---")
+        print(post)</code></pre>
+
+<p>Запуск:</p>
+<pre><code>$ python generator.py
+Тема поста: ошибки наставничества молодых разработчиков
+Тон: прямой
+
+--- Вариант 1 ---
+[три варианта поста]</code></pre>
+
+<h2>11. Тонкости и подводные камни</h2>
+
+<h3>Кеширование запросов</h3>
+<p>Если ты делаешь много одинаковых запросов в разработке — кешируй ответы локально:</p>
+<pre><code>import hashlib, json, os
+
+CACHE_DIR = ".llm_cache"
+os.makedirs(CACHE_DIR, exist_ok=True)
+
+def cached_chat(messages, model="gpt-4o-mini", **kwargs):
+    key_str = json.dumps({"m": model, "msg": messages, **kwargs}, sort_keys=True)
+    key = hashlib.md5(key_str.encode()).hexdigest()
+    path = f"{CACHE_DIR}/{key}.json"
+
+    if os.path.exists(path):
+        with open(path) as f:
+            return json.load(f)["content"]
+
+    response = client.chat.completions.create(model=model, messages=messages, **kwargs)
+    content = response.choices[0].message.content
+
+    with open(path, "w") as f:
+        json.dump({"content": content}, f)
+    return content</code></pre>
+<p>Сэкономит и время, и деньги при разработке.</p>
+
+<h3>Логирование</h3>
+<p>Сохраняй все запросы и ответы — пригодится для дебага и анализа.</p>
+<pre><code>import logging
+logging.basicConfig(filename="llm.log", level=logging.INFO)
+
+logging.info(f"Request: {messages}")
+logging.info(f"Response: {response.choices[0].message.content}")
+logging.info(f"Tokens: {response.usage}")</code></pre>
+
+<h3>Параллельные запросы</h3>
+<p>Если нужно обработать 100 промптов — не делай их последовательно. Используй <code>asyncio</code> или <code>concurrent.futures</code>:</p>
+<pre><code>from concurrent.futures import ThreadPoolExecutor
+
+def process_one(text):
+    return client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": text}]
+    ).choices[0].message.content
+
+with ThreadPoolExecutor(max_workers=10) as ex:
+    results = list(ex.map(process_one, texts))</code></pre>
+<p>10x ускорение. Но осторожно с rate limits — у OpenAI обычно 5000 req/min.</p>
+
+<h3>Структурированный вывод (JSON mode)</h3>
+<p>Если ответ должен парситься программно:</p>
+<pre><code>response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "Отвечай только валидным JSON."},
+        {"role": "user", "content": "Извлеки имя, возраст и роль из: 'Анна, 28 лет, фронтенд'"}
+    ],
+    response_format={"type": "json_object"},
+    temperature=0
+)
+
+import json
+data = json.loads(response.choices[0].message.content)
+# data = {"name": "Анна", "age": 28, "role": "фронтенд"}</code></pre>
+
+<h2>12. Глоссарий</h2>
+<ul>
+<li><strong>API</strong> — Application Programming Interface, способ программного вызова сервиса.</li>
+<li><strong>API key</strong> — секретный токен для авторизации запросов.</li>
+<li><strong>Endpoint</strong> — конкретный URL API.</li>
+<li><strong>SDK</strong> — Software Development Kit, библиотека-обёртка над API.</li>
+<li><strong>.env</strong> — файл для секретов, не идёт в git.</li>
+<li><strong>Rate limit</strong> — лимит запросов в единицу времени.</li>
+<li><strong>Streaming</strong> — постепенный вывод ответа по мере генерации.</li>
+<li><strong>finish_reason</strong> — причина остановки генерации (stop / length / etc).</li>
+<li><strong>usage</strong> — статистика токенов в ответе.</li>
+<li><strong>Exponential backoff</strong> — растущая задержка между retries.</li>
+<li><strong>JSON mode</strong> — гарантированно валидный JSON в ответе.</li>
+</ul>
+
+<h2>13. Практика (60 минут)</h2>
+
+<h3>Упражнение 1. Hello, AI (15 минут)</h3>
+<ol>
+<li>Заведи аккаунт OpenAI, пополни на $5.</li>
+<li>Создай ключ, сохрани в <code>.env</code>.</li>
+<li>Установи <code>openai</code> и <code>python-dotenv</code>.</li>
+<li>Напиши минимальный скрипт hello_ai.py из урока. Запусти.</li>
+<li>Поэкспериментируй: меняй model, temperature, max_tokens. Заметь разницу.</li>
+</ol>
+
+<h3>Упражнение 2. Считаем стоимость (10 минут)</h3>
+<ol>
+<li>Добавь функцию <code>calculate_cost</code> к своему скрипту.</li>
+<li>Сделай 5 разных запросов: коротких и длинных, на gpt-4o-mini и gpt-4o.</li>
+<li>Записывай реальную стоимость каждого. Сравни с теоретическим расчётом.</li>
+</ol>
+
+<h3>Упражнение 3. Генератор контента (20 минут)</h3>
+<ol>
+<li>Возьми пример с генератором постов из урока.</li>
+<li>Адаптируй под свою задачу: 3 варианта email, 5 заголовков, 3 рерайта одного абзаца — что нужно тебе.</li>
+<li>Добавь streaming — пусть текст печатается по мере генерации.</li>
+<li>Сохрани результат в файл с временной меткой.</li>
+</ol>
+
+<h3>Упражнение 4. Обработка ошибок (15 минут)</h3>
+<ol>
+<li>Сломай намеренно: подстави неверный ключ → увидишь <code>AuthenticationError</code>.</li>
+<li>Попробуй очень большой <code>max_tokens</code> — увидишь, что произойдёт.</li>
+<li>Добавь <code>safe_chat</code> с retry. Протестируй.</li>
+<li>Добавь логирование в файл.</li>
+</ol>
+
+<h2>14. Проверь себя</h2>
+
+<p><strong>1. Где хранить API ключ?</strong><br>
+В файле <code>.env</code>, который добавлен в <code>.gitignore</code>. Никогда не в коде, никогда в git, никогда на фронтенде.</p>
+
+<p><strong>2. Что в JSON-ответе содержит сам сгенерированный текст?</strong><br>
+<code>response.choices[0].message.content</code></p>
+
+<p><strong>3. <code>finish_reason: "length"</code> — что значит?</strong><br>
+Модель упёрлась в <code>max_tokens</code> и ответ обрезан. Нужно увеличить лимит или сделать новый запрос с продолжением.</p>
+
+<p><strong>4. Как посчитать стоимость одного запроса?</strong><br>
+Берём из <code>response.usage</code> поля <code>prompt_tokens</code> и <code>completion_tokens</code>, умножаем на цены модели за миллион токенов и делим на миллион.</p>
+
+<p><strong>5. Что такое rate limit?</strong><br>
+Лимит запросов в единицу времени (обычно в минуту). У OpenAI бывает 5000 RPM для платных аккаунтов. При превышении — <code>RateLimitError</code>, нужно подождать.</p>
+
+<p><strong>6. Зачем streaming?</strong><br>
+Чтобы пользователь видел текст по мере генерации, а не белый экран 5 секунд. Резко улучшает воспринимаемую скорость.</p>
+
+<p><strong>7. Что добавить в .gitignore при работе с API?</strong><br>
+Минимум: <code>.env</code>, <code>venv/</code>, <code>__pycache__/</code>, <code>*.pyc</code>, <code>.llm_cache/</code> (если используешь кеш).</p>
+
+<p><strong>8. Как сделать гарантированно валидный JSON в ответе?</strong><br>
+<code>response_format={"type": "json_object"}</code> + явная инструкция в system prompt + temperature=0 + try/except json.loads на стороне кода.</p>
+
+<p><strong>9. Когда retry, а когда нет?</strong><br>
+Retry на временные ошибки: rate limit, network timeout, 5xx. Не retry на логические: невалидный запрос (400), кончились деньги (402), неверный ключ (401).</p>
+
+<p><strong>10. Чем отличаются <code>frequency_penalty</code> и <code>presence_penalty</code>?</strong><br>
+<code>frequency_penalty</code> штрафует за частоту повторений конкретного токена. <code>presence_penalty</code> — за сам факт упоминания темы. Оба от -2 до 2, по умолчанию 0.</p>
+
+<h2>15. Что должно остаться в голове</h2>
+<ol>
+<li><strong>API + ключ + .env</strong> — фундамент любого ИИ-приложения.</li>
+<li><strong>Структура запроса:</strong> model + messages + параметры.</li>
+<li><strong>Структура ответа:</strong> <code>choices[0].message.content</code> + <code>usage</code>.</li>
+<li><strong>Считай стоимость</strong> в каждом скрипте — поможет не сжечь деньги случайно.</li>
+<li><strong>Streaming</strong> для интерактивных интерфейсов.</li>
+<li><strong>Retry с backoff</strong> на временные ошибки.</li>
+<li><strong>JSON mode</strong> для парсинга ответов программно.</li>
+<li><strong>Никогда не клади ключ в код / git / фронтенд.</strong></li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> создай папку <code>my-ai-app/</code> с venv и .env. Это будет твоя лаборатория на следующие уроки. Все скрипты из уроков 7, 8 будут в ней.
+</div>
+`);
+
+// ============================================================
+// Урок 7
+// ============================================================
+registerLesson(7, `
+<h1>Урок 7. Чат-приложение с памятью</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> сделать чат-бот, который помнит контекст разговора</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/07</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Скрипт из урока 6 — однократный вызов: «введи промпт → получи ответ → конец». Реальные ИИ-продукты — почти все чат-формата: бот помнит контекст, продолжает беседу, держит роль. ChatGPT, Claude.ai, корпоративные ассистенты — все построены на одной механике, которую ты освоишь сегодня.</p>
+<p>Отдельная сложность — <strong>память</strong>. LLM stateless: ничего не помнит между вызовами. «Память» — это то, что ты сам подсовываешь в контекст. Этот урок — про разные стратегии, как это делать правильно.</p>
+
+<h2>1. Stateless API и иллюзия памяти</h2>
+
+<p>Вспомни урок 1: каждый запрос к LLM API независим. Модель не «помнит» прошлые сообщения. Если ты хочешь, чтобы она знала контекст — <strong>ты должен отправить весь контекст</strong> в массиве <code>messages</code>:</p>
+
+<pre><code># Запрос 1
+client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "Меня зовут Иван"}]
+)
+# → "Приятно познакомиться, Иван!"
+
+# Запрос 2 — модель ничего не помнит
+client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "Как меня зовут?"}]
+)
+# → "Я не знаю, как вас зовут"
+
+# Запрос 2 правильный — передаём всю историю
+client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "user", "content": "Меня зовут Иван"},
+        {"role": "assistant", "content": "Приятно познакомиться, Иван!"},
+        {"role": "user", "content": "Как меня зовут?"}
+    ]
+)
+# → "Вас зовут Иван."</code></pre>
+
+<p>Вся «память» чат-бота — это твой массив сообщений, который ты ведёшь на стороне приложения и каждый раз отправляешь целиком.</p>
+
+<h2>2. Простейший чат-бот</h2>
+
+<pre><code>import os
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv()
+client = OpenAI()
+
+class ChatBot:
+    def __init__(self, system_prompt: str, model: str = "gpt-4o-mini"):
+        self.model = model
+        self.history = [{"role": "system", "content": system_prompt}]
+
+    def chat(self, user_msg: str) -> str:
+        self.history.append({"role": "user", "content": user_msg})
+
+        response = client.chat.completions.create(
+            model=self.model,
+            messages=self.history,
+            temperature=0.7
+        )
+        reply = response.choices[0].message.content
+
+        # сохраняем ответ в историю — он понадобится в следующих запросах
+        self.history.append({"role": "assistant", "content": reply})
+        return reply
+
+
+# Используем
+bot = ChatBot("Ты помощник по фитнесу. Кратко, по делу. Спрашивай уточняющие вопросы.")
+
+while True:
+    msg = input("Ты: ")
+    if msg.lower() in ("exit", "quit", "выход"):
+        break
+    print("Бот:", bot.chat(msg))</code></pre>
+
+<p>Запускаешь — получаешь рабочий чат с ботом, который помнит весь разговор.</p>
+
+<h2>3. Проблема: контекст растёт</h2>
+
+<p>На 5-м сообщении массив <code>history</code> содержит 11 элементов (1 system + 10 messages), на 50-м — уже 101. Что в этом плохого:</p>
+
+<ol>
+<li><strong>Цена.</strong> Каждый запрос отправляет всю историю. На 50-м сообщении ты платишь за токены 50 предыдущих + новый.</li>
+<li><strong>Лимит.</strong> Контекстное окно ограничено (128k у GPT-4o). На очень длинных диалогах упрёшься.</li>
+<li><strong>Качество.</strong> «Lost in the middle» — модель хуже помнит середину длинного контекста.</li>
+<li><strong>Latency.</strong> Большой контекст обрабатывается дольше.</li>
+</ol>
+
+<p>Решение — <strong>стратегии управления историей</strong>.</p>
+
+<h2>4. Стратегия 1: Sliding Window (скользящее окно)</h2>
+
+<h3>Идея</h3>
+<p>Хранить только последние N сообщений. Старое — забывать.</p>
+
+<pre><code>class ChatBot:
+    def __init__(self, system_prompt: str, max_history: int = 10):
+        self.system_prompt = system_prompt
+        self.max_history = max_history
+        self.history = []
+
+    def chat(self, user_msg: str) -> str:
+        self.history.append({"role": "user", "content": user_msg})
+
+        # отрезаем sliding window
+        recent = self.history[-self.max_history:]
+        messages = [{"role": "system", "content": self.system_prompt}] + recent
+
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=messages,
+            temperature=0.7
+        )
+        reply = response.choices[0].message.content
+        self.history.append({"role": "assistant", "content": reply})
+        return reply</code></pre>
+
+<h3>Когда подходит</h3>
+<ul>
+<li>Короткие фокусные диалоги (helpdesk, FAQ).</li>
+<li>Не нужно помнить детали из начала.</li>
+</ul>
+
+<h3>Минусы</h3>
+<ul>
+<li>Бот «забывает» имя, контекст, ранние решения.</li>
+<li>Резкая граница: 10 сообщений помнит, 11-е — забыл начисто.</li>
+</ul>
+
+<h2>5. Стратегия 2: Summary (саммари)</h2>
+
+<h3>Идея</h3>
+<p>Когда история становится длинной, просим модель <strong>суммировать</strong> старую часть и заменяем её на summary.</p>
+
+<pre><code>class ChatBot:
+    def __init__(self, system_prompt: str, summarize_every: int = 20):
+        self.system_prompt = system_prompt
+        self.summarize_every = summarize_every
+        self.summary = ""
+        self.recent = []  # последние сообщения, не сжатые
+
+    def _summarize_old(self, old_messages):
+        text = "\\n".join([f"{m['role']}: {m['content']}" for m in old_messages])
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "Сожми диалог в краткое саммари ключевых фактов и решений (1 абзац)."},
+                {"role": "user", "content": text}
+            ]
+        )
+        return response.choices[0].message.content
+
+    def chat(self, user_msg: str) -> str:
+        self.recent.append({"role": "user", "content": user_msg})
+
+        # компонуем системный промпт с актуальным саммари
+        sys = self.system_prompt
+        if self.summary:
+            sys += f"\\n\\nКонтекст из предыдущей части диалога: {self.summary}"
+
+        messages = [{"role": "system", "content": sys}] + self.recent
+
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=messages,
+            temperature=0.7
+        )
+        reply = response.choices[0].message.content
+        self.recent.append({"role": "assistant", "content": reply})
+
+        # если накопилось много — сжимаем старое
+        if len(self.recent) >= self.summarize_every:
+            old = self.recent[:-10]   # сжимаем всё кроме последних 10
+            self.recent = self.recent[-10:]
+            new_summary = self._summarize_old(old)
+            self.summary = (
+                f"{self.summary}\\n{new_summary}" if self.summary else new_summary
+            )
+
+        return reply</code></pre>
+
+<h3>Когда подходит</h3>
+<ul>
+<li>Длинные обучающие диалоги (репетитор, ментор).</li>
+<li>Долгое сопровождение клиента.</li>
+<li>Когда важны ранние решения и факты.</li>
+</ul>
+
+<h3>Минусы</h3>
+<ul>
+<li>Дополнительные вызовы LLM (1 саммари = 1 запрос).</li>
+<li>Информация теряется при сжатии.</li>
+<li>Качество саммари влияет на всё дальнейшее.</li>
+</ul>
+
+<h2>6. Стратегия 3: Hierarchical (иерархическая)</h2>
+
+<p>Гибрид:</p>
+<ul>
+<li>Последние 5–10 сообщений — целиком.</li>
+<li>Чуть более старые — суммаризированы по 5 в одну запись.</li>
+<li>Древние — глобальное саммари «о чём вообще шёл разговор».</li>
+</ul>
+
+<p>Сложнее в реализации, но даёт хороший баланс «точность недавнего» + «общее понимание».</p>
+
+<h2>7. Стратегия 4: Vector memory (векторная память)</h2>
+
+<p>Самая мощная: храним все сообщения в <strong>векторной БД</strong>, при каждом запросе достаём релевантные текущему вопросу. Это уже <strong>RAG</strong> — будем разбирать в уроке 14. Тут просто упомянем для полноты.</p>
+
+<h2>8. Подсчёт токенов и обрезка</h2>
+
+<p>Чтобы понять, когда применять стратегию — нужно считать токены. Есть библиотека <code>tiktoken</code> (для OpenAI):</p>
+
+<pre><code>pip install tiktoken</code></pre>
+
+<pre><code>import tiktoken
+
+def count_tokens(messages, model="gpt-4o-mini"):
+    enc = tiktoken.encoding_for_model(model)
+    total = 0
+    for m in messages:
+        # в реальности OpenAI добавляет ~4 токена на сообщение для метаданных
+        total += len(enc.encode(m["content"])) + 4
+    return total + 2  # +2 для приоритета</code></pre>
+
+<p>Перед запросом проверяй и обрезай:</p>
+
+<pre><code>MAX_CONTEXT = 100_000  # с запасом
+
+while count_tokens(messages) > MAX_CONTEXT:
+    # удаляем второе сообщение (после system)
+    messages.pop(1)</code></pre>
+
+<h2>9. System prompt — главный инструмент устойчивости</h2>
+
+<p>System prompt задаётся один раз и держит характер бота на весь диалог. Сюда кладём:</p>
+
+<ul>
+<li><strong>Роль и сфера.</strong></li>
+<li><strong>Стиль общения</strong> (тон, длина ответов).</li>
+<li><strong>Правила поведения.</strong></li>
+<li><strong>Что делать в граничных случаях.</strong></li>
+<li><strong>Что НЕ делать.</strong></li>
+</ul>
+
+<h3>Пример хорошего system prompt</h3>
+<pre><code>SYSTEM = """Ты — Никита, виртуальный помощник студии веб-разработки.
+Твоя задача — помочь клиенту понять, подойдём ли мы под его проект.
+
+Стиль:
+- Прямо и по делу, без воды.
+- Короткие ответы (2-4 предложения).
+- На "ты", дружелюбно, но профессионально.
+
+Что ты делаешь:
+- Спрашиваешь про проект клиента: цели, бюджет, сроки.
+- Объясняешь наши услуги (разработка сайтов, мобильные приложения).
+- Если клиент готов — предлагаешь созвон с менеджером.
+
+Что ты НЕ делаешь:
+- Не называешь конкретные цены — это решает менеджер на созвоне.
+- Не обещаешь сроков.
+- Не отвечаешь на вопросы вне темы (политика, погода и т.п.) —
+  вежливо возвращаешь к теме проекта.
+
+Если не знаешь ответа на технический вопрос — скажи прямо
+"уточню у команды и вернусь" и предложи оставить контакты."""</code></pre>
+
+<h2>10. Persistence — сохранение между сессиями</h2>
+
+<p>Если бот должен помнить тебя между запусками — сохраняй историю в файл:</p>
+
+<pre><code>import json
+from pathlib import Path
+
+class ChatBot:
+    def __init__(self, system_prompt, history_file="chat_history.json"):
+        self.system_prompt = system_prompt
+        self.history_file = Path(history_file)
+        self.history = self._load()
+
+    def _load(self):
+        if self.history_file.exists():
+            with open(self.history_file) as f:
+                return json.load(f)
+        return []
+
+    def _save(self):
+        with open(self.history_file, "w") as f:
+            json.dump(self.history, f, ensure_ascii=False, indent=2)
+
+    def chat(self, user_msg):
+        self.history.append({"role": "user", "content": user_msg})
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "system", "content": self.system_prompt}] + self.history[-20:],
+            temperature=0.7
+        )
+        reply = response.choices[0].message.content
+        self.history.append({"role": "assistant", "content": reply})
+        self._save()
+        return reply</code></pre>
+
+<p>Для production — лучше БД (SQLite, Postgres), не JSON-файл.</p>
+
+<h2>11. UI на Streamlit за 30 строк</h2>
+
+<p>Терминал — для отладки. Для пользователей — нужен веб-UI. Streamlit делает это за 5 минут.</p>
+
+<pre><code>pip install streamlit</code></pre>
+
+<p>Файл <code>chat_app.py</code>:</p>
+
+<pre><code>import streamlit as st
+from openai import OpenAI
+client = OpenAI()
+
+st.title("🤖 Мой AI помощник")
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+SYSTEM = "Ты дружелюбный помощник."
+
+# показать историю
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.markdown(msg["content"])
+
+# поле ввода
+if user_msg := st.chat_input("Напиши что-нибудь..."):
+    st.session_state.messages.append({"role": "user", "content": user_msg})
+    with st.chat_message("user"):
+        st.markdown(user_msg)
+
+    # генерируем ответ со streaming
+    with st.chat_message("assistant"):
+        stream = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "system", "content": SYSTEM}] +
+                     st.session_state.messages,
+            stream=True
+        )
+        reply = st.write_stream(stream)
+    st.session_state.messages.append({"role": "assistant", "content": reply})</code></pre>
+
+<p>Запуск:</p>
+<pre><code>streamlit run chat_app.py</code></pre>
+
+<p>Откроется браузер. Получаешь полноценный чат-интерфейс с:</p>
+<ul>
+<li>Аватарами user / assistant.</li>
+<li>Историей в session.</li>
+<li>Streaming ответа.</li>
+<li>Адаптивным дизайном.</li>
+</ul>
+
+<h2>12. Тонкости</h2>
+
+<h3>Не клади всё в system prompt</h3>
+<p>Если у тебя 50-страничный мануал, и ты пихаешь его в system prompt каждого запроса — ты платишь за него каждый раз. Лучше — RAG (урок 14): подгружать релевантные куски только когда нужно.</p>
+
+<h3>System prompt и role-confusion</h3>
+<p>Иногда модель «забывает» о своей роли в долгих диалогах, если пользователь активно её сбивает. Лекарство: <strong>повторять ключевые правила</strong> либо в начале, либо в конце контекста (помним про lost in the middle).</p>
+
+<h3>Идентификация пользователя</h3>
+<p>В мульти-пользовательском боте нельзя смешивать историю разных людей. Каждому юзеру — отдельный <code>history</code>, ключуй по user_id.</p>
+
+<h3>Цензура и фильтры</h3>
+<p>Если бот публичный — добавь Moderation API:</p>
+<pre><code>moderation = client.moderations.create(input=user_msg)
+if moderation.results[0].flagged:
+    return "Я не могу ответить на это."</code></pre>
+
+<h3>Streaming + не блокирующий UI</h3>
+<p>В Streamlit это делается одной строкой <code>st.write_stream(stream)</code>. В голом Flask/FastAPI — через Server-Sent Events.</p>
+
+<h2>13. Глоссарий</h2>
+<ul>
+<li><strong>Conversation history</strong> — массив сообщений диалога.</li>
+<li><strong>Sliding window</strong> — окно последних N сообщений.</li>
+<li><strong>Summary memory</strong> — сжатие старого в короткое описание.</li>
+<li><strong>Hierarchical memory</strong> — многоуровневая память.</li>
+<li><strong>Vector memory</strong> — поиск релевантного по эмбеддингам (RAG).</li>
+<li><strong>tiktoken</strong> — библиотека OpenAI для подсчёта токенов.</li>
+<li><strong>Context overflow</strong> — переполнение контекстного окна.</li>
+<li><strong>Persistence</strong> — сохранение состояния между сессиями.</li>
+<li><strong>Streamlit</strong> — Python-фреймворк для быстрых веб-приложений.</li>
+<li><strong>Moderation API</strong> — фильтр вредного контента.</li>
+</ul>
+
+<h2>14. Практика (60 минут)</h2>
+
+<h3>Упражнение 1. Базовый бот (15 минут)</h3>
+<p>Реализуй <code>ChatBot</code> из секции 2. Запусти в терминале. Поговори с ним 10 сообщений. Заметь, что он помнит контекст.</p>
+
+<h3>Упражнение 2. Sliding window (10 минут)</h3>
+<p>Добавь <code>max_history=4</code>. Дай боту имя в первом сообщении, веди диалог. На 6-м сообщении спроси «как меня зовут?». Должен забыть. Увеличь до 20 — должен помнить.</p>
+
+<h3>Упражнение 3. Persistence (15 минут)</h3>
+<p>Добавь сохранение/загрузку истории из JSON-файла. Перезапусти скрипт между сообщениями. Бот должен помнить всё.</p>
+
+<h3>Упражнение 4. Streamlit-UI (20 минут)</h3>
+<p>Подними <code>chat_app.py</code> из секции 11. Запусти. Поэкспериментируй: добавь кнопку «Очистить историю», изменение системного промпта через sidebar, отображение количества токенов.</p>
+
+<h3>Упражнение 5. Свой характер (бонус)</h3>
+<p>Напиши <strong>хороший</strong> system prompt для бота под свою задачу. Применяй принципы из урока 4. Прогоняй через бота 20 разных запросов, проверь устойчивость роли.</p>
+
+<h2>15. Проверь себя</h2>
+
+<p><strong>1. Почему чат «помнит» если LLM stateless?</strong><br>
+Приложение хранит историю на своей стороне и подставляет её в каждый запрос. Сама LLM ничего не помнит.</p>
+
+<p><strong>2. Что такое sliding window?</strong><br>
+Стратегия памяти: храним только последние N сообщений, остальное выбрасываем.</p>
+
+<p><strong>3. Зачем считать токены?</strong><br>
+Чтобы не упереться в лимит контекста и не платить за лишнее. Также — чтобы заранее обрезать историю.</p>
+
+<p><strong>4. Когда нужен summary вместо sliding window?</strong><br>
+Когда важно помнить ранние решения/факты, но не каждое слово. Жертвуем точностью ради покрытия.</p>
+
+<p><strong>5. Что обязательно в system prompt?</strong><br>
+Роль, стиль общения, что делать, чего не делать, что в граничных случаях.</p>
+
+<p><strong>6. У меня 100 пользователей бота. Что важно?</strong><br>
+Хранить историю отдельно для каждого user_id, никогда не смешивать. Идентифицировать по сессии или auth.</p>
+
+<p><strong>7. Бот теряет роль на 30-м сообщении. Что делать?</strong><br>
+(а) Проверить, не выпал ли system prompt из окна. (б) Дублировать ключевые правила в начале или конце контекста. (в) Использовать summary-стратегию, оставляя главное в саммари.</p>
+
+<p><strong>8. Streamlit vs голый Flask — что выбрать?</strong><br>
+Streamlit — для быстрых прототипов и внутренних инструментов. 30 строк = рабочий чат. Flask/FastAPI — для production: контроль над HTTP, мульти-юзер, аутентификация.</p>
+
+<p><strong>9. Как сохранить историю на 1000 пользователей?</strong><br>
+SQLite или Postgres, таблица <code>(user_id, role, content, timestamp)</code>. JSON-файл подойдёт только для одного пользователя.</p>
+
+<p><strong>10. Как защитить чат от вредных запросов?</strong><br>
+Moderation API на входе и/или выходе. Чёткий system prompt с явным «что не делать». Логирование и алерты на странные паттерны.</p>
+
+<h2>16. Что должно остаться в голове</h2>
+<ol>
+<li><strong>Память = массив <code>messages[]</code></strong>, который ведёшь сам.</li>
+<li><strong>Sliding window</strong> — простой и часто достаточный вариант.</li>
+<li><strong>Summary</strong> — для долгих диалогов с важной историей.</li>
+<li><strong>Vector memory (RAG)</strong> — самая мощная, в уроке 14.</li>
+<li><strong>System prompt</strong> — главный инструмент устойчивости характера.</li>
+<li><strong>Persistence</strong> между сессиями — JSON для прототипа, БД для prod.</li>
+<li><strong>Streamlit</strong> — UI за 30 строк.</li>
+<li><strong>Moderation API</strong> для публичных ботов.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> в <code>my-ai-app/</code> у тебя теперь рабочий чат-бот. Это база для всех будущих проектов — RAG-бот, агент, ассистент. Сохрани шаблон — пригодится.
+</div>
+`);
+
+// ============================================================
+// Урок 8
+// ============================================================
+registerLesson(8, `
+<h1>Урок 8. Поиск с эмбеддингами (semantic search)</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять как ИИ ищет «по смыслу» и сделать свой semantic-поисковик</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/08</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Обычный поиск ищет <strong>совпадения слов</strong>. Если у тебя в заметках есть запись «как корректно расстаться с компанией», а ты ищешь «как уволиться без скандала» — обычный grep ничего не найдёт. Semantic search найдёт, потому что понимает смысл.</p>
+<p>Это <strong>фундаментальная техника</strong>:</p>
+<ul>
+<li>Под капотом RAG (урок 14) — самой популярной паттерны для работы с документами.</li>
+<li>Поиск по своим заметкам, тикетам, документам.</li>
+<li>Дедупликация (найти похожие вопросы в FAQ).</li>
+<li>Кластеризация (группировка отзывов по темам).</li>
+<li>Рекомендации.</li>
+</ul>
+<p>К концу урока у тебя будет рабочий поисковик по твоим собственным заметкам, понимающий запросы на естественном языке.</p>
+
+<h2>1. Что такое embedding</h2>
+
+<h3>Идея</h3>
+<p><strong>Embedding</strong> (эмбеддинг, векторное представление) — это превращение текста в <strong>массив чисел фиксированной длины</strong>, отражающий смысл этого текста. Тексты с близким смыслом имеют близкие векторы; разные — далёкие.</p>
+
+<p>Длина вектора зависит от модели:</p>
+<ul>
+<li><code>text-embedding-3-small</code> — 1536 чисел.</li>
+<li><code>text-embedding-3-large</code> — 3072 числа.</li>
+<li>BGE-M3 — 1024.</li>
+<li>Старая <code>text-embedding-ada-002</code> — 1536.</li>
+</ul>
+
+<h3>Упрощённое представление</h3>
+<p>Представь, что ты строишь координатную систему смыслов. Каждый текст — точка в этом пространстве. Похожие смыслы — рядом.</p>
+
+<pre><code>"Я хочу есть"        → [0.21, -0.45, 0.12, ...]   (1536 чисел)
+"Хочу пиццу"         → [0.20, -0.43, 0.15, ...]   (близко)
+"Голоден"            → [0.22, -0.44, 0.10, ...]   (близко)
+"Где Эйфелева башня" → [-0.50, 0.31, -0.20, ...]  (далеко)
+"Париж — столица"    → [-0.48, 0.30, -0.22, ...]  (далеко от еды, близко к башне)</code></pre>
+
+<p>Конечно реальные числа намного сложнее и не интерпретируемы напрямую — каждое из 1536 «измерений» отвечает за какой-то смысловой аспект, выученный моделью на огромном корпусе.</p>
+
+<h3>Откуда берутся эмбеддинги</h3>
+<p>Тренируются специальные модели (отдельные от chat-моделей):</p>
+<ul>
+<li><strong>OpenAI:</strong> text-embedding-3-small/large.</li>
+<li><strong>Open-source:</strong> BGE, E5, Sentence Transformers, BERT.</li>
+<li><strong>Cohere:</strong> embed-multilingual-v3.</li>
+<li><strong>Google:</strong> text-embedding-005.</li>
+</ul>
+
+<p>Под капотом это нейросеть-трансформер, которая пропускает текст через свои слои и выдаёт вектор. Принцип: текст подаётся на вход, выход последнего слоя усредняется и нормализуется.</p>
+
+<h2>2. Косинусное сходство — как мерить «близость» векторов</h2>
+
+<p>Когда у нас есть векторы — нам нужна метрика близости. Стандарт — <strong>cosine similarity</strong>.</p>
+
+<h3>Формула на пальцах</h3>
+<p>Косинус угла между двумя векторами. Значения от -1 до 1:</p>
+<ul>
+<li><code>1.0</code> — векторы совпадают (одинаковый смысл).</li>
+<li><code>0.7–0.9</code> — близкий смысл.</li>
+<li><code>0.3–0.6</code> — связанные темы.</li>
+<li><code>0.0</code> — не связаны.</li>
+<li><code>-1.0</code> — противоположны (редко на эмбеддингах текста).</li>
+</ul>
+
+<h3>Реализация на Python</h3>
+<pre><code>import numpy as np
+
+def cosine_similarity(a, b):
+    a, b = np.array(a), np.array(b)
+    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+# или, если векторы уже нормализованы (как у OpenAI):
+# просто скалярное произведение
+def dot(a, b):
+    return sum(x*y for x, y in zip(a, b))</code></pre>
+
+<h3>Альтернативные метрики</h3>
+<ul>
+<li><strong>Euclidean distance</strong> — евклидово расстояние. Работает, но cosine обычно лучше для текста.</li>
+<li><strong>Dot product</strong> — для нормализованных векторов = cosine. Быстрее.</li>
+<li><strong>Manhattan</strong> — почти не используется для текста.</li>
+</ul>
+
+<h2>3. Pipeline semantic search</h2>
+
+<p>Стандартная схема (для всех векторных систем):</p>
+
+<pre><code>┌─────────────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────┐
+│ Документы (.md, │ -> │ Chunking │ -> │ Embedding    │ -> │ Vector   │
+│ pdf, txt, ...)  │    │          │    │ model        │    │ DB       │
+└─────────────────┘    └──────────┘    └──────────────┘    └──────────┘
+
+                                                                │
+                            запрос пользователя                  │
+                                    │                            │
+                                    ▼                            │
+                            ┌──────────────┐                     │
+                            │ Embedding    │                     │
+                            │ model        │                     │
+                            └──────────────┘                     │
+                                    │                            │
+                                    ▼                            │
+                            ┌──────────────────────────────────┐ │
+                            │ Поиск ближайших по cosine sim    │◄┘
+                            └──────────────────────────────────┘
+                                    │
+                                    ▼
+                            топ-K результатов</code></pre>
+
+<h3>Этапы</h3>
+
+<p><strong>1. Chunking — нарезка документов.</strong></p>
+<p>Документ редко влезает целиком в эмбеддинг. Нарезаем на куски по 200–800 токенов с небольшим перекрытием (50 токенов overlap), чтобы не разрывать важные связи.</p>
+
+<p><strong>2. Embedding — превращение в векторы.</strong></p>
+<p>Каждый chunk прогоняем через embedding-модель.</p>
+
+<p><strong>3. Storage — хранение в векторной БД.</strong></p>
+<p>Сохраняем (id, embedding, original_text, metadata).</p>
+
+<p><strong>4. Query — поиск.</strong></p>
+<p>Эмбеддим запрос, ищем top-K ближайших chunks по cosine.</p>
+
+<p><strong>5. Return — отдаём пользователю.</strong></p>
+<p>Возвращаем найденные тексты + score близости.</p>
+
+<h2>4. Векторные базы — что выбрать</h2>
+
+<table>
+<tr><th>БД</th><th>Тип</th><th>Когда брать</th></tr>
+<tr><td><strong>Chroma</strong></td><td>Local file / server</td><td>Прототипы, обучение, маленькие проекты</td></tr>
+<tr><td><strong>FAISS</strong> (Meta)</td><td>Library, не БД</td><td>Огромные объёмы, in-memory, ML</td></tr>
+<tr><td><strong>Qdrant</strong></td><td>Self-host, cloud</td><td>Production, фичи, фильтры</td></tr>
+<tr><td><strong>Weaviate</strong></td><td>Self-host, cloud</td><td>Hybrid search, GraphQL</td></tr>
+<tr><td><strong>Pinecone</strong></td><td>Cloud only</td><td>Managed, без админа</td></tr>
+<tr><td><strong>pgvector</strong></td><td>Postgres extension</td><td>Уже есть Postgres</td></tr>
+<tr><td><strong>Milvus</strong></td><td>Cloud / self-host</td><td>Enterprise, миллиарды векторов</td></tr>
+<tr><td><strong>LanceDB</strong></td><td>Embedded</td><td>Локально + аналитика</td></tr>
+</table>
+
+<p>Для обучения и большинства задач — Chroma. Для production среднего масштаба — Qdrant или pgvector. Для огромных объёмов — Milvus / Pinecone.</p>
+
+<h2>5. Полный пример с Chroma</h2>
+
+<pre><code>pip install chromadb openai</code></pre>
+
+<pre><code>from openai import OpenAI
+import chromadb
+
+client = OpenAI()
+chroma = chromadb.PersistentClient(path="./chroma_db")
+collection = chroma.get_or_create_collection("notes")
+
+def embed(text: str) -> list[float]:
+    """Получить эмбеддинг текста через OpenAI."""
+    response = client.embeddings.create(
+        model="text-embedding-3-small",
+        input=text
+    )
+    return response.data[0].embedding
+
+# 1. Индексация заметок
+notes = [
+    "Сегодня встретился с Иваном, обсудили сроки запуска MVP.",
+    "Купить корм коту, заехать в зоомагазин в среду.",
+    "Идея: сервис для автоматической генерации тестов из ТЗ.",
+    "Дед-лайн по статье — пятница.",
+    "Почитать про векторные базы данных.",
+    "В четверг забрать ребёнка из садика в 17:00.",
+    "TODO: написать ответ HR в Лаборатории Касперского."
+]
+
+# Эмбеддим и кладём в Chroma
+embeddings = [embed(note) for note in notes]
+collection.add(
+    ids=[f"note_{i}" for i in range(len(notes))],
+    embeddings=embeddings,
+    documents=notes
+)
+
+# 2. Поиск
+def search(query: str, k: int = 3):
+    query_emb = embed(query)
+    results = collection.query(
+        query_embeddings=[query_emb],
+        n_results=k
+    )
+    return list(zip(results["documents"][0], results["distances"][0]))
+
+# Пробуем
+print(search("что мне нужно купить?"))
+# → найдёт «корм коту»
+
+print(search("какие у меня дед-лайны?"))
+# → найдёт «статья пятница» и MVP
+
+print(search("задачи связанные с детьми"))
+# → найдёт «забрать ребёнка»
+
+print(search("есть ли у меня вакансии или офферы?"))
+# → найдёт «HR в Лаборатории Касперского»</code></pre>
+
+<p>Заметь — в каждом случае модель находит правильный chunk, хотя <strong>прямых совпадений слов</strong> нет.</p>
+
+<h2>6. Стратегии чанкинга</h2>
+
+<h3>Простая нарезка</h3>
+<pre><code>def chunk_text(text: str, chunk_size: int = 500, overlap: int = 50):
+    chunks = []
+    start = 0
+    while start < len(text):
+        end = start + chunk_size
+        chunks.append(text[start:end])
+        start = end - overlap
+    return chunks</code></pre>
+<p>Минус — режет посередине предложения.</p>
+
+<h3>По параграфам</h3>
+<pre><code>chunks = text.split("\\n\\n")</code></pre>
+<p>Натуральные границы, но размеры разные.</p>
+
+<h3>По смыслу (рекомендуется)</h3>
+<p>Используй <code>RecursiveCharacterTextSplitter</code> из LangChain или его аналог:</p>
+<pre><code>def smart_chunk(text, max_size=500):
+    # сначала по параграфам, потом по предложениям, потом по словам
+    paragraphs = text.split("\\n\\n")
+    chunks = []
+    current = ""
+    for p in paragraphs:
+        if len(current) + len(p) <= max_size:
+            current += "\\n\\n" + p
+        else:
+            if current: chunks.append(current.strip())
+            if len(p) > max_size:
+                # длинный параграф — режем по предложениям
+                sentences = p.split(". ")
+                ...
+            else:
+                current = p
+    if current: chunks.append(current.strip())
+    return chunks</code></pre>
+
+<h3>Размер chunk — компромисс</h3>
+<ul>
+<li><strong>Маленькие (~100 токенов)</strong> — точный поиск, но теряется контекст.</li>
+<li><strong>Средние (~500)</strong> — стандарт.</li>
+<li><strong>Большие (~2000)</strong> — широкий контекст, но смешивает темы.</li>
+</ul>
+<p>Для большинства задач 500 + overlap 50 — рабочая точка.</p>
+
+<h2>7. Hybrid search — комбо semantic + keyword</h2>
+
+<p>Иногда semantic пропускает запросы, где важно <strong>точное слово</strong> (имя продукта, артикул, аббревиатура). Hybrid search комбинирует:</p>
+
+<ul>
+<li><strong>Semantic</strong> (эмбеддинги) — для смысла.</li>
+<li><strong>BM25 / keyword</strong> — для точных совпадений.</li>
+<li><strong>Reranking</strong> — пересортировка финальных результатов второй моделью (cross-encoder).</li>
+</ul>
+
+<p>Поддерживается в Weaviate, Qdrant, Elasticsearch + плагины. Для прода почти всегда выигрывает у чистого semantic.</p>
+
+<h2>8. Стоимость эмбеддингов</h2>
+
+<p>Цены OpenAI:</p>
+<ul>
+<li>text-embedding-3-small: <strong>$0.02 / 1M токенов</strong> input.</li>
+<li>text-embedding-3-large: <strong>$0.13 / 1M</strong>.</li>
+</ul>
+
+<p>Реально:</p>
+<ul>
+<li>Эмбеддинг 1000 заметок по 200 токенов = 200k токенов = <strong>$0.004</strong>. Копейки.</li>
+<li>Эмбеддинг целой Wikipedia (~3 миллиарда токенов) = <strong>$60</strong>.</li>
+</ul>
+
+<p>Однажды эмбеддишь — потом только запросы. Запрос — 1 эмбеддинг = ~50 токенов = $0.000001. Очень дёшево.</p>
+
+<h2>9. Open-source эмбеддинги</h2>
+
+<p>Если не хочешь платить или нужна приватность — open-source модели через <code>sentence-transformers</code>:</p>
+
+<pre><code>pip install sentence-transformers</code></pre>
+
+<pre><code>from sentence_transformers import SentenceTransformer
+
+# Качественная мультиязычная модель
+model = SentenceTransformer("BAAI/bge-m3")
+
+# Один раз скачается (~2 ГБ), потом работает локально
+embedding = model.encode("Привет мир")  # numpy array длиной 1024
+
+# Батчем для скорости
+embeddings = model.encode(texts, batch_size=32, show_progress_bar=True)</code></pre>
+
+<p>Качество BGE-M3 на русском сравнимо с OpenAI. Бесплатно после скачивания. На современном CPU — ~50 эмбеддингов/сек, на GPU — тысячи.</p>
+
+<h2>10. Тонкости и подводные камни</h2>
+
+<h3>Метаданные</h3>
+<p>Сохраняй вместе с эмбеддингами полезные метаданные — потом можно фильтровать:</p>
+<pre><code>collection.add(
+    ids=["note_1"],
+    embeddings=[emb],
+    documents=[note],
+    metadatas=[{"date": "2026-05-04", "tag": "work", "author": "me"}]
+)
+
+# Поиск с фильтром
+collection.query(
+    query_embeddings=[q_emb],
+    n_results=5,
+    where={"tag": "work"}
+)</code></pre>
+
+<h3>Несовпадение моделей при поиске</h3>
+<p>Если эмбеддил коллекцию моделью X, а ищешь моделью Y — результаты будут полным мусором. Векторные пространства разных моделей <strong>несовместимы</strong>. Запиши в metadata, какой моделью эмбеддил.</p>
+
+<h3>Multilingual проблемы</h3>
+<p>Не все embedding-модели хорошо работают на русском. Хорошие на русском:</p>
+<ul>
+<li>OpenAI text-embedding-3-* — отлично.</li>
+<li>BGE-M3 — отлично, мультиязычно.</li>
+<li>multilingual-e5-large — отлично.</li>
+<li>cohere multilingual-v3 — отлично.</li>
+</ul>
+<p>Старая ada-002 на русском была слабее, но всё ещё рабочая.</p>
+
+<h3>Когда semantic проигрывает</h3>
+<ul>
+<li>Поиск по точным артикулам, ID, кодам.</li>
+<li>Очень короткие запросы (1–2 слова).</li>
+<li>Тексты на узком жаргоне, где модель не училась.</li>
+</ul>
+<p>Решение — hybrid search (см. секция 7).</p>
+
+<h3>Скейл</h3>
+<p>Cosine similarity между N векторами и одним запросом — O(N). При 1M документов это ~100ms на CPU. Для бо́льших объёмов — приближённый поиск (ANN — Approximate Nearest Neighbor): HNSW, IVF. Все нормальные векторные БД делают это автоматически.</p>
+
+<h2>11. Глоссарий</h2>
+<ul>
+<li><strong>Embedding</strong> — числовой вектор, представляющий смысл текста.</li>
+<li><strong>Cosine similarity</strong> — мера близости двух векторов (-1...1).</li>
+<li><strong>Chunk</strong> — кусок исходного документа.</li>
+<li><strong>Chunking</strong> — стратегия нарезки документов.</li>
+<li><strong>Vector DB</strong> — хранилище векторов с быстрым поиском.</li>
+<li><strong>k-NN</strong> — k-Nearest Neighbors, поиск k ближайших.</li>
+<li><strong>ANN</strong> — Approximate Nearest Neighbor, быстрый приближённый поиск.</li>
+<li><strong>HNSW</strong> — Hierarchical Navigable Small World, популярный ANN-алгоритм.</li>
+<li><strong>BM25</strong> — классический keyword-алгоритм.</li>
+<li><strong>Hybrid search</strong> — combo semantic + keyword.</li>
+<li><strong>Reranking</strong> — пересортировка результатов второй моделью.</li>
+<li><strong>Cross-encoder</strong> — модель для reranking, оценивает пару (query, doc).</li>
+<li><strong>Sentence Transformers</strong> — Python-библиотека для embedding-моделей.</li>
+</ul>
+
+<h2>12. Практика (60 минут)</h2>
+
+<h3>Упражнение 1. Свой semantic-поисковик (25 минут)</h3>
+<ol>
+<li>Возьми 30–50 своих заметок (Obsidian export, txt-файлы, копипаст).</li>
+<li>Создай скрипт <code>indexer.py</code>: читает все файлы, разбивает на чанки (по параграфам), эмбеддит и кладёт в Chroma.</li>
+<li>Создай <code>search.py</code>: принимает запрос, выводит топ-3 релевантных заметок.</li>
+<li>Поиграйся: задавай вопросы на естественном языке, не используя слова из самих заметок.</li>
+</ol>
+
+<h3>Упражнение 2. Сравни с grep (10 минут)</h3>
+<ol>
+<li>Возьми 5 запросов от упр. 1.</li>
+<li>Для каждого попробуй также найти через <code>grep</code> по ключевым словам.</li>
+<li>Сравни: где semantic умнее? Где grep точнее?</li>
+</ol>
+
+<h3>Упражнение 3. Local embedding (15 минут)</h3>
+<ol>
+<li>Установи <code>sentence-transformers</code>.</li>
+<li>Перепиши <code>indexer.py</code> с локальной BGE-M3.</li>
+<li>Сравни время и качество с OpenAI-версией.</li>
+</ol>
+
+<h3>Упражнение 4. Метаданные и фильтры (10 минут)</h3>
+<ol>
+<li>В <code>indexer.py</code> добавь metadata: дата создания файла, имя файла, размер.</li>
+<li>В <code>search.py</code> добавь фильтр: «только за последний месяц», «только из такого-то файла».</li>
+</ol>
+
+<h2>13. Проверь себя</h2>
+
+<p><strong>1. Что такое embedding одним предложением?</strong><br>
+Числовой вектор фиксированной длины, представляющий смысл текста. Близкие смыслы = близкие векторы.</p>
+
+<p><strong>2. Почему semantic search умнее keyword?</strong><br>
+Понимает синонимы, перефразировки, смысловые связи. Находит «купить корм коту» по запросу «что нужно купить».</p>
+
+<p><strong>3. Зачем чанкать документы перед эмбеддингом?</strong><br>
+(а) Документ не влезает целиком (лимит embedding-модели). (б) Маленькие куски дают точный поиск. (в) Гранулярность результатов — пользователь видит релевантный кусок, а не всю книгу.</p>
+
+<p><strong>4. Какая мера близости используется?</strong><br>
+Cosine similarity (косинус угла). Для нормализованных векторов эквивалентно скалярному произведению.</p>
+
+<p><strong>5. Назови 3 векторные БД.</strong><br>
+Chroma, Qdrant, Pinecone (или Weaviate, pgvector, Milvus, LanceDB, FAISS).</p>
+
+<p><strong>6. Я эмбеддил коллекцию ada-002. Можно искать в ней с text-embedding-3-small?</strong><br>
+Нет. Векторные пространства разных моделей несовместимы — поиск выдаст мусор. Нужно переэмбеддить всё одной моделью.</p>
+
+<p><strong>7. Стандартный размер chunk?</strong><br>
+500 токенов с overlap 50. Зависит от задачи: для точного поиска факта — меньше (~200), для широкого контекста — больше (~1000).</p>
+
+<p><strong>8. Когда нужен hybrid search?</strong><br>
+Когда важны точные совпадения (артикулы, имена, аббревиатуры) И смысл одновременно. Чистый semantic иногда пропускает важные точные совпадения.</p>
+
+<p><strong>9. Что такое ANN и зачем?</strong><br>
+Approximate Nearest Neighbor — приближённый поиск ближайших векторов. Жертвует точностью ради скорости. Нужен при объёме &gt;100k векторов, иначе линейный поиск медленный.</p>
+
+<p><strong>10. Бесплатные embedding-модели для русского?</strong><br>
+BGE-M3, multilingual-e5-large — обе через <code>sentence-transformers</code>, работают локально, качество как у OpenAI.</p>
+
+<h2>14. Что должно остаться в голове</h2>
+<ol>
+<li><strong>Embedding</strong> — вектор смысла. База всего semantic-мира.</li>
+<li><strong>Cosine similarity</strong> — стандартная мера близости.</li>
+<li><strong>Pipeline:</strong> chunks → embed → vector DB → query embed → top-K.</li>
+<li><strong>Chroma</strong> для прототипов; <strong>Qdrant / pgvector</strong> для прода.</li>
+<li><strong>Chunking</strong> 500 + overlap 50 — рабочая точка.</li>
+<li><strong>Hybrid search</strong> побеждает чистый semantic в проде.</li>
+<li><strong>OpenAI embeddings</strong> для удобства; <strong>BGE-M3</strong> для приватности и экономии.</li>
+<li><strong>Метаданные</strong> в БД для фильтров — обязательно.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> у тебя теперь есть рабочий поисковик по своим заметкам. Это база для урока 14, где мы превратим его в полноценный RAG (модель будет генерировать ответы на основе найденных кусков). Сохрани <code>indexer.py</code> и <code>search.py</code>.
+</div>
+`);
+
+// ============================================================
 // Состояние и UI
 // ============================================================
 
@@ -2327,6 +3785,7 @@ function updateProgressUI() {
 
 function openLesson(id) {
   currentLessonId = id;
+  setActiveStaticLink(null);
   renderLesson(id);
   history.replaceState(null, '', `#lesson-${id}`);
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2378,6 +3837,286 @@ function renderLesson(id) {
   `;
 
   container.innerHTML = body + actions;
+}
+
+function setActiveStaticLink(name) {
+  document.querySelectorAll('.lesson-link.static-link').forEach(l => {
+    l.classList.toggle('active', l.dataset.static === name);
+  });
+}
+
+function openStaticPage(name) {
+  currentLessonId = null;
+  setActiveStaticLink(name);
+  buildNav();
+  setActiveStaticLink(name);
+  history.replaceState(null, '', `#${name}`);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (name === 'about') renderAbout();
+  else if (name === 'howto') renderHowTo();
+  else if (name === 'faq') renderFAQ();
+}
+
+function renderAbout() {
+  const total = LESSONS.length;
+  const done = LESSONS.filter(l => isCompleted(l.id)).length;
+  const written = LESSONS.filter(l => l.content).length;
+  const totalDuration = LESSONS.reduce((s, l) => s + l.duration, 0);
+  const hours = Math.round(totalDuration / 60);
+
+  document.getElementById('lesson-content').innerHTML = `
+    <h1>📖 О курсе</h1>
+
+    <p style="font-size: 1.15rem; color: var(--text-muted); margin-bottom: 2rem;">
+      Бесплатный курс по искусственному интеллекту на русском языке. Один последовательный путь от полного нуля до уровня инженера.
+    </p>
+
+    <div class="welcome-stats">
+      <div class="stat-card"><span class="stat-num">${total}</span><span class="stat-label">уроков</span></div>
+      <div class="stat-card"><span class="stat-num">4</span><span class="stat-label">фазы</span></div>
+      <div class="stat-card"><span class="stat-num">~${hours}</span><span class="stat-label">часов чтения</span></div>
+      <div class="stat-card"><span class="stat-num">${done}/${total}</span><span class="stat-label">пройдено вами</span></div>
+    </div>
+
+    <h2>Для кого этот курс</h2>
+    <p>Если ты:</p>
+    <ul>
+      <li>📌 Активно пользуешься ChatGPT/Claude, но чувствуешь что используешь на 10% возможностей.</li>
+      <li>📌 Хочешь встроить ИИ в свою работу или продукт, но не знаешь с чего начать.</li>
+      <li>📌 Слышал про «агентов», «RAG», «embeddings» и хочешь разобраться, что это и зачем.</li>
+      <li>📌 Думаешь о смене карьеры в ИИ-сферу и нужна структурированная база.</li>
+      <li>📌 Просто любопытен — что там под капотом ChatGPT.</li>
+    </ul>
+    <p>...то этот курс — твой. <strong>Подготовка не требуется.</strong> Достаточно базовой компьютерной грамотности. Программирование пригодится с 6-го урока, но даже его можно осваивать по ходу.</p>
+
+    <h2>Что ты узнаешь</h2>
+
+    <h3>🟢 Фаза 1. Пользователь (12 уроков)</h3>
+    <p>Стать <strong>продвинутым юзером</strong> ИИ. Понимать как работают LLM, писать сильные промпты, делать первые приложения. Освоишь ChatGPT/Claude/Gemini на максимум, научишься выбирать модель под задачу, защищаться от галлюцинаций и инжекшен-атак, поднимать чат-боты и semantic-поиск по своим документам.</p>
+
+    <h3>🔵 Фаза 2. Строитель (18 уроков)</h3>
+    <p>Делать <strong>рабочие AI-продукты</strong>. Function calling, RAG, агенты, мульти-агентные системы, продакшен. После фазы ты сможешь спроектировать и собрать многошагового агента с памятью, инструментами и мониторингом, и задеплоить его в облако.</p>
+
+    <h3>🟣 Фаза 3. Практик (20 уроков)</h3>
+    <p>Понять <strong>что под капотом</strong> ИИ. Нейросети с нуля на NumPy, потом PyTorch. Компьютерное зрение (CNN, transfer learning, GAN), NLP (эмбеддинги, RNN, трансформеры). После фазы ты прочитаешь любую ML-статью или код и поймёшь.</p>
+
+    <h3>🟠 Фаза 4. Инженер (22 урока)</h3>
+    <p>Стать <strong>ML-инженером</strong>. Классическое ML (регрессия, классификация, кластеризация, RL), MLOps, fine-tuning LLM (LoRA, QLoRA), запуск open-source моделей. После фазы ты делаешь end-to-end ML-проекты — от грязных данных до задеплоенной модели в проде.</p>
+
+    <h2>Как устроен один урок</h2>
+    <p>Каждый урок — это самодостаточный мини-учебник, ~50 минут чтения + 60 минут практики:</p>
+    <ul>
+      <li><strong>Зачем тебе этот урок</strong> — мотивация и что узнаешь.</li>
+      <li><strong>Глубокая теория</strong> — без воды, на пальцах, с историей и контекстом.</li>
+      <li><strong>Живые примеры с цифрами</strong> — реальные кейсы, разобранные по шагам.</li>
+      <li><strong>Рабочий код</strong> — копируй, запускай, получай результат.</li>
+      <li><strong>Тонкости и подводные камни</strong> — то что в туториалах обычно умалчивается.</li>
+      <li><strong>Глоссарий</strong> — все термины с объяснениями.</li>
+      <li><strong>Практика</strong> — упражнения с понятным результатом.</li>
+      <li><strong>Самопроверка</strong> — 10 вопросов с разбором ответов.</li>
+    </ul>
+
+    <h2>Сколько времени займёт</h2>
+    <p>При темпе <strong>1 урок в день</strong> курс занимает 4–5 месяцев. По 2 урока в день — 2 месяца. По воскресеньям только — 1.5 года. Главное — <strong>регулярность</strong>, не темп.</p>
+    <p>Не пытайся прочитать всё за неделю. ИИ — это область, в которой нужно <strong>встраивать новые концепции в свою работу</strong>, иначе быстро забудется.</p>
+
+    <h2>Чем этот курс отличается</h2>
+    <ul>
+      <li>🎯 <strong>Один путь</strong>, а не пять разных курсов с пересечениями.</li>
+      <li>🇷🇺 <strong>На русском</strong>, с примерами под русскоязычный контекст.</li>
+      <li>💯 <strong>Бесплатно, открыто, без регистраций.</strong></li>
+      <li>🛠 <strong>Практика после каждого урока</strong> — без неё знание не оседает.</li>
+      <li>🔄 <strong>Прогресс сохраняется</strong> в браузере. Закрыл вкладку — продолжишь с того же места.</li>
+      <li>📱 <strong>Работает на любом устройстве.</strong></li>
+    </ul>
+
+    <h2>Откуда контент</h2>
+    <p>Базой служат четыре открытых курса Microsoft (все на MIT-лицензии):</p>
+    <ul>
+      <li><a href="https://github.com/microsoft/generative-ai-for-beginners" target="_blank">generative-ai-for-beginners</a></li>
+      <li><a href="https://github.com/microsoft/ai-agents-for-beginners" target="_blank">ai-agents-for-beginners</a></li>
+      <li><a href="https://github.com/microsoft/AI-For-Beginners" target="_blank">AI-For-Beginners</a></li>
+      <li><a href="https://github.com/microsoft/ML-For-Beginners" target="_blank">ML-For-Beginners</a></li>
+    </ul>
+    <p>Эти курсы — отличные сами по себе, но они <strong>отдельные</strong> и параллельные. Я переработал материал в один последовательный путь, дополнил недостающим (примеры на русском, актуальные цены и модели 2026, тонкости production), сделал тоном «коллега объясняет», а не «лектор читает».</p>
+
+    <h2>Готов начать?</h2>
+    <div class="callout callout-success" style="text-align: center; padding: 2rem;">
+      <p style="font-size: 1.15rem; margin-bottom: 1.5rem;">Не торопись. Один урок — это не строчка-указатель, а полноценное занятие.</p>
+      <button class="nav-btn" style="font-size: 1.05rem; padding: 0.75rem 1.5rem; background: var(--accent); color: white; border-color: var(--accent);" onclick="openStaticPage('howto')">Сначала почитать «Как заниматься» →</button>
+      <span style="display: inline-block; margin: 0 0.5rem; color: var(--text-muted);">или</span>
+      <button class="nav-btn" style="font-size: 1.05rem; padding: 0.75rem 1.5rem;" onclick="openLesson(1)">Сразу к Уроку 1 →</button>
+    </div>
+
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 3rem; text-align: center;">
+      Готовых полных уроков на текущий момент: <strong>${written}</strong> из ${total}. Остальные пишутся постепенно (~2 урока в день). Возвращайся за обновлениями.
+    </p>
+  `;
+}
+
+function renderHowTo() {
+  document.getElementById('lesson-content').innerHTML = `
+    <h1>🎯 Как заниматься</h1>
+
+    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2rem;">
+      Просто читать недостаточно. Ниже — 7 принципов, которые отличают людей, прошедших курс, от тех кто бросил на 5-м уроке.
+    </p>
+
+    <h2>1. Не больше 1 урока в день</h2>
+    <p>Кажется заманчивым «пройти всё за выходные» — не пройдёшь. Один глубокий урок в день усваивается, накопленные за полгода знания остаются. Двадцать поверхностно прочитанных уроков забываются за неделю.</p>
+    <p>Если очень хочешь больше — делай <strong>2 урока в день максимум</strong>: один утром, один вечером, с обязательной практикой между ними.</p>
+
+    <h2>2. После каждого урока — практика</h2>
+    <p>В каждом уроке есть секция «Практика» с конкретными упражнениями. <strong>Делай их.</strong> Без практики 80% прочитанного выветрится за неделю. Это не «дополнительные задания» — это сам процесс обучения.</p>
+    <p>Если упражнение на код — реально открой редактор и напиши код. Если на размышление — реально сядь и подумай 10 минут с ручкой и бумагой.</p>
+
+    <h2>3. Веди файл progress.md</h2>
+    <p>Создай рядом с курсом файл <code>progress.md</code> или <code>прогресс.md</code>. После каждого урока пиши в него:</p>
+    <ul>
+      <li><strong>Дата</strong> и номер урока.</li>
+      <li><strong>3 ключевые мысли</strong>, которые остались в голове.</li>
+      <li><strong>Что я сделал руками</strong> — какой код написал, какой файл создал.</li>
+      <li><strong>Что осталось мутным</strong> — туда вернёшься, когда тема всплывёт в следующих уроках.</li>
+      <li><strong>«До этого я думал X, теперь понимаю Y»</strong> — самый сильный фиксатор новой ментальной модели.</li>
+    </ul>
+    <p>Через 30 уроков у тебя будет ценный личный конспект, который ты будешь пересматривать.</p>
+
+    <h2>4. Один сквозной проект</h2>
+    <p>Возьми <strong>одну реальную задачу</strong> из своей жизни. Например:</p>
+    <ul>
+      <li>«Ассистент по моим заметкам» — отвечает на вопросы по моим Obsidian/Notion-файлам.</li>
+      <li>«Бот в Telegram, который суммирует длинные переписки».</li>
+      <li>«Анализатор моих писем — что критично, что подождёт».</li>
+      <li>«Помощник в чтении научных статей».</li>
+    </ul>
+    <p>Этот проект расти будет вместе с курсом:</p>
+    <ul>
+      <li>В Фазе 1 ты собёрешь его как простой скрипт с промптом.</li>
+      <li>В Фазе 2 — добавишь RAG и сделаешь агентом.</li>
+      <li>В Фазе 3 — поймёшь как работает то, что внутри.</li>
+      <li>В Фазе 4 — обучишь свою специализированную модель и задеплоишь.</li>
+    </ul>
+    <p>В конце у тебя будет рабочий продукт под твою задачу + полное понимание как он работает.</p>
+
+    <h2>5. Возвращайся к контролю фазы</h2>
+    <p>В конце каждой из 4 фаз есть «Контроль фазы» — список того, что ты должен уметь после неё. <strong>Не переходи в следующую фазу</strong>, пока не можешь связно ответить на эти вопросы вслух.</p>
+    <p>Лайфхак: пересказывай вслух самому себе или ребёнку, как будто объясняешь нетехнарю. Если не можешь объяснить — значит не понял.</p>
+
+    <h2>6. Заведи аккаунт у LLM-провайдера сразу</h2>
+    <p>К Уроку 6 тебе понадобится API-ключ. Лучше сделать это <strong>прямо сейчас</strong>, а не откладывать:</p>
+    <ul>
+      <li><a href="https://platform.openai.com" target="_blank">OpenAI</a> — пополни на $5 (хватит на весь курс).</li>
+      <li><a href="https://console.anthropic.com" target="_blank">Anthropic (Claude)</a> — альтернатива, особенно если в России.</li>
+      <li>Поставь monthly budget — например, $20. Защитит от случайного слива.</li>
+    </ul>
+
+    <h2>7. Не бросай при первом затыке</h2>
+    <p>В Фазе 3 (нейросети) и в начале Фазы 4 (классика ML) — будут моменты, когда захочется бросить. Это <strong>нормально</strong>. Любой кто прошёл — проходил через это.</p>
+    <p>Если застрял на уроке — не пытайся понять всё сразу. Пройди его на 70%, иди дальше. Через 5–10 уроков вернёшься, и многое станет очевидным — потому что в голове появятся другие концепции, которые помогут.</p>
+
+    <h2>Темп — на ваш выбор</h2>
+    <table>
+      <tr><th>Темп</th><th>Длительность</th><th>Кому подходит</th></tr>
+      <tr><td>1 урок/день</td><td>~5 месяцев</td><td>Идеальный темп. Глубоко и без выгорания.</td></tr>
+      <tr><td>2 урока/день</td><td>~2.5 месяца</td><td>Если есть много времени и сильная мотивация.</td></tr>
+      <tr><td>1 урок/выходные</td><td>~18 месяцев</td><td>Если совмещаешь с работой и семьёй. Главное — не бросать.</td></tr>
+      <tr><td>«За неделю»</td><td>—</td><td>Не работает. Знание не успеет осесть.</td></tr>
+    </table>
+
+    <h2>Что делать если...</h2>
+    <p><strong>...я не понимаю урок?</strong> — Отметь, что неясно, в <code>progress.md</code>. Иди дальше. Через 3–5 уроков вернись — обычно становится понятно.</p>
+    <p><strong>...я пропустил неделю?</strong> — Открой <code>progress.md</code> и быстро пробеги по последним 3–5 записям. Прочитай раздел «Что должно остаться в голове» в этих уроках. Можно идти дальше.</p>
+    <p><strong>...мне скучно в Фазе 4?</strong> — Можно остановиться после Фазы 2. Этого хватает чтобы делать почти любые ИИ-продукты на современных инструментах. Фазы 3 и 4 — для тех, кто хочет идти в исследования или ML-инжиниринг.</p>
+    <p><strong>...я хочу пропустить теорию и сразу к коду?</strong> — Тогда тебе пригодятся сразу Уроки 6, 7, 8 (API, чат, semantic search). Но через 1–2 недели вернись и прочитай теоретические — пригодятся.</p>
+
+    <div class="callout callout-info" style="margin-top: 3rem;">
+      <strong>📌 Закрепление:</strong> прежде чем идти к Уроку 1, реши:
+      <ul>
+        <li>Какой у меня темп? (1/день, 2/день, по выходным?)</li>
+        <li>Какая моя сквозная задача? (Какой проект я буду делать через все фазы?)</li>
+        <li>Где я буду вести progress.md?</li>
+      </ul>
+      Запиши это где-нибудь. Это твой контракт с самим собой.
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+      <button class="nav-btn" style="font-size: 1.05rem; padding: 0.75rem 1.5rem; background: var(--accent); color: white; border-color: var(--accent);" onclick="openLesson(1)">Готов. К Уроку 1 →</button>
+    </div>
+  `;
+}
+
+function renderFAQ() {
+  document.getElementById('lesson-content').innerHTML = `
+    <h1>❓ FAQ — Часто задаваемые вопросы</h1>
+
+    <h2>Курс правда бесплатный?</h2>
+    <p>Да. Полностью. Никаких подписок, регистраций, лид-магнитов, premium-уровней. Контент открыт по MIT-лицензии — можно даже использовать в своих проектах со ссылкой.</p>
+    <p>Единственная вещь, на которую ты потратишь деньги — API-ключ OpenAI/Anthropic с урока 6. Хватит $5 на весь курс.</p>
+
+    <h2>Я ничего не знаю про программирование. Это нормально?</h2>
+    <p>Нормально. Первые 5 уроков — без кода вообще. С урока 6 появляется Python. Если ты совсем не знаешь Python — параллельно пройди бесплатный <a href="https://stepik.org/course/67" target="_blank">мини-курс на Stepik</a> или книгу «Автоматизация рутинных задач с помощью Python».</p>
+    <p>Глубокого знания не требуется. Базовые конструкции (переменные, функции, циклы, условия) — этого хватит для всех Фаз 1 и 2. К Фазе 3 нужно будет знать классы и numpy.</p>
+
+    <h2>На какой машине это всё запускать?</h2>
+    <ul>
+      <li><strong>Фазы 1–2:</strong> любой ноутбук. Всё работает через API-вызовы.</li>
+      <li><strong>Фаза 3:</strong> для лёгких упражнений хватит Mac M1+ или ПК с GPU 6+ ГБ. Для серьёзных задач — Google Colab (бесплатно).</li>
+      <li><strong>Фаза 4:</strong> аналогично + есть упражнения с fine-tuning, для которых пригодится GPU 16+ ГБ или облако.</li>
+    </ul>
+
+    <h2>Я в России / Беларуси. Как с OpenAI?</h2>
+    <p>OpenAI напрямую не работает. Варианты:</p>
+    <ul>
+      <li><strong>Anthropic Claude</strong> — работает, оплата картой UnionPay или зарубежной.</li>
+      <li><strong>YandexGPT, GigaChat от Сбера</strong> — российские альтернативы.</li>
+      <li><strong>OpenRouter</strong> — единый API ко множеству моделей, иногда работает с российских карт.</li>
+      <li><strong>Self-hosted Llama / Mistral</strong> через Ollama — полностью бесплатно.</li>
+    </ul>
+    <p>В уроках буду давать рабочий код, в комментариях указывать альтернативные провайдеры.</p>
+
+    <h2>Сколько времени займёт?</h2>
+    <p>При темпе 1 урок/день — ~5 месяцев. 2 урока/день — ~2.5 месяца. Подробнее в разделе «Как заниматься».</p>
+
+    <h2>Я могу читать с телефона?</h2>
+    <p>Да, сайт адаптивен. Но <strong>практика</strong> на телефоне неудобна — для упражнений с кодом нужен компьютер.</p>
+
+    <h2>Прогресс сохраняется?</h2>
+    <p>Да, в браузере (localStorage). Закрыл вкладку — открыл снова, всё на месте. Но это привязано к конкретному браузеру на конкретном устройстве. На другом устройстве — начнёшь заново.</p>
+    <p>Если хочешь синхронизировать между устройствами — сохрани прогресс через JSON-экспорт (планируется в следующих обновлениях).</p>
+
+    <h2>Можно ли использовать курс в своих учебных программах / корпоративном обучении?</h2>
+    <p>Можно. Лицензия MIT. Просьба ставить ссылку на оригинал и указывать авторство.</p>
+
+    <h2>А если мне не нравится формат / есть замечания?</h2>
+    <p>Курс открыт на GitHub. Можно сделать issue с предложением, или PR с правкой. Конструктивная критика приветствуется.</p>
+
+    <h2>Где задавать вопросы по содержанию урока?</h2>
+    <p>Лучшее место — задать вопрос самому ChatGPT/Claude. Просто скопируй кусок урока и спроси «объясни подробнее» или «приведи ещё пример». Для новичков это самая мощная практика.</p>
+
+    <h2>Контент будет обновляться?</h2>
+    <p>Да. Сейчас написано ${LESSONS.filter(l => l.content).length} уроков из ${LESSONS.length}. Остальные пишутся ~2 в день. Кроме того, по мере выхода новых моделей и фреймворков — корректирую соответствующие уроки.</p>
+
+    <h2>Можно ли получить сертификат?</h2>
+    <p>Нет. Сертификаты — это бизнес-модель платных платформ. Тут — открытое знание для самообразования. Лучший «сертификат» — твой собственный pet-проект, сделанный по курсу.</p>
+
+    <h2>Чем отличается от bootcamp / курсов на Coursera?</h2>
+    <ul>
+      <li>Bootcamp/Coursera — структура + менторы + сертификат + €1000–€5000.</li>
+      <li>Этот курс — структура (без менторов), без сертификата, бесплатно.</li>
+      <li>Если у тебя есть деньги и нужны сертификаты для HR — иди на платное.</li>
+      <li>Если нужны знания и навыки — этого курса хватает.</li>
+    </ul>
+
+    <h2>Куда дальше после курса?</h2>
+    <p>В конце Фазы 4 будет раздел «Что дальше» с конкретными рекомендациями в зависимости от твоего интереса:</p>
+    <ul>
+      <li><strong>LLM-инженер</strong> — DeepLearning.AI specs, LangChain, evals.</li>
+      <li><strong>ML-инженер</strong> — Andrew Ng ML Specialization, Kaggle competitions.</li>
+      <li><strong>Researcher</strong> — Stanford CS229/CS231n/CS224n, чтение arXiv.</li>
+      <li><strong>Product-AI</strong> — focus на UX, evals, продуктовую интеграцию.</li>
+    </ul>
+  `;
 }
 
 function renderWelcome() {
@@ -2450,10 +4189,20 @@ updateProgressUI();
 
 // Open from hash if present
 const hashMatch = window.location.hash.match(/lesson-(\d+)/);
+const staticHash = window.location.hash.replace('#', '');
 if (hashMatch) {
   openLesson(parseInt(hashMatch[1]));
+} else if (['about', 'howto', 'faq'].includes(staticHash)) {
+  openStaticPage(staticHash);
 } else {
-  renderWelcome();
+  // Новый посетитель → страница "О курсе"
+  // Возвращающийся (что-то прошёл) → продолжить с последнего урока
+  const hasProgress = Object.keys(progress).length > 0;
+  if (hasProgress) {
+    renderWelcome();
+  } else {
+    openStaticPage('about');
+  }
 }
 
 // Keyboard shortcuts
