@@ -2009,8 +2009,8 @@ const LESSONS = [
   { id: 12, phase: 1, title: "Безопасность ИИ-приложений", duration: 60, draft: true },
 
   // ===== ФАЗА 2: Строитель =====
-  { id: 13, phase: 2, title: "Function Calling — ИИ вызывает твои функции", duration: 60, draft: true },
-  { id: 14, phase: 2, title: "RAG и векторные БД", duration: 70, draft: true },
+  { id: 13, phase: 2, title: "Function Calling — ИИ вызывает твои функции", duration: 60 },
+  { id: 14, phase: 2, title: "RAG и векторные БД", duration: 70 },
   { id: 15, phase: 2, title: "Жизненный цикл GenAI-приложения", duration: 50, draft: true },
   { id: 16, phase: 2, title: "Что такое ИИ-агенты", duration: 45, draft: true },
   { id: 17, phase: 2, title: "Обзор агентских фреймворков", duration: 55, draft: true },
@@ -5154,6 +5154,351 @@ BGE-M3, multilingual-e5-large — обе через <code>sentence-transformers<
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> у тебя теперь есть рабочий поисковик по своим заметкам. Это база для урока 14, где мы превратим его в полноценный RAG (модель будет генерировать ответы на основе найденных кусков). Сохрани <code>indexer.py</code> и <code>search.py</code>.
 </div>
+`);
+
+
+// ============================================================
+// Урок 13
+// ============================================================
+registerLesson(13, `
+<h1>Урок 13. Function Calling — ИИ вызывает твои функции</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять как работает Function Calling и почему это строительный блок агентов</span>
+  <span><strong>Время:</strong> ~45 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/11</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>В Фазе 1 ты научился разговаривать с LLM: задавать вопросы, получать ответы, писать промпты. Но у такой модели есть потолок: LLM живёт в своём пузыре — она не знает текущую погоду, не умеет запросить твою базу данных, не может отправить email. И даже если ты просишь вернуть структурированный JSON, каждая модель форматирует его по-своему.</p>
+<p><strong>Function Calling</strong> — механизм, который закрывает обе проблемы разом:</p>
+<ol>
+<li>LLM возвращает <strong>строго структурированные данные</strong> — никаких сюрпризов с форматом.</li>
+<li>LLM может «попросить» выполнить реальное действие во внешнем мире — погода, поиск, база данных, отправка сообщения.</li>
+</ol>
+<p>Это <strong>архитектурный сдвиг</strong>: ты переходишь от чат-бота, который отвечает на вопросы, к агенту, который действует. Function Calling — фундамент всех агентных систем.</p>
+
+<h2>1. Проблема, которую решает Function Calling</h2>
+<p>Представь: ты хочешь сделать бота для HR-отдела. Бот принимает резюме и должен занести данные в CRM: имя, должность, опыт, зарплатные ожидания.</p>
+<p>До Function Calling GPT-4 вернёт <code>{"name": "Алексей", "experience": 5}</code>, Claude вернёт <code>{"full_name": "Иванов Алексей", "years": "5 лет"}</code>, Mistral добавит пояснительный текст вокруг JSON. Три модели — три разных ключа, разные типы данных. Твой код упадёт с ошибкой.</p>
+<p>После Function Calling ты один раз описываешь схему — и все модели возвращают строго её.</p>
+
+<h2>2. Ментальная модель: LLM — диспетчер, а не исполнитель</h2>
+<div class="callout callout-warning">
+<strong>Ключевое заблуждение:</strong> «LLM вызывает функцию». Это неправда. LLM не умеет выполнять код. Она только производит текст.
+</div>
+<p>Что происходит на самом деле:</p>
+<pre><code>[Ты] → описываешь функции + вопрос пользователя → [LLM]
+[LLM] → возвращает: "вызови функцию X с аргументами Y" → [Ты]
+[Ты] → вызываешь настоящую функцию X(Y) → получаешь результат
+[Ты] → передаёшь результат обратно → [LLM]
+[LLM] → формулирует ответ для пользователя → [Ты]</code></pre>
+<p>LLM — умный <strong>диспетчер</strong>. Она не делает работу сама, но знает, кому передать задачу и с какими параметрами. Реальную работу делает твой код.</p>
+
+<h2>3. Анатомия Function Calling: три шага</h2>
+<h3>Шаг 1. Ты описываешь функции</h3>
+<p>Перед запросом к LLM ты передаёшь список функций в виде JSON-схем. Схема — это описание: как называется функция, что делает, какие принимает параметры.</p>
+<pre><code>{
+  "name": "get_weather",
+  "description": "Получить текущую погоду в городе",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "city": {
+        "type": "string",
+        "description": "Название города, например: Москва"
+      }
+    },
+    "required": ["city"]
+  }
+}</code></pre>
+<p>Это просто описание на языке JSON — <strong>инструкция для LLM</strong>, не настоящий код.</p>
+
+<h3>Шаг 2. LLM решает, нужна ли функция</h3>
+<p>Пользователь пишет «Какая сейчас погода в Казани?» — LLM смотрит на список функций и возвращает:</p>
+<pre><code>{
+  "function_call": {
+    "name": "get_weather",
+    "arguments": { "city": "Казань" }
+  }
+}</code></pre>
+<p>Если пользователь пишет «Как дела?» — LLM просто ответит текстом, функция не нужна.</p>
+
+<h3>Шаг 3. Ты выполняешь реальный вызов и возвращаешь результат</h3>
+<p>Твой код (не LLM!) берёт имя функции и аргументы, вызывает настоящий API, получает данные и передаёт обратно в LLM. LLM формулирует финальный ответ для пользователя.</p>
+
+<h2>4. Function Calling vs просто «верни JSON»</h2>
+<table>
+<tr><th></th><th>Промпт «верни JSON»</th><th>Function Calling</th></tr>
+<tr><td>Формат</td><td>Может плавать</td><td>Строго по схеме</td></tr>
+<tr><td>Тип данных</td><td>Строки везде</td><td>string, integer, boolean, array</td></tr>
+<tr><td>required поля</td><td>Модель может пропустить</td><td>API гарантирует схему</td></tr>
+<tr><td>Несколько инструментов</td><td>Нельзя</td><td>Можно передать список</td></tr>
+<tr><td>Интеграция в агентный цикл</td><td>Сложно</td><td>Нативно</td></tr>
+</table>
+
+<h2>5. Важные нюансы</h2>
+<h3>Function Calling ≠ Tool Use (но это одно и то же)</h3>
+<p>OpenAI называет это <strong>Function Calling</strong> (старое API) и <strong>Tool Use</strong> (новое). Anthropic (Claude) называет это <strong>Tool Use</strong>. Принцип идентичный — просто разные названия в документации.</p>
+
+<h3>Безопасность: не доверяй аргументам слепо</h3>
+<p>LLM передаёт тебе аргументы для функции — но она может ошибиться или быть обманута через prompt injection. Всегда валидируй аргументы перед выполнением, особенно если функция делает что-то необратимое.</p>
+
+<h3>Один запрос может потребовать несколько функций</h3>
+<p>«Найди курсы по Python и запиши меня на лучший» — это два действия. Современные LLM умеют вызывать несколько функций подряд (parallel tool calls).</p>
+
+<h2>6. Практика: бот с двумя инструментами</h2>
+<pre><code>pip install openai</code></pre>
+<pre><code>import json
+from openai import OpenAI
+
+client = OpenAI(api_key="твой-ключ")
+
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_weather",
+            "description": "Получить текущую погоду в городе",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "city": {"type": "string", "description": "Название города"}
+                },
+                "required": ["city"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "send_email",
+            "description": "Отправить email сообщение",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "to": {"type": "string"},
+                    "subject": {"type": "string"},
+                    "body": {"type": "string"}
+                },
+                "required": ["to", "subject", "body"]
+            }
+        }
+    }
+]
+
+def get_weather(city):
+    data = {"Москва": {"temp": 20, "condition": "солнечно"},
+            "Казань": {"temp": 18, "condition": "облачно"}}
+    w = data.get(city, {"temp": 15, "condition": "неизвестно"})
+    return json.dumps({"city": city, **w}, ensure_ascii=False)
+
+def send_email(to, subject, body):
+    print(f"📧 Email → {to}: {subject}")
+    return json.dumps({"status": "sent"})
+
+available_functions = {"get_weather": get_weather, "send_email": send_email}
+
+def run_agent(user_message):
+    messages = [{"role": "user", "content": user_message}]
+    response = client.chat.completions.create(
+        model="gpt-4o-mini", messages=messages, tools=tools, tool_choice="auto"
+    )
+    message = response.choices[0].message
+    while message.tool_calls:
+        messages.append(message)
+        for tc in message.tool_calls:
+            result = available_functions[tc.function.name](
+                **json.loads(tc.function.arguments)
+            )
+            messages.append({"role": "tool", "tool_call_id": tc.id, "content": result})
+        response = client.chat.completions.create(
+            model="gpt-4o-mini", messages=messages, tools=tools, tool_choice="auto"
+        )
+        message = response.choices[0].message
+    return message.content
+
+print(run_agent("Проверь погоду в Питере и если дождь — предупреди boss@example.com"))</code></pre>
+
+<h2>7. Связь с другими уроками</h2>
+<p><strong>Урок 14 (RAG):</strong> функция поиска по векторной БД станет одним из инструментов агента. <strong>Урок 16 (Агенты):</strong> тот самый <code>while message.tool_calls</code> — это и есть агентный цикл. <strong>Урок 28 (MCP):</strong> стандартный протокол для подключения инструментов — Function Calling, возведённый в стандарт.</p>
+<p>Когда Claude в Cowork вызывает Notion или Asana — это ровно тот же механизм Tool Use. Принцип один везде.</p>
+
+<h2>✅ Контроль урока</h2>
+<ol>
+<li>LLM сама вызывает функции — правда или нет? Объясни.</li>
+<li>Какие три шага составляют один цикл Function Calling?</li>
+<li>Чем Function Calling лучше промпта «верни JSON» для агентных систем?</li>
+<li>Что такое Tool Use и как оно связано с Function Calling?</li>
+<li>Почему нельзя слепо доверять аргументам, которые LLM передаёт в функцию?</li>
+</ol>
+`);
+
+
+// ============================================================
+// Урок 14
+// ============================================================
+registerLesson(14, `
+<h1>Урок 14. RAG и векторные базы данных</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять как работает RAG и собрать поисковик по своим документам</span>
+  <span><strong>Время:</strong> ~55 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/15</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Проблема, которую решает RAG, возникает у каждого кто строит AI-продукты:</p>
+<ul>
+<li>Компания хочет чат-бота по своей документации — но документация закрытая, в LLM её нет.</li>
+<li>Хочешь задавать вопросы своим заметкам — LLM их не видела при обучении.</li>
+<li>Нужен помощник по актуальным ценам — у LLM данные устарели на год-два.</li>
+<li>Бот даёт уверенные ответы но иногда явно врёт — нет способа проверить источник.</li>
+</ul>
+<p>RAG (<strong>Retrieval-Augmented Generation</strong>) решает это: вместо того чтобы запихнуть всё в промпт, ты <strong>ищешь только нужное</strong> и даёшь LLM именно те фрагменты, которые релевантны вопросу.</p>
+
+<h2>1. Ментальная модель RAG</h2>
+<p>Аналогия: студент на устном экзамене. Обычный LLM — студент с феноменальной памятью, но не знает ничего про твою компанию. RAG — тот же студент, но с правом принести <strong>шпаргалки</strong>: перед ответом он листает нужные карточки и использует их в ответе.</p>
+<p>RAG — конвейер из двух частей:</p>
+<pre><code>ЧАСТЬ 1: ИНДЕКСИРОВАНИЕ (один раз заранее)
+Документы → Нарезка на чанки → Векторы → Сохранение в БД
+
+ЧАСТЬ 2: РАБОТА С ПОЛЬЗОВАТЕЛЕМ (каждый запрос)
+Вопрос → Вектор → Поиск похожих чанков → Отправка в LLM → Ответ</code></pre>
+
+<h2>2. Embeddings — числовое представление смысла</h2>
+<p><strong>Embedding</strong> — это способ превратить текст в список чисел так, чтобы <strong>похожие по смыслу тексты давали похожие числа</strong>.</p>
+<p>Три фразы: «Кошка сидит на ковре», «Котёнок лежит на подстилке», «Процентная ставка ЦБ выросла». Первые две похожи по смыслу — их векторы будут <strong>близкими в пространстве</strong>, у третьей вектор далёкий.</p>
+<p>Это лучше обычного поиска по ключевым словам: запрос «купить ноутбук» найдёт документ с фразой «приобрести лэптоп» — разные слова, но <strong>смысл близок</strong>. Можно спрашивать на русском, а находить документы на английском.</p>
+
+<h2>3. Чанкинг — нарезка документов</h2>
+<p>Почему нельзя один embedding для всего документа на 100 страниц?</p>
+<ul>
+<li><strong>Качество поиска падает.</strong> Один вектор — усреднение по всему содержимому. HR-раздел и финансовый смешаются.</li>
+<li><strong>Контекстное окно ограничено.</strong> Нашёл документ — но передать его целиком нельзя.</li>
+<li><strong>Стоимость.</strong> Чем больше токенов — тем дороже.</li>
+</ul>
+<p>Стандарт: <strong>500–600 слов с перекрытием 50–100 слов</strong> между чанками — чтобы не потерять смысл на границах. Лучше делить по абзацам или разделам, а не механически.</p>
+
+<h2>4. Векторная база данных</h2>
+<p>Обычные БД плохо подходят: они ищут по точным значениям, но не умеют «найти ближайших соседей в многомерном пространстве». Векторная БД — специализированное хранилище именно для такого поиска.</p>
+<table>
+<tr><th>База</th><th>Особенность</th><th>Когда</th></tr>
+<tr><td>Chroma</td><td>Локальная, простая</td><td>Прототипы и учёба</td></tr>
+<tr><td>Pinecone</td><td>Облачная, масштабируемая</td><td>Продакшен без инфраструктуры</td></tr>
+<tr><td>Qdrant</td><td>Self-hosted, высокая производительность</td><td>Продакшен на своих серверах</td></tr>
+<tr><td>pgvector</td><td>Расширение для PostgreSQL</td><td>Уже используешь Postgres</td></tr>
+</table>
+
+<h2>5. Как работает поиск: косинусное сходство</h2>
+<p><strong>Косинусное сходство</strong> измеряет <strong>угол</strong> между двумя векторами:</p>
+<ul>
+<li>= 1 → идентичны (угол 0°)</li>
+<li>= 0 → не связаны (угол 90°)</li>
+<li>= -1 → противоположны</li>
+</ul>
+<p>Почему угол, а не расстояние? Длина вектора зависит от длины текста, угол — только от <strong>направления</strong>, то есть от смысла.</p>
+
+<h2>6. Полный RAG-конвейер</h2>
+<h3>Этап 1: Индексирование</h3>
+<pre><code>1. Загружаешь документы (PDF, .md, .txt)
+2. Нарезаешь на чанки (~500 слов, с перекрытием)
+3. Каждый чанк → embedding-модель → вектор
+4. Сохраняешь в векторную БД: {вектор, текст, метаданные}</code></pre>
+
+<h3>Этап 2: Ответ на вопрос</h3>
+<pre><code>1. Пользователь задаёт вопрос
+2. Вопрос → embedding → вектор вопроса
+3. Ищем top-K (3–5) ближайших чанков
+4. Составляем промпт: "Ответь используя только этот контекст: [чанки]"
+5. LLM отвечает на основе контекста
+6. Показываем пользователю источники</code></pre>
+
+<h2>7. Важные нюансы</h2>
+<h3>Одна и та же embedding-модель для индексации и поиска</h3>
+<p>Критично: если индексировал через <code>text-embedding-ada-002</code>, а вопросы переводишь через <code>text-embedding-3-small</code> — пространства несовместимы, поиск будет мусором.</p>
+
+<h3>RAG vs Fine-tuning</h3>
+<table>
+<tr><th></th><th>RAG</th><th>Fine-tuning</th></tr>
+<tr><td>Стоимость</td><td>Дёшево</td><td>Очень дорого</td></tr>
+<tr><td>Актуальность данных</td><td>Обновляешь БД — сразу работает</td><td>Нужно переобучение</td></tr>
+<tr><td>Прозрачность</td><td>Видишь источники</td><td>Знания внутри модели</td></tr>
+<tr><td>Лучше для</td><td>Фактических знаний, поиска</td><td>Стиля, поведения</td></tr>
+</table>
+
+<h2>8. Практика: RAG по своим документам</h2>
+<pre><code>pip install openai chromadb</code></pre>
+<pre><code>import os, json, chromadb
+from openai import OpenAI
+
+client = OpenAI(api_key="твой-ключ")
+chroma = chromadb.Client()
+collection = chroma.create_collection("docs", metadata={"hnsw:space": "cosine"})
+
+def embed(text):
+    return client.embeddings.create(
+        model="text-embedding-3-small", input=text
+    ).data[0].embedding
+
+def index_file(filepath):
+    with open(filepath, encoding="utf-8") as f:
+        text = f.read()
+    words = text.split()
+    chunks = [" ".join(words[i:i+500]) for i in range(0, len(words), 450)]
+    for i, chunk in enumerate(chunks):
+        collection.add(
+            ids=[f"{filepath}_{i}"],
+            embeddings=[embed(chunk)],
+            documents=[chunk],
+            metadatas=[{"source": os.path.basename(filepath)}]
+        )
+    print(f"✅ {filepath}: {len(chunks)} чанков")
+
+def ask(question, n=4):
+    results = collection.query(query_embeddings=[embed(question)], n_results=n,
+                               include=["documents", "metadatas", "distances"])
+    chunks = [
+        f"[{results['metadatas'][0][i]['source']}]\n{results['documents'][0][i]}"
+        for i in range(len(results["documents"][0]))
+        if 1 - results["distances"][0][i] > 0.5
+    ]
+    if not chunks:
+        return "❌ В документах нет информации по этому вопросу."
+    
+    context = "\n\n---\n\n".join(chunks)
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "Отвечай ТОЛЬКО на основе контекста. Если ответа нет — так и скажи."},
+            {"role": "user", "content": f"Контекст:\n{context}\n\nВопрос: {question}"}
+        ],
+        temperature=0.2
+    )
+    return response.choices[0].message.content
+
+# Индексируем свои файлы
+for f in ["notes.txt", "manual.txt"]:
+    if os.path.exists(f):
+        index_file(f)
+
+# Интерактивный режим
+while True:
+    q = input("\nВопрос: ").strip()
+    if q.lower() in ["выход", "exit"]: break
+    print(ask(q))</code></pre>
+
+<h2>9. Связь с другими уроками</h2>
+<p><strong>Урок 8</strong> — ты уже строил первую систему поиска с embeddings. RAG добавляет этап генерации ответа через LLM. <strong>Урок 13</strong> — функция поиска по БД станет инструментом агента. <strong>Урок 20 (Agentic RAG)</strong> — агент сам переформулирует запрос если первый поиск не дал результата, ищет итеративно. <strong>Урок 25 (Память агента)</strong> — долгосрочная память — это тоже RAG по истории разговоров.</p>
+
+<h2>✅ Контроль урока</h2>
+<ol>
+<li>Что такое embedding и почему похожие тексты дают похожие векторы?</li>
+<li>Зачем нарезать документы на чанки?</li>
+<li>Из каких шагов состоит RAG-конвейер? (два этапа)</li>
+<li>Почему нужно использовать одну embedding-модель для индексации и поиска?</li>
+<li>Чем RAG отличается от fine-tuning? Когда что выбирать?</li>
+</ol>
 `);
 
 // ============================================================
