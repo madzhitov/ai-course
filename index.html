@@ -26,40 +26,90 @@
 <style>
 :root {
   --bg: #ffffff;
-  --bg-sidebar: #f7f7f5;
+  --bg-sidebar: #fafafa;
   --bg-card: #ffffff;
-  --bg-code: #f4f4f4;
-  --text: #1a1a1a;
-  --text-muted: #6b6b6b;
-  --border: #e5e5e5;
-  --accent: #2563eb;
-  --accent-soft: #dbeafe;
-  --success: #16a34a;
-  --success-soft: #dcfce7;
-  --warning: #ea580c;
-  --warning-soft: #fed7aa;
-  --danger: #dc2626;
-  --danger-soft: #fee2e2;
-  --shadow: 0 1px 3px rgba(0,0,0,0.06);
+  --bg-code: #f4f4f6;
+  --bg-elevated: #f9fafb;
+  --text: #111827;
+  --text-muted: #6b7280;
+  --text-soft: #9ca3af;
+  --border: #e5e7eb;
+  --border-soft: #f3f4f6;
+
+  /* Primary — фиолетовый акцент в стиле T-Course */
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --accent-soft: #f3e8ff;
+  --accent-text: #6d28d9;
+
+  /* Категории — пастельные пары bg/text */
+  --cat-prompts: #dbeafe;       --cat-prompts-text: #2563eb;
+  --cat-agents: #f3e8ff;        --cat-agents-text: #9333ea;
+  --cat-claude: #ede9fe;        --cat-claude-text: #7c3aed;
+  --cat-projects: #dcfce7;      --cat-projects-text: #16a34a;
+  --cat-industry: #fef3c7;      --cat-industry-text: #d97706;
+  --cat-rag: #ffe4e6;           --cat-rag-text: #e11d48;
+  --cat-ml: #ffedd5;            --cat-ml-text: #ea580c;
+  --cat-nlp: #ccfbf1;           --cat-nlp-text: #0d9488;
+  --cat-safety: #fee2e2;        --cat-safety-text: #dc2626;
+  --cat-api: #e0e7ff;           --cat-api-text: #4f46e5;
+  --cat-fundamentals: #fce7f3;  --cat-fundamentals-text: #db2777;
+
+  /* Статусы */
+  --status-complete: #dcfce7;   --status-complete-text: #16a34a;
+  --status-ongoing: #dbeafe;    --status-ongoing-text: #2563eb;
+  --status-draft: #f3f4f6;      --status-draft-text: #6b7280;
+
+  /* Семантические цвета (старые алиасы для совместимости) */
+  --success: #16a34a;           --success-soft: #dcfce7;
+  --warning: #d97706;           --warning-soft: #fef3c7;
+  --danger: #dc2626;            --danger-soft: #fee2e2;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow: 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.08);
 }
 
 [data-theme="dark"] {
-  --bg: #0f0f10;
-  --bg-sidebar: #18181b;
-  --bg-card: #1f1f23;
-  --bg-code: #2a2a2e;
+  --bg: #0a0a0b;
+  --bg-sidebar: #131316;
+  --bg-card: #1a1a1d;
+  --bg-code: #232328;
+  --bg-elevated: #18181b;
   --text: #f4f4f5;
   --text-muted: #a1a1aa;
-  --border: #2a2a2e;
-  --accent: #60a5fa;
-  --accent-soft: #1e3a8a;
-  --success: #4ade80;
-  --success-soft: #14532d;
-  --warning: #fb923c;
-  --warning-soft: #7c2d12;
-  --danger: #f87171;
-  --danger-soft: #7f1d1d;
-  --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  --text-soft: #71717a;
+  --border: #27272a;
+  --border-soft: #1e1e22;
+
+  --accent: #a78bfa;
+  --accent-hover: #c4b5fd;
+  --accent-soft: #2e1065;
+  --accent-text: #c4b5fd;
+
+  --cat-prompts: #1e3a8a;       --cat-prompts-text: #93c5fd;
+  --cat-agents: #581c87;        --cat-agents-text: #d8b4fe;
+  --cat-claude: #4c1d95;        --cat-claude-text: #c4b5fd;
+  --cat-projects: #14532d;      --cat-projects-text: #86efac;
+  --cat-industry: #78350f;      --cat-industry-text: #fcd34d;
+  --cat-rag: #831843;           --cat-rag-text: #fda4af;
+  --cat-ml: #7c2d12;            --cat-ml-text: #fdba74;
+  --cat-nlp: #134e4a;           --cat-nlp-text: #5eead4;
+  --cat-safety: #7f1d1d;        --cat-safety-text: #fca5a5;
+  --cat-api: #312e81;           --cat-api-text: #a5b4fc;
+  --cat-fundamentals: #831843;  --cat-fundamentals-text: #f9a8d4;
+
+  --status-complete: #14532d;   --status-complete-text: #86efac;
+  --status-ongoing: #1e3a8a;    --status-ongoing-text: #93c5fd;
+  --status-draft: #27272a;      --status-draft-text: #a1a1aa;
+
+  --success: #4ade80;           --success-soft: #14532d;
+  --warning: #fb923c;           --warning-soft: #78350f;
+  --danger: #f87171;            --danger-soft: #7f1d1d;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+  --shadow: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -67,31 +117,36 @@
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.7;
   display: flex;
   min-height: 100vh;
-  font-size: 16px;
+  font-size: 17px;
   transition: background 0.2s, color 0.2s;
-  padding-top: 52px;
+  padding-top: 56px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .top-nav {
   position: fixed;
   top: 0; left: 0; right: 0;
-  height: 52px;
-  background: var(--bg);
+  height: 56px;
+  background: rgba(255, 255, 255, 0.85);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  padding: 0 1.25rem;
+  padding: 0 1.5rem;
   z-index: 200;
   gap: 0.5rem;
-  font-size: 0.92rem;
-  backdrop-filter: blur(8px);
+  font-size: 0.94rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
+
+[data-theme="dark"] .top-nav { background: rgba(10, 10, 11, 0.85); }
 
 .top-nav-logo {
   font-weight: 700;
@@ -155,14 +210,14 @@ body {
 }
 
 .sidebar {
-  width: 320px;
+  width: 300px;
   flex-shrink: 0;
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border);
-  padding: 1.5rem 1rem;
+  padding: 1.5rem 0.85rem;
   overflow-y: auto;
   position: fixed;
-  top: 52px; left: 0; bottom: 0;
+  top: 56px; left: 0; bottom: 0;
   z-index: 100;
 }
 
@@ -327,6 +382,406 @@ body {
 
 .glossary-lessons a:hover { text-decoration: underline; }
 
+/* ============================================================
+   T-Course inspired components: stat-cards, badges, lesson-cards
+   ============================================================ */
+
+.stats-grid-v2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 2.5rem;
+}
+
+.stat-card-v2 {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s;
+}
+
+.stat-card-v2:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.stat-icon-v2 {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.stat-content-v2 { flex: 1; min-width: 0; }
+.stat-label-v2 {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stat-num-v2 {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* Status badges (pill) */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.7rem;
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.badge-complete { background: var(--status-complete); color: var(--status-complete-text); }
+.badge-ongoing { background: var(--status-ongoing); color: var(--status-ongoing-text); }
+.badge-draft { background: var(--status-draft); color: var(--status-draft-text); }
+
+/* Category tag (uppercase) */
+.cat-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.cat-tag.cat-t-prompts { color: var(--cat-prompts-text); }
+.cat-tag.cat-t-agents { color: var(--cat-agents-text); }
+.cat-tag.cat-t-claude { color: var(--cat-claude-text); }
+.cat-tag.cat-t-projects { color: var(--cat-projects-text); }
+.cat-tag.cat-t-industry { color: var(--cat-industry-text); }
+.cat-tag.cat-t-rag { color: var(--cat-rag-text); }
+.cat-tag.cat-t-ml { color: var(--cat-ml-text); }
+.cat-tag.cat-t-nlp { color: var(--cat-nlp-text); }
+.cat-tag.cat-t-safety { color: var(--cat-safety-text); }
+.cat-tag.cat-t-api { color: var(--cat-api-text); }
+.cat-tag.cat-t-fundamentals { color: var(--cat-fundamentals-text); }
+
+/* Lesson cards (in section overviews) */
+.lesson-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.lesson-card-v2 {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.lesson-card-v2:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+}
+
+.lesson-card-thumb {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  position: relative;
+}
+
+.lesson-card-thumb.theme-prompts { background: linear-gradient(135deg, var(--cat-prompts), var(--cat-agents)); }
+.lesson-card-thumb.theme-agents { background: linear-gradient(135deg, var(--cat-agents), var(--cat-claude)); }
+.lesson-card-thumb.theme-claude { background: linear-gradient(135deg, var(--cat-claude), var(--cat-fundamentals)); }
+.lesson-card-thumb.theme-projects { background: linear-gradient(135deg, var(--cat-projects), var(--cat-nlp)); }
+.lesson-card-thumb.theme-industry { background: linear-gradient(135deg, var(--cat-industry), var(--cat-ml)); }
+.lesson-card-thumb.theme-rag { background: linear-gradient(135deg, var(--cat-rag), var(--cat-fundamentals)); }
+.lesson-card-thumb.theme-ml { background: linear-gradient(135deg, var(--cat-ml), var(--cat-industry)); }
+.lesson-card-thumb.theme-nlp { background: linear-gradient(135deg, var(--cat-nlp), var(--cat-projects)); }
+.lesson-card-thumb.theme-safety { background: linear-gradient(135deg, var(--cat-safety), var(--cat-rag)); }
+.lesson-card-thumb.theme-api { background: linear-gradient(135deg, var(--cat-api), var(--cat-prompts)); }
+.lesson-card-thumb.theme-fundamentals { background: linear-gradient(135deg, var(--cat-fundamentals), var(--cat-claude)); }
+
+.lesson-card-body {
+  padding: 1rem 1.25rem 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.lesson-card-body h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.02rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+.lesson-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+.lesson-card-v2.is-draft { opacity: 0.6; }
+.lesson-card-v2.is-draft .lesson-card-thumb::after {
+  content: "✏️ скоро";
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  padding: 0.15rem 0.5rem;
+  border-radius: 100px;
+  font-size: 0.7rem;
+}
+
+/* Continue learning (small card) */
+.continue-learning {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.continue-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.continue-card:hover {
+  border-color: var(--accent);
+  transform: translateX(2px);
+}
+
+.continue-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.continue-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.continue-title {
+  font-weight: 600;
+  font-size: 0.92rem;
+  margin-bottom: 0.15rem;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.continue-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.circle-progress {
+  width: 44px; height: 44px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.circle-progress svg { transform: rotate(-90deg); }
+.circle-progress-text {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* Donut chart on home page */
+.donut-container {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.donut-svg {
+  flex-shrink: 0;
+  position: relative;
+  width: 180px;
+  height: 180px;
+}
+
+.donut-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.donut-center .num {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.donut-center .label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+.donut-legend {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+}
+
+.donut-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+}
+
+.donut-legend-dot {
+  width: 12px; height: 12px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+/* Hero — обновлённый */
+.hero-v2 {
+  padding: 2.5rem 0 1.5rem;
+}
+
+.hero-v2 h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+  background: linear-gradient(135deg, var(--text) 30%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-v2 .tagline {
+  font-size: 1.18rem;
+  color: var(--text-muted);
+  max-width: 720px;
+  margin: 0 0 1.5rem;
+  line-height: 1.55;
+}
+
+.hero-cta-v2 {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary-v2 {
+  padding: 0.9rem 1.75rem;
+  background: var(--accent);
+  color: white;
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  font-family: inherit;
+  transition: all 0.15s;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+}
+
+.btn-primary-v2:hover { background: var(--accent-hover); transform: translateY(-1px); }
+
+.btn-secondary-v2 {
+  padding: 0.9rem 1.75rem;
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.btn-secondary-v2:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Two-col layout for home (main + Continue Learning) */
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.home-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.home-aside-section h3 {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 0.85rem;
+}
+
+@media (max-width: 1024px) {
+  .home-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  main { padding: 1.5rem 1.25rem 3rem; }
+  .hero-v2 h1 { font-size: 2.2rem; }
+  .stats-grid-v2 { grid-template-columns: 1fr 1fr; }
+  .stat-num-v2 { font-size: 1.5rem; }
+}
+
 .sidebar-header {
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
@@ -437,27 +892,27 @@ body {
 .lesson-link {
   display: flex;
   align-items: flex-start;
-  gap: 0.5rem;
-  padding: 0.45rem 0.5rem 0.45rem 0.75rem;
-  border-radius: 6px;
+  gap: 0.55rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 10px;
   text-decoration: none;
   color: var(--text);
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   cursor: pointer;
   border: none;
   background: none;
   width: 100%;
   text-align: left;
   font-family: inherit;
-  line-height: 1.35;
-  transition: background 0.15s;
+  line-height: 1.4;
+  transition: all 0.15s;
 }
 
 .lesson-link:hover { background: var(--bg-card); }
 
 .lesson-link.active {
   background: var(--accent-soft);
-  color: var(--accent);
+  color: var(--accent-text);
   font-weight: 600;
 }
 
@@ -495,10 +950,10 @@ body {
 }
 
 main {
-  margin-left: 320px;
+  margin-left: 300px;
   flex: 1;
-  padding: 3rem 4rem;
-  max-width: 900px;
+  padding: 2.5rem 3.5rem 4rem;
+  max-width: 1080px;
 }
 
 .update-banner {
@@ -539,30 +994,36 @@ main {
 
 .lesson-content {
   font-size: 17px;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 .lesson-content h1 {
-  font-size: 2.2rem;
-  margin-bottom: 0.75rem;
-  line-height: 1.2;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .lesson-content h2 {
-  font-size: 1.5rem;
-  margin: 2.5rem 0 1rem 0;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border);
+  font-size: 1.6rem;
+  margin: 2.75rem 0 1.1rem 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-soft);
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .lesson-content h3 {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   margin: 2rem 0 0.75rem;
+  font-weight: 700;
 }
 
 .lesson-content h4 {
-  font-size: 1rem;
+  font-size: 1.05rem;
   margin: 1.5rem 0 0.5rem;
+  font-weight: 700;
 }
 
 .lesson-content p { margin-bottom: 1rem; }
@@ -661,9 +1122,9 @@ main {
   display: flex;
   gap: 0.75rem;
   margin: 2.5rem 0;
-  padding: 1.25rem;
+  padding: 1.5rem;
   background: var(--bg-sidebar);
-  border-radius: 8px;
+  border-radius: 16px;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -5579,6 +6040,142 @@ function renderLesson(id) {
 // АНАЛИТИКА — GoatCounter custom events + локальный лог
 // ============================================================
 
+// ============================================================
+// ВИЗУАЛЬНЫЕ ХЕЛПЕРЫ — категории, темы, бейджи
+// ============================================================
+
+// Маппинг урок → категория и иконка-эмодзи
+function lessonTheme(lesson) {
+  if (!lesson) return { theme: "fundamentals", icon: "📚", catKey: "fundamentals", catName: "ОСНОВЫ" };
+
+  // Спецветки
+  if (lesson.track === 'claude') return { theme: "claude", icon: "🟣", catKey: "claude", catName: "CLAUDE" };
+  if (lesson.track === 'projects') return { theme: "projects", icon: "🛠", catKey: "projects", catName: "ПРОЕКТ" };
+  if (lesson.track === 'industry') return { theme: "industry", icon: "💼", catKey: "industry", catName: "ИНДУСТРИЯ" };
+
+  // Главный путь — по номеру урока
+  const id = lesson.id;
+  if (id <= 3) return { theme: "fundamentals", icon: "🌱", catKey: "fundamentals", catName: "ОСНОВЫ" };
+  if (id <= 5) return { theme: "prompts", icon: "✍️", catKey: "prompts", catName: "ПРОМПТЫ" };
+  if (id <= 8) return { theme: "api", icon: "💻", catKey: "api", catName: "API" };
+  if (id <= 12) return { theme: "safety", icon: "🛡", catKey: "safety", catName: "БЕЗОПАСНОСТЬ" };
+  if (id <= 15) return { theme: "rag", icon: "🔍", catKey: "rag", catName: "RAG" };
+  if (id <= 30) return { theme: "agents", icon: "🤖", catKey: "agents", catName: "АГЕНТЫ" };
+  if (id <= 42) return { theme: "ml", icon: "🧠", catKey: "ml", catName: "НЕЙРОСЕТИ" };
+  if (id <= 50) return { theme: "nlp", icon: "💬", catKey: "nlp", catName: "NLP" };
+  return { theme: "ml", icon: "⚙️", catKey: "ml", catName: "ML" };
+}
+
+function lessonStatus(lesson) {
+  if (lesson.draft) return '<span class="badge badge-draft">Черновик</span>';
+  if (isCompleted(lesson.id)) return '<span class="badge badge-complete">Пройдено</span>';
+  return '<span class="badge badge-ongoing">Доступно</span>';
+}
+
+function lessonCard(lesson) {
+  const theme = lessonTheme(lesson);
+  const draftClass = lesson.draft ? 'is-draft' : '';
+  const idStr = typeof lesson.id === 'string' ? `'${lesson.id}'` : lesson.id;
+  return `
+    <div class="lesson-card-v2 ${draftClass}" onclick="openLesson(${idStr})">
+      <div class="lesson-card-thumb theme-${theme.theme}">${theme.icon}</div>
+      <div class="lesson-card-body">
+        <span class="cat-tag cat-t-${theme.catKey}">${theme.catName}</span>
+        <h3>${lesson.title}</h3>
+        <div class="lesson-card-meta">
+          <span>${lesson.duration} мин</span>
+          ${lessonStatus(lesson)}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Стат-карточка с цветным иконом
+function statCard({ icon, label, value, theme = 'prompts' }) {
+  return `
+    <div class="stat-card-v2">
+      <div class="stat-icon-v2" style="background: var(--cat-${theme}); color: var(--cat-${theme}-text);">${icon}</div>
+      <div class="stat-content-v2">
+        <div class="stat-label-v2">${label}</div>
+        <div class="stat-num-v2">${value}</div>
+      </div>
+    </div>
+  `;
+}
+
+// SVG donut chart
+function donutChart(segments, centerNum, centerLabel) {
+  // segments: [{label, value, color}]
+  const total = segments.reduce((s, x) => s + x.value, 0) || 1;
+  const radius = 70, strokeWidth = 22;
+  const circumference = 2 * Math.PI * radius;
+
+  let offset = 0;
+  const paths = segments.map(s => {
+    const dash = (s.value / total) * circumference;
+    const result = `<circle cx="90" cy="90" r="${radius}" fill="none" stroke="${s.color}" stroke-width="${strokeWidth}" stroke-dasharray="${dash} ${circumference - dash}" stroke-dashoffset="${-offset}" />`;
+    offset += dash;
+    return result;
+  }).join('');
+
+  const legend = segments.map(s => `
+    <div class="donut-legend-item">
+      <span class="donut-legend-dot" style="background: ${s.color}"></span>
+      <span>${s.label}</span>
+      <span style="margin-left: auto; color: var(--text-muted);">${total ? Math.round(s.value / total * 100) : 0}%</span>
+    </div>
+  `).join('');
+
+  return `
+    <div class="donut-container">
+      <div class="donut-svg">
+        <svg width="180" height="180" viewBox="0 0 180 180">
+          <circle cx="90" cy="90" r="${radius}" fill="none" stroke="var(--border-soft)" stroke-width="${strokeWidth}" />
+          ${paths}
+        </svg>
+        <div class="donut-center">
+          <div class="num">${centerNum}</div>
+          <div class="label">${centerLabel}</div>
+        </div>
+      </div>
+      <div class="donut-legend">${legend}</div>
+    </div>
+  `;
+}
+
+// Маленькая SVG-кольцо прогресса для Continue Learning
+function circleProgress(percent) {
+  const radius = 18, sw = 4;
+  const circ = 2 * Math.PI * radius;
+  const filled = (percent / 100) * circ;
+  return `
+    <div class="circle-progress">
+      <svg width="44" height="44" viewBox="0 0 44 44">
+        <circle cx="22" cy="22" r="${radius}" fill="none" stroke="var(--border-soft)" stroke-width="${sw}" />
+        <circle cx="22" cy="22" r="${radius}" fill="none" stroke="var(--accent)" stroke-width="${sw}"
+                stroke-dasharray="${filled} ${circ}" stroke-linecap="round" />
+      </svg>
+      <div class="circle-progress-text">${percent}%</div>
+    </div>
+  `;
+}
+
+function continueCard(lesson, percent) {
+  const theme = lessonTheme(lesson);
+  const idStr = typeof lesson.id === 'string' ? `'${lesson.id}'` : lesson.id;
+  return `
+    <div class="continue-card" onclick="openLesson(${idStr})">
+      <div class="continue-icon" style="background: var(--cat-${theme.catKey}); color: var(--cat-${theme.catKey}-text);">${theme.icon}</div>
+      <div class="continue-info">
+        <div class="continue-title">${lesson.title}</div>
+        <div class="continue-meta">${theme.catName} · ${lesson.duration} мин</div>
+      </div>
+      ${circleProgress(percent)}
+    </div>
+  `;
+}
+
 function trackEvent(eventName, eventTitle = null) {
   // GoatCounter custom event (если подключен)
   try {
@@ -5635,51 +6232,69 @@ function renderMainSection() {
   const total = LESSONS.length;
   const done = LESSONS.filter(l => isCompleted(l.id)).length;
   const written = LESSONS.filter(l => l.content).length;
+  const totalDuration = LESSONS.reduce((s, l) => s + l.duration, 0);
+  const hours = Math.round(totalDuration / 60);
 
   let html = `
-    <h1>📚 Главный курс — путь от пользователя к разработчику</h1>
-    <p style="color: var(--text-muted); margin-bottom: 2rem;">
-      Последовательный маршрут из <strong>72 уроков</strong> в 4 фазах. Идти по порядку.
-      Готово сейчас: <strong>${written}/${total}</strong>. Пройдено вами: <strong>${done}/${total}</strong>.
+    <h1>Главный путь</h1>
+    <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 1.05rem;">
+      Последовательный маршрут от пользователя ChatGPT до уровня ML-инженера. 4 фазы, 72 урока.
     </p>
+
+    <div class="stats-grid-v2">
+      ${statCard({ icon: '📚', label: 'Уроков', value: total, theme: 'prompts' })}
+      ${statCard({ icon: '✓', label: 'Готово', value: written, theme: 'projects' })}
+      ${statCard({ icon: '🎯', label: 'Пройдено', value: done, theme: 'claude' })}
+      ${statCard({ icon: '⏱', label: 'Часов', value: '~' + hours, theme: 'industry' })}
+    </div>
+
+    <h2>Фазы</h2>
   `;
 
-  PHASES.forEach(phase => {
+  // Карточки фаз
+  const phaseThemes = ['fundamentals', 'agents', 'ml', 'industry'];
+  const phaseIcons = ['🟢', '🔵', '🟣', '🟠'];
+
+  html += '<div class="lesson-cards-grid">';
+  PHASES.forEach((phase, idx) => {
     const phaseLessons = LESSONS.filter(l => l.phase === phase.id);
     const phaseCompleted = phaseLessons.filter(l => isCompleted(l.id)).length;
     const phaseWritten = phaseLessons.filter(l => l.content).length;
-    const pct = phaseLessons.length ? (phaseCompleted / phaseLessons.length * 100).toFixed(0) : 0;
-
     const firstWritten = phaseLessons.find(l => l.content);
     const firstUnfinished = phaseLessons.find(l => l.content && !isCompleted(l.id));
     const targetLesson = firstUnfinished || firstWritten || phaseLessons[0];
+    const theme = phaseThemes[idx];
+
+    let statusBadge;
+    if (phaseCompleted === phaseLessons.length) statusBadge = '<span class="badge badge-complete">Пройдено</span>';
+    else if (phaseCompleted > 0) statusBadge = '<span class="badge badge-ongoing">' + phaseCompleted + '/' + phaseLessons.length + '</span>';
+    else if (phaseWritten === 0) statusBadge = '<span class="badge badge-draft">Скоро</span>';
+    else statusBadge = '<span class="badge badge-ongoing">' + phaseWritten + ' готово</span>';
 
     html += `
-      <div class="section-card" onclick="openLesson(${targetLesson.id})">
-        <div class="section-card-header">
-          <h3>${phase.title}</h3>
-          <div class="progress-mini">${phaseCompleted}/${phaseLessons.length} · ${phaseWritten} готово</div>
+      <div class="lesson-card-v2" onclick="openLesson(${targetLesson.id})">
+        <div class="lesson-card-thumb theme-${theme}">${phaseIcons[idx]}</div>
+        <div class="lesson-card-body">
+          <span class="cat-tag cat-t-${theme}">ФАЗА ${phase.id}</span>
+          <h3>${phase.title.replace('Фаза ' + phase.id + '. ', '')}</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0 0 0.5rem;">${phase.subtitle}</p>
+          <div class="lesson-card-meta">
+            <span>${phaseLessons.length} уроков</span>
+            ${statusBadge}
+          </div>
         </div>
-        <p style="color: var(--text-muted); margin: 0.25rem 0 0;">${phase.subtitle}</p>
-        <div class="progress-bar"><div class="progress-bar-fill" style="width: ${pct}%"></div></div>
       </div>
     `;
   });
+  html += '</div>';
 
-  // Список всех уроков
-  html += '<h2 style="margin-top: 2.5rem;">Все уроки главного пути</h2><ul class="section-lessons-list">';
+  // Все уроки карточками
+  html += '<h2>Все уроки по порядку</h2>';
+  html += '<div class="lesson-cards-grid">';
   LESSONS.forEach(lesson => {
-    const completed = isCompleted(lesson.id);
-    html += `
-      <li class="${lesson.draft ? 'draft' : ''}" onclick="openLesson(${lesson.id})">
-        <span class="num">${lesson.id}.</span>
-        <span class="title">${lesson.title}</span>
-        <span class="duration">${lesson.duration} мин</span>
-        <span class="status ${completed ? 'completed' : ''}">${completed ? '✓' : ''}</span>
-      </li>
-    `;
+    html += lessonCard(lesson);
   });
-  html += '</ul>';
+  html += '</div>';
 
   document.getElementById('lesson-content').innerHTML = html;
 }
@@ -5689,18 +6304,29 @@ function renderTrackSection(trackId) {
   const lessons = TRACK_LESSONS.filter(l => l.track === trackId);
   const done = lessons.filter(l => isCompleted(l.id)).length;
   const written = lessons.filter(l => l.content).length;
-  const pct = lessons.length ? (done / lessons.length * 100).toFixed(0) : 0;
+  const pct = lessons.length ? Math.round(done / lessons.length * 100) : 0;
+  const totalDuration = lessons.reduce((s, l) => s + l.duration, 0);
+  const hours = Math.round(totalDuration / 60);
 
   const descriptions = {
     claude: {
-      hero: "Самая активно растущая ветка курса. Глубокое погружение в Claude как платформу: уникальные фичи, рабочие паттерны, практические кейсы. Идти можно параллельно с главным курсом или вместо него — если работаешь именно с Claude.",
+      title: "Claude Deep Dive",
+      icon: "🟣",
+      theme: "claude",
+      hero: "Самая активно растущая тропинка. Глубокое погружение в Claude как платформу: уникальные фичи, рабочие паттерны, практические кейсы. Идти можно параллельно с главным курсом или вместо него — если работаешь именно с Claude.",
       sources: 'Источники: <a href="https://docs.claude.com" target="_blank">официальная документация</a>, <a href="https://github.com/anthropics/anthropic-cookbook" target="_blank">cookbook</a>, <a href="https://anthropic.com/news" target="_blank">блог Anthropic</a>, <a href="https://github.com/anthropics/courses" target="_blank">курсы Anthropic</a>, материалы практиков (<a href="https://www.youtube.com/@AndrejKarpathy" target="_blank">Karpathy</a>, <a href="https://simonwillison.net" target="_blank">Simon Willison</a>, <a href="https://magazine.sebastianraschka.com" target="_blank">Sebastian Raschka</a>).'
     },
     projects: {
+      title: "Мини-проекты «За 1 час»",
+      icon: "🛠",
+      theme: "projects",
       hero: "Рабочие пет-проекты, каждый делается за час от старта до результата. Не «учебные примеры», а вещи, которые ты реально захочешь использовать в жизни. Практика после теории.",
       sources: 'Каждый проект — это применение знаний из главного курса. Идеально подходит когда ты прошёл уроки 6–8 и хочешь сразу попробовать.'
     },
     industry: {
+      title: "Темы под индустрии",
+      icon: "💼",
+      theme: "industry",
       hero: "ИИ-применения для конкретных профессий. Каждая ветка собрана с учётом реальных задач индустрии — без воды и без «вообще про ИИ».",
       sources: 'Если у тебя есть опыт в конкретной индустрии — буду благодарен за обратную связь и кейсы. Пиши в <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a>.'
     }
@@ -5709,38 +6335,26 @@ function renderTrackSection(trackId) {
   const meta = descriptions[trackId];
 
   let html = `
-    <h1>${track.title}</h1>
-    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem;">${track.subtitle}</p>
+    <h1>${meta.icon} ${meta.title}</h1>
+    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1.5rem;">${meta.hero}</p>
 
-    <div class="callout callout-info" style="margin: 1.5rem 0;">
-      <p style="margin: 0;">${meta.hero}</p>
+    <div class="stats-grid-v2">
+      ${statCard({ icon: '📚', label: 'Уроков', value: lessons.length, theme: meta.theme })}
+      ${statCard({ icon: '✓', label: 'Готово', value: written, theme: 'projects' })}
+      ${statCard({ icon: '🎯', label: 'Пройдено', value: done, theme: 'agents' })}
+      ${statCard({ icon: '⏱', label: 'Часов', value: '~' + hours, theme: 'industry' })}
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
-      <div class="stat-card"><span class="stat-num">${lessons.length}</span><span class="stat-label">всего уроков</span></div>
-      <div class="stat-card"><span class="stat-num">${written}</span><span class="stat-label">готово</span></div>
-      <div class="stat-card"><span class="stat-num">${done}</span><span class="stat-label">пройдено</span></div>
-      <div class="stat-card"><span class="stat-num">${pct}%</span><span class="stat-label">прогресс</span></div>
-    </div>
-
-    <h2>Уроки в ветке</h2>
-    <ul class="section-lessons-list">
+    <h2>Уроки в тропинке</h2>
+    <div class="lesson-cards-grid">
   `;
 
-  lessons.forEach((lesson, idx) => {
-    const completed = isCompleted(lesson.id);
-    html += `
-      <li class="${lesson.draft ? 'draft' : ''}" onclick="openLesson('${lesson.id}')">
-        <span class="num">${idx + 1}.</span>
-        <span class="title">${lesson.title}</span>
-        <span class="duration">${lesson.duration} мин</span>
-        <span class="status ${completed ? 'completed' : ''}">${completed ? '✓' : ''}</span>
-      </li>
-    `;
+  lessons.forEach(lesson => {
+    html += lessonCard(lesson);
   });
 
-  html += `</ul>
-    <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1.5rem;">${meta.sources}</p>
+  html += `</div>
+    <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 2rem; padding: 1rem 1.25rem; background: var(--bg-sidebar); border-radius: 12px;">${meta.sources}</p>
   `;
 
   document.getElementById('lesson-content').innerHTML = html;
@@ -6766,136 +7380,186 @@ function renderHome() {
   const written = allLessons().filter(l => l.content).length;
   const lastUpdate = CHANGELOG[0].date;
 
+  // Donut: прогресс по 4 фазам + 3 трекам
+  const donutSegments = [
+    { label: 'Фаза 1', value: LESSONS.filter(l => l.phase === 1 && isCompleted(l.id)).length, color: '#7c3aed' },
+    { label: 'Фаза 2', value: LESSONS.filter(l => l.phase === 2 && isCompleted(l.id)).length, color: '#a78bfa' },
+    { label: 'Фаза 3', value: LESSONS.filter(l => l.phase === 3 && isCompleted(l.id)).length, color: '#c4b5fd' },
+    { label: 'Фаза 4', value: LESSONS.filter(l => l.phase === 4 && isCompleted(l.id)).length, color: '#ddd6fe' },
+    { label: 'Тропинки', value: TRACK_LESSONS.filter(l => isCompleted(l.id)).length, color: '#16a34a' },
+  ];
+
+  // Continue learning — 3 ближайших готовых, не пройденных урока
+  const continueLessons = allLessons()
+    .filter(l => l.content && !isCompleted(l.id))
+    .slice(0, 3);
+
+  const continueSection = continueLessons.length === 0 ? '' : `
+    <div class="home-aside-section">
+      <h3>Продолжить обучение</h3>
+      <div class="continue-learning">
+        ${continueLessons.map((l, i) => continueCard(l, [10, 30, 50][i] || 0)).join('')}
+      </div>
+    </div>
+  `;
+
+  // Если что-то пройдено — donut, иначе показать «начать»
+  const hasProgress = donutSegments.some(s => s.value > 0);
+
   document.getElementById('lesson-content').innerHTML = `
-    <div class="hero">
+    <div class="hero-v2">
       <h1>Путь в ИИ через Claude и open-source — на русском</h1>
       <p class="tagline">
         Бесплатный практический курс. От первых промптов до создания агентов и обучения нейросетей.
         Без воды, с реальным кодом, в темпе который ты выбираешь сам.
       </p>
-      <div class="hero-cta">
-        <button class="btn-primary" onclick="openLesson(1)">Начать с Урока 1 →</button>
-        <button class="btn-secondary" onclick="openStaticPage('about')">Что внутри</button>
+      <div class="hero-cta-v2">
+        <button class="btn-primary-v2" onclick="openLesson(1)">${hasProgress ? 'Продолжить курс' : 'Начать с Урока 1'} →</button>
+        <button class="btn-secondary-v2" onclick="openStaticPage('about')">Что внутри</button>
       </div>
       <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1.5rem;">
-        Курс собирает и постоянно обновляет <strong>Руслан Маджитов</strong> · Telegram: <a href="https://t.me/madzhitov" target="_blank" style="color: var(--accent);">@madzhitov</a>
+        Курс собирает и постоянно обновляет <strong>Руслан Маджитов</strong> · Telegram: <a href="https://t.me/madzhitov" target="_blank" style="color: var(--accent); font-weight: 600;">@madzhitov</a>
       </p>
     </div>
 
-    <div class="welcome-stats">
-      <div class="stat-card"><span class="stat-num">${total}</span><span class="stat-label">уроков</span></div>
-      <div class="stat-card"><span class="stat-num">${written}</span><span class="stat-label">готово сейчас</span></div>
-      <div class="stat-card"><span class="stat-num">~150</span><span class="stat-label">часов обучения</span></div>
-      <div class="stat-card"><span class="stat-num">${done}</span><span class="stat-label">пройдено вами</span></div>
+    <div class="stats-grid-v2">
+      ${statCard({ icon: '📚', label: 'Уроков всего', value: total, theme: 'prompts' })}
+      ${statCard({ icon: '✓', label: 'Готово сейчас', value: written, theme: 'projects' })}
+      ${statCard({ icon: '🎯', label: 'Пройдено вами', value: done, theme: 'claude' })}
+      ${statCard({ icon: '⏱', label: 'Часов изучения', value: '~150', theme: 'industry' })}
     </div>
 
-    <h2>Что ты получишь</h2>
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🎯</div>
-        <h3>Один последовательный путь</h3>
-        <p>Не «10 разных курсов» — один маршрут от пользователя ChatGPT до уровня инженера.</p>
+    <div class="home-grid">
+      <div>
+        ${hasProgress ? `
+          <h2 style="border-top: none; padding-top: 0; margin-top: 0;">Твой прогресс</h2>
+          ${donutChart(donutSegments, done, 'пройдено')}
+        ` : ''}
+
+        <h2 ${hasProgress ? '' : 'style="border-top: none; padding-top: 0; margin-top: 0;"'}>Структура курса</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.25rem;">Главный путь — 4 фазы, 72 урока по порядку. Параллельные тропинки — углублённые серии, в которые можно нырять параллельно.</p>
+
+        <div class="lesson-cards-grid">
+          <div class="lesson-card-v2" onclick="openSection('main')">
+            <div class="lesson-card-thumb theme-fundamentals">📚</div>
+            <div class="lesson-card-body">
+              <span class="cat-tag cat-t-fundamentals">ГЛАВНЫЙ ПУТЬ</span>
+              <h3>72 урока в 4 фазах</h3>
+              <div class="lesson-card-meta">
+                <span>Пользователь → Инженер</span>
+                <span class="badge badge-ongoing">${LESSONS.filter(l => isCompleted(l.id)).length}/${LESSONS.length}</span>
+              </div>
+            </div>
+          </div>
+          <div class="lesson-card-v2" onclick="openSection('claude')">
+            <div class="lesson-card-thumb theme-claude">🟣</div>
+            <div class="lesson-card-body">
+              <span class="cat-tag cat-t-claude">ТРОПИНКА</span>
+              <h3>Claude Deep Dive</h3>
+              <div class="lesson-card-meta">
+                <span>Artifacts, MCP, Computer Use</span>
+                <span class="badge badge-ongoing">${TRACK_LESSONS.filter(l => l.track === 'claude' && l.content).length}/${TRACK_LESSONS.filter(l => l.track === 'claude').length}</span>
+              </div>
+            </div>
+          </div>
+          <div class="lesson-card-v2" onclick="openSection('projects')">
+            <div class="lesson-card-thumb theme-projects">🛠</div>
+            <div class="lesson-card-body">
+              <span class="cat-tag cat-t-projects">ТРОПИНКА</span>
+              <h3>Мини-проекты «За 1 час»</h3>
+              <div class="lesson-card-meta">
+                <span>TG-бот, RAG, голос</span>
+                <span class="badge badge-ongoing">${TRACK_LESSONS.filter(l => l.track === 'projects' && l.content).length}/${TRACK_LESSONS.filter(l => l.track === 'projects').length}</span>
+              </div>
+            </div>
+          </div>
+          <div class="lesson-card-v2" onclick="openSection('industry')">
+            <div class="lesson-card-thumb theme-industry">💼</div>
+            <div class="lesson-card-body">
+              <span class="cat-tag cat-t-industry">ТРОПИНКА</span>
+              <h3>Темы под индустрии</h3>
+              <div class="lesson-card-meta">
+                <span>Юристы, маркетинг, HR</span>
+                <span class="badge badge-draft">Скоро</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2>Что ты получишь</h2>
+        <div class="lesson-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+          <div class="lesson-card-v2" style="cursor: default;">
+            <div class="lesson-card-thumb theme-prompts">🎯</div>
+            <div class="lesson-card-body">
+              <h3>Один последовательный путь</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Не «10 разных курсов» — один маршрут от пользователя ChatGPT до уровня инженера.</p>
+            </div>
+          </div>
+          <div class="lesson-card-v2" style="cursor: default;">
+            <div class="lesson-card-thumb theme-claude">🟣</div>
+            <div class="lesson-card-body">
+              <h3>Глубоко про Claude</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Artifacts, Projects, MCP, Computer Use, Claude Code — самая детальная серия на русском.</p>
+            </div>
+          </div>
+          <div class="lesson-card-v2" style="cursor: default;">
+            <div class="lesson-card-thumb theme-projects">🛠</div>
+            <div class="lesson-card-body">
+              <h3>Реальная практика</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Telegram-бот, RAG над заметками, голосовой ассистент — каждый pet-проект делается за час.</p>
+            </div>
+          </div>
+          <div class="lesson-card-v2" style="cursor: default;">
+            <div class="lesson-card-thumb theme-fundamentals">💯</div>
+            <div class="lesson-card-body">
+              <h3>Полностью бесплатно</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Никаких подписок и платных уровней. MIT-лицензия — можно использовать в своих программах.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="email-signup">
+          <h3>📬 Не пропусти новые уроки</h3>
+          <p>Раз в неделю присылаю короткое письмо: что вышло, что в индустрии произошло, какие новые модели появились.</p>
+          <form class="email-form" onsubmit="subscribeEmail(event)">
+            <input type="email" name="email" placeholder="ты@email.ru" required>
+            <button type="submit">Подписаться</button>
+          </form>
+        </div>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">🟣</div>
-        <h3>Глубоко про Claude</h3>
-        <p>Отдельная ветка про Anthropic Claude — Artifacts, Projects, MCP, Computer Use, Claude Code.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🛠</div>
-        <h3>Мини-проекты «За 1 час»</h3>
-        <p>Telegram-бот, RAG над заметками, голосовой ассистент — каждый делается за час.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">💼</div>
-        <h3>Темы под твою индустрию</h3>
-        <p>Юристы, маркетологи, HR, разработчики, финансы — отдельные ветки с релевантными кейсами.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">💯</div>
-        <h3>Полностью бесплатно</h3>
-        <p>Никаких подписок и платных уровней. MIT-лицензия — можно использовать в своих программах.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🇷🇺</div>
-        <h3>На русском, для русского контекста</h3>
-        <p>С учётом российских реалий: альтернативы OpenAI, налоги, регуляция, локальные модели.</p>
-      </div>
+
+      <aside class="home-aside">
+        ${continueSection}
+
+        <div class="home-aside-section">
+          <h3>Источники</h3>
+          <div class="continue-learning">
+            <div class="continue-card" onclick="openStaticPage('resources')" style="background: var(--bg-card);">
+              <div class="continue-icon" style="background: var(--cat-claude); color: var(--cat-claude-text);">📚</div>
+              <div class="continue-info">
+                <div class="continue-title">Anthropic, Karpathy, Willison</div>
+                <div class="continue-meta">Полный список →</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="home-aside-section">
+          <h3>Свежее</h3>
+          <div class="continue-learning">
+            <div class="continue-card" onclick="openStaticPage('changelog')" style="background: var(--bg-card);">
+              <div class="continue-icon" style="background: var(--cat-projects); color: var(--cat-projects-text);">📰</div>
+              <div class="continue-info">
+                <div class="continue-title">Что нового</div>
+                <div class="continue-meta">${CHANGELOG[0].date} · обновление</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
     </div>
 
-    <h2>Две параллельные плоскости обучения</h2>
-    <p style="margin-bottom: 1.5rem;">У этого курса две оси. <strong>Главный путь</strong> — последовательное углубление от пользователя до инженера. <strong>Параллельные тропинки</strong> — отдельные ветки, в которые можно нырять параллельно с главным путём или вместо части основного маршрута.</p>
-
-    <div class="feature-grid" style="grid-template-columns: 1fr 1fr;">
-      <div class="feature-card" style="border-left: 4px solid var(--accent);">
-        <div class="feature-icon">📚</div>
-        <h3>Главный путь — 4 фазы · 72 урока</h3>
-        <p style="margin-bottom: 0.75rem;">Последовательный маршрут от первых промптов до уровня инженера. Идти по порядку.</p>
-        <ul style="margin-left: 1rem; font-size: 0.9rem; color: var(--text-muted);">
-          <li>🟢 Фаза 1. Пользователь (12 уроков)</li>
-          <li>🔵 Фаза 2. Строитель (18 уроков)</li>
-          <li>🟣 Фаза 3. Практик (20 уроков)</li>
-          <li>🟠 Фаза 4. Инженер (22 урока)</li>
-        </ul>
-      </div>
-
-      <div class="feature-card" style="border-left: 4px solid var(--success);">
-        <div class="feature-icon">🌟</div>
-        <h3>Параллельные тропинки</h3>
-        <p style="margin-bottom: 0.75rem;">Углублённые серии по темам, которых нет в главном пути. Идти параллельно или вместо части основы.</p>
-        <ul style="margin-left: 1rem; font-size: 0.9rem; color: var(--text-muted);">
-          <li>🟣 <strong>Claude Deep Dive</strong> (8 уроков) — Artifacts, Projects, MCP, Computer Use, Claude Code</li>
-          <li>🛠 <strong>Мини-проекты «За 1 час»</strong> (5 проектов) — TG-бот, RAG, голосовой ассистент</li>
-          <li>💼 <strong>Темы под индустрии</strong> (5 веток) — юристы, маркетинг, HR, разработчики, финансы</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="callout callout-info" style="margin-top: 2rem;">
-      <strong>📚 Тропинка про Claude — самая активно растущая.</strong> Я (Руслан) сам строю на Claude, поэтому здесь будет глубже, чем где-либо в русскоязычном пространстве. Источники для ветки: <a href="https://docs.claude.com" target="_blank">официальная документация</a>, <a href="https://github.com/anthropics/anthropic-cookbook" target="_blank">cookbook</a>, <a href="https://anthropic.com/news" target="_blank">блог Anthropic</a>, <a href="https://github.com/anthropics/courses" target="_blank">официальные курсы</a>, плюс материалы практиков — <a href="https://www.youtube.com/@AndrejKarpathy" target="_blank">Karpathy</a>, <a href="https://simonwillison.net" target="_blank">Simon Willison</a>, <a href="https://magazine.sebastianraschka.com" target="_blank">Sebastian Raschka</a>. <a href="#resources" onclick="openStaticPage('resources'); return false;">Полный список источников</a>.
-    </div>
-
-    <h2>Как это устроено</h2>
-    <p>Каждый урок — самодостаточный мини-учебник, ~50 минут чтения + 60 минут практики. Внутри:</p>
-    <ul>
-      <li><strong>Зачем тебе этот урок</strong> — мотивация и что узнаешь.</li>
-      <li><strong>Глубокая теория</strong> с примерами и историей, а не «понятия в трёх словах».</li>
-      <li><strong>Рабочий код</strong> — копируй, запускай, получай результат.</li>
-      <li><strong>Тонкости и подводные камни</strong> — то что в туториалах обычно умалчивается.</li>
-      <li><strong>Практика</strong> — упражнения с понятным результатом.</li>
-      <li><strong>Самопроверка</strong> — 10 вопросов с разбором ответов.</li>
-    </ul>
-
-    <div class="email-signup">
-      <h3>📬 Не пропусти новые уроки</h3>
-      <p>Раз в неделю присылаю короткое письмо: что вышло, что в индустрии произошло, какие новые модели появились. Без спама.</p>
-      <form class="email-form" onsubmit="subscribeEmail(event)">
-        <input type="email" name="email" placeholder="ты@email.ru" required>
-        <button type="submit">Подписаться</button>
-      </form>
-    </div>
-
-    <h2>Кому подойдёт</h2>
-    <ul>
-      <li>Активным пользователям ChatGPT/Claude, которые хотят выйти на новый уровень.</li>
-      <li>Разработчикам, которые хотят встроить ИИ в свои продукты.</li>
-      <li>Менеджерам и аналитикам, которым нужно понимать, что возможно с ИИ сегодня.</li>
-      <li>Студентам и тем, кто меняет карьеру в ИИ-сферу.</li>
-      <li>Людям из конкретных индустрий — есть отдельные ветки.</li>
-    </ul>
-
-    <h2>Откуда контент</h2>
-    <p>Базой служат четыре открытых курса Microsoft (MIT-лицензия) — тысячи часов работы их команды. Я переработал материал в один последовательный путь, дополнил недостающим (Claude, актуальные модели 2026, российский контекст), и добавил то, что в их курсах нет: параллельные тропинки, мини-проекты, темы под индустрии.</p>
-    <p>Источники для ветки про Claude: официальная документация <a href="https://docs.claude.com" target="_blank">docs.claude.com</a>, <a href="https://github.com/anthropics/anthropic-cookbook" target="_blank">cookbook</a>, <a href="https://anthropic.com/news" target="_blank">блог Anthropic</a>, <a href="https://github.com/anthropics/courses" target="_blank">официальные курсы</a>.</p>
-
-    <div style="text-align: center; margin: 3rem 0; padding: 2rem; background: var(--bg-sidebar); border-radius: 12px;">
-      <h2 style="margin-top: 0;">Готов начать?</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Не торопись. Один урок — это не строчка-указатель, а полноценное занятие.</p>
-      <button class="btn-primary" onclick="openLesson(1)">К Уроку 1 →</button>
-      <button class="btn-secondary" onclick="openStaticPage('howto')" style="margin-left: 0.5rem;">Сначала почитать «Как заниматься»</button>
-    </div>
-
-    <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-top: 2rem;">
+    <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-top: 3rem;">
       Курс активно обновляется · Последнее обновление: ${lastUpdate} · ${written}/${total} уроков готово
     </p>
   `;
