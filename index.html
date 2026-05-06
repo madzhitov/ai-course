@@ -20,6 +20,12 @@
 <meta name="twitter:description" content="72 урока по ИИ на русском. От промптов до агентов и нейросетей.">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🤖%3C/text%3E%3C/svg%3E">
+
+<!-- GoatCounter Analytics — замени YOURSITE на свой домен после регистрации на goatcounter.com -->
+<!-- Инструкция: 1) Зайди на goatcounter.com → Sign up → выбери поддомен (например, aicourse). -->
+<!-- 2) Замени строку ниже: data-goatcounter="https://AICOURSE.goatcounter.com/count" -->
+<!-- 3) Дашборд будет на https://AICOURSE.goatcounter.com -->
+<script data-goatcounter="https://YOURSITE.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <style>
 :root {
   --bg: #ffffff;
@@ -72,6 +78,83 @@ body {
   min-height: 100vh;
   font-size: 16px;
   transition: background 0.2s, color 0.2s;
+  padding-top: 52px;
+}
+
+.top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 52px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 1.25rem;
+  z-index: 200;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  backdrop-filter: blur(8px);
+}
+
+.top-nav-logo {
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-right: 1rem;
+  white-space: nowrap;
+}
+
+.top-nav-logo:hover { color: var(--accent); }
+
+.top-nav-links {
+  display: flex;
+  gap: 0.25rem;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.top-nav-links a, .top-nav-right a {
+  color: var(--text);
+  text-decoration: none;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.top-nav-links a:hover, .top-nav-right a:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.top-nav-links a.section-active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.top-nav-right {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.top-nav-right .tg-link {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.top-nav-right .tg-link:hover { background: var(--accent); color: white; }
+
+@media (max-width: 768px) {
+  .top-nav { font-size: 0.82rem; padding: 0 0.5rem; gap: 0.25rem; }
+  .top-nav-logo { margin-right: 0.5rem; }
+  .top-nav-links a, .top-nav-right a { padding: 0.3rem 0.5rem; }
+  .top-nav-right .tg-link { font-size: 0.8rem; }
 }
 
 .sidebar {
@@ -82,9 +165,104 @@ body {
   padding: 1.5rem 1rem;
   overflow-y: auto;
   position: fixed;
-  top: 0; left: 0; bottom: 0;
+  top: 52px; left: 0; bottom: 0;
   z-index: 100;
 }
+
+.section-card {
+  display: block;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  background: var(--bg-sidebar);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.15s;
+  cursor: pointer;
+}
+
+.section-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.section-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.section-card h3 { margin: 0; }
+.section-card .progress-mini {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.section-card .progress-bar {
+  margin-top: 0.75rem;
+  height: 4px;
+}
+
+.section-lessons-list {
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0;
+}
+
+.section-lessons-list li {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.section-lessons-list li:hover { background: var(--bg-sidebar); }
+.section-lessons-list li:last-child { border-bottom: none; }
+
+.section-lessons-list .num {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  width: 30px;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.section-lessons-list .title { flex: 1; }
+.section-lessons-list .duration {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.section-lessons-list .status {
+  width: 20px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.section-lessons-list .completed { color: var(--success); }
+.section-lessons-list li.draft { opacity: 0.5; }
+.section-lessons-list li.draft .title::after {
+  content: ' ✏️';
+  font-size: 0.75rem;
+}
+
+.admin-stat {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-stat:last-child { border: none; }
+.admin-stat .label { color: var(--text-muted); }
+.admin-stat .value { font-weight: 600; }
 
 .sidebar-header {
   margin-bottom: 1.5rem;
@@ -752,6 +930,23 @@ main {
 </style>
 </head>
 <body>
+
+<header class="top-nav">
+  <a href="#home" class="top-nav-logo" onclick="openStaticPage('home'); return false;">
+    🤖 <span>AI Курс</span>
+  </a>
+  <nav class="top-nav-links">
+    <a href="#section-main" data-section="main" onclick="openSection('main'); return false;">Главный курс</a>
+    <a href="#section-claude" data-section="claude" onclick="openSection('claude'); return false;">Claude</a>
+    <a href="#section-projects" data-section="projects" onclick="openSection('projects'); return false;">Проекты</a>
+    <a href="#section-industry" data-section="industry" onclick="openSection('industry'); return false;">Индустрии</a>
+  </nav>
+  <div class="top-nav-right">
+    <a href="#resources" onclick="openStaticPage('resources'); return false;">Источники</a>
+    <a href="#changelog" onclick="openStaticPage('changelog'); return false;">Что нового</a>
+    <a href="https://t.me/madzhitov" target="_blank" class="tg-link">@madzhitov</a>
+  </div>
+</header>
 
 <aside class="sidebar">
   <div class="sidebar-header">
@@ -5086,6 +5281,7 @@ function toggleCompleted(id) {
     delete progress[id];
   } else {
     progress[id] = true;
+    trackEvent(`lesson-complete-${id}`, `Lesson completed: ${id}`);
   }
   saveProgress();
   renderLesson(currentLessonId);
@@ -5241,9 +5437,18 @@ function renderFooter() {
 function openLesson(id) {
   currentLessonId = id;
   setActiveStaticLink(null);
+  // подсветка top-nav по типу урока
+  const lesson = findLesson(id);
+  if (lesson) {
+    if (typeof id === 'number') setActiveTopNav('main');
+    else if (lesson.track === 'claude') setActiveTopNav('claude');
+    else if (lesson.track === 'projects') setActiveTopNav('projects');
+    else if (lesson.track === 'industry') setActiveTopNav('industry');
+  }
   renderLesson(id);
   history.replaceState(null, '', `#lesson-${id}`);
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  trackEvent(`lesson-open-${id}`, `Lesson opened: ${id}`);
   buildNav();
 }
 
@@ -5303,19 +5508,365 @@ function renderLesson(id) {
   container.innerHTML = body + actions;
 }
 
+// ============================================================
+// АНАЛИТИКА — GoatCounter custom events + локальный лог
+// ============================================================
+
+function trackEvent(eventName, eventTitle = null) {
+  // GoatCounter custom event (если подключен)
+  try {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({
+        path: eventName,
+        title: eventTitle || eventName,
+        event: true
+      });
+    }
+  } catch (e) { /* silent */ }
+
+  // Локальный fallback — в localStorage для админки
+  try {
+    const events = JSON.parse(localStorage.getItem('events') || '[]');
+    events.push({ name: eventName, ts: Date.now() });
+    if (events.length > 500) events.splice(0, events.length - 500);
+    localStorage.setItem('events', JSON.stringify(events));
+  } catch (e) { /* silent */ }
+}
+
 function setActiveStaticLink(name) {
   document.querySelectorAll('.lesson-link.static-link').forEach(l => {
     l.classList.toggle('active', l.dataset.static === name);
   });
 }
 
+function setActiveTopNav(section) {
+  document.querySelectorAll('.top-nav-links a').forEach(a => {
+    a.classList.toggle('section-active', a.dataset.section === section);
+  });
+}
+
+// ============================================================
+// СЕКЦИИ — overview-страницы для каждой ветки
+// ============================================================
+
+function openSection(sectionId) {
+  currentLessonId = null;
+  setActiveStaticLink(null);
+  setActiveTopNav(sectionId);
+  history.replaceState(null, '', `#section-${sectionId}`);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  trackEvent(`section-${sectionId}`, `Section: ${sectionId}`);
+  buildNav();
+
+  if (sectionId === 'main') renderMainSection();
+  else if (sectionId === 'claude') renderTrackSection('claude');
+  else if (sectionId === 'projects') renderTrackSection('projects');
+  else if (sectionId === 'industry') renderTrackSection('industry');
+}
+
+function renderMainSection() {
+  const total = LESSONS.length;
+  const done = LESSONS.filter(l => isCompleted(l.id)).length;
+  const written = LESSONS.filter(l => l.content).length;
+
+  let html = `
+    <h1>📚 Главный курс — путь от пользователя к разработчику</h1>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">
+      Последовательный маршрут из <strong>72 уроков</strong> в 4 фазах. Идти по порядку.
+      Готово сейчас: <strong>${written}/${total}</strong>. Пройдено вами: <strong>${done}/${total}</strong>.
+    </p>
+  `;
+
+  PHASES.forEach(phase => {
+    const phaseLessons = LESSONS.filter(l => l.phase === phase.id);
+    const phaseCompleted = phaseLessons.filter(l => isCompleted(l.id)).length;
+    const phaseWritten = phaseLessons.filter(l => l.content).length;
+    const pct = phaseLessons.length ? (phaseCompleted / phaseLessons.length * 100).toFixed(0) : 0;
+
+    const firstWritten = phaseLessons.find(l => l.content);
+    const firstUnfinished = phaseLessons.find(l => l.content && !isCompleted(l.id));
+    const targetLesson = firstUnfinished || firstWritten || phaseLessons[0];
+
+    html += `
+      <div class="section-card" onclick="openLesson(${targetLesson.id})">
+        <div class="section-card-header">
+          <h3>${phase.title}</h3>
+          <div class="progress-mini">${phaseCompleted}/${phaseLessons.length} · ${phaseWritten} готово</div>
+        </div>
+        <p style="color: var(--text-muted); margin: 0.25rem 0 0;">${phase.subtitle}</p>
+        <div class="progress-bar"><div class="progress-bar-fill" style="width: ${pct}%"></div></div>
+      </div>
+    `;
+  });
+
+  // Список всех уроков
+  html += '<h2 style="margin-top: 2.5rem;">Все уроки главного пути</h2><ul class="section-lessons-list">';
+  LESSONS.forEach(lesson => {
+    const completed = isCompleted(lesson.id);
+    html += `
+      <li class="${lesson.draft ? 'draft' : ''}" onclick="openLesson(${lesson.id})">
+        <span class="num">${lesson.id}.</span>
+        <span class="title">${lesson.title}</span>
+        <span class="duration">${lesson.duration} мин</span>
+        <span class="status ${completed ? 'completed' : ''}">${completed ? '✓' : ''}</span>
+      </li>
+    `;
+  });
+  html += '</ul>';
+
+  document.getElementById('lesson-content').innerHTML = html;
+}
+
+function renderTrackSection(trackId) {
+  const track = TRACKS.find(t => t.id === trackId);
+  const lessons = TRACK_LESSONS.filter(l => l.track === trackId);
+  const done = lessons.filter(l => isCompleted(l.id)).length;
+  const written = lessons.filter(l => l.content).length;
+  const pct = lessons.length ? (done / lessons.length * 100).toFixed(0) : 0;
+
+  const descriptions = {
+    claude: {
+      hero: "Самая активно растущая ветка курса. Глубокое погружение в Claude как платформу: уникальные фичи, рабочие паттерны, практические кейсы. Идти можно параллельно с главным курсом или вместо него — если работаешь именно с Claude.",
+      sources: 'Источники: <a href="https://docs.claude.com" target="_blank">официальная документация</a>, <a href="https://github.com/anthropics/anthropic-cookbook" target="_blank">cookbook</a>, <a href="https://anthropic.com/news" target="_blank">блог Anthropic</a>, <a href="https://github.com/anthropics/courses" target="_blank">курсы Anthropic</a>, материалы практиков (<a href="https://www.youtube.com/@AndrejKarpathy" target="_blank">Karpathy</a>, <a href="https://simonwillison.net" target="_blank">Simon Willison</a>, <a href="https://magazine.sebastianraschka.com" target="_blank">Sebastian Raschka</a>).'
+    },
+    projects: {
+      hero: "Рабочие пет-проекты, каждый делается за час от старта до результата. Не «учебные примеры», а вещи, которые ты реально захочешь использовать в жизни. Практика после теории.",
+      sources: 'Каждый проект — это применение знаний из главного курса. Идеально подходит когда ты прошёл уроки 6–8 и хочешь сразу попробовать.'
+    },
+    industry: {
+      hero: "ИИ-применения для конкретных профессий. Каждая ветка собрана с учётом реальных задач индустрии — без воды и без «вообще про ИИ».",
+      sources: 'Если у тебя есть опыт в конкретной индустрии — буду благодарен за обратную связь и кейсы. Пиши в <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a>.'
+    }
+  };
+
+  const meta = descriptions[trackId];
+
+  let html = `
+    <h1>${track.title}</h1>
+    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem;">${track.subtitle}</p>
+
+    <div class="callout callout-info" style="margin: 1.5rem 0;">
+      <p style="margin: 0;">${meta.hero}</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
+      <div class="stat-card"><span class="stat-num">${lessons.length}</span><span class="stat-label">всего уроков</span></div>
+      <div class="stat-card"><span class="stat-num">${written}</span><span class="stat-label">готово</span></div>
+      <div class="stat-card"><span class="stat-num">${done}</span><span class="stat-label">пройдено</span></div>
+      <div class="stat-card"><span class="stat-num">${pct}%</span><span class="stat-label">прогресс</span></div>
+    </div>
+
+    <h2>Уроки в ветке</h2>
+    <ul class="section-lessons-list">
+  `;
+
+  lessons.forEach((lesson, idx) => {
+    const completed = isCompleted(lesson.id);
+    html += `
+      <li class="${lesson.draft ? 'draft' : ''}" onclick="openLesson('${lesson.id}')">
+        <span class="num">${idx + 1}.</span>
+        <span class="title">${lesson.title}</span>
+        <span class="duration">${lesson.duration} мин</span>
+        <span class="status ${completed ? 'completed' : ''}">${completed ? '✓' : ''}</span>
+      </li>
+    `;
+  });
+
+  html += `</ul>
+    <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1.5rem;">${meta.sources}</p>
+  `;
+
+  document.getElementById('lesson-content').innerHTML = html;
+}
+
+// ============================================================
+// АДМИНКА — личная статистика для автора
+// ============================================================
+
+function renderAdmin() {
+  const all = allLessons();
+  const total = all.length;
+  const written = all.filter(l => l.content).length;
+  const completed = all.filter(l => isCompleted(l.id)).length;
+
+  const events = JSON.parse(localStorage.getItem('events') || '[]');
+  const subscribers = JSON.parse(localStorage.getItem('email_subscribers') || '[]');
+
+  // считаем события по уроку
+  const lessonOpens = {};
+  const lessonCompletes = {};
+  events.forEach(e => {
+    const openMatch = e.name.match(/^lesson-open-(.+)$/);
+    const completeMatch = e.name.match(/^lesson-complete-(.+)$/);
+    if (openMatch) lessonOpens[openMatch[1]] = (lessonOpens[openMatch[1]] || 0) + 1;
+    if (completeMatch) lessonCompletes[completeMatch[1]] = (lessonCompletes[completeMatch[1]] || 0) + 1;
+  });
+
+  // топ-5 открытых
+  const topOpens = Object.entries(lessonOpens)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
+
+  // прогресс по фазам
+  let phaseStats = '';
+  PHASES.forEach(phase => {
+    const phaseLessons = LESSONS.filter(l => l.phase === phase.id);
+    const phaseDone = phaseLessons.filter(l => isCompleted(l.id)).length;
+    const pct = phaseLessons.length ? (phaseDone / phaseLessons.length * 100).toFixed(0) : 0;
+    phaseStats += `
+      <div class="admin-stat">
+        <span class="label">${phase.title}</span>
+        <span class="value">${phaseDone}/${phaseLessons.length} · ${pct}%</span>
+      </div>
+    `;
+  });
+
+  // прогресс по трекам
+  let trackStats = '';
+  TRACKS.forEach(track => {
+    const trackLessons = TRACK_LESSONS.filter(l => l.track === track.id);
+    const trackDone = trackLessons.filter(l => isCompleted(l.id)).length;
+    const trackWritten = trackLessons.filter(l => l.content).length;
+    trackStats += `
+      <div class="admin-stat">
+        <span class="label">${track.title}</span>
+        <span class="value">${trackDone}/${trackLessons.length} · ${trackWritten} готово</span>
+      </div>
+    `;
+  });
+
+  // квизы
+  let quizStats = '';
+  PHASES.forEach(phase => {
+    const score = progress[`quiz_phase_${phase.id}`];
+    if (score !== undefined) {
+      quizStats += `
+        <div class="admin-stat">
+          <span class="label">Квиз Фазы ${phase.id}</span>
+          <span class="value">${score} правильных</span>
+        </div>
+      `;
+    }
+  });
+  if (!quizStats) quizStats = '<p style="color: var(--text-muted);">Ещё не проходил квизы.</p>';
+
+  // топ открытых уроков
+  let topOpenedHTML = '';
+  if (topOpens.length === 0) {
+    topOpenedHTML = '<p style="color: var(--text-muted);">События ещё не накопились — открывай уроки, считается локально.</p>';
+  } else {
+    topOpenedHTML = '<ul class="section-lessons-list">';
+    topOpens.forEach(([id, count]) => {
+      const l = findLesson(isNaN(parseInt(id)) ? id : parseInt(id));
+      const title = l ? l.title : `Урок ${id}`;
+      topOpenedHTML += `
+        <li><span class="num">${id}</span><span class="title">${title}</span><span class="duration">${count} раз</span></li>
+      `;
+    });
+    topOpenedHTML += '</ul>';
+  }
+
+  document.getElementById('lesson-content').innerHTML = `
+    <h1>📊 Админка</h1>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">
+      Личная статистика. Что видно тут — только в этом браузере.
+      Глобальная статистика — на дашборде GoatCounter (когда настроишь).
+    </p>
+
+    <div class="callout callout-info">
+      <strong>📈 Глобальная аналитика:</strong>
+      <a href="https://AICOURSE.goatcounter.com" target="_blank">Дашборд GoatCounter</a>
+      (замени AICOURSE на свой поддомен после регистрации). Там видны все посетители, страницы, страны, устройства.
+    </div>
+
+    <h2>Общий прогресс</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1rem 0 2rem;">
+      <div class="stat-card"><span class="stat-num">${total}</span><span class="stat-label">уроков</span></div>
+      <div class="stat-card"><span class="stat-num">${written}</span><span class="stat-label">готово</span></div>
+      <div class="stat-card"><span class="stat-num">${completed}</span><span class="stat-label">пройдено</span></div>
+      <div class="stat-card"><span class="stat-num">${subscribers.length}</span><span class="stat-label">подписок (локально)</span></div>
+    </div>
+
+    <h2>По фазам</h2>
+    <div class="quiz-card">${phaseStats}</div>
+
+    <h2>По спецветкам</h2>
+    <div class="quiz-card">${trackStats}</div>
+
+    <h2>Квизы</h2>
+    <div class="quiz-card">${quizStats}</div>
+
+    <h2>Топ открытых уроков (локально)</h2>
+    <div class="quiz-card">${topOpenedHTML}</div>
+
+    <h2>Email-подписчики (локально)</h2>
+    <div class="quiz-card">
+      ${subscribers.length === 0 ? '<p style="color: var(--text-muted);">Пока никто не подписался.</p>' :
+        '<p>' + subscribers.map(e => `<code>${e}</code>`).join(', ') + '</p>'}
+    </div>
+
+    <div class="callout callout-warning" style="margin-top: 2rem;">
+      <h3>⚠️ Как настроить настоящую аналитику</h3>
+      <ol>
+        <li>Зайди на <a href="https://www.goatcounter.com" target="_blank">goatcounter.com</a> → Sign up.</li>
+        <li>Выбери поддомен (например, <code>aicourse</code>).</li>
+        <li>В файле <code>index.html</code> найди строку с <code>YOURSITE.goatcounter.com</code> и замени <code>YOURSITE</code> на свой поддомен.</li>
+        <li>Запушь обновление в GitHub. Через минуту начнут собираться данные.</li>
+        <li>Дашборд: <code>https://AICOURSE.goatcounter.com</code> — там все события и переходы.</li>
+      </ol>
+      <p>Бесплатно до 200 000 просмотров/мес. Без cookies. Без баннера согласия.</p>
+    </div>
+
+    <div style="margin-top: 2rem;">
+      <button class="nav-btn" onclick="exportData()">📥 Экспорт всех локальных данных в JSON</button>
+      <button class="nav-btn" onclick="resetAllData()" style="margin-left: 0.5rem; color: var(--danger); border-color: var(--danger);">🗑 Сбросить весь локальный прогресс</button>
+    </div>
+  `;
+}
+
+function exportData() {
+  const data = {
+    progress,
+    events: JSON.parse(localStorage.getItem('events') || '[]'),
+    subscribers: JSON.parse(localStorage.getItem('email_subscribers') || '[]'),
+    quiz_states: {},
+    exported_at: new Date().toISOString()
+  };
+  // соберём состояния квизов
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('quiz_phase_')) {
+      data.quiz_states[key] = JSON.parse(localStorage.getItem(key));
+    }
+  }
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `ai-course-data-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function resetAllData() {
+  if (!confirm('Точно сбросить весь прогресс? Это нельзя отменить.')) return;
+  Object.keys(localStorage).forEach(k => {
+    if (k.startsWith('quiz_phase_') || ['ai-course-progress', 'events', 'email_subscribers'].includes(k)) {
+      localStorage.removeItem(k);
+    }
+  });
+  progress = {};
+  location.reload();
+}
+
 function openStaticPage(name) {
   currentLessonId = null;
   setActiveStaticLink(name);
+  setActiveTopNav(null);
   buildNav();
   setActiveStaticLink(name);
   history.replaceState(null, '', `#${name}`);
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  trackEvent(`page-${name}`, `Static page: ${name}`);
 
   if (name === 'home') renderHome();
   else if (name === 'about') renderAbout();
@@ -5323,6 +5874,7 @@ function openStaticPage(name) {
   else if (name === 'faq') renderFAQ();
   else if (name === 'changelog') renderChangelog();
   else if (name === 'resources') renderResources();
+  else if (name === 'admin') renderAdmin();
 }
 
 function renderResources() {
@@ -6233,6 +6785,7 @@ updateProgressUI();
 const hashMatch = window.location.hash.match(/lesson-(\d+)/);
 const trackHash = window.location.hash.match(/lesson-([cpi]\d+)/);
 const quizHash = window.location.hash.match(/quiz-(\d+)/);
+const sectionHash = window.location.hash.match(/section-(main|claude|projects|industry)/);
 const staticHash = window.location.hash.replace('#', '');
 if (hashMatch) {
   openLesson(parseInt(hashMatch[1]));
@@ -6240,11 +6793,19 @@ if (hashMatch) {
   openLesson(trackHash[1]);
 } else if (quizHash) {
   openQuiz(parseInt(quizHash[1]));
-} else if (['home', 'about', 'howto', 'faq', 'changelog', 'resources'].includes(staticHash)) {
+} else if (sectionHash) {
+  openSection(sectionHash[1]);
+} else if (['home', 'about', 'howto', 'faq', 'changelog', 'resources', 'admin'].includes(staticHash)) {
   openStaticPage(staticHash);
 } else {
-  // Все по умолчанию открывают новый Home (он умеет показать прогресс)
+  // По умолчанию — Home
   openStaticPage('home');
+}
+
+// Трекинг первого посещения (welcome event)
+if (!localStorage.getItem('first_visit')) {
+  localStorage.setItem('first_visit', new Date().toISOString());
+  trackEvent('first-visit', 'First visit');
 }
 
 // Keyboard shortcuts
