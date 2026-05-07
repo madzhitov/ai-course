@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Курс — от пользователя к разработчику ИИ за 72 урока</title>
-<meta name="description" content="Бесплатный курс по искусственному интеллекту на русском. 72 урока: от промптов до создания агентов и обучения нейросетей. Основан на курсах Microsoft.">
+<title>Понятный курс ИИ на русском. Бесплатно</title>
+<meta name="description" content="Понятный курс по искусственному интеллекту на русском. Бесплатно. 72 урока: от промптов до создания агентов и обучения нейросетей.">
 <meta name="keywords" content="ИИ, AI, искусственный интеллект, нейросети, ChatGPT, LLM, машинное обучение, промпт-инжиниринг, агенты, курс, обучение, бесплатно, на русском">
-<meta name="author" content="AI Course">
+<meta name="author" content="Руслан Маджитов">
 
 <!-- Open Graph / соцсети -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="AI Курс — от пользователя к разработчику ИИ">
-<meta property="og:description" content="72 урока по искусственному интеллекту на русском. Бесплатно. От промптов до создания агентов.">
+<meta property="og:title" content="Понятный курс ИИ на русском. Бесплатно">
+<meta property="og:description" content="72 урока: от промптов до создания агентов и обучения нейросетей. Глубокая ветка про Claude. Без воды, с реальным кодом.">
 <meta property="og:locale" content="ru_RU">
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AI Курс — от пользователя к разработчику ИИ">
-<meta name="twitter:description" content="72 урока по ИИ на русском. От промптов до агентов и нейросетей.">
+<meta name="twitter:title" content="Понятный курс ИИ на русском. Бесплатно">
+<meta name="twitter:description" content="72 урока: от промптов до агентов и нейросетей. Глубокая ветка про Claude.">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🤖%3C/text%3E%3C/svg%3E">
 
@@ -1875,7 +1875,7 @@ main {
     <span id="theme-label">Тёмная тема</span>
   </button>
 
-  <input type="text" class="search-box" placeholder="Поиск по урокам..." oninput="filterLessons(this.value)">
+  <input type="text" class="search-box" placeholder="Поиск по урокам..." oninput="filterLessons(this.value)" onkeydown="if(event.key==='Escape'){this.value=''; filterLessons('');}">
 
   <div class="global-progress">
     <div class="global-progress-label">
@@ -8160,7 +8160,7 @@ function renderHome() {
 
   document.getElementById('lesson-content').innerHTML = `
     <div class="hero-v2">
-      <h1>Путь в ИИ через Claude и open-source — на русском</h1>
+      <h1>Понятный курс ИИ на русском. Бесплатно</h1>
       <p class="tagline">
         Бесплатный практический курс. От первых промптов до создания агентов и обучения нейросетей.
         Без воды, с реальным кодом, в темпе который ты выбираешь сам.
@@ -8634,9 +8634,24 @@ function renderWelcome() {
 
 function filterLessons(query) {
   const q = query.toLowerCase().trim();
+
+  // 1. Фильтруем уроки по data-title; статичные ссылки оставляем как есть
   document.querySelectorAll('.lesson-link').forEach(link => {
-    const matches = !q || link.dataset.title.includes(q);
+    if (link.classList.contains('static-link')) {
+      link.style.display = '';     // "Главная", "О курсе", "FAQ" и т.п.
+      return;
+    }
+    const title = (link.dataset.title || '').toLowerCase();
+    const matches = !q || title.includes(q);
     link.style.display = matches ? '' : 'none';
+  });
+
+  // 2. Скрываем заголовки фаз/треков без видимых уроков
+  document.querySelectorAll('#lesson-nav .phase, #track-nav .phase').forEach(phase => {
+    const lessons = phase.querySelectorAll('.lesson-link:not(.static-link)');
+    if (lessons.length === 0) return;
+    const anyVisible = Array.from(lessons).some(l => l.style.display !== 'none');
+    phase.style.display = (q && !anyVisible) ? 'none' : '';
   });
 }
 
