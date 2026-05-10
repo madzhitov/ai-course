@@ -1933,7 +1933,7 @@ main {
     <span class="live-dot"></span>
     <span class="update-banner-text">
       <strong>Курс активно обновляется.</strong>
-      Готово <span id="banner-progress">8</span> из 72 уроков · Следующее обновление: <span id="banner-next">скоро</span>
+      Готово <span id="banner-progress">16</span> из <span id="banner-total">90</span> уроков · Последнее обновление: <span id="banner-next">сегодня</span>
     </span>
     <a href="#changelog" onclick="openStaticPage('changelog'); return false;">Что нового →</a>
   </div>
@@ -7431,9 +7431,19 @@ function updateProgressUI() {
   document.getElementById('global-progress-text').textContent = `${done} / ${total}`;
   document.getElementById('global-progress-bar').style.width = `${(done / total * 100).toFixed(1)}%`;
 
-  // Бейдж сверху
+  // Бейдж сверху — реальные цифры
   const banner = document.getElementById('banner-progress');
-  if (banner) banner.textContent = LESSONS.filter(l => l.content).length;
+  if (banner) banner.textContent = allLessons().filter(l => l.content).length;
+  const bannerTotal = document.getElementById('banner-total');
+  if (bannerTotal) bannerTotal.textContent = allLessons().length;
+  // Дата последнего обновления — берём из CHANGELOG
+  const bannerNext = document.getElementById('banner-next');
+  if (bannerNext && typeof CHANGELOG !== 'undefined' && CHANGELOG.length > 0) {
+    const latest = CHANGELOG[0].date;
+    const today = new Date().toISOString().slice(0,10);
+    const isToday = latest === today;
+    bannerNext.textContent = isToday ? `сегодня (${latest})` : latest;
+  }
 
   buildNav();
   renderFooter();
@@ -8785,6 +8795,48 @@ function resetQuiz(phaseId) {
 
 const CHANGELOG = [
   {
+    date: "2026-05-07",
+    title: "Уроки c3 (MCP) и c4 (Computer Use) в Claude Deep Dive",
+    tag: "new",
+    items: [
+      "Урок c3 — Model Context Protocol: «USB-C для ИИ», как подключать серверы к Claude Desktop, как написать свой MCP-сервер за 30 минут",
+      "Урок c4 — Computer Use: Claude управляет компьютером через скриншоты, мышь и клавиатуру. Запуск reference Docker за 15 минут",
+      "Это первые подробные материалы по MCP и Computer Use на русском"
+    ]
+  },
+  {
+    date: "2026-05-07",
+    title: "Новый главный заголовок и фикс поиска по сайдбару",
+    tag: "update",
+    items: [
+      "Главный заголовок: «Понятный курс ИИ на русском. Бесплатно»",
+      "Обновлены все meta-теги (title, OG, Twitter card) под новое название",
+      "Исправлен поиск в сайдбаре: попробуй «claude», «rag», «бот» — фильтрация теперь работает",
+      "Escape в поле поиска — мгновенно сбрасывает фильтр"
+    ]
+  },
+  {
+    date: "2026-05-07",
+    title: "Полная починка мобильной вёрстки",
+    tag: "fix",
+    items: [
+      "Перешли на mobile-first архитектуру: десктопные правила теперь в @media (min-width: 769px)",
+      "Исправлен flex-баг с min-width: 0 — контент больше не вылезает за viewport",
+      "Drawer-pattern для сайдбара: гамбургер-меню с blur-фоном, авто-закрытие после клика, Escape для закрытия",
+      "Tap-targets 44–48px по спеке iOS HIG",
+      "Брейкпоинты: 768px, 414px, 380px"
+    ]
+  },
+  {
+    date: "2026-05-06",
+    title: "Уроки 13 и 14: Function Calling и RAG",
+    tag: "new",
+    items: [
+      "Урок 13 — Function Calling: ИИ вызывает твои функции (стартует Фазу 2 «Строитель»)",
+      "Урок 14 — RAG и векторные БД: даём модели документы как контекст для ответа"
+    ]
+  },
+  {
     date: "2026-05-06",
     title: "Большой апгрейд структуры",
     tag: "update",
@@ -8870,9 +8922,10 @@ function renderChangelog() {
       <h3>📅 Ближайшие планы</h3>
       <ul>
         <li>Уроки 9–12 — генерация картинок, low-code, UX, безопасность (закрывает Фазу 1)</li>
-        <li>Уроки c3–c8 — продолжение Claude Deep Dive: MCP, Computer Use, Claude Code, Prompt caching</li>
+        <li>Уроки c5–c8 — продолжение Claude Deep Dive: Claude Code, Prompt caching, Constitutional AI, сравнение моделей</li>
+        <li>Уроки 15–18 — продолжение Фазы 2: жизненный цикл GenAI, ИИ-агенты, фреймворки, паттерны</li>
         <li>Проекты p3–p5 — анализатор писем, голосовой ассистент, авто-ревьюер PR</li>
-        <li>Старт Фазы 2 — function calling, RAG, агенты</li>
+        <li>Tone of voice ревью существующих уроков</li>
       </ul>
     </div>
   `;
