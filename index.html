@@ -4,20 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Понятный курс ИИ на русском. Бесплатно</title>
-<meta name="description" content="Понятный курс по искусственному интеллекту на русском. Бесплатно. 72 урока: от промптов до создания агентов и обучения нейросетей.">
+<meta name="description" content="Понятный курс по искусственному интеллекту на русском. Бесплатно. 95 уроков: от промптов до создания агентов и обучения нейросетей.">
 <meta name="keywords" content="ИИ, AI, искусственный интеллект, нейросети, ChatGPT, LLM, машинное обучение, промпт-инжиниринг, агенты, курс, обучение, бесплатно, на русском">
 <meta name="author" content="Руслан Маджитов">
 
 <!-- Open Graph / соцсети -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Понятный курс ИИ на русском. Бесплатно">
-<meta property="og:description" content="72 урока: от промптов до создания агентов и обучения нейросетей. Глубокая ветка про Claude. Без воды, с реальным кодом.">
+<meta property="og:description" content="95 уроков: от промптов до создания агентов и обучения нейросетей. Глубокая ветка про Claude. Без воды, с реальным кодом.">
 <meta property="og:locale" content="ru_RU">
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Понятный курс ИИ на русском. Бесплатно">
-<meta name="twitter:description" content="72 урока: от промптов до агентов и нейросетей. Глубокая ветка про Claude.">
+<meta name="twitter:description" content="95 уроков: от промптов до агентов и нейросетей. Глубокая ветка про Claude.">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🤖%3C/text%3E%3C/svg%3E">
 
@@ -1343,21 +1343,29 @@ main {
   main {
     margin-left: 300px;
     padding: 2.5rem 3.5rem 4rem;
-    max-width: 1080px;
+    max-width: 1200px;
   }
 }
 
 .update-banner {
-  background: linear-gradient(135deg, var(--accent-soft), transparent);
-  border: 1px solid var(--accent);
-  border-radius: 8px;
-  padding: 0.6rem 1rem;
-  margin-bottom: 2rem;
-  font-size: 0.88rem;
+  background: var(--accent-soft);
+  border-bottom: 1px solid var(--border, rgba(0,0,0,0.06));
+  border-radius: 0;
+  padding: 0.35rem 1rem;
+  margin: -1rem -1rem 1rem;
+  font-size: 0.78rem;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
   flex-wrap: wrap;
+}
+@media (min-width: 769px) {
+  .update-banner {
+    margin: -2.5rem -3.5rem 1.5rem;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 }
 
 .update-banner .live-dot {
@@ -1395,6 +1403,106 @@ main {
   font-weight: 800;
   letter-spacing: -0.02em;
 }
+
+/* Tone down emoji at start of headings — they should support, not dominate */
+.lesson-content h1 .h-emoji,
+.lesson-content h2 .h-emoji,
+.lesson-content h3 .h-emoji { font-size: 0.7em; opacity: 0.85; margin-right: 0.15em; }
+
+.resume-banner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, var(--accent, #7c3aed), #6d28d9);
+  color: white;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.25);
+}
+.resume-banner:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(124, 58, 237, 0.35); }
+.resume-banner-icon {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.05rem;
+  flex-shrink: 0;
+}
+.resume-banner-body { flex: 1; min-width: 0; }
+.resume-banner-eyebrow {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.85;
+  margin-bottom: 0.15rem;
+}
+.resume-banner-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.resume-banner-meta { font-size: 0.82rem; opacity: 0.85; margin-top: 0.2rem; }
+.resume-banner-cta { font-size: 1.5rem; opacity: 0.9; flex-shrink: 0; }
+
+.about-progress-block {
+  background: var(--bg-card, #f8f7ff);
+  border: 1px solid var(--border-soft, rgba(124,58,237,0.15));
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin: 0 0 1.5rem;
+}
+.about-progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.95rem;
+  margin-bottom: 0.4rem;
+}
+.about-progress-block .progress-bar {
+  height: 8px;
+  background: var(--border-soft, rgba(124,58,237,0.15));
+  border-radius: 4px;
+  overflow: hidden;
+}
+.about-progress-block .progress-bar-fill {
+  height: 100%;
+  background: var(--accent, #7c3aed);
+  transition: width 0.4s ease;
+}
+
+.lesson-time-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.5rem 0.85rem;
+  background: var(--bg-card, #f8f7ff);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin: 0.5rem 0 1.5rem;
+}
+.lesson-time-meta strong { color: var(--text, #1a1a1a); font-weight: 600; }
+.lesson-time-meta .dot { width: 4px; height: 4px; background: currentColor; border-radius: 50%; opacity: 0.4; }
+
+.phase-header { cursor: pointer; user-select: none; }
+.phase-header .phase-toggle {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  margin-right: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.phase.collapsed .phase-toggle { transform: rotate(-90deg); }
+.phase.collapsed .phase-lessons { display: none; }
 
 .lesson-content h2 {
   font-size: 1.6rem;
@@ -1508,6 +1616,15 @@ main {
 .callout-success { background: var(--success-soft); border-color: var(--success); }
 .callout-warning { background: var(--warning-soft); border-color: var(--warning); }
 .callout-danger { background: var(--danger-soft); border-color: var(--danger); }
+
+/* Links inside callouts and key UI elements — ensure dark-mode contrast */
+.callout a, .resume-banner a, .about-progress-block a {
+  color: var(--accent);
+  text-decoration: underline;
+  font-weight: 600;
+}
+[data-theme="dark"] .callout a { color: #c4b5fd; }
+[data-theme="dark"] .callout-info { background: rgba(124, 58, 237, 0.18); }
 
 .lesson-actions {
   display: flex;
@@ -1875,7 +1992,7 @@ main {
     <span id="theme-label">Тёмная тема</span>
   </button>
 
-  <input type="text" class="search-box" placeholder="Поиск по урокам..." oninput="filterLessons(this.value)" onkeydown="if(event.key==='Escape'){this.value=''; filterLessons('');}">
+  <input type="text" class="search-box" placeholder="Поиск по урокам  (⌘K)" oninput="filterLessons(this.value)" onkeydown="if(event.key==='Escape'){this.value=''; filterLessons(''); this.blur();}">
 
   <div class="global-progress">
     <div class="global-progress-label">
@@ -6402,7 +6519,7 @@ registerLesson("c2", `
 
 В knowledge:
 - progress.md — мой журнал и планы по курсу.
-- structure.md — структура 72 уроков.
+- structure.md — структура 95 уроков.
 - lesson-template.md — шаблон формата урока.
 - audience.md — описание целевой аудитории.
 
@@ -8482,15 +8599,21 @@ function buildNav() {
   `;
   nav.appendChild(mainHeader);
 
+  // Определяем активную фазу (содержит текущий урок)
+  const currentLesson = currentLessonId ? findLesson(currentLessonId) : null;
+  const activePhaseId = (currentLesson && typeof currentLesson.id === 'number') ? currentLesson.phase : null;
+
   PHASES.forEach(phase => {
     const phaseLessons = LESSONS.filter(l => l.phase === phase.id);
     const completedCount = phaseLessons.filter(l => isCompleted(l.id)).length;
     const phaseEl = document.createElement('div');
-    phaseEl.className = 'phase';
+    // По умолчанию свёрнуты неактивные фазы (кроме первой при первом заходе)
+    const shouldCollapse = activePhaseId !== null ? (phase.id !== activePhaseId) : (phase.id !== 1);
+    phaseEl.className = 'phase' + (shouldCollapse ? ' collapsed' : '');
     phaseEl.innerHTML = `
-      <div class="phase-header">
+      <div class="phase-header" onclick="this.parentElement.classList.toggle('collapsed')">
         <div>
-          <div class="phase-title">${phase.title}</div>
+          <div class="phase-title"><span class="phase-toggle">▼</span>${phase.title}</div>
           <div class="phase-progress-mini">${phase.subtitle}</div>
         </div>
         <div class="phase-progress-mini">${completedCount}/${phaseLessons.length}</div>
@@ -8546,15 +8669,18 @@ function buildNav() {
   `;
   trackNav.appendChild(tracksHeader);
 
+  const activeTrack = (currentLesson && currentLesson.track) ? currentLesson.track : null;
+
   TRACKS.forEach(track => {
     const trackLessons = TRACK_LESSONS.filter(l => l.track === track.id);
     const completedCount = trackLessons.filter(l => isCompleted(l.id)).length;
     const trackEl = document.createElement('div');
-    trackEl.className = 'phase';
+    const shouldCollapse = activeTrack ? (track.id !== activeTrack) : true;
+    trackEl.className = 'phase' + (shouldCollapse ? ' collapsed' : '');
     trackEl.innerHTML = `
-      <div class="phase-header">
+      <div class="phase-header" onclick="this.parentElement.classList.toggle('collapsed')">
         <div>
-          <div class="phase-title">${track.title}</div>
+          <div class="phase-title"><span class="phase-toggle">▼</span>${track.title}</div>
           <div class="phase-progress-mini">${track.subtitle}</div>
         </div>
         <div class="phase-progress-mini">${completedCount}/${trackLessons.length}</div>
@@ -8663,21 +8789,37 @@ function renderLesson(id) {
     nextLesson = idx < trackList.length - 1 ? trackList[idx + 1] : null;
   }
 
+  const writtenIds = LESSONS.filter(l => l.content).map(l => l.id).filter(x => typeof x === 'number').sort((a,b) => a-b);
+  const availableRange = writtenIds.length
+    ? (writtenIds.length === 1 ? `Урок ${writtenIds[0]}` : `Уроки ${writtenIds[0]}–${writtenIds[writtenIds.length-1]}`)
+    : '';
+
+  const courseUpdated = (typeof CHANGELOG !== 'undefined' && CHANGELOG[0]) ? fmtDate(CHANGELOG[0].date) : '';
+  const timeMeta = `
+    <div class="lesson-time-meta">
+      <span>⏱ <strong>~${lesson.duration} мин</strong> чтения</span>
+      <span class="dot"></span>
+      <span>📝 <strong>30–60 мин</strong> практики</span>
+      ${courseUpdated ? `<span class="dot"></span><span>🔄 обновлено: <strong>${courseUpdated}</strong></span>` : ''}
+    </div>
+  `;
+
   let body;
   if (lesson.content) {
-    body = lesson.content;
+    // Inject time meta after the first H1 of lesson content
+    body = lesson.content.replace(/(<h1[^>]*>[\s\S]*?<\/h1>)/, `$1${timeMeta}`);
   } else {
     body = `
       <h1>Урок ${lesson.id}. ${lesson.title}</h1>
+      ${timeMeta}
       <div class="lesson-meta">
         <span><strong>Фаза:</strong> ${lesson.phase}</span>
-        <span><strong>Время:</strong> ~${lesson.duration} минут</span>
         <span><strong>Статус:</strong> черновик</span>
       </div>
       <div class="draft-notice">
         <h3>✏️ Этот урок ещё пишется</h3>
-        <p>Подробное содержание появится в одной из следующих итераций. Когда будет готово — урок автоматически появится тут.</p>
-        <p>Уже готовы уроки 1–3 в Фазе 1. Возвращайся за обновлениями.</p>
+        <p>Подробное содержание появится в одной из следующих итераций. Темп: ~2 урока в день, в порядке очереди.</p>
+        ${availableRange ? `<p>Сейчас доступно из главного пути: <strong>${availableRange}</strong>. Спецветки тоже частично готовы — смотри <a href="#changelog" onclick="openStaticPage('changelog'); return false;">«Что нового»</a>.</p>` : ''}
       </div>
     `;
   }
@@ -8911,7 +9053,7 @@ function renderMainSection() {
   let html = `
     <h1>Главный путь</h1>
     <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 1.05rem;">
-      Последовательный маршрут от пользователя ChatGPT до уровня ML-инженера. 4 фазы, 72 урока.
+      Последовательный маршрут от пользователя ChatGPT до уровня ML-инженера. 4 фазы, ${LESSONS.length} уроков.
     </p>
 
     <div class="stats-grid-v2">
@@ -10144,6 +10286,11 @@ function renderHome() {
     .filter(l => l.content && !isCompleted(l.id))
     .slice(0, 3);
 
+  // «Продолжить с того места» — ближайший непройденный готовый урок
+  // (для пользователя который уже прошёл хотя бы один)
+  const nextLesson = allLessons().find(l => l.content && !isCompleted(l.id));
+  const anyCompleted = allLessons().some(l => isCompleted(l.id));
+
   const continueSection = continueLessons.length === 0 ? '' : `
     <div class="home-aside-section">
       <h3>Продолжить обучение</h3>
@@ -10153,10 +10300,24 @@ function renderHome() {
     </div>
   `;
 
+  // Большой баннер «Продолжить» в верху главной, если есть прогресс
+  const resumeBanner = (anyCompleted && nextLesson) ? `
+    <div class="resume-banner" onclick="openLesson(${typeof nextLesson.id === 'string' ? `'${nextLesson.id}'` : nextLesson.id})">
+      <div class="resume-banner-icon">▶</div>
+      <div class="resume-banner-body">
+        <div class="resume-banner-eyebrow">Продолжить с того места</div>
+        <div class="resume-banner-title">${typeof nextLesson.id === 'number' ? `Урок ${nextLesson.id}. ` : ''}${nextLesson.title}</div>
+        <div class="resume-banner-meta">~${nextLesson.duration} мин чтения</div>
+      </div>
+      <div class="resume-banner-cta">→</div>
+    </div>
+  ` : '';
+
   // Если что-то пройдено — donut, иначе показать «начать»
   const hasProgress = donutSegments.some(s => s.value > 0);
 
   document.getElementById('lesson-content').innerHTML = `
+    ${resumeBanner}
     <div class="hero-v2">
       <h1>Понятный курс ИИ на русском. Бесплатно</h1>
       <p class="tagline">
@@ -10187,14 +10348,14 @@ function renderHome() {
         ` : ''}
 
         <h2 ${hasProgress ? '' : 'style="border-top: none; padding-top: 0; margin-top: 0;"'}>Структура курса</h2>
-        <p style="color: var(--text-muted); margin-bottom: 1.25rem;">Главный путь — 4 фазы, 72 урока по порядку. Параллельные тропинки — углублённые серии, в которые можно нырять параллельно.</p>
+        <p style="color: var(--text-muted); margin-bottom: 1.25rem;">Главный путь — 4 фазы, ${LESSONS.length} уроков по порядку. Параллельные тропинки — углублённые серии, в которые можно нырять параллельно.</p>
 
         <div class="lesson-cards-grid">
           <div class="lesson-card-v2" onclick="openSection('main')">
             <div class="lesson-card-thumb theme-fundamentals">📚</div>
             <div class="lesson-card-body">
               <span class="cat-tag cat-t-fundamentals">ГЛАВНЫЙ ПУТЬ</span>
-              <h3>72 урока в 4 фазах</h3>
+              <h3>${LESSONS.length} уроков в 4 фазах</h3>
               <div class="lesson-card-meta">
                 <span>Пользователь → Инженер</span>
                 <span class="badge badge-ongoing">${LESSONS.filter(l => isCompleted(l.id)).length}/${LESSONS.length}</span>
@@ -10325,29 +10486,41 @@ function subscribeEmail(event) {
 }
 
 function renderAbout() {
-  const total = LESSONS.length;
-  const done = LESSONS.filter(l => isCompleted(l.id)).length;
-  const written = LESSONS.filter(l => l.content).length;
-  const totalDuration = LESSONS.reduce((s, l) => s + l.duration, 0);
-  const hours = Math.round(totalDuration / 60);
+  const all = allLessons();
+  const total = all.length;
+  const totalMain = LESSONS.length;
+  const totalTracks = TRACK_LESSONS.length;
+  const done = all.filter(l => isCompleted(l.id)).length;
+  const written = all.filter(l => l.content).length;
+  const writtenPct = Math.round(written / total * 100);
+  const donePct = total ? Math.round(done / total * 100) : 0;
 
   document.getElementById('lesson-content').innerHTML = `
-    <h1>📖 О курсе</h1>
+    <h1>О курсе</h1>
 
     <p style="font-size: 1.15rem; color: var(--text-muted); margin-bottom: 1.5rem;">
       Бесплатный курс по искусственному интеллекту на русском языке. Один последовательный путь от полного нуля до уровня инженера.
     </p>
 
+    <div class="about-progress-block">
+      <div class="about-progress-row">
+        <span><strong>${written}</strong> из ${total} уроков готово</span>
+        <span style="color: var(--text-muted);">${writtenPct}%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-bar-fill" style="width: ${writtenPct}%"></div></div>
+      <div class="about-progress-row" style="margin-top: 0.5rem;">
+        <span><strong>${done}</strong> из ${total} пройдено тобой</span>
+        <span style="color: var(--text-muted);">${donePct}%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-bar-fill" style="width: ${donePct}%; background: var(--accent-soft, #a78bfa);"></div></div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.75rem 0 0;">
+        ${totalMain} уроков в главном пути · ${totalTracks} в параллельных тропинках · 4 фазы
+      </p>
+    </div>
+
     <div class="callout callout-info" style="margin-bottom: 2rem;">
       Курс собирает и постоянно обновляет <strong>Руслан Маджитов</strong>. Делюсь практикой, которую сам прохожу — пишу про работу с Claude, агентов, ML-инжиниринг и интеграции в реальные продукты.
       Telegram для вопросов и предложений: <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a>.
-    </div>
-
-    <div class="welcome-stats">
-      <div class="stat-card"><span class="stat-num">${total}</span><span class="stat-label">уроков</span></div>
-      <div class="stat-card"><span class="stat-num">4</span><span class="stat-label">фазы</span></div>
-      <div class="stat-card"><span class="stat-num">~${hours}</span><span class="stat-label">часов чтения</span></div>
-      <div class="stat-card"><span class="stat-num">${done}/${total}</span><span class="stat-label">пройдено вами</span></div>
     </div>
 
     <h2>Для кого этот курс</h2>
@@ -10600,7 +10773,7 @@ function renderWelcome() {
   document.getElementById('lesson-content').innerHTML = `
     <div class="welcome">
       <h1>AI Курс</h1>
-      <p>От пользователя к разработчику. 72 урока в 4 фазах на основе курсов Microsoft.</p>
+      <p>От пользователя к разработчику. ${total} уроков в 4 фазах на основе курсов Microsoft.</p>
       <div class="welcome-stats">
         <div class="stat-card"><span class="stat-num">${total}</span><span class="stat-label">уроков всего</span></div>
         <div class="stat-card"><span class="stat-num">4</span><span class="stat-label">фазы</span></div>
@@ -10707,6 +10880,19 @@ if (!localStorage.getItem('first_visit')) {
 
 // Keyboard shortcuts
 document.addEventListener('keydown', e => {
+  // Cmd/Ctrl+K — focus search (works from anywhere)
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault();
+    const search = document.querySelector('.search-box');
+    if (search) {
+      if (window.innerWidth < 769 && !document.body.classList.contains('sidebar-open')) {
+        document.body.classList.add('sidebar-open');
+      }
+      search.focus();
+      search.select();
+    }
+    return;
+  }
   if (e.target.tagName === 'INPUT') return;
   if (e.key === 'Escape' && document.body.classList.contains('sidebar-open')) {
     closeSidebar();
