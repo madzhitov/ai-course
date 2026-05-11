@@ -1409,6 +1409,32 @@ main {
 .lesson-content h2 .h-emoji,
 .lesson-content h3 .h-emoji { font-size: 0.7em; opacity: 0.85; margin-right: 0.15em; }
 
+/* SVG diagrams inside lessons */
+.diagram {
+  margin: 1.75rem 0;
+  padding: 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft, rgba(124,58,237,0.12));
+  border-radius: 10px;
+  text-align: center;
+}
+.diagram svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  color: var(--text);
+}
+.diagram figcaption {
+  margin: 0.85rem auto 0;
+  max-width: 540px;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  font-style: italic;
+}
+[data-theme="dark"] .diagram { background: rgba(124, 58, 237, 0.08); border-color: rgba(167, 139, 250, 0.18); }
+
 .resume-banner {
   display: flex;
   align-items: center;
@@ -2310,6 +2336,47 @@ registerLesson(1, `
 <li><code>"Привет"</code> → <code>["При", "вет"]</code> — два токена.</li>
 <li><code>"программист"</code> → <code>["прог", "раммис", "т"]</code> — три токена.</li>
 </ul>
+
+<figure class="diagram">
+<svg viewBox="0 0 600 210" role="img" aria-label="Разбиение слов на токены">
+  <text x="20" y="38" font-size="14" fill="currentColor" opacity="0.75">"unbelievable" →</text>
+  <g transform="translate(160, 20)">
+    <rect x="0" y="0" width="46" height="32" rx="6" fill="#a78bfa"/>
+    <text x="23" y="22" text-anchor="middle" font-size="14" fill="#fff" font-weight="600">un</text>
+    <rect x="54" y="0" width="118" height="32" rx="6" fill="#7c3aed"/>
+    <text x="113" y="22" text-anchor="middle" font-size="14" fill="#fff" font-weight="600">believable</text>
+  </g>
+  <text x="350" y="38" font-size="13" fill="currentColor" opacity="0.6">2 токена</text>
+
+  <text x="20" y="98" font-size="14" fill="currentColor" opacity="0.75">"Привет" →</text>
+  <g transform="translate(160, 80)">
+    <rect x="0" y="0" width="58" height="32" rx="6" fill="#a78bfa"/>
+    <text x="29" y="22" text-anchor="middle" font-size="14" fill="#fff" font-weight="600">При</text>
+    <rect x="66" y="0" width="58" height="32" rx="6" fill="#7c3aed"/>
+    <text x="95" y="22" text-anchor="middle" font-size="14" fill="#fff" font-weight="600">вет</text>
+  </g>
+  <text x="350" y="98" font-size="13" fill="currentColor" opacity="0.6">2 токена · в русском «дороже»</text>
+
+  <text x="20" y="158" font-size="14" fill="currentColor" opacity="0.75">"GPT-4 is amazing" →</text>
+  <g transform="translate(160, 140)">
+    <rect x="0" y="0" width="28" height="32" rx="6" fill="#c4b5fd"/>
+    <text x="14" y="22" text-anchor="middle" font-size="14" fill="#3b1c7a" font-weight="600">G</text>
+    <rect x="33" y="0" width="36" height="32" rx="6" fill="#a78bfa"/>
+    <text x="51" y="22" text-anchor="middle" font-size="14" fill="#fff" font-weight="600">PT</text>
+    <rect x="74" y="0" width="22" height="32" rx="6" fill="#c4b5fd"/>
+    <text x="85" y="22" text-anchor="middle" font-size="14" fill="#3b1c7a" font-weight="600">-</text>
+    <rect x="101" y="0" width="26" height="32" rx="6" fill="#a78bfa"/>
+    <text x="114" y="22" text-anchor="middle" font-size="14" fill="#fff" font-weight="600">4</text>
+    <rect x="132" y="0" width="36" height="32" rx="6" fill="#7c3aed"/>
+    <text x="150" y="22" text-anchor="middle" font-size="14" fill="#fff" font-weight="600">is</text>
+    <rect x="173" y="0" width="78" height="32" rx="6" fill="#7c3aed"/>
+    <text x="212" y="22" text-anchor="middle" font-size="14" fill="#fff" font-weight="600">amazing</text>
+  </g>
+  <text x="430" y="158" font-size="13" fill="currentColor" opacity="0.6">6 токенов</text>
+</svg>
+<figcaption>Токен — атомарный кусочек текста для модели. Не буква, не слово, а что-то посередине: цифра, морфема, знак препинания, иногда целое слово.</figcaption>
+</figure>
+
 <p><strong>Почему это важно лично тебе:</strong></p>
 <ul>
 <li>Ты платишь за токены. Русский текст в 2–3 раза дороже английского при той же информации.</li>
@@ -2441,7 +2508,85 @@ registerLesson(1, `
 </ul>
 <p><strong>Lost in the middle:</strong> модель <strong>лучше всего помнит начало и конец</strong> контекста, и <strong>хуже середину</strong>. Размещай главное на краях.</p>
 
+<figure class="diagram">
+<svg viewBox="0 0 640 220" role="img" aria-label="Контекстное окно: lost in the middle">
+  <defs>
+    <linearGradient id="ctx-grad" x1="0" x2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="20%" stop-color="#a78bfa"/>
+      <stop offset="50%" stop-color="#ddd6fe"/>
+      <stop offset="80%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  <text x="320" y="22" font-size="13" fill="currentColor" font-weight="600" text-anchor="middle">Контекстное окно (128k–200k–1M токенов)</text>
+
+  <rect x="40" y="40" width="560" height="48" rx="8" fill="url(#ctx-grad)"/>
+  <text x="60" y="69" font-size="13" fill="#fff" font-weight="700">НАЧАЛО</text>
+  <text x="320" y="69" font-size="13" fill="#3b1c7a" font-weight="700" text-anchor="middle">СЕРЕДИНА</text>
+  <text x="580" y="69" font-size="13" fill="#fff" font-weight="700" text-anchor="end">КОНЕЦ</text>
+
+  <text x="320" y="115" font-size="12" fill="currentColor" opacity="0.65" text-anchor="middle">насколько хорошо модель помнит этот участок</text>
+
+  <path d="M 40 145 Q 110 138 170 152 Q 240 170 320 180 Q 400 170 470 152 Q 530 138 600 145" fill="none" stroke="#7c3aed" stroke-width="2.5"/>
+  <circle cx="40" cy="143" r="5" fill="#16a34a"/>
+  <circle cx="320" cy="180" r="6" fill="#dc2626"/>
+  <circle cx="600" cy="143" r="5" fill="#16a34a"/>
+
+  <text x="40" y="200" font-size="11" fill="#16a34a" font-weight="600">отлично</text>
+  <text x="320" y="200" font-size="12" fill="#dc2626" font-weight="700" text-anchor="middle">хуже всего</text>
+  <text x="600" y="200" font-size="11" fill="#16a34a" font-weight="600" text-anchor="end">отлично</text>
+</svg>
+<figcaption>Lost in the middle — модель помнит края контекста лучше, чем середину. Главные инструкции пиши в начале и конце промпта.</figcaption>
+</figure>
+
 <h3>Температура</h3>
+
+<figure class="diagram">
+<svg viewBox="0 0 720 240" role="img" aria-label="Температура и распределения вероятностей">
+  <g transform="translate(20, 30)">
+    <text x="100" y="0" text-anchor="middle" font-size="14" fill="currentColor" font-weight="700">T = 0  ·  детерминизм</text>
+    <text x="100" y="18" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.65">всегда самое вероятное</text>
+    <rect x="10" y="40" width="22" height="130" fill="#7c3aed"/>
+    <rect x="38" y="155" width="22" height="15" fill="#a78bfa" opacity="0.55"/>
+    <rect x="66" y="162" width="22" height="8" fill="#a78bfa" opacity="0.4"/>
+    <rect x="94" y="166" width="22" height="4" fill="#a78bfa" opacity="0.3"/>
+    <rect x="122" y="168" width="22" height="2" fill="#a78bfa" opacity="0.25"/>
+    <rect x="150" y="169" width="22" height="1" fill="#a78bfa" opacity="0.2"/>
+    <line x1="0" y1="170" x2="190" y2="170" stroke="currentColor" opacity="0.3"/>
+  </g>
+
+  <g transform="translate(260, 30)">
+    <text x="100" y="0" text-anchor="middle" font-size="14" fill="currentColor" font-weight="700">T = 0.7  ·  баланс</text>
+    <text x="100" y="18" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.65">чаще лучшее, иногда другое</text>
+    <rect x="10" y="55" width="22" height="115" fill="#7c3aed"/>
+    <rect x="38" y="85" width="22" height="85" fill="#a78bfa"/>
+    <rect x="66" y="115" width="22" height="55" fill="#a78bfa" opacity="0.75"/>
+    <rect x="94" y="135" width="22" height="35" fill="#a78bfa" opacity="0.6"/>
+    <rect x="122" y="150" width="22" height="20" fill="#a78bfa" opacity="0.45"/>
+    <rect x="150" y="160" width="22" height="10" fill="#a78bfa" opacity="0.35"/>
+    <line x1="0" y1="170" x2="190" y2="170" stroke="currentColor" opacity="0.3"/>
+  </g>
+
+  <g transform="translate(500, 30)">
+    <text x="100" y="0" text-anchor="middle" font-size="14" fill="currentColor" font-weight="700">T = 1.3  ·  хаос</text>
+    <text x="100" y="18" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.65">всё почти одинаково</text>
+    <rect x="10" y="100" width="22" height="70" fill="#a78bfa"/>
+    <rect x="38" y="95" width="22" height="75" fill="#a78bfa"/>
+    <rect x="66" y="108" width="22" height="62" fill="#a78bfa"/>
+    <rect x="94" y="98" width="22" height="72" fill="#a78bfa"/>
+    <rect x="122" y="103" width="22" height="67" fill="#a78bfa"/>
+    <rect x="150" y="110" width="22" height="60" fill="#a78bfa"/>
+    <line x1="0" y1="170" x2="190" y2="170" stroke="currentColor" opacity="0.3"/>
+  </g>
+
+  <text x="115" y="225" font-size="11" fill="currentColor" opacity="0.65" text-anchor="middle">токены-кандидаты →</text>
+  <text x="355" y="225" font-size="11" fill="currentColor" opacity="0.65" text-anchor="middle">токены-кандидаты →</text>
+  <text x="595" y="225" font-size="11" fill="currentColor" opacity="0.65" text-anchor="middle">токены-кандидаты →</text>
+</svg>
+<figcaption>Температура «сплющивает» распределение вероятностей. T=0 — модель всегда берёт лучший токен. T=1.3 — почти случайный выбор. Дефолт обычно 0.7.</figcaption>
+</figure>
+
 <table>
 <tr><th>Задача</th><th>Temperature</th><th>Зачем</th></tr>
 <tr><td>JSON, structured</td><td>0</td><td>Стабильность</td></tr>
