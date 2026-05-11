@@ -7442,7 +7442,7 @@ function updateProgressUI() {
     const latest = CHANGELOG[0].date;
     const today = new Date().toISOString().slice(0,10);
     const isToday = latest === today;
-    bannerNext.textContent = isToday ? `сегодня (${latest})` : latest;
+    bannerNext.textContent = isToday ? `сегодня (${fmtDate(latest)})` : fmtDate(latest);
   }
 
   buildNav();
@@ -8793,9 +8793,28 @@ function resetQuiz(phaseId) {
 // CHANGELOG
 // ============================================================
 
+// Форматирование даты для отображения: "2026-05-11" → "26.05.11"
+function fmtDate(isoDate) {
+  if (!isoDate || typeof isoDate !== 'string') return '';
+  const parts = isoDate.split('-');
+  if (parts.length !== 3) return isoDate;
+  return `${parts[0].slice(2)}.${parts[1]}.${parts[2]}`;
+}
+
 const CHANGELOG = [
   {
-    date: "2026-05-07",
+    date: "2026-05-11",
+    title: "Changelog со всеми последними обновлениями + автодата в баннере",
+    tag: "update",
+    items: [
+      "Раздел «Что нового» теперь обновляется при каждом коммите",
+      "Формат дат: ГГ.ММ.ДД",
+      "Баннер «Курс активно обновляется» подтягивает дату последнего апдейта автоматически",
+      "Счётчик «Готово N из M уроков» теперь учитывает и тропинки (всего 90, не 72)"
+    ]
+  },
+  {
+    date: "2026-05-10",
     title: "Уроки c3 (MCP) и c4 (Computer Use) в Claude Deep Dive",
     tag: "new",
     items: [
@@ -8816,7 +8835,7 @@ const CHANGELOG = [
     ]
   },
   {
-    date: "2026-05-07",
+    date: "2026-05-06",
     title: "Полная починка мобильной вёрстки",
     tag: "fix",
     items: [
@@ -8890,7 +8909,7 @@ function renderChangelog() {
   let html = `
     <h1>📰 Что нового</h1>
     <p style="color: var(--text-muted); margin-bottom: 2rem;">
-      Курс активно растёт. Последнее обновление: <strong>${CHANGELOG[0].date}</strong>.
+      Курс активно растёт. Последнее обновление: <strong>${fmtDate(CHANGELOG[0].date)}</strong>.
       Готово полных уроков: <strong>${written}</strong> из ${totalAll}.
     </p>
 
@@ -8908,7 +8927,7 @@ function renderChangelog() {
   CHANGELOG.forEach(entry => {
     html += `
       <div class="changelog-entry">
-        <div class="changelog-date">${entry.date}</div>
+        <div class="changelog-date">${fmtDate(entry.date)}</div>
         <h3><span class="tag tag-${entry.tag}">${entry.tag === 'new' ? 'Новое' : entry.tag === 'fix' ? 'Правка' : 'Апдейт'}</span>${entry.title}</h3>
         <ul>
           ${entry.items.map(i => `<li>${i}</li>`).join('')}
@@ -8941,7 +8960,7 @@ function renderHome() {
   const total = allLessons().length;
   const done = allLessons().filter(l => isCompleted(l.id)).length;
   const written = allLessons().filter(l => l.content).length;
-  const lastUpdate = CHANGELOG[0].date;
+  const lastUpdate = fmtDate(CHANGELOG[0].date);
 
   // Donut: прогресс по 4 фазам + 3 трекам
   const donutSegments = [
@@ -9114,7 +9133,7 @@ function renderHome() {
               <div class="continue-icon" style="background: var(--cat-projects); color: var(--cat-projects-text);">📰</div>
               <div class="continue-info">
                 <div class="continue-title">Что нового</div>
-                <div class="continue-meta">${CHANGELOG[0].date} · обновление</div>
+                <div class="continue-meta">${fmtDate(CHANGELOG[0].date)} · обновление</div>
               </div>
             </div>
           </div>
