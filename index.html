@@ -1346,6 +1346,12 @@ main {
     max-width: 1200px;
   }
 }
+/* Reserve space for sticky Alesha widget on desktop */
+@media (min-width: 1100px) {
+  body:has(.alesha-widget.is-lesson:not(.is-collapsed-desktop)) main {
+    padding-right: 420px;
+  }
+}
 
 .update-banner {
   background: var(--accent-soft);
@@ -1530,19 +1536,107 @@ main {
 }
 
 /* ============================================
-   Alesha — AI-тьютор виджет
+   Alesha — AI-тьютор виджет (sticky right-rail)
    ============================================ */
 .alesha-widget {
-  margin: 3rem 0 1.5rem;
+  display: none; /* hidden by default — shows only on lesson pages */
+  flex-direction: column;
   border-radius: 14px;
-  border: 1px solid var(--border-soft, rgba(124, 58, 237, 0.18));
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.04), rgba(236, 72, 153, 0.04));
+  border: 1px solid var(--border-soft, rgba(124, 58, 237, 0.2));
+  background: var(--bg, #fff);
+  box-shadow: 0 10px 40px rgba(124, 58, 237, 0.15);
   overflow: hidden;
+  z-index: 50;
 }
+.alesha-widget.is-lesson { display: flex; }
 [data-theme="dark"] .alesha-widget {
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(236, 72, 153, 0.08));
-  border-color: rgba(167, 139, 250, 0.2);
+  background: #18181b;
+  border-color: rgba(167, 139, 250, 0.25);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
 }
+
+/* DESKTOP: sticky right-rail */
+@media (min-width: 1100px) {
+  .alesha-widget.is-lesson {
+    position: fixed;
+    right: 24px;
+    top: 90px;
+    width: 360px;
+    max-height: calc(100vh - 130px);
+  }
+  .alesha-widget.is-collapsed-desktop {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    overflow: visible;
+    background: linear-gradient(135deg, var(--brand-accent), var(--brand-accent-2));
+    cursor: pointer;
+  }
+  .alesha-widget.is-collapsed-desktop > *:not(.alesha-collapse-icon) { display: none; }
+  .alesha-widget.is-collapsed-desktop .alesha-collapse-icon {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 100%;
+    color: #fff; font-weight: 800; font-size: 1.4rem;
+  }
+}
+
+/* MOBILE/TABLET: floating button + slide-up sheet */
+@media (max-width: 1099px) {
+  .alesha-widget.is-lesson {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    overflow: visible;
+    background: linear-gradient(135deg, var(--brand-accent), var(--brand-accent-2));
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+  }
+  .alesha-widget.is-lesson > *:not(.alesha-collapse-icon) { display: none; }
+  .alesha-widget .alesha-collapse-icon {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 100%;
+    color: #fff; font-weight: 800; font-size: 1.4rem;
+  }
+  .alesha-widget.is-open {
+    width: calc(100vw - 24px);
+    max-width: 420px;
+    height: calc(100vh - 80px);
+    max-height: 600px;
+    border-radius: 14px;
+    background: var(--bg, #fff);
+    cursor: default;
+    overflow: hidden;
+  }
+  .alesha-widget.is-open > *:not(.alesha-collapse-icon) { display: flex; }
+  .alesha-widget.is-open .alesha-collapse-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px; height: 28px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    font-size: 1rem;
+    z-index: 5;
+  }
+  [data-theme="dark"] .alesha-widget.is-open { background: #18181b; }
+}
+
+/* Collapse button on desktop — small minimize icon top-right of widget */
+.alesha-min-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.alesha-min-btn:hover { color: var(--accent); background: var(--bg-card); }
+@media (max-width: 1099px) { .alesha-min-btn { display: none; } }
 .alesha-header {
   display: flex;
   align-items: center;
@@ -1673,6 +1767,60 @@ main {
   color: var(--text-muted);
 }
 .alesha-disabled-note a { color: var(--accent); }
+
+/* Alesha announce banner on home */
+.alesha-announce {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.5rem 1.75rem;
+  margin: 2rem 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(236, 72, 153, 0.08));
+  border: 1px solid rgba(124, 58, 237, 0.2);
+}
+[data-theme="dark"] .alesha-announce {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.18), rgba(236, 72, 153, 0.12));
+  border-color: rgba(167, 139, 250, 0.3);
+}
+.alesha-announce .alesha-logo { flex-shrink: 0; }
+.alesha-announce-body { flex: 1; min-width: 0; }
+.alesha-announce-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--brand-accent-2);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.3rem;
+}
+.alesha-announce-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+.alesha-announce-text {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 0.85rem;
+}
+.alesha-announce-btn {
+  background: linear-gradient(135deg, var(--brand-accent), var(--brand-accent-2));
+  color: #fff;
+  border: none;
+  padding: 0.55rem 1.1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+.alesha-announce-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(124,58,237,0.3); }
+@media (max-width: 600px) {
+  .alesha-announce { flex-direction: column; align-items: flex-start; text-align: left; }
+}
 
 /* SVG diagrams inside lessons */
 .diagram {
@@ -2353,6 +2501,25 @@ main {
   <div class="lesson-content" id="lesson-content"></div>
   <footer class="site-footer" id="site-footer"></footer>
 </main>
+
+<!-- Alesha — persistent AI tutor widget -->
+<div class="alesha-widget" id="alesha-widget" data-lesson-title="" data-lesson-id="">
+  <div class="alesha-collapse-icon" onclick="aleshaToggle()">А</div>
+  <div class="alesha-header">
+    <span class="alesha-logo">А</span>
+    <div class="alesha-header-text">
+      <div class="alesha-header-title">Алёша</div>
+      <div class="alesha-header-sub">Спроси про урок — отвечу за 10 сек</div>
+    </div>
+    <button class="alesha-min-btn" onclick="aleshaToggle()" title="Свернуть">✕</button>
+  </div>
+  <div class="alesha-chat" id="alesha-chat"></div>
+  <div class="alesha-suggestions" id="alesha-suggestions"></div>
+  <div class="alesha-input">
+    <textarea id="alesha-input" placeholder="Спроси про этот урок..." rows="1"></textarea>
+    <button id="alesha-send" onclick="aleshaSend()">↑</button>
+  </div>
+</div>
 
 <script>
 // ============================================================
@@ -12327,28 +12494,7 @@ function renderLesson(id) {
     </div>
   `;
 
-  // Alesha widget — chat with AI tutor about this lesson
-  const aleshaWidget = `
-    <div class="alesha-widget" id="alesha-widget"
-         data-lesson-title="${(lesson.title || '').replace(/"/g, '&quot;')}"
-         data-lesson-id="${lesson.id}">
-      <div class="alesha-header">
-        <span class="alesha-logo">А</span>
-        <div class="alesha-header-text">
-          <div class="alesha-header-title">Спроси Алёшу про этот урок</div>
-          <div class="alesha-header-sub">AI-наставник. Ответит по теме урока за 10 секунд.</div>
-        </div>
-      </div>
-      <div class="alesha-chat" id="alesha-chat"></div>
-      <div class="alesha-suggestions" id="alesha-suggestions"></div>
-      <div class="alesha-input">
-        <textarea id="alesha-input" placeholder="Спроси про что угодно из этого урока..." rows="1"></textarea>
-        <button id="alesha-send" onclick="aleshaSend()">Отправить</button>
-      </div>
-    </div>
-  `;
-
-  container.innerHTML = body + aleshaWidget + actions;
+  container.innerHTML = body + actions;
 
   // Post-render enhancements
   enhanceCodeBlocks(container);
@@ -12392,41 +12538,73 @@ function aleshaGetLessonText() {
   return clone.innerText.trim();
 }
 
+let aleshaInputBound = false;
+
+function aleshaHide() {
+  const w = document.getElementById('alesha-widget');
+  if (w) w.classList.remove('is-lesson', 'is-open', 'is-collapsed-desktop');
+}
+
+function aleshaToggle() {
+  const w = document.getElementById('alesha-widget');
+  if (!w) return;
+  if (window.innerWidth >= 1100) {
+    w.classList.toggle('is-collapsed-desktop');
+  } else {
+    w.classList.toggle('is-open');
+  }
+}
+
 function initAlesha(lesson) {
   aleshaHistory = [];
+  const w = document.getElementById('alesha-widget');
   const chat = document.getElementById('alesha-chat');
   const sugg = document.getElementById('alesha-suggestions');
-  if (!chat) return;
+  if (!w || !chat) return;
+
+  // Show widget on lesson pages
+  w.classList.add('is-lesson');
+  w.classList.remove('is-collapsed-desktop', 'is-open');
+  w.dataset.lessonId = String(lesson.id);
+  w.dataset.lessonTitle = lesson.title || '';
+
+  // Reset chat
+  chat.innerHTML = '';
+  sugg.innerHTML = '';
 
   if (!ALESHA_API) {
     chat.innerHTML = `<div class="alesha-disabled-note">
-      AI-тьютор пока не подключён. Деплой worker (см. <code>worker/README.md</code>) и впиши URL в <code>ALESHA_API</code>.
-      <br><br>А пока — спроси в чате: <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a>
+      AI-тьютор не подключён. См. <code>alesha-vercel/README.md</code>.
     </div>`;
     document.querySelector('.alesha-input').style.display = 'none';
     return;
+  } else {
+    document.querySelector('.alesha-input').style.display = '';
   }
 
   // Greeting + 3 suggestions
   aleshaAddMsg('bot', `Привет! Я Алёша. Помогу разобраться с уроком «${lesson.title}». Спроси что угодно.`);
   const suggestions = [
-    'Объясни главную идею проще',
-    'Дай ещё один пример',
-    'Где это применяется на практике?'
+    'Объясни проще',
+    'Ещё пример',
+    'Где это на практике?'
   ];
   sugg.innerHTML = suggestions.map(s =>
     `<button class="alesha-suggestion" onclick="aleshaAsk('${s.replace(/'/g, "\\'")}')">${s}</button>`
   ).join('');
 
-  // Enter to send (Shift+Enter for newline)
-  const input = document.getElementById('alesha-input');
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); aleshaSend(); }
-  });
-  input.addEventListener('input', () => {
-    input.style.height = 'auto';
-    input.style.height = Math.min(140, input.scrollHeight) + 'px';
-  });
+  // Bind input handlers once
+  if (!aleshaInputBound) {
+    const input = document.getElementById('alesha-input');
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); aleshaSend(); }
+    });
+    input.addEventListener('input', () => {
+      input.style.height = 'auto';
+      input.style.height = Math.min(140, input.scrollHeight) + 'px';
+    });
+    aleshaInputBound = true;
+  }
 }
 
 function aleshaAddMsg(role, text) {
@@ -12718,6 +12896,7 @@ function setActiveTopNav(section) {
 
 function openSection(sectionId) {
   currentLessonId = null;
+  aleshaHide();
   setActiveStaticLink(null);
   setActiveTopNav(sectionId);
   closeSidebar();
@@ -13043,6 +13222,7 @@ function resetAllData() {
 
 function openStaticPage(name) {
   currentLessonId = null;
+  aleshaHide();
   setActiveStaticLink(name);
   setActiveTopNav(null);
   closeSidebar();
@@ -13439,6 +13619,7 @@ function filterGlossary(query) {
 
 function openGlossary(termId = null) {
   currentLessonId = null;
+  aleshaHide();
   setActiveStaticLink('glossary');
   setActiveTopNav(null);
   closeSidebar();
@@ -13653,6 +13834,7 @@ const QUIZZES = {
 
 function openQuiz(phaseId) {
   currentLessonId = null;
+  aleshaHide();
   setActiveStaticLink(null);
   closeSidebar();
   history.replaceState(null, '', `#quiz-${phaseId}`);
@@ -13789,6 +13971,31 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-05-12",
+    title: "🎉 Алёша — AI-наставник прямо в уроке",
+    tag: "new",
+    items: [
+      "На каждом уроке появился sticky-виджет «Алёша» — спрашиваешь что угодно по теме, получаешь ответ за 3–5 секунд",
+      "Алёша видит контекст конкретного урока и не уходит за его рамки",
+      "Бесплатно для тебя: оплачивает автор курса",
+      "На десктопе — справа от текста, не мешает читать. На мобилке — кнопка-«А» в углу, тап = чат",
+      "Привет, я Алёша. Заходи на любой урок и спроси что-нибудь — увидишь как это работает"
+    ]
+  },
+  {
+    date: "2026-05-12",
+    title: "Большое UX-обновление + бренд «Алёша»",
+    tag: "update",
+    items: [
+      "Курс получил имя и лицо — «Алёша · AI на русском, без боли»",
+      "Цветные плашки фаз: зелёная (Пользователь), синяя (Строитель), фиолетовая (Практик), оранжевая (Инженер)",
+      "Breadcrumbs в каждом уроке: «Главная › Фаза 1 › Урок N»",
+      "Кнопка «Копировать» на каждом блоке кода",
+      "Закрыты ветки: ✅ Фаза 1 (12 уроков), ✅ Claude Deep Dive (8), ✅ Мини-проекты (10), ✅ Индустрии (5)",
+      "Готово 41 из 95 уроков"
+    ]
+  },
   {
     date: "2026-05-11",
     title: "Уроки 15, 16, c5, c6 + расширили мини-проекты",
@@ -14005,6 +14212,22 @@ function renderHome() {
   // Если что-то пройдено — donut, иначе показать «начать»
   const hasProgress = donutSegments.some(s => s.value > 0);
 
+  // Алёша announcement banner
+  const aleshaBanner = `
+    <div class="alesha-announce">
+      <span class="alesha-logo lg">А</span>
+      <div class="alesha-announce-body">
+        <div class="alesha-announce-eyebrow">🎉 Новое</div>
+        <div class="alesha-announce-title">Алёша — AI-наставник прямо в уроке</div>
+        <div class="alesha-announce-text">
+          Спроси что угодно про конкретный урок — Алёша ответит за 5 секунд.
+          Понимает контекст, не галлюцинирует за рамками темы, бесплатно для тебя.
+        </div>
+        <button class="alesha-announce-btn" onclick="openLesson(1); setTimeout(()=>aleshaToggle(),500);">Попробовать →</button>
+      </div>
+    </div>
+  `;
+
   document.getElementById('lesson-content').innerHTML = `
     ${resumeBanner}
     <div class="hero-v2">
@@ -14021,6 +14244,8 @@ function renderHome() {
         Курс собирает и постоянно обновляет <strong>Руслан Маджитов</strong> · Telegram: <a href="https://t.me/madzhitov" target="_blank" style="color: var(--accent); font-weight: 600;">@madzhitov</a>
       </p>
     </div>
+
+    ${aleshaBanner}
 
     <div class="stats-grid-v2">
       ${statCard({ icon: '📚', label: 'Уроков всего', value: total, theme: 'prompts' })}
