@@ -1409,6 +1409,271 @@ main {
 .lesson-content h2 .h-emoji,
 .lesson-content h3 .h-emoji { font-size: 0.7em; opacity: 0.85; margin-right: 0.15em; }
 
+/* ============================================
+   Брендинг: Алёша
+   ============================================ */
+:root {
+  --brand-accent: #7c3aed;
+  --brand-accent-2: #ec4899;
+  --phase-1: #16a34a;   /* зелёный — Пользователь */
+  --phase-2: #2563eb;   /* синий — Строитель */
+  --phase-3: #9333ea;   /* фиолетовый — Практик */
+  --phase-4: #ea580c;   /* оранжевый — Инженер */
+  --phase-c: #db2777;   /* розовый — Claude */
+  --phase-p: #0891b2;   /* бирюзовый — Проекты */
+  --phase-i: #ca8a04;   /* жёлтый — Индустрии */
+}
+
+.alesha-logo {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-accent), var(--brand-accent-2));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #fff;
+  font-size: 1.1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+.alesha-logo.sm { width: 26px; height: 26px; font-size: 0.85rem; }
+.alesha-logo.lg { width: 56px; height: 56px; font-size: 1.6rem; }
+
+.top-nav-logo {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.55rem;
+}
+.top-nav-logo .alesha-logo { width: 28px; height: 28px; font-size: 0.95rem; }
+.top-nav-logo .brand-name { font-weight: 700; letter-spacing: -0.01em; }
+.top-nav-logo .brand-sub { color: var(--text-muted); font-weight: 400; font-size: 0.85rem; margin-left: 0.25rem; }
+
+/* ============================================
+   Breadcrumbs
+   ============================================ */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0 0 1rem;
+}
+.breadcrumbs a {
+  color: var(--text-muted);
+  text-decoration: none;
+  border-bottom: 1px dotted transparent;
+}
+.breadcrumbs a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.breadcrumbs .sep { opacity: 0.4; }
+.breadcrumbs .current { color: var(--text); font-weight: 500; }
+
+/* ============================================
+   Phase-coloured accents
+   ============================================ */
+.phase-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: #fff;
+}
+.phase-tag.p1 { background: var(--phase-1); }
+.phase-tag.p2 { background: var(--phase-2); }
+.phase-tag.p3 { background: var(--phase-3); }
+.phase-tag.p4 { background: var(--phase-4); }
+.phase-tag.pc { background: var(--phase-c); }
+.phase-tag.pp { background: var(--phase-p); }
+.phase-tag.pi { background: var(--phase-i); }
+
+.phase[data-phase="1"] .phase-title { color: var(--phase-1); }
+.phase[data-phase="2"] .phase-title { color: var(--phase-2); }
+.phase[data-phase="3"] .phase-title { color: var(--phase-3); }
+.phase[data-phase="4"] .phase-title { color: var(--phase-4); }
+.phase[data-phase="c"] .phase-title { color: var(--phase-c); }
+.phase[data-phase="p"] .phase-title { color: var(--phase-p); }
+.phase[data-phase="i"] .phase-title { color: var(--phase-i); }
+
+/* ============================================
+   Code blocks: copy button + syntax styling
+   ============================================ */
+.lesson-content pre {
+  position: relative;
+}
+.lesson-content pre .copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid var(--border, rgba(0,0,0,0.1));
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-family: inherit;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.lesson-content pre:hover .copy-btn { opacity: 1; }
+.lesson-content pre .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+.lesson-content pre .copy-btn.copied { color: var(--success, #16a34a); border-color: var(--success, #16a34a); }
+[data-theme="dark"] .lesson-content pre .copy-btn {
+  background: rgba(0,0,0,0.5);
+  border-color: rgba(255,255,255,0.15);
+}
+
+/* ============================================
+   Alesha — AI-тьютор виджет
+   ============================================ */
+.alesha-widget {
+  margin: 3rem 0 1.5rem;
+  border-radius: 14px;
+  border: 1px solid var(--border-soft, rgba(124, 58, 237, 0.18));
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.04), rgba(236, 72, 153, 0.04));
+  overflow: hidden;
+}
+[data-theme="dark"] .alesha-widget {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(236, 72, 153, 0.08));
+  border-color: rgba(167, 139, 250, 0.2);
+}
+.alesha-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-soft, rgba(0,0,0,0.06));
+}
+.alesha-header-text { flex: 1; min-width: 0; }
+.alesha-header-title { font-weight: 700; font-size: 1rem; line-height: 1.2; }
+.alesha-header-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+.alesha-chat {
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 480px;
+  overflow-y: auto;
+}
+.alesha-msg {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+}
+.alesha-msg.user { flex-direction: row-reverse; }
+.alesha-msg .alesha-msg-body {
+  padding: 0.6rem 0.85rem;
+  border-radius: 12px;
+  font-size: 0.93rem;
+  line-height: 1.55;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+.alesha-msg.bot .alesha-msg-body {
+  background: var(--bg-card);
+  border-bottom-left-radius: 4px;
+}
+.alesha-msg.user .alesha-msg-body {
+  background: var(--accent);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.alesha-msg .alesha-msg-body p { margin: 0 0 0.5rem; }
+.alesha-msg .alesha-msg-body p:last-child { margin-bottom: 0; }
+.alesha-msg .alesha-msg-body ul,
+.alesha-msg .alesha-msg-body ol { margin: 0.4rem 0; padding-left: 1.25rem; }
+.alesha-msg .alesha-msg-body code {
+  background: rgba(124, 58, 237, 0.1);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 0.85em;
+}
+.alesha-msg.user .alesha-msg-body code { background: rgba(255,255,255,0.2); }
+.alesha-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0 1.25rem 1rem;
+}
+.alesha-suggestion {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft, rgba(124, 58, 237, 0.2));
+  color: var(--text);
+  padding: 0.4rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.alesha-suggestion:hover { border-color: var(--accent); color: var(--accent); }
+.alesha-input {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem 1rem;
+  border-top: 1px solid var(--border-soft, rgba(0,0,0,0.06));
+}
+.alesha-input textarea {
+  flex: 1;
+  padding: 0.55rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--border, rgba(0,0,0,0.1));
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.92rem;
+  resize: none;
+  min-height: 40px;
+  max-height: 140px;
+  line-height: 1.4;
+}
+.alesha-input textarea:focus { outline: none; border-color: var(--accent); }
+.alesha-input button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+  align-self: flex-end;
+  min-height: 40px;
+}
+.alesha-input button:hover { background: #6d28d9; }
+.alesha-input button:disabled { opacity: 0.5; cursor: not-allowed; }
+.alesha-typing {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+  padding: 0.4rem 0;
+}
+.alesha-typing span {
+  width: 6px; height: 6px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  animation: alesha-bounce 1s infinite;
+}
+.alesha-typing span:nth-child(2) { animation-delay: 0.15s; }
+.alesha-typing span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes alesha-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+.alesha-disabled-note {
+  padding: 1rem 1.25rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.alesha-disabled-note a { color: var(--accent); }
+
 /* SVG diagrams inside lessons */
 .diagram {
   margin: 1.75rem 0;
@@ -1990,7 +2255,9 @@ main {
     <span></span><span></span><span></span>
   </button>
   <a href="#home" class="top-nav-logo" onclick="openStaticPage('home'); return false;">
-    🤖 <span>AI Курс</span>
+    <span class="alesha-logo">А</span>
+    <span class="brand-name">Алёша</span>
+    <span class="brand-sub">· AI на русском</span>
   </a>
   <nav class="top-nav-links">
     <a href="#section-main" data-section="main" onclick="openSection('main'); return false;">Главный курс</a>
@@ -2008,9 +2275,12 @@ main {
 <div class="sidebar-backdrop" onclick="closeSidebar()"></div>
 
 <aside class="sidebar">
-  <div class="sidebar-header">
-    <div class="sidebar-title">AI Курс</div>
-    <div class="sidebar-subtitle">От пользователя к разработчику</div>
+  <div class="sidebar-header" style="display:flex; align-items:center; gap:0.6rem;">
+    <span class="alesha-logo">А</span>
+    <div>
+      <div class="sidebar-title">Алёша</div>
+      <div class="sidebar-subtitle">AI на русском, без боли</div>
+    </div>
   </div>
 
   <button class="theme-toggle" onclick="toggleTheme()">
@@ -11808,6 +12078,7 @@ function buildNav() {
     // По умолчанию свёрнуты неактивные фазы (кроме первой при первом заходе)
     const shouldCollapse = activePhaseId !== null ? (phase.id !== activePhaseId) : (phase.id !== 1);
     phaseEl.className = 'phase' + (shouldCollapse ? ' collapsed' : '');
+    phaseEl.setAttribute('data-phase', String(phase.id));
     phaseEl.innerHTML = `
       <div class="phase-header" onclick="this.parentElement.classList.toggle('collapsed')">
         <div>
@@ -11875,6 +12146,7 @@ function buildNav() {
     const trackEl = document.createElement('div');
     const shouldCollapse = activeTrack ? (track.id !== activeTrack) : true;
     trackEl.className = 'phase' + (shouldCollapse ? ' collapsed' : '');
+    trackEl.setAttribute('data-phase', track.id === 'claude' ? 'c' : track.id === 'projects' ? 'p' : 'i');
     trackEl.innerHTML = `
       <div class="phase-header" onclick="this.parentElement.classList.toggle('collapsed')">
         <div>
@@ -12002,12 +12274,32 @@ function renderLesson(id) {
     </div>
   `;
 
+  // Breadcrumbs
+  const phaseInfo = (() => {
+    if (lesson.track === 'claude') return { tag: 'Claude Deep Dive', cls: 'pc' };
+    if (lesson.track === 'projects') return { tag: 'Мини-проекты', cls: 'pp' };
+    if (lesson.track === 'industry') return { tag: 'Индустрии', cls: 'pi' };
+    const phaseNames = { 1: 'Фаза 1. Пользователь', 2: 'Фаза 2. Строитель', 3: 'Фаза 3. Практик', 4: 'Фаза 4. Инженер' };
+    return { tag: phaseNames[lesson.phase] || 'Курс', cls: 'p' + lesson.phase };
+  })();
+  const lessonNum = typeof lesson.id === 'number' ? `Урок ${lesson.id}` : String(lesson.id).toUpperCase();
+  const breadcrumbs = `
+    <div class="breadcrumbs">
+      <a href="#home" onclick="openStaticPage('home'); return false;">Главная</a>
+      <span class="sep">›</span>
+      <span class="phase-tag ${phaseInfo.cls}">${phaseInfo.tag}</span>
+      <span class="sep">›</span>
+      <span class="current">${lessonNum}</span>
+    </div>
+  `;
+
   let body;
   if (lesson.content) {
-    // Inject time meta after the first H1 of lesson content
-    body = lesson.content.replace(/(<h1[^>]*>[\s\S]*?<\/h1>)/, `$1${timeMeta}`);
+    // Inject breadcrumbs + time meta after the first H1 of lesson content
+    body = lesson.content.replace(/(<h1[^>]*>[\s\S]*?<\/h1>)/, `${breadcrumbs}$1${timeMeta}`);
   } else {
     body = `
+      ${breadcrumbs}
       <h1>Урок ${lesson.id}. ${lesson.title}</h1>
       ${timeMeta}
       <div class="lesson-meta">
@@ -12035,7 +12327,206 @@ function renderLesson(id) {
     </div>
   `;
 
-  container.innerHTML = body + actions;
+  // Alesha widget — chat with AI tutor about this lesson
+  const aleshaWidget = `
+    <div class="alesha-widget" id="alesha-widget"
+         data-lesson-title="${(lesson.title || '').replace(/"/g, '&quot;')}"
+         data-lesson-id="${lesson.id}">
+      <div class="alesha-header">
+        <span class="alesha-logo">А</span>
+        <div class="alesha-header-text">
+          <div class="alesha-header-title">Спроси Алёшу про этот урок</div>
+          <div class="alesha-header-sub">AI-наставник. Ответит по теме урока за 10 секунд.</div>
+        </div>
+      </div>
+      <div class="alesha-chat" id="alesha-chat"></div>
+      <div class="alesha-suggestions" id="alesha-suggestions"></div>
+      <div class="alesha-input">
+        <textarea id="alesha-input" placeholder="Спроси про что угодно из этого урока..." rows="1"></textarea>
+        <button id="alesha-send" onclick="aleshaSend()">Отправить</button>
+      </div>
+    </div>
+  `;
+
+  container.innerHTML = body + aleshaWidget + actions;
+
+  // Post-render enhancements
+  enhanceCodeBlocks(container);
+  initAlesha(lesson);
+}
+
+// ============================================================
+// Code-block copy buttons
+// ============================================================
+function enhanceCodeBlocks(container) {
+  container.querySelectorAll('pre').forEach(pre => {
+    if (pre.querySelector('.copy-btn')) return;
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = 'Копировать';
+    btn.onclick = () => {
+      const code = pre.querySelector('code')?.textContent ?? pre.textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = 'Скопировано ✓';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Копировать'; btn.classList.remove('copied'); }, 1500);
+      });
+    };
+    pre.appendChild(btn);
+  });
+}
+
+// ============================================================
+// Alesha — AI-тьютор виджет
+// ============================================================
+const ALESHA_API = ''; // ⬅️ Сюда впиши URL Cloudflare Worker после деплоя (см. worker/README.md)
+let aleshaHistory = [];
+let aleshaBusy = false;
+
+function aleshaGetLessonText() {
+  const main = document.getElementById('lesson-content');
+  if (!main) return '';
+  // Берём текст урока без виджета и actions
+  const clone = main.cloneNode(true);
+  clone.querySelectorAll('.alesha-widget, .lesson-actions, .breadcrumbs').forEach(n => n.remove());
+  return clone.innerText.trim();
+}
+
+function initAlesha(lesson) {
+  aleshaHistory = [];
+  const chat = document.getElementById('alesha-chat');
+  const sugg = document.getElementById('alesha-suggestions');
+  if (!chat) return;
+
+  if (!ALESHA_API) {
+    chat.innerHTML = `<div class="alesha-disabled-note">
+      AI-тьютор пока не подключён. Деплой worker (см. <code>worker/README.md</code>) и впиши URL в <code>ALESHA_API</code>.
+      <br><br>А пока — спроси в чате: <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a>
+    </div>`;
+    document.querySelector('.alesha-input').style.display = 'none';
+    return;
+  }
+
+  // Greeting + 3 suggestions
+  aleshaAddMsg('bot', `Привет! Я Алёша. Помогу разобраться с уроком «${lesson.title}». Спроси что угодно.`);
+  const suggestions = [
+    'Объясни главную идею проще',
+    'Дай ещё один пример',
+    'Где это применяется на практике?'
+  ];
+  sugg.innerHTML = suggestions.map(s =>
+    `<button class="alesha-suggestion" onclick="aleshaAsk('${s.replace(/'/g, "\\'")}')">${s}</button>`
+  ).join('');
+
+  // Enter to send (Shift+Enter for newline)
+  const input = document.getElementById('alesha-input');
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); aleshaSend(); }
+  });
+  input.addEventListener('input', () => {
+    input.style.height = 'auto';
+    input.style.height = Math.min(140, input.scrollHeight) + 'px';
+  });
+}
+
+function aleshaAddMsg(role, text) {
+  const chat = document.getElementById('alesha-chat');
+  if (!chat) return null;
+  const wrap = document.createElement('div');
+  wrap.className = 'alesha-msg ' + role;
+  const body = document.createElement('div');
+  body.className = 'alesha-msg-body';
+  body.innerHTML = aleshaMarkdown(text);
+  if (role === 'bot') {
+    wrap.innerHTML = '<span class="alesha-logo sm">А</span>';
+  }
+  wrap.appendChild(body);
+  chat.appendChild(wrap);
+  chat.scrollTop = chat.scrollHeight;
+  return body;
+}
+
+function aleshaMarkdown(text) {
+  // Минимальный безопасный markdown: bold, code, перевод строк
+  return text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>')
+    .replace(/^/, '<p>').replace(/$/, '</p>');
+}
+
+function aleshaAsk(question) {
+  document.getElementById('alesha-input').value = question;
+  aleshaSend();
+}
+
+async function aleshaSend() {
+  if (aleshaBusy) return;
+  const input = document.getElementById('alesha-input');
+  const question = input.value.trim();
+  if (!question) return;
+
+  aleshaBusy = true;
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('alesha-send').disabled = true;
+  document.getElementById('alesha-suggestions').innerHTML = '';
+
+  aleshaAddMsg('user', question);
+
+  const widget = document.getElementById('alesha-widget');
+  const lessonTitle = widget?.dataset.lessonTitle || '';
+  const lessonText = aleshaGetLessonText();
+
+  // Bot message with typing indicator
+  const botBody = aleshaAddMsg('bot', '');
+  botBody.innerHTML = '<div class="alesha-typing"><span></span><span></span><span></span></div>';
+
+  try {
+    const res = await fetch(ALESHA_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        lessonTitle,
+        lessonText,
+        history: aleshaHistory,
+        question
+      })
+    });
+
+    if (!res.ok) {
+      let errMsg = 'Ошибка сервера.';
+      try { errMsg = (await res.json()).error || errMsg; } catch {}
+      botBody.innerHTML = aleshaMarkdown('⚠️ ' + errMsg);
+      return;
+    }
+
+    botBody.innerHTML = '';
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let acc = '';
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      acc += decoder.decode(value, { stream: true });
+      botBody.innerHTML = aleshaMarkdown(acc);
+      const chat = document.getElementById('alesha-chat');
+      if (chat) chat.scrollTop = chat.scrollHeight;
+    }
+
+    aleshaHistory.push({ role: 'user', content: question });
+    aleshaHistory.push({ role: 'assistant', content: acc });
+    if (aleshaHistory.length > 8) aleshaHistory = aleshaHistory.slice(-8);
+
+    trackEvent('alesha-question', `Asked Alesha (lesson ${widget?.dataset.lessonId})`);
+  } catch (err) {
+    botBody.innerHTML = aleshaMarkdown('⚠️ Не получилось связаться с Алёшей. Проверь интернет.');
+  } finally {
+    aleshaBusy = false;
+    document.getElementById('alesha-send').disabled = false;
+  }
 }
 
 // ============================================================
