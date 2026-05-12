@@ -9976,6 +9976,937 @@ if question := st.chat_input("Спроси по своим заметкам...")
 
 
 // ============================================================
+// МИНИ-ПРОЕКТ p3: Свой MCP-сервер
+// ============================================================
+registerLesson("p3", `
+<h1>Проект «За 1 час»: Свой MCP-сервер для Claude</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> MCP-сервер, который даёт Claude доступ к твоему Notion / Linear / своему API</span>
+  <span><strong>Время:</strong> ~75 минут</span>
+  <span><strong>Уровень:</strong> Python + урок c3 (про MCP)</span>
+</div>
+
+<h2>Зачем</h2>
+<p>MCP (Model Context Protocol) — открытый стандарт от Anthropic, позволяющий Claude подключаться к любым твоим системам единым способом. Один MCP-сервер ты пишешь раз — он работает в Claude Desktop, Claude Code, Cursor, Zed и сотнях других клиентов. Этот проект научит тебя писать свой MCP-сервер за час.</p>
+
+<h2>Что узнаешь</h2>
+<ul>
+<li>Архитектура MCP (resources, tools, prompts).</li>
+<li>Использование Python MCP SDK.</li>
+<li>Подключение сервера к Claude Desktop.</li>
+<li>Дебаг через MCP Inspector.</li>
+</ul>
+
+<h2>Архитектура</h2>
+<pre><code>Claude Desktop ↔ stdio ↔ твой MCP-сервер ↔ Notion API
+                                    ↘ Linear API
+                                    ↘ твоя БД</code></pre>
+
+<h2>Шаг 1. Установка (5 мин)</h2>
+<pre><code>pip install mcp anthropic-mcp</code></pre>
+<p>Создай папку проекта <code>my-mcp</code> и файл <code>server.py</code>.</p>
+
+<h2>Шаг 2. Минимальный сервер (15 мин)</h2>
+<pre><code>from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("my-tools")
+
+@mcp.tool()
+def get_weather(city: str) -&gt; str:
+    """Получает погоду в городе."""
+    # Здесь реальный вызов API
+    return f"В городе {city} +18°C, солнечно"
+
+@mcp.resource("note://daily")
+def daily_note() -&gt; str:
+    """Текущая дневная заметка."""
+    return open("daily.md").read()
+
+if __name__ == "__main__":
+    mcp.run()</code></pre>
+
+<h2>Шаг 3. Подключаем к Claude Desktop (10 мин)</h2>
+<p>Открой <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> (Mac) или <code>%APPDATA%\Claude\claude_desktop_config.json</code> (Win):</p>
+<pre><code>{
+  "mcpServers": {
+    "my-tools": {
+      "command": "python",
+      "args": ["/полный/путь/к/server.py"]
+    }
+  }
+}</code></pre>
+<p>Перезапусти Claude Desktop. В чате появится 🔌-иконка с твоим сервером.</p>
+
+<h2>Шаг 4. Реальный tool — Notion (25 мин)</h2>
+<p>Получи Notion API key (developers.notion.com), share свою базу с интеграцией. Добавь:</p>
+<pre><code>import requests, os
+NOTION_KEY = os.environ["NOTION_KEY"]
+DATABASE_ID = "..."
+
+@mcp.tool()
+def create_notion_task(title: str, status: str = "Todo") -&gt; str:
+    """Создаёт задачу в Notion."""
+    r = requests.post(
+      "https://api.notion.com/v1/pages",
+      headers={"Authorization": f"Bearer {NOTION_KEY}", "Notion-Version": "2022-06-28"},
+      json={"parent": {"database_id": DATABASE_ID},
+            "properties": {"Title": {"title": [{"text": {"content": title}}]},
+                          "Status": {"select": {"name": status}}}}
+    )
+    return f"Created: {r.json().get('url')}"</code></pre>
+
+<h2>Шаг 5. Дебаг через MCP Inspector (10 мин)</h2>
+<pre><code>npx @modelcontextprotocol/inspector python server.py</code></pre>
+<p>Откроется веб-UI на localhost:5173. Можешь тестировать tools без Claude.</p>
+
+<h2>Шаг 6. Расширения</h2>
+<ul>
+<li>Добавь <strong>resources</strong> — статические данные (твоя текущая страница в Notion).</li>
+<li>Добавь <strong>prompts</strong> — шаблоны промптов (review my today's tasks).</li>
+<li>Сделай <strong>auth</strong> через OAuth (для прода).</li>
+<li>Опубликуй на <strong>mcp-servers.dev</strong>.</li>
+</ul>
+
+<h2>Что дальше</h2>
+<p>Прочитай <a href="https://modelcontextprotocol.io" target="_blank">modelcontextprotocol.io</a>. MCP — будущий стандарт для AI-инструментов; писать свои серверы — навык, который окупится.</p>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> через свой MCP-сервер Claude может управлять чем угодно — твоей домашней автоматикой, корпоративными системами, кастомными БД. Это «открыть Claude в свой мир».
+</div>
+`);
+
+
+// ============================================================
+// МИНИ-ПРОЕКТ p4: Анализ счетов через Claude Vision
+// ============================================================
+registerLesson("p4", `
+<h1>Проект «За 1 час»: Анализ счетов и чеков через Claude Vision</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> приложение, превращающее фото чека в строку Google Sheets с расходами</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Уровень:</strong> Python + базовый API</span>
+</div>
+
+<h2>Зачем</h2>
+<p>Каждый чек — это потенциальная строка в семейном бюджете, которую никто не заполнит вручную. Раньше нужен был OCR + классификатор + ручная разметка. Сейчас — один вызов Claude с картинкой, и получаешь структурированный JSON.</p>
+
+<h2>Что узнаешь</h2>
+<ul>
+<li>Multimodal Claude API (vision).</li>
+<li>Structured output (JSON-mode).</li>
+<li>Google Sheets API.</li>
+<li>Простой web-UI на Streamlit для загрузки.</li>
+</ul>
+
+<h2>Архитектура</h2>
+<pre><code>Streamlit upload → Claude Sonnet (vision + JSON) → Google Sheets append</code></pre>
+
+<h2>Шаг 1. Установка</h2>
+<pre><code>pip install anthropic streamlit gspread oauth2client</code></pre>
+
+<h2>Шаг 2. Промпт для распознавания</h2>
+<pre><code>EXTRACT_PROMPT = """
+Перед тобой фото чека. Извлеки данные в JSON:
+{
+  "store": "название магазина",
+  "date": "YYYY-MM-DD",
+  "total": число,
+  "currency": "RUB" | "USD" | ...,
+  "category": "groceries" | "restaurant" | "transport" | "other",
+  "items": [{"name": "...", "price": число, "quantity": число}]
+}
+
+Если что-то не видно — null. Не придумывай. Возвращай ТОЛЬКО JSON, без пояснений.
+"""</code></pre>
+
+<h2>Шаг 3. Vision-вызов</h2>
+<pre><code>import anthropic, base64, json
+client = anthropic.Anthropic()
+
+def analyze_receipt(image_bytes):
+    img64 = base64.b64encode(image_bytes).decode()
+    msg = client.messages.create(
+      model="claude-sonnet-4-6",
+      max_tokens=1024,
+      messages=[{
+        "role": "user",
+        "content": [
+          {"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": img64}},
+          {"type": "text", "text": EXTRACT_PROMPT}
+        ]
+      }]
+    )
+    return json.loads(msg.content[0].text)</code></pre>
+
+<h2>Шаг 4. Google Sheets</h2>
+<p>Создай Service Account в console.cloud.google.com, скачай credentials.json, share Google Sheet с email сервиса.</p>
+<pre><code>import gspread
+gc = gspread.service_account(filename="credentials.json")
+sheet = gc.open("My Expenses").sheet1
+
+def append_to_sheet(data):
+    sheet.append_row([data["date"], data["store"], data["category"],
+                      data["total"], data["currency"],
+                      ", ".join(i["name"] for i in data["items"])])</code></pre>
+
+<h2>Шаг 5. Streamlit UI</h2>
+<pre><code>import streamlit as st
+st.title("Receipt → Sheet")
+uploaded = st.file_uploader("Загрузи фото чека", type=["jpg","png","jpeg"])
+if uploaded:
+    st.image(uploaded)
+    if st.button("Обработать"):
+        with st.spinner("Анализирую..."):
+            data = analyze_receipt(uploaded.read())
+            st.json(data)
+            append_to_sheet(data)
+            st.success("Записано в таблицу!")</code></pre>
+<p>Запускай: <code>streamlit run app.py</code>.</p>
+
+<h2>Шаг 6. Расширения</h2>
+<ul>
+<li><strong>Telegram-бот</strong> вместо Streamlit: пересылаешь фото чека → запись в Sheets.</li>
+<li><strong>Анализ за месяц:</strong> отдельный скрипт читает Sheet и через Claude генерирует отчёт.</li>
+<li><strong>OCR в банковских выписках</strong> — то же самое, но с PDF.</li>
+<li><strong>Категоризация по обучаемому списку</strong> — fine-tune категорий под себя.</li>
+</ul>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> Claude Vision + JSON-mode = быстрый OCR-pipeline для любых документов. Накладные, чеки, паспорта, формы — один паттерн.
+</div>
+`);
+
+
+// ============================================================
+// МИНИ-ПРОЕКТ p5: AI-ресёрчер конкурентов
+// ============================================================
+registerLesson("p5", `
+<h1>Проект «За 1 час»: AI-ресёрчер конкурентов с TG-дайджестом</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> скрипт, ежедневно сканирующий конкурентов и присылающий дайджест в Telegram</span>
+  <span><strong>Время:</strong> ~75 минут</span>
+  <span><strong>Уровень:</strong> Python + urok 14 (RAG)</span>
+</div>
+
+<h2>Зачем</h2>
+<p>«Что нового у конкурентов?» — занудный вопрос, на который нужно знать ответ еженедельно. Скрипт автоматизирует: парсит их сайты/блоги/changelog, выделяет изменения, отправляет краткий дайджест в твой Telegram.</p>
+
+<h2>Архитектура</h2>
+<pre><code>Cron (раз в сутки) →
+  for each competitor:
+    fetch sitemap/RSS →
+    diff vs yesterday →
+    Claude summarize new content →
+  collate → format → Telegram bot</code></pre>
+
+<h2>Шаг 1. Зависимости</h2>
+<pre><code>pip install anthropic httpx feedparser python-telegram-bot beautifulsoup4</code></pre>
+
+<h2>Шаг 2. Источники</h2>
+<pre><code>SOURCES = [
+  {"name": "Competitor A", "rss": "https://compA.com/feed.xml"},
+  {"name": "Competitor B", "rss": "https://compB.com/blog/rss"},
+  {"name": "Competitor C", "changelog": "https://compC.com/changelog"},
+]</code></pre>
+
+<h2>Шаг 3. Парсинг RSS + дифф</h2>
+<pre><code>import feedparser, json, os
+SEEN_FILE = "seen.json"
+seen = json.load(open(SEEN_FILE)) if os.path.exists(SEEN_FILE) else {}
+
+def fetch_new(source):
+    feed = feedparser.parse(source["rss"])
+    new = [e for e in feed.entries if e.id not in seen.get(source["name"], set())]
+    seen.setdefault(source["name"], []).extend(e.id for e in new)
+    return new</code></pre>
+
+<h2>Шаг 4. Суммаризация через Claude</h2>
+<pre><code>import anthropic
+client = anthropic.Anthropic()
+
+def summarize(entries, competitor):
+    text = "\\n\\n".join(f"## {e.title}\\n{e.summary}" for e in entries)
+    msg = client.messages.create(
+      model="claude-sonnet-4-6",
+      max_tokens=600,
+      messages=[{"role": "user", "content": f'''Конкурент: {competitor}
+Новые публикации:
+{text}
+
+Сделай дайджест (3–5 буллетов):
+- Что нового (продукт / фича / партнёрство / маркетинговый ход)?
+- Что это значит для нас?
+- Опасно / нейтрально / возможность.
+
+Только важное. Прямо, без воды.'''}]
+    )
+    return msg.content[0].text</code></pre>
+
+<h2>Шаг 5. Telegram</h2>
+<pre><code>import httpx
+BOT_TOKEN = os.environ["TG_BOT_TOKEN"]
+CHAT_ID = os.environ["TG_CHAT_ID"]
+
+def send_telegram(text):
+    httpx.post(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
+               json={"chat_id": CHAT_ID, "text": text, "parse_mode": "Markdown"})</code></pre>
+
+<h2>Шаг 6. Основной цикл</h2>
+<pre><code>def main():
+    digest = "🔍 *Конкуренты — что нового:*\\n\\n"
+    for src in SOURCES:
+        new = fetch_new(src)
+        if not new: continue
+        digest += f"*{src['name']}*:\\n{summarize(new, src['name'])}\\n\\n"
+    send_telegram(digest)
+    json.dump(seen, open(SEEN_FILE, "w"))</code></pre>
+
+<h2>Шаг 7. Cron (10 мин)</h2>
+<p>Запускай через GitHub Actions (бесплатно), Railway cron или просто <code>crontab -e</code>:</p>
+<pre><code>0 9 * * * cd /path/to/project && python main.py</code></pre>
+
+<h2>Расширения</h2>
+<ul>
+<li><strong>Web scraping</strong> сайтов без RSS (Playwright).</li>
+<li><strong>Job openings</strong> — отдельный поток: что нанимают (стратегические сигналы).</li>
+<li><strong>Анализ соцсетей</strong> — Twitter/LinkedIn API.</li>
+<li><strong>Еженедельный отчёт</strong> с трендами.</li>
+</ul>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> подписки на чужие блоги ты больше не читаешь — твой бот делает это за тебя и шлёт только важное.
+</div>
+`);
+
+
+// ============================================================
+// МИНИ-ПРОЕКТ p6: Self-hosted Perplexity
+// ============================================================
+registerLesson("p6", `
+<h1>Проект «За 1 час»: Self-hosted Perplexity — Q&A с поиском по твоим данным</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> веб-приложение, которое ищет по твоим документам + интернету и отвечает с цитатами</span>
+  <span><strong>Время:</strong> ~90 минут</span>
+  <span><strong>Уровень:</strong> Python + urok 14 (RAG)</span>
+</div>
+
+<h2>Зачем</h2>
+<p>Perplexity делает 3 вещи: ищет в сети, читает результаты, отвечает с цитатами. Своя версия даёт: приватность + поиск по твоим данным + контроль модели.</p>
+
+<h2>Архитектура</h2>
+<pre><code>FastAPI ─ user query
+          ↓
+    [parallel]: RAG(my docs) + web_search(SerpAPI/Tavily)
+          ↓
+    Claude with sources → answer with citations
+          ↓
+    Streamlit/Next.js UI</code></pre>
+
+<h2>Шаг 1. Зависимости</h2>
+<pre><code>pip install anthropic chromadb tavily-python fastapi uvicorn streamlit</code></pre>
+
+<h2>Шаг 2. Векторная база с твоими доками (15 мин)</h2>
+<pre><code>import chromadb, anthropic, os
+from pathlib import Path
+
+client = chromadb.PersistentClient(path="./db")
+coll = client.get_or_create_collection("docs")
+
+# Используем Claude эмбеддинги через OpenAI (Anthropic не делает эмбеддинги — берём voyageai или openai)
+import openai
+emb_client = openai.OpenAI()
+
+def embed(texts):
+    return [e.embedding for e in emb_client.embeddings.create(
+      model="text-embedding-3-small", input=texts).data]
+
+def index_docs(folder):
+    docs, ids = [], []
+    for f in Path(folder).rglob("*.md"):
+        docs.append(f.read_text())
+        ids.append(str(f))
+    coll.add(documents=docs, embeddings=embed(docs), ids=ids)</code></pre>
+
+<h2>Шаг 3. Web search (Tavily — 10 мин)</h2>
+<p>Tavily — search API для AI. Получи ключ на tavily.com (бесплатно 1k/мес).</p>
+<pre><code>from tavily import TavilyClient
+tav = TavilyClient(api_key=os.environ["TAVILY_KEY"])
+
+def web_search(query):
+    r = tav.search(query=query, max_results=5, include_raw_content=True)
+    return [{"url": x["url"], "title": x["title"], "content": x["raw_content"][:2000]} for x in r["results"]]</code></pre>
+
+<h2>Шаг 4. Поиск + ответ</h2>
+<pre><code>llm = anthropic.Anthropic()
+
+def answer(query):
+    # Локальные документы
+    q_emb = embed([query])[0]
+    local = coll.query(query_embeddings=[q_emb], n_results=3)
+    local_docs = [{"source": local["ids"][0][i], "content": d}
+                  for i,d in enumerate(local["documents"][0])]
+
+    # Веб
+    web_docs = web_search(query)
+
+    sources = local_docs + web_docs
+
+    # Промпт с источниками
+    src_text = "\\n\\n".join(f"[{i+1}] {s.get('source') or s.get('url')}:\\n{s['content'][:1000]}"
+                            for i, s in enumerate(sources))
+
+    msg = llm.messages.create(
+      model="claude-sonnet-4-6",
+      max_tokens=1500,
+      messages=[{"role": "user", "content": f'''Источники:
+{src_text}
+
+Вопрос: {query}
+
+Ответь, опираясь только на источники. После каждого утверждения — номер источника в [квадратных скобках].
+Если в источниках нет ответа — скажи "не нашёл".
+'''}]
+    )
+    return {"answer": msg.content[0].text, "sources": sources}</code></pre>
+
+<h2>Шаг 5. FastAPI + UI (20 мин)</h2>
+<pre><code>from fastapi import FastAPI
+app = FastAPI()
+
+@app.post("/ask")
+def ask(query: str):
+    return answer(query)</code></pre>
+<p>Простой UI на Streamlit:</p>
+<pre><code>import streamlit as st, requests
+st.title("Мой Perplexity")
+q = st.text_input("Вопрос:")
+if q:
+    with st.spinner("Ищу..."):
+        r = requests.post("http://localhost:8000/ask", params={"query": q}).json()
+        st.markdown(r["answer"])
+        st.divider()
+        st.caption("Источники:")
+        for i, s in enumerate(r["sources"]):
+            st.markdown(f"**[{i+1}]** {s.get('source') or s.get('url')}")</code></pre>
+
+<h2>Расширения</h2>
+<ul>
+<li><strong>Streaming</strong> — токен за токеном (Урок 11).</li>
+<li><strong>Re-ranking</strong> через Cohere — повышает качество источников.</li>
+<li><strong>Follow-up вопросы</strong> — модель сама предлагает.</li>
+<li><strong>Mobile app</strong> через Tauri/Capacitor.</li>
+</ul>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> у тебя теперь своя Perplexity — но с доступом к твоим документам, под твоим контролем.
+</div>
+`);
+
+
+// ============================================================
+// МИНИ-ПРОЕКТ p7: AI-помощник для встреч
+// ============================================================
+registerLesson("p7", `
+<h1>Проект «За 1 час»: AI-помощник для встреч — транскрипция + summary + задачи в Notion</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> запись встречи → транскрипт → саммари → задачи в Notion</span>
+  <span><strong>Время:</strong> ~75 минут</span>
+  <span><strong>Уровень:</strong> Python + базовый API</span>
+</div>
+
+<h2>Зачем</h2>
+<p>Встречи без саммари — это потерянная информация. Кто за что отвечает, какие решения, что ждёт. Ассистент берёт аудио-файл и за минуту даёт: чёткий транскрипт, выжимку решений, список задач с ответственными.</p>
+
+<h2>Архитектура</h2>
+<pre><code>Audio (mp3/wav) → Whisper API (транскрипт) → Claude (summary + action items) → Notion</code></pre>
+
+<h2>Шаг 1. Зависимости</h2>
+<pre><code>pip install openai anthropic notion-client</code></pre>
+
+<h2>Шаг 2. Транскрипция через Whisper</h2>
+<pre><code>import openai
+client = openai.OpenAI()
+
+def transcribe(audio_path):
+    with open(audio_path, "rb") as f:
+        r = client.audio.transcriptions.create(
+          model="whisper-1", file=f, response_format="verbose_json", language="ru"
+        )
+    return r.text  # для длинных встреч лучше r.segments с таймкодами</code></pre>
+<p>Whisper API стоит $0.006/мин. Часовая встреча = $0.36.</p>
+
+<h2>Шаг 3. Саммари через Claude</h2>
+<pre><code>import anthropic, json
+llm = anthropic.Anthropic()
+
+def analyze(transcript):
+    msg = llm.messages.create(
+      model="claude-sonnet-4-6",
+      max_tokens=2000,
+      messages=[{"role": "user", "content": f'''Транскрипт встречи:
+&lt;transcript&gt;
+{transcript}
+&lt;/transcript&gt;
+
+Сделай JSON со структурой:
+{{
+  "topic": "тема встречи 1 фразой",
+  "participants": ["имена если упоминались"],
+  "key_decisions": ["решение 1", "решение 2"],
+  "discussions": ["о чём спорили, без вывода"],
+  "action_items": [
+    {{"task": "...", "owner": "имя", "deadline": "если упомянут"}}
+  ],
+  "open_questions": ["что осталось нерешённым"]
+}}
+
+Только факты из транскрипта. Если чего-то нет — пустой массив.
+Возвращай ТОЛЬКО JSON.'''}]
+    )
+    return json.loads(msg.content[0].text)</code></pre>
+
+<h2>Шаг 4. Сохранение в Notion</h2>
+<pre><code>from notion_client import Client
+notion = Client(auth=os.environ["NOTION_TOKEN"])
+DATABASE_ID = "..."  # ID базы со встречами
+
+def save_to_notion(data, audio_filename):
+    notion.pages.create(
+      parent={"database_id": DATABASE_ID},
+      properties={
+        "Name": {"title": [{"text": {"content": data["topic"]}}]},
+        "Date": {"date": {"start": "2026-05-12"}},
+      },
+      children=[
+        {"type": "heading_2", "heading_2": {"rich_text":[{"text":{"content":"Решения"}}]}},
+        *[{"type": "bulleted_list_item", "bulleted_list_item":
+           {"rich_text":[{"text":{"content": d}}]}} for d in data["key_decisions"]],
+        {"type": "heading_2", "heading_2": {"rich_text":[{"text":{"content":"Задачи"}}]}},
+        *[{"type": "to_do", "to_do":
+           {"rich_text":[{"text":{"content": f"[{a['owner']}] {a['task']}"}}], "checked": False}}
+          for a in data["action_items"]],
+      ]
+    )</code></pre>
+
+<h2>Шаг 5. Пайплайн</h2>
+<pre><code>def process_meeting(audio_path):
+    print("Транскрибирую...")
+    text = transcribe(audio_path)
+    print("Анализирую...")
+    data = analyze(text)
+    print("Сохраняю в Notion...")
+    save_to_notion(data, audio_path)
+    return data
+
+if __name__ == "__main__":
+    import sys
+    process_meeting(sys.argv[1])</code></pre>
+<p>Запуск: <code>python meeting.py recording.mp3</code>.</p>
+
+<h2>Расширения</h2>
+<ul>
+<li><strong>Запись прямо в Zoom/Meet</strong> через их API.</li>
+<li><strong>Speaker diarization</strong> — разделение голосов через AssemblyAI или Whisper-X.</li>
+<li><strong>Автоотправка</strong> ответственным в Slack.</li>
+<li><strong>Telegram-бот</strong>: пересылаешь голосовое — получаешь сводку.</li>
+</ul>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> освобождает 30 минут после каждой встречи — на масштабе недели это 5+ часов.
+</div>
+`);
+
+
+// ============================================================
+// МИНИ-ПРОЕКТ p8: Анти-спам классификатор
+// ============================================================
+registerLesson("p8", `
+<h1>Проект «За 1 час»: Анти-спам — AI классифицирует входящие письма и отвечает на простые</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> система для входящих писем: классификация + автоответ на простые + эскалация важных</span>
+  <span><strong>Время:</strong> ~75 минут</span>
+  <span><strong>Уровень:</strong> Python + Gmail API</span>
+</div>
+
+<h2>Зачем</h2>
+<p>В среднем 50% входящих писем не требуют твоего внимания (рассылки, автоматические уведомления, типовые запросы). ИИ их сортирует, отвечает на простые, эскалирует важные.</p>
+
+<h2>Архитектура</h2>
+<pre><code>Gmail watch → новое письмо → Claude classify →
+  spam → archive
+  newsletter → label
+  routine question → auto-reply
+  important → forward to inbox+notify</code></pre>
+
+<h2>Шаг 1. Gmail API setup (10 мин)</h2>
+<p>console.cloud.google.com → новый проект → Enable Gmail API → OAuth credentials. Сохрани <code>credentials.json</code>.</p>
+<pre><code>pip install google-api-python-client google-auth-oauthlib anthropic</code></pre>
+
+<h2>Шаг 2. Категоризация (главный промпт)</h2>
+<pre><code>import anthropic, json
+llm = anthropic.Anthropic()
+
+def classify(email):
+    msg = llm.messages.create(
+      model="claude-haiku-4-5-20251001",  # дёшево
+      max_tokens=400,
+      messages=[{"role": "user", "content": f'''Письмо:
+From: {email["from"]}
+Subject: {email["subject"]}
+Body: {email["body"][:2000]}
+
+Классифицируй в JSON:
+{{
+  "category": "spam" | "newsletter" | "promo" | "routine_question" | "personal" | "important",
+  "confidence": 0.0–1.0,
+  "reason": "одна фраза",
+  "auto_reply_possible": true/false,
+  "suggested_reply": "..." (если auto_reply_possible=true)
+}}
+
+Категории:
+- spam: явный спам, фишинг.
+- newsletter: подписки, рассылки.
+- promo: коммерческие предложения.
+- routine_question: типовой вопрос с шаблонным ответом.
+- personal: личные письма знакомых, требует ответа.
+- important: bzz-критичные (контракты, выставление счетов, дедлайны).
+
+Возвращай только JSON.'''}]
+    )
+    return json.loads(msg.content[0].text)</code></pre>
+
+<h2>Шаг 3. Действия</h2>
+<pre><code>from googleapiclient.discovery import build
+
+def archive(service, msg_id):
+    service.users().messages().modify(userId="me", id=msg_id,
+      body={"removeLabelIds": ["INBOX"]}).execute()
+
+def add_label(service, msg_id, label_name):
+    # создай label заранее в Gmail UI или через API
+    labels = service.users().labels().list(userId="me").execute()
+    label_id = next(l["id"] for l in labels["labels"] if l["name"] == label_name)
+    service.users().messages().modify(userId="me", id=msg_id,
+      body={"addLabelIds": [label_id]}).execute()
+
+def auto_reply(service, msg, text):
+    # отправка ответа в той же thread
+    import base64
+    from email.message import EmailMessage
+    m = EmailMessage()
+    m.set_content(text)
+    m["To"] = msg["from"]
+    m["Subject"] = "Re: " + msg["subject"]
+    raw = base64.urlsafe_b64encode(m.as_bytes()).decode()
+    service.users().messages().send(userId="me",
+      body={"raw": raw, "threadId": msg["thread_id"]}).execute()</code></pre>
+
+<h2>Шаг 4. Основной цикл</h2>
+<pre><code>def process_inbox(service):
+    # последние непрочитанные
+    res = service.users().messages().list(userId="me", q="is:unread", maxResults=20).execute()
+    for m in res.get("messages", []):
+        msg = service.users().messages().get(userId="me", id=m["id"], format="full").execute()
+        email = extract_email_data(msg)  # реализуй сам — headers + body
+        cat = classify(email)
+
+        if cat["category"] == "spam":
+            archive(service, m["id"])
+        elif cat["category"] == "newsletter":
+            add_label(service, m["id"], "AI-Newsletter")
+            archive(service, m["id"])
+        elif cat["category"] == "promo":
+            add_label(service, m["id"], "AI-Promo")
+        elif cat["category"] == "routine_question" and cat["auto_reply_possible"]:
+            auto_reply(service, email, cat["suggested_reply"])
+            add_label(service, m["id"], "AI-Auto-Replied")
+        elif cat["category"] == "important":
+            add_label(service, m["id"], "AI-Important")
+            # отправь в Slack/Telegram уведомление</code></pre>
+
+<h2>Шаг 5. Деплой и запуск</h2>
+<p>Запускай по cron каждые 5 минут. Первую неделю — без авто-ответов (только классификация в labels). Проверь, что классификация корректна.</p>
+
+<h2>Безопасность</h2>
+<div class="callout callout-danger">
+<ul>
+<li><strong>Никогда не доверяй AI отвечать от твоего имени без проверки.</strong> Первые 2 недели — только драфт в черновики.</li>
+<li><strong>Whitelist для авто-ответа</strong> — только письма от незнакомых, с очень типовыми запросами.</li>
+<li><strong>Никогда не выполняй действия из писем</strong> через ИИ (нажми ссылку, переведи деньги).</li>
+</ul>
+</div>
+
+<h2>Расширения</h2>
+<ul>
+<li><strong>RAG над твоими предыдущими ответами</strong> — модель учится твоему стилю.</li>
+<li><strong>Гибрид-режим</strong>: ИИ драфтит, ты подтверждаешь.</li>
+<li><strong>Аналитика</strong>: сколько % писем спам, какие категории растут.</li>
+</ul>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> 30+ часов в год возвращаешь себе только на сортировке.
+</div>
+`);
+
+
+// ============================================================
+// МИНИ-ПРОЕКТ p9: Семантический поиск по Telegram-каналу
+// ============================================================
+registerLesson("p9", `
+<h1>Проект «За 1 час»: Семантический поиск по своему Telegram-каналу или чату</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> поиск «по смыслу» по экспорту своего Telegram-канала или чата</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Уровень:</strong> Python + urok 8 (эмбеддинги)</span>
+</div>
+
+<h2>Зачем</h2>
+<p>В Telegram стандартный поиск — по точным словам. «Где я писал про оптимизацию баз?» — если ты писал «ускорил Postgres», не найдёт. Semantic search решает.</p>
+
+<h2>Что узнаешь</h2>
+<ul>
+<li>Экспорт чата/канала из Telegram.</li>
+<li>Парсинг JSON в чанки.</li>
+<li>Embeddings + ChromaDB.</li>
+<li>Простой CLI или TG-бот для поиска.</li>
+</ul>
+
+<h2>Шаг 1. Экспорт чата (5 мин)</h2>
+<p>Telegram Desktop → Settings → Advanced → Export Telegram data → выбери чат → формат JSON. Получишь <code>result.json</code>.</p>
+
+<h2>Шаг 2. Парсинг</h2>
+<pre><code>import json
+data = json.load(open("result.json"))
+messages = []
+for m in data["messages"]:
+    if m["type"] != "message": continue
+    text = m["text"] if isinstance(m["text"], str) else "".join(
+      t["text"] if isinstance(t, dict) else t for t in m["text"]
+    )
+    if len(text) &lt; 20: continue  # пропускаем «ок», «👍»
+    messages.append({"id": m["id"], "date": m["date"], "from": m.get("from"), "text": text})</code></pre>
+
+<h2>Шаг 3. Эмбеддинги в ChromaDB</h2>
+<pre><code>import chromadb, openai
+client = chromadb.PersistentClient(path="./tg_db")
+coll = client.get_or_create_collection("messages")
+emb_client = openai.OpenAI()
+
+def embed_batch(texts):
+    r = emb_client.embeddings.create(model="text-embedding-3-small", input=texts)
+    return [e.embedding for e in r.data]
+
+# Батчами по 100
+for i in range(0, len(messages), 100):
+    batch = messages[i:i+100]
+    coll.add(
+      ids=[str(m["id"]) for m in batch],
+      documents=[m["text"] for m in batch],
+      embeddings=embed_batch([m["text"] for m in batch]),
+      metadatas=[{"date": m["date"], "from": m["from"] or ""} for m in batch]
+    )
+    print(f"Indexed {i+len(batch)} / {len(messages)}")</code></pre>
+<p>Стоимость: 10k сообщений × средняя длина 200 токенов = 2M токенов × $0.02/1M = $0.04. Один раз.</p>
+
+<h2>Шаг 4. Поиск</h2>
+<pre><code>def search(query, k=5):
+    q_emb = embed_batch([query])[0]
+    r = coll.query(query_embeddings=[q_emb], n_results=k)
+    for i, doc in enumerate(r["documents"][0]):
+        meta = r["metadatas"][0][i]
+        print(f"[{meta['date']}] {meta['from']}: {doc[:200]}...\\n")
+
+search("оптимизация баз данных")</code></pre>
+
+<h2>Шаг 5. TG-бот для поиска</h2>
+<pre><code>from aiogram import Bot, Dispatcher, types
+import asyncio
+
+bot = Bot(token=os.environ["TG_BOT_TOKEN"])
+dp = Dispatcher()
+
+@dp.message()
+async def handle(message: types.Message):
+    q_emb = embed_batch([message.text])[0]
+    r = coll.query(query_embeddings=[q_emb], n_results=5)
+    reply = ""
+    for i, doc in enumerate(r["documents"][0]):
+        meta = r["metadatas"][0][i]
+        reply += f"**{meta['date']}** ({meta['from']}):\\n{doc[:300]}\\n\\n"
+    await message.answer(reply, parse_mode="Markdown")
+
+asyncio.run(dp.start_polling(bot))</code></pre>
+
+<h2>Расширения</h2>
+<ul>
+<li><strong>Q&amp;A</strong> — поверх поиска прикручиваешь Claude, который отвечает на вопрос по найденным сообщениям.</li>
+<li><strong>Несколько чатов</strong> сразу — добавь поле <code>chat_name</code> в metadata.</li>
+<li><strong>Инкрементальный апдейт</strong> — раз в день добавляешь новые сообщения через Telethon (TG-клиент-API).</li>
+<li><strong>Фильтр по дате/автору</strong> через метаданные.</li>
+</ul>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> личная Wikipedia из твоих чатов. Особенно полезно для рабочих чатов с архивом обсуждений.
+</div>
+`);
+
+
+// ============================================================
+// МИНИ-ПРОЕКТ p10: Авто-ревьюер PR
+// ============================================================
+registerLesson("p10", `
+<h1>Проект «За 1 час»: Авто-ревьюер pull request'ов на GitHub</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> GitHub Action, оставляющий AI-ревью на каждый PR</span>
+  <span><strong>Время:</strong> ~75 минут</span>
+  <span><strong>Уровень:</strong> Python + GitHub Actions</span>
+</div>
+
+<h2>Зачем</h2>
+<p>Качество кода + скорость ревью. AI-ревью не заменяет человека, но ловит 60–80% типичных проблем за минуты — и человек ревьюит уже отфильтрованный код.</p>
+
+<h2>Архитектура</h2>
+<pre><code>PR opened/updated → GitHub Action triggered →
+  fetch diff + context → Claude review →
+  post comment on PR → request changes if critical issues</code></pre>
+
+<h2>Шаг 1. Структура репозитория</h2>
+<pre><code>your-repo/
+├── .github/
+│   └── workflows/
+│       └── ai-review.yml
+└── scripts/
+    └── ai_review.py</code></pre>
+
+<h2>Шаг 2. Скрипт ревью</h2>
+<pre><code># scripts/ai_review.py
+import os, anthropic, requests, json
+
+PR_NUM = int(os.environ["PR_NUMBER"])
+REPO = os.environ["GITHUB_REPOSITORY"]
+GH_TOKEN = os.environ["GITHUB_TOKEN"]
+AN_KEY = os.environ["ANTHROPIC_API_KEY"]
+
+def gh(method, path, **kw):
+    return requests.request(method, f"https://api.github.com{path}",
+      headers={"Authorization": f"Bearer {GH_TOKEN}", "Accept": "application/vnd.github+json"}, **kw)
+
+# Получаем дифф PR
+diff = gh("GET", f"/repos/{REPO}/pulls/{PR_NUM}",
+          headers={"Accept": "application/vnd.github.v3.diff"}).text
+
+pr = gh("GET", f"/repos/{REPO}/pulls/{PR_NUM}").json()
+title = pr["title"]
+body = pr["body"] or ""
+
+# Промпт для ревью
+client = anthropic.Anthropic(api_key=AN_KEY)
+review = client.messages.create(
+  model="claude-sonnet-4-6",
+  max_tokens=2000,
+  messages=[{"role": "user", "content": f'''Ты — старший разработчик. Делаешь code review.
+
+Pull Request:
+Title: {title}
+Description: {body}
+
+Diff:
+{diff[:30000]}
+
+Сделай review в формате:
+
+## Сводка
+1–2 предложения о PR.
+
+## Критические проблемы (если есть)
+- Только реальные баги, безопасность, performance.
+
+## Замечания
+- Стиль, читаемость, тесты.
+
+## Положительное
+- Что хорошо сделано.
+
+## Verdict
+"approve" / "request_changes" / "comment"
+
+Только обоснованные замечания. Не придирайся к стилю если он соответствует окружению.'''}]
+).content[0].text
+
+# Постим комментарий
+gh("POST", f"/repos/{REPO}/issues/{PR_NUM}/comments",
+   json={"body": "🤖 **AI Review** (Claude Sonnet)\\n\\n" + review})
+
+# Если verdict == request_changes, оставим review с REQUEST_CHANGES
+if "request_changes" in review.lower():
+    gh("POST", f"/repos/{REPO}/pulls/{PR_NUM}/reviews",
+       json={"event": "REQUEST_CHANGES", "body": "См. AI-комментарий выше"})</code></pre>
+
+<h2>Шаг 3. GitHub Action</h2>
+<pre><code># .github/workflows/ai-review.yml
+name: AI Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install anthropic requests
+      - run: python scripts/ai_review.py
+        env:
+          PR_NUMBER: \${{ github.event.pull_request.number }}
+          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+          ANTHROPIC_API_KEY: \${{ secrets.ANTHROPIC_API_KEY }}</code></pre>
+
+<h2>Шаг 4. Setup в репозитории</h2>
+<ol>
+<li>Settings → Secrets → New secret: <code>ANTHROPIC_API_KEY</code>.</li>
+<li>Закоммить файлы.</li>
+<li>Открой тестовый PR — Action запустится автоматически.</li>
+</ol>
+
+<h2>Шаг 5. Улучшения</h2>
+<ul>
+<li><strong>Inline-комменты на конкретных строках</strong> через <code>POST /repos/{repo}/pulls/{n}/comments</code> с line + path.</li>
+<li><strong>Контекст соседних файлов</strong> — добавь импорты, чтобы модель понимала зависимости.</li>
+<li><strong>Конфиг через .ai-review.yml</strong>: какие папки игнорировать, какие правила.</li>
+<li><strong>Двухмодельная стратегия:</strong> Haiku для быстрого первичного прохода, Sonnet — для критичных PR.</li>
+<li><strong>Promtbook</strong> — храните в репо подсказки под типы PR (security, refactor, feature).</li>
+</ul>
+
+<h2>Стоимость</h2>
+<p>Один PR со средним диффом 5k токенов = $0.02–0.04 на ревью. На 100 PR/мес = $2–4. Дешевле кофе.</p>
+
+<h2>Чего НЕ делать</h2>
+<div class="callout callout-warning">
+<ul>
+<li>Не доверяй финальный approve AI — должен быть человек.</li>
+<li>Не передавай в Claude приватные/чувствительные репо без enterprise-договора (или используй self-hosted Sonnet через AWS Bedrock).</li>
+<li>Не игнорируй усталость ревьюеров — если AI генерирует слишком много шума, выключай.</li>
+</ul>
+</div>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> AI-ревью — это «как иметь второго senior'a в команде, который доступен 24/7 за $5/мес». Не заменяет человека, но усиливает.
+</div>
+`);
+
+
+// ============================================================
 // ИНДУСТРИЯ i1: ИИ для юристов
 // ============================================================
 registerLesson("i1", `
