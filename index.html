@@ -1768,6 +1768,176 @@ main {
 }
 .alesha-disabled-note a { color: var(--accent); }
 
+/* ============================================
+   Full-text search overlay
+   ============================================ */
+.search-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 15, 20, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 500;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 80px;
+}
+.search-overlay.is-open { display: flex; }
+.search-overlay-panel {
+  width: 92%;
+  max-width: 620px;
+  background: var(--bg, #fff);
+  border-radius: 14px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+[data-theme="dark"] .search-overlay-panel { background: #18181b; }
+.search-overlay-input {
+  width: 100%;
+  padding: 1.1rem 1.25rem;
+  border: none;
+  background: transparent;
+  font-size: 1.05rem;
+  color: var(--text);
+  font-family: inherit;
+  border-bottom: 1px solid var(--border-soft, rgba(0,0,0,0.08));
+}
+.search-overlay-input:focus { outline: none; }
+.search-results {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+.search-result {
+  display: block;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--border-soft, rgba(0,0,0,0.04));
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.1s;
+}
+.search-result:hover, .search-result.active { background: var(--bg-card); }
+.search-result-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+.search-result-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+}
+.search-result-snippet {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.search-result-snippet mark {
+  background: rgba(255, 215, 0, 0.35);
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+[data-theme="dark"] .search-result-snippet mark {
+  background: rgba(255, 215, 0, 0.22);
+  color: #fef08a;
+}
+.search-empty, .search-loading {
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+.search-footer {
+  padding: 0.6rem 1.25rem;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-soft, rgba(0,0,0,0.06));
+  background: var(--bg-card);
+}
+
+/* ============================================
+   Lesson TOC + scroll-spy
+   ============================================ */
+.lesson-toc {
+  margin: 1rem 0 1.5rem;
+  padding: 0.85rem 1.1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft, rgba(124, 58, 237, 0.12));
+  border-radius: 10px;
+}
+.lesson-toc summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  user-select: none;
+}
+.lesson-toc summary::-webkit-details-marker { display: none; }
+.lesson-toc summary::before {
+  content: '▶';
+  font-size: 0.7rem;
+  transition: transform 0.15s;
+  color: var(--accent);
+}
+.lesson-toc[open] summary::before { transform: rotate(90deg); }
+.lesson-toc ol {
+  margin: 0.85rem 0 0;
+  padding-left: 1.25rem;
+  font-size: 0.9rem;
+  counter-reset: toc-h2;
+  list-style: none;
+}
+.lesson-toc ol li { margin: 0.3rem 0; }
+.lesson-toc ol a {
+  color: var(--text-muted);
+  text-decoration: none;
+  display: inline-block;
+  padding: 1px 4px;
+  border-radius: 3px;
+  transition: all 0.1s;
+}
+.lesson-toc ol a:hover { color: var(--accent); }
+.lesson-toc ol a.active {
+  color: var(--accent);
+  background: rgba(124, 58, 237, 0.08);
+  font-weight: 600;
+}
+.lesson-toc ol .h3 { padding-left: 1rem; font-size: 0.85rem; }
+
+/* ============================================
+   Share button in lesson
+   ============================================ */
+.lesson-share-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft, rgba(0,0,0,0.08));
+  color: var(--text-muted);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.1s;
+}
+.lesson-share-btn:hover { color: var(--accent); border-color: var(--accent); }
+.lesson-share-btn.copied { color: var(--success, #16a34a); border-color: var(--success, #16a34a); }
+
 /* Alesha announce banner on home */
 .alesha-announce {
   display: flex;
@@ -2436,7 +2606,7 @@ main {
     <span id="theme-label">Тёмная тема</span>
   </button>
 
-  <input type="text" class="search-box" placeholder="Поиск по урокам  (⌘K)" oninput="filterLessons(this.value)" onkeydown="if(event.key==='Escape'){this.value=''; filterLessons(''); this.blur();}">
+  <input type="text" class="search-box" id="search-box" placeholder="Поиск по урокам  (⌘K)" oninput="onSearchInput(this.value)" onfocus="onSearchInput(this.value)" onkeydown="if(event.key==='Escape'){this.value=''; closeSearchOverlay(); this.blur();}">
 
   <div class="global-progress">
     <div class="global-progress-label">
@@ -2501,6 +2671,16 @@ main {
   <div class="lesson-content" id="lesson-content"></div>
   <footer class="site-footer" id="site-footer"></footer>
 </main>
+
+<!-- Full-text search overlay -->
+<div class="search-overlay" id="search-overlay" onclick="if(event.target===this) closeSearchOverlay()">
+  <div class="search-overlay-panel">
+    <input type="text" id="search-overlay-input" class="search-overlay-input" placeholder="Что ищешь? Введи слово или фразу..." oninput="runFullSearch(this.value)" onkeydown="if(event.key==='Escape')closeSearchOverlay()">
+    <div class="search-results" id="search-results"></div>
+    <div class="search-footer">↑↓ — выбрать, Enter — открыть, Esc — закрыть</div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
 
 <!-- Alesha — persistent AI tutor widget -->
 <div class="alesha-widget" id="alesha-widget" data-lesson-title="" data-lesson-id="">
@@ -12494,11 +12674,204 @@ function renderLesson(id) {
     </div>
   `;
 
-  container.innerHTML = body + actions;
+  // Share button — добавляем перед actions
+  const shareSection = `
+    <div style="margin: 1.5rem 0 0.5rem; text-align: right;">
+      <button id="lesson-share-btn" class="lesson-share-btn" onclick="shareLessonLink(${typeof lesson.id === 'number' ? lesson.id : `'${lesson.id}'`})">
+        🔗 Скопировать ссылку
+      </button>
+    </div>
+  `;
+
+  container.innerHTML = body + shareSection + actions;
 
   // Post-render enhancements
   enhanceCodeBlocks(container);
   initAlesha(lesson);
+
+  // Build TOC and inject after H1
+  const tocHtml = buildLessonTOC(container);
+  if (tocHtml) {
+    const h1 = container.querySelector('h1');
+    const meta = container.querySelector('.lesson-meta');
+    const anchor = meta || h1;
+    if (anchor) anchor.insertAdjacentHTML('afterend', tocHtml);
+    setTimeout(() => activateTOCSpy(container), 100);
+  }
+}
+
+// ============================================================
+// Full-text search via MiniSearch
+// ============================================================
+let searchIndex = null;
+let searchActiveIdx = -1;
+
+function buildSearchIndex() {
+  if (typeof MiniSearch === 'undefined') return null;
+  const idx = new MiniSearch({
+    fields: ['title', 'text'],
+    storeFields: ['id', 'title', 'phase', 'track', 'text'],
+    searchOptions: { boost: { title: 3 }, fuzzy: 0.15, prefix: true },
+  });
+  const docs = allLessons()
+    .filter(l => l.content)
+    .map(l => {
+      const tmp = document.createElement('div');
+      tmp.innerHTML = l.content;
+      const text = tmp.innerText.replace(/\s+/g, ' ').trim();
+      return { id: l.id, title: l.title, phase: l.phase, track: l.track, text };
+    });
+  idx.addAll(docs);
+  return idx;
+}
+
+function onSearchInput(value) {
+  // Override default filterLessons — open full-text overlay instead
+  if (!value) { closeSearchOverlay(); return; }
+  openSearchOverlay(value);
+}
+
+function openSearchOverlay(initial) {
+  const ov = document.getElementById('search-overlay');
+  const input = document.getElementById('search-overlay-input');
+  ov.classList.add('is-open');
+  input.value = initial || '';
+  input.focus();
+  runFullSearch(input.value);
+}
+
+function closeSearchOverlay() {
+  document.getElementById('search-overlay').classList.remove('is-open');
+}
+
+function makeSnippet(text, query) {
+  const q = query.trim().toLowerCase();
+  if (!q) return text.slice(0, 200);
+  const lower = text.toLowerCase();
+  const i = lower.indexOf(q);
+  if (i === -1) return text.slice(0, 200);
+  const start = Math.max(0, i - 60);
+  const end = Math.min(text.length, i + q.length + 140);
+  let snip = (start > 0 ? '...' : '') + text.slice(start, end) + (end < text.length ? '...' : '');
+  // Highlight all occurrences
+  const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+  return snip.replace(re, m => `<mark>${m}</mark>`);
+}
+
+function runFullSearch(query) {
+  const results = document.getElementById('search-results');
+  if (!query || query.length < 2) {
+    results.innerHTML = `<div class="search-empty">Введи минимум 2 символа</div>`;
+    return;
+  }
+  if (!searchIndex) searchIndex = buildSearchIndex();
+  if (!searchIndex) {
+    results.innerHTML = `<div class="search-empty">Поиск загружается, подожди секунду...</div>`;
+    setTimeout(() => runFullSearch(query), 500);
+    return;
+  }
+  const hits = searchIndex.search(query, { combineWith: 'AND' }).slice(0, 12);
+  if (hits.length === 0) {
+    results.innerHTML = `<div class="search-empty">Ничего не нашёл по запросу «${query}». Попробуй другое слово.</div>`;
+    return;
+  }
+  searchActiveIdx = 0;
+  results.innerHTML = hits.map((h, i) => {
+    const phaseLabel = h.track === 'claude' ? 'Claude' : h.track === 'projects' ? 'Проект' :
+                       h.track === 'industry' ? 'Индустрия' : `Фаза ${h.phase}`;
+    const phaseCls = h.track === 'claude' ? 'pc' : h.track === 'projects' ? 'pp' :
+                     h.track === 'industry' ? 'pi' : 'p' + h.phase;
+    const lessonNum = typeof h.id === 'number' ? `Урок ${h.id}` : String(h.id).toUpperCase();
+    const snippet = makeSnippet(h.text || '', query);
+    return `<a class="search-result ${i === 0 ? 'active' : ''}" data-idx="${i}" data-id="${h.id}" onclick="event.preventDefault(); openSearchHit(${JSON.stringify(h.id)})" href="#lesson-${h.id}">
+      <div class="search-result-meta"><span class="phase-tag ${phaseCls}">${phaseLabel}</span> · ${lessonNum}</div>
+      <div class="search-result-title">${h.title}</div>
+      <div class="search-result-snippet">${snippet}</div>
+    </a>`;
+  }).join('');
+}
+
+function openSearchHit(id) {
+  closeSearchOverlay();
+  // Очистим сайдбар-поиск
+  const sb = document.getElementById('search-box');
+  if (sb) sb.value = '';
+  openLesson(id);
+}
+
+// Keyboard navigation in overlay
+document.addEventListener('keydown', e => {
+  const ov = document.getElementById('search-overlay');
+  if (!ov || !ov.classList.contains('is-open')) return;
+  const results = [...document.querySelectorAll('.search-result')];
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    if (searchActiveIdx < results.length - 1) searchActiveIdx++;
+    results.forEach((r, i) => r.classList.toggle('active', i === searchActiveIdx));
+    results[searchActiveIdx]?.scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    if (searchActiveIdx > 0) searchActiveIdx--;
+    results.forEach((r, i) => r.classList.toggle('active', i === searchActiveIdx));
+    results[searchActiveIdx]?.scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    const active = results[searchActiveIdx];
+    if (active) active.click();
+  }
+});
+
+// ============================================================
+// Lesson TOC + scroll-spy
+// ============================================================
+let tocSpyObserver = null;
+
+function buildLessonTOC(container) {
+  const headings = container.querySelectorAll('h2, h3');
+  if (headings.length < 3) return null;
+  let html = '<details class="lesson-toc" open><summary>📑 Содержание урока</summary><ol>';
+  headings.forEach((h, i) => {
+    const id = 'h-' + i;
+    h.id = id;
+    const cls = h.tagName === 'H3' ? 'h3' : '';
+    const text = h.textContent.replace(/^\d+\.\s*/, '').trim();
+    html += `<li class="${cls}"><a href="#${id}" onclick="event.preventDefault(); document.getElementById('${id}').scrollIntoView({behavior:'smooth', block:'start'}); history.replaceState(null,'','#${id}')">${text}</a></li>`;
+  });
+  html += '</ol></details>';
+  return html;
+}
+
+function activateTOCSpy(container) {
+  if (tocSpyObserver) tocSpyObserver.disconnect();
+  const headings = [...container.querySelectorAll('h2, h3')];
+  const links = [...container.querySelectorAll('.lesson-toc ol a')];
+  if (!headings.length || !links.length) return;
+  tocSpyObserver = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        links.forEach(a => a.classList.remove('active'));
+        const id = en.target.id;
+        const link = container.querySelector(`.lesson-toc ol a[href="#${id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+  headings.forEach(h => tocSpyObserver.observe(h));
+}
+
+// ============================================================
+// Share button — copy clean URL
+// ============================================================
+function shareLessonLink(id) {
+  const url = `${location.origin}${location.pathname.replace(/index\.html?$/, '')}lessons/${id}.html`;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('lesson-share-btn');
+    if (btn) {
+      btn.textContent = '✓ Скопировано';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.innerHTML = '🔗 Скопировать ссылку'; btn.classList.remove('copied'); }, 1800);
+    }
+  });
 }
 
 // ============================================================
