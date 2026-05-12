@@ -12829,7 +12829,7 @@ let tocSpyObserver = null;
 function buildLessonTOC(container) {
   const headings = container.querySelectorAll('h2, h3');
   if (headings.length < 3) return null;
-  let html = '<details class="lesson-toc" open><summary>📑 Содержание урока</summary><ol>';
+  let html = '<details class="lesson-toc"><summary>📑 Содержание урока</summary><ol>';
   headings.forEach((h, i) => {
     const id = 'h-' + i;
     h.id = id;
@@ -12937,7 +12937,13 @@ function initAlesha(lesson) {
 
   // Show widget on lesson pages
   w.classList.add('is-lesson');
-  w.classList.remove('is-collapsed-desktop', 'is-open');
+  w.classList.remove('is-collapsed-desktop');
+  // On mobile/tablet — open by default too
+  if (window.innerWidth < 1100) {
+    w.classList.add('is-open');
+  } else {
+    w.classList.remove('is-open');
+  }
   w.dataset.lessonId = String(lesson.id);
   w.dataset.lessonTitle = lesson.title || '';
 
