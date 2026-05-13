@@ -8744,6 +8744,682 @@ registerLesson(22, `
 
 
 // ============================================================
+// Урок 31 — старт Фазы 3
+// ============================================================
+registerLesson(31, `
+<h1>Урок 31. Введение в ИИ как науку</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять, где сейчас находится ИИ и как мы сюда пришли — без воды и без хайпа</span>
+  <span><strong>Время:</strong> ~45 минут</span>
+  <span><strong>Источник:</strong> AI-For-Beginners/01–02 + Russell &amp; Norvig «AIMA»</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Ты уже умеешь работать с LLM и собирать агентов. Теперь — ныряем под капот: что такое нейросети, как они учатся, чем отличаются от классического ML. Без этой базы дальше будет каша.</p>
+<p>Фаза 3 — про практическое понимание <em>как это работает</em>. Не математические доказательства, а ментальная модель, которая позволяет читать статьи и код.</p>
+
+<h2>1. Что мы вообще называем «ИИ»</h2>
+<p>Термин 1956 года, означал очень разные вещи. Современная вложенная иерархия:</p>
+<pre><code>AI (искусственный интеллект)
+└── ML (машинное обучение)
+    └── Neural Networks (нейросети)
+        └── Deep Learning (глубокие нейросети, ≥3 слоёв)
+            └── Foundation Models (LLM, Vision, etc.)</code></pre>
+<p><strong>AI ≠ ML ≠ DL ≠ LLM</strong> — это разные уровни абстракции. ChatGPT — это <em>LLM</em>, который является <em>Foundation Model</em>, которая является <em>Deep Learning</em> моделью, которая является <em>Neural Network</em>, которая является разновидностью <em>ML</em>, которое — разновидность <em>AI</em>.</p>
+
+<h2>2. Три парадигмы ИИ</h2>
+<table>
+<tr><th>Парадигма</th><th>Идея</th><th>Когда работает</th><th>Когда не работает</th></tr>
+<tr><td><strong>Символьный ИИ</strong></td><td>Закодировать правила и логику</td><td>Чёткие домены: шахматы, теорема Пифагора, экспертные системы</td><td>Распознавание лица, понимание текста, всё что зашумлено</td></tr>
+<tr><td><strong>Коннекционизм (нейросети)</strong></td><td>Учиться на данных, паттерны</td><td>Зашумлённые данные, паттерны, обобщение</td><td>Логика, точные вычисления, объяснимость</td></tr>
+<tr><td><strong>Вероятностный</strong></td><td>Управлять неопределённостью через Байеса</td><td>Малые данные, причинно-следственный анализ</td><td>Крупные данные, сложные паттерны</td></tr>
+</table>
+<p>В 2026 доминирует коннекционизм. Но «победить» так и не получилось — современные системы гибридные (RAG = коннекционизм + символьный поиск, AlphaGo = нейросети + tree search).</p>
+
+<h2>3. История на пальцах (10 ключевых дат)</h2>
+<ul>
+<li><strong>1943</strong> — McCulloch &amp; Pitts: математическая модель нейрона.</li>
+<li><strong>1950</strong> — Тест Тьюринга.</li>
+<li><strong>1956</strong> — Дартмутская конференция, термин «AI».</li>
+<li><strong>1958</strong> — Перцептрон Розенблатта (научается на данных!).</li>
+<li><strong>1969</strong> — Minsky &amp; Papert: перцептрон не может XOR. Зима ИИ.</li>
+<li><strong>1986</strong> — Backpropagation (Rumelhart) — оттаивание.</li>
+<li><strong>2006</strong> — Hinton: «deep learning» взлетает.</li>
+<li><strong>2012</strong> — AlexNet выигрывает ImageNet. CNN-революция в зрении.</li>
+<li><strong>2017</strong> — «Attention Is All You Need» — рождение трансформеров.</li>
+<li><strong>2020+</strong> — GPT-3, ChatGPT, мультимодальные модели, агенты.</li>
+</ul>
+
+<h2>4. Что такое «обучение»</h2>
+<p>Главный сдвиг 21 века — мы не программируем поведение, а <strong>задаём цель</strong> и пускаем модель учиться.</p>
+<ul>
+<li><strong>Supervised</strong> (обучение с учителем) — есть пары (вход, правильный ответ). Модель учится приближать.</li>
+<li><strong>Unsupervised</strong> — есть только входы. Модель ищет структуру (кластеры, эмбеддинги).</li>
+<li><strong>Self-supervised</strong> — модель сама себе создаёт «правильные ответы» из текста (предсказать следующий токен). Так учатся LLM.</li>
+<li><strong>Reinforcement Learning</strong> — учится через награды от среды (роботы, игры, RLHF).</li>
+</ul>
+
+<h2>5. Почему именно сейчас сработало</h2>
+<p>Идеи нейросетей существовали с 1940-х. «Взрыв» 2010-х — это сочетание трёх вещей:</p>
+<ol>
+<li><strong>Данные.</strong> Интернет дал триллионы примеров.</li>
+<li><strong>Вычисления.</strong> GPU из игр оказались идеальны для умножения матриц.</li>
+<li><strong>Архитектуры.</strong> Backprop, CNN, ResNet, Transformer — нашли что хорошо обучается.</li>
+</ol>
+<p>Без любых двух из трёх — ничего бы не сработало.</p>
+
+<h2>6. Что НЕ умеет современный ИИ</h2>
+<ul>
+<li><strong>Думать про физический мир.</strong> Модели не понимают, что стул не пройдёт сквозь стену.</li>
+<li><strong>Точная математика.</strong> LLM плохо считают, нужен Code Interpreter.</li>
+<li><strong>Каузальность.</strong> Видят корреляции, не причины.</li>
+<li><strong>Долгосрочное планирование.</strong> Помнят контекст плохо.</li>
+<li><strong>Обучение online.</strong> Не учатся в процессе использования (без RL).</li>
+<li><strong>Объяснимость.</strong> Внутри — миллиарды чисел, не поддаются прямой интерпретации.</li>
+</ul>
+
+<h2>7. Карта Фазы 3</h2>
+<p>Дальше в фазе мы пройдём:</p>
+<ul>
+<li><strong>32:</strong> Символьный ИИ — корни и где он жив.</li>
+<li><strong>33:</strong> Перцептрон — простейшая нейросеть.</li>
+<li><strong>34:</strong> Свой framework на NumPy — поймём backprop изнутри.</li>
+<li><strong>35:</strong> PyTorch / TensorFlow — современные инструменты.</li>
+<li><strong>36–42:</strong> Computer Vision — CNN, transfer learning, GANs, detection, segmentation.</li>
+<li><strong>43–50:</strong> NLP — эмбеддинги, RNN, attention, transformers, BERT, GPT.</li>
+</ul>
+<p>К концу фазы ты прочитаешь любую ML-статью и поймёшь архитектуру.</p>
+
+<h2>8. Глоссарий</h2>
+<div class="glossary-term"><h3>AI / ML / DL</h3><p>Искусственный интеллект / Машинное обучение / Глубокое обучение — вложенные категории.</p></div>
+<div class="glossary-term"><h3>Supervised learning</h3><p>Обучение на парах (вход, правильный ответ).</p></div>
+<div class="glossary-term"><h3>Self-supervised</h3><p>Модель сама задаёт себе задачу из неразмеченных данных. Так учатся LLM.</p></div>
+<div class="glossary-term"><h3>Foundation model</h3><p>Большая модель, обученная на огромном корпусе, пригодная для fine-tune под разные задачи.</p></div>
+<div class="glossary-term"><h3>Backpropagation</h3><p>Алгоритм 1986 года, делающий обучение нейросетей вычислительно реальным.</p></div>
+
+<h2>9. Практика (45 минут)</h2>
+<ol>
+<li>Прочитай <a href="https://en.wikipedia.org/wiki/Timeline_of_artificial_intelligence" target="_blank">Timeline AI на Wikipedia</a> — это 20 минут хорошо потраченного времени.</li>
+<li>Открой <a href="https://playground.tensorflow.org" target="_blank">playground.tensorflow.org</a>. Поиграйся с XOR / Spiral — увидишь, как нейросеть учится визуально.</li>
+<li>Напиши в <code>progress.md</code>: какие 3 ограничения современного ИИ ты считаешь самыми важными для своей работы.</li>
+</ol>
+
+<h2>10. Проверь себя</h2>
+<p><strong>1. AI, ML, DL, LLM — иерархия?</strong><br>LLM ⊂ Foundation Model ⊂ Deep Learning ⊂ Neural Networks ⊂ ML ⊂ AI.</p>
+<p><strong>2. Три парадигмы ИИ?</strong><br>Символьный, коннекционистский (нейросети), вероятностный.</p>
+<p><strong>3. Почему именно в 2010-х взлетело?</strong><br>Сочетание трёх: данные (интернет), вычисления (GPU), архитектуры (backprop + CNN + Transformer).</p>
+<p><strong>4. Чем self-supervised отличается от supervised?</strong><br>Self-supervised сам создаёт «правильные ответы» из неразмеченных данных. LLM учатся предсказывать следующий токен.</p>
+
+<h2>11. Что должно остаться в голове</h2>
+<ol>
+<li>AI ≠ ML ≠ DL ≠ LLM. Это вложенные категории.</li>
+<li>Три парадигмы: символьный, коннекционизм, вероятностный. Сейчас доминирует коннекционизм.</li>
+<li>«Программирование через обучение» — главный сдвиг 21 века.</li>
+<li>Взлёт = данные + GPU + архитектуры.</li>
+<li>Современный ИИ не умеет каузальность, online-обучение, объяснимость.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> поиграй на playground.tensorflow.org минут 15. Увидеть как нейросеть учится спирали — лучше тысячи слов теории.
+</div>
+`);
+
+
+// ============================================================
+// Урок 32
+// ============================================================
+registerLesson(32, `
+<h1>Урок 32. Символьный ИИ и графы знаний</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять, чем был старый ИИ и почему knowledge graphs живут и сейчас</span>
+  <span><strong>Время:</strong> ~50 минут</span>
+  <span><strong>Источник:</strong> AI-For-Beginners/03</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Символьный ИИ кажется чем-то из 1970-х, но в реальности его части — knowledge graphs, expert systems, formal reasoning — активно работают в продакшене 2026. Google использует Knowledge Graph для поиска, Amazon для рекомендаций, Bloomberg для финансовой аналитики.</p>
+<p>Без понимания symbolic AI ты не поймёшь, чем гибридные neuro-symbolic подходы лучше чистых нейросетей, и где LLM нужно «прикручивать к графу».</p>
+
+<h2>1. Идея в одном абзаце</h2>
+<p>Символьный ИИ = <strong>правила + факты + логика</strong>. Все знания записываются в виде символов (имена, отношения, правила вывода). Машина выводит новые факты, применяя правила к фактам.</p>
+<pre><code>Факты: Сократ — человек. Все люди смертны.
+Правило: Если X — человек, то X — смертен.
+Вывод: Сократ смертен.</code></pre>
+<p>Это первый класс задач, которые решал ИИ — 50-е и 60-е годы.</p>
+
+<h2>2. Knowledge Representation</h2>
+<p>Главное в символьном AI — <strong>как представить знания</strong>. Подходы:</p>
+<ul>
+<li><strong>Логика первого порядка</strong> — формулы вида <code>∀x: Человек(x) → Смертен(x)</code>.</li>
+<li><strong>Семантические сети / графы</strong> — узлы (сущности) и рёбра (отношения).</li>
+<li><strong>Фреймы</strong> — структуры с слотами (как объекты в ООП).</li>
+<li><strong>Онтологии</strong> — формальные иерархии понятий (Schema.org, OWL).</li>
+<li><strong>Продукционные правила</strong> — «если A и B, то C» (CLIPS, Drools).</li>
+</ul>
+
+<h2>3. Экспертные системы — пик 80-х</h2>
+<p>Идея: эксперт даёт правила своей области, машина применяет их к фактам.</p>
+<ul>
+<li><strong>MYCIN</strong> (1972) — диагностика бактериальных инфекций. ~600 правил, точнее многих врачей.</li>
+<li><strong>DENDRAL</strong> (1965) — определение структуры молекул из масс-спектрометрии.</li>
+<li><strong>XCON</strong> (1980) — конфигурирование компьютеров DEC, сэкономила $25M/год.</li>
+</ul>
+<p>Технологически работало. Коммерчески — индустрия экспертных систем рухнула в 1987–1993:</p>
+<ul>
+<li>Правила хрупкие — каждое новое исключение ломало.</li>
+<li>«Бутылочное горлышко знаний» — экспертов сложно интервьюировать и кодировать.</li>
+<li>Не справлялись с шумом и неопределённостью.</li>
+<li>Не масштабировались — после 1000 правил система становилась неуправляемой.</li>
+</ul>
+
+<h2>4. Knowledge Graphs — что живо в 2026</h2>
+<p>Knowledge Graph (KG) — это граф, где:</p>
+<ul>
+<li><strong>Узлы</strong> = сущности (Москва, Эйфелева башня, Альберт Эйнштейн).</li>
+<li><strong>Рёбра</strong> = отношения (находится_в, спроектирована, родился_в).</li>
+<li><strong>Каждое утверждение</strong> = тройка (subject, predicate, object). RDF-стандарт.</li>
+</ul>
+<pre><code>(Эйфелева_башня, located_in, Париж)
+(Париж, capital_of, Франция)
+(Эйфелева_башня, designed_by, Эйфель)
+(Эйфель, born_in, Дижон)</code></pre>
+<p>Имея KG, можно ответить на вопросы выводом: «кто спроектировал самое известное здание столицы Франции?» — это путь в графе.</p>
+
+<h2>5. Знаменитые KG в продакшене</h2>
+<table>
+<tr><th>KG</th><th>Размер</th><th>Где используется</th></tr>
+<tr><td><strong>Wikidata</strong></td><td>~100M сущностей, 1B утверждений</td><td>Wikipedia, открытые проекты</td></tr>
+<tr><td><strong>Google Knowledge Graph</strong></td><td>500B+ фактов</td><td>Поиск Google, Knowledge Panels справа</td></tr>
+<tr><td><strong>Schema.org</strong></td><td>Стандарт онтологии</td><td>SEO-микроразметка на сайтах</td></tr>
+<tr><td><strong>YAGO</strong></td><td>10M сущностей</td><td>Академический research</td></tr>
+<tr><td><strong>Bloomberg Knowledge Graph</strong></td><td>Финансовая</td><td>Bloomberg Terminal, риски</td></tr>
+<tr><td><strong>Amazon Product Graph</strong></td><td>Миллиарды товаров</td><td>Рекомендации, search</td></tr>
+</table>
+
+<h2>6. Запросы к KG — SPARQL</h2>
+<p>Wikidata можно запрашивать через SPARQL:</p>
+<pre><code>SELECT ?president ?birthplace
+WHERE {
+  ?president wdt:P39 wd:Q11696.    # был президентом США
+  ?president wdt:P19 ?birthplace.  # место рождения
+}</code></pre>
+<p>Это SQL-подобный язык, но для графов. Возвращает всех президентов США и их места рождения.</p>
+
+<h2>7. Где LLM не справится без KG</h2>
+<ul>
+<li><strong>Точные актуальные факты.</strong> «Сколько у компании сотрудников сейчас» — KG обновляется, LLM застряла на cutoff.</li>
+<li><strong>Сложные multi-hop запросы.</strong> «Кто работал над проектами обеих компаний» — естественно для KG, мука для LLM.</li>
+<li><strong>Доказуемость.</strong> Каждое утверждение в KG — это конкретное ребро с источником. LLM «не помнит откуда».</li>
+<li><strong>Согласованность.</strong> KG не даст двух противоречивых ответов на один и тот же вопрос (если правильно построен).</li>
+</ul>
+
+<h2>8. Neuro-Symbolic AI — гибрид</h2>
+<p>Сильный тренд 2024–2026: нейросети + символьное знание.</p>
+<ul>
+<li><strong>LLM + KG retrieval</strong> — модель отвечает, используя факты из графа (вариант RAG).</li>
+<li><strong>LLM генерирует SPARQL</strong> — пользователь задаёт вопрос на естественном языке, LLM пишет запрос к графу.</li>
+<li><strong>AlphaGeometry</strong> — DeepMind решает геометрические задачи: нейросеть генерирует идеи, символьный решатель проверяет.</li>
+<li><strong>Verification</strong> — LLM генерирует утверждение, KG проверяет фактологию.</li>
+</ul>
+
+<h2>9. Когда строить свой KG для своего продукта</h2>
+<table>
+<tr><th>Имеет смысл</th><th>Не имеет</th></tr>
+<tr><td>Данные структурированные с понятными отношениями</td><td>Данные — это текст разной природы</td></tr>
+<tr><td>Запросы — это «связи между сущностями»</td><td>Запросы — это «найди похожее по смыслу»</td></tr>
+<tr><td>Нужна доказуемость источников</td><td>Достаточно «правдоподобно»</td></tr>
+<tr><td>Данные не меняются часто</td><td>Реальное время, миллионы записей/час</td></tr>
+</table>
+<p>Если сомневаешься — начни с vector DB (Урок 14). KG требует серьёзной онтологической работы заранее.</p>
+
+<h2>10. Тонкости и подводные камни</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Онтология — самая дорогая часть.</strong> «Какие у нас сущности и отношения» — это месяцы работы доменных экспертов.</li>
+<li><strong>KG ≠ Neo4j.</strong> Neo4j — это property graph DB. KG — это RDF/triples с формальной семантикой. Часто путают.</li>
+<li><strong>Чистота данных.</strong> Один дубль или плохое отношение портит выводы.</li>
+<li><strong>Reasoning медленный.</strong> Сложные SPARQL-запросы через большой граф = десятки секунд.</li>
+<li><strong>LLM-генерация SPARQL ошибается.</strong> Точность 60–80% на нетривиальных запросах. Нужна валидация.</li>
+</ul>
+</div>
+
+<h2>11. Глоссарий</h2>
+<div class="glossary-term"><h3>Symbolic AI</h3><p>Подход, где знания и логика — символы и правила.</p></div>
+<div class="glossary-term"><h3>Knowledge Graph</h3><p>Граф сущностей и отношений. Часто RDF-формат.</p></div>
+<div class="glossary-term"><h3>Triple / RDF</h3><p>Тройка (subject, predicate, object). Атом знаний в KG.</p></div>
+<div class="glossary-term"><h3>Ontology</h3><p>Формальная иерархия понятий с правилами.</p></div>
+<div class="glossary-term"><h3>SPARQL</h3><p>Язык запросов к RDF-графам. SQL-подобный.</p></div>
+<div class="glossary-term"><h3>Neuro-symbolic AI</h3><p>Гибрид нейросетей с символьными методами.</p></div>
+
+<h2>12. Практика (45 минут)</h2>
+<ol>
+<li>Открой <a href="https://query.wikidata.org" target="_blank">query.wikidata.org</a>. Это публичный KG.</li>
+<li>Выполни 2–3 готовых query из примеров. Посмотри SPARQL.</li>
+<li>Напиши свой: «все писатели, родившиеся в твоём городе».</li>
+<li>Попроси ChatGPT/Claude написать SPARQL по твоему вопросу — посмотри, насколько он точен.</li>
+<li>В <code>progress.md</code> запиши: где KG явно бы помогли твоему продукту, и стоит ли.</li>
+</ol>
+
+<h2>13. Проверь себя</h2>
+<p><strong>1. Чем KG отличается от vector DB?</strong><br>KG — структурированные связи между сущностями. Vector — семантическое сходство текстов. Разные классы задач.</p>
+<p><strong>2. Что такое triple?</strong><br>Тройка (subject, predicate, object). Атом знания в RDF KG.</p>
+<p><strong>3. Почему провалились экспертные системы?</strong><br>Правила хрупкие, экспертов сложно интервьюировать, не справляются с шумом, не масштабируются.</p>
+<p><strong>4. Где KG нужнее, чем LLM?</strong><br>Точные актуальные факты, multi-hop связи, доказуемость источников, согласованность.</p>
+<p><strong>5. Что такое neuro-symbolic AI?</strong><br>Гибрид нейросетей и символьного reasoning. AlphaGeometry, LLM + KG retrieval.</p>
+
+<h2>14. Что должно остаться в голове</h2>
+<ol>
+<li>Символьный AI = правила + факты + логика. Был доминантным до 1990-х.</li>
+<li>Knowledge Graphs живы в Google, Wikidata, Bloomberg, Amazon.</li>
+<li>RDF triples: (subject, predicate, object). SPARQL для запросов.</li>
+<li>LLM + KG — гибрид для точности фактов и доказуемости.</li>
+<li>Строить свой KG — серьёзная онтологическая работа. Начни с vector DB если сомневаешься.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> поиграйся с Wikidata Query Service 15 минут. Это даёт понимание, что такое «структурированные знания» лучше любых статей.
+</div>
+`);
+
+
+// ============================================================
+// Урок 33
+// ============================================================
+registerLesson(33, `
+<h1>Урок 33. Перцептрон — самая простая нейросеть</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять простейшую нейросеть так, чтобы дальше понять все остальные</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Источник:</strong> AI-For-Beginners/04 + Goodfellow «Deep Learning» гл. 6</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Перцептрон — это «hello world» нейросетей. На нём ты поймёшь:</p>
+<ul>
+<li>Что такое «нейрон» в математическом смысле.</li>
+<li>Что такое веса и обучение.</li>
+<li>Что такое функция активации.</li>
+<li>Зачем нужны несколько слоёв (XOR-проблема).</li>
+</ul>
+<p>Без этого понимания CNN, RNN, Transformer — будут магией.</p>
+
+<h2>1. Биологическая мотивация (одно предложение)</h2>
+<p>Нейрон в мозге: получает сигналы от других нейронов через дендриты, суммирует, и если сумма выше порога — посылает сигнал по аксону.</p>
+<p>Математическая абстракция: <strong>взвешенная сумма входов → активация → выход</strong>. Все детали биологии — упрощены до этой схемы.</p>
+
+<h2>2. Формула перцептрона</h2>
+<p>Вход: <code>x₁, x₂, ..., xₙ</code> (например, пиксели картинки).</p>
+<p>Веса: <code>w₁, w₂, ..., wₙ</code> (то, что модель учится подбирать).</p>
+<p>Bias: <code>b</code> (свободный коэффициент).</p>
+<p>Выход:</p>
+<pre><code>z = w₁·x₁ + w₂·x₂ + ... + wₙ·xₙ + b
+y = activation(z)</code></pre>
+<p>То есть: считаешь взвешенную сумму, пропускаешь через функцию активации, получаешь ответ.</p>
+
+<h2>3. Функции активации</h2>
+<table>
+<tr><th>Функция</th><th>Формула</th><th>Где используется</th></tr>
+<tr><td><strong>Step</strong></td><td>1 если z &gt; 0, иначе 0</td><td>Исторический перцептрон Розенблатта</td></tr>
+<tr><td><strong>Sigmoid</strong></td><td>1 / (1 + e⁻ᶻ)</td><td>Бинарная классификация, выход вероятности</td></tr>
+<tr><td><strong>Tanh</strong></td><td>(eᶻ - e⁻ᶻ) / (eᶻ + e⁻ᶻ)</td><td>Раньше — скрытые слои</td></tr>
+<tr><td><strong>ReLU</strong></td><td>max(0, z)</td><td>Стандарт скрытых слоёв сейчас</td></tr>
+<tr><td><strong>Softmax</strong></td><td>eᶻⁱ / Σeᶻⁱ</td><td>Многоклассовая классификация</td></tr>
+</table>
+<p><strong>ReLU</strong> победил, потому что: простой (max), быстрый, не насыщается при больших z, и эмпирически даёт лучшую сходимость.</p>
+
+<h2>4. Геометрический смысл</h2>
+<p>Один перцептрон с step-активацией = <strong>линейный классификатор</strong>. Он рисует <em>гиперплоскость</em> в пространстве признаков и относит точки к классу 0 или 1 в зависимости от того, по какую сторону.</p>
+<p>Для 2D — это просто линия:</p>
+<pre><code>w₁·x + w₂·y + b = 0</code></pre>
+<p>Если точка (x, y) над линией — класс 1, под линией — класс 0.</p>
+
+<h2>5. Как перцептрон учится</h2>
+<p>Розенблатт (1958) предложил простое правило:</p>
+<ol>
+<li>Инициализируй веса случайно.</li>
+<li>Возьми обучающий пример (x, y_true).</li>
+<li>Посчитай y_pred = perceptron(x).</li>
+<li>Если y_pred ≠ y_true → подкрути веса: <code>w_i += learning_rate * (y_true - y_pred) * x_i</code>.</li>
+<li>Повторяй пока ошибки не исчезнут.</li>
+</ol>
+<p><strong>Теорема Розенблатта:</strong> если данные <em>линейно разделимы</em>, это правило сойдётся за конечное число шагов.</p>
+
+<h2>6. XOR-проблема — фатальная для перцептрона</h2>
+<p>Возьми XOR:</p>
+<pre><code>x₁  x₂  XOR
+0   0   0
+0   1   1
+1   0   1
+1   1   0</code></pre>
+<p>Попробуй провести одну прямую, отделяющую (0,0) и (1,1) от (0,1) и (1,0). Не получится. <strong>XOR — не линейно разделим.</strong></p>
+<p>Это убило хайп вокруг перцептронов в 1969 (Minsky &amp; Papert «Perceptrons»). Зима ИИ на 20 лет.</p>
+
+<h2>7. Многослойный перцептрон (MLP) решает XOR</h2>
+<p>Идея: <strong>два слоя</strong> перцептронов вместо одного.</p>
+<p>Первый слой переводит вход в новое пространство, где XOR уже линейно разделим. Второй слой делает линейную классификацию.</p>
+<pre><code>Скрытый слой:
+  h₁ = activation(x₁ + x₂ - 0.5)     // «либо один из x»
+  h₂ = activation(x₁ + x₂ - 1.5)     // «оба x»
+Выходной слой:
+  y = activation(h₁ - h₂ - 0.5)      // «h₁ но не h₂»</code></pre>
+<p>Это и есть XOR. Любая функция может быть приближена многослойным MLP — это <strong>теорема универсальной аппроксимации</strong> (1989).</p>
+
+<h2>8. Простейшая реализация на Python</h2>
+<pre><code>import numpy as np
+
+class Perceptron:
+    def __init__(self, n_features, lr=0.1):
+        self.w = np.zeros(n_features)
+        self.b = 0
+        self.lr = lr
+
+    def predict(self, x):
+        return 1 if (np.dot(self.w, x) + self.b) > 0 else 0
+
+    def train(self, X, y, epochs=100):
+        for _ in range(epochs):
+            for xi, yi in zip(X, y):
+                y_pred = self.predict(xi)
+                error = yi - y_pred
+                self.w += self.lr * error * xi
+                self.b += self.lr * error
+
+# AND функция — линейно разделима
+X = np.array([[0,0],[0,1],[1,0],[1,1]])
+y = np.array([0, 0, 0, 1])
+
+p = Perceptron(n_features=2)
+p.train(X, y, epochs=20)
+print([p.predict(x) for x in X])  # [0, 0, 0, 1] — выучил AND</code></pre>
+
+<h2>9. От перцептрона до современных сетей</h2>
+<p>Современная глубокая сеть = десятки слоёв таких «перцептронов» + ReLU + хитрые архитектуры. Но базовая идея — та же:</p>
+<ol>
+<li>Взвешенная сумма входов.</li>
+<li>Нелинейная активация.</li>
+<li>Передача в следующий слой.</li>
+</ol>
+
+<h2>10. Тонкости и подводные камни</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Без активации многослойный MLP = линейный.</strong> Если активаций нет — любая комбинация линейных преобразований остаётся линейной. Активации — то, что даёт нелинейность.</li>
+<li><strong>Step-активация не дифференцируема.</strong> Для backprop (Урок 34) нужны гладкие функции — sigmoid, tanh, ReLU.</li>
+<li><strong>Веса инициализируй НЕ нулями.</strong> Если все нули — все нейроны учатся одному и тому же. Используй случайную инициализацию (Glorot, He).</li>
+<li><strong>Learning rate важен.</strong> Слишком большой — модель не сходится, слишком малый — учится годами.</li>
+</ul>
+</div>
+
+<h2>11. Глоссарий</h2>
+<div class="glossary-term"><h3>Perceptron</h3><p>Один нейрон: взвешенная сумма входов + активация = выход.</p></div>
+<div class="glossary-term"><h3>Activation function</h3><p>Нелинейная функция, через которую пропускают взвешенную сумму. ReLU — стандарт.</p></div>
+<div class="glossary-term"><h3>Bias</h3><p>Свободный коэффициент в нейроне. Сдвигает гиперплоскость.</p></div>
+<div class="glossary-term"><h3>MLP</h3><p>Multi-Layer Perceptron — несколько слоёв перцептронов. Может приблизить любую функцию.</p></div>
+<div class="glossary-term"><h3>XOR-проблема</h3><p>Один перцептрон не может выучить XOR (не линейно разделим). MLP с скрытым слоем — может.</p></div>
+<div class="glossary-term"><h3>Universal Approximation Theorem</h3><p>Двухслойный MLP с достаточным количеством нейронов может приблизить любую непрерывную функцию.</p></div>
+
+<h2>12. Практика (60 минут)</h2>
+<ol>
+<li>Запусти Python-пример выше. Проверь, что AND учится.</li>
+<li>Попробуй на XOR — увидишь, что перцептрон не сходится (точность остаётся ~50%).</li>
+<li>Открой <a href="https://playground.tensorflow.org" target="_blank">playground.tensorflow.org</a>. Включи режим XOR. Без скрытых слоёв — не работает. Добавь 1 скрытый слой с 4 нейронами — заработает.</li>
+<li>Поиграйся с learning rate, числом эпох, активациями. Записывай, что меняется.</li>
+<li>В <code>progress.md</code> — зарисуй схему «1 нейрон» от руки и подпиши все компоненты.</li>
+</ol>
+
+<h2>13. Проверь себя</h2>
+<p><strong>1. Формула одного нейрона?</strong><br>y = activation(w·x + b), где w — веса, x — вход, b — bias.</p>
+<p><strong>2. Зачем нужна функция активации?</strong><br>Чтобы внести нелинейность. Без неё многослойная сеть остаётся линейной и не лучше одного нейрона.</p>
+<p><strong>3. Почему перцептрон не учит XOR?</strong><br>XOR не линейно разделим. Один нейрон рисует прямую — её нельзя так провести, чтобы отделить (0,1)+(1,0) от (0,0)+(1,1).</p>
+<p><strong>4. Что говорит теорема универсальной аппроксимации?</strong><br>Двухслойный MLP с достаточным числом нейронов может приблизить любую непрерывную функцию.</p>
+<p><strong>5. Почему ReLU стала стандартом?</strong><br>Простая, быстрая, не насыщается при больших z, эмпирически даёт лучшую сходимость и не страдает от vanishing gradient как sigmoid.</p>
+
+<h2>14. Что должно остаться в голове</h2>
+<ol>
+<li>Перцептрон = w·x + b → activation → y. Это весь нейрон.</li>
+<li>Один перцептрон — линейный классификатор. Может решить AND, OR. Не может XOR.</li>
+<li>MLP (скрытый слой) — переводит вход в новое пространство, где задача становится линейной.</li>
+<li>Activation function = источник нелинейности. ReLU — стандарт.</li>
+<li>Веса инициализируй случайно, не нулями.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> запусти простой Python из этого урока и поиграй с playground.tensorflow.org. После этого следующий урок — про обучение более серьёзных сетей — будет понятен.
+</div>
+`);
+
+
+// ============================================================
+// Урок 34
+// ============================================================
+registerLesson(34, `
+<h1>Урок 34. Свой framework для нейросетей на NumPy</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> построить мини-PyTorch с нуля и понять backprop изнутри</span>
+  <span><strong>Время:</strong> ~90 минут</span>
+  <span><strong>Источник:</strong> AI-For-Beginners/06 + Karpathy «Neural Networks Zero to Hero»</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Можно всю жизнь пользоваться PyTorch и не понимать что внутри. Но один раз написать свой mini-framework на NumPy = понять, как работает backprop, и почему модели иногда «не учатся».</p>
+<p>К концу урока ты:</p>
+<ul>
+<li>Поймёшь, что такое gradient descent на пальцах.</li>
+<li>Сам напишешь backpropagation.</li>
+<li>Обучишь нейросеть распознавать XOR.</li>
+<li>Будешь читать чужой PyTorch-код глубже.</li>
+</ul>
+
+<h2>1. Идея обучения за 30 секунд</h2>
+<p>У нас есть нейросеть с параметрами (веса <code>w</code> и biases <code>b</code>). У нас есть данные (X, y). Мы хотим, чтобы сеть на входе X выдавала y.</p>
+<ol>
+<li><strong>Forward pass:</strong> прогоняем X через сеть, получаем prediction.</li>
+<li><strong>Loss:</strong> считаем ошибку (насколько prediction отличается от y).</li>
+<li><strong>Backward pass:</strong> считаем градиент loss по каждому параметру (как loss изменится, если чуть поменять параметр).</li>
+<li><strong>Update:</strong> сдвигаем параметры в сторону уменьшения loss.</li>
+<li>Повтор пока loss не станет маленьким.</li>
+</ol>
+
+<h2>2. Loss function</h2>
+<p>Самая простая для регрессии — <strong>MSE</strong> (Mean Squared Error):</p>
+<pre><code>L = (1/N) · Σ (y_pred - y_true)²</code></pre>
+<p>Чем больше ошибка — тем больше loss. Цель — минимизировать.</p>
+<p>Для классификации — <strong>Cross-Entropy</strong>:</p>
+<pre><code>L = -Σ y_true · log(y_pred)</code></pre>
+
+<h2>3. Gradient descent на пальцах</h2>
+<p>Loss — это функция от параметров: <code>L(w₁, w₂, ..., wₙ, b₁, ...)</code>. Мы в точке этой функции (текущие значения параметров) и хотим попасть в минимум.</p>
+<p><strong>Градиент</strong> <code>∂L/∂wᵢ</code> = в какую сторону loss растёт быстрее всего по wᵢ. Идём в противоположную сторону:</p>
+<pre><code>w_i ← w_i - learning_rate · ∂L/∂w_i</code></pre>
+<p>Это весь gradient descent в одной формуле.</p>
+
+<h2>4. Chain rule — сердце backprop</h2>
+<p>Сеть из нескольких слоёв = композиция функций. Чтобы посчитать градиент loss по весам первого слоя, нужно «протащить» производную через все слои.</p>
+<p>Chain rule из матанализа:</p>
+<pre><code>Если y = f(g(x)), то  dy/dx = (df/dg) · (dg/dx)</code></pre>
+<p>Для сети из L слоёв: градиент loss по весу w в слое 1 = произведение производных всех слоёв 2..L и самого слоя 1.</p>
+<p><strong>Backpropagation</strong> = алгоритм эффективного вычисления этих градиентов, идя от выхода ко входу.</p>
+
+<h2>5. Минимальный framework</h2>
+<p>Реализуем 4 базовых модуля: Linear, ReLU, Sigmoid, MSE.</p>
+<pre><code>import numpy as np
+
+class Linear:
+    def __init__(self, in_features, out_features):
+        # He init для ReLU
+        self.W = np.random.randn(in_features, out_features) * np.sqrt(2.0 / in_features)
+        self.b = np.zeros(out_features)
+        self.input = None
+        self.grad_W = None
+        self.grad_b = None
+
+    def forward(self, x):
+        self.input = x  # запоминаем для backward
+        return x @ self.W + self.b
+
+    def backward(self, grad_output):
+        # grad по W: x.T @ grad_output
+        self.grad_W = self.input.T @ grad_output
+        self.grad_b = grad_output.sum(axis=0)
+        # grad для предыдущего слоя
+        return grad_output @ self.W.T
+
+
+class ReLU:
+    def __init__(self):
+        self.mask = None
+
+    def forward(self, x):
+        self.mask = (x > 0).astype(float)
+        return x * self.mask
+
+    def backward(self, grad_output):
+        return grad_output * self.mask
+
+
+class Sigmoid:
+    def __init__(self):
+        self.output = None
+
+    def forward(self, x):
+        self.output = 1 / (1 + np.exp(-x))
+        return self.output
+
+    def backward(self, grad_output):
+        return grad_output * self.output * (1 - self.output)
+
+
+class MSE:
+    def forward(self, y_pred, y_true):
+        self.y_pred = y_pred
+        self.y_true = y_true
+        return ((y_pred - y_true) ** 2).mean()
+
+    def backward(self):
+        return 2 * (self.y_pred - self.y_true) / self.y_true.size</code></pre>
+
+<h2>6. Собираем сеть и обучаем XOR</h2>
+<pre><code>class Network:
+    def __init__(self, layers):
+        self.layers = layers
+
+    def forward(self, x):
+        for layer in self.layers:
+            x = layer.forward(x)
+        return x
+
+    def backward(self, grad):
+        for layer in reversed(self.layers):
+            grad = layer.backward(grad)
+
+    def step(self, lr):
+        for layer in self.layers:
+            if isinstance(layer, Linear):
+                layer.W -= lr * layer.grad_W
+                layer.b -= lr * layer.grad_b
+
+
+# XOR data
+X = np.array([[0,0],[0,1],[1,0],[1,1]], dtype=float)
+y = np.array([[0],[1],[1],[0]], dtype=float)
+
+net = Network([
+    Linear(2, 4),
+    ReLU(),
+    Linear(4, 1),
+    Sigmoid(),
+])
+loss_fn = MSE()
+
+for epoch in range(2000):
+    y_pred = net.forward(X)
+    loss = loss_fn.forward(y_pred, y)
+    grad = loss_fn.backward()
+    net.backward(grad)
+    net.step(lr=0.1)
+    if epoch % 200 == 0:
+        print(f"Epoch {epoch}, loss: {loss:.4f}")
+
+print("Predictions:", net.forward(X).round(2))</code></pre>
+<p>Запусти. Через 1000 эпох loss упадёт до ~0.001, predictions станут [[0],[1],[1],[0]]. Ты обучил нейросеть.</p>
+
+<h2>7. Что мы только что сделали</h2>
+<ul>
+<li>Написали <strong>forward pass</strong> через слои.</li>
+<li>Реализовали <strong>backpropagation</strong> через chain rule.</li>
+<li>Сделали <strong>SGD optimizer</strong> (Stochastic Gradient Descent в простейшей форме).</li>
+<li>Использовали <strong>He initialization</strong> для весов.</li>
+<li>Решили <strong>XOR</strong> — задачу, которая убила перцептроны 1969 года.</li>
+</ul>
+<p>~80 строк кода. И это база любого современного фреймворка.</p>
+
+<h2>8. Что добавляют настоящие фреймворки</h2>
+<ul>
+<li><strong>Auto-grad</strong> — автоматически считают backward (не пишешь руками).</li>
+<li><strong>GPU поддержка</strong> — CUDA, MPS.</li>
+<li><strong>Оптимизаторы</strong> — Adam, AdamW, RMSprop (умнее SGD).</li>
+<li><strong>Регуляризация</strong> — dropout, weight decay, batch norm.</li>
+<li><strong>Утилиты</strong> — DataLoader, checkpointing, schedulers.</li>
+<li><strong>Слои</strong> — Conv, LSTM, Attention.</li>
+</ul>
+
+<h2>9. Распространённые ошибки при обучении</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Loss не падает.</strong> Слишком большой learning rate (взрывается) или слишком маленький (не двигается). Попробуй 0.01, 0.001.</li>
+<li><strong>Loss = NaN.</strong> Произошло overflow — обычно из-за высокого LR или sigmoid с очень большими/маленькими z. Проверь масштаб данных.</li>
+<li><strong>Loss падает, точность не растёт.</strong> Метрика неправильно меряет (или есть утечка в данных).</li>
+<li><strong>Веса начинаются с нулей.</strong> Все нейроны учатся одному. Используй случайную инициализацию.</li>
+<li><strong>Vanishing gradients.</strong> Sigmoid в глубоких сетях: градиент стремится к нулю. Лечение — ReLU.</li>
+</ul>
+</div>
+
+<h2>10. Глоссарий</h2>
+<div class="glossary-term"><h3>Forward pass</h3><p>Прогон входа через сеть — получение предсказания.</p></div>
+<div class="glossary-term"><h3>Loss function</h3><p>Функция, которая измеряет ошибку. MSE, Cross-Entropy.</p></div>
+<div class="glossary-term"><h3>Backward pass / Backprop</h3><p>Вычисление градиентов loss по всем параметрам с применением chain rule.</p></div>
+<div class="glossary-term"><h3>Gradient descent</h3><p>Метод оптимизации: идёшь в сторону, противоположную градиенту.</p></div>
+<div class="glossary-term"><h3>Learning rate</h3><p>Размер шага обновления весов. Один из главных гиперпараметров.</p></div>
+<div class="glossary-term"><h3>Epoch</h3><p>Один полный проход по всем данным.</p></div>
+
+<h2>11. Практика (90 минут)</h2>
+<ol>
+<li>Скопируй framework из урока в файл и запусти на XOR.</li>
+<li>Добавь свой слой: <code>Tanh</code> (формула в Уроке 33).</li>
+<li>Попробуй разные learning rate: 0.001, 0.01, 0.1, 1.0 — посмотри что происходит.</li>
+<li>Замени XOR на MNIST (можно через sklearn.datasets) — настоящий датасет.</li>
+<li>Сравни время обучения с PyTorch на той же задаче.</li>
+<li>В <code>progress.md</code> зафиксируй: какие гипер-параметры лучше всего сработали.</li>
+</ol>
+
+<h2>12. Проверь себя</h2>
+<p><strong>1. Цикл обучения нейросети в 4 шагах?</strong><br>Forward → Loss → Backward → Update. Повтор.</p>
+<p><strong>2. Что такое gradient descent?</strong><br>Метод оптимизации: считаем градиент loss по параметру, идём в противоположную сторону.</p>
+<p><strong>3. Зачем chain rule в backprop?</strong><br>Чтобы посчитать градиент loss по весам внутренних слоёв через производные внешних слоёв.</p>
+<p><strong>4. Почему нельзя инициализировать веса нулями?</strong><br>Все нейроны будут учиться одному и тому же — нет смысла в нескольких нейронах.</p>
+<p><strong>5. Что значит «loss = NaN» в логах?</strong><br>Численное переполнение. Обычно: слишком большой LR, или sigmoid с экстремальными значениями. Уменьши LR или нормализуй данные.</p>
+
+<h2>13. Что должно остаться в голове</h2>
+<ol>
+<li>Обучение = Forward + Loss + Backward + Update в цикле.</li>
+<li>Backprop = chain rule, идущий от loss к входам слой за слоем.</li>
+<li>Loss функция = MSE для регрессии, Cross-Entropy для классификации.</li>
+<li>SGD: w ← w − lr · gradient.</li>
+<li>He initialization для ReLU, Xavier для tanh/sigmoid.</li>
+<li>Современные фреймворки = тот же базовый цикл + auto-grad + GPU + optimizers.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> если запустил свой framework и обучил XOR — поздравляю, ты понимаешь больше, чем 90% людей, работающих с ML. Дальше — PyTorch (Урок 35), но идеи те же.
+</div>
+`);
+
+
+// ============================================================
 // CLAUDE DEEP DIVE — Урок c1
 // ============================================================
 registerLesson("c1", `
