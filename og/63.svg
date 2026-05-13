@@ -15,7 +15,7 @@
   <!-- Brand row -->
   <g transform="translate(110, 110)">
     <text x="0" y="48" fill="#fff" font-family="-apple-system, system-ui, sans-serif" font-weight="800" font-size="44">🤖 AI Курс</text>
-    <text x="0" y="78" fill="rgba(255,255,255,0.75)" font-family="-apple-system, system-ui, sans-serif" font-weight="400" font-size="18">От пользователя к разработчику</text>
+    <text x="0" y="78" fill="rgba(255,255,255,0.75)" font-family="-apple-system, system-ui, sans-serif" font-weight="400" font-size="18">От пользователя к создателю</text>
   </g>
 
   <!-- Phase tag -->
