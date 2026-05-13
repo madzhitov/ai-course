@@ -14,10 +14,8 @@
 
   <!-- Brand row -->
   <g transform="translate(110, 110)">
-    <circle cx="35" cy="35" r="35" fill="url(#logo)"/>
-    <text x="35" y="48" text-anchor="middle" fill="#fff" font-family="-apple-system, system-ui, sans-serif" font-weight="800" font-size="32">А</text>
-    <text x="92" y="32" fill="#fff" font-family="-apple-system, system-ui, sans-serif" font-weight="700" font-size="22">Алёша</text>
-    <text x="92" y="58" fill="rgba(255,255,255,0.75)" font-family="-apple-system, system-ui, sans-serif" font-weight="400" font-size="16">AI на русском</text>
+    <text x="0" y="48" fill="#fff" font-family="-apple-system, system-ui, sans-serif" font-weight="800" font-size="44">🤖 AI Курс</text>
+    <text x="0" y="78" fill="rgba(255,255,255,0.75)" font-family="-apple-system, system-ui, sans-serif" font-weight="400" font-size="18">От пользователя к разработчику</text>
   </g>
 
   <!-- Phase tag -->
