@@ -2688,19 +2688,40 @@ main {
   --phase-i-dot: #eab308;
 }
 
-/* === Top-nav: убираем категории, оставляем только лого + TG === */
-.top-nav-links { display: none !important; }
+/* === Top-nav: editorial style, ссылки видимы === */
 .top-nav { background: var(--bg) !important; border-bottom: 1px solid var(--border) !important; padding: 0 1.5rem !important; }
 .top-nav-logo { display: inline-flex !important; align-items: center; gap: 0.5rem; }
 .top-nav-logo .brand-name { font-weight: 700; letter-spacing: -0.02em; font-size: 17px; }
-.tg-link { padding: 6px 12px; border: 1px solid var(--border); border-radius: 8px; font-weight: 500; color: var(--text) !important; background: var(--bg) !important; }
-.tg-link:hover { background: var(--bg-soft); border-color: var(--border-strong); }
+.top-nav-links { display: flex !important; gap: 0; margin-left: 1.5rem; }
+.top-nav-links a {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--text-muted) !important;
+  padding: 6px 14px !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  transition: all 0.15s !important;
+}
+.top-nav-links a:hover { background: var(--bg-soft) !important; color: var(--text) !important; }
+.top-nav-links a.active { background: var(--bg-soft) !important; color: var(--text) !important; font-weight: 600 !important; }
+.top-nav-right { display: flex !important; align-items: center; gap: 4px; }
+.top-nav-right a {
+  font-size: 13px !important;
+  color: var(--text-muted) !important;
+  padding: 6px 12px !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+}
+.top-nav-right a:hover { background: var(--bg-soft) !important; color: var(--text) !important; }
+.tg-link { padding: 6px 12px !important; border: 1px solid var(--border) !important; border-radius: 8px !important; font-weight: 500 !important; color: var(--text) !important; background: var(--bg) !important; margin-left: 4px; }
+.tg-link:hover { background: var(--bg-soft) !important; border-color: var(--border-strong) !important; }
+@media (max-width: 900px) { .top-nav-links { display: none !important; } .top-nav-right a:not(.tg-link) { display: none; } }
 
 /* === Sidebar: editorial list-pattern === */
 .sidebar { background: var(--bg-sidebar) !important; border-right: 1px solid var(--border) !important; }
-.sidebar-header { padding: 1.5rem 1rem 1rem !important; }
-.sidebar-title { font-weight: 700; letter-spacing: -0.02em; font-size: 17px !important; }
-.sidebar-subtitle { color: var(--text-muted); font-size: 12px !important; }
+.sidebar-header { padding: 1.5rem 1rem 1.25rem !important; }
+.sidebar-title { font-weight: 800 !important; letter-spacing: -0.025em !important; font-size: 22px !important; line-height: 1.1 !important; color: var(--text) !important; }
+.sidebar-subtitle { display: none !important; }
 
 .theme-toggle { margin: 0 0.5rem 0.5rem; padding: 8px 12px !important; border-radius: 6px !important; background: transparent !important; border: 1px solid var(--border) !important; color: var(--text) !important; font-size: 13px !important; }
 .theme-toggle:hover { background: var(--bg-soft) !important; }
@@ -3377,9 +3398,9 @@ main {
     🤖 <span class="brand-name">AI Курс</span>
   </a>
   <nav class="top-nav-links">
-    <a href="#section-main" data-section="main" onclick="openSection('main'); return false;">Главный курс</a>
-    <a href="#section-claude" data-section="claude" onclick="openSection('claude'); return false;">Claude</a>
-    <a href="#section-projects" data-section="projects" onclick="openSection('projects'); return false;">Проекты</a>
+    <a href="#section-main" data-section="main" onclick="openSection('main'); return false;">Основной курс</a>
+    <a href="#section-claude" data-section="claude" onclick="openSection('claude'); return false;">Погружение в Клод</a>
+    <a href="#section-projects" data-section="projects" onclick="openSection('projects'); return false;">Мини-проекты за час</a>
     <a href="#section-industry" data-section="industry" onclick="openSection('industry'); return false;">Индустрии</a>
   </nav>
   <div class="top-nav-right">
@@ -3393,8 +3414,7 @@ main {
 
 <aside class="sidebar">
   <div class="sidebar-header">
-    <div class="sidebar-title">AI Курс</div>
-    <div class="sidebar-subtitle">От пользователя к создателю</div>
+    <div class="sidebar-title">От пользователя<br>к создателю</div>
   </div>
 
   <button class="theme-toggle" onclick="toggleTheme()">
