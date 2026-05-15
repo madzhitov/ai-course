@@ -16927,7 +16927,7 @@ function renderHome() {
           Спроси что угодно про конкретный урок — Алёша ответит за 5 секунд.
           Понимает контекст, не галлюцинирует за рамками темы, бесплатно для тебя.
         </div>
-        <button class="alesha-announce-btn" onclick="openLesson(1); setTimeout(()=>aleshaToggle(),500);">Попробовать →</button>
+        <button class="alesha-announce-btn" onclick="openLesson(1); setTimeout(()=>{ if(window.innerWidth < 1100) aleshaToggle(); },500);">Попробовать →</button>
       </div>
     </div>
   `;
