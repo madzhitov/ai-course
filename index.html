@@ -21,26 +21,39 @@
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🤖%3C/text%3E%3C/svg%3E">
 
+<!-- Inter font for editorial style -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 <!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <style>
 :root {
+  /* Editorial light palette — monochrome + один blue accent */
   --bg: #ffffff;
-  --bg-sidebar: #fafafa;
+  --bg-sidebar: #fafaf9;
   --bg-card: #ffffff;
-  --bg-code: #f4f4f6;
-  --bg-elevated: #f9fafb;
-  --text: #111827;
-  --text-muted: #6b7280;
-  --text-soft: #9ca3af;
-  --border: #e5e7eb;
-  --border-soft: #f3f4f6;
+  --bg-code: #f5f5f4;
+  --bg-elevated: #f9f9f8;
+  --bg-soft: #f5f5f4;
+  --text: #0a0a0a;
+  --text-muted: #6b6b6b;
+  --text-soft: #a8a8a8;
+  --border: #e7e5e4;
+  --border-soft: #f0efed;
+  --border-strong: rgba(0,0,0,0.12);
 
-  /* Primary — фиолетовый акцент в стиле T-Course */
-  --accent: #7c3aed;
-  --accent-hover: #6d28d9;
-  --accent-soft: #f3e8ff;
-  --accent-text: #6d28d9;
+  /* Accent в editorial — это сам text. CTA-кнопка чёрная. */
+  --accent: #0a0a0a;
+  --accent-hover: #2a2a2a;
+  --accent-soft: #f5f5f4;
+  --accent-text: #0a0a0a;
+
+  /* Highlight blue — только для callout и hover-ссылок */
+  --link: #2563eb;
+  --link-soft: #dbeafe;
+  --link-border: rgba(37, 99, 235, 0.2);
 
   /* Категории — пастельные пары bg/text */
   --cat-prompts: #dbeafe;       --cat-prompts-text: #2563eb;
@@ -71,21 +84,29 @@
 }
 
 [data-theme="dark"] {
+  /* Editorial dark — глубокий чёрный + тёплый off-white текст */
   --bg: #0a0a0b;
-  --bg-sidebar: #131316;
-  --bg-card: #1a1a1d;
-  --bg-code: #232328;
-  --bg-elevated: #18181b;
-  --text: #f4f4f5;
-  --text-muted: #a1a1aa;
-  --text-soft: #71717a;
-  --border: #27272a;
-  --border-soft: #1e1e22;
+  --bg-sidebar: #0f0f10;
+  --bg-card: #131316;
+  --bg-code: #18181b;
+  --bg-elevated: #1a1a1d;
+  --bg-soft: #18181b;
+  --text: #f2f2f3;
+  --text-muted: #8a8a92;
+  --text-soft: #5a5a62;
+  --border: rgba(255,255,255,0.07);
+  --border-soft: rgba(255,255,255,0.04);
+  --border-strong: rgba(255,255,255,0.15);
 
-  --accent: #a78bfa;
-  --accent-hover: #c4b5fd;
-  --accent-soft: #2e1065;
-  --accent-text: #c4b5fd;
+  /* В dark accent = белый текст; CTA-кнопка остаётся «инвертная» */
+  --accent: #f2f2f3;
+  --accent-hover: #ffffff;
+  --accent-soft: rgba(255,255,255,0.06);
+  --accent-text: #f2f2f3;
+
+  --link: #60a5fa;
+  --link-soft: rgba(96, 165, 250, 0.12);
+  --link-border: rgba(96, 165, 250, 0.25);
 
   --cat-prompts: #1e3a8a;       --cat-prompts-text: #93c5fd;
   --cat-agents: #581c87;        --cat-agents-text: #d8b4fe;
@@ -132,7 +153,8 @@ img, svg, video, canvas, iframe {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
   background: var(--bg);
   color: var(--text);
   line-height: 1.7;
@@ -1416,11 +1438,11 @@ main {
 .lesson-content h3 .h-emoji { font-size: 0.7em; opacity: 0.85; margin-right: 0.15em; }
 
 /* ============================================
-   Брендинг: Алёша
+   Брендинг (editorial)
    ============================================ */
 :root {
-  --brand-accent: #7c3aed;
-  --brand-accent-2: #ec4899;
+  --brand-accent: #0a0a0a;
+  --brand-accent-2: #2a2a2a;
   --phase-1: #16a34a;   /* зелёный — Пользователь */
   --phase-2: #2563eb;   /* синий — Строитель */
   --phase-3: #9333ea;   /* фиолетовый — Практик */
@@ -2649,6 +2671,700 @@ main {
   color: var(--text-muted);
   margin-bottom: 1rem;
 }
+
+/* ============================================================
+   EDITORIAL OVERRIDES — Option 4
+   Серый монохром, Inter, sharp typography
+   ============================================================ */
+
+/* Phase color dots (для маркеров в сайдбаре + breadcrumbs) */
+:root {
+  --phase-1-dot: #22c55e;
+  --phase-2-dot: #3b82f6;
+  --phase-3-dot: #a855f7;
+  --phase-4-dot: #f97316;
+  --phase-c-dot: #ec4899;
+  --phase-p-dot: #06b6d4;
+  --phase-i-dot: #eab308;
+}
+
+/* === Top-nav: убираем категории, оставляем только лого + TG === */
+.top-nav-links { display: none !important; }
+.top-nav { background: var(--bg) !important; border-bottom: 1px solid var(--border) !important; padding: 0 1.5rem !important; }
+.top-nav-logo { display: inline-flex !important; align-items: center; gap: 0.5rem; }
+.top-nav-logo .brand-name { font-weight: 700; letter-spacing: -0.02em; font-size: 17px; }
+.tg-link { padding: 6px 12px; border: 1px solid var(--border); border-radius: 8px; font-weight: 500; color: var(--text) !important; background: var(--bg) !important; }
+.tg-link:hover { background: var(--bg-soft); border-color: var(--border-strong); }
+
+/* === Sidebar: editorial list-pattern === */
+.sidebar { background: var(--bg-sidebar) !important; border-right: 1px solid var(--border) !important; }
+.sidebar-header { padding: 1.5rem 1rem 1rem !important; }
+.sidebar-title { font-weight: 700; letter-spacing: -0.02em; font-size: 17px !important; }
+.sidebar-subtitle { color: var(--text-muted); font-size: 12px !important; }
+
+.theme-toggle { margin: 0 0.5rem 0.5rem; padding: 8px 12px !important; border-radius: 6px !important; background: transparent !important; border: 1px solid var(--border) !important; color: var(--text) !important; font-size: 13px !important; }
+.theme-toggle:hover { background: var(--bg-soft) !important; }
+
+.search-box { margin: 0 0.5rem 1rem !important; padding: 8px 12px !important; background: var(--bg-card) !important; border: 1px solid var(--border) !important; border-radius: 8px !important; font-size: 14px !important; color: var(--text) !important; }
+.search-box::placeholder { color: var(--text-muted); }
+.search-box:focus { outline: none; border-color: var(--text); }
+
+.phase { padding: 0 0.5rem !important; margin-bottom: 0.5rem !important; }
+.phase-header { padding: 6px 12px !important; border-radius: 6px; }
+.phase-header:hover { background: var(--bg-soft); }
+.phase-title { font-weight: 600 !important; font-size: 13px !important; letter-spacing: -0.01em !important; color: var(--text) !important; }
+.phase-progress-mini { font-size: 11px !important; color: var(--text-muted) !important; }
+
+.lesson-link { padding: 6px 12px !important; border-radius: 6px !important; font-size: 13px !important; color: var(--text-muted) !important; border: none !important; }
+.lesson-link:hover { background: var(--bg-soft) !important; color: var(--text) !important; }
+.lesson-link.active { background: var(--bg-elevated) !important; color: var(--text) !important; font-weight: 600 !important; }
+.lesson-link.completed { color: var(--text-soft) !important; }
+.lesson-link.completed::after { content: '✓'; color: var(--text-soft); margin-left: auto; font-size: 11px; }
+.lesson-link.draft { opacity: 0.45; }
+
+/* Static menu items (Главная, О курсе, FAQ, ...) */
+.lesson-link.static-link { color: var(--text) !important; }
+.lesson-link.static-link .num { font-size: 14px; }
+.lesson-link.static-link .title { font-size: 13px !important; }
+
+/* === Global progress bar в сайдбаре === */
+.global-progress { padding: 0.85rem 1rem !important; margin: 0 0.5rem 0.5rem; background: transparent !important; border: 1px solid var(--border); border-radius: 8px; }
+.global-progress-label { font-size: 12px !important; color: var(--text-muted) !important; }
+.global-progress .progress-bar { background: var(--bg-soft) !important; }
+.global-progress .progress-bar-fill { background: var(--text) !important; }
+
+/* === Update banner: преобразую в чистый thin top-strip === */
+.update-banner { background: var(--bg-soft) !important; border: none !important; border-bottom: 1px solid var(--border) !important; border-radius: 0 !important; padding: 6px 1rem !important; font-size: 12px !important; color: var(--text-muted) !important; margin: -2.5rem -3.5rem 1.5rem !important; }
+.update-banner strong { color: var(--text); font-weight: 600; }
+.update-banner a { color: var(--link) !important; font-weight: 500 !important; }
+.live-dot { background: #22c55e; }
+@media (max-width: 768px) { .update-banner { margin: -1rem -1rem 1rem !important; padding: 6px 0.85rem !important; flex-wrap: wrap; } }
+
+/* === Lesson content типографика === */
+.lesson-content h1 { font-size: 40px !important; font-weight: 800 !important; line-height: 1.1 !important; letter-spacing: -0.025em !important; }
+.lesson-content h2 { font-size: 22px !important; font-weight: 700 !important; letter-spacing: -0.015em !important; border-top: 1px solid var(--border) !important; padding-top: 1.5rem !important; }
+.lesson-content h3 { font-size: 17px !important; font-weight: 700 !important; letter-spacing: -0.01em !important; }
+.lesson-content p { font-size: 16px; line-height: 1.65; }
+.lesson-content a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+.lesson-content a:hover { color: var(--link); text-decoration-thickness: 2px; }
+.lesson-content code { background: var(--bg-code) !important; color: var(--text) !important; padding: 2px 5px !important; border-radius: 3px !important; font-family: ui-monospace, "SF Mono", Monaco, Consolas, monospace !important; font-size: 13px !important; }
+.lesson-content pre { background: var(--bg-code) !important; border: 1px solid var(--border) !important; padding: 16px 18px !important; border-radius: 8px !important; }
+.lesson-content pre code { padding: 0 !important; background: transparent !important; font-size: 13px !important; line-height: 1.55 !important; }
+
+/* === Breadcrumbs в уроке === */
+.breadcrumbs { font-size: 13px !important; padding: 0 !important; margin-bottom: 1.5rem !important; }
+.breadcrumbs a, .breadcrumbs .current { padding: 4px 10px; border-radius: 100px; }
+.breadcrumbs a { background: var(--bg-soft); color: var(--text); border: 1px solid var(--border); }
+.breadcrumbs a:hover { background: var(--bg-card); border-color: var(--text); }
+.breadcrumbs .current { background: var(--text); color: var(--bg); font-weight: 500; }
+.breadcrumbs .sep { display: none; }
+.phase-tag { padding: 4px 10px !important; font-size: 11px !important; letter-spacing: 0.05em !important; border-radius: 100px !important; background: var(--bg-soft) !important; color: var(--text-muted) !important; border: 1px solid var(--border); font-weight: 600; }
+.phase-tag.p1 { color: var(--phase-1-dot); border-color: var(--phase-1-dot); }
+.phase-tag.p2 { color: var(--phase-2-dot); border-color: var(--phase-2-dot); }
+.phase-tag.p3 { color: var(--phase-3-dot); border-color: var(--phase-3-dot); }
+.phase-tag.p4 { color: var(--phase-4-dot); border-color: var(--phase-4-dot); }
+.phase-tag.pc { color: var(--phase-c-dot); border-color: var(--phase-c-dot); }
+.phase-tag.pp { color: var(--phase-p-dot); border-color: var(--phase-p-dot); }
+.phase-tag.pi { color: var(--phase-i-dot); border-color: var(--phase-i-dot); }
+
+/* === Lesson time meta === */
+.lesson-time-meta { background: transparent !important; border: 1px solid var(--border) !important; border-radius: 8px !important; padding: 10px 14px !important; font-size: 13px !important; }
+
+/* === Callouts (info/warning/etc.) === */
+.callout-info { background: var(--link-soft) !important; border: 1px solid var(--link-border) !important; border-radius: 10px !important; color: var(--text); }
+[data-theme="dark"] .callout-info { background: var(--link-soft) !important; }
+.callout { border-left: none !important; padding: 14px 18px !important; }
+.callout-success { background: rgba(34, 197, 94, 0.08) !important; border: 1px solid rgba(34, 197, 94, 0.25) !important; }
+.callout-warning { background: rgba(245, 158, 11, 0.08) !important; border: 1px solid rgba(245, 158, 11, 0.25) !important; }
+.callout-danger { background: rgba(239, 68, 68, 0.08) !important; border: 1px solid rgba(239, 68, 68, 0.25) !important; }
+
+/* === Resume banner: editorial вместо градиента === */
+.resume-banner { background: var(--text) !important; color: var(--bg) !important; box-shadow: none !important; border-radius: 12px !important; padding: 14px 18px !important; }
+.resume-banner:hover { background: var(--accent-hover) !important; transform: none !important; box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important; }
+.resume-banner-icon { background: var(--bg) !important; color: var(--text) !important; width: 36px !important; height: 36px !important; }
+.resume-banner-eyebrow { opacity: 0.6; }
+.resume-banner-title { font-weight: 700; }
+.resume-banner-meta { opacity: 0.7; }
+.resume-banner-cta { opacity: 1; }
+
+/* === Alesha announce on home → editorial === */
+.alesha-announce { background: var(--bg-card) !important; border: 1px solid var(--border) !important; border-radius: 14px !important; }
+[data-theme="dark"] .alesha-announce { background: var(--bg-card) !important; border-color: var(--border) !important; }
+.alesha-announce-eyebrow { color: var(--text-muted) !important; }
+.alesha-announce-btn { background: var(--text) !important; color: var(--bg) !important; }
+.alesha-announce-btn:hover { background: var(--accent-hover) !important; box-shadow: none !important; }
+
+/* === Alesha logo → editorial (monochrome, не gradient) === */
+.alesha-logo { background: var(--text) !important; color: var(--bg) !important; }
+[data-theme="dark"] .alesha-logo { background: var(--text) !important; color: var(--bg) !important; }
+
+/* === Alesha widget (right rail) — editorial === */
+.alesha-widget { box-shadow: none !important; border: 1px solid var(--border) !important; background: var(--bg-card) !important; border-radius: 12px !important; }
+.alesha-widget.is-collapsed-desktop { background: var(--text) !important; }
+.alesha-widget.is-collapsed-desktop .alesha-collapse-icon::before { color: var(--bg); }
+.alesha-header { border-bottom: 1px solid var(--border) !important; padding: 14px 16px !important; }
+.alesha-header-title { font-size: 14px !important; font-weight: 700 !important; }
+.alesha-msg.user .alesha-msg-body { background: var(--text) !important; color: var(--bg) !important; }
+.alesha-msg.bot .alesha-msg-body { background: var(--bg-soft) !important; }
+.alesha-msg .alesha-msg-body code { background: var(--bg-card) !important; }
+.alesha-suggestion { background: var(--bg) !important; border: 1px solid var(--border) !important; }
+.alesha-suggestion:hover { border-color: var(--text) !important; color: var(--text) !important; }
+.alesha-input button { background: var(--text) !important; color: var(--bg) !important; }
+.alesha-input button:hover { background: var(--accent-hover) !important; }
+.alesha-input textarea:focus { border-color: var(--text) !important; }
+.alesha-typing span { background: var(--text-muted); }
+
+/* Mobile Alesha button — editorial */
+@media (max-width: 1099px) {
+  .alesha-widget.is-lesson { background: var(--text) !important; box-shadow: 0 6px 20px rgba(0,0,0,0.2) !important; }
+  .alesha-widget.is-lesson .alesha-collapse-icon::before { color: var(--bg); }
+  .alesha-widget.is-open { background: var(--bg-card) !important; }
+}
+
+/* === Code block copy button === */
+.lesson-content pre .copy-btn { background: var(--bg) !important; border: 1px solid var(--border) !important; color: var(--text-muted) !important; }
+.lesson-content pre .copy-btn:hover { color: var(--text) !important; border-color: var(--text) !important; }
+
+/* === Lesson share button === */
+.lesson-share-btn { background: var(--bg) !important; border: 1px solid var(--border) !important; color: var(--text-muted) !important; }
+.lesson-share-btn:hover { color: var(--text) !important; border-color: var(--text) !important; }
+
+/* === TOC + collapsible block === */
+.lesson-toc { background: var(--bg-soft) !important; border: 1px solid var(--border) !important; }
+.lesson-toc summary::before { color: var(--text-muted); }
+.lesson-toc ol a.active { background: var(--bg-card) !important; color: var(--text) !important; border-left-color: var(--text) !important; }
+
+/* === Search overlay === */
+.search-overlay-panel { background: var(--bg) !important; border: 1px solid var(--border); }
+.search-result.active, .search-result:hover { background: var(--bg-soft) !important; }
+.search-overlay-input { color: var(--text) !important; }
+
+/* === SVG diagrams === */
+.diagram { background: var(--bg-soft) !important; border: 1px solid var(--border) !important; }
+[data-theme="dark"] .diagram { background: var(--bg-soft) !important; border-color: var(--border) !important; }
+
+/* === About page progress block === */
+.about-progress-block { background: var(--bg-soft) !important; border: 1px solid var(--border) !important; border-radius: 10px; }
+.about-progress-block .progress-bar { background: var(--border-soft) !important; }
+.about-progress-block .progress-bar-fill { background: var(--text) !important; }
+
+/* === Glossary terms === */
+.glossary-term { border-left: 2px solid var(--border) !important; padding-left: 1rem !important; margin: 1.25rem 0 !important; }
+.glossary-term h3 { font-size: 15px !important; color: var(--text) !important; margin: 0 0 6px !important; }
+
+/* === Buttons общие === */
+.nav-btn { font-family: inherit; padding: 10px 18px !important; border-radius: 8px !important; border: 1px solid var(--border) !important; background: var(--bg) !important; color: var(--text) !important; font-weight: 600; }
+.nav-btn:hover { background: var(--bg-soft) !important; }
+.nav-btn:disabled { opacity: 0.4 !important; }
+
+/* === Footer (расширенный, 4 колонки) === */
+.site-footer {
+  background: var(--bg-sidebar);
+  border-top: 1px solid var(--border);
+  padding: 4rem 3.5rem 2rem;
+  margin: 4rem -3.5rem 0;
+  font-size: 14px;
+  color: var(--text);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr repeat(4, 1fr);
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+}
+.footer-brand .alesha-logo { width: 32px; height: 32px; font-size: 14px; margin-bottom: 12px; }
+.footer-brand h4 { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
+.footer-brand p { font-size: 13px; color: var(--text-muted); line-height: 1.5; max-width: 280px; }
+.footer-col h5 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: var(--text-muted); margin-bottom: 14px; }
+.footer-col a { display: block; color: var(--text); font-size: 13px; text-decoration: none; padding: 4px 0; cursor: pointer; }
+.footer-col a:hover { color: var(--link); }
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font-size: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .site-footer { padding: 3rem 1.25rem 1.5rem; margin: 3rem -1rem 0; }
+}
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr; }
+}
+
+/* === Скрываем устаревший hero-v2 фон gradient и т.п. === */
+.hero-v2 { padding: 2rem 0 1rem !important; background: none !important; }
+.hero-v2 h1 { font-size: 60px !important; line-height: 1.05 !important; font-weight: 800 !important; letter-spacing: -0.03em !important; max-width: 800px !important; }
+.hero-v2 .tagline { font-size: 18px !important; color: var(--text-muted) !important; max-width: 620px !important; line-height: 1.55 !important; }
+.hero-cta-v2 .btn-primary-v2 { background: var(--text) !important; color: var(--bg) !important; box-shadow: none !important; }
+.hero-cta-v2 .btn-primary-v2:hover { background: var(--accent-hover) !important; }
+.hero-cta-v2 .btn-secondary-v2 { background: var(--bg) !important; color: var(--text) !important; border: 1px solid var(--border) !important; }
+.hero-cta-v2 .btn-secondary-v2:hover { background: var(--bg-soft) !important; }
+
+/* === Stat cards на главной === */
+.stats-grid-v2 { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 0 !important; border-top: 1px solid var(--border) !important; border-bottom: 1px solid var(--border) !important; padding: 1.5rem 0 !important; margin: 2.5rem 0 3rem !important; }
+.stats-grid-v2 .stat-card-v2 { background: transparent !important; border: none !important; border-radius: 0 !important; padding: 0 !important; box-shadow: none !important; }
+.stats-grid-v2 .stat-card-v2 + .stat-card-v2 { border-left: 1px solid var(--border) !important; padding-left: 1.5rem !important; }
+.stat-card-v2 .stat-icon-v2 { display: none !important; }
+.stat-card-v2 .stat-value-v2 { font-size: 32px !important; font-weight: 800 !important; letter-spacing: -0.03em !important; line-height: 1 !important; color: var(--text) !important; font-variant-numeric: tabular-nums !important; }
+.stat-card-v2 .stat-label-v2 { font-size: 13px !important; color: var(--text-muted) !important; margin-top: 6px !important; }
+
+/* === Lesson cards (фазы/тропинки на главной) → list rows === */
+.lesson-card-v2 {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 20px !important;
+  padding: 18px 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  border-bottom: 1px solid var(--border) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: all 0.15s !important;
+}
+.lesson-card-v2:hover {
+  background: var(--bg-soft) !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  margin: 0 -16px !important;
+  border-radius: 8px !important;
+  border-bottom-color: transparent !important;
+  transform: none !important;
+}
+.lesson-card-thumb {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 8px !important;
+  flex-shrink: 0 !important;
+  background: var(--bg-soft) !important;
+  font-size: 16px !important;
+}
+.lesson-card-body { flex: 1 !important; min-width: 0 !important; padding: 0 !important; }
+.lesson-card-body h3 { font-size: 17px !important; font-weight: 700 !important; letter-spacing: -0.01em !important; margin: 0 0 3px !important; }
+.lesson-card-body p { font-size: 13px !important; color: var(--text-muted) !important; margin: 0 !important; }
+.cat-tag { display: none !important; }
+.lesson-card-meta { gap: 12px !important; font-size: 13px !important; color: var(--text-muted) !important; }
+.badge-ongoing, .badge-complete, .badge-draft { background: transparent !important; color: var(--text-muted) !important; padding: 0 !important; font-weight: 500 !important; }
+.badge-complete { color: var(--phase-1-dot) !important; }
+.lesson-cards-grid { display: block !important; }
+
+/* === Sidebar phase dots === */
+.phase[data-phase="1"] .phase-title::before,
+.phase[data-phase="2"] .phase-title::before,
+.phase[data-phase="3"] .phase-title::before,
+.phase[data-phase="4"] .phase-title::before,
+.phase[data-phase="c"] .phase-title::before,
+.phase[data-phase="p"] .phase-title::before,
+.phase[data-phase="i"] .phase-title::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.phase[data-phase="1"] .phase-title::before { background: var(--phase-1-dot); }
+.phase[data-phase="2"] .phase-title::before { background: var(--phase-2-dot); }
+.phase[data-phase="3"] .phase-title::before { background: var(--phase-3-dot); }
+.phase[data-phase="4"] .phase-title::before { background: var(--phase-4-dot); }
+.phase[data-phase="c"] .phase-title::before { background: var(--phase-c-dot); }
+.phase[data-phase="p"] .phase-title::before { background: var(--phase-p-dot); }
+.phase[data-phase="i"] .phase-title::before { background: var(--phase-i-dot); }
+/* убираем цветной color: на title — теперь это просто текст с точкой перед */
+.phase .phase-title { color: var(--text) !important; }
+
+/* === Track cards на About → list rows === */
+.track-cards { gap: 0 !important; }
+.track-card {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 20px !important;
+  padding: 18px 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  border-bottom: 1px solid var(--border) !important;
+  background: transparent !important;
+}
+.track-card:hover { transform: none !important; box-shadow: none !important; border-color: var(--border) !important; background: var(--bg-soft) !important; padding: 18px 16px !important; margin: 0 -16px !important; border-radius: 8px !important; }
+.track-card-icon { width: 40px !important; height: 40px !important; border-radius: 8px !important; font-size: 18px !important; }
+.track-card-body h3 { font-size: 17px !important; margin: 0 0 3px !important; }
+.track-card-body p { font-size: 13px !important; margin: 0 0 4px !important; }
+.track-card-meta { font-size: 12px !important; }
+
+/* ============================================================
+   /my-progress — light-friendly dashboard (Option 2 style)
+   ============================================================ */
+.mp-hello {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.mp-hello-text { flex: 1; min-width: 280px; }
+.mp-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.mp-hello h1 {
+  font-size: 40px !important;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin: 0 0 8px;
+  border-top: none !important;
+  padding-top: 0 !important;
+}
+.mp-hello p {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.5;
+  max-width: 580px;
+}
+.mp-cta-btn {
+  background: var(--text);
+  color: var(--bg);
+  padding: 12px 22px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.mp-cta-btn:hover { background: var(--accent-hover); }
+.mp-cta-btn-ghost {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.mp-cta-btn-ghost:hover { background: var(--bg-soft); }
+
+.mp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.mp-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px;
+}
+.mp-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.mp-card-head h3 {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+  border: none !important;
+  padding: 0 !important;
+}
+.mp-pill {
+  background: var(--bg-soft);
+  color: var(--text);
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.mp-link {
+  color: var(--link);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+}
+.mp-link:hover { text-decoration: underline; }
+
+/* Gauge card */
+.mp-gauge { position: relative; max-width: 220px; margin: 12px auto; }
+.mp-gauge svg { width: 100%; height: auto; }
+.mp-gauge-center {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+.mp-gauge-num {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.mp-gauge-of {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.mp-row-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+.mp-num {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.mp-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Continue learning card */
+.mp-lesson-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 0 -4px;
+  transition: background 0.1s;
+}
+.mp-lesson-row:hover { background: var(--bg-soft); }
+.mp-lesson-thumb {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--bg-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.mp-lesson-thumb.mp-thumb-next {
+  background: var(--text);
+  color: var(--bg);
+}
+.mp-lesson-body { flex: 1; min-width: 0; }
+.mp-lesson-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mp-lesson-meta { font-size: 12px; color: var(--text-muted); }
+.mp-lesson-tag {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.mp-empty {
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* Phases */
+.mp-phases-card { grid-column: 1 / -1; }
+.mp-phases {
+  display: grid;
+  gap: 4px;
+}
+.mp-phase-row {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.mp-phase-row:last-child { border-bottom: none; }
+.mp-phase-name {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.mp-phase-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--phase-color);
+}
+.mp-phase-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  padding-left: 16px;
+}
+.mp-phase-stat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mp-phase-num {
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  min-width: 50px;
+}
+.mp-phase-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-soft);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.mp-phase-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s;
+}
+.mp-phase-written {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* Tracks */
+.mp-tracks-card { grid-column: 1 / -1; }
+.mp-tracks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.mp-track {
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--bg-soft);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.mp-track:hover { transform: translateY(-2px); }
+.mp-track-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.mp-track-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--track-color);
+}
+.mp-track-name {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.mp-track-stat {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.mp-track-bar {
+  height: 4px;
+  background: var(--bg-card);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.mp-track-fill {
+  height: 100%;
+  background: var(--track-color);
+  border-radius: 2px;
+}
+
+/* Motivation */
+.mp-motivation-card { grid-column: 1 / -1; }
+.mp-motivation-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+  margin-bottom: 14px;
+}
+.mp-motivation-stat { text-align: center; }
+.mp-motivation-stat + .mp-motivation-stat { border-left: 1px solid var(--border); }
+.mp-big {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.mp-tip {
+  background: var(--link-soft);
+  border: 1px solid var(--link-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+/* Alesha card */
+.mp-alesha-card .mp-alesha-body { text-align: center; padding: 8px 8px 4px; }
+.mp-alesha-card .alesha-logo.lg {
+  margin: 0 auto 12px;
+  width: 52px;
+  height: 52px;
+  font-size: 22px;
+}
+.mp-alesha-card p {
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .mp-grid { grid-template-columns: 1fr; }
+  .mp-phase-row { grid-template-columns: 1fr; gap: 8px; }
+  .mp-tracks { grid-template-columns: 1fr; }
+  .mp-motivation-stats { grid-template-columns: 1fr; }
+  .mp-motivation-stat + .mp-motivation-stat { border-left: none; border-top: 1px solid var(--border); padding-top: 14px; margin-top: 14px; }
+}
+
+/* === Lesson actions: чек + prev/next === */
+.lesson-actions { border-top: 1px solid var(--border); padding-top: 1.5rem; margin-top: 2rem !important; }
+.complete-checkbox { background: var(--bg-soft) !important; border-radius: 8px !important; padding: 10px 16px !important; border: 1px solid var(--border); }
+
 </style>
 </head>
 <body>
@@ -2707,6 +3423,10 @@ main {
       <button class="lesson-link static-link" data-static="home" onclick="openStaticPage('home')">
         <span class="num">🏠</span>
         <span class="title">Главная</span>
+      </button>
+      <button class="lesson-link static-link" data-static="my-progress" onclick="openStaticPage('my-progress')">
+        <span class="num">📊</span>
+        <span class="title">Мой прогресс</span>
       </button>
       <button class="lesson-link static-link" data-static="about" onclick="openStaticPage('about')">
         <span class="num">📖</span>
@@ -14050,16 +14770,50 @@ function renderFooter() {
   const footer = document.getElementById('site-footer');
   if (!footer) return;
   footer.innerHTML = `
-    <div>
-      Курс ведёт и постоянно обновляет <strong>Руслан Маджитов</strong> ·
-      Telegram: <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a> ·
-      <a href="https://github.com/madzhitov/ai-course" target="_blank">GitHub</a>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="alesha-logo">A</div>
+        <h4>AI Курс</h4>
+        <p>Бесплатный практический курс по ИИ на русском. От пользователя к создателю. 95 уроков с AI-наставником.</p>
+      </div>
+
+      <div class="footer-col">
+        <h5>Курс</h5>
+        <a onclick="openSection('main')">Главный путь</a>
+        <a onclick="openSection('claude')">Claude Deep Dive</a>
+        <a onclick="openSection('projects')">Мини-проекты</a>
+        <a onclick="openSection('industry')">Индустрии</a>
+        <a onclick="openGlossary()">Глоссарий</a>
+      </div>
+
+      <div class="footer-col">
+        <h5>Сообщество</h5>
+        <a href="https://t.me/madzhitov" target="_blank">Telegram автора ↗</a>
+        <a onclick="openStaticPage('changelog')">Что нового</a>
+        <a onclick="openStaticPage('changelog')">Newsletter (скоро)</a>
+        <a onclick="openStaticPage('changelog')">Pet-проекты (скоро)</a>
+      </div>
+
+      <div class="footer-col">
+        <h5>Ресурсы</h5>
+        <a onclick="openStaticPage('about')">О курсе</a>
+        <a onclick="openStaticPage('howto')">Как заниматься</a>
+        <a onclick="openStaticPage('faq')">FAQ</a>
+        <a onclick="openStaticPage('resources')">Источники</a>
+      </div>
+
+      <div class="footer-col">
+        <h5>Open Source</h5>
+        <a href="https://github.com/madzhitov/ai-course" target="_blank">GitHub репо ↗</a>
+        <a href="https://ai.madzhitov.ru" target="_blank">ai.madzhitov.ru ↗</a>
+        <a>MIT-лицензия</a>
+        <a href="https://madzhitov.ru" target="_blank">madzhitov.ru ↗</a>
+      </div>
     </div>
-    <div>
-      <a href="#about" onclick="openStaticPage('about'); return false;">О курсе</a> ·
-      <a href="#changelog" onclick="openStaticPage('changelog'); return false;">Что нового</a> ·
-      <a href="#faq" onclick="openStaticPage('faq'); return false;">FAQ</a> ·
-      <a href="#resources" onclick="openStaticPage('resources'); return false;">Источники</a>
+
+    <div class="footer-bottom">
+      <div>© 2026 Руслан Маджитов · MIT-лицензия</div>
+      <div>Сделано с ❤️ и Claude · Telegram: <a href="https://t.me/madzhitov" target="_blank" style="color: var(--text); font-weight: 500;">@madzhitov</a></div>
     </div>
   `;
 }
@@ -15110,6 +15864,7 @@ function openStaticPage(name) {
   else if (name === 'changelog') renderChangelog();
   else if (name === 'resources') renderResources();
   else if (name === 'admin') renderAdmin();
+  else if (name === 'my-progress') renderMyProgress();
 }
 
 // ============================================================
@@ -16269,6 +17024,204 @@ function subscribeEmail(event) {
   event.target.innerHTML = '<div class="callout callout-success" style="margin: 0;">✓ Спасибо! Я свяжусь с тобой когда выйдет первая рассылка.</div>';
 }
 
+// ============================================================
+// MY PROGRESS — дашборд в light-friendly стиле (Option 2)
+// ============================================================
+function renderMyProgress() {
+  const all = allLessons();
+  const total = all.length;
+  const done = all.filter(l => isCompleted(l.id)).length;
+  const written = all.filter(l => l.content).length;
+  const donePct = total ? Math.round(done / total * 100) : 0;
+  const writtenPct = total ? Math.round(written / total * 100) : 0;
+
+  // Phase progress
+  const phaseStats = PHASES.map(phase => {
+    const lessons = LESSONS.filter(l => l.phase === phase.id);
+    const phaseDone = lessons.filter(l => isCompleted(l.id)).length;
+    const phaseWritten = lessons.filter(l => l.content).length;
+    return {
+      id: phase.id,
+      title: phase.title.replace('Фаза ' + phase.id + '. ', ''),
+      sub: phase.subtitle,
+      done: phaseDone,
+      written: phaseWritten,
+      total: lessons.length,
+      donePct: lessons.length ? Math.round(phaseDone / lessons.length * 100) : 0,
+      writtenPct: lessons.length ? Math.round(phaseWritten / lessons.length * 100) : 0,
+    };
+  });
+
+  const trackStats = TRACKS.map(track => {
+    const lessons = TRACK_LESSONS.filter(l => l.track === track.id);
+    const tDone = lessons.filter(l => isCompleted(l.id)).length;
+    const tWritten = lessons.filter(l => l.content).length;
+    return {
+      id: track.id,
+      title: track.title,
+      done: tDone,
+      written: tWritten,
+      total: lessons.length,
+      donePct: lessons.length ? Math.round(tDone / lessons.length * 100) : 0,
+    };
+  });
+
+  // Continue learning — следующие 3 готовых непройденных
+  const nextLessons = all.filter(l => l.content && !isCompleted(l.id)).slice(0, 3);
+
+  // Streak: считаем последние N дней по completed_at если есть, иначе - просто статус
+  // Простая версия — показываем когда последняя активность была (по any localStorage timestamp)
+  const lastVisit = localStorage.getItem('first_visit');
+  const daysSinceStart = lastVisit ? Math.floor((Date.now() - new Date(lastVisit).getTime()) / 86400000) : 0;
+
+  // Estimated finish based on rate
+  const remaining = written - done;
+  const dailyRate = 1;
+  const daysToFinish = Math.ceil(remaining / dailyRate);
+
+  document.getElementById('lesson-content').innerHTML = `
+    <div class="mp-hello">
+      <div class="mp-hello-text">
+        <div class="mp-eyebrow">Личный дашборд</div>
+        <h1>Твой прогресс</h1>
+        <p>${done === 0
+          ? 'Ты ещё не отметил ни одного урока пройденным. Начни с Урока 1 — он самый важный, объясняет «что под капотом» LLM.'
+          : `Молодец! Прошёл ${done} из ${total} уроков. Продолжай в том же темпе — впереди ещё ${remaining} готовых.`}</p>
+      </div>
+      <div class="mp-cta">
+        ${nextLessons.length > 0
+          ? `<button class="mp-cta-btn" onclick="openLesson(${typeof nextLessons[0].id === 'string' ? `'${nextLessons[0].id}'` : nextLessons[0].id})">Продолжить →</button>`
+          : `<button class="mp-cta-btn" onclick="openLesson(1)">Начать с Урока 1 →</button>`
+        }
+      </div>
+    </div>
+
+    <div class="mp-grid">
+
+      <!-- Gauge card -->
+      <div class="mp-card mp-gauge-card">
+        <div class="mp-card-head">
+          <h3>Общий прогресс</h3>
+          <span class="mp-pill">${donePct}%</span>
+        </div>
+        <div class="mp-gauge">
+          <svg viewBox="0 0 200 120">
+            <path d="M 20 110 A 80 80 0 0 1 180 110" fill="none" stroke="var(--border-soft, #f0efed)" stroke-width="16" stroke-linecap="round"/>
+            <path d="M 20 110 A 80 80 0 0 1 180 110" fill="none" stroke="url(#mp-grad)" stroke-width="16" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="${251 - (251 * donePct / 100)}"/>
+            <defs>
+              <linearGradient id="mp-grad" x1="0" x2="1">
+                <stop offset="0" stop-color="#a78bfa"/>
+                <stop offset="1" stop-color="#ec4899"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="mp-gauge-center">
+            <div class="mp-gauge-num">${done}</div>
+            <div class="mp-gauge-of">из ${total}</div>
+          </div>
+        </div>
+        <div class="mp-row-pair">
+          <div><div class="mp-num">${written}</div><div class="mp-sub">уроков доступно</div></div>
+          <div><div class="mp-num">${remaining}</div><div class="mp-sub">осталось пройти</div></div>
+        </div>
+      </div>
+
+      <!-- Continue learning -->
+      <div class="mp-card mp-continue-card">
+        <div class="mp-card-head">
+          <h3>Продолжить обучение</h3>
+        </div>
+        ${nextLessons.length === 0
+          ? `<div class="mp-empty">Все доступные уроки пройдены! Жди новых — выпускаем по 2 в неделю.</div>`
+          : nextLessons.map((l, i) => `
+            <div class="mp-lesson-row" onclick="openLesson(${typeof l.id === 'string' ? `'${l.id}'` : l.id})">
+              <div class="mp-lesson-thumb ${i === 0 ? 'mp-thumb-next' : ''}">${i === 0 ? '▶' : i + 1}</div>
+              <div class="mp-lesson-body">
+                <div class="mp-lesson-title">${l.title}</div>
+                <div class="mp-lesson-meta">${typeof l.id === 'number' ? `Урок ${l.id}` : String(l.id).toUpperCase()} · ~${l.duration} мин</div>
+              </div>
+              <div class="mp-lesson-tag">${i === 0 ? 'Дальше' : 'Потом'}</div>
+            </div>
+          `).join('')
+        }
+      </div>
+
+      <!-- Phases -->
+      <div class="mp-card mp-phases-card">
+        <div class="mp-card-head">
+          <h3>Главный путь — 4 фазы</h3>
+          <a class="mp-link" onclick="openSection('main'); return false;">Все уроки →</a>
+        </div>
+        <div class="mp-phases">
+          ${phaseStats.map(p => `
+            <div class="mp-phase-row" style="--phase-color: var(--phase-${p.id}-dot);">
+              <div class="mp-phase-info">
+                <div class="mp-phase-name"><span class="mp-phase-dot"></span> Фаза ${p.id}. ${p.title}</div>
+                <div class="mp-phase-sub">${p.sub}</div>
+              </div>
+              <div class="mp-phase-stat">
+                <div class="mp-phase-num">${p.done} / ${p.total}</div>
+                <div class="mp-phase-bar"><div class="mp-phase-fill" style="width: ${p.donePct}%; background: var(--phase-${p.id}-dot);"></div></div>
+                <div class="mp-phase-written">${p.written} готово</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- Tracks -->
+      <div class="mp-card mp-tracks-card">
+        <div class="mp-card-head">
+          <h3>Параллельные тропинки</h3>
+        </div>
+        <div class="mp-tracks">
+          ${trackStats.map((t, i) => `
+            <div class="mp-track" onclick="openSection('${t.id}')" style="--track-color: var(--phase-${t.id === 'claude' ? 'c' : t.id === 'projects' ? 'p' : 'i'}-dot);">
+              <div class="mp-track-head">
+                <span class="mp-track-dot"></span>
+                <div class="mp-track-name">${t.title.replace(/^[🟣🛠💼]\s/, '')}</div>
+              </div>
+              <div class="mp-track-stat">${t.done} / ${t.total}</div>
+              <div class="mp-track-bar"><div class="mp-track-fill" style="width: ${t.donePct}%;"></div></div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- Activity / motivation -->
+      <div class="mp-card mp-motivation-card">
+        <div class="mp-card-head"><h3>На этой неделе</h3></div>
+        <div class="mp-motivation-stats">
+          <div class="mp-motivation-stat">
+            <div class="mp-big">${daysSinceStart}</div>
+            <div class="mp-sub">дней с курсом</div>
+          </div>
+          <div class="mp-motivation-stat">
+            <div class="mp-big">${done}</div>
+            <div class="mp-sub">уроков пройдено всего</div>
+          </div>
+          <div class="mp-motivation-stat">
+            <div class="mp-big">${daysToFinish || '∞'}</div>
+            <div class="mp-sub">дней до финиша<br>(при 1 уроке/день)</div>
+          </div>
+        </div>
+        <p class="mp-tip">💡 <strong>Совет:</strong> регулярность важнее темпа. 1 урок каждый день > 5 уроков в один день.</p>
+      </div>
+
+      <!-- Алёша tip -->
+      <div class="mp-card mp-alesha-card">
+        <div class="mp-card-head"><h3>Спрашивай Алёшу</h3></div>
+        <div class="mp-alesha-body">
+          <div class="alesha-logo lg" style="margin-bottom: 12px;">A</div>
+          <p>В каждом уроке справа — виджет «Алёша». Спрашивай что угодно по теме урока — ответит за 5 секунд. Бесплатно для тебя.</p>
+          ${nextLessons[0] ? `<button class="mp-cta-btn mp-cta-btn-ghost" onclick="openLesson(${typeof nextLessons[0].id === 'string' ? `'${nextLessons[0].id}'` : nextLessons[0].id})">Открыть урок →</button>` : ''}
+        </div>
+      </div>
+
+    </div>
+  `;
+}
+
 function renderAbout() {
   const all = allLessons();
   const total = all.length;
@@ -16684,7 +17637,7 @@ if (hashMatch) {
   openGlossary(glossaryTermHash[1]);
 } else if (staticHash === 'glossary') {
   openGlossary();
-} else if (['home', 'about', 'howto', 'faq', 'changelog', 'resources', 'admin'].includes(staticHash)) {
+} else if (['home', 'about', 'howto', 'faq', 'changelog', 'resources', 'admin', 'my-progress'].includes(staticHash)) {
   openStaticPage(staticHash);
 } else {
   // По умолчанию — Home
