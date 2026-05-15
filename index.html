@@ -14810,7 +14810,6 @@ function renderFooter() {
         <h5>Сообщество</h5>
         <a href="https://t.me/madzhitov" target="_blank">Telegram автора ↗</a>
         <a onclick="openStaticPage('changelog')">Что нового</a>
-        <a onclick="openStaticPage('changelog')">Newsletter (скоро)</a>
         <a onclick="openStaticPage('changelog')">Pet-проекты (скоро)</a>
       </div>
 
@@ -15477,17 +15476,18 @@ function circleProgress(percent) {
   `;
 }
 
-function continueCard(lesson, percent) {
+function continueCard(lesson) {
   const theme = lessonTheme(lesson);
   const idStr = typeof lesson.id === 'string' ? `'${lesson.id}'` : lesson.id;
+  const lessonNum = typeof lesson.id === 'number' ? `Урок ${lesson.id}` : String(lesson.id).toUpperCase();
   return `
     <div class="continue-card" onclick="openLesson(${idStr})">
       <div class="continue-icon" style="background: var(--cat-${theme.catKey}); color: var(--cat-${theme.catKey}-text);">${theme.icon}</div>
       <div class="continue-info">
         <div class="continue-title">${lesson.title}</div>
-        <div class="continue-meta">${theme.catName} · ${lesson.duration} мин</div>
+        <div class="continue-meta">${lessonNum} · ${lesson.duration} мин</div>
       </div>
-      ${circleProgress(percent)}
+      <div class="continue-arrow">→</div>
     </div>
   `;
 }
@@ -15571,7 +15571,7 @@ function renderMainSection() {
 
     <div class="stats-grid-v2">
       ${statCard({ icon: '📚', label: 'Уроков', value: total, theme: 'prompts' })}
-      ${statCard({ icon: '✓', label: 'Готово', value: written, theme: 'projects' })}
+      ${statCard({ icon: '✓', label: 'Опубликовано', value: written, theme: 'projects' })}
       ${statCard({ icon: '🎯', label: 'Пройдено', value: done, theme: 'claude' })}
       ${statCard({ icon: '⏱', label: 'Часов', value: '~' + hours, theme: 'industry' })}
     </div>
@@ -15668,7 +15668,7 @@ function renderTrackSection(trackId) {
 
     <div class="stats-grid-v2">
       ${statCard({ icon: '📚', label: 'Уроков', value: lessons.length, theme: meta.theme })}
-      ${statCard({ icon: '✓', label: 'Готово', value: written, theme: 'projects' })}
+      ${statCard({ icon: '✓', label: 'Опубликовано', value: written, theme: 'projects' })}
       ${statCard({ icon: '🎯', label: 'Пройдено', value: done, theme: 'agents' })}
       ${statCard({ icon: '⏱', label: 'Часов', value: '~' + hours, theme: 'industry' })}
     </div>
@@ -16618,6 +16618,63 @@ function fmtDate(isoDate) {
 
 const CHANGELOG = [
   {
+    date: "2026-05-15",
+    title: "🎨 Большой редизайн в editorial-стиле",
+    tag: "update",
+    items: [
+      "Курс полностью переехал на новый адрес: <a href=\"https://ai.madzhitov.ru\" target=\"_blank\"><strong>ai.madzhitov.ru</strong></a> (старый madzhitov.github.io/ai-course продолжает работать как зеркало)",
+      "Полный визуальный рестайл — Inter шрифт, минималистичная типографика, чёрно-белая палитра + один синий акцент",
+      "Огромные заголовки на главной (60px), чистые list rows вместо больших карточек",
+      "Новый расширенный footer с 4 колонками: Курс / Сообщество / Ресурсы / Open Source",
+      "Тёмная тема переработана под editorial-палитру (глубокий чёрный + off-white текст)"
+    ]
+  },
+  {
+    date: "2026-05-15",
+    title: "📊 Новая страница «Мой прогресс»",
+    tag: "new",
+    items: [
+      "Появилась персональная панель прогресса — <a href=\"#my-progress\" onclick=\"openStaticPage('my-progress'); return false;\">/my-progress</a>",
+      "Полукруглый gauge с общим прогрессом курса",
+      "Карточка «Продолжить обучение» — 3 ближайших готовых урока",
+      "Прогресс по 4 фазам главного пути и 3 параллельным тропинкам с прогресс-барами",
+      "Motivation-блок: сколько дней с курсом, сколько пройдено, прогноз времени до финиша",
+      "Доступна через сайдбар (📊 Мой прогресс) и хеш #my-progress"
+    ]
+  },
+  {
+    date: "2026-05-15",
+    title: "🧭 Меню в шапке обновлено",
+    tag: "update",
+    items: [
+      "Названия разделов стали человечнее: «Основной курс», «Погружение в Клод», «Мини-проекты за час», «Индустрии»",
+      "Сайдбар: убрал «AI Курс» (лого и так с роботом), оставил крупное «От пользователя к создателю»",
+      "Шапка переехала в editorial-стиль — тонкая чёрно-белая полоска без отвлекающих градиентов"
+    ]
+  },
+  {
+    date: "2026-05-14",
+    title: "📚 Старт Фазы 3 — Практик (что под капотом ИИ)",
+    tag: "new",
+    items: [
+      "Урок 31 — Введение в ИИ как науку. История, 3 парадигмы (символьный/нейросети/вероятностный), что НЕ умеет современный ИИ",
+      "Урок 32 — Символьный ИИ и графы знаний. Knowledge graphs (Wikidata, Google KG), RDF, SPARQL, neuro-symbolic AI",
+      "Урок 33 — Перцептрон. Простейшая нейросеть с математикой, активации, XOR-проблема, MLP, рабочий Python-пример",
+      "Урок 34 — Свой framework для нейросетей на NumPy. ~80 строк кода, forward/backward, обучает XOR. Это «hello world» PyTorch"
+    ]
+  },
+  {
+    date: "2026-05-13",
+    title: "🤖 Фаза 2 продвинулась: уроки 19–22",
+    tag: "new",
+    items: [
+      "Урок 19 — Использование инструментов агентами. Descriptions, idempotency, least privilege, грануляция tools",
+      "Урок 20 — Agentic RAG. Multi-hop, sub-question decomposition, self-RAG, corrective RAG",
+      "Урок 21 — Доверие и безопасность агентов. OWASP, HITL, sandbox, cost limits, audit log, kill switch",
+      "Урок 22 — Планирование задач агентом. Plan-and-Execute, replanning, hierarchical, Tree-of-Thoughts"
+    ]
+  },
+  {
     date: "2026-05-12",
     title: "🎉 Алёша — AI-наставник прямо в уроке",
     tag: "new",
@@ -16764,15 +16821,6 @@ function renderChangelog() {
       Готово полных уроков: <strong>${written}</strong> из ${totalAll}.
     </p>
 
-    <div class="email-signup">
-      <h3>📬 Получай новые уроки на почту</h3>
-      <p>Раз в неделю — короткое письмо: какие уроки добавились, что в индустрии произошло, какие новые модели вышли.</p>
-      <form class="email-form" onsubmit="subscribeEmail(event)">
-        <input type="email" name="email" placeholder="ты@email.ru" required>
-        <button type="submit">Подписаться</button>
-      </form>
-      <p style="font-size: 0.85rem; margin-top: 0.5rem;">Без спама. Отписка в один клик. На время черновика — копится список и придёт первое письмо когда наберётся 50+ подписчиков.</p>
-    </div>
   `;
 
   CHANGELOG.forEach(entry => {
@@ -16836,7 +16884,7 @@ function renderHome() {
     <div class="home-aside-section">
       <h3>Продолжить обучение</h3>
       <div class="continue-learning">
-        ${continueLessons.map((l, i) => continueCard(l, [10, 30, 50][i] || 0)).join('')}
+        ${continueLessons.map(l => continueCard(l)).join('')}
       </div>
     </div>
   `;
@@ -16894,7 +16942,7 @@ function renderHome() {
 
     <div class="stats-grid-v2">
       ${statCard({ icon: '📚', label: 'Уроков всего', value: total, theme: 'prompts' })}
-      ${statCard({ icon: '✓', label: 'Готово сейчас', value: written, theme: 'projects' })}
+      ${statCard({ icon: '✓', label: 'Опубликовано', value: written, theme: 'projects' })}
       ${statCard({ icon: '🎯', label: 'Пройдено вами', value: done, theme: 'claude' })}
       ${statCard({ icon: '⏱', label: 'Часов изучения', value: '~150', theme: 'industry' })}
     </div>
@@ -16988,14 +17036,6 @@ function renderHome() {
           </div>
         </div>
 
-        <div class="email-signup">
-          <h3>📬 Не пропусти новые уроки</h3>
-          <p>Раз в неделю присылаю короткое письмо: что вышло, что в индустрии произошло, какие новые модели появились.</p>
-          <form class="email-form" onsubmit="subscribeEmail(event)">
-            <input type="email" name="email" placeholder="ты@email.ru" required>
-            <button type="submit">Подписаться</button>
-          </form>
-        </div>
       </div>
 
       <aside class="home-aside">
@@ -17155,7 +17195,7 @@ function renderMyProgress() {
           ? `<div class="mp-empty">Все доступные уроки пройдены! Жди новых — выпускаем по 2 в неделю.</div>`
           : nextLessons.map((l, i) => `
             <div class="mp-lesson-row" onclick="openLesson(${typeof l.id === 'string' ? `'${l.id}'` : l.id})">
-              <div class="mp-lesson-thumb ${i === 0 ? 'mp-thumb-next' : ''}">${i === 0 ? '▶' : i + 1}</div>
+              <div class="mp-lesson-thumb ${i === 0 ? 'mp-thumb-next' : ''}">${i === 0 ? '▶' : '·'}</div>
               <div class="mp-lesson-body">
                 <div class="mp-lesson-title">${l.title}</div>
                 <div class="mp-lesson-meta">${typeof l.id === 'number' ? `Урок ${l.id}` : String(l.id).toUpperCase()} · ~${l.duration} мин</div>
