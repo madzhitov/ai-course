@@ -645,9 +645,30 @@ body.sidebar-open .sidebar-backdrop { display: block; }
 }
 
 .continue-card:hover {
-  border-color: var(--accent);
+  border-color: var(--text);
+  background: var(--bg-soft);
+}
+.continue-arrow {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: transform 0.15s, color 0.15s;
+}
+.continue-card:hover .continue-arrow {
+  color: var(--text);
   transform: translateX(2px);
 }
+.continue-title {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.continue-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.continue-info { flex: 1; min-width: 0; }
 
 .continue-icon {
   width: 44px; height: 44px;
@@ -16619,6 +16640,16 @@ function fmtDate(isoDate) {
 const CHANGELOG = [
   {
     date: "2026-05-16",
+    title: "🐛 Фикс несогласованностей в дашборде",
+    tag: "fix",
+    items: [
+      "На главной в блоке «Структура курса» карточка «Темы под индустрии» показывала «Скоро» — но все 5 уроков индустрий уже опубликованы. Теперь честно: «5/5»",
+      "«Продолжить обучение» на главной и в «Мой прогресс» теперь выглядят одинаково — тот же стиль карточек, та же логика, те же данные",
+      "На кнопке «Попробовать Алёшу» на главной — на десктопе больше не сворачивает виджет"
+    ]
+  },
+  {
+    date: "2026-05-16",
     title: "🐛 Фикс счётчиков прогресса",
     tag: "fix",
     items: [
@@ -17008,8 +17039,8 @@ function renderHome() {
               <span class="cat-tag cat-t-industry">ТРОПИНКА</span>
               <h3>Темы под индустрии</h3>
               <div class="lesson-card-meta">
-                <span>Юристы, маркетинг, HR</span>
-                <span class="badge badge-draft">Скоро</span>
+                <span>Юристы, маркетинг, HR, разработчики, финансы</span>
+                <span class="badge badge-ongoing">${TRACK_LESSONS.filter(l => l.track === 'industry' && l.content).length}/${TRACK_LESSONS.filter(l => l.track === 'industry').length}</span>
               </div>
             </div>
           </div>
@@ -17204,16 +17235,21 @@ function renderMyProgress() {
         </div>
         ${nextLessons.length === 0
           ? `<div class="mp-empty">Все доступные уроки пройдены! Жди новых — выпускаем по 2 в неделю.</div>`
-          : nextLessons.map((l, i) => `
-            <div class="mp-lesson-row" onclick="openLesson(${typeof l.id === 'string' ? `'${l.id}'` : l.id})">
-              <div class="mp-lesson-thumb ${i === 0 ? 'mp-thumb-next' : ''}">${i === 0 ? '▶' : '·'}</div>
-              <div class="mp-lesson-body">
-                <div class="mp-lesson-title">${l.title}</div>
-                <div class="mp-lesson-meta">${typeof l.id === 'number' ? `Урок ${l.id}` : String(l.id).toUpperCase()} · ~${l.duration} мин</div>
-              </div>
-              <div class="mp-lesson-tag">${i === 0 ? 'Дальше' : 'Потом'}</div>
-            </div>
-          `).join('')
+          : nextLessons.map(l => {
+              const theme = lessonTheme(l);
+              const idStr = typeof l.id === 'string' ? `'${l.id}'` : l.id;
+              const lessonNum = typeof l.id === 'number' ? `Урок ${l.id}` : String(l.id).toUpperCase();
+              return `
+                <div class="continue-card" onclick="openLesson(${idStr})">
+                  <div class="continue-icon" style="background: var(--cat-${theme.catKey}); color: var(--cat-${theme.catKey}-text);">${theme.icon}</div>
+                  <div class="continue-info">
+                    <div class="continue-title">${l.title}</div>
+                    <div class="continue-meta">${lessonNum} · ${l.duration} мин</div>
+                  </div>
+                  <div class="continue-arrow">→</div>
+                </div>
+              `;
+            }).join('')
         }
       </div>
 
