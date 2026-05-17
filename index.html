@@ -612,18 +612,8 @@ body.sidebar-open .sidebar-backdrop { display: block; }
   padding-top: 0.75rem;
 }
 
-.lesson-card-v2.is-draft { opacity: 0.6; }
-.lesson-card-v2.is-draft .lesson-card-thumb::after {
-  content: "✏️ скоро";
-  position: absolute;
-  bottom: 0.5rem;
-  right: 0.5rem;
-  background: rgba(0,0,0,0.5);
-  color: white;
-  padding: 0.15rem 0.5rem;
-  border-radius: 100px;
-  font-size: 0.7rem;
-}
+.lesson-card-v2.is-draft { opacity: 0.55; }
+.lesson-card-v2.is-draft:hover { opacity: 0.85; }
 
 /* Continue learning (small card) */
 .continue-learning {
@@ -15798,7 +15788,7 @@ function lessonTheme(lesson) {
 }
 
 function lessonStatus(lesson) {
-  if (lesson.draft) return '<span class="badge badge-draft">Черновик</span>';
+  if (lesson.draft) return '<span class="badge badge-draft">скоро</span>';
   if (isCompleted(lesson.id)) return '<span class="badge badge-complete">Пройдено</span>';
   return '<span class="badge badge-ongoing">Доступно</span>';
 }
