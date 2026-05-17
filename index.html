@@ -2996,7 +2996,13 @@ main {
   flex-shrink: 0 !important;
   background: var(--bg-soft) !important;
   font-size: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--text-muted);
 }
+.lesson-card-thumb .ico { width: 18px !important; height: 18px !important; }
+.lesson-card-v2:hover .lesson-card-thumb { color: var(--text); }
 .lesson-card-body { flex: 1 !important; min-width: 0 !important; padding: 0 !important; }
 .lesson-card-body h3 { font-size: 17px !important; font-weight: 700 !important; letter-spacing: -0.01em !important; margin: 0 0 3px !important; }
 .lesson-card-body p { font-size: 13px !important; color: var(--text-muted) !important; margin: 0 !important; }
@@ -17482,29 +17488,29 @@ function renderHome() {
 
         <h2>Что ты получишь</h2>
         <div class="lesson-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
-          <div class="lesson-card-v2" style="cursor: default;">
-            <div class="lesson-card-thumb theme-prompts">🎯</div>
+          <div class="lesson-card-v2" onclick="openSection('main')">
+            <div class="lesson-card-thumb">${phaseIcon(1)}</div>
             <div class="lesson-card-body">
               <h3>Один последовательный путь</h3>
               <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Не «10 разных курсов» — один маршрут от пользователя ChatGPT до уровня инженера.</p>
             </div>
           </div>
-          <div class="lesson-card-v2" style="cursor: default;">
-            <div class="lesson-card-thumb theme-claude">🟣</div>
+          <div class="lesson-card-v2" onclick="openSection('claude')">
+            <div class="lesson-card-thumb">${phaseIcon('claude')}</div>
             <div class="lesson-card-body">
               <h3>Глубоко про Claude</h3>
               <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Artifacts, Projects, MCP, Computer Use, Claude Code — самая детальная серия на русском.</p>
             </div>
           </div>
-          <div class="lesson-card-v2" style="cursor: default;">
-            <div class="lesson-card-thumb theme-projects">🛠</div>
+          <div class="lesson-card-v2" onclick="openSection('projects')">
+            <div class="lesson-card-thumb">${phaseIcon('projects')}</div>
             <div class="lesson-card-body">
               <h3>Реальная практика</h3>
               <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Telegram-бот, RAG над заметками, голосовой ассистент — каждый pet-проект делается за час.</p>
             </div>
           </div>
-          <div class="lesson-card-v2" style="cursor: default;">
-            <div class="lesson-card-thumb theme-fundamentals">💯</div>
+          <div class="lesson-card-v2" onclick="openStaticPage('about')">
+            <div class="lesson-card-thumb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg></div>
             <div class="lesson-card-body">
               <h3>Полностью бесплатно</h3>
               <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Никаких подписок и платных уровней. MIT-лицензия — можно использовать в своих программах.</p>
