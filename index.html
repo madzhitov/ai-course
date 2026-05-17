@@ -3823,9 +3823,9 @@ const PHASES = [
 
 // Параллельные тропинки — отдельные ветки рядом с главным путём
 const TRACKS = [
-  { id: "claude", title: "🟣 Claude Deep Dive", subtitle: "Всё что важно про Claude", icon: "🟣" },
-  { id: "projects", title: "🛠 Мини-проекты «За 1 час»", subtitle: "Рабочие пет-проекты", icon: "🛠" },
-  { id: "industry", title: "💼 Темы под индустрии", subtitle: "ИИ для конкретных профессий", icon: "💼" },
+  { id: "claude", title: "Claude Deep Dive", subtitle: "Всё что важно про Claude", icon: "🟣" },
+  { id: "projects", title: "Мини-проекты «За 1 час»", subtitle: "Рабочие пет-проекты", icon: "🛠" },
+  { id: "industry", title: "Темы под индустрии", subtitle: "ИИ для конкретных профессий", icon: "💼" },
 ];
 
 // Уроки спецветок
@@ -16009,30 +16009,25 @@ function renderMainSection() {
   `;
 
   // Карточки фаз
-  const phaseThemes = ['fundamentals', 'agents', 'ml', 'industry'];
-  const phaseIcons = ['🟢', '🔵', '🟣', '🟠'];
-
   html += '<div class="lesson-cards-grid">';
-  PHASES.forEach((phase, idx) => {
+  PHASES.forEach((phase) => {
     const phaseLessons = LESSONS.filter(l => l.phase === phase.id);
     const phaseCompleted = phaseLessons.filter(l => isCompleted(l.id)).length;
     const phaseWritten = phaseLessons.filter(l => l.content).length;
     const firstWritten = phaseLessons.find(l => l.content);
     const firstUnfinished = phaseLessons.find(l => l.content && !isCompleted(l.id));
     const targetLesson = firstUnfinished || firstWritten || phaseLessons[0];
-    const theme = phaseThemes[idx];
 
     let statusBadge;
     if (phaseCompleted === phaseLessons.length) statusBadge = '<span class="badge badge-complete">Пройдено</span>';
     else if (phaseCompleted > 0) statusBadge = '<span class="badge badge-ongoing">' + phaseCompleted + '/' + phaseLessons.length + '</span>';
-    else if (phaseWritten === 0) statusBadge = '<span class="badge badge-draft">Скоро</span>';
+    else if (phaseWritten === 0) statusBadge = '<span class="badge badge-draft">скоро</span>';
     else statusBadge = '<span class="badge badge-ongoing">' + phaseWritten + ' готово</span>';
 
     html += `
       <div class="lesson-card-v2" onclick="openLesson(${targetLesson.id})">
-        <div class="lesson-card-thumb theme-${theme}">${phaseIcons[idx]}</div>
+        <div class="lesson-card-thumb">${phaseIcon(phase.id)}</div>
         <div class="lesson-card-body">
-          <span class="cat-tag cat-t-${theme}">ФАЗА ${phase.id}</span>
           <h3>${phase.title.replace('Фаза ' + phase.id + '. ', '')}</h3>
           <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0 0 0.5rem;">${phase.subtitle}</p>
           <div class="lesson-card-meta">
@@ -16092,7 +16087,7 @@ function renderTrackSection(trackId) {
   const meta = descriptions[trackId];
 
   let html = `
-    <h1>${meta.icon} ${meta.title}</h1>
+    <h1 style="display:flex; align-items:center; gap:14px;"><span style="display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:10px; background: var(--bg-soft); color: var(--text);">${phaseIcon(trackId)}</span>${meta.title}</h1>
     <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1.5rem;">${meta.hero}</p>
 
     <div class="stats-grid-v2">
