@@ -3574,6 +3574,39 @@ main {
 }
 [data-theme="dark"] .sb-prompt { background: var(--bg); }
 
+/* === Roadmap block (About) === */
+.roadmap-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 1.25rem 0 1.5rem;
+}
+.roadmap-section {
+  padding: 16px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.roadmap-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.roadmap-section ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+}
+.roadmap-section li { margin-bottom: 6px; }
+.roadmap-section li:last-child { margin-bottom: 0; }
+@media (max-width: 700px) {
+  .roadmap-block { grid-template-columns: 1fr; }
+}
+
 /* === Compare block (About) === */
 .compare-block {
   margin: 1.5rem 0;
@@ -17847,6 +17880,69 @@ function renderAbout() {
       <li>📱 <strong>Работает на любом устройстве.</strong></li>
       <li>👨‍💻 <strong>Открытый код</strong> — можешь делать pull request с правками.</li>
     </ul>
+
+    <h2>В чём принципиальное отличие</h2>
+    <p>Обычные курсы про AI делают одно из двух:</p>
+    <ul>
+      <li>📚 <strong>Учат одному инструменту</strong> — «Claude 101», «Как пользоваться ChatGPT», «5 промптов которые». Это полезно как первое знакомство, но не даёт картины.</li>
+      <li>🎓 <strong>Учат теории глубоко и сухо</strong> — академические курсы (Coursera, Stanford) про математику нейросетей. Хорошо для научной карьеры, плохо для применения.</li>
+    </ul>
+
+    <p>Этот курс — <strong>между этими крайностями</strong>. Не «как нажать кнопку», но и не «градиентный спуск по матрицам». Это <strong>AI literacy для практиков</strong>:</p>
+    <ul>
+      <li>Чтобы ты <strong>понимал что происходит внутри</strong>, когда отправляешь запрос в LLM — на уровне «токены, контекст, температура», а не на уровне «волшебная коробка отвечает».</li>
+      <li>Чтобы ты <strong>делал свои AI-приложения</strong> — не пересказывая чужие туториалы, а от понимания принципов.</li>
+      <li>Чтобы ты <strong>читал статьи и код</strong> в области без ощущения «всё непонятное».</li>
+      <li>Чтобы тебе было <strong>не больно</strong> — без затянутых лекций и сухих формул. На русском, тоном «коллега объясняет коллеге».</li>
+    </ul>
+
+    <p>Это длинно. 95 уроков. ~150 часов. Не для тех, кто хочет «быстро попробовать». Для тех, кто хочет <strong>надолго</strong>.</p>
+
+    <h2>Что планируем дальше</h2>
+    <p>Курс активно развивается. Вот что уже в работе или близко на горизонте:</p>
+
+    <div class="roadmap-block">
+      <div class="roadmap-section">
+        <div class="roadmap-section-title">📚 Уроки</div>
+        <ul>
+          <li>Доделать Фазу 2 (агенты) — уроки 23–30 про мульти-агентные системы, метакогницию, MCP, агентов в проде</li>
+          <li>Развернуть Фазу 3 (Практик) — компьютерное зрение, NLP, трансформеры</li>
+          <li>Открыть Фазу 4 (Инженер) — классический ML, MLOps, fine-tuning LLM</li>
+        </ul>
+      </div>
+
+      <div class="roadmap-section">
+        <div class="roadmap-section-title">⚡ Интерактив</div>
+        <ul>
+          <li>Песочница температуры уже есть в Уроке 1 — следом будут токенизатор, контекстное окно, эмбеддинги</li>
+          <li>Возможность запускать Python прямо в браузере для практических уроков</li>
+          <li>Live-сравнение моделей (Claude vs GPT vs Gemini) на одном промпте</li>
+        </ul>
+      </div>
+
+      <div class="roadmap-section">
+        <div class="roadmap-section-title">🤝 Сообщество</div>
+        <ul>
+          <li>Запуск Telegram-канала — анонсы новых уроков, личный опыт автора, разборы</li>
+          <li>Чат подписчиков — для вопросов и взаимопомощи</li>
+          <li>Cohort-mode — раз в 1-2 месяца открытый набор группы, прохождение Фазы 1 за 4 недели вместе</li>
+          <li>Showcase pet-проектов — галерея работ студентов</li>
+        </ul>
+      </div>
+
+      <div class="roadmap-section">
+        <div class="roadmap-section-title">🎯 Качество и доступность</div>
+        <ul>
+          <li>Сертификаты по окончании фазы — PDF с QR на публичный профиль</li>
+          <li>Алёша с памятью — будет помнить твои предыдущие диалоги между сессиями</li>
+          <li>Перевод на английский — если будет ресурс</li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="color: var(--text-muted); font-size: 14px; margin-top: 1rem;">
+      Идеи и пожелания — пиши в Telegram <a href="https://t.me/madzhitov" target="_blank"><strong>@madzhitov</strong></a>. Открытый код — можно прислать pull request.
+    </p>
 
     <h2>Откуда контент</h2>
     <p>Базой служат четыре открытых курса Microsoft (все на MIT-лицензии):</p>
