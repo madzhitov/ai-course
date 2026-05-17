@@ -3006,31 +3006,16 @@ main {
 .badge-complete { color: var(--phase-1-dot) !important; }
 .lesson-cards-grid { display: block !important; }
 
-/* === Sidebar phase dots === */
-.phase[data-phase="1"] .phase-title::before,
-.phase[data-phase="2"] .phase-title::before,
-.phase[data-phase="3"] .phase-title::before,
-.phase[data-phase="4"] .phase-title::before,
-.phase[data-phase="c"] .phase-title::before,
-.phase[data-phase="p"] .phase-title::before,
-.phase[data-phase="i"] .phase-title::before {
-  content: '';
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  margin-right: 8px;
-  vertical-align: middle;
+/* === Sidebar phase icons (Lucide monochrome) === */
+.phase-icon {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 6px;
+  color: var(--text-muted);
 }
-.phase[data-phase="1"] .phase-title::before { background: var(--phase-1-dot); }
-.phase[data-phase="2"] .phase-title::before { background: var(--phase-2-dot); }
-.phase[data-phase="3"] .phase-title::before { background: var(--phase-3-dot); }
-.phase[data-phase="4"] .phase-title::before { background: var(--phase-4-dot); }
-.phase[data-phase="c"] .phase-title::before { background: var(--phase-c-dot); }
-.phase[data-phase="p"] .phase-title::before { background: var(--phase-p-dot); }
-.phase[data-phase="i"] .phase-title::before { background: var(--phase-i-dot); }
-/* убираем цветной color: на title — теперь это просто текст с точкой перед */
-.phase .phase-title { color: var(--text) !important; }
+.phase-icon .ico { width: 14px; height: 14px; }
+.phase .phase-title { color: var(--text) !important; display: inline-flex; align-items: center; gap: 0; }
+.phase:hover .phase-icon { color: var(--text); }
 
 /* === Track cards на About → list rows === */
 .track-cards { gap: 0 !important; }
@@ -3265,12 +3250,13 @@ main {
   align-items: center;
   gap: 8px;
 }
-.mp-phase-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--phase-color);
+.mp-phase-dot { display: none; }
+.mp-phase-icon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--phase-color);
 }
+.mp-phase-icon .ico { width: 18px; height: 18px; }
 .mp-phase-sub {
   font-size: 12px;
   color: var(--text-muted);
@@ -3327,12 +3313,13 @@ main {
   gap: 8px;
   margin-bottom: 12px;
 }
-.mp-track-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--track-color);
+.mp-track-dot { display: none; }
+.mp-track-icon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--track-color);
 }
+.mp-track-icon .ico { width: 20px; height: 20px; }
 .mp-track-name {
   font-size: 14px;
   font-weight: 700;
@@ -14960,7 +14947,7 @@ function buildNav() {
     phaseEl.innerHTML = `
       <div class="phase-header" onclick="this.parentElement.classList.toggle('collapsed')">
         <div>
-          <div class="phase-title"><span class="phase-toggle">▼</span>${phase.title}</div>
+          <div class="phase-title"><span class="phase-toggle">▼</span><span class="phase-icon">${phaseIcon(phase.id)}</span>${phase.title}</div>
           <div class="phase-progress-mini">${phase.subtitle}</div>
         </div>
         <div class="phase-progress-mini">${completedCount}/${phaseLessons.length}</div>
@@ -15028,7 +15015,7 @@ function buildNav() {
     trackEl.innerHTML = `
       <div class="phase-header" onclick="this.parentElement.classList.toggle('collapsed')">
         <div>
-          <div class="phase-title"><span class="phase-toggle">▼</span>${track.title}</div>
+          <div class="phase-title"><span class="phase-toggle">▼</span><span class="phase-icon">${phaseIcon(track.id)}</span>${track.title.replace(/^[🟣🛠💼]\s*/, '')}</div>
           <div class="phase-progress-mini">${track.subtitle}</div>
         </div>
         <div class="phase-progress-mini">${completedCount}/${trackLessons.length}</div>
@@ -15458,6 +15445,36 @@ function enhanceCodeBlocks(container) {
     };
     pre.appendChild(btn);
   });
+}
+
+// ============================================================
+// Phase / Track icons (Lucide monochrome)
+// ============================================================
+function phaseIcon(key) {
+  // key: 1, 2, 3, 4, 'claude', 'projects', 'industry' (или 'c', 'p', 'i')
+  const SVG = (paths, cls = 'ico') =>
+    `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
+  const icons = {
+    // Фаза 1. Пользователь → user
+    1: '<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>',
+    // Фаза 2. Строитель → wrench
+    2: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+    // Фаза 3. Практик → microscope
+    3: '<path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14h2"/><path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z"/><path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/>',
+    // Фаза 4. Инженер → cpu
+    4: '<rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/>',
+    // Claude Deep Dive → sparkles
+    claude: '<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>',
+    // Mini-projects → play circle
+    projects: '<circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/>',
+    // Industries → briefcase
+    industry: '<rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
+  };
+  // Aliases for short keys
+  if (key === 'c') key = 'claude';
+  if (key === 'p') key = 'projects';
+  if (key === 'i') key = 'industry';
+  return SVG(icons[key] || '<circle cx="12" cy="12" r="3"/>');
 }
 
 // ============================================================
@@ -17680,7 +17697,7 @@ function renderMyProgress() {
           ${phaseStats.map(p => `
             <div class="mp-phase-row" style="--phase-color: var(--phase-${p.id}-dot);">
               <div class="mp-phase-info">
-                <div class="mp-phase-name"><span class="mp-phase-dot"></span> Фаза ${p.id}. ${p.title}</div>
+                <div class="mp-phase-name"><span class="mp-phase-icon">${phaseIcon(p.id)}</span> Фаза ${p.id}. ${p.title}</div>
                 <div class="mp-phase-sub">${p.sub}</div>
               </div>
               <div class="mp-phase-stat">
@@ -17702,7 +17719,7 @@ function renderMyProgress() {
           ${trackStats.map((t, i) => `
             <div class="mp-track" onclick="openSection('${t.id}')" style="--track-color: var(--phase-${t.id === 'claude' ? 'c' : t.id === 'projects' ? 'p' : 'i'}-dot);">
               <div class="mp-track-head">
-                <span class="mp-track-dot"></span>
+                <span class="mp-track-icon">${phaseIcon(t.id)}</span>
                 <div class="mp-track-name">${t.title.replace(/^[🟣🛠💼]\s/, '')}</div>
               </div>
               <div class="mp-track-stat">${t.done} / ${t.total}</div>
