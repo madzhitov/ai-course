@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Понятный курс ИИ на русском. Бесплатно</title>
-<meta name="description" content="Понятный курс по искусственному интеллекту на русском. Бесплатно. 95 уроков: от промптов до создания агентов и обучения нейросетей.">
-<meta name="keywords" content="ИИ, AI, искусственный интеллект, нейросети, ChatGPT, LLM, машинное обучение, промпт-инжиниринг, агенты, курс, обучение, бесплатно, на русском">
+<title>AI Курс — от первых промптов до своих AI-приложений. На русском, бесплатно</title>
+<meta name="description" content="95 уроков на русском с AI-наставником в каждом. Полный путь от первых промптов до своих агентов и понимания, как нейросети работают внутри. Бесплатно, открытый код.">
+<meta name="keywords" content="ИИ, AI, искусственный интеллект, нейросети, ChatGPT, Claude, LLM, машинное обучение, промпт-инжиниринг, агенты, курс, обучение, бесплатно, на русском">
 <meta name="author" content="Руслан Маджитов">
 
 <!-- Open Graph / соцсети -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Понятный курс ИИ на русском. Бесплатно">
-<meta property="og:description" content="95 уроков: от промптов до создания агентов и обучения нейросетей. Глубокая ветка про Claude. Без воды, с реальным кодом.">
+<meta property="og:title" content="AI Курс — от первых промптов до своих AI-приложений">
+<meta property="og:description" content="95 уроков на русском с AI-наставником. Полный путь: промпты → агенты → нейросети. Не очередное «введение в Claude» на 12 уроков.">
 <meta property="og:locale" content="ru_RU">
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Понятный курс ИИ на русском. Бесплатно">
-<meta name="twitter:description" content="95 уроков: от промптов до агентов и нейросетей. Глубокая ветка про Claude.">
+<meta name="twitter:title" content="AI Курс — от первых промптов до своих AI-приложений">
+<meta name="twitter:description" content="95 уроков на русском с AI-наставником. Полный путь: промпты → агенты → нейросети.">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🤖%3C/text%3E%3C/svg%3E">
 
@@ -3401,6 +3401,39 @@ main {
   .mp-tracks { grid-template-columns: 1fr; }
   .mp-motivation-stats { grid-template-columns: 1fr; }
   .mp-motivation-stat + .mp-motivation-stat { border-left: none; border-top: 1px solid var(--border); padding-top: 14px; margin-top: 14px; }
+}
+
+/* === Compare block (About) === */
+.compare-block {
+  margin: 1.5rem 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg-card);
+}
+.compare-row {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr 2fr;
+  gap: 1rem;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  font-size: 14px;
+}
+.compare-row:last-child { border-bottom: none; }
+.compare-row.compare-head {
+  background: var(--bg-soft);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.compare-row .us { color: var(--text); }
+.compare-row .us strong { color: var(--link); }
+@media (max-width: 600px) {
+  .compare-row { grid-template-columns: 1fr 1fr; padding: 12px; font-size: 13px; }
+  .compare-row > div:first-child { grid-column: 1 / -1; font-weight: 600; padding-bottom: 4px; }
 }
 
 /* === Lesson actions: чек + prev/next === */
@@ -16640,6 +16673,17 @@ function fmtDate(isoDate) {
 const CHANGELOG = [
   {
     date: "2026-05-16",
+    title: "✍️ Новый главный заголовок + сравнение с конкурентами",
+    tag: "update",
+    items: [
+      "Главная страница: новый h1 «От первых промптов до своих AI-приложений» — конкретнее чем абстрактное «Понятный курс»",
+      "Подзаголовок объясняет чем отличаемся от «Claude 101»-форматов: 95 уроков vs 11–12, AI-наставник в каждом, pet-проекты с кодом",
+      "На странице «О курсе» добавлена таблица сравнения с другими русскоязычными курсами по AI",
+      "Обновлены SEO-теги и Open Graph для лучшего шеринга"
+    ]
+  },
+  {
+    date: "2026-05-16",
     title: "🐛 Фикс несогласованностей в дашборде",
     tag: "fix",
     items: [
@@ -16966,14 +17010,13 @@ function renderHome() {
   document.getElementById('lesson-content').innerHTML = `
     ${resumeBanner}
     <div class="hero-v2">
-      <h1>Понятный курс ИИ на русском. Бесплатно</h1>
+      <h1>От первых промптов<br>до своих AI-приложений.</h1>
       <p class="tagline">
-        Бесплатный практический курс. От первых промптов до создания агентов и обучения нейросетей.
-        Без воды, с реальным кодом, в темпе который ты выбираешь сам.
+        95 уроков на русском, AI-наставник в каждом, готовые pet-проекты с кодом. Полный путь — а не очередное «введение в Claude» на 12 уроков.
       </p>
       <div class="hero-cta-v2">
         <button class="btn-primary-v2" onclick="openLesson(1)">${hasProgress ? 'Продолжить курс' : 'Начать с Урока 1'} →</button>
-        <button class="btn-secondary-v2" onclick="openStaticPage('about')">Что внутри</button>
+        <button class="btn-secondary-v2" onclick="openStaticPage('about')">Чем отличается</button>
       </div>
       <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1.5rem;">
         Курс собирает и постоянно обновляет <strong>Руслан Маджитов</strong> · Telegram: <a href="https://t.me/madzhitov" target="_blank" style="color: var(--accent); font-weight: 600;">@madzhitov</a>
@@ -17444,14 +17487,66 @@ function renderAbout() {
     <p>При темпе <strong>1 урок в день</strong> курс занимает 4–5 месяцев. По 2 урока в день — 2 месяца. По воскресеньям только — 1.5 года. Главное — <strong>регулярность</strong>, не темп.</p>
     <p>Не пытайся прочитать всё за неделю. ИИ — это область, в которой нужно <strong>встраивать новые концепции в свою работу</strong>, иначе быстро забудется.</p>
 
-    <h2>Чем этот курс отличается</h2>
+    <h2>Чем отличается от других русскоязычных курсов</h2>
+    <p>В рунете есть два видимых курса про Claude (Reymer, BeSmart) — оба адаптации Anthropic Academy на 11–12 уроков. Это полезно как введение, но это про <strong>один инструмент</strong>, а не про AI literacy.</p>
+
+    <div class="compare-block">
+      <div class="compare-row compare-head">
+        <div></div>
+        <div>«Claude 101»-форматы</div>
+        <div class="us">AI Курс</div>
+      </div>
+      <div class="compare-row">
+        <div>Уроков</div>
+        <div>11–12</div>
+        <div class="us"><strong>95</strong></div>
+      </div>
+      <div class="compare-row">
+        <div>Общее время</div>
+        <div>2–3 часа</div>
+        <div class="us"><strong>~150 часов</strong></div>
+      </div>
+      <div class="compare-row">
+        <div>Тема</div>
+        <div>Только Claude</div>
+        <div class="us"><strong>AI literacy:</strong> LLM, агенты, ML, CV, NLP</div>
+      </div>
+      <div class="compare-row">
+        <div>Источник</div>
+        <div>Перевод Anthropic Academy</div>
+        <div class="us"><strong>Свой контент</strong> на базе Microsoft + опыт</div>
+      </div>
+      <div class="compare-row">
+        <div>AI-наставник</div>
+        <div>—</div>
+        <div class="us"><strong>Алёша</strong> в каждом уроке</div>
+      </div>
+      <div class="compare-row">
+        <div>Pet-проекты</div>
+        <div>—</div>
+        <div class="us"><strong>10 проектов</strong> с реальным кодом</div>
+      </div>
+      <div class="compare-row">
+        <div>Для индустрий</div>
+        <div>Кейсы по ролям</div>
+        <div class="us"><strong>5 уроков</strong> с compliance и risk-частью</div>
+      </div>
+      <div class="compare-row">
+        <div>Цена</div>
+        <div>Бесплатно (некоторые — премиум)</div>
+        <div class="us"><strong>Бесплатно навсегда</strong>, MIT-лицензия</div>
+      </div>
+    </div>
+
+    <p style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.95rem;">Если тебе нужно «5 минут попробовать Claude» — иди к ним, они короче. Если хочешь <strong>понять AI как область</strong> и научиться делать собственные приложения — оставайся тут.</p>
+
+    <h2>И ещё несколько вещей</h2>
     <ul>
       <li>🎯 <strong>Один путь</strong>, а не пять разных курсов с пересечениями.</li>
       <li>🇷🇺 <strong>На русском</strong>, с примерами под русскоязычный контекст.</li>
-      <li>💯 <strong>Бесплатно, открыто, без регистраций.</strong></li>
-      <li>🛠 <strong>Практика после каждого урока</strong> — без неё знание не оседает.</li>
       <li>🔄 <strong>Прогресс сохраняется</strong> в браузере. Закрыл вкладку — продолжишь с того же места.</li>
       <li>📱 <strong>Работает на любом устройстве.</strong></li>
+      <li>👨‍💻 <strong>Открытый код</strong> — можешь делать pull request с правками.</li>
     </ul>
 
     <h2>Откуда контент</h2>
