@@ -3403,6 +3403,177 @@ main {
   .mp-motivation-stat + .mp-motivation-stat { border-left: none; border-top: 1px solid var(--border); padding-top: 14px; margin-top: 14px; }
 }
 
+/* ============================================================
+   Interactive sandboxes (в уроках)
+   ============================================================ */
+.sandbox {
+  margin: 1.75rem 0;
+  padding: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+[data-theme="dark"] .sandbox { background: var(--bg-soft); }
+.sandbox-loading {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 1.5rem 0;
+  font-size: 14px;
+}
+.sandbox-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--link);
+  margin-bottom: 8px;
+}
+.sandbox-title {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px !important;
+  border: none !important;
+  padding: 0 !important;
+}
+.sandbox-desc {
+  color: var(--text-muted) !important;
+  font-size: 14px !important;
+  margin: 0 0 1rem !important;
+}
+
+/* Temperature controls */
+.sb-control-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.sb-slider {
+  flex: 1;
+  min-width: 200px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg-soft);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+.sb-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--text);
+  cursor: grab;
+  border: 3px solid var(--bg-card);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.sb-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--text);
+  cursor: grab;
+  border: 3px solid var(--bg-card);
+}
+.sb-slider:active::-webkit-slider-thumb { cursor: grabbing; }
+.sb-value {
+  font-family: ui-monospace, "SF Mono", Monaco, monospace;
+  font-size: 18px;
+  font-weight: 700;
+  min-width: 60px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.sb-presets { display: flex; gap: 6px; flex-wrap: wrap; }
+.sb-preset-btn {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.sb-preset-btn:hover { color: var(--text); border-color: var(--text); }
+.sb-preset-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+/* Token bars */
+.sb-bars { margin: 1rem 0 0.5rem; }
+.sb-bar-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 60px;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 0;
+  font-size: 14px;
+}
+.sb-bar-token {
+  font-family: ui-monospace, "SF Mono", Monaco, monospace;
+  font-size: 13px;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sb-bar-track {
+  height: 22px;
+  background: var(--bg-soft);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+[data-theme="dark"] .sb-bar-track { background: var(--bg); }
+.sb-bar-fill {
+  height: 100%;
+  background: var(--text);
+  border-radius: 4px;
+  transition: width 0.25s ease-out;
+  min-width: 2px;
+}
+.sb-bar-row.is-top .sb-bar-fill { background: linear-gradient(90deg, #7c3aed, #ec4899); }
+.sb-bar-pct {
+  font-family: ui-monospace, "SF Mono", Monaco, monospace;
+  font-size: 13px;
+  color: var(--text);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+.sb-bar-pct.tiny { color: var(--text-soft); font-weight: 400; }
+
+.sb-explanation {
+  margin-top: 1rem;
+  padding: 12px 14px;
+  background: var(--link-soft);
+  border: 1px solid var(--link-border);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 38px;
+}
+.sb-explanation strong { color: var(--text); font-weight: 700; }
+
+.sb-prompt {
+  font-family: ui-monospace, "SF Mono", Monaco, monospace;
+  background: var(--bg-soft);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 1rem;
+  border-left: 3px solid var(--text);
+}
+[data-theme="dark"] .sb-prompt { background: var(--bg); }
+
 /* === Compare block (About) === */
 .compare-block {
   margin: 1.5rem 0;
@@ -4077,6 +4248,10 @@ registerLesson(1, `
 </svg>
 <figcaption>Температура «сплющивает» распределение вероятностей. T=0 — модель всегда берёт лучший токен. T=1.3 — почти случайный выбор. Дефолт обычно 0.7.</figcaption>
 </figure>
+
+<div class="sandbox" data-sandbox="temperature">
+  <div class="sandbox-loading">⚡ Загружаю интерактивную песочницу…</div>
+</div>
 
 <table>
 <tr><th>Задача</th><th>Temperature</th><th>Зачем</th></tr>
@@ -15012,6 +15187,7 @@ function renderLesson(id) {
 
   // Post-render enhancements
   enhanceCodeBlocks(container);
+  initSandboxes(container);
   initAlesha(lesson);
 
   // Build TOC and inject after H1
@@ -15218,6 +15394,118 @@ function enhanceCodeBlocks(container) {
     };
     pre.appendChild(btn);
   });
+}
+
+// ============================================================
+// Interactive sandboxes (в уроках)
+// ============================================================
+function initSandboxes(container) {
+  container.querySelectorAll('.sandbox').forEach(el => {
+    const type = el.dataset.sandbox;
+    if (type === 'temperature') initTemperatureSandbox(el);
+    // future: tokenizer, context-window, etc.
+  });
+}
+
+function initTemperatureSandbox(el) {
+  // Базовые logits для токенов после "Столица Франции —"
+  const tokens = [
+    { word: ' Париж', logit: 4.5 },
+    { word: ' город', logit: 2.8 },
+    { word: ' одно', logit: 2.3 },
+    { word: ' Лондон', logit: 1.7 },
+    { word: ' Версаль', logit: 1.2 },
+    { word: ' например', logit: 0.6 },
+    { word: ' банан', logit: -1.5 },
+  ];
+
+  function softmax(logits, T) {
+    T = Math.max(0.001, T);
+    const adjusted = logits.map(l => l / T);
+    const max = Math.max(...adjusted);
+    const exp = adjusted.map(l => Math.exp(l - max));
+    const sum = exp.reduce((a, b) => a + b, 0);
+    return exp.map(e => e / sum);
+  }
+
+  function explain(T) {
+    if (T < 0.05) return '<strong>T=0 — детерминизм.</strong> Модель ВСЕГДА берёт самое вероятное. Подходит для JSON, кода, переводов — когда важна стабильность и нет места «креативу».';
+    if (T < 0.5) return '<strong>T низкая.</strong> Модель почти всегда выбирает лучший токен, иногда — второй по вероятности. Тон ответа предсказуемый, без сюрпризов.';
+    if (T < 0.9) return '<strong>T ≈ 0.7 — стандарт.</strong> Дефолт для большинства задач. Чаще лучшее, иногда — другое, чтобы текст не был «роботизированным».';
+    if (T < 1.3) return '<strong>T высокая.</strong> Распределение «сплющивается». Хорошо для брейнсторма, креативного письма — модель чаще выбирает неожиданные варианты.';
+    return '<strong>T = 1.5+ — почти случайно.</strong> Все токены становятся почти равновероятными. Текст может развалиться или выйти бессвязным. Используй только когда нужна максимальная вариативность.';
+  }
+
+  el.innerHTML = `
+    <div class="sandbox-eyebrow">⚡ Попробуй сам</div>
+    <h4 class="sandbox-title">Как температура меняет вероятности токенов</h4>
+    <p class="sandbox-desc">Двигай ползунок — увидишь, как модель «выбирает» из словаря разные варианты следующего слова.</p>
+
+    <div class="sb-prompt">Промпт: «Столица Франции —»</div>
+
+    <div class="sb-control-row">
+      <input type="range" min="0" max="2" step="0.05" value="0.7" class="sb-slider" />
+      <div class="sb-value">T = <span class="sb-value-num">0.70</span></div>
+    </div>
+
+    <div class="sb-presets">
+      <button class="sb-preset-btn" data-t="0">0 (детерминизм)</button>
+      <button class="sb-preset-btn active" data-t="0.7">0.7 (баланс)</button>
+      <button class="sb-preset-btn" data-t="1.3">1.3 (хаос)</button>
+    </div>
+
+    <div class="sb-bars"></div>
+
+    <div class="sb-explanation"></div>
+  `;
+
+  const slider = el.querySelector('.sb-slider');
+  const valueNum = el.querySelector('.sb-value-num');
+  const barsContainer = el.querySelector('.sb-bars');
+  const explanationEl = el.querySelector('.sb-explanation');
+  const presetBtns = el.querySelectorAll('.sb-preset-btn');
+
+  function render(T) {
+    const probs = softmax(tokens.map(t => t.logit), T);
+    valueNum.textContent = T.toFixed(2);
+
+    // Sort by probability descending so visually it's a nice waterfall
+    const sorted = tokens
+      .map((t, i) => ({ word: t.word, prob: probs[i] }))
+      .sort((a, b) => b.prob - a.prob);
+
+    barsContainer.innerHTML = sorted.map((t, i) => {
+      const pct = t.prob * 100;
+      const display = pct < 0.1 ? '&lt;0.1%' : pct.toFixed(pct < 10 ? 1 : 0) + '%';
+      const isTiny = pct < 1;
+      return `
+        <div class="sb-bar-row ${i === 0 ? 'is-top' : ''}">
+          <div class="sb-bar-token">"${t.word.replace(/^ /, '·')}"</div>
+          <div class="sb-bar-track"><div class="sb-bar-fill" style="width: ${Math.max(pct, 0.5)}%"></div></div>
+          <div class="sb-bar-pct ${isTiny ? 'tiny' : ''}">${display}</div>
+        </div>
+      `;
+    }).join('');
+
+    explanationEl.innerHTML = explain(T);
+
+    // Update preset active state
+    presetBtns.forEach(b => {
+      const bT = parseFloat(b.dataset.t);
+      b.classList.toggle('active', Math.abs(bT - T) < 0.01);
+    });
+  }
+
+  slider.addEventListener('input', e => render(parseFloat(e.target.value)));
+  presetBtns.forEach(b => {
+    b.addEventListener('click', () => {
+      const T = parseFloat(b.dataset.t);
+      slider.value = T;
+      render(T);
+    });
+  });
+
+  render(0.7);
 }
 
 // ============================================================
@@ -16671,6 +16959,17 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-05-17",
+    title: "⚡ Первая интерактивная песочница — в Уроке 1",
+    tag: "new",
+    items: [
+      "В Уроке 1 (раздел «Температура») появилась интерактивная песочница — двигаешь ползунок T от 0 до 2, видишь как меняются вероятности токенов в реальном времени",
+      "Использует реальный softmax — те же формулы что в LLM. Можно жмякать пресеты: 0 (детерминизм) / 0.7 (баланс) / 1.3 (хаос)",
+      "Концепт «температура сплющивает распределение» теперь не читается, а пробуется руками",
+      "Первая из серии — следом будут токенизатор (Урок 1), контекстное окно (Урок 1), эмбеддинги (Урок 8)"
+    ]
+  },
   {
     date: "2026-05-17",
     title: "✍️ Новый главный заголовок + сравнение с конкурентами",
