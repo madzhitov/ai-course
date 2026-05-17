@@ -3598,6 +3598,29 @@ main {
 }
 [data-theme="dark"] .sb-prompt { background: var(--bg); }
 
+/* === Phase headings in About ("Что ты узнаешь") === */
+.phase-h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.phase-h3-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: var(--bg-soft);
+  border-radius: 8px;
+  color: var(--text);
+  flex-shrink: 0;
+}
+.phase-h3-icon .ico { width: 18px; height: 18px; }
+
+/* === Track-card icon (in About) — make it work with SVG === */
+.track-card-icon .ico { width: 22px; height: 22px; color: var(--text); }
+.track-card-icon { background: var(--bg-soft) !important; color: var(--text) !important; }
+
 /* === Roadmap block (About) === */
 .roadmap-block {
   display: grid;
@@ -15789,25 +15812,46 @@ async function aleshaSend() {
 // ============================================================
 
 // Маппинг урок → категория и иконка-эмодзи
+function themeIcon(name) {
+  const SVG = (paths) =>
+    `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
+  const icons = {
+    // Главный путь — субтемы по группам
+    fundamentals: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>', // book-open
+    prompts: '<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/>', // pen-line
+    api: '<polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/>', // terminal
+    safety: '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>', // shield
+    rag: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>', // search
+    agents: '<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>', // bot
+    ml: '<path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/><path d="M19.938 10.5a4 4 0 0 1 .585.396"/><path d="M6 18a4 4 0 0 1-1.967-.516"/><path d="M19.967 17.484A4 4 0 0 1 18 18"/>', // brain
+    nlp: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>', // message-square
+    // Спецветки
+    claude: '<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>', // sparkles
+    projects: '<circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/>', // play-circle
+    industry: '<rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>', // briefcase
+  };
+  return SVG(icons[name] || icons.fundamentals);
+}
+
 function lessonTheme(lesson) {
-  if (!lesson) return { theme: "fundamentals", icon: "📚", catKey: "fundamentals", catName: "ОСНОВЫ" };
+  if (!lesson) return { theme: "fundamentals", icon: themeIcon('fundamentals'), catKey: "fundamentals", catName: "ОСНОВЫ" };
 
   // Спецветки
-  if (lesson.track === 'claude') return { theme: "claude", icon: "🟣", catKey: "claude", catName: "CLAUDE" };
-  if (lesson.track === 'projects') return { theme: "projects", icon: "🛠", catKey: "projects", catName: "ПРОЕКТ" };
-  if (lesson.track === 'industry') return { theme: "industry", icon: "💼", catKey: "industry", catName: "ИНДУСТРИЯ" };
+  if (lesson.track === 'claude') return { theme: "claude", icon: themeIcon('claude'), catKey: "claude", catName: "CLAUDE" };
+  if (lesson.track === 'projects') return { theme: "projects", icon: themeIcon('projects'), catKey: "projects", catName: "ПРОЕКТ" };
+  if (lesson.track === 'industry') return { theme: "industry", icon: themeIcon('industry'), catKey: "industry", catName: "ИНДУСТРИЯ" };
 
   // Главный путь — по номеру урока
   const id = lesson.id;
-  if (id <= 3) return { theme: "fundamentals", icon: "🌱", catKey: "fundamentals", catName: "ОСНОВЫ" };
-  if (id <= 5) return { theme: "prompts", icon: "✍️", catKey: "prompts", catName: "ПРОМПТЫ" };
-  if (id <= 8) return { theme: "api", icon: "💻", catKey: "api", catName: "API" };
-  if (id <= 12) return { theme: "safety", icon: "🛡", catKey: "safety", catName: "БЕЗОПАСНОСТЬ" };
-  if (id <= 15) return { theme: "rag", icon: "🔍", catKey: "rag", catName: "RAG" };
-  if (id <= 30) return { theme: "agents", icon: "🤖", catKey: "agents", catName: "АГЕНТЫ" };
-  if (id <= 42) return { theme: "ml", icon: "🧠", catKey: "ml", catName: "НЕЙРОСЕТИ" };
-  if (id <= 50) return { theme: "nlp", icon: "💬", catKey: "nlp", catName: "NLP" };
-  return { theme: "ml", icon: "⚙️", catKey: "ml", catName: "ML" };
+  if (id <= 3) return { theme: "fundamentals", icon: themeIcon('fundamentals'), catKey: "fundamentals", catName: "ОСНОВЫ" };
+  if (id <= 5) return { theme: "prompts", icon: themeIcon('prompts'), catKey: "prompts", catName: "ПРОМПТЫ" };
+  if (id <= 8) return { theme: "api", icon: themeIcon('api'), catKey: "api", catName: "API" };
+  if (id <= 12) return { theme: "safety", icon: themeIcon('safety'), catKey: "safety", catName: "БЕЗОПАСНОСТЬ" };
+  if (id <= 15) return { theme: "rag", icon: themeIcon('rag'), catKey: "rag", catName: "RAG" };
+  if (id <= 30) return { theme: "agents", icon: themeIcon('agents'), catKey: "agents", catName: "АГЕНТЫ" };
+  if (id <= 42) return { theme: "ml", icon: themeIcon('ml'), catKey: "ml", catName: "НЕЙРОСЕТИ" };
+  if (id <= 50) return { theme: "nlp", icon: themeIcon('nlp'), catKey: "nlp", catName: "NLP" };
+  return { theme: "ml", icon: themeIcon('ml'), catKey: "ml", catName: "ML" };
 }
 
 function lessonStatus(lesson) {
@@ -17447,7 +17491,7 @@ function renderHome() {
 
         <div class="lesson-cards-grid">
           <div class="lesson-card-v2" onclick="openSection('main')">
-            <div class="lesson-card-thumb theme-fundamentals">📚</div>
+            <div class="lesson-card-thumb">${phaseIcon(1)}</div>
             <div class="lesson-card-body">
               <span class="cat-tag cat-t-fundamentals">ГЛАВНЫЙ ПУТЬ</span>
               <h3>${LESSONS.length} уроков в 4 фазах</h3>
@@ -17458,7 +17502,7 @@ function renderHome() {
             </div>
           </div>
           <div class="lesson-card-v2" onclick="openSection('claude')">
-            <div class="lesson-card-thumb theme-claude">🟣</div>
+            <div class="lesson-card-thumb">${phaseIcon('claude')}</div>
             <div class="lesson-card-body">
               <span class="cat-tag cat-t-claude">ТРОПИНКА</span>
               <h3>Claude Deep Dive</h3>
@@ -17469,7 +17513,7 @@ function renderHome() {
             </div>
           </div>
           <div class="lesson-card-v2" onclick="openSection('projects')">
-            <div class="lesson-card-thumb theme-projects">🛠</div>
+            <div class="lesson-card-thumb">${phaseIcon('projects')}</div>
             <div class="lesson-card-body">
               <span class="cat-tag cat-t-projects">ТРОПИНКА</span>
               <h3>Мини-проекты «За 1 час»</h3>
@@ -17480,7 +17524,7 @@ function renderHome() {
             </div>
           </div>
           <div class="lesson-card-v2" onclick="openSection('industry')">
-            <div class="lesson-card-thumb theme-industry">💼</div>
+            <div class="lesson-card-thumb">${phaseIcon('industry')}</div>
             <div class="lesson-card-body">
               <span class="cat-tag cat-t-industry">ТРОПИНКА</span>
               <h3>Темы под индустрии</h3>
@@ -17826,16 +17870,16 @@ function renderAbout() {
 
     <h2>Что ты узнаешь</h2>
 
-    <h3>🟢 Фаза 1. Пользователь (12 уроков)</h3>
+    <h3 class="phase-h3"><span class="phase-h3-icon">${phaseIcon(1)}</span>Фаза 1. Пользователь (12 уроков)</h3>
     <p>Стать <strong>продвинутым юзером</strong> ИИ. Понимать как работают LLM, писать сильные промпты, делать первые приложения. Освоишь ChatGPT/Claude/Gemini на максимум, научишься выбирать модель под задачу, защищаться от галлюцинаций и инжекшен-атак, поднимать чат-боты и semantic-поиск по своим документам.</p>
 
-    <h3>🔵 Фаза 2. Строитель (18 уроков)</h3>
+    <h3 class="phase-h3"><span class="phase-h3-icon">${phaseIcon(2)}</span>Фаза 2. Строитель (18 уроков)</h3>
     <p>Делать <strong>рабочие AI-продукты</strong>. Function calling, RAG, агенты, мульти-агентные системы, продакшен. После фазы ты сможешь спроектировать и собрать многошагового агента с памятью, инструментами и мониторингом, и задеплоить его в облако.</p>
 
-    <h3>🟣 Фаза 3. Практик (20 уроков)</h3>
+    <h3 class="phase-h3"><span class="phase-h3-icon">${phaseIcon(3)}</span>Фаза 3. Практик (20 уроков)</h3>
     <p>Понять <strong>что под капотом</strong> ИИ. Нейросети с нуля на NumPy, потом PyTorch. Компьютерное зрение (CNN, transfer learning, GAN), NLP (эмбеддинги, RNN, трансформеры). После фазы ты прочитаешь любую ML-статью или код и поймёшь.</p>
 
-    <h3>🟠 Фаза 4. Инженер (22 урока)</h3>
+    <h3 class="phase-h3"><span class="phase-h3-icon">${phaseIcon(4)}</span>Фаза 4. Инженер (22 урока)</h3>
     <p>Стать <strong>ML-инженером</strong>. Классическое ML (регрессия, классификация, кластеризация, RL), MLOps, fine-tuning LLM (LoRA, QLoRA), запуск open-source моделей. После фазы ты делаешь end-to-end ML-проекты — от грязных данных до задеплоенной модели в проде.</p>
 
     <h2>Параллельные тропинки</h2>
@@ -17843,9 +17887,9 @@ function renderAbout() {
 
     <div class="track-cards">
       <div class="track-card" onclick="openSection('claude')">
-        <div class="track-card-icon" style="background: linear-gradient(135deg, #db2777, #9d174d);">🟣</div>
+        <div class="track-card-icon">${phaseIcon('claude')}</div>
         <div class="track-card-body">
-          <div class="track-card-tag" style="color: #db2777;">CLAUDE DEEP DIVE</div>
+          <div class="track-card-tag">CLAUDE DEEP DIVE</div>
           <h3>Глубоко про Claude (8 уроков)</h3>
           <p>Artifacts, Projects, MCP, Computer Use, Claude Code, prompt caching, Constitutional AI, сравнение с GPT/Gemini. Самая детальная серия про Claude на русском.</p>
           <div class="track-card-meta">Для тех, кто работает с Claude в продукте или дев-флоу</div>
@@ -17853,9 +17897,9 @@ function renderAbout() {
       </div>
 
       <div class="track-card" onclick="openSection('projects')">
-        <div class="track-card-icon" style="background: linear-gradient(135deg, #0891b2, #155e75);">🛠</div>
+        <div class="track-card-icon">${phaseIcon('projects')}</div>
         <div class="track-card-body">
-          <div class="track-card-tag" style="color: #0891b2;">МИНИ-ПРОЕКТЫ «ЗА 1 ЧАС»</div>
+          <div class="track-card-tag">МИНИ-ПРОЕКТЫ «ЗА 1 ЧАС»</div>
           <h3>10 рабочих pet-проектов</h3>
           <p>Telegram-бот для саммари, RAG над заметками, свой MCP-сервер, OCR чеков через Vision, ресёрчер конкурентов, self-hosted Perplexity, AI-помощник для встреч, анти-спам, поиск по TG, авто-ревьюер PR.</p>
           <div class="track-card-meta">Каждый проект делается за час. Реально живые. Можно класть в портфолио.</div>
@@ -17863,9 +17907,9 @@ function renderAbout() {
       </div>
 
       <div class="track-card" onclick="openSection('industry')">
-        <div class="track-card-icon" style="background: linear-gradient(135deg, #ca8a04, #854d0e);">💼</div>
+        <div class="track-card-icon">${phaseIcon('industry')}</div>
         <div class="track-card-body">
-          <div class="track-card-tag" style="color: #ca8a04;">ТЕМЫ ПОД ИНДУСТРИИ</div>
+          <div class="track-card-tag">ТЕМЫ ПОД ИНДУСТРИИ</div>
           <h3>ИИ для конкретных профессий (5 веток)</h3>
           <p>Юристы, маркетологи, HR, разработчики, финансисты — где AI реально применять, где осторожно, где категорически нельзя. С готовыми промптами и compliance-аспектами (GDPR, EU AI Act).</p>
           <div class="track-card-meta">Прикладные знания для своей области без теории</div>
