@@ -3881,6 +3881,11 @@ const TRACK_LESSONS = [
   { id: "p8", track: "projects", title: "Анти-спам: AI классифицирует входящие письма и отвечает на простые", duration: 75, draft: true },
   { id: "p9", track: "projects", title: "Семантический поиск по своему Telegram-каналу или чату", duration: 60, draft: true },
   { id: "p10", track: "projects", title: "Авто-ревьюер pull request'ов на GitHub", duration: 90, draft: true },
+  { id: "p11", track: "projects", title: "Голосовой AI-ассистент: Whisper + Claude + TTS на твоём железе", duration: 90, draft: true },
+  { id: "p12", track: "projects", title: "Свой Claude Skill: упаковываем рутинную задачу в навык", duration: 60, draft: true },
+  { id: "p13", track: "projects", title: "Browser-расширение «AI рядом с текстом»: объяснить, упростить, перевести выделенное", duration: 75, draft: true },
+  { id: "p14", track: "projects", title: "Локальный AI на Ollama: всё работает на твоём ноутбуке, без облака", duration: 75, draft: true },
+  { id: "p15", track: "projects", title: "Личный AI-секретарь: автоответы на типовые email + дневной чек-ин", duration: 90, draft: true },
 
   // Индустрии
   { id: "i1", track: "industry", title: "ИИ для юристов: договоры, документы, поиск", duration: 60, draft: true },
@@ -18092,6 +18097,19 @@ function fmtDate(isoDate) {
 const CHANGELOG = [
   {
     date: "2026-05-18",
+    title: "🛠 +5 свежих мини-проектов в тропинке «Pet-проекты»",
+    tag: "new",
+    items: [
+      "p11 — Голосовой AI-ассистент: Whisper + Claude + TTS на твоём железе (закрываем зияющий пробел про голос)",
+      "p12 — Свой Claude Skill: упаковываем рутинную задачу в навык (под новую фичу Anthropic из урока c9)",
+      "p13 — Browser-расширение «AI рядом с текстом»: объяснить, упростить, перевести выделенное",
+      "p14 — Локальный AI на Ollama: всё работает на твоём ноутбуке, без облака (приватность + офлайн)",
+      "p15 — Личный AI-секретарь: автоответы на типовые email + дневной чек-ин",
+      "Всего в тропинке теперь 15 проектов вместо 10. Описания обновлены везде на главной и в «О курсе»"
+    ]
+  },
+  {
+    date: "2026-05-18",
     title: "🏠 Новая тропинка «AI каждый день» — для всех, без кода",
     tag: "new",
     items: [
@@ -18580,7 +18598,7 @@ function renderHome() {
               <span class="cat-tag cat-t-projects">ТРОПИНКА</span>
               <h3>Мини-проекты «За 1 час»</h3>
               <div class="lesson-card-meta">
-                <span>TG-бот, RAG, голос</span>
+                <span>TG-бот, RAG, голос, MCP, Skills, Ollama</span>
                 <span class="badge badge-ongoing">${TRACK_LESSONS.filter(l => l.track === 'projects' && l.content).length}/${TRACK_LESSONS.filter(l => l.track === 'projects').length}</span>
               </div>
             </div>
@@ -19010,9 +19028,9 @@ function renderAbout() {
         <div class="track-card-icon">${phaseIcon('projects')}</div>
         <div class="track-card-body">
           <div class="track-card-tag">МИНИ-ПРОЕКТЫ «ЗА 1 ЧАС»</div>
-          <h3>10 рабочих pet-проектов</h3>
-          <p>Telegram-бот для саммари, RAG над заметками, свой MCP-сервер, OCR чеков через Vision, ресёрчер конкурентов, self-hosted Perplexity, AI-помощник для встреч, анти-спам, поиск по TG, авто-ревьюер PR.</p>
-          <div class="track-card-meta">Каждый проект делается за час. Реально живые. Можно класть в портфолио.</div>
+          <h3>15 рабочих pet-проектов</h3>
+          <p>Telegram-бот для саммари, RAG над заметками, свой MCP-сервер, OCR чеков через Vision, ресёрчер конкурентов, self-hosted Perplexity, AI-помощник для встреч, анти-спам, поиск по TG, авто-ревьюер PR. <strong>Новое:</strong> голосовой ассистент (Whisper+Claude+TTS), свой Claude Skill, browser-расширение «AI рядом с текстом», локальный AI на Ollama, личный AI-секретарь.</p>
+          <div class="track-card-meta">Каждый проект делается за час–полтора. Реально живые. Можно класть в портфолио.</div>
         </div>
       </div>
 
