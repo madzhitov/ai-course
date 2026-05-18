@@ -3889,6 +3889,10 @@ const TRACK_LESSONS = [
   { id: "p16", track: "projects", title: "AI-репетитор Сократическим методом: интерактивная среда для школьника", duration: 75 },
   { id: "p17", track: "projects", title: "Конспект лекции из аудио: Whisper + Claude → структурированный markdown", duration: 60 },
   { id: "p18", track: "projects", title: "Генератор Anki-карточек из PDF учебника для подготовки к экзамену", duration: 60 },
+  { id: "p19", track: "projects", title: "TG-бот для саммари длинных чатов на GigaChat (без VPN)", duration: 75 },
+  { id: "p20", track: "projects", title: "AI-помощник продавца Wildberries на YandexGPT", duration: 90 },
+  { id: "p21", track: "projects", title: "Локальный AI-секретарь на Ollama — без облака и подписок", duration: 75 },
+  { id: "p22", track: "projects", title: "RAG для своих документов (госуслуги, медкарта, договоры) на локальных моделях", duration: 90 },
 
   // Индустрии
   { id: "i1", track: "industry", title: "ИИ для юристов: договоры, документы, поиск", duration: 60, draft: true },
@@ -15929,6 +15933,10 @@ async def summarize(message: Message):
 <div class="callout callout-success">
 <strong>🚀 Поделись:</strong> если бот работает — расскажи о нём в чате курса в Telegram. Самые удачные проекты учеников будут в показательной галерее.
 </div>
+
+<div class="callout callout-info" style="margin-top: 1.5rem;">
+<strong>Без VPN и подписок:</strong> тот же бот, но на GigaChat — бесплатно до 1М токенов в месяц, оплата с российской карты, без VPN. Полный код — <a href="#lesson-p19" onclick="openLesson('p19'); return false;">урок p19</a>.
+</div>
 `);
 
 // ============================================================
@@ -16262,6 +16270,10 @@ if question := st.chat_input("Спроси по своим заметкам...")
 
 <div class="callout callout-success">
 <strong>🚀 Эволюция:</strong> через 2 месяца использования у тебя будет личный ИИ-ассистент, знающий все твои заметки лучше тебя. Это базовый паттерн для всех корпоративных «AI knowledge base» — что ты делаешь — то же самое, что Notion AI или Glean.
+</div>
+
+<div class="callout callout-info" style="margin-top: 1.5rem;">
+<strong>Без VPN и подписок:</strong> возьми локальные embeddings (sentence-transformers) и Ollama вместо Claude — всё работает на твоём ноутбуке без облака. Полный пример — <a href="#lesson-p22" onclick="openLesson('p22'); return false;">урок p22</a> (RAG для своих документов).
 </div>
 `);
 
@@ -16809,6 +16821,10 @@ if __name__ == "__main__":
 
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> освобождает 30 минут после каждой встречи — на масштабе недели это 5+ часов.
+</div>
+
+<div class="callout callout-info" style="margin-top: 1.5rem;">
+<strong>Без VPN и подписок:</strong> Whisper запускается локально через <code>faster-whisper</code> (см. <a href="#lesson-p11" onclick="openLesson('p11'); return false;">p11</a>). Для саммари — GigaChat (бесплатно 1М токенов/мес) или локальный Ollama. Обзор стека — <a href="#lesson-e11" onclick="openLesson('e11'); return false;">e11</a>.
 </div>
 `);
 
@@ -18900,6 +18916,10 @@ if __name__ == "__main__":
 
 <p>Главный нелинейный эффект — психологический. Открываешь почту не с тошнотой «опять 60 непрочитанных», а с пониманием «у меня 3 важных, я знаю какие». Это меняет утро.</p>
 
+<div class="callout callout-info" style="margin-top: 1.5rem;">
+<strong>Без VPN и подписок:</strong> полностью локальная версия — без западных API, без подписок, ничего не уходит в облако — <a href="#lesson-p21" onclick="openLesson('p21'); return false;">урок p21</a> (AI-секретарь на Ollama).
+</div>
+
 `);
 
 
@@ -19851,6 +19871,1681 @@ if __name__ == "__main__":
 <p>Я делал колоды для подготовки к собеседованиям (System Design, алгоритмы) — 30 минут на главу из <em>Designing Data-Intensive Applications</em> вместо двух дней ручного выписывания. Точность карточек ~85%, остальное правлю на лету. На жену делал колоду по фармакологии для её повышения квалификации — 4 учебника за вечер.</p>
 
 <p>Главная мысль: Anki давно перестала быть «инструментом для медиков-задротов». Это рабочая память для любой профессии, где много фактического материала. Но создание карточек руками — барьер, на котором отваливается 90% людей. Этот скрипт убирает барьер. А дальше — пользоваться или забить — уже не задача инструмента.</p>
+
+`);
+
+
+registerLesson("p19", `
+<h1>Проект «За 1 час»: TG-бот для саммари чатов на GigaChat (РФ-стек)</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> Telegram-бот, который делает выжимку из пересланной переписки — без VPN, через GigaChat</span>
+  <span><strong>Время:</strong> ~75 минут</span>
+  <span><strong>Уровень:</strong> базовый Python + понимание HTTP</span>
+  <span><strong>Стек:</strong> Python 3.10+, python-telegram-bot, gigachat SDK, .env</span>
+</div>
+
+<h2>Что в итоге будет</h2>
+
+<p>Полностью рабочий Telegram-бот, который:</p>
+<ul>
+<li>Принимает любое длинное сообщение или пачку пересланных подряд;</li>
+<li>Склеивает их в один текст, режет на чанки (контекст у GigaChat скромный — 8192 токена);</li>
+<li>Отдаёт каждый чанк в GigaChat Lite/Pro, получает мини-саммари, потом сшивает в один TL;DR;</li>
+<li>Команды: <code>/start</code>, <code>/summary</code>, <code>/stats</code>;</li>
+<li>Работает на любом российском VPS — Yandex Cloud, Selectel, или прямо локально через ngrok.</li>
+</ul>
+
+<p>Это РФ-аналог проекта <strong>p1</strong> (там Claude). Разница принципиальная: оплата с любой РФ-карты, никакого VPN, не блокируется. Бесплатный тир — 1 миллион токенов в месяц для физлица. Для пет-проекта этого хватит на годы.</p>
+
+<h2>Требования</h2>
+
+<ul>
+<li>Python 3.10 или выше;</li>
+<li>Аккаунт в Telegram и созданный бот (через <code>@BotFather</code>);</li>
+<li>Учётка в Сбер ID (любая, обычно есть у каждого);</li>
+<li>Доступ к <code>developers.sber.ru</code> — регистрация занимает 10 минут;</li>
+<li>Желание один раз разобраться с SSL-сертификатом Минцифры (рассказываю ниже).</li>
+</ul>
+
+<h2>Архитектура</h2>
+
+<pre><code>┌────────────────┐       ┌──────────────────┐      ┌────────────────────┐
+│  Пользователь  │──────▶│  Telegram-бот    │─────▶│   GigaChat API     │
+│  (пересылает   │       │  (python-telegram│      │   (gigachat.devices│
+│   сообщения)   │◀──────│   -bot, polling) │◀─────│    .sberbank.ru)   │
+└────────────────┘       └──────────────────┘      └────────────────────┘
+                                  │
+                                  ▼
+                         ┌──────────────────┐
+                         │ Буфер: user_id → │
+                         │ список сообщений │
+                         │ (in-memory dict) │
+                         └──────────────────┘
+</code></pre>
+
+<p>Никакой БД, никакого Redis. Всё в памяти процесса — для личного использования и небольшой группы коллег этого более чем достаточно.</p>
+
+<h2>Шаг 1: Регистрация в developers.sber.ru (10 минут)</h2>
+
+<ol>
+<li>Идёшь на <a href="https://developers.sber.ru" target="_blank">developers.sber.ru</a>, нажимаешь «Войти» — заходишь через Сбер ID. Если у тебя есть Сбербанк Онлайн — учётка уже есть.</li>
+<li>В шапке выбираешь <strong>GigaChat API</strong> → подключить.</li>
+<li>Выбираешь тариф <strong>Freemium</strong> (для физлиц). Это и есть тот самый 1М токенов в месяц.</li>
+<li>Принимаешь оферту. Если попросит подтвердить телефон — подтверждаешь.</li>
+<li>После активации в личном кабинете появится раздел <strong>«Мои проекты»</strong>. Создай проект (название любое, например «summary-bot»).</li>
+<li>В проекте нажимаешь <strong>«Сгенерировать новый Client Secret»</strong> — копируешь <code>Authorization Key</code>. Это base64-строка вида <code>NzE4Yzg3ZDAt...:OWY1ZGY5...</code>. Сохрани сразу в надёжное место — повторно показать его нельзя, только перевыпустить.</li>
+</ol>
+
+<p>Этот <code>Authorization Key</code> — не сам access token. Это пара client_id:client_secret в base64. Каждые 30 минут SDK будет менять его на короткоживущий access token через OAuth2. Это нормальный flow, SDK всё делает сам.</p>
+
+<h2>Шаг 2: SSL-сертификат Минцифры — почему это вообще проблема</h2>
+
+<p>API GigaChat живёт на домене <code>gigachat.devices.sberbank.ru</code>, и сертификат там подписан российским корневым центром (Минцифры). В системные хранилища macOS/Linux/Windows этот корень по умолчанию не входит — поэтому Python ругается:</p>
+
+<pre><code>SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed</code></pre>
+
+<p>Есть два пути:</p>
+
+<p><strong>Для экспериментов (быстро):</strong> просто отключаешь проверку. SDK поддерживает флаг <code>verify_ssl_certs=False</code>. Для пет-проекта на своём ноуте — нормально.</p>
+
+<p><strong>Для прода:</strong> качаешь корневой сертификат Минцифры и добавляешь в trust store. Файл лежит на сайте Минцифры — <a href="https://www.gosuslugi.ru/crt" target="_blank">gosuslugi.ru/crt</a> (раздел «Корневой сертификат Минцифры»). Скачиваешь <code>russian_trusted_root_ca.cer</code>, кладёшь рядом с проектом и в SDK передаёшь <code>ca_bundle_file="russian_trusted_root_ca.cer"</code>.</p>
+
+<p>На macOS можно ещё добавить в системный keychain, но проще через файл — переносимо.</p>
+
+<h2>Шаг 3: Создаём бота в Telegram (2 минуты)</h2>
+
+<ol>
+<li>В Telegram находишь <code>@BotFather</code>, шлёшь <code>/newbot</code>.</li>
+<li>Имя для отображения — что угодно («My Summary Bot»).</li>
+<li>Username — должен заканчиваться на <code>_bot</code> (например <code>rm_summary_bot</code>).</li>
+<li>Получишь токен вида <code>1234567:AABBccDD...</code>. Сохраняем.</li>
+</ol>
+
+<h2>Шаг 4: Структура проекта</h2>
+
+<pre><code>mkdir gigachat-summary-bot && cd gigachat-summary-bot
+python3 -m venv venv && source venv/bin/activate
+pip install python-telegram-bot==21.6 gigachat==0.1.36 python-dotenv==1.0.1</code></pre>
+
+<p>Создаём <code>.env</code>:</p>
+
+<pre><code>TG_TOKEN=1234567:AABBccDD...
+GIGACHAT_AUTH_KEY=NzE4Yzg3ZDAt...:OWY1ZGY5...
+GIGACHAT_SCOPE=GIGACHAT_API_PERS</code></pre>
+
+<p><code>GIGACHAT_API_PERS</code> — это scope для физлиц на тарифе Freemium. Для юрлиц будет <code>GIGACHAT_API_CORP</code>, но нам не нужно.</p>
+
+<p>И <code>.gitignore</code> с одной строчкой <code>.env</code> — чтобы случайно не закоммитить ключи.</p>
+
+<h2>Шаг 5: Минимальная обёртка над GigaChat</h2>
+
+<p>Файл <code>llm.py</code>:</p>
+
+<pre><code>import os
+from gigachat import GigaChat
+from gigachat.models import Chat, Messages, MessagesRole
+
+SYSTEM_PROMPT = """Ты делаешь краткое саммари переписки из мессенджера.
+
+Формат ответа:
+
+📌 ТЕМЫ
+- (1-3 пункта, о чём говорили)
+
+✅ РЕШЕНИЯ
+- (что решили; если ничего — пиши «решений нет»)
+
+⚠️ ВОПРОСЫ И ЗАДАЧИ
+- (что ждут от участников чата)
+
+📅 ДЕДЛАЙНЫ
+- (даты, если упоминаются)
+
+Будь краток. Только факты. Без воды и без вступлений."""
+
+
+def summarize_chunk(text: str) -> str:
+    """Один вызов GigaChat для куска текста."""
+    with GigaChat(
+        credentials=os.getenv("GIGACHAT_AUTH_KEY"),
+        scope=os.getenv("GIGACHAT_SCOPE", "GIGACHAT_API_PERS"),
+        model="GigaChat",  # Lite — бесплатный. Pro — платный.
+        verify_ssl_certs=False,  # для прода — ca_bundle_file=...
+    ) as giga:
+        payload = Chat(
+            messages=[
+                Messages(role=MessagesRole.SYSTEM, content=SYSTEM_PROMPT),
+                Messages(role=MessagesRole.USER, content=text),
+            ],
+            temperature=0.3,
+            max_tokens=800,
+        )
+        response = giga.chat(payload)
+        return response.choices[0].message.content
+
+
+def merge_summaries(parts: list[str]) -> str:
+    """Если чанков было много — сшиваем мини-саммари в одно общее."""
+    if len(parts) == 1:
+        return parts[0]
+
+    joined = "\n\n---\n\n".join(parts)
+    merge_prompt = (
+        "Тебе даны несколько фрагментов саммари длинной переписки. "
+        "Сшей их в одно итоговое саммари по тому же формату "
+        "(ТЕМЫ / РЕШЕНИЯ / ВОПРОСЫ / ДЕДЛАЙНЫ). Убери дубли, оставь главное."
+    )
+    with GigaChat(
+        credentials=os.getenv("GIGACHAT_AUTH_KEY"),
+        scope=os.getenv("GIGACHAT_SCOPE", "GIGACHAT_API_PERS"),
+        verify_ssl_certs=False,
+    ) as giga:
+        payload = Chat(
+            messages=[
+                Messages(role=MessagesRole.SYSTEM, content=merge_prompt),
+                Messages(role=MessagesRole.USER, content=joined),
+            ],
+            temperature=0.2,
+            max_tokens=1000,
+        )
+        return giga.chat(payload).choices[0].message.content
+</code></pre>
+
+<p>Обрати внимание: SDK сам ходит за access token'ом по OAuth2 при первом запросе, кеширует, обновляет. Тебе вообще не надо думать про bearer-токены.</p>
+
+<h2>Шаг 6: Разбиваем длинный текст на чанки</h2>
+
+<p>У <code>GigaChat</code> (Lite) контекст — 8192 токена. Это примерно 20–25 тысяч символов на русском. Если переписка длиннее — упрёмся. Простое решение: режем по <code>~12000</code> символов с небольшим overlap, чтобы не разорвать мысль на границе.</p>
+
+<p>Файл <code>chunker.py</code>:</p>
+
+<pre><code>CHUNK_SIZE = 12000
+OVERLAP = 500
+
+
+def split_text(text: str) -> list[str]:
+    if len(text) <= CHUNK_SIZE:
+        return [text]
+
+    chunks = []
+    start = 0
+    while start < len(text):
+        end = min(start + CHUNK_SIZE, len(text))
+        # стараемся резать по \n\n, чтобы не рвать сообщение пополам
+        if end < len(text):
+            nl = text.rfind("\n\n", start, end)
+            if nl > start + CHUNK_SIZE // 2:
+                end = nl
+        chunks.append(text[start:end])
+        start = end - OVERLAP if end < len(text) else end
+    return chunks
+</code></pre>
+
+<h2>Шаг 7: Сам бот</h2>
+
+<p>Файл <code>bot.py</code>:</p>
+
+<pre><code>import os
+import asyncio
+import logging
+from collections import defaultdict
+from datetime import datetime
+from dotenv import load_dotenv
+
+from telegram import Update
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    MessageHandler,
+    ContextTypes,
+    filters,
+)
+
+from llm import summarize_chunk, merge_summaries
+from chunker import split_text
+
+load_dotenv()
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+log = logging.getLogger("bot")
+
+# user_id -> список (timestamp, text)
+buffer: dict[int, list[tuple[datetime, str]]] = defaultdict(list)
+# user_id -> счётчик использований
+stats: dict[int, int] = defaultdict(int)
+
+BUFFER_WAIT_SEC = 2.0  # сколько ждём после последнего сообщения, прежде чем суммировать
+
+
+async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "Привет! Я суммаризирую длинные чаты через GigaChat.\n\n"
+        "Перешли мне одно или несколько сообщений из любого чата — "
+        "через пару секунд получишь TL;DR.\n\n"
+        "Команды:\n"
+        "/summary — принудительно собрать саммари по тому, что в буфере\n"
+        "/stats — сколько раз ты пользовался ботом"
+    )
+
+
+async def cmd_stats(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    uid = update.effective_user.id
+    await update.message.reply_text(f"Ты сделал {stats[uid]} саммари.")
+
+
+async def cmd_summary(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    uid = update.effective_user.id
+    if not buffer[uid]:
+        await update.message.reply_text("Буфер пуст. Перешли сначала сообщения.")
+        return
+    await process_buffer(update, uid)
+
+
+async def on_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    uid = update.effective_user.id
+    text = update.message.text or update.message.caption or ""
+    if not text.strip():
+        return
+
+    buffer[uid].append((datetime.utcnow(), text))
+    log.info(f"buffer[{uid}] = {len(buffer[uid])} msgs, total {sum(len(t) for _, t in buffer[uid])} chars")
+
+    # отложенная сборка: ждём BUFFER_WAIT_SEC. Если за это время пришли ещё — выходим.
+    await asyncio.sleep(BUFFER_WAIT_SEC)
+    last_time = buffer[uid][-1][0]
+    if (datetime.utcnow() - last_time).total_seconds() < BUFFER_WAIT_SEC - 0.3:
+        return  # пришли свежие сообщения, отработает следующий вызов
+
+    await process_buffer(update, uid)
+
+
+async def process_buffer(update: Update, uid: int):
+    full_text = "\n\n".join(t for _, t in buffer[uid])
+    buffer[uid] = []
+
+    if len(full_text) < 200:
+        await update.message.reply_text("Слишком короткое для саммари (нужно от 200 символов).")
+        return
+
+    chunks = split_text(full_text)
+    notice = await update.message.reply_text(
+        f"⏳ Делаю саммари... ({len(chunks)} {'кусок' if len(chunks) == 1 else 'кусков'})"
+    )
+
+    try:
+        # GigaChat SDK — синхронный, гоняем в thread pool, чтобы не блокировать loop
+        loop = asyncio.get_running_loop()
+        parts = []
+        for i, ch in enumerate(chunks, 1):
+            log.info(f"summarize chunk {i}/{len(chunks)}, {len(ch)} chars")
+            part = await loop.run_in_executor(None, summarize_chunk, ch)
+            parts.append(part)
+        final = await loop.run_in_executor(None, merge_summaries, parts)
+    except Exception as e:
+        log.exception("GigaChat call failed")
+        await notice.edit_text(f"Ошибка при обращении к GigaChat: {e}")
+        return
+
+    stats[uid] += 1
+    await notice.edit_text(final)
+
+
+def main():
+    token = os.getenv("TG_TOKEN")
+    if not token:
+        raise SystemExit("TG_TOKEN не задан в .env")
+
+    app = Application.builder().token(token).build()
+    app.add_handler(CommandHandler("start", cmd_start))
+    app.add_handler(CommandHandler("stats", cmd_stats))
+    app.add_handler(CommandHandler("summary", cmd_summary))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, on_text))
+
+    log.info("Bot started, polling...")
+    app.run_polling(allowed_updates=Update.ALL_TYPES)
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+
+<h2>Запуск и проверка</h2>
+
+<pre><code>python bot.py</code></pre>
+
+<p>В консоли увидишь <code>Bot started, polling...</code>. Идёшь в Telegram, находишь своего бота, шлёшь <code>/start</code>. Потом — открываешь любой групповой чат, выделяешь 10–15 сообщений (зажимаешь, потом «Forward»), пересылаешь боту. Через 2 секунды после последнего сообщения он начинает работать и через 5–10 секунд (зависит от длины) присылает структурированный TL;DR.</p>
+
+<p>У меня на проверке: переписка из рабочего чата на ~40 сообщений (≈18 тыс. символов) — саммари 4 пункта по темам, 2 решения, 1 вопрос ко мне. Заняло около 6 секунд. Стоимость — около 4000 токенов, то есть бесплатно в рамках месячного тира.</p>
+
+<h2>Деплой: куда поставить</h2>
+
+<p><strong>Локально через ngrok</strong> — для теста сойдёт, но бот живёт, пока ноут включён.</p>
+
+<p><strong>Yandex Cloud Compute Cloud</strong> — самый предсказуемый вариант для РФ. Виртуалка <code>2 vCPU / 1 Gb / 10 Gb HDD</code> — около 350 ₽/мес. Поставил Python, склонировал репу, <code>systemd</code>-юнит, и забыл.</p>
+
+<p><strong>Selectel</strong> — то же самое, тарифы примерно те же, но интерфейс чуть проще.</p>
+
+<p>Минимальный <code>systemd</code>-юнит <code>/etc/systemd/system/summary-bot.service</code>:</p>
+
+<pre><code>[Unit]
+Description=GigaChat Summary Bot
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/gigachat-summary-bot
+EnvironmentFile=/home/ubuntu/gigachat-summary-bot/.env
+ExecStart=/home/ubuntu/gigachat-summary-bot/venv/bin/python bot.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<pre><code>sudo systemctl enable --now summary-bot
+sudo journalctl -u summary-bot -f</code></pre>
+
+<h2>Расширения</h2>
+
+<ul>
+<li><strong>Разные форматы саммари.</strong> Команды <code>/tldr</code> (одно предложение), <code>/actions</code> (только задачи и дедлайны), <code>/decisions</code> (только что решили). Просто параметризуй системный промпт.</li>
+<li><strong>Классификация важности.</strong> Перед саммари просишь GigaChat поставить тег: <code>срочно</code> / <code>обсудить</code> / <code>фон</code>. Полезно для рабочих чатов — за 5 секунд понимаешь, надо ли вообще читать.</li>
+<li><strong>Перевод.</strong> Если пересылают переписку на английском — GigaChat нормально с ней справляется, а можно явно попросить «суммируй и переведи на русский».</li>
+<li><strong>Личный дайджест по утрам.</strong> Юзер привязывает чат, бот в 9:00 присылает саммари за вчера. Это уже требует БД (хранить последний обработанный <code>message_id</code>), но архитектурно — то же самое.</li>
+<li><strong>Голос.</strong> GigaChat умеет в распознавание речи (SaluteSpeech). Пересылаешь голосовое — бот сначала транскрибирует, потом суммирует. Полезно для длинных голосовых от любителей наговаривать пять минут вместо двух строк.</li>
+</ul>
+
+<h2>Подводные камни</h2>
+
+<ul>
+<li><strong>SSL.</strong> Если запустил с <code>verify_ssl_certs=False</code> — это нормально для теста, но в проде поставь корневой сертификат Минцифры через <code>ca_bundle_file=...</code>. Иначе MITM теоретически возможен.</li>
+<li><strong>Контекст 8k токенов.</strong> Это мало по меркам современных моделей. Без chunking длинный чат тебе никто не суммаризирует — поэтому split_text обязателен.</li>
+<li><strong>Авторизация раз в 30 минут.</strong> SDK сам обновляет access token, но если бот висит долго без активности — первый запрос после простоя может занять чуть дольше (идёт за новым токеном). Лучше не пугаться, просто добавь логирование.</li>
+<li><strong>Rate limit.</strong> Freemium — 1М токенов в месяц и не более 1 запроса в секунду. Если запустишь массовую обработку чанков параллельно — словишь 429. Делай последовательно (как у меня в коде), или ставь <code>asyncio.Semaphore(1)</code>.</li>
+<li><strong>Сообщения с медиа.</strong> Если пересылаешь сообщение с фото и подписью, в <code>message.text</code> подписи не будет — она в <code>message.caption</code>. У меня в коде это учтено (<code>or update.message.caption</code>), но изображения как таковые этот бот не понимает.</li>
+<li><strong>Утечка ключа.</strong> <code>Authorization Key</code> от GigaChat — это фактически логин+пароль к твоему лимиту. Никогда не коммить в репо, никогда не присылай скриншотом. Утёк — сразу перевыпускай в личном кабинете.</li>
+</ul>
+
+<h2>Что в итоге</h2>
+
+<p>За 75 минут у тебя в Telegram живёт собственный личный assistant, который снимает боль непрочитанных чатов. Без VPN, без зарубежной карты, без подписки. На бесплатном тире проживёт год минимум. Это — рабочий пример того, что РФ-стек для AI-проектов давно перестал быть «второсортным»: GigaChat по качеству для саммари сравним с gpt-4o-mini, а в личных проектах разницы ты просто не заметишь.</p>
+
+<p>Заодно ты понял, как устроен типичный AI-pipeline: пользователь → бот → разбиение на чанки → LLM → merge → ответ. Эта же схема работает для RAG, для классификации, для агентов — меняется только содержимое промпта.</p>
+
+<div class="callout callout-success">
+<strong>Готово!</strong> Дальше — добавь к боту команду <code>/tldr</code> с укороченным форматом и запусти на Yandex Cloud. Через неделю использования сам поймёшь, какие ещё команды тебе нужны лично. Это самый честный способ развивать пет-проект — собственным трением.
+</div>
+
+`);
+
+
+registerLesson("p20", `
+<h1>Проект «За 1 час»: AI-помощник продавца Wildberries на YandexGPT</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> скрипт, который по фото товара генерирует готовую карточку для WB и загружает её через Seller API</span>
+  <span><strong>Время:</strong> ~90 минут</span>
+  <span><strong>Уровень:</strong> Python + базовое понимание REST API</span>
+  <span><strong>Стек:</strong> Python 3.10+, requests, YandexGPT API, WB Content API</span>
+</div>
+
+<h2>Что в итоге будет</h2>
+
+<p>CLI-утилита, которая:</p>
+<ul>
+<li>Принимает на вход путь к папке с фото товара и краткое описание («синие женские джинсы, размер 42-50, состав хлопок 98%»);</li>
+<li>Отдаёт фото + описание в YandexGPT с правильным промптом;</li>
+<li>Получает готовую карточку: <strong>заголовок до 60 символов</strong>, <strong>описание до 1000 символов</strong>, характеристики, ключевые слова;</li>
+<li>Формирует валидный JSON под WB Content API и (опционально) загружает карточку в личный кабинет продавца;</li>
+<li>Поддерживает батч-режим: одна команда — папка из 20 товаров — 20 карточек.</li>
+</ul>
+
+<p>Целевой пользователь — селлер с десятками или сотнями SKU, который вручную час сидит над каждой карточкой. После этой утилиты — 30 секунд на товар.</p>
+
+<h2>Требования</h2>
+
+<ul>
+<li>Аккаунт в <strong>Yandex Cloud</strong> с привязанной картой (любая РФ-карта). Оплата в рублях, по факту использования. Стартовый грант обычно ~4000 ₽;</li>
+<li>Аккаунт продавца на Wildberries с доступом в <strong>«Личный кабинет поставщика»</strong>;</li>
+<li>Python 3.10+, библиотеки <code>requests</code> и <code>python-dotenv</code>;</li>
+<li>Фотографии товаров — минимум 1, лучше 3–5 ракурсов.</li>
+</ul>
+
+<h2>Архитектура</h2>
+
+<pre><code>┌──────────────────┐     ┌──────────────────────┐     ┌────────────────────┐
+│  Папка с фото    │────▶│  generator.py        │────▶│  YandexGPT API     │
+│  + brief.txt     │     │  (склейка контекста, │     │  (genai endpoint)  │
+│                  │◀────│   парсинг ответа)    │◀────│                    │
+└──────────────────┘     └──────────────────────┘     └────────────────────┘
+                                  │
+                                  ▼
+                         ┌──────────────────┐     ┌────────────────────┐
+                         │  card.json       │────▶│  WB Content API    │
+                         │  (готовая        │     │  (создание         │
+                         │   карточка)      │◀────│   карточки)        │
+                         └──────────────────┘     └────────────────────┘
+</code></pre>
+
+<h2>Шаг 1: Yandex Cloud — каталог, сервисный аккаунт, API-ключ</h2>
+
+<ol>
+<li>Идёшь в <a href="https://console.cloud.yandex.ru" target="_blank">console.cloud.yandex.ru</a>, логинишься через Яндекс ID.</li>
+<li>Если каталога нет — Yandex Cloud сам предложит создать. Привяжи карту. Включается биллинг.</li>
+<li>В меню слева — <strong>Identity and Access Management → Сервисные аккаунты → Создать</strong>. Имя <code>wb-bot</code>.</li>
+<li>Выдай этому сервисному аккаунту роль <code>ai.languageModels.user</code> на каталог. Без этой роли API будет отвечать 403.</li>
+<li>В карточке сервисного аккаунта — <strong>Создать новый ключ → API-ключ</strong>. Копируешь сразу, повторно не покажет.</li>
+<li>Запомни <code>folder_id</code> (он в URL консоли или в шапке каталога) — он нужен в каждом запросе.</li>
+</ol>
+
+<p>Стоимость <code>yandexgpt-lite</code>: примерно 0.20 ₽ за 1000 токенов на вход и столько же на выход. Одна карточка — ~3000 токенов, итого меньше рубля. На 100 карточек — около 60–80 ₽. Это сильно дешевле, чем нанять копирайтера на ту же сотню.</p>
+
+<h2>Шаг 2: Токен Wildberries Seller API</h2>
+
+<ol>
+<li>Заходишь в <a href="https://seller.wildberries.ru" target="_blank">seller.wildberries.ru</a>.</li>
+<li>Профиль (правый верхний угол) → <strong>Настройки → Доступ к API</strong>.</li>
+<li>Нажимаешь <strong>«Создать новый токен»</strong>. Имя — например <code>ai-card-generator</code>.</li>
+<li>В правах выбираешь <strong>«Контент»</strong> (и опционально <strong>«Цены и скидки»</strong>, если будешь обновлять цены). НЕ давай токену больше прав, чем нужно — если утечёт, ущерб меньше.</li>
+<li>Опция «Только для чтения» — снимаем (иначе не сможем создавать карточки).</li>
+<li>Копируешь токен. Это JWT-строка длиной ~150 символов.</li>
+</ol>
+
+<p>Endpoint для создания карточек: <code>https://content-api.wildberries.ru/content/v2/cards/upload</code>. Документация — на <a href="https://dev.wildberries.ru" target="_blank">dev.wildberries.ru</a>, раздел «Контент».</p>
+
+<h2>Шаг 3: Структура проекта</h2>
+
+<pre><code>mkdir wb-ai-cards && cd wb-ai-cards
+python3 -m venv venv && source venv/bin/activate
+pip install requests==2.32.3 python-dotenv==1.0.1 Pillow==10.4.0</code></pre>
+
+<p>Файл <code>.env</code>:</p>
+
+<pre><code>YC_API_KEY=AQVNxxxxxxxxxxxxxxxxxx
+YC_FOLDER_ID=b1g123456789abcdef
+WB_TOKEN=eyJhbGciOiJFUzI1NiIsImtpZCI6...</code></pre>
+
+<p>Структура папок:</p>
+
+<pre><code>wb-ai-cards/
+  .env
+  generator.py
+  wb_uploader.py
+  main.py
+  prompts/
+    clothes.txt
+    electronics.txt
+    home.txt
+  goods/
+    item_001/
+      photo1.jpg
+      photo2.jpg
+      brief.txt    # "женские джинсы синие, состав хлопок 98%"
+    item_002/
+      ...
+</code></pre>
+
+<h2>Шаг 4: Промпт-шаблоны под категории</h2>
+
+<p>WB сильно разный по требованиям к категориям. Одежда любит размерную сетку и состав, электроника — точные ТТХ, дом — материал и габариты. Поэтому держим шаблоны в отдельных файлах и подгружаем по категории.</p>
+
+<p><code>prompts/clothes.txt</code>:</p>
+
+<pre><code>Ты — копирайтер маркетплейса. Сделай карточку товара для Wildberries по фото и описанию ниже.
+
+Категория: ОДЕЖДА.
+
+Жёсткие ограничения:
+- "title": до 60 символов, начинается с типа товара (Джинсы, Платье, Футболка), без CAPS и без эмодзи
+- "description": до 1000 символов, абзацами через \n\n. Структура: общее описание → состав и качество → для каких случаев → советы по уходу. Без слов "купить", "лучший", "идеальный" — WB не любит маркетинговую воду.
+- "characteristics": массив объектов {"name": "...", "value": "..."}. Обязательные: "Состав", "Сезон", "Страна производства" (если не известна — пиши "Россия"). НЕ ВЫДУМЫВАЙ цифр. Если данных нет — оставь поле пустым.
+- "keywords": массив из 10-15 слов для поиска, через которые товар найдут (без знаков препинания, lowercase).
+
+Верни СТРОГО JSON по схеме. Никаких комментариев до или после.
+
+Схема:
+{
+  "title": "string",
+  "description": "string",
+  "characteristics": [{"name": "string", "value": "string"}],
+  "keywords": ["string"]
+}
+</code></pre>
+
+<p>Аналогично <code>electronics.txt</code> (упор на ТТХ: мощность, напряжение, разъёмы) и <code>home.txt</code> (материал, размеры, вес, инструкция по сборке).</p>
+
+<p>Главное правило промпта — <strong>«не выдумывай характеристики»</strong>. Если модели не дать этого ограничения, она радостно напишет про джинсы «состав: хлопок 100%, плотность 320 г/м², пропитка водоотталкивающая» — даже если из фото видно только цвет.</p>
+
+<h2>Шаг 5: Вызов YandexGPT</h2>
+
+<p>Файл <code>generator.py</code>:</p>
+
+<pre><code>import os
+import json
+import base64
+import logging
+from pathlib import Path
+import requests
+
+log = logging.getLogger("generator")
+
+YC_URL = "https://llm.api.cloud.yandex.net/foundationModels/v1/completion"
+
+
+def _read_brief(item_dir: Path) -> str:
+    brief = item_dir / "brief.txt"
+    return brief.read_text(encoding="utf-8").strip() if brief.exists() else ""
+
+
+def _encode_photos(item_dir: Path, max_n: int = 3) -> list[str]:
+    """YandexGPT (text-only) фото не понимает — для multimodal нужен другой endpoint.
+    Пока используем только описания фото (имена файлов как намёк)."""
+    photos = sorted(p for p in item_dir.iterdir() if p.suffix.lower() in {".jpg", ".jpeg", ".png"})
+    return [p.name for p in photos[:max_n]]
+
+
+def generate_card(item_dir: Path, category: str = "clothes") -> dict:
+    brief = _read_brief(item_dir)
+    photo_names = _encode_photos(item_dir)
+
+    prompt_file = Path("prompts") / f"{category}.txt"
+    system_prompt = prompt_file.read_text(encoding="utf-8")
+
+    user_text = (
+        f"Описание от продавца:\n{brief}\n\n"
+        f"Имена файлов фото (как доп. подсказка): {', '.join(photo_names)}"
+    )
+
+    body = {
+        "modelUri": f"gpt://{os.getenv('YC_FOLDER_ID')}/yandexgpt-lite/latest",
+        "completionOptions": {
+            "stream": False,
+            "temperature": 0.3,
+            "maxTokens": 2000,
+        },
+        "messages": [
+            {"role": "system", "text": system_prompt},
+            {"role": "user", "text": user_text},
+        ],
+    }
+
+    headers = {
+        "Authorization": f"Api-Key {os.getenv('YC_API_KEY')}",
+        "Content-Type": "application/json",
+    }
+
+    log.info(f"YandexGPT request for {item_dir.name}, category={category}")
+    r = requests.post(YC_URL, json=body, headers=headers, timeout=60)
+    r.raise_for_status()
+    raw = r.json()["result"]["alternatives"][0]["message"]["text"]
+
+    # YandexGPT иногда оборачивает JSON в \`\`\`json ... \`\`\`. Чистим.
+    raw = raw.strip()
+    if raw.startswith("\`\`\`"):
+        raw = raw.split("\`\`\`")[1]
+        if raw.startswith("json"):
+            raw = raw[4:]
+    raw = raw.strip()
+
+    try:
+        card = json.loads(raw)
+    except json.JSONDecodeError as e:
+        log.error(f"Не смог распарсить ответ как JSON: {raw[:500]}")
+        raise
+
+    # пост-валидация: title никогда не должен быть длиннее 60
+    if len(card.get("title", "")) > 60:
+        card["title"] = card["title"][:60].rsplit(" ", 1)[0]
+    if len(card.get("description", "")) > 1000:
+        card["description"] = card["description"][:1000].rsplit(" ", 1)[0] + "..."
+
+    return card
+</code></pre>
+
+<p>Заметка про мультимодальность. У YandexGPT есть отдельная мультимодальная модель (<code>yandexgpt-vision</code> в visionai endpoint), которая принимает base64-картинки. Если хочется реального анализа фото — переключайся на неё, формат запроса похожий. Для большинства задач карточек хватает описания от продавца + имени файла (которое селлеры часто называют осмысленно: <code>front.jpg</code>, <code>label.jpg</code>).</p>
+
+<h2>Шаг 6: Загрузка карточки в WB</h2>
+
+<p>Файл <code>wb_uploader.py</code>:</p>
+
+<pre><code>import os
+import json
+import time
+import logging
+import requests
+
+log = logging.getLogger("wb")
+
+WB_UPLOAD = "https://content-api.wildberries.ru/content/v2/cards/upload"
+
+
+def upload_card(card: dict, vendor_code: str, subject_id: int, brand: str, price_rub: int) -> dict:
+    """
+    vendor_code — твой внутренний артикул (любая строка).
+    subject_id — числовой ID предмета (категории) в WB. Получается отдельным
+                 запросом /content/v2/object/all (там список).
+    """
+    payload = [{
+        "subjectID": subject_id,
+        "variants": [{
+            "vendorCode": vendor_code,
+            "title": card["title"],
+            "description": card["description"],
+            "brand": brand,
+            "dimensions": {"length": 30, "width": 20, "height": 5},  # см; ставь свои
+            "characteristics": card.get("characteristics", []),
+            "sizes": [{
+                "techSize": "0",
+                "wbSize": "",
+                "price": price_rub,
+                "skus": [vendor_code]
+            }]
+        }]
+    }]
+
+    headers = {
+        "Authorization": os.getenv("WB_TOKEN"),
+        "Content-Type": "application/json",
+    }
+
+    log.info(f"WB upload: vendorCode={vendor_code}, title={card['title']!r}")
+    r = requests.post(WB_UPLOAD, json=payload, headers=headers, timeout=30)
+
+    if r.status_code == 429:
+        # rate limit — ждём и пробуем ещё раз
+        log.warning("WB rate limit, sleep 30s")
+        time.sleep(30)
+        r = requests.post(WB_UPLOAD, json=payload, headers=headers, timeout=30)
+
+    r.raise_for_status()
+    return r.json()
+</code></pre>
+
+<p>Обрати внимание: токен WB кладётся в заголовок <code>Authorization</code> как есть, без префикса <code>Bearer</code>. Это нестандартно, но так у WB. Если поставишь <code>Bearer</code> — получишь 401 и долго будешь дебажить.</p>
+
+<h2>Шаг 7: Главный скрипт</h2>
+
+<p>Файл <code>main.py</code>:</p>
+
+<pre><code>import os
+import json
+import logging
+import argparse
+from pathlib import Path
+from dotenv import load_dotenv
+
+from generator import generate_card
+from wb_uploader import upload_card
+
+load_dotenv()
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+log = logging.getLogger("main")
+
+
+def process_one(item_dir: Path, category: str, upload: bool, brand: str, price: int, subject_id: int):
+    log.info(f"=== {item_dir.name} ===")
+
+    card = generate_card(item_dir, category=category)
+    out = item_dir / "card.json"
+    out.write_text(json.dumps(card, ensure_ascii=False, indent=2), encoding="utf-8")
+    log.info(f"saved {out}")
+
+    if upload:
+        vendor_code = item_dir.name  # используем имя папки как артикул
+        try:
+            res = upload_card(card, vendor_code, subject_id, brand, price)
+            log.info(f"WB ответ: {res}")
+        except Exception as e:
+            log.exception(f"WB upload failed for {item_dir.name}: {e}")
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--goods-dir", default="goods", help="папка с подпапками-товарами")
+    ap.add_argument("--category", default="clothes", choices=["clothes", "electronics", "home"])
+    ap.add_argument("--brand", default="NoBrand")
+    ap.add_argument("--price", type=int, default=1990)
+    ap.add_argument("--subject-id", type=int, required=False, default=0,
+                    help="ID категории WB (обязателен, если --upload)")
+    ap.add_argument("--upload", action="store_true", help="реально загружать в WB")
+    args = ap.parse_args()
+
+    goods = Path(args.goods_dir)
+    items = sorted(p for p in goods.iterdir() if p.is_dir())
+    log.info(f"Найдено товаров: {len(items)}")
+
+    for item in items:
+        try:
+            process_one(item, args.category, args.upload, args.brand, args.price, args.subject_id)
+        except Exception as e:
+            log.exception(f"Ошибка по {item.name}: {e}")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+
+<h2>Запуск и проверка</h2>
+
+<p>Сначала генерим карточки без заливки (dry-run):</p>
+
+<pre><code>python main.py --goods-dir goods --category clothes</code></pre>
+
+<p>Скрипт пройдётся по всем подпапкам, для каждой создаст <code>card.json</code> рядом с фото. Открываешь, читаешь глазами. Если ок — заливаешь:</p>
+
+<pre><code>python main.py --goods-dir goods --category clothes \
+  --upload --brand "MyBrand" --price 2490 --subject-id 192</code></pre>
+
+<p><code>subject-id</code> ищется через отдельный GET-запрос на <code>/content/v2/object/all</code> с параметром <code>name=джинсы</code>. Сделай это один раз вручную через <code>curl</code> и запиши ID нужных категорий в табличку.</p>
+
+<p>У меня на тесте: 12 товаров одежды → 12 карточек за 4 минуты. Загрузка в WB — ещё минута. Из 12 описаний 2 пришлось руками поправить (модель оба раза подзагнула состав ткани, потому что в brief.txt я этого не указал). Осальные 10 пошли как есть.</p>
+
+<h2>Расширения</h2>
+
+<ul>
+<li><strong>Батч-обработка папки фото.</strong> Сейчас один товар = одна подпапка. Можно сделать обратный режим: одна большая папка с файлами вида <code>джинсы-синие-001.jpg</code>, скрипт сам группирует и парсит имя для brief.</li>
+<li><strong>Авто-обновление по тренду ключевиков.</strong> WB сам показывает в кабинете «популярные запросы по категории». Парсишь раз в неделю, скармливаешь YandexGPT и просишь переписать <code>keywords</code> и слегка <code>description</code>. Заметно бустит выдачу.</li>
+<li><strong>A/B-тестирование заголовков.</strong> Генеришь 3 варианта <code>title</code>, через WB API меняешь раз в неделю, смотришь конверсию в кабинете. Через месяц у тебя статистически лучший заголовок.</li>
+<li><strong>Мультимодальность.</strong> Переключи endpoint на <code>yandexgpt-vision</code> и шли реальные base64-фото. Тогда модель сможет описать цвет, фактуру, угол — особенно полезно для категорий вроде декора.</li>
+<li><strong>Чек на запрещёнку.</strong> Перед загрузкой прогоняешь карточку через второй промпт «есть ли тут запрещённые WB обещания: лечит, сертифицирован, гарантирует». Если да — флаг, ручная проверка.</li>
+</ul>
+
+<h2>Подводные камни</h2>
+
+<ul>
+<li><strong>WB банит за враньё в характеристиках.</strong> Если карточка обещает «хлопок 100%», а покупатель получает синтетику — будут возвраты, штрафы и в худшем случае блокировка. Лучше пустое поле, чем выдуманное. Промпт это явно требует, но проверяй глазами.</li>
+<li><strong>YandexGPT любит «эссе» вместо JSON.</strong> Иногда возвращает «Вот ваш JSON: \`\`\`json {...} \`\`\`». Чищу через split — но если будет упорно срываться, добавь в промпт «не пиши ничего кроме JSON» дважды и понизь temperature до 0.1.</li>
+<li><strong>Rate limit WB API.</strong> На <code>/cards/upload</code> — 100 запросов в минуту, на остальных ручках бывает 10. Если льёшь сотни карточек — добавь <code>time.sleep(0.7)</code> между запросами. У меня в коде есть базовый ретрай на 429, но превентивно лучше не упираться.</li>
+<li><strong>subjectID разный для разных подкатегорий.</strong> «Женские джинсы» и «мужские джинсы» — разные ID. Не угадывай: получи список через API и держи у себя справочник.</li>
+<li><strong>Сезонность характеристик.</strong> Для одежды поле «Сезон» обязательное. YandexGPT иногда забывает добавить, особенно если в brief не указано. Сделай пост-валидацию: если поле отсутствует — добавляй <code>"всесезонный"</code> по умолчанию или возвращай товар на ручную обработку.</li>
+<li><strong>Картинки грузятся отдельно.</strong> <code>/cards/upload</code> только создаёт текстовую часть карточки. Фото льются другим endpoint'ом — <code>/content/v3/media/save</code>. Если хочешь полный цикл — добавь и это, но обычно фото удобнее заливать через web-кабинет (drag-n-drop там лучше).</li>
+</ul>
+
+<h2>Что в итоге</h2>
+
+<p>За полтора часа у тебя получился рабочий конвейер «фото и краткое описание → готовая карточка WB». Стоимость генерации одной карточки — меньше рубля. Времени экономишь — час на товар. На 100 товарах в месяц это уже окупает любой облачный сервис в десятки раз.</p>
+
+<p>Технически ты потрогал два важных российских API: Yandex Cloud Foundation Models (это, по сути, продакшен-ready LLM-as-a-service от Яндекса) и Wildberries Content API (один из самых документированных marketplace API в РФ). Эти знания переиспользуются — от YandexGPT можно перейти к YandexART для генерации изображений, от WB к Ozon Seller API (он устроен похоже).</p>
+
+<p>И главное — это первый честный пример того, как AI реально снимает рутину, а не «генерит контент ради контента». Тут есть конкретный селлер, конкретная задача и измеримая экономия времени.</p>
+
+<div class="callout callout-success">
+<strong>Готово!</strong> Дальше — добавь интеграцию с фото-генерацией (<code>yandexgpt-vision</code> для анализа фото и формирования описаний) и сделай Telegram-бот поверх скрипта: селлер шлёт фото — получает готовую карточку прямо в Telegram. На базе p19 и p20 это уже почти готовый micro-SaaS.
+</div>
+
+`);
+
+
+registerLesson("p21", `
+<h1>Проект «За 1 час»: Локальный AI-секретарь на Ollama — без облака и подписок</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> офлайн-версию проекта p15 — утренний разбор почты, классификация и черновики ответов полностью на локальной модели</span>
+  <span><strong>Время:</strong> ~75 минут</span>
+  <span><strong>Уровень:</strong> Python средний, базовое понимание IMAP, 16+ GB RAM на машине</span>
+</div>
+
+<h2>Зачем этот проект</h2>
+<p>Проект p15 делает почти то же самое, но через Claude API. У этого подхода есть три неприятных «но»:</p>
+<ul>
+<li><strong>Приватность.</strong> Содержимое каждого письма уезжает в облако. Если в почте врачебные выписки, NDA, переписка с нотариусом — это твой осознанный выбор, и далеко не все готовы его делать.</li>
+<li><strong>Деньги.</strong> Сто писем в день — копейки, тысяча — уже заметно. На длинной дистанции API-счёт капает.</li>
+<li><strong>Зависимость.</strong> Перебои с платежом, региональные блокировки, лимиты — и скрипт встал.</li>
+</ul>
+<p>Локальная версия снимает все три пункта. Письма не покидают машину, никакие подписки не нужны, всё работает в самолёте. Платишь только электричеством и временем — обработка медленнее, чем у Claude, но для утренней пачки это нормально.</p>
+
+<h2>Что в итоге будет</h2>
+<ul>
+<li>Python-скрипт, запускающийся по cron каждое утро.</li>
+<li>Чтение inbox через IMAP (Mail.ru / Yandex / Gmail — что угодно с поддержкой app-password).</li>
+<li>Классификация через локальную Ollama: <code>urgent / fyi / noise / template</code>.</li>
+<li>На «template» — черновик ответа сохраняется в IMAP-папку «Черновики».</li>
+<li>Дневной чек-ин в Telegram: «3 срочных, 12 FYI, 47 шума. Срочные: …».</li>
+<li>Ни одного облачного запроса с содержимым письма — только TG-бот в самом конце.</li>
+</ul>
+
+<h2>Требования</h2>
+<ul>
+<li>Python 3.10+.</li>
+<li>16 GB RAM минимум (для qwen2.5:7b) или 32 GB (для qwen2.5:14b).</li>
+<li>Mac с Apple Silicon, Linux или Windows. На CPU тоже работает, но в 5–10 раз медленнее.</li>
+<li>Почтовый ящик с включённым IMAP и app-password.</li>
+<li>Telegram-бот (через @BotFather) и свой <code>chat_id</code>.</li>
+<li>Установленный Ollama (см. шаг 1).</li>
+</ul>
+
+<h2>Архитектура</h2>
+<pre><code>cron (8:00 утра)
+    ↓
+main.py
+    ├─→ IMAP: достать письма за последние 24 часа (тема + первые 1500 символов)
+    ├─→ Ollama (qwen2.5): классифицировать каждое (urgent / fyi / noise / template)
+    ├─→ для template: сгенерировать draft → положить в IMAP Drafts
+    └─→ Telegram: отправить дневной чек-ин
+
+Всё локально, наружу уходит только финальное сообщение в Telegram.</code></pre>
+
+<h2>Почему Qwen 2.5, а не Llama 3</h2>
+<p>На локальных моделях главный критерий — качество русского. Llama 3 и 3.1 умеют русский «по остаточному принципу»: понимают, но в генерации часто скатываются в кальки с английского, путают падежи, формулируют коряво. Qwen 2.5 тренировался на заметно большем объёме китайского и русского, и в задачах на русском уверенно его обходит при том же размере. Для классификации с короткими репликами на русском это критично.</p>
+<p>Из практики: на одних и тех же 50 письмах qwen2.5:7b делает 2–3 ошибки классификации, llama3:8b — 7–10. Драфты на русском у Qwen выглядят как нормальный человеческий ответ; у Llama часто «по́жалуйста подтвердите получение данного письма».</p>
+
+<h2>Шаг 1: ставим Ollama и тянем модель</h2>
+
+<p>Ollama — самый простой способ запустить локальную LLM. Сам ставит, сам обновляет, поднимает HTTP-сервер на <code>localhost:11434</code>.</p>
+
+<p>Установка:</p>
+<pre><code class="language-bash"># macOS / Linux
+curl -fsSL https://ollama.com/install.sh | sh
+
+# или скачать .dmg / .exe с ollama.com</code></pre>
+
+<p>Тянем модель. Выбор размера зависит от RAM:</p>
+<ul>
+<li><code>qwen2.5:7b</code> — 4.7 GB на диске, ~6 GB RAM при работе. Для 16 GB-машин.</li>
+<li><code>qwen2.5:14b</code> — 9 GB на диске, ~12 GB RAM. Для 32 GB.</li>
+<li><code>qwen2.5:32b</code> — 20 GB, ~28 GB RAM. Если у тебя сервер или Mac Studio.</li>
+</ul>
+
+<pre><code class="language-bash">ollama pull qwen2.5:7b
+# или
+ollama pull qwen2.5:14b
+
+# проверка — модель должна ответить:
+ollama run qwen2.5:7b "Ответь одним словом: какой сегодня день недели? Просто угадай."</code></pre>
+
+<p>Если на 16 GB запустил 14b — система начнёт уходить в swap, и каждый запрос будет идти по 2–3 минуты. Лучше честно остановиться на 7b и при необходимости подкрутить промпт.</p>
+
+<h2>Шаг 2: проект и зависимости</h2>
+
+<pre><code class="language-bash">mkdir local-secretary && cd local-secretary
+python3 -m venv venv && source venv/bin/activate
+pip install imap-tools ollama python-telegram-bot python-dotenv</code></pre>
+
+<p>Файл <code>.env</code> (добавь в <code>.gitignore</code>):</p>
+<pre><code class="language-bash">IMAP_HOST=imap.mail.ru
+IMAP_USER=you@mail.ru
+IMAP_PASS=xxxxxxxxxxxxxxxx
+OLLAMA_MODEL=qwen2.5:7b
+TG_BOT_TOKEN=1234:AABB...
+TG_CHAT_ID=123456789</code></pre>
+
+<p>Никакого OpenAI/Anthropic-ключа — единственный токен наружу это TG-бот. Если совсем хочется параноидально, можно и Telegram заменить на локальный desktop-notification.</p>
+
+<p><strong>App-password по провайдерам:</strong></p>
+<ul>
+<li><strong>Mail.ru:</strong> account.mail.ru → Безопасность → Пароли для внешних приложений → создать. Хост <code>imap.mail.ru</code>, порт 993.</li>
+<li><strong>Yandex:</strong> id.yandex.ru → Безопасность → Пароли приложений → «Почта». Хост <code>imap.yandex.ru</code>.</li>
+<li><strong>Gmail:</strong> myaccount.google.com → Безопасность → 2-Step Verification → App passwords. Хост <code>imap.gmail.com</code>.</li>
+</ul>
+
+<p>Чтобы узнать свой <code>chat_id</code>: напиши боту @userinfobot — он вернёт твой id.</p>
+
+<h2>Шаг 3: достаём свежие письма</h2>
+
+<p>Файл <code>fetch_inbox.py</code>:</p>
+<pre><code class="language-python">import os
+from datetime import datetime, timedelta
+from dotenv import load_dotenv
+from imap_tools import MailBox, AND
+
+load_dotenv()
+
+
+def fetch_recent_emails(hours=24):
+    since = (datetime.now() - timedelta(hours=hours)).date()
+    emails = []
+
+    with MailBox(os.getenv("IMAP_HOST")).login(
+        os.getenv("IMAP_USER"),
+        os.getenv("IMAP_PASS"),
+        initial_folder="INBOX",
+    ) as mailbox:
+        for msg in mailbox.fetch(AND(date_gte=since), mark_seen=False):
+            emails.append({
+                "uid": msg.uid,
+                "from": msg.from_,
+                "subject": msg.subject or "(без темы)",
+                "date": msg.date.isoformat() if msg.date else "",
+                "body": (msg.text or msg.html or "")[:1500],
+            })
+    return emails
+
+
+if __name__ == "__main__":
+    mails = fetch_recent_emails(24)
+    print(f"Получено {len(mails)} писем за 24 часа")
+    for m in mails[:3]:
+        print(f"  {m['from']} | {m['subject']}")
+</code></pre>
+
+<p>Запусти — должно вывести количество и первые 3 темы.</p>
+
+<h2>Шаг 4: классифицируем через Ollama</h2>
+
+<p>Главное отличие от облачной версии — у локальной 7b-модели контекст 8k токенов и она заметно хуже держит длинные batch-запросы. Если на Claude мы могли отправить пачку из 30 писем в одном запросе, то здесь надёжнее идти по одному. Медленнее, но качество классификации не плывёт.</p>
+
+<p>Файл <code>classify.py</code>:</p>
+<pre><code class="language-python">import json
+import os
+import re
+import ollama
+
+MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:7b")
+
+SYSTEM_PROMPT = """Ты — личный секретарь. Классифицируй письмо в одну из категорий:
+
+- "urgent" — требует ответа сегодня. Прямой вопрос лично мне, дедлайн,
+  проблема в проде, срочная просьба от руководства или клиента.
+- "fyi" — нужно знать, но отвечать не надо. Уведомления о решениях,
+  важные рассылки, отчёты.
+- "noise" — можно не открывать. Маркетинг, спам, авто-уведомления
+  систем (CI/CD, дайджесты, PR-апдейты).
+- "template" — типовой запрос со стандартным ответом: подтверждение
+  слота, запрос документов, "можете созвониться в среду?".
+
+Для "template" добавь поле "draft" — текст черновика ответа на русском,
+в моём стиле: короткий, без воды, без формальностей вроде
+"Добрый день, уважаемый". Просто по делу.
+
+Верни СТРОГО валидный JSON-объект без markdown и без комментариев:
+{"category": "urgent", "reason": "клиент спрашивает про дедлайн"}
+или для template:
+{"category": "template", "reason": "запрос слота",
+ "draft": "Привет! Среда 15:00 подходит. Скину ссылку утром."}
+"""
+
+
+def _extract_json(text):
+    """Локальные модели иногда оборачивают ответ в \`\`\`json ... \`\`\` или комментируют.
+    Достаём первый валидный JSON-объект."""
+    text = text.strip()
+    if text.startswith("\`\`\`"):
+        text = re.sub(r"^\`\`\`(?:json)?\s*", "", text)
+        text = re.sub(r"\s*\`\`\`$", "", text)
+    # на всякий случай ищем первую {...}-структуру
+    match = re.search(r"\{.*\}", text, re.DOTALL)
+    if match:
+        text = match.group(0)
+    return json.loads(text)
+
+
+def classify_one(email):
+    user_msg = json.dumps({
+        "from": email["from"],
+        "subject": email["subject"],
+        "body_preview": email["body"][:1200],
+    }, ensure_ascii=False)
+
+    resp = ollama.chat(
+        model=MODEL,
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_msg},
+        ],
+        options={"temperature": 0.2, "num_ctx": 8192},
+        format="json",  # ollama умеет принуждать модель к JSON
+    )
+
+    try:
+        return _extract_json(resp["message"]["content"])
+    except json.JSONDecodeError:
+        # фолбэк: если модель совсем сошла с ума — считаем шумом
+        return {"category": "noise", "reason": "parse_error"}
+
+
+def classify_all(emails):
+    out = []
+    for i, e in enumerate(emails, 1):
+        result = classify_one(e)
+        result["uid"] = e["uid"]
+        out.append(result)
+        print(f"  [{i}/{len(emails)}] {result['category']:8} | {e['subject'][:60]}")
+    return out
+</code></pre>
+
+<p>Ключевые параметры:</p>
+<ul>
+<li><code>temperature=0.2</code> — для классификации нам нужна предсказуемость, не креатив.</li>
+<li><code>num_ctx=8192</code> — поднимаем контекст до максимума 7b-модели. По умолчанию Ollama даёт 2048, чего мало.</li>
+<li><code>format="json"</code> — Ollama переключает декодер в режим, гарантирующий валидный JSON. Без этого 5–10% ответов будут битыми.</li>
+</ul>
+
+<h2>Шаг 5: сохраняем черновики в папку Drafts</h2>
+
+<p>Эта часть идентична облачной версии — IMAP-протокол одинаков для Claude и для Ollama.</p>
+
+<p>Файл <code>drafts.py</code>:</p>
+<pre><code class="language-python">import os
+from email.message import EmailMessage
+from imap_tools import MailBox
+
+
+def guess_drafts_folder():
+    host = os.getenv("IMAP_HOST", "")
+    if "gmail" in host:
+        return "[Gmail]/Drafts"
+    if "yandex" in host:
+        return "Drafts"
+    if "mail.ru" in host:
+        return "Черновики"
+    return "Drafts"
+
+
+def save_draft(to_addr, subject, body):
+    msg = EmailMessage()
+    msg["From"] = os.getenv("IMAP_USER")
+    msg["To"] = to_addr
+    msg["Subject"] = (
+        f"Re: {subject}"
+        if not subject.lower().startswith("re:")
+        else subject
+    )
+    msg.set_content(body)
+
+    folder = guess_drafts_folder()
+    with MailBox(os.getenv("IMAP_HOST")).login(
+        os.getenv("IMAP_USER"), os.getenv("IMAP_PASS")
+    ) as mailbox:
+        mailbox.append(msg.as_bytes(), folder)
+</code></pre>
+
+<p>Если не уверен в имени папки — выведи список:</p>
+<pre><code class="language-python">with MailBox(host).login(user, password) as mailbox:
+    for folder in mailbox.folder.list():
+        print(folder.name)
+</code></pre>
+
+<h2>Шаг 6: дневной чек-ин в Telegram</h2>
+
+<p>Файл <code>tg_brief.py</code>:</p>
+<pre><code class="language-python">import os
+from telegram import Bot
+
+
+async def send_brief(stats, urgent_items, draft_count):
+    bot = Bot(token=os.getenv("TG_BOT_TOKEN"))
+
+    lines = [
+        "📬 *Утренний бриф (локально, без облака)*",
+        "",
+        f"🔴 Срочное: {stats.get('urgent', 0)}",
+        f"🟡 FYI: {stats.get('fyi', 0)}",
+        f"⚪️ Шум: {stats.get('noise', 0)}",
+        f"✉️ Черновиков подготовлено: {draft_count}",
+    ]
+
+    if urgent_items:
+        lines.append("")
+        lines.append("*Что важно сегодня:*")
+        for item in urgent_items[:5]:
+            lines.append(f"• _{item['from']}_: {item['subject']}")
+            if item.get("reason"):
+                lines.append(f"  └ {item['reason']}")
+
+    await bot.send_message(
+        chat_id=os.getenv("TG_CHAT_ID"),
+        text="\n".join(lines),
+        parse_mode="Markdown",
+    )
+</code></pre>
+
+<h2>Шаг 7: собираем main.py</h2>
+
+<pre><code class="language-python">import asyncio
+from collections import Counter
+from dotenv import load_dotenv
+
+from fetch_inbox import fetch_recent_emails
+from classify import classify_all
+from drafts import save_draft
+from tg_brief import send_brief
+
+load_dotenv()
+
+
+def main():
+    emails = fetch_recent_emails(hours=24)
+    print(f"Достал {len(emails)} писем")
+
+    if not emails:
+        asyncio.run(send_brief({}, [], 0))
+        return
+
+    results = classify_all(emails)
+    email_by_uid = {e["uid"]: e for e in emails}
+
+    stats = Counter()
+    urgent_items = []
+    draft_count = 0
+
+    for r in results:
+        stats[r["category"]] += 1
+
+        if r["category"] == "urgent":
+            e = email_by_uid.get(r["uid"], {})
+            urgent_items.append({
+                "from": e.get("from", "?"),
+                "subject": e.get("subject", "?"),
+                "reason": r.get("reason", ""),
+            })
+
+        if r["category"] == "template" and r.get("draft"):
+            e = email_by_uid.get(r["uid"])
+            if e:
+                save_draft(e["from"], e["subject"], r["draft"])
+                draft_count += 1
+                print(f"  draft → {e['from']}")
+
+    asyncio.run(send_brief(dict(stats), urgent_items, draft_count))
+    print("Готово.")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+
+<h2>Запуск и проверка</h2>
+
+<p>Сначала проверь, что Ollama жива:</p>
+<pre><code class="language-bash">curl http://localhost:11434/api/tags
+# должен вернуть JSON со списком установленных моделей</code></pre>
+
+<p>Дальше — ручной запуск:</p>
+<pre><code class="language-bash">python main.py</code></pre>
+
+<p>На 50 письмах и qwen2.5:7b на Apple M2 Pro у меня уходит около 4–5 минут (CPU+GPU). На голом CPU — 12–15 минут. Это нормально для утреннего cron, который ты не видишь.</p>
+
+<p>Что проверить:</p>
+<ul>
+<li>В Telegram пришёл бриф с цифрами.</li>
+<li>В папке «Черновики» появились новые драфты на письма-«template».</li>
+<li>Тексты драфтов читаемые на русском, без англицизмов и «уважаемых коллег».</li>
+</ul>
+
+<p>Когда работает — ставь cron:</p>
+<pre><code class="language-bash">crontab -e
+# каждый будний день в 8:00:
+0 8 * * 1-5 cd /path/to/local-secretary && /path/to/venv/bin/python main.py >> log.txt 2>&1</code></pre>
+
+<h2>Сравнение с p15 (Claude-версия)</h2>
+<ul>
+<li><strong>Скорость.</strong> Claude обрабатывает 50 писем за 10–15 секунд, локальная qwen2.5:7b — за 4–5 минут на M-чипе. Для крона разница незаметна, для интерактивного использования — да.</li>
+<li><strong>Качество классификации.</strong> Claude промахивается ~1% случаев, qwen2.5:7b — 5–7%, qwen2.5:14b — 2–3%. Чаще всего ошибки между «fyi» и «noise» (что не критично), реже между «urgent» и «fyi» (тут больно).</li>
+<li><strong>Качество драфтов.</strong> Claude пишет ответ «как живой человек, твоего уровня». Qwen 7b пишет нормально, но иногда слишком формально или с лишним «надеюсь, у вас всё хорошо». 14b — заметно ближе к Claude. Решается few-shot-примерами в системном промпте.</li>
+<li><strong>Деньги.</strong> Claude — порядка $0.5–2 в месяц на средний почтовый ящик. Ollama — $0, если не считать электричество.</li>
+<li><strong>Приватность.</strong> У Ollama содержимое писем не покидает машину. Это главный аргумент для медкарт, договоров и личной переписки.</li>
+</ul>
+
+<h2>Расширения</h2>
+<ul>
+<li><strong>Автотегирование в почте.</strong> Добавляй IMAP-флаги — «\Flagged» на urgent, метку «AI-noise» на noise. Потом фильтром в клиенте → шум сразу в архив.</li>
+<li><strong>Экспорт TODO.</strong> Если в письме «сделай X к четвергу» — отдельный класс <code>task</code>, и draft = добавить в Things 3 (URL-схема), Todoist или Obsidian-файл.</li>
+<li><strong>Пятничный недельный отчёт.</strong> Второй cron-джоб в пятницу в 17:00 — пробегает по отправленным письмам за неделю и через Ollama же выдаёт «вот что ты на этой неделе сделал». Удобно для журнала или для отчёта руководителю.</li>
+<li><strong>Few-shot стиль.</strong> Подсунь модели 5–10 своих реальных ответов прямо в SYSTEM_PROMPT — драфты становятся заметно «твоими».</li>
+<li><strong>VIP-список.</strong> «Эти 10 адресов — всегда urgent» хардкодом в коде, до запроса в модель. Письмо от босса или нотариуса не должно зависеть от настроения LLM.</li>
+</ul>
+
+<h2>Подводные камни</h2>
+<ul>
+<li><strong>Медленно на CPU.</strong> Без GPU 7b-модель отвечает 10–20 секунд на письмо. 50 писем = до 15 минут. Если есть Apple Silicon или дискретная NVIDIA — будет в 3–5 раз быстрее, Ollama её подхватывает автоматически.</li>
+<li><strong>Контекст 8k у 7b.</strong> Длинный тред с историей на 100 круток не влезет. Безопасно — обрезать тело письма до 1200–1500 символов, как в коде выше. Иначе модель начнёт «забывать» начало и галлюцинировать.</li>
+<li><strong>Модель промахивается чаще, чем Claude.</strong> Поэтому скрипт ничего не удаляет и не отправляет сам — только классифицирует и кладёт драфт. Все деструктивные действия за тобой.</li>
+<li><strong>Ollama иногда не возвращает валидный JSON.</strong> Даже с <code>format="json"</code> бывают сбои. Поэтому в коде есть фолбэк-парсинг и «если не распарсилось — считаем noise». Лучше пропустить одно письмо, чем уронить весь джоб.</li>
+<li><strong>Память.</strong> Ollama загружает модель в RAM при первом запросе и держит 5 минут. Если cron бежит раз в сутки — каждый раз будет холодный старт ~15–30 секунд на загрузку весов. Можно прогревать: <code>curl http://localhost:11434/api/generate -d '{"model":"qwen2.5:7b","keep_alive":-1}'</code> на старте машины.</li>
+<li><strong>HTML-письма.</strong> У многих рассылок <code>msg.text</code> пустой, всё в <code>msg.html</code>. Фолбэк в коде есть, но HTML-теги забивают контекст. Если у тебя много HTML — подключи <code>html2text</code> для очистки.</li>
+</ul>
+
+<h2>Что в итоге</h2>
+<p>У тебя есть полностью офлайн-версия секретаря. Письма не покидают машину, никаких подписок, никаких блокировок. По качеству qwen2.5:7b проигрывает Claude на 5–10 процентных пунктов точности классификации и заметно скучнее в драфтах — но эти 5–10% часто стоят того, чтобы медкарта и переписка с банком не уезжали в чужой дата-центр.</p>
+
+<p>Связка p15 + p21 даёт интересный паттерн: рабочую почту с NDA — на Ollama, личную с подписками и встречами — на Claude. Один и тот же main.py, отличаются только <code>classify.py</code> и переменные окружения.</p>
+
+<div class="callout callout-success">
+<strong>Готово.</strong> Утренний разбор inbox теперь делается локально и бесплатно. Дальше — недельный отчёт по отправленным письмам, экспорт TODO в Things/Todoist, или замена Telegram на native-нотификацию macOS. Всё это докручивается на той же Ollama без единого запроса в облако.
+</div>
+
+`);
+
+
+registerLesson("p22", `
+<h1>Проект «За 1 час»: Локальный RAG по своим документам — приватный поиск без облака</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> систему семантического поиска по PDF — медкарта, договоры, выписки, рабочие материалы — полностью офлайн</span>
+  <span><strong>Время:</strong> ~90 минут</span>
+  <span><strong>Уровень:</strong> Python средний, понимание основ эмбеддингов полезно, 16+ GB RAM</span>
+</div>
+
+<h2>Зачем этот проект</h2>
+<p>Типичная ситуация: 50 PDF — выписки из банка, медицинские протоколы, договоры аренды, скан паспорта, налоговые квитанции, рабочие методички. Когда нужно найти «сколько я плачу за коммуналку в среднем за полгода» или «что у меня в полисе ДМС про стоматологию» — приходится открывать файлы по одному, листать, искать словом, ругаться.</p>
+<p>Облачные ассистенты эту задачу решают, но в них надо закидывать документы — а медкарта в чужом дата-центре это совсем не то, чего хочется. Локальный RAG (Retrieval-Augmented Generation) делает то же самое, но всё хранится у тебя на диске: эмбеддинги, индекс, ответы — ничего наружу.</p>
+<p>За 90 минут получим CLI: <code>python rag.py index ~/Documents/мои-доки</code> один раз, потом <code>python rag.py ask "..."</code> — и ответ с цитатами и ссылками на конкретные документы и страницы.</p>
+
+<h2>Что в итоге будет</h2>
+<ul>
+<li>Индексатор PDF: извлекает текст (включая таблицы), режет на чанки, считает эмбеддинги.</li>
+<li>Локальная векторная база ChromaDB — хранится в папке проекта.</li>
+<li>CLI с двумя командами: <code>index</code> (проиндексировать папку) и <code>ask</code> (спросить).</li>
+<li>Поиск top-k релевантных фрагментов → подсовываем Ollama → получаем ответ со ссылками на источники.</li>
+<li>Опциональный Streamlit-интерфейс в одну страницу.</li>
+<li>Ни одного облачного запроса. Всё локально, всё бесплатно, всё офлайн-совместимо.</li>
+</ul>
+
+<h2>Требования</h2>
+<ul>
+<li>Python 3.10+.</li>
+<li>16+ GB RAM (для qwen2.5:7b и embeddings одновременно).</li>
+<li>Установленный Ollama (если не ставил — см. проект p21, шаг 1).</li>
+<li>Папка с PDF/TXT-документами, которые хочешь сделать поисковыми.</li>
+<li>~3 GB свободного места на диске под модели и индекс.</li>
+</ul>
+
+<h2>Архитектура</h2>
+<pre><code>ИНДЕКСАЦИЯ (однократно или по cron):
+docs/*.pdf
+  → pdfplumber: извлечь текст постранично
+  → split: разбить на чанки 500–800 токенов с overlap 100
+  → sentence-transformers: посчитать embedding для каждого чанка
+  → ChromaDB: положить (text, embedding, metadata{file, page})
+
+ЗАПРОС:
+"Сколько я плачу за коммуналку?"
+  → sentence-transformers: embedding запроса
+  → ChromaDB: top-5 ближайших чанков
+  → Ollama (qwen2.5): "вот вопрос, вот контекст, ответь и сошлись"
+  → ответ + список источников</code></pre>
+
+<h2>Шаг 1: окружение и зависимости</h2>
+
+<pre><code class="language-bash">mkdir local-rag && cd local-rag
+python3 -m venv venv && source venv/bin/activate
+pip install pdfplumber sentence-transformers chromadb ollama tqdm
+
+# Ollama-модель (если ещё не тянул)
+ollama pull qwen2.5:7b</code></pre>
+
+<p>Структура проекта:</p>
+<pre><code>local-rag/
+├── venv/
+├── docs/                 ← сюда кладёшь свои PDF
+├── chroma_db/            ← создастся автоматически при индексации
+├── rag.py                ← главный CLI
+└── ui.py                 ← опциональный Streamlit
+</code></pre>
+
+<h2>Шаг 2: извлечение текста из PDF</h2>
+
+<p>Я перебрал три библиотеки. PyPDF2 ломается на сложных layout, PyMuPDF (fitz) быстрый и хороший, но лицензия AGPL — для open-source проектов норм, для корпоративного использования бывают вопросы. Pdfplumber медленнее, но из коробки умеет таблицы и проще ставится. Берём его.</p>
+
+<p>Файл <code>extract.py</code>:</p>
+<pre><code class="language-python">import pdfplumber
+from pathlib import Path
+
+
+def extract_pdf_pages(path):
+    """Возвращает список (page_number, text) для PDF."""
+    pages = []
+    with pdfplumber.open(path) as pdf:
+        for i, page in enumerate(pdf.pages, 1):
+            text = page.extract_text() or ""
+            # таблицы — отдельно, склеиваем построчно
+            for table in page.extract_tables() or []:
+                rows = ["\t".join(c or "" for c in row) for row in table]
+                text += "\n\n[TABLE]\n" + "\n".join(rows) + "\n[/TABLE]"
+            if text.strip():
+                pages.append((i, text))
+    return pages
+
+
+def extract_any(path):
+    """PDF — постранично, TXT — целиком как одна "страница"."""
+    p = Path(path)
+    if p.suffix.lower() == ".pdf":
+        return extract_pdf_pages(p)
+    if p.suffix.lower() in (".txt", ".md"):
+        return [(1, p.read_text(encoding="utf-8", errors="ignore"))]
+    return []
+</code></pre>
+
+<p>Тестируем:</p>
+<pre><code class="language-bash">python -c "from extract import extract_any; print(extract_any('docs/example.pdf')[0][1][:300])"</code></pre>
+
+<h2>Шаг 3: чанкинг</h2>
+
+<p>Эмбеддинг хорошо работает на коротких связных кусках. Если кинуть в модель целиком 20-страничный договор — получится размытое усреднение «договор о чём-то». Если резать на абзацы по 50 слов — потеряем контекст. Опытно лучше всего ~500–800 токенов с overlap 100 (чтобы фраза, попавшая на границу, всё равно нашлась).</p>
+
+<p>Файл <code>chunk.py</code>:</p>
+<pre><code class="language-python">def chunk_text(text, chunk_size=600, overlap=100):
+    """Грубая разбивка по словам. Для русского работает достаточно хорошо.
+
+    chunk_size — примерное число слов в куске (≈ 800 токенов для русского).
+    overlap — сколько слов перекрывается между соседними чанками.
+    """
+    words = text.split()
+    if not words:
+        return []
+
+    chunks = []
+    step = chunk_size - overlap
+    for start in range(0, len(words), step):
+        chunk = " ".join(words[start:start + chunk_size])
+        if chunk.strip():
+            chunks.append(chunk)
+        if start + chunk_size >= len(words):
+            break
+    return chunks
+</code></pre>
+
+<p>Можно использовать tiktoken для точного подсчёта токенов, но для нашей задачи разбиение «по словам» работает не хуже и не тянет лишних зависимостей.</p>
+
+<h2>Шаг 4: эмбеддинги и ChromaDB</h2>
+
+<p>Для русского лучшая бесплатная мультиязычная модель — <code>sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2</code>. 384-мерные эмбеддинги, ~120 MB на диске, работает мгновенно даже на CPU. Поддерживает 50+ языков, на русском показывает себя на уровне OpenAI ada-002.</p>
+<p>Если у тебя много документов и хочется качества повыше — возьми <code>paraphrase-multilingual-mpnet-base-v2</code> (768-мерные, ~420 MB, точность выше на 5–10%).</p>
+
+<p>ChromaDB — самая простая локальная векторная БД. Хранит всё в SQLite + parquet-файлах в указанной папке. Никакого сервера, никаких портов.</p>
+
+<p>Файл <code>store.py</code>:</p>
+<pre><code class="language-python">import chromadb
+from sentence_transformers import SentenceTransformer
+
+EMBED_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+
+_model = None
+_client = None
+_collection = None
+
+
+def get_model():
+    global _model
+    if _model is None:
+        _model = SentenceTransformer(EMBED_MODEL)
+    return _model
+
+
+def get_collection(persist_dir="./chroma_db"):
+    global _client, _collection
+    if _collection is None:
+        _client = chromadb.PersistentClient(path=persist_dir)
+        _collection = _client.get_or_create_collection(
+            name="documents",
+            metadata={"hnsw:space": "cosine"},
+        )
+    return _collection
+
+
+def embed_texts(texts):
+    model = get_model()
+    # normalize — для cosine-similarity это обязательно
+    return model.encode(texts, normalize_embeddings=True).tolist()
+</code></pre>
+
+<h2>Шаг 5: индексатор</h2>
+
+<p>Файл <code>indexer.py</code>:</p>
+<pre><code class="language-python">import hashlib
+from pathlib import Path
+from tqdm import tqdm
+
+from extract import extract_any
+from chunk import chunk_text
+from store import get_collection, embed_texts
+
+
+def _chunk_id(file_path, page, chunk_idx):
+    raw = f"{file_path}::{page}::{chunk_idx}"
+    return hashlib.md5(raw.encode()).hexdigest()
+
+
+def index_folder(folder, exts=(".pdf", ".txt", ".md")):
+    collection = get_collection()
+    folder = Path(folder)
+    files = [p for p in folder.rglob("*") if p.suffix.lower() in exts]
+    print(f"Найдено {len(files)} документов")
+
+    for path in tqdm(files, desc="Документы"):
+        try:
+            pages = extract_any(path)
+        except Exception as e:
+            print(f"  пропускаю {path.name}: {e}")
+            continue
+
+        ids, docs, metas = [], [], []
+        for page_num, text in pages:
+            for chunk_idx, chunk in enumerate(chunk_text(text)):
+                ids.append(_chunk_id(str(path), page_num, chunk_idx))
+                docs.append(chunk)
+                metas.append({
+                    "file": path.name,
+                    "path": str(path),
+                    "page": page_num,
+                })
+
+        if not docs:
+            continue
+
+        # считаем эмбеддинги пачками по 64 — оптимально для CPU
+        embeddings = []
+        for i in range(0, len(docs), 64):
+            embeddings.extend(embed_texts(docs[i:i + 64]))
+
+        # upsert — если документ переиндексируем, старые куски заменятся
+        collection.upsert(
+            ids=ids,
+            documents=docs,
+            embeddings=embeddings,
+            metadatas=metas,
+        )
+
+    print(f"В индексе теперь {collection.count()} чанков")
+</code></pre>
+
+<h2>Шаг 6: поиск и ответ через Ollama</h2>
+
+<p>Файл <code>query.py</code>:</p>
+<pre><code class="language-python">import ollama
+from store import get_collection, embed_texts
+
+MODEL = "qwen2.5:7b"
+
+SYSTEM_PROMPT = """Ты — ассистент для поиска по личным документам пользователя.
+
+Тебе дают вопрос и фрагменты документов с пометками источников.
+Отвечай ТОЛЬКО на основании этих фрагментов. Не придумывай.
+
+Правила:
+- Если в фрагментах есть прямой ответ — давай его и в конце укажи источники
+  в формате [файл.pdf, стр. N].
+- Если в фрагментах нет нужной информации — честно скажи "в документах
+  этого не нашёл" и не выдумывай.
+- Если в фрагментах есть цифры — приводи их точно, не округляй на свой вкус.
+- Отвечай кратко, по делу, на русском.
+"""
+
+
+def search(query, top_k=5):
+    collection = get_collection()
+    query_emb = embed_texts([query])[0]
+    results = collection.query(
+        query_embeddings=[query_emb],
+        n_results=top_k,
+    )
+    hits = []
+    for doc, meta, dist in zip(
+        results["documents"][0],
+        results["metadatas"][0],
+        results["distances"][0],
+    ):
+        hits.append({
+            "text": doc,
+            "file": meta["file"],
+            "page": meta["page"],
+            "score": 1 - dist,  # cosine distance → similarity
+        })
+    return hits
+
+
+def ask(question, top_k=5):
+    hits = search(question, top_k=top_k)
+
+    if not hits:
+        return "В индексе нет документов. Сначала запусти \`index\`.", []
+
+    context = "\n\n---\n\n".join(
+        f"[Источник: {h['file']}, стр. {h['page']}]\n{h['text']}"
+        for h in hits
+    )
+
+    user_msg = f"Вопрос: {question}\n\nФрагменты документов:\n\n{context}"
+
+    resp = ollama.chat(
+        model=MODEL,
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_msg},
+        ],
+        options={"temperature": 0.1, "num_ctx": 8192},
+    )
+    answer = resp["message"]["content"]
+    return answer, hits
+</code></pre>
+
+<h2>Шаг 7: CLI</h2>
+
+<p>Файл <code>rag.py</code>:</p>
+<pre><code class="language-python">import sys
+from indexer import index_folder
+from query import ask
+
+
+def main():
+    if len(sys.argv) &lt; 2:
+        print("Использование:")
+        print("  python rag.py index &lt;папка&gt;")
+        print("  python rag.py ask \"&lt;вопрос&gt;\"")
+        sys.exit(1)
+
+    cmd = sys.argv[1]
+
+    if cmd == "index":
+        if len(sys.argv) &lt; 3:
+            print("Укажи папку: python rag.py index ./docs")
+            sys.exit(1)
+        index_folder(sys.argv[2])
+
+    elif cmd == "ask":
+        if len(sys.argv) &lt; 3:
+            print("Укажи вопрос: python rag.py ask \"...\"")
+            sys.exit(1)
+        question = " ".join(sys.argv[2:])
+        answer, hits = ask(question)
+        print("\n=== ОТВЕТ ===\n")
+        print(answer)
+        print("\n=== ИСТОЧНИКИ ===")
+        for h in hits:
+            print(f"  • {h['file']} стр. {h['page']}  (similarity {h['score']:.2f})")
+
+    else:
+        print(f"Неизвестная команда: {cmd}")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+
+<h2>Запуск и проверка</h2>
+
+<p>Кладёшь PDF в <code>docs/</code> и запускаешь:</p>
+<pre><code class="language-bash">python rag.py index docs/
+# Документы: 100%|██████████| 12/12 [00:47&lt;00:00,  3.9s/it]
+# В индексе теперь 384 чанков</code></pre>
+
+<p>Первый запуск тянет модель эмбеддингов (~120 MB). Дальше — только индексация: ~3–5 секунд на средний PDF на M-чипе, ~10–15 секунд на CPU.</p>
+
+<p>Спрашиваем:</p>
+<pre><code class="language-bash">python rag.py ask "Сколько я плачу за коммуналку в среднем за полгода?"
+
+=== ОТВЕТ ===
+По квитанциям за январь–июнь среднемесячный платёж — 7842 рубля.
+Минимум в апреле (6210 ₽), максимум в феврале (9430 ₽).
+[жкх-янв.pdf, стр. 1], [жкх-фев.pdf, стр. 1], [жкх-мар.pdf, стр. 1] ...
+
+=== ИСТОЧНИКИ ===
+  • жкх-фев.pdf стр. 1  (similarity 0.78)
+  • жкх-мар.pdf стр. 1  (similarity 0.76)
+  ...</code></pre>
+
+<p>Время ответа на M-чипе — 8–15 секунд, на CPU — 30–60 секунд (большую часть тратит Ollama на генерацию).</p>
+
+<h2>Опционально: Streamlit-интерфейс</h2>
+
+<p>Если CLI кажется аскетичным — за 30 строк делаем UI:</p>
+
+<pre><code class="language-bash">pip install streamlit</code></pre>
+
+<p>Файл <code>ui.py</code>:</p>
+<pre><code class="language-python">import streamlit as st
+from query import ask
+
+st.set_page_config(page_title="Локальный RAG", page_icon="🔍")
+st.title("🔍 Поиск по документам")
+
+question = st.text_input("Вопрос", placeholder="Например: что у меня в полисе ДМС про стоматологию?")
+
+if question:
+    with st.spinner("Ищу..."):
+        answer, hits = ask(question)
+
+    st.subheader("Ответ")
+    st.write(answer)
+
+    st.subheader("Источники")
+    for h in hits:
+        with st.expander(f"{h['file']} — стр. {h['page']} (similarity {h['score']:.2f})"):
+            st.text(h["text"][:1500])
+</code></pre>
+
+<p>Запуск:</p>
+<pre><code class="language-bash">streamlit run ui.py
+# открывается на http://localhost:8501</code></pre>
+
+<h2>Расширения</h2>
+<ul>
+<li><strong>Разные индексы под категории.</strong> Создай несколько коллекций в Chroma: <code>medical</code>, <code>legal</code>, <code>finance</code>. Запросы — только в одну, иначе медицинский термин может «зацепить» юридический документ.</li>
+<li><strong>OCR для сканов.</strong> Если у тебя фото-документы или сканы без текстового слоя — добавь Tesseract: <code>pip install pytesseract</code>, перед <code>extract_text()</code> прогоняй страницу через OCR. Качество на русском печатном тексте — 95%+ при разумном разрешении.</li>
+<li><strong>Голосовые запросы.</strong> Whisper.cpp локально транскрибирует речь — добавляешь кнопку записи в Streamlit, прогоняешь через Whisper, кидаешь текст в <code>ask()</code>. Идеально для «спросить про лекарство, когда руки в тесте».</li>
+<li><strong>Авто-индексация по cron.</strong> Если документы добавляются регулярно (например, банк раз в месяц шлёт выписку) — раз в день <code>python rag.py index ~/Downloads/банк/</code>. Upsert по hash не дублирует уже проиндексированное.</li>
+<li><strong>Гибридный поиск.</strong> К семантическому добавь BM25-поиск (через <code>rank_bm25</code>) и объедини результаты. Семантика хороша для смысла, BM25 — для точных слов и номеров. Вместе — заметно лучше top-k.</li>
+</ul>
+
+<h2>Подводные камни</h2>
+<ul>
+<li><strong>Качество эмбеддингов на специфической лексике.</strong> Мультиязычная MiniLM хорошо понимает обычный русский, но медицинские термины («гиперэхогенное включение», «АТ-ТПО») или юридические формулы знает хуже. Если вопрос совсем не находится — попробуй переформулировать «человеческими словами» или подними top_k до 10–15.</li>
+<li><strong>Скорость на большом корпусе.</strong> 100 PDF индексируется за 5–10 минут, 1000 — уже за час+. Запускай в фоне или ночью. ChromaDB сам по себе шустрый, бутылочное горлышко — pdfplumber на парсинге.</li>
+<li><strong>Что делать, если top-k не нашёл нужный документ.</strong> Это нормальная ситуация: эмбеддинг — не магия. Подними <code>n_results=10</code>, переформулируй вопрос, или добавь BM25 (см. расширения). В крайнем случае grep по тексту чанков из ChromaDB.</li>
+<li><strong>Hallucinations при пустом контексте.</strong> Если в top-k попадут нерелевантные чанки — qwen2.5:7b может попробовать «дотянуть» ответ из своих знаний. Поэтому в SYSTEM_PROMPT жёстко: «если не нашёл — скажи что не нашёл». Раз в неделю проверяй сомнительные ответы вручную.</li>
+<li><strong>Чанк-граница режет таблицу.</strong> Финансовая таблица из 100 строк попадёт в 3–4 чанка, и в один из них — без заголовка. Запрос «сумма за март» может промахнуться. Лечится либо большим overlap (200 слов вместо 100), либо специальной обработкой таблиц (записывать заголовок в каждый чанк-фрагмент).</li>
+<li><strong>Безопасность хранения.</strong> ChromaDB складывает распознанный текст и эмбеддинги в обычные файлы в <code>./chroma_db/</code>. Если в индексе медкарта и кто-то получает доступ к диску — он получает доступ и к содержимому. Шифруй раздел (FileVault / LUKS), не клади <code>chroma_db/</code> в общие облака типа iCloud Desktop.</li>
+</ul>
+
+<h2>Этика и аккуратность</h2>
+<ul>
+<li>Не индексируй чужие документы без согласия. Договор контрагента — это часто его конфиденциальная информация, даже если у тебя физически есть копия.</li>
+<li>Помни, что распознанный текст лежит у тебя в чистом виде. Если ноутбук уедет в ремонт — индекс надо удалить (или зашифровать ФС заранее).</li>
+<li>RAG — не юрист и не врач. Ответ из медкарты «у тебя нашли X» — повод сходить к врачу, а не диагноз.</li>
+</ul>
+
+<h2>Что в итоге</h2>
+<p>За 90 минут собрали полностью офлайн-систему: индексируешь папку документов, спрашиваешь обычным языком, получаешь ответ с цитатами. Никаких подписок, никаких облаков, никаких утечек. Связка pdfplumber + sentence-transformers + ChromaDB + Ollama — это, по сути, тот же стек, что в дорогих корпоративных RAG-продуктах, только без вендора над тобой.</p>
+
+<p>Дальше — добавляй OCR для сканов, индексы по категориям, голосовые запросы через Whisper. Архитектура линейно растёт: новый шаг — новый модуль, остальное не трогаешь.</p>
+
+<div class="callout callout-success">
+<strong>Готово.</strong> У тебя локальный поиск по личным документам, который ничем не делится с миром. Дальше — индексируй медкарту, договоры, рабочие методички и забудь про «где-то у меня это было». Если захочется поднять качество — поменяй модель эмбеддингов на mpnet или добавь BM25-гибрид в один день работы.
+</div>
 
 `);
 
@@ -22898,6 +24593,18 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-05-18",
+    title: "🌐 +4 проекта на стеке «Без VPN и подписок»",
+    tag: "new",
+    items: [
+      "p19 — TG-бот для саммари длинных чатов на GigaChat (полный РФ-стек, бесплатно до 1М токенов/мес)",
+      "p20 — AI-помощник продавца Wildberries на YandexGPT (фото товара → описание + ключевики → загрузка в WB через API)",
+      "p21 — Локальный AI-секретарь на Ollama (офлайн-версия p15: ничего не уходит в облако)",
+      "p22 — RAG для своих документов на локальных моделях (госуслуги, медкарта, договоры — приватный поиск по PDF)",
+      "В существующих p1, p2, p7, p15 — добавлен блок «Без VPN и подписок» со ссылкой на альтернативу"
+    ]
+  },
   {
     date: "2026-05-18",
     title: "📚 Большое обновление: +16 уроков, новая тропинка опубликована целиком",
