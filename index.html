@@ -228,6 +228,16 @@ body {
   font-weight: 600;
 }
 
+/* Вайб-тропинка — яркая выделенная ссылка в меню */
+.top-nav-links a.nav-vibe {
+  background: linear-gradient(125deg, #db2777, #7c3aed);
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(124,58,237,0.3);
+}
+.top-nav-links a.nav-vibe:hover { color: #fff !important; filter: brightness(1.08); }
+.top-nav-links a.nav-vibe.section-active { background: linear-gradient(125deg, #be185d, #6d28d9); color: #fff !important; }
+
 .top-nav-right {
   display: flex;
   gap: 0.25rem;
@@ -25311,6 +25321,7 @@ function renderFooter() {
         <a onclick="openSection('claude')">Claude Deep Dive</a>
         <a onclick="openSection('projects')">Мини-проекты</a>
         <a onclick="openSection('industry')">Индустрии</a>
+        <a onclick="openSection('vibe')">🥋 Вайб Код Вам Дам</a>
         <a onclick="openGlossary()">Глоссарий</a>
       </div>
 
