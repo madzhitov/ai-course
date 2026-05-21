@@ -24573,7 +24573,7 @@ function renderRoutesContent(heading, subtitle) {
     <p class="routes-subtitle">${subtitle}</p>
     <div class="routes-grid">${cards}</div>
     <div id="routes-quiz-container">
-      <button class="quiz-cta" onclick="openQuiz()" type="button">
+      <button class="quiz-cta" onclick="openRouteQuiz()" type="button">
         ❓ Не уверен, что подходит? Ответь на 3 вопроса (30 секунд) →
       </button>
     </div>
@@ -24594,60 +24594,60 @@ function openRoute(routeId) {
 }
 
 // Опросник: открыть и показать первый вопрос
-let quizAnswers = { experience: null, goal: null, time: null };
+let routeQuizAnswers = { experience: null, goal: null, time: null };
 
-function openQuiz() {
-  quizAnswers = { experience: null, goal: null, time: null };
-  renderQuiz();
+function openRouteQuiz() {
+  routeQuizAnswers = { experience: null, goal: null, time: null };
+  renderRouteQuiz();
 }
 
-function renderQuiz() {
+function renderRouteQuiz() {
   const c = document.getElementById('routes-quiz-container');
   if (!c) return;
   c.innerHTML = `
     <div class="quiz-form">
-      <button class="quiz-form-close" onclick="closeQuiz()" type="button" aria-label="Закрыть">✕</button>
+      <button class="quiz-form-close" onclick="closeRouteQuiz()" type="button" aria-label="Закрыть">✕</button>
       <h4>30 секунд, и я подскажу маршрут</h4>
 
       <div class="quiz-form-q">1. Есть опыт с AI?</div>
       <div class="quiz-form-options" data-q="experience">
-        <button type="button" class="quiz-opt" data-v="none" onclick="answerQuiz('experience','none')">Не пробовал</button>
-        <button type="button" class="quiz-opt" data-v="sometimes" onclick="answerQuiz('experience','sometimes')">Иногда</button>
-        <button type="button" class="quiz-opt" data-v="often" onclick="answerQuiz('experience','often')">Постоянно, хочу глубже</button>
+        <button type="button" class="quiz-opt" data-v="none" onclick="answerRouteQuiz('experience','none')">Не пробовал</button>
+        <button type="button" class="quiz-opt" data-v="sometimes" onclick="answerRouteQuiz('experience','sometimes')">Иногда</button>
+        <button type="button" class="quiz-opt" data-v="often" onclick="answerRouteQuiz('experience','often')">Постоянно, хочу глубже</button>
       </div>
 
       <div class="quiz-divider"></div>
 
       <div class="quiz-form-q">2. Что ближе?</div>
       <div class="quiz-form-options" data-q="goal">
-        <button type="button" class="quiz-opt" data-v="life" onclick="answerQuiz('goal','life')">Применить в быту</button>
-        <button type="button" class="quiz-opt" data-v="work" onclick="answerQuiz('goal','work')">Применить в работе</button>
-        <button type="button" class="quiz-opt" data-v="build" onclick="answerQuiz('goal','build')">Построить своё</button>
-        <button type="button" class="quiz-opt" data-v="understand" onclick="answerQuiz('goal','understand')">Понять, как устроено</button>
+        <button type="button" class="quiz-opt" data-v="life" onclick="answerRouteQuiz('goal','life')">Применить в быту</button>
+        <button type="button" class="quiz-opt" data-v="work" onclick="answerRouteQuiz('goal','work')">Применить в работе</button>
+        <button type="button" class="quiz-opt" data-v="build" onclick="answerRouteQuiz('goal','build')">Построить своё</button>
+        <button type="button" class="quiz-opt" data-v="understand" onclick="answerRouteQuiz('goal','understand')">Понять, как устроено</button>
       </div>
 
       <div class="quiz-divider"></div>
 
       <div class="quiz-form-q">3. Сколько времени готов?</div>
       <div class="quiz-form-options" data-q="time">
-        <button type="button" class="quiz-opt" data-v="small" onclick="answerQuiz('time','small')">Час в неделю</button>
-        <button type="button" class="quiz-opt" data-v="medium" onclick="answerQuiz('time','medium')">Несколько часов</button>
-        <button type="button" class="quiz-opt" data-v="large" onclick="answerQuiz('time','large')">День+ в неделю</button>
+        <button type="button" class="quiz-opt" data-v="small" onclick="answerRouteQuiz('time','small')">Час в неделю</button>
+        <button type="button" class="quiz-opt" data-v="medium" onclick="answerRouteQuiz('time','medium')">Несколько часов</button>
+        <button type="button" class="quiz-opt" data-v="large" onclick="answerRouteQuiz('time','large')">День+ в неделю</button>
       </div>
     </div>
   `;
 }
 
-function answerQuiz(question, value) {
-  quizAnswers[question] = value;
+function answerRouteQuiz(question, value) {
+  routeQuizAnswers[question] = value;
   // Подсветить активный вариант
   const group = document.querySelector(`.quiz-form-options[data-q="${question}"]`);
   if (group) {
     group.querySelectorAll('.quiz-opt').forEach(b => b.classList.toggle('active', b.dataset.v === value));
   }
   // Если все 3 отвечено — показать результат
-  if (quizAnswers.experience && quizAnswers.goal && quizAnswers.time) {
-    setTimeout(showQuizResult, 350);
+  if (routeQuizAnswers.experience && routeQuizAnswers.goal && routeQuizAnswers.time) {
+    setTimeout(showRouteQuizResult, 350);
   }
 }
 
@@ -24668,8 +24668,8 @@ function recommendRoute({ experience, goal, time }) {
   return 'daily-life';
 }
 
-function showQuizResult() {
-  const routeId = recommendRoute(quizAnswers);
+function showRouteQuizResult() {
+  const routeId = recommendRoute(routeQuizAnswers);
   const route = ROUTES.find(r => r.id === routeId);
   if (!route) return;
   const firstUnfinished = route.lessons.find(lid => !isCompleted(lid)) || route.lessons[0];
@@ -24685,19 +24685,19 @@ function showQuizResult() {
       <div class="quiz-result-hint">Начнём с «${firstTitle}» — там практика на твоих реальных задачах в первые 30 минут.</div>
       <div class="quiz-result-actions">
         <button class="btn-primary-v2" onclick="openRoute('${route.id}')">Начать маршрут →</button>
-        <button class="btn-secondary-v2" onclick="openQuiz()">Пройти заново</button>
-        <button class="btn-secondary-v2" onclick="closeQuiz()">Закрыть</button>
+        <button class="btn-secondary-v2" onclick="openRouteQuiz()">Пройти заново</button>
+        <button class="btn-secondary-v2" onclick="closeRouteQuiz()">Закрыть</button>
       </div>
     </div>
   `;
   trackEvent(`quiz-result-${routeId}`, `Quiz recommended: ${routeId}`);
 }
 
-function closeQuiz() {
+function closeRouteQuiz() {
   const c = document.getElementById('routes-quiz-container');
   if (!c) return;
   c.innerHTML = `
-    <button class="quiz-cta" onclick="openQuiz()" type="button">
+    <button class="quiz-cta" onclick="openRouteQuiz()" type="button">
       ❓ Не уверен, что подходит? Ответь на 3 вопроса (30 секунд) →
     </button>
   `;
@@ -25917,6 +25917,15 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-05-21",
+    title: "🔧 Починили опросник «С чего начать?» на главной",
+    tag: "fix",
+    items: [
+      "Опросник из 3 вопросов не работал — конфликт имён функций со старой системой «тест по фазам»",
+      "Кнопка квиза вызывала не ту функцию и ломала блок маршрутов. Переименовали — теперь работает: 3 вопроса → рекомендация маршрута"
+    ]
+  },
   {
     date: "2026-05-21",
     title: "🔵 Опубликованы 6 уроков Claude Deep Dive",
