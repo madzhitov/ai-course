@@ -4006,6 +4006,14 @@ const ROUTES = [
     lessons: ["e6", "e7"],
   },
   {
+    id: "profession",
+    icon: "💼",
+    title: "AI для твоей профессии",
+    meta: "тропинка «Индустрии» · 10 профессий",
+    description: "Юрист, маркетолог, HR, дизайнер, риэлтор, учитель, фэшн-бренд — готовые приёмы под твою область.",
+    section: "industry",
+  },
+  {
     id: "no-vpn",
     icon: "💸",
     title: "AI без VPN и подписок",
@@ -24555,8 +24563,9 @@ function renderRoutesBlock() {
 
 function renderRoutesContent(heading, subtitle) {
   const cards = ROUTES.map(r => {
-    const completedInRoute = r.lessons.filter(lid => isCompleted(lid)).length;
-    const progress = completedInRoute > 0 ? `<span style="color: var(--text-muted); font-size: 11px; margin-left: 6px;">✓ ${completedInRoute}/${r.lessons.length}</span>` : '';
+    const lessons = r.lessons || [];
+    const completedInRoute = lessons.filter(lid => isCompleted(lid)).length;
+    const progress = (lessons.length && completedInRoute > 0) ? `<span style="color: var(--text-muted); font-size: 11px; margin-left: 6px;">✓ ${completedInRoute}/${lessons.length}</span>` : '';
     return `
       <button class="route-card" onclick="openRoute('${r.id}')" type="button">
         <div class="route-card-icon">${r.icon}</div>
@@ -24580,17 +24589,22 @@ function renderRoutesContent(heading, subtitle) {
   `;
 }
 
-// Открыть маршрут — первый незавершённый урок, или первый
+// Открыть маршрут — секцию (тропинку) или первый незавершённый урок
 function openRoute(routeId) {
   const route = ROUTES.find(r => r.id === routeId);
   if (!route) return;
-  // Найти первый незавершённый урок маршрута
-  const firstUnfinished = route.lessons.find(lid => !isCompleted(lid));
-  const target = firstUnfinished || route.lessons[0];
-  // Сохранить активный маршрут в localStorage (для будущего использования)
   try { localStorage.setItem('active-route', routeId); } catch(_) {}
-  openLesson(target);
   trackEvent(`route-start-${routeId}`, `Route started: ${routeId}`);
+  // Маршрут-в-секцию (например, «AI для профессии» → тропинка «Индустрии»)
+  if (route.section) {
+    openSection(route.section);
+    return;
+  }
+  // Обычный маршрут — открыть первый незавершённый урок
+  const lessons = route.lessons || [];
+  const firstUnfinished = lessons.find(lid => !isCompleted(lid));
+  const target = firstUnfinished || lessons[0];
+  if (target) openLesson(target);
 }
 
 // Опросник: открыть и показать первый вопрос
@@ -24655,25 +24669,26 @@ function recommendRoute({ experience, goal, time }) {
   // Балльная система: каждый из 3 ответов добавляет очки маршрутам.
   // Так все три вопроса реально влияют на итог, а не только «цель».
   const score = {
-    'daily-life': 0, 'kids-learn': 0, 'marketplace': 0,
+    'daily-life': 0, 'kids-learn': 0, 'marketplace': 0, 'profession': 0,
     'no-vpn': 0, 'build-product': 0, 'full-picture': 0,
   };
   const add = (route, pts) => { score[route] += pts; };
 
-  // Цель — сильнейший сигнал (+3 основному, +1-2 смежным)
-  if (goal === 'life')       { add('daily-life', 3); add('kids-learn', 1); add('no-vpn', 1); }
-  if (goal === 'work')       { add('marketplace', 3); add('kids-learn', 2); add('no-vpn', 1); }
-  if (goal === 'build')      { add('build-product', 3); add('no-vpn', 2); add('marketplace', 1); }
-  if (goal === 'understand') { add('full-picture', 3); add('daily-life', 1); }
+  // Цель — сильнейший сигнал. Каждая цель ведёт к своему семейству маршрутов.
+  // «Работа» → профессия (тропинка Индустрии) или маркетплейс. НИКОГДА не «дети».
+  if (goal === 'life')       { add('daily-life', 4); }
+  if (goal === 'work')       { add('profession', 4); add('marketplace', 2); }
+  if (goal === 'build')      { add('build-product', 4); add('no-vpn', 2); }
+  if (goal === 'understand') { add('full-picture', 4); add('daily-life', 1); }
 
   // Опыт — уточняет уровень входа
-  if (experience === 'none')      { add('daily-life', 2); add('marketplace', 1); add('no-vpn', 1); }
-  if (experience === 'sometimes') { add('kids-learn', 1); add('no-vpn', 1); add('build-product', 1); }
+  if (experience === 'none')      { add('daily-life', 2); add('marketplace', 1); add('no-vpn', 2); }
+  if (experience === 'sometimes') { add('profession', 1); add('build-product', 1); }
   if (experience === 'often')     { add('build-product', 2); add('full-picture', 2); }
 
   // Время — уточняет глубину
-  if (time === 'small')  { add('daily-life', 2); add('marketplace', 2); add('kids-learn', 1); }
-  if (time === 'medium') { add('kids-learn', 1); add('no-vpn', 1); add('build-product', 1); }
+  if (time === 'small')  { add('daily-life', 2); add('marketplace', 2); add('profession', 1); }
+  if (time === 'medium') { add('profession', 1); add('no-vpn', 1); add('build-product', 1); }
   if (time === 'large')  { add('full-picture', 3); add('build-product', 2); }
 
   // Выбираем маршрут с максимальным баллом (при равенстве — первый по порядку ROUTES)
@@ -24688,9 +24703,17 @@ function showRouteQuizResult() {
   const routeId = recommendRoute(routeQuizAnswers);
   const route = ROUTES.find(r => r.id === routeId);
   if (!route) return;
-  const firstUnfinished = route.lessons.find(lid => !isCompleted(lid)) || route.lessons[0];
-  const firstLesson = findLesson(firstUnfinished);
-  const firstTitle = firstLesson ? firstLesson.title : '';
+  // Подсказка: для маршрута-в-секцию — про выбор профессии, иначе — про первый урок
+  let hint;
+  if (route.section) {
+    hint = 'Открой тропинку и выбери свою профессию — для каждой готовые приёмы и промпты.';
+  } else {
+    const lessons = route.lessons || [];
+    const firstUnfinished = lessons.find(lid => !isCompleted(lid)) || lessons[0];
+    const firstLesson = firstUnfinished ? findLesson(firstUnfinished) : null;
+    const firstTitle = firstLesson ? firstLesson.title : '';
+    hint = firstTitle ? `Начнём с «${firstTitle}» — там практика на твоих реальных задачах в первые 30 минут.` : 'Начнём по порядку.';
+  }
   const c = document.getElementById('routes-quiz-container');
   if (!c) return;
   c.innerHTML = `
@@ -24698,7 +24721,7 @@ function showRouteQuizResult() {
       <div class="quiz-result-tag">✨ Тебе подойдёт</div>
       <div class="quiz-result-route">${route.icon} ${route.title}</div>
       <div class="quiz-result-meta">${route.meta}</div>
-      <div class="quiz-result-hint">Начнём с «${firstTitle}» — там практика на твоих реальных задачах в первые 30 минут.</div>
+      <div class="quiz-result-hint">${hint}</div>
       <div class="quiz-result-actions">
         <button class="btn-primary-v2" onclick="openRoute('${route.id}')">Начать маршрут →</button>
         <button class="btn-secondary-v2" onclick="openRouteQuiz()">Пройти заново</button>
@@ -25939,7 +25962,8 @@ const CHANGELOG = [
     tag: "fix",
     items: [
       "Опросник из 3 вопросов не работал — конфликт имён функций со старой системой «тест по фазам». Переименовали, теперь работает",
-      "Переделали логику подбора на балльную систему: раньше итог зависел почти только от вопроса «что ближе», теперь все 3 ответа (опыт, цель, время) реально влияют — разные комбинации дают разные маршруты"
+      "Переделали логику подбора на балльную систему: все 3 ответа (опыт, цель, время) реально влияют на результат",
+      "Добавили маршрут «AI для твоей профессии» → тропинка «Индустрии». Раньше при выборе «применить в работе» абсурдно предлагался маршрут «помочь ребёнку» — теперь работа ведёт в профессии"
     ]
   },
   {
