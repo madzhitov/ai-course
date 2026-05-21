@@ -3740,16 +3740,20 @@ main {
   border-radius: 20px; margin-bottom: 14px;
 }
 .vibe-banner-title { font-size: 30px; font-weight: 900; letter-spacing: -0.02em; margin: 0 0 18px; line-height: 1.05; }
-.vibe-splits {
-  display: flex; align-items: center; gap: 14px; margin-bottom: 16px; flex-wrap: wrap;
+/* Сцена: маскот на шпагате, стопы на плашках КОД/КЛОД */
+.vibe-stage { position: relative; max-width: 520px; margin: 10px auto 18px; }
+.vibe-mascot-img { display: block; width: 100%; height: auto; filter: drop-shadow(0 6px 18px rgba(0,0,0,0.3)); position: relative; z-index: 2; }
+.vibe-foot {
+  position: absolute; bottom: 9%; z-index: 1;
+  font-size: 20px; font-weight: 900; letter-spacing: 1px; color: #fff;
+  background: rgba(0,0,0,0.32); padding: 8px 20px; border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
 }
-.vibe-leg {
-  font-size: 22px; font-weight: 900; letter-spacing: 1px;
-  background: rgba(0,0,0,0.22); padding: 8px 18px; border-radius: 10px;
+.vibe-foot.kod { left: -6px; }
+.vibe-foot.klod { right: -6px; }
+@media (max-width: 600px) {
+  .vibe-foot { font-size: 15px; padding: 6px 13px; bottom: 8%; }
 }
-.vibe-figure { flex: 0 1 230px; min-width: 150px; }
-.vibe-figure svg, .vibe-figure img { width: 100%; height: auto; display: block; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25)); }
-.vibe-rope { flex: 0 0 28px; height: 3px; background: rgba(255,255,255,0.5); border-radius: 2px; }
 .vibe-banner-sub { font-size: 15px; line-height: 1.5; max-width: 620px; opacity: 0.95; margin-bottom: 18px; position: relative; z-index: 1; }
 .vibe-banner-cta {
   display: inline-flex; align-items: center; gap: 6px; font-family: inherit;
@@ -28077,12 +28081,10 @@ function renderHome() {
     <div class="vibe-banner" onclick="openSection('vibe')">
       <span class="vibe-banner-tag">Новая тропинка</span>
       <div class="vibe-banner-title">Вайб Код Вам Дам</div>
-      <div class="vibe-splits">
-        <span class="vibe-leg">КОД</span>
-        <span class="vibe-figure" aria-label="Вам Дам на шпагате между КОД и КЛОД">
-          <img src="vibe-mascot.png" alt="Вам Дам на шпагате">
-        </span>
-        <span class="vibe-leg">КЛОД</span>
+      <div class="vibe-stage">
+        <img class="vibe-mascot-img" src="vibe-mascot.png" alt="VKVD на шпагате между КОД и КЛОД">
+        <span class="vibe-foot kod">КОД</span>
+        <span class="vibe-foot klod">КЛОД</span>
       </div>
       <div class="vibe-banner-sub">Вайбкодинг как боевое искусство. VKVD садится на шпагат между двумя AI-моделями и ставит тебе навык, который останется, когда модель в десятый раз сменит версию.</div>
       <button class="vibe-banner-cta" type="button">Войти в додзё →</button>
