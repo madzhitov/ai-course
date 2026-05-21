@@ -24652,20 +24652,36 @@ function answerRouteQuiz(question, value) {
 }
 
 function recommendRoute({ experience, goal, time }) {
-  if (goal === 'life') return 'daily-life';
-  if (goal === 'work') {
-    if (time === 'small') return 'marketplace';
-    return 'kids-learn';
+  // Балльная система: каждый из 3 ответов добавляет очки маршрутам.
+  // Так все три вопроса реально влияют на итог, а не только «цель».
+  const score = {
+    'daily-life': 0, 'kids-learn': 0, 'marketplace': 0,
+    'no-vpn': 0, 'build-product': 0, 'full-picture': 0,
+  };
+  const add = (route, pts) => { score[route] += pts; };
+
+  // Цель — сильнейший сигнал (+3 основному, +1-2 смежным)
+  if (goal === 'life')       { add('daily-life', 3); add('kids-learn', 1); add('no-vpn', 1); }
+  if (goal === 'work')       { add('marketplace', 3); add('kids-learn', 2); add('no-vpn', 1); }
+  if (goal === 'build')      { add('build-product', 3); add('no-vpn', 2); add('marketplace', 1); }
+  if (goal === 'understand') { add('full-picture', 3); add('daily-life', 1); }
+
+  // Опыт — уточняет уровень входа
+  if (experience === 'none')      { add('daily-life', 2); add('marketplace', 1); add('no-vpn', 1); }
+  if (experience === 'sometimes') { add('kids-learn', 1); add('no-vpn', 1); add('build-product', 1); }
+  if (experience === 'often')     { add('build-product', 2); add('full-picture', 2); }
+
+  // Время — уточняет глубину
+  if (time === 'small')  { add('daily-life', 2); add('marketplace', 2); add('kids-learn', 1); }
+  if (time === 'medium') { add('kids-learn', 1); add('no-vpn', 1); add('build-product', 1); }
+  if (time === 'large')  { add('full-picture', 3); add('build-product', 2); }
+
+  // Выбираем маршрут с максимальным баллом (при равенстве — первый по порядку ROUTES)
+  let best = 'daily-life', bestScore = -1;
+  for (const r of ROUTES) {
+    if (score[r.id] > bestScore) { bestScore = score[r.id]; best = r.id; }
   }
-  if (goal === 'build') {
-    if (experience === 'none') return 'no-vpn';
-    return 'build-product';
-  }
-  if (goal === 'understand') {
-    if (time === 'small') return 'daily-life';
-    return 'full-picture';
-  }
-  return 'daily-life';
+  return best;
 }
 
 function showRouteQuizResult() {
@@ -25922,8 +25938,8 @@ const CHANGELOG = [
     title: "🔧 Починили опросник «С чего начать?» на главной",
     tag: "fix",
     items: [
-      "Опросник из 3 вопросов не работал — конфликт имён функций со старой системой «тест по фазам»",
-      "Кнопка квиза вызывала не ту функцию и ломала блок маршрутов. Переименовали — теперь работает: 3 вопроса → рекомендация маршрута"
+      "Опросник из 3 вопросов не работал — конфликт имён функций со старой системой «тест по фазам». Переименовали, теперь работает",
+      "Переделали логику подбора на балльную систему: раньше итог зависел почти только от вопроса «что ближе», теперь все 3 ответа (опыт, цель, время) реально влияют — разные комбинации дают разные маршруты"
     ]
   },
   {
