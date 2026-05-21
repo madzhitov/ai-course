@@ -2963,6 +2963,18 @@ main {
 .hero-cta-v2 .btn-secondary-v2 { background: var(--bg) !important; color: var(--text) !important; border: 1px solid var(--border) !important; }
 .hero-cta-v2 .btn-secondary-v2:hover { background: var(--bg-soft) !important; }
 
+/* Hero h1 — адаптив под мобилку (перебивает глобальные 60px выше) */
+@media (max-width: 768px) {
+  .hero-v2 h1 { font-size: 42px !important; }
+}
+@media (max-width: 600px) {
+  .hero-v2 h1 { font-size: 32px !important; line-height: 1.12 !important; }
+  .hero-v2 .tagline { font-size: 16px !important; }
+}
+@media (max-width: 380px) {
+  .hero-v2 h1 { font-size: 27px !important; }
+}
+
 /* === Stat cards на главной === */
 .stats-grid-v2 { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 0 !important; border-top: 1px solid var(--border) !important; border-bottom: 1px solid var(--border) !important; padding: 1.5rem 0 !important; margin: 2.5rem 0 3rem !important; }
 .stats-grid-v2 .stat-card-v2 { background: transparent !important; border: none !important; border-radius: 0 !important; padding: 0 !important; box-shadow: none !important; }
