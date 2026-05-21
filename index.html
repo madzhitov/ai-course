@@ -3918,13 +3918,13 @@ const TRACK_LESSONS = [
   // Claude Deep Dive
   { id: "c1", track: "claude", title: "Claude Artifacts — генерация кода и UI прямо в чате", duration: 40 },
   { id: "c2", track: "claude", title: "Claude Projects — память и контекст для задач", duration: 35 },
-  { id: "c3", track: "claude", title: "MCP — Model Context Protocol", duration: 50, draft: true },
-  { id: "c4", track: "claude", title: "Computer Use — Claude управляет компьютером", duration: 50, draft: true },
+  { id: "c3", track: "claude", title: "MCP — Model Context Protocol", duration: 50 },
+  { id: "c4", track: "claude", title: "Computer Use — Claude управляет компьютером", duration: 50 },
   { id: "c5", track: "claude", title: "Claude Code — CLI для разработчиков", duration: 60, draft: true },
-  { id: "c6", track: "claude", title: "Prompt caching — экономим на длинных контекстах", duration: 35, draft: true },
-  { id: "c7", track: "claude", title: "Constitutional AI и safety в Claude", duration: 40, draft: true },
+  { id: "c6", track: "claude", title: "Prompt caching — экономим на длинных контекстах", duration: 35 },
+  { id: "c7", track: "claude", title: "Constitutional AI и safety в Claude", duration: 40 },
   { id: "c8", track: "claude", title: "Claude vs GPT vs Gemini: когда что", duration: 35, draft: true },
-  { id: "c9", track: "claude", title: "Claude Skills — пре-настроенные навыки", duration: 40, draft: true },
+  { id: "c9", track: "claude", title: "Claude Skills — пре-настроенные навыки", duration: 40 },
 
   // Мини-проекты
   { id: "p1", track: "projects", title: "Telegram-бот для саммари длинных переписок", duration: 60 },
@@ -12322,6 +12322,8 @@ registerLesson("c6", `
 
 <p><strong>Cache write</strong> чуть дороже обычного input (+25%). <strong>Cache read</strong> — в 10 раз дешевле. Поэтому кэш окупается уже на 2-м запросе.</p>
 
+<p class="callout"><strong>Цены в таблице — ориентир.</strong> Anthropic периодически их пересматривает, а названия моделей обновляются. Актуальный прайс всегда здесь: <a href="https://www.anthropic.com/pricing" target="_blank">anthropic.com/pricing</a>. Важна не конкретная цифра, а соотношение: write ≈ +25%, read ≈ −90%.</p>
+
 <h2>4. Время жизни кэша</h2>
 
 <p>Два режима:</p>
@@ -12887,7 +12889,7 @@ registerLesson("c9", `
 <h2>5. Skills в API</h2>
 <p>Для разработчиков Skills доступны через Claude API. Пример включения Excel skill:</p>
 <pre><code>response = client.messages.create(
-  model="claude-sonnet-4-6",
+  model="claude-sonnet-4-5",
   max_tokens=4000,
   messages=[{"role": "user", "content": "Проанализируй прикреплённый Excel"}],
   tools=[{
@@ -16547,7 +16549,7 @@ client = anthropic.Anthropic()
 def analyze_receipt(image_bytes):
     img64 = base64.b64encode(image_bytes).decode()
     msg = client.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-sonnet-4-5",
       max_tokens=1024,
       messages=[{
         "role": "user",
@@ -16649,7 +16651,7 @@ client = anthropic.Anthropic()
 def summarize(entries, competitor):
     text = "\\n\\n".join(f"## {e.title}\\n{e.summary}" for e in entries)
     msg = client.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-sonnet-4-5",
       max_tokens=600,
       messages=[{"role": "user", "content": f'''Конкурент: {competitor}
 Новые публикации:
@@ -16779,7 +16781,7 @@ def answer(query):
                             for i, s in enumerate(sources))
 
     msg = llm.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-sonnet-4-5",
       max_tokens=1500,
       messages=[{"role": "user", "content": f'''Источники:
 {src_text}
@@ -16865,7 +16867,7 @@ llm = anthropic.Anthropic()
 
 def analyze(transcript):
     msg = llm.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-sonnet-4-5",
       max_tokens=2000,
       messages=[{"role": "user", "content": f'''Транскрипт встречи:
 &lt;transcript&gt;
@@ -17234,7 +17236,7 @@ body = pr["body"] or ""
 # Промпт для ревью
 client = anthropic.Anthropic(api_key=AN_KEY)
 review = client.messages.create(
-  model="claude-sonnet-4-6",
+  model="claude-sonnet-4-5",
   max_tokens=2000,
   messages=[{"role": "user", "content": f'''Ты — старший разработчик. Делаешь code review.
 
@@ -25905,6 +25907,20 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-05-21",
+    title: "🔵 Опубликованы 5 уроков Claude Deep Dive",
+    tag: "new",
+    items: [
+      "c3 — MCP (Model Context Protocol): архитектура, готовые серверы, свой сервер за 30 минут",
+      "c4 — Computer Use: как Claude управляет компьютером, tool-use паттерны",
+      "c6 — Prompt caching: экономия на длинных контекстах (write +25%, read −90%)",
+      "c7 — Constitutional AI и safety: как устроена безопасность Claude",
+      "c9 — Claude Skills: пре-настроенные навыки, свой SKILL.md",
+      "Уроки c5 (Claude Code) и c8 (сравнение моделей) пока дорабатываются — там нужно обновить актуальную функциональность",
+      "Технически: исправлена несогласованность версии модели по всему сайту (привели к единому claude-sonnet-4-5)"
+    ]
+  },
   {
     date: "2026-05-19",
     title: "🏢 +5 новых индустрий в тропинке: фэшн, YouTube, beauty, недвижимость, учителя",
