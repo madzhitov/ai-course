@@ -3827,6 +3827,7 @@ main {
     <a href="#section-claude" data-section="claude" onclick="openSection('claude'); return false;">Погружение в Клод</a>
     <a href="#section-projects" data-section="projects" onclick="openSection('projects'); return false;">Мини-проекты за час</a>
     <a href="#section-industry" data-section="industry" onclick="openSection('industry'); return false;">Индустрии</a>
+    <a href="#section-vibe" data-section="vibe" onclick="openSection('vibe'); return false;" class="nav-vibe">🥋 Вайб Код Вам Дам</a>
   </nav>
   <div class="top-nav-right">
     <a href="#glossary" onclick="openGlossary(); return false;">Глоссарий</a>
@@ -26459,6 +26460,7 @@ function openSection(sectionId) {
   else if (sectionId === 'projects') renderTrackSection('projects');
   else if (sectionId === 'industry') renderTrackSection('industry');
   else if (sectionId === 'everyday') renderTrackSection('everyday');
+  else if (sectionId === 'vibe') renderTrackSection('vibe');
 }
 
 function renderMainSection() {
@@ -26564,6 +26566,13 @@ function renderTrackSection(trackId) {
       theme: "everyday",
       hero: "AI без кода — для всех. Меню недели для семьи, помощь школьнику, разбор медвыписки, тренажёр собеседования, описание товара по фото. Каждый урок — рабочий артефакт за 20–40 минут.",
       sources: 'Эта тропинка — для тех, кто не пишет код. Только ChatGPT / Claude через приложение или сайт. Если попробовал и зашло — расскажи в <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a>, добавим твой кейс.'
+    },
+    vibe: {
+      title: "Вайб Код Вам Дам",
+      icon: "🥋",
+      theme: "vibe",
+      hero: "Вайбкодинг как боевое искусство. Путь Вайб Код До: додзё-кун, ката, кю/дан, котоваза. Две ноги шпагата — «Вайб Код» (вайбкодинг вообще) и «Вайб Клод» (конкретно с Claude). Учим не приёмам, а режиму работы — навыку, который останется, когда модель сменит версию.",
+      sources: 'Тропинка про ремесло, а не про трюки. Тон лёгкий, практика серьёзная. Делись результатами и своими ката в <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a>.'
     }
   };
 
