@@ -4030,6 +4030,22 @@ const ROUTES = [
     lessons: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, "p1", "p7", "p15"],
   },
   {
+    id: "pet-projects",
+    icon: "🔧",
+    title: "Pet-проекты «за час»",
+    meta: "тропинка «Мини-проекты» · 22 проекта",
+    description: "Быстрые рабочие штуки руками: TG-бот, RAG, голосовой ассистент, свой MCP. Каждый — за час.",
+    section: "projects",
+  },
+  {
+    id: "claude-deep",
+    icon: "🔵",
+    title: "Глубоко освоить Claude",
+    meta: "тропинка Claude Deep Dive · 9 уроков",
+    description: "MCP, Computer Use, Claude Code, prompt caching, Skills — для тех, кто работает именно с Claude.",
+    section: "claude",
+  },
+  {
     id: "full-picture",
     icon: "🧠",
     title: "Глубокая картина с нуля",
@@ -24670,7 +24686,7 @@ function recommendRoute({ experience, goal, time }) {
   // Так все три вопроса реально влияют на итог, а не только «цель».
   const score = {
     'daily-life': 0, 'kids-learn': 0, 'marketplace': 0, 'profession': 0,
-    'no-vpn': 0, 'build-product': 0, 'full-picture': 0,
+    'no-vpn': 0, 'build-product': 0, 'pet-projects': 0, 'claude-deep': 0, 'full-picture': 0,
   };
   const add = (route, pts) => { score[route] += pts; };
 
@@ -24678,17 +24694,17 @@ function recommendRoute({ experience, goal, time }) {
   // «Работа» → профессия (тропинка Индустрии) или маркетплейс. НИКОГДА не «дети».
   if (goal === 'life')       { add('daily-life', 4); }
   if (goal === 'work')       { add('profession', 4); add('marketplace', 2); }
-  if (goal === 'build')      { add('build-product', 4); add('no-vpn', 2); }
+  if (goal === 'build')      { add('build-product', 3); add('pet-projects', 3); add('no-vpn', 2); }
   if (goal === 'understand') { add('full-picture', 4); add('daily-life', 1); }
 
   // Опыт — уточняет уровень входа
-  if (experience === 'none')      { add('daily-life', 2); add('marketplace', 1); add('no-vpn', 2); }
-  if (experience === 'sometimes') { add('profession', 1); add('build-product', 1); }
+  if (experience === 'none')      { add('daily-life', 2); add('marketplace', 1); add('no-vpn', 2); add('pet-projects', 1); }
+  if (experience === 'sometimes') { add('profession', 1); add('pet-projects', 1); add('build-product', 1); }
   if (experience === 'often')     { add('build-product', 2); add('full-picture', 2); }
 
   // Время — уточняет глубину
-  if (time === 'small')  { add('daily-life', 2); add('marketplace', 2); add('profession', 1); }
-  if (time === 'medium') { add('profession', 1); add('no-vpn', 1); add('build-product', 1); }
+  if (time === 'small')  { add('daily-life', 2); add('marketplace', 2); add('profession', 1); add('pet-projects', 2); }
+  if (time === 'medium') { add('profession', 1); add('no-vpn', 1); add('build-product', 1); add('pet-projects', 1); }
   if (time === 'large')  { add('full-picture', 3); add('build-product', 2); }
 
   // Выбираем маршрут с максимальным баллом (при равенстве — первый по порядку ROUTES)
@@ -25963,7 +25979,8 @@ const CHANGELOG = [
     items: [
       "Опросник из 3 вопросов не работал — конфликт имён функций со старой системой «тест по фазам». Переименовали, теперь работает",
       "Переделали логику подбора на балльную систему: все 3 ответа (опыт, цель, время) реально влияют на результат",
-      "Добавили маршрут «AI для твоей профессии» → тропинка «Индустрии». Раньше при выборе «применить в работе» абсурдно предлагался маршрут «помочь ребёнку» — теперь работа ведёт в профессии"
+      "Добавили маршрут «AI для твоей профессии» → тропинка «Индустрии». Раньше при выборе «применить в работе» абсурдно предлагался маршрут «помочь ребёнку» — теперь работа ведёт в профессии",
+      "Блок дополнен до 9 маршрутов (сетка 3×3): добавлены «Pet-проекты за час» → тропинка «Мини-проекты» и «Глубоко освоить Claude» → Claude Deep Dive"
     ]
   },
   {
