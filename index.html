@@ -1307,6 +1307,12 @@ body.sidebar-open .sidebar-backdrop { display: block; }
   font-size: 0.95rem;
 }
 
+/* Сайдбар крупнее — только на десктопе (мобилку не трогаем) */
+@media (min-width: 769px) {
+  .lesson-link { font-size: 1rem; padding: 0.6rem 0.9rem; }
+  .phase-title { font-size: 1.05rem; }
+}
+
 .phase-progress-mini {
   font-size: 0.75rem;
   color: var(--text-muted);
@@ -2739,14 +2745,15 @@ main {
 .top-nav-logo:hover .brand-mark { background: var(--accent-hover); }
 .top-nav-links { display: flex !important; gap: 0; margin-left: 1.5rem; }
 .top-nav-links a {
-  font-size: 13px !important;
+  font-size: 15.5px !important;
   font-weight: 500 !important;
   color: var(--text-muted) !important;
-  padding: 6px 14px !important;
+  padding: 8px 15px !important;
   border-radius: 6px !important;
   background: transparent !important;
   transition: all 0.15s !important;
 }
+.top-nav-right a { font-size: 14.5px; }
 .top-nav-links a:hover { background: var(--bg-soft) !important; color: var(--text) !important; }
 .top-nav-links a.active { background: var(--bg-soft) !important; color: var(--text) !important; font-weight: 600 !important; }
 .top-nav-right { display: flex !important; align-items: center; gap: 4px; }
@@ -3762,6 +3769,7 @@ main {
   transition: transform 0.12s; position: relative; z-index: 1;
 }
 .vibe-banner:hover .vibe-banner-cta { transform: scale(1.04); }
+.vibe-irony { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 13px; opacity: 0.65; margin-top: 14px; letter-spacing: 0.5px; position: relative; z-index: 1; }
 @media (max-width: 600px) {
   .vibe-banner { padding: 22px 20px; }
   .vibe-banner-title { font-size: 23px; }
@@ -26586,7 +26594,7 @@ function renderTrackSection(trackId) {
       title: "Вайб Код Вам Дам",
       icon: "🥋",
       theme: "vibe",
-      hero: "Вайбкодинг как боевое искусство. Путь Вайб Код До: додзё-кун, ката, кю/дан, котоваза. Две ноги шпагата — «Вайб Код» (вайбкодинг вообще) и «Вайб Клод» (конкретно с Claude). Учим не приёмам, а режиму работы — навыку, который останется, когда модель сменит версию.",
+      hero: "Вайбкодинг как боевое искусство. Путь Вайб Код До: додзё-кун, ката, кю/дан, котоваза. Две ноги шпагата — «Вайб Код» (вайбкодинг вообще) и «Вайб Клод» (конкретно с Claude). Учим не приёмам, а режиму работы — навыку, который останется, когда модель сменит версию.<br><span style=\"font-family:ui-monospace,Menlo,monospace; font-size:14px; opacity:0.55;\">&lt;/irony mode&gt;</span>",
       sources: 'Тропинка про ремесло, а не про трюки. Тон лёгкий, практика серьёзная. Делись результатами и своими ката в <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a>.'
     }
   };
@@ -28088,6 +28096,7 @@ function renderHome() {
       </div>
       <div class="vibe-banner-sub">Вайбкодинг как боевое искусство. VKVD садится на шпагат между двумя AI-моделями и ставит тебе навык, который останется, когда модель в десятый раз сменит версию.</div>
       <button class="vibe-banner-cta" type="button">Войти в додзё →</button>
+      <div class="vibe-irony">&lt;/irony mode&gt;</div>
     </div>
 
     ${aleshaBanner}
