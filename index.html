@@ -4035,10 +4035,10 @@ const TRACK_LESSONS = [
 
   // Индустрии
   { id: "i1", track: "industry", title: "ИИ для юристов: договоры, документы, поиск", duration: 60 },
-  { id: "i2", track: "industry", title: "ИИ для маркетинга: контент, исследование, персонализация", duration: 60, draft: true },
-  { id: "i3", track: "industry", title: "ИИ для HR: резюме, найм, обучение", duration: 60, draft: true },
-  { id: "i4", track: "industry", title: "ИИ для разработчиков: вне Cursor и Copilot", duration: 60, draft: true },
-  { id: "i5", track: "industry", title: "ИИ для финансов: отчёты, анализ, прогнозы", duration: 60, draft: true },
+  { id: "i2", track: "industry", title: "ИИ для маркетинга: контент, исследование, персонализация", duration: 60 },
+  { id: "i3", track: "industry", title: "ИИ для HR: резюме, найм, обучение", duration: 60 },
+  { id: "i4", track: "industry", title: "ИИ для разработчиков: вне Cursor и Copilot", duration: 60 },
+  { id: "i5", track: "industry", title: "ИИ для финансов: отчёты, анализ, прогнозы", duration: 60 },
   { id: "i6", track: "industry", title: "ИИ для фэшн-бренда: лукбуки, описания, тон голоса, тренды", duration: 60 },
   { id: "i7", track: "industry", title: "ИИ для YouTube и видеомейкеров: сценарии, превью, дубляж", duration: 60 },
   { id: "i8", track: "industry", title: "ИИ для Beauty (визажист, мастер маникюра, парикмахер): соцсети, портфолио, клиенты", duration: 50 },
@@ -22424,7 +22424,7 @@ claude
 <div class="callout callout-warning">
 <ul>
 <li><strong>Cursor vs Copilot:</strong> Cursor лучше для агентских задач, Copilot — для inline-автодополнения.</li>
-<li><strong>Claude Sonnet</strong> — топ для серьёзного кода в 2026. GPT-4o — для скорости и широты.</li>
+<li><strong>Claude Sonnet 4.5</strong> — топ для серьёзного кода в 2026 (лидер SWE-Bench Verified). GPT-5 — для широты и скорости. Haiku 4.5 / GPT-5 mini — для дешёвого автодополнения.</li>
 <li><strong>Большие репо.</strong> Inline-инструменты с @codebase работают через embeddings, могут пропустить релевантные файлы. Проверяй.</li>
 <li><strong>Open-source альтернативы:</strong> Continue.dev (бесплатный заменитель Cursor), Aider (open-source аналог Claude Code).</li>
 </ul>
@@ -22496,12 +22496,12 @@ registerLesson("i5", `
 </table>
 
 <h2>2. Главное правило: ИИ — для текста, калькулятор — для чисел</h2>
-<p>LLM <strong>плохо считают арифметику</strong>. «Сколько 17% от 4534?» — GPT-4 ответит верно или почти верно. «Чистая прибыль за Q3 если выручка 432.5M, COGS 187.3M, opex 142.8M, амортизация 18.2M, налог 25%?» — даст уверенно неправильный ответ.</p>
-<p><strong>Решение: code interpreter</strong>. Все топ-модели сейчас могут запустить Python для расчётов:</p>
+<p>LLM <strong>плохо считают арифметику</strong>. «Сколько 17% от 4534?» — GPT-5 ответит верно или почти верно. «Чистая прибыль за Q3 если выручка 432.5M, COGS 187.3M, opex 142.8M, амортизация 18.2M, налог 25%?» — может дать уверенно неправильный ответ. Чем больше чисел и шагов — тем выше шанс ошибки.</p>
+<p><strong>Решение: code execution</strong>. Все топ-модели сейчас могут запустить Python для расчётов:</p>
 <ul>
-<li>ChatGPT с включённым Code Interpreter.</li>
-<li>Claude с инструментом Computer (через API).</li>
-<li>Gemini Advanced.</li>
+<li>ChatGPT с Code Interpreter / Advanced Data Analysis.</li>
+<li>Claude Sonnet 4.5 с инструментом Code Execution (через API или в claude.ai).</li>
+<li>Gemini 2.5 Pro в AI Studio.</li>
 </ul>
 <p>Когда модель пишет код для расчёта, проверяй его, не саму цифру.</p>
 
@@ -22603,10 +22603,10 @@ registerLesson("i5", `
 <h2>10. Тонкости</h2>
 <div class="callout callout-warning">
 <ul>
-<li><strong>Длинный контекст важен.</strong> 10-K = 200–400 страниц. Claude 200k вмещает целиком. Это даёт сильное преимущество против моделей с 32k.</li>
-<li><strong>Multimodal критичен для графиков.</strong> Если в PDF графики важны (а они важны) — GPT-4o или Gemini лучше понимают их визуально.</li>
+<li><strong>Длинный контекст важен.</strong> 10-K = 200–400 страниц. Claude Sonnet 4.5 (200k стандарт, 1M в beta) вмещает несколько отчётов сразу. Gemini 2.5 Pro — 1M по умолчанию. Это даёт сильное преимущество против моделей с 32k.</li>
+<li><strong>Multimodal критичен для графиков.</strong> Если в PDF графики важны (а они важны) — GPT-5 или Gemini 2.5 Pro лучше понимают их визуально.</li>
 <li><strong>Цена анализа одной компании:</strong> ~$0.5–2 в API. Окупается с первого использования.</li>
-<li><strong>Финансовые модели с AI:</strong> GPT и Claude могут хорошо генерировать структуру Excel-модели, но конкретные предпосылки задаёшь ты.</li>
+<li><strong>Финансовые модели с AI:</strong> GPT и Claude хорошо генерируют структуру Excel-модели + формулы (через Skills для xlsx), но конкретные предпосылки задаёшь ты.</li>
 </ul>
 </div>
 
@@ -22633,12 +22633,12 @@ registerLesson("i5", `
 
 <h2>14. Что должно остаться в голове</h2>
 <ol>
-<li>ИИ — для текста, калькулятор/Python — для чисел. Code interpreter — must.</li>
+<li>ИИ — для текста, калькулятор/Python — для чисел. Code execution — must.</li>
 <li>10-K анализ за 30 минут — реальный главный кейс.</li>
 <li>Сверяй цифры с оригиналом. Не цитируй AI как источник.</li>
 <li>MNPI — никогда в публичный chat.</li>
 <li>SEC / EU AI Act / MiFID II — учитывай документацию и transparency.</li>
-<li>Claude 200k — главное оружие для длинных финансовых документов.</li>
+<li>Claude Sonnet 4.5 (200k–1M) и Gemini 2.5 Pro (1M) — главное оружие для длинных финансовых документов.</li>
 </ol>
 
 <div class="callout callout-info">
@@ -27562,12 +27562,15 @@ function fmtDate(isoDate) {
 const CHANGELOG = [
   {
     date: "2026-05-26",
-    title: "📚 Опубликовал c8 и i1 — закрываем хвосты тропинок",
+    title: "🏭 Тропинка «Индустрии» закрыта — 10/10 уроков",
     tag: "new",
     items: [
-      "Claude Deep Dive: c8 «Claude vs GPT vs Gemini: когда что» — матрица выбора модели под задачу, обновлена под актуальные версии (Claude Sonnet 4.5, GPT-5, Gemini 2.5 Pro), свежие цены, агентный код, MCP как стандарт. Тропинка теперь 9/9 ✅",
-      "Индустрии: i1 «ИИ для юристов: договоры, документы, поиск» — что безопасно автоматизировать, что нельзя, промпт-паттерны для анализа договоров, конфиденциальность и адвокатская тайна",
-      "Осталось добить: i2–i5 (маркетинг, HR, разработчики, финансы) и 8 мини-проектов p3–p10"
+      "i2 «ИИ для маркетинга» — контент, исследование конкурентов, персонализация, анти-AI-стиль письма",
+      "i3 «ИИ для HR» — где безопасно, где регуляторный риск (EU AI Act, NYC AEDT), human-in-the-loop в найме",
+      "i4 «ИИ для разработчиков: вне Cursor и Copilot» — терминальные агенты (Claude Code, Aider), code review, миграции, дебаг. Обновлён под Claude Sonnet 4.5 и GPT-5",
+      "i5 «ИИ для финансов» — анализ 10-K за 30 минут, code execution вместо арифметики, MNPI и compliance",
+      "До этого утром: c8 «Claude vs GPT vs Gemini» (Claude Deep Dive 9/9 ✅) и i1 «ИИ для юристов»",
+      "Итого в курсе теперь 59 опубликованных уроков"
     ]
   },
   {
