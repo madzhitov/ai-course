@@ -25,31 +25,45 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js">
 </script>
 <style>
 :root {
-  /* Editorial light palette — monochrome + один blue accent */
-  --bg: #ffffff;
-  --bg-sidebar: #fafaf9;
-  --bg-card: #ffffff;
-  --bg-code: #f5f5f4;
-  --bg-elevated: #f9f9f8;
-  --bg-soft: #f5f5f4;
-  --text: #0a0a0a;
-  --text-muted: #6b6b6b;
-  --text-soft: #a8a8a8;
-  --border: #e7e5e4;
-  --border-soft: #f0efed;
-  --border-strong: rgba(0,0,0,0.12);
+  /* Tropa palette (light) — бумажный фон, тёплый уголь, один фиолетовый акцент.
+     Дефолтная тема. Тёмная — опция через [data-theme="dark"]. */
+  --bg: #FAF8F3;
+  --panel: #F1EFE9;
+  --card: #FFFFFF;
+  --ink: #211F1B;
+  --muted: #6b6a64;
+  --faint: #9d9a90;
+  --line: rgba(0,0,0,0.09);
+  --line-strong: rgba(0,0,0,0.17);
+  --done: #2f8f5b;
+  --done-soft: rgba(47,143,91,0.10);
+  --r: 14px;
 
-  /* Accent в editorial — это сам text. CTA-кнопка чёрная. */
-  --accent: #0a0a0a;
-  --accent-hover: #2a2a2a;
-  --accent-soft: #f5f5f4;
-  --accent-text: #0a0a0a;
+  /* Старые имена → tropa-палитра (оболочка и тела уроков наследуют сами) */
+  --bg-sidebar: var(--panel);
+  --bg-card: var(--card);
+  --bg-code: #f1efe9;
+  --bg-elevated: var(--panel);
+  --bg-soft: var(--panel);
+  --text: var(--ink);
+  --text-muted: var(--muted);
+  --text-soft: var(--faint);
+  --border: var(--line);
+  --border-soft: rgba(0,0,0,0.05);
+  --border-strong: var(--line-strong);
+
+  /* Один акцент — фиолетовый, только на действии «сейчас / иди» */
+  --accent: #6d28d9;
+  --accent-hover: #5b21b6;
+  --accent-soft: rgba(109,40,217,0.09);
+  --accent-text: #ffffff;
 
   /* Highlight blue — только для callout и hover-ссылок */
   --link: #2563eb;
@@ -86,25 +100,34 @@
 }
 
 [data-theme="dark"] {
-  /* Editorial dark — глубокий чёрный + тёплый off-white текст */
-  --bg: #0a0a0b;
-  --bg-sidebar: #0f0f10;
-  --bg-card: #131316;
-  --bg-code: #18181b;
-  --bg-elevated: #1a1a1d;
-  --bg-soft: #18181b;
-  --text: #f2f2f3;
-  --text-muted: #8a8a92;
-  --text-soft: #5a5a62;
-  --border: rgba(255,255,255,0.07);
-  --border-soft: rgba(255,255,255,0.04);
-  --border-strong: rgba(255,255,255,0.15);
+  /* Tropa palette (dark) — глубокий уголь, тёплый off-white, светлая лаванда-акцент */
+  --bg: #0e0e10;
+  --panel: #151517;
+  --card: #1c1c20;
+  --ink: #ECEAE3;
+  --muted: #9b988f;
+  --faint: #6a6862;
+  --line: rgba(255,255,255,0.08);
+  --line-strong: rgba(255,255,255,0.18);
+  --done: #85b394;
+  --done-soft: rgba(133,179,148,0.13);
 
-  /* В dark accent = белый текст; CTA-кнопка остаётся «инвертная» */
-  --accent: #f2f2f3;
-  --accent-hover: #ffffff;
-  --accent-soft: rgba(255,255,255,0.06);
-  --accent-text: #f2f2f3;
+  --bg-sidebar: var(--panel);
+  --bg-card: var(--card);
+  --bg-code: #1c1c20;
+  --bg-elevated: var(--panel);
+  --bg-soft: var(--panel);
+  --text: var(--ink);
+  --text-muted: var(--muted);
+  --text-soft: var(--faint);
+  --border: var(--line);
+  --border-soft: rgba(255,255,255,0.04);
+  --border-strong: var(--line-strong);
+
+  --accent: #9b8cf5;
+  --accent-hover: #b3a6ff;
+  --accent-soft: rgba(155,140,245,0.15);
+  --accent-text: #14121c;
 
   --link: #60a5fa;
   --link-soft: rgba(96, 165, 250, 0.12);
@@ -156,8 +179,8 @@ img, svg, video, canvas, iframe {
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
+  font-family: "Golos Text", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-feature-settings: "tnum";
   background: var(--bg);
   color: var(--text);
   line-height: 1.7;
@@ -3832,6 +3855,53 @@ main {
 .quiz-result-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 .quiz-result-actions button { font-family: inherit; }
 
+/* ============================================================
+   ТРОПА — карты Пути и Уровня. Namespace .tmap, чтобы не цеплять
+   существующие .card/.row/.rail/.head в остальном сайте.
+   ============================================================ */
+.tmap { max-width: 640px; margin: 0 auto; padding: 0.5rem 0 1rem; }
+.tmap-head { font-size: 21px; font-weight: 500; margin: 0 0 1.6rem; color: var(--ink); }
+.tmap-head .sub { font-size: 14px; font-weight: 400; color: var(--faint); }
+.tmap-zoom { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; color: var(--muted); cursor: pointer; user-select: none; margin-bottom: 1.2rem; background: none; border: none; padding: 0; font-family: inherit; }
+.tmap-zoom:hover { color: var(--ink); }
+.tmap-rail { position: relative; }
+.tmap-rln { position: absolute; left: 16px; top: 24px; bottom: 24px; width: 2px; background: var(--line); }
+.tmap-row { display: flex; gap: 17px; align-items: center; padding: 11px 0; position: relative; }
+.tmap-row.top { align-items: flex-start; }
+.tmap-mk { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--panel); z-index: 1; }
+.tmap-mk.done { background: var(--done-soft); color: var(--done); }
+.tmap-mk.now { background: var(--accent-soft); margin-top: 17px; }
+.tmap-mk.now i { width: 11px; height: 11px; border-radius: 50%; background: var(--accent); display: block; }
+.tmap-mk.lock { color: var(--faint); border: 0.5px solid var(--line); }
+.tmap-mk.gate { color: var(--muted); border: 0.5px solid var(--line-strong); margin-top: 17px; }
+.tmap-mk.a { background: var(--accent-soft); color: var(--accent); font-size: 13px; font-weight: 600; }
+.tmap-lbl { font-size: 17px; color: var(--faint); }
+.tmap-lbl .mut { font-size: 13px; }
+.tmap-lbl.live { color: var(--ink); }
+.tmap-card { flex: 1; background: var(--card); border: 2px solid var(--accent); border-radius: var(--r); padding: 1.2rem 1.35rem; }
+.tmap-card .eye { font-size: 13px; color: var(--accent); margin-bottom: 6px; }
+.tmap-card .ttl { font-size: 19px; font-weight: 500; margin-bottom: 4px; color: var(--ink); }
+.tmap-card .dsc { font-size: 15px; color: var(--muted); margin-bottom: 17px; }
+.tmap-go { font-family: inherit; font-size: 16px; color: var(--ink); background: transparent; border: 0.5px solid var(--line-strong); border-radius: 10px; padding: 11px 19px; cursor: pointer; transition: .15s; }
+.tmap-go:hover { background: var(--accent-soft); border-color: var(--accent); }
+.tmap-go:active { transform: scale(.98); }
+.tmap-gatecard { flex: 1; background: var(--panel); border: 2px solid var(--line-strong); border-radius: var(--r); padding: 1.2rem 1.35rem; cursor: pointer; transition: .15s; }
+.tmap-gatecard:hover { border-color: var(--muted); }
+.tmap-gatecard .ttl { font-size: 19px; font-weight: 500; margin-bottom: 4px; color: var(--ink); }
+.tmap-gatecard .dsc { font-size: 15px; color: var(--muted); }
+.tmap-foot { margin-top: 1.6rem; padding-top: 1rem; border-top: 0.5px solid var(--line); font-size: 14px; color: var(--faint); line-height: 1.7; }
+.tmap-foot a { color: var(--muted); cursor: pointer; }
+.tmap-foot a:hover { color: var(--ink); }
+.tmap-acall { margin-top: 1.8rem; border-top: 0.5px solid var(--line); padding-top: 1.1rem; }
+.tmap-acall .bar { display: inline-flex; align-items: center; gap: 11px; cursor: pointer; user-select: none; }
+.tmap-acall .bar .a-mk { width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+.tmap-acall .bar span { font-size: 15px; color: var(--faint); }
+.tmap-acall .bar:hover span { color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) {
+  .tmap-view { animation: tmapfade .26s ease; }
+  @keyframes tmapfade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+}
+
 </style>
 </head>
 <body>
@@ -3872,70 +3942,11 @@ main {
 
   <input type="text" class="search-box" id="search-box" placeholder="Поиск по урокам  (⌘K)" oninput="onSearchInput(this.value)" onfocus="onSearchInput(this.value)" onkeydown="if(event.key==='Escape'){this.value=''; closeSearchOverlay(); this.blur();}">
 
-  <div class="global-progress">
-    <div class="global-progress-label">
-      <span>Общий прогресс</span>
-      <span id="global-progress-text">0 / 72</span>
-    </div>
-    <div class="progress-bar"><div class="progress-bar-fill" id="global-progress-bar" style="width: 0%"></div></div>
-  </div>
-
-  <div class="phase">
-    <div class="phase-header" style="cursor: default;">
-      <div>
-        <div class="phase-title">Введение</div>
-        <div class="phase-progress-mini">Начни здесь</div>
-      </div>
-    </div>
-    <div class="phase-lessons">
-      <button class="lesson-link static-link" data-static="home" onclick="openStaticPage('home')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
-        <span class="title">Главная</span>
-      </button>
-      <button class="lesson-link static-link" data-static="my-progress" onclick="openStaticPage('my-progress')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16V9"/><path d="M12 16V6"/><path d="M17 16v-4"/></svg></span>
-        <span class="title">Мой прогресс</span>
-      </button>
-      <button class="lesson-link static-link" data-static="about" onclick="openStaticPage('about')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span>
-        <span class="title">О курсе</span>
-      </button>
-      <button class="lesson-link static-link" data-static="howto" onclick="openStaticPage('howto')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
-        <span class="title">Как заниматься</span>
-      </button>
-      <button class="lesson-link static-link" data-static="faq" onclick="openStaticPage('faq')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span>
-        <span class="title">FAQ</span>
-      </button>
-      <button class="lesson-link static-link" data-static="glossary" onclick="openGlossary()">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></span>
-        <span class="title">Глоссарий</span>
-      </button>
-      <button class="lesson-link static-link" data-static="changelog" onclick="openStaticPage('changelog')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6z"/></svg></span>
-        <span class="title">Что нового</span>
-      </button>
-      <button class="lesson-link static-link" data-static="resources" onclick="openStaticPage('resources')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg></span>
-        <span class="title">Источники</span>
-      </button>
-    </div>
-  </div>
-
   <nav id="lesson-nav"></nav>
   <nav id="track-nav"></nav>
 </aside>
 
 <main>
-  <div class="update-banner" id="update-banner">
-    <span class="live-dot"></span>
-    <span class="update-banner-text">
-      <strong>Курс активно обновляется.</strong>
-      Готово <span id="banner-progress">16</span> из <span id="banner-total">90</span> уроков · Последнее обновление: <span id="banner-next">сегодня</span>
-    </span>
-    <a href="#changelog" onclick="openStaticPage('changelog'); return false;">Что нового →</a>
-  </div>
   <div class="lesson-content" id="lesson-content"></div>
   <footer class="site-footer" id="site-footer"></footer>
 </main>
@@ -3986,6 +3997,65 @@ const PHASES = [
   { id: 3, title: "Фаза 3. Практик", subtitle: "Что под капотом ИИ" },
   { id: 4, title: "Фаза 4. Инженер", subtitle: "Классический ML, fine-tuning, продакшен" },
 ];
+
+// ============================================================
+// УРОВНИ (Тропа) — группировка ШАГОВ поверх существующих id уроков.
+// Это слой ОТОБРАЖЕНИЯ: id и прогресс не меняются, перенумерации нет.
+// Уровни режут поперёк старых фаз. Веха базы — заглушка, тело вставим
+// отдельно через registerLesson (это контент, не оболочка).
+// ============================================================
+const VEKHA_BASE = 'vekha-base';  // id-заглушка Вехи Уровня 2 (тела пока нет)
+function rangeIds(a, b) { const r = []; for (let i = a; i <= b; i++) r.push(i); return r; }
+
+const LEVELS = [
+  { n: 1, title: "Понять и заговорить",
+    dsc: "первые шаги: что такое ИИ и как с ним договориться",
+    steps: [1, 4, 3], gated: false },
+  { n: 2, title: "Свой помощник",
+    dsc: "впереди Веха — собранный руками помощник",
+    steps: [10, VEKHA_BASE], gated: false, vekha: VEKHA_BASE },
+  // ── Ворота встают здесь, после Вехи базы ──
+  { n: 3, title: "Строитель",
+    dsc: "приложения и агенты",
+    steps: [2, 5, 6, 7, 8, 9, 11, 12].concat(rangeIds(13, 30)), gated: true },
+  { n: 4, title: "Практик",
+    dsc: "что под капотом ИИ",
+    steps: rangeIds(31, 50), gated: true },
+  { n: 5, title: "Инженер",
+    dsc: "классический ML, fine-tuning, продакшен",
+    steps: rangeIds(51, 72), gated: true },
+];
+
+// Узлы шагов уровня: {id, title, kind:'step'|'vekha', done, placeholder}
+function levelSteps(level) {
+  return level.steps.map(sid => {
+    if (sid === VEKHA_BASE) {
+      return { id: VEKHA_BASE, title: "Веха: протокол встречи → задачи", kind: 'vekha', done: isCompleted(VEKHA_BASE), placeholder: !findLesson(VEKHA_BASE) };
+    }
+    const l = findLesson(sid);
+    return { id: sid, title: l ? l.title : ('Шаг ' + sid), kind: 'step', done: isCompleted(sid), placeholder: !(l && l.content) };
+  });
+}
+// Гейтинг мягкий: пока Вехи нет, «база сдана» = пройден реальный шаг базы (урок 10).
+// Когда тело Вехи появится — ужесточим до isCompleted(VEKHA_BASE).
+function baseReady() { return isCompleted(VEKHA_BASE) || isCompleted(10); }
+function levelHasProgress(level) { return level.steps.some(sid => sid !== VEKHA_BASE && isCompleted(sid)); }
+function levelDone(level) {
+  const real = levelSteps(level).filter(s => !s.placeholder);
+  return real.length > 0 && real.every(s => s.done);
+}
+// Уровень за Воротами заперт ТОЛЬКО если база не сдана И внутри нет прогресса
+// (бывалый пользователь со старыми галочками не теряет доступ — защита прогресса).
+function isLevelLocked(level) {
+  if (!level.gated) return false;
+  if (baseReady()) return false;
+  if (levelHasProgress(level)) return false;
+  return true;
+}
+function currentLevel() {
+  for (const lv of LEVELS) { if (isLevelLocked(lv)) continue; if (!levelDone(lv)) return lv; }
+  return LEVELS[LEVELS.length - 1];
+}
 
 // Параллельные тропинки — отдельные ветки рядом с главным путём
 const TRACKS = [
@@ -26506,137 +26576,76 @@ function toggleCompleted(id) {
   renderLesson(currentLessonId);
 }
 
+// Тропа: бургер открывает панель «Разделы» — Путь (Уровни), Тропинки, Ещё.
+// Сайдбар фаз и список всех уроков убраны (закон 1: карта районов, не улиц).
 function buildNav() {
-  // Главный путь — фазы
   const nav = document.getElementById('lesson-nav');
-  nav.innerHTML = '';
-
-  const mainHeader = document.createElement('div');
-  mainHeader.className = 'phase';
-  mainHeader.innerHTML = `
-    <div class="phase-header" style="cursor: default; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
-      <div>
-        <div class="phase-title" style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Главный путь</div>
-      </div>
-    </div>
-  `;
-  nav.appendChild(mainHeader);
-
-  // Определяем активную фазу (содержит текущий урок)
-  const currentLesson = currentLessonId ? findLesson(currentLessonId) : null;
-  const activePhaseId = (currentLesson && typeof currentLesson.id === 'number') ? currentLesson.phase : null;
-
-  PHASES.forEach(phase => {
-    const phaseLessons = LESSONS.filter(l => l.phase === phase.id);
-    const completedCount = phaseLessons.filter(l => isCompleted(l.id)).length;
-    const phaseEl = document.createElement('div');
-    // По умолчанию свёрнуты неактивные фазы (кроме первой при первом заходе)
-    const shouldCollapse = activePhaseId !== null ? (phase.id !== activePhaseId) : (phase.id !== 1);
-    phaseEl.className = 'phase' + (shouldCollapse ? ' collapsed' : '');
-    phaseEl.setAttribute('data-phase', String(phase.id));
-    phaseEl.innerHTML = `
-      <div class="phase-header" onclick="this.parentElement.classList.toggle('collapsed')">
-        <div>
-          <div class="phase-title"><span class="phase-toggle">▼</span><span class="phase-icon">${phaseIcon(phase.id)}</span>${phase.title}</div>
-          <div class="phase-progress-mini">${phase.subtitle}</div>
-        </div>
-        <div class="phase-progress-mini">${completedCount}/${phaseLessons.length}</div>
-      </div>
-      <div class="phase-lessons" id="phase-${phase.id}-lessons"></div>
-    `;
-    nav.appendChild(phaseEl);
-    const lessonsContainer = phaseEl.querySelector(`#phase-${phase.id}-lessons`);
-    phaseLessons.forEach(lesson => {
-      const link = document.createElement('button');
-      const completed = isCompleted(lesson.id);
-      link.className = 'lesson-link' + (completed ? ' completed' : '') + (lesson.draft ? ' draft' : '') + (lesson.id === currentLessonId ? ' active' : '');
-      link.dataset.lessonId = lesson.id;
-      link.dataset.title = lesson.title.toLowerCase();
-      link.innerHTML = `
-        <span class="num">${lesson.id}.</span>
-        <span class="title">${lesson.title}</span>
-        <span class="status">${completed ? '✓' : ''}</span>
-      `;
-      link.onclick = () => openLesson(lesson.id);
-      lessonsContainer.appendChild(link);
-    });
-
-    // Квиз в конце фазы
-    const phaseDoneCount = phaseLessons.filter(l => l.content).length;
-    if (phaseDoneCount >= 5) {
-      const quizLink = document.createElement('button');
-      const quizDone = progress[`quiz_phase_${phase.id}`];
-      quizLink.className = 'lesson-link' + (quizDone ? ' completed' : '');
-      quizLink.dataset.title = `квиз фаза ${phase.id}`;
-      quizLink.innerHTML = `
-        <span class="num">🎓</span>
-        <span class="title">Квиз: проверь себя</span>
-        <span class="status">${quizDone ? '✓' : ''}</span>
-      `;
-      quizLink.onclick = () => openQuiz(phase.id);
-      lessonsContainer.appendChild(quizLink);
-    }
-  });
-
-  // Параллельные тропинки
   const trackNav = document.getElementById('track-nav');
+  if (!nav || !trackNav) return;
+  nav.innerHTML = '';
   trackNav.innerHTML = '';
 
-  const tracksHeader = document.createElement('div');
-  tracksHeader.className = 'phase';
-  tracksHeader.innerHTML = `
-    <div class="phase-header" style="cursor: default; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 0.5rem; margin-top: 1rem;">
-      <div>
-        <div class="phase-title" style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Параллельные тропинки</div>
-      </div>
-    </div>
-  `;
-  trackNav.appendChild(tracksHeader);
+  const groupHeader = (label, mt) => `<div class="phase-header" style="cursor:default;border-bottom:1px solid var(--border);padding-bottom:0.5rem;margin:${mt?'1rem':'0'} 0 0.5rem;"><div><div class="phase-title" style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">${label}</div></div></div>`;
 
-  const activeTrack = (currentLesson && currentLesson.track) ? currentLesson.track : null;
+  // ── Путь ──
+  const nowLv = currentLevel();
+  const pathEl = document.createElement('div');
+  pathEl.className = 'phase';
+  let p = groupHeader('Путь', false) + '<div class="phase-lessons">';
+  p += `<button class="lesson-link" onclick="closeSidebar();openStaticPage('home')"><span class="num">🗺</span><span class="title">Весь Путь</span></button>`;
+  for (const lv of LEVELS) {
+    const locked = isLevelLocked(lv), done = levelDone(lv);
+    const isNow = lv.n === nowLv.n && !done && !locked;
+    if (locked) {
+      p += `<button class="lesson-link draft" style="opacity:.55" onclick="closeSidebar();openStaticPage('home')"><span class="num">🔒</span><span class="title">Уровень ${lv.n} · ${lv.title}</span></button>`;
+    } else {
+      const cls = 'lesson-link' + (done ? ' completed' : '') + (isNow ? ' active' : '');
+      const mark = done ? '✓' : (isNow ? '◆' : '○');
+      p += `<button class="${cls}" onclick="closeSidebar();openLevel(${lv.n})"><span class="num">${mark}</span><span class="title">Уровень ${lv.n} · ${lv.title}</span><span class="status">${done ? '✓' : ''}</span></button>`;
+    }
+    if (lv.n === 2) {
+      p += `<button class="lesson-link" onclick="closeSidebar();openSection('vibe')"><span class="num">⛩</span><span class="title">Ворота · Додзё</span></button>`;
+    }
+  }
+  p += '</div>';
+  pathEl.innerHTML = p;
+  nav.appendChild(pathEl);
 
-  TRACKS.forEach(track => {
-    const trackLessons = TRACK_LESSONS.filter(l => l.track === track.id);
-    const completedCount = trackLessons.filter(l => isCompleted(l.id)).length;
-    const trackEl = document.createElement('div');
-    const shouldCollapse = activeTrack ? (track.id !== activeTrack) : true;
-    trackEl.className = 'phase' + (shouldCollapse ? ' collapsed' : '');
-    trackEl.setAttribute('data-phase', track.id === 'claude' ? 'c' : track.id === 'projects' ? 'p' : 'i');
-    trackEl.innerHTML = `
-      <div class="phase-header" onclick="this.parentElement.classList.toggle('collapsed')">
-        <div>
-          <div class="phase-title"><span class="phase-toggle">▼</span><span class="phase-icon">${phaseIcon(track.id)}</span>${track.title.replace(/^[🟣🛠💼]\s*/, '')}</div>
-          <div class="phase-progress-mini">${track.subtitle}</div>
-        </div>
-        <div class="phase-progress-mini">${completedCount}/${trackLessons.length}</div>
-      </div>
-      <div class="phase-lessons" id="track-${track.id}-lessons"></div>
-    `;
-    trackNav.appendChild(trackEl);
-    const lessonsContainer = trackEl.querySelector(`#track-${track.id}-lessons`);
-    trackLessons.forEach(lesson => {
-      const link = document.createElement('button');
-      const completed = isCompleted(lesson.id);
-      link.className = 'lesson-link' + (completed ? ' completed' : '') + (lesson.draft ? ' draft' : '') + (lesson.id === currentLessonId ? ' active' : '');
-      link.dataset.lessonId = lesson.id;
-      link.dataset.title = lesson.title.toLowerCase();
-      link.innerHTML = `
-        <span class="num">${lesson.id.toUpperCase()}</span>
-        <span class="title">${lesson.title}</span>
-        <span class="status">${completed ? '✓' : ''}</span>
-      `;
-      link.onclick = () => openLesson(lesson.id);
-      lessonsContainer.appendChild(link);
-    });
+  // ── Тропинки (vibe — это Ворота, не тропинка) ──
+  const trEl = document.createElement('div');
+  trEl.className = 'phase';
+  let t = groupHeader('Тропинки', true) + '<div class="phase-lessons">';
+  TRACKS.filter(tr => tr.id !== 'vibe').forEach(tr => {
+    const doneN = TRACK_LESSONS.filter(l => l.track === tr.id && isCompleted(l.id)).length;
+    t += `<button class="lesson-link" onclick="closeSidebar();openSection('${tr.id}')"><span class="num">${tr.icon}</span><span class="title">${tr.title.replace(/^[🟣🛠💼🏠🥋]\s*/, '')}</span><span class="status">${doneN ? '✓' : ''}</span></button>`;
   });
+  t += '</div>';
+  trEl.innerHTML = t;
+  trackNav.appendChild(trEl);
+
+  // ── Ещё (статические страницы; data-static нужен setActiveStaticLink) ──
+  const moreEl = document.createElement('div');
+  moreEl.className = 'phase';
+  const pages = [['my-progress', 'Мой прогресс'], ['about', 'О курсе'], ['howto', 'Как заниматься'], ['faq', 'FAQ'], ['glossary', 'Глоссарий'], ['changelog', 'Что нового'], ['resources', 'Источники']];
+  let m = groupHeader('Ещё', true) + '<div class="phase-lessons">';
+  pages.forEach(([id, label]) => {
+    const handler = id === 'glossary' ? 'openGlossary()' : `openStaticPage('${id}')`;
+    m += `<button class="lesson-link static-link" data-static="${id}" onclick="closeSidebar();${handler}"><span class="num">·</span><span class="title">${label}</span></button>`;
+  });
+  m += '</div>';
+  moreEl.innerHTML = m;
+  trackNav.appendChild(moreEl);
 }
 
 function updateProgressUI() {
   const all = allLessons();
   const total = all.length;
   const done = all.filter(l => isCompleted(l.id)).length;
-  document.getElementById('global-progress-text').textContent = `${done} / ${total}`;
-  document.getElementById('global-progress-bar').style.width = `${(done / total * 100).toFixed(1)}%`;
+  // Глобальный счётчик «N из всего» убран по закону 1 Тропы — элементы могут отсутствовать.
+  const gpt = document.getElementById('global-progress-text');
+  if (gpt) gpt.textContent = `${done} / ${total}`;
+  const gpb = document.getElementById('global-progress-bar');
+  if (gpb) gpb.style.width = `${(done / total * 100).toFixed(1)}%`;
 
   // Бейдж сверху — реальные цифры
   const banner = document.getElementById('banner-progress');
@@ -26664,47 +26673,44 @@ function renderFooter() {
       <div class="footer-brand">
         <div class="alesha-logo">A</div>
         <h4>AI Курс</h4>
-        <p>Бесплатный практический курс по ИИ на русском. От пользователя к создателю. 139 уроков с AI-наставником, 93 готовы.</p>
+        <p>тихий путь от пользователя к создателю. рядом Алёша, в конце каждого уровня — Веха, собранная руками.</p>
       </div>
 
       <div class="footer-col">
-        <h5>Курс</h5>
-        <a onclick="openSection('main')">Главный путь</a>
+        <h5>путь</h5>
+        <a onclick="openStaticPage('home')">весь путь</a>
+        <a onclick="openStaticPage('about')">о пути</a>
+        <a onclick="openSection('vibe')">ворота · додзё</a>
+      </div>
+
+      <div class="footer-col">
+        <h5>тропинки</h5>
+        <a onclick="openSection('claude')">Claude</a>
+        <a onclick="openSection('projects')">мини-проекты</a>
+        <a onclick="openSection('industry')">индустрии</a>
         <a onclick="openSection('everyday')">AI каждый день</a>
-        <a onclick="openSection('claude')">Claude Deep Dive</a>
-        <a onclick="openSection('projects')">Мини-проекты</a>
-        <a onclick="openSection('industry')">Индустрии</a>
-        <a onclick="openSection('vibe')">🥋 Вайб Код Вам Дам</a>
-        <a onclick="openGlossary()">Глоссарий</a>
       </div>
 
       <div class="footer-col">
-        <h5>Сообщество</h5>
-        <a href="https://t.me/artefakty_ai" target="_blank">Канал @artefakty_ai ↗</a>
-        <a onclick="openStaticPage('changelog')">Что нового</a>
-        <a onclick="openStaticPage('changelog')">Pet-проекты (скоро)</a>
+        <h5>ещё</h5>
+        <a onclick="openStaticPage('howto')">как заниматься</a>
+        <a onclick="openGlossary()">глоссарий</a>
+        <a onclick="openStaticPage('faq')">частые вопросы</a>
+        <a onclick="openStaticPage('resources')">источники</a>
+        <a onclick="openStaticPage('changelog')">что нового</a>
       </div>
 
       <div class="footer-col">
-        <h5>Ресурсы</h5>
-        <a onclick="openStaticPage('about')">О курсе</a>
-        <a onclick="openStaticPage('howto')">Как заниматься</a>
-        <a onclick="openStaticPage('faq')">FAQ</a>
-        <a onclick="openStaticPage('resources')">Источники</a>
-      </div>
-
-      <div class="footer-col">
-        <h5>Open Source</h5>
-        <a href="https://github.com/madzhitov/ai-course" target="_blank">GitHub репо ↗</a>
-        <a href="https://ai.madzhitov.ru" target="_blank">ai.madzhitov.ru ↗</a>
-        <a>MIT-лицензия</a>
+        <h5>рядом</h5>
+        <a href="https://t.me/artefakty_ai" target="_blank">канал @artefakty_ai ↗</a>
+        <a href="https://github.com/madzhitov/ai-course" target="_blank">открытый код ↗</a>
         <a href="https://madzhitov.ru" target="_blank">madzhitov.ru ↗</a>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <div>© 2026 Руслан Маджитов · MIT-лицензия</div>
-      <div>Сделано с ❤️ и Claude · Канал: <a href="https://t.me/artefakty_ai" target="_blank" style="color: var(--text); font-weight: 500;">@artefakty_ai</a></div>
+      <div>© 2026 Руслан Маджитов · MIT</div>
+      <div>бесплатно · открытый код · на русском</div>
     </div>
   `;
 }
@@ -28157,7 +28163,7 @@ function openStaticPage(name) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   trackEvent(`page-${name}`, `Static page: ${name}`);
 
-  if (name === 'home') renderHome();
+  if (name === 'home') renderPathMap();
   else if (name === 'about') renderAbout();
   else if (name === 'howto') renderHowTo();
   else if (name === 'faq') renderFAQ();
@@ -29377,6 +29383,82 @@ function renderChangelog() {
 // ============================================================
 // HOME (новый лендинг)
 // ============================================================
+
+// ============================================================
+// ТРОПА — рендер двух карт. Прогресс/уроки не трогаем: читаем
+// isCompleted, открываем существующий openLesson(id).
+// ============================================================
+let currentMapLevel = null;  // null = карта Пути; число = карта Уровня
+const T_CHECK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg>';
+const T_LOCK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+function gateOpen() { return baseReady(); }
+function openPath() { currentMapLevel = null; renderPathMap(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function openLevel(n) { currentMapLevel = n; renderLevel(n); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function renderPathMap() {
+  currentLessonId = null;
+  const ub = document.getElementById('update-banner'); if (ub) ub.style.display = 'none';  // глобальный счётчик уходит (закон 1)
+  const nowLv = currentLevel();
+  let rows = '';
+  for (const lv of LEVELS) {
+    const locked = isLevelLocked(lv);
+    const done = levelDone(lv);
+    const isNow = (lv.n === nowLv.n) && !done && !locked;
+    if (done) {
+      rows += `<div class="tmap-row"><div class="tmap-mk done">${T_CHECK}</div><div class="tmap-lbl">Уровень ${lv.n} · ${lv.title} <span class="mut">· пройден</span></div></div>`;
+    } else if (isNow) {
+      rows += `<div class="tmap-row top"><div class="tmap-mk now"><i></i></div><div class="tmap-card"><div class="eye">ты здесь</div><div class="ttl">Уровень ${lv.n} · ${lv.title}</div><div class="dsc">${lv.dsc}</div><button class="tmap-go" onclick="openLevel(${lv.n})">Войти в уровень →</button></div></div>`;
+    } else if (locked) {
+      rows += `<div class="tmap-row"><div class="tmap-mk lock">${T_LOCK}</div><div class="tmap-lbl">Уровень ${lv.n} · ${lv.title}</div></div>`;
+    } else {
+      rows += `<div class="tmap-row"><div class="tmap-mk" style="cursor:pointer" onclick="openLevel(${lv.n})"><i style="width:9px;height:9px;border-radius:50%;background:var(--faint);display:block"></i></div><div class="tmap-lbl live" style="cursor:pointer" onclick="openLevel(${lv.n})">Уровень ${lv.n} · ${lv.title}</div></div>`;
+    }
+    if (lv.n === 2) {
+      rows += `<div class="tmap-row top"><div class="tmap-mk gate">${T_LOCK}</div><div class="tmap-gatecard" onclick="openSection('vibe')"><div class="ttl">Ворота — а что там?</div><div class="dsc">Додзё · ${gateOpen() ? 'путь открыт, заходи когда готов' : 'сними обувь, здесь свои правила'}</div></div></div>`;
+    }
+  }
+  document.getElementById('lesson-content').innerHTML = `
+    <div class="tmap tmap-view">
+      <div class="tmap-head">Путь <span class="sub">· от пользователя к создателю</span></div>
+      <div class="tmap-rail"><div class="tmap-rln"></div>${rows}</div>
+      <div class="tmap-acall"><div class="bar" onclick="aleshaToggle()"><div class="a-mk">А</div><span>позвать Алёшу</span></div></div>
+      <div class="tmap-foot">Тропинки рядом — <a onclick="openSection('claude')">Claude</a> · <a onclick="openSection('projects')">мини-проекты</a> · <a onclick="openSection('industry')">индустрии</a> · <a onclick="openSection('everyday')">AI каждый день</a></div>
+    </div>`;
+  renderFooter();
+}
+
+function renderLevel(n) {
+  const lv = LEVELS.find(l => l.n === n);
+  if (!lv) { openPath(); return; }
+  const steps = levelSteps(lv);
+  let nowIdx = steps.findIndex(s => !s.placeholder && !s.done);
+  const total = steps.filter(s => !s.placeholder).length;
+  const pos = Math.min((nowIdx === -1 ? total : nowIdx + 1), total || 1);
+  let rows = '';
+  steps.forEach((s, idx) => {
+    const openId = (typeof s.id === 'number') ? s.id : `'${s.id}'`;
+    if (s.kind === 'vekha') {
+      rows += `<div class="tmap-row"><div class="tmap-mk lock">${T_LOCK}</div><div class="tmap-lbl">Веха · протокол встречи → задачи <span class="mut">· скоро</span></div></div>`;
+      return;
+    }
+    if (s.done) {
+      rows += `<div class="tmap-row"><div class="tmap-mk done">${T_CHECK}</div><div class="tmap-lbl">${s.title} <span class="mut">· пройдено</span></div></div>`;
+    } else if (idx === nowIdx) {
+      const dur = (findLesson(s.id) || {}).duration;
+      rows += `<div class="tmap-row top"><div class="tmap-mk now"><i></i></div><div class="tmap-card"><div class="eye">сейчас здесь</div><div class="ttl">${s.title}</div><div class="dsc">${s.placeholder ? 'скоро' : '~' + (dur || '') + ' мин'}</div>${s.placeholder ? '' : `<button class="tmap-go" onclick="openLesson(${openId})">Идти →</button>`}</div></div>`;
+    } else {
+      rows += `<div class="tmap-row"><div class="tmap-mk lock">${T_LOCK}</div><div class="tmap-lbl">${s.title}</div></div>`;
+    }
+  });
+  const kalitka = `<div class="tmap-row"><div class="tmap-mk a">А</div><div class="tmap-lbl" style="font-size:14px;color:var(--muted)">Калитка · Алёша сверит: «покажи, что собрал»</div></div>`;
+  document.getElementById('lesson-content').innerHTML = `
+    <div class="tmap tmap-view">
+      <button class="tmap-zoom" onclick="openPath()">← весь Путь</button>
+      <div class="tmap-head">Уровень ${lv.n} · ${lv.title} <span class="sub">${total ? '· шаг ' + pos + ' из ' + total : ''}</span></div>
+      <div class="tmap-rail"><div class="tmap-rln"></div>${rows}${kalitka}</div>
+    </div>`;
+  renderFooter();
+}
 
 function renderHome() {
   const total = allLessons().length;
