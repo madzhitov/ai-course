@@ -3864,6 +3864,14 @@ main {
 .tmap-head .sub { font-size: 14px; font-weight: 400; color: var(--faint); }
 .tmap-zoom { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; color: var(--muted); cursor: pointer; user-select: none; margin-bottom: 1.2rem; background: none; border: none; padding: 0; font-family: inherit; }
 .tmap-zoom:hover { color: var(--ink); }
+.lesson-back { margin: 0 0 1.4rem; }
+.lesson-back .tmap-zoom { font-size: 15px; margin-bottom: 0; }
+/* Тропа: тихий футер одной строкой (как в эталоне v8), а не витрина-сетка */
+.tropa-footer { margin-top: 3rem; padding-top: 1.3rem; border-top: 0.5px solid var(--line); text-align: center; }
+.tropa-footer .tf-line { font-size: 14px; color: var(--faint); }
+.tropa-footer .tf-sub { font-size: 13px; color: var(--faint); margin-top: 0.5rem; opacity: 0.85; }
+.tropa-footer a { color: var(--muted); }
+.tropa-footer a:hover { color: var(--ink); }
 .tmap-rail { position: relative; }
 .tmap-rln { position: absolute; left: 16px; top: 24px; bottom: 24px; width: 2px; background: var(--line); }
 .tmap-row { display: flex; gap: 17px; align-items: center; padding: 11px 0; position: relative; }
@@ -26700,48 +26708,9 @@ function renderFooter() {
   const footer = document.getElementById('site-footer');
   if (!footer) return;
   footer.innerHTML = `
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="alesha-logo">A</div>
-        <h4>AI Курс</h4>
-        <p>тихий путь от пользователя к создателю. рядом Алёша, в конце каждого уровня — Веха, собранная руками.</p>
-      </div>
-
-      <div class="footer-col">
-        <h5>путь</h5>
-        <a onclick="openStaticPage('home')">весь путь</a>
-        <a onclick="openStaticPage('about')">о пути</a>
-        <a onclick="openSection('vibe')">ворота · додзё</a>
-      </div>
-
-      <div class="footer-col">
-        <h5>тропинки</h5>
-        <a onclick="openSection('claude')">Claude</a>
-        <a onclick="openSection('projects')">мини-проекты</a>
-        <a onclick="openSection('industry')">индустрии</a>
-        <a onclick="openSection('everyday')">AI каждый день</a>
-      </div>
-
-      <div class="footer-col">
-        <h5>ещё</h5>
-        <a onclick="openStaticPage('howto')">как заниматься</a>
-        <a onclick="openGlossary()">глоссарий</a>
-        <a onclick="openStaticPage('faq')">частые вопросы</a>
-        <a onclick="openStaticPage('resources')">источники</a>
-        <a onclick="openStaticPage('changelog')">что нового</a>
-      </div>
-
-      <div class="footer-col">
-        <h5>рядом</h5>
-        <a href="https://t.me/artefakty_ai" target="_blank">канал @artefakty_ai ↗</a>
-        <a href="https://github.com/madzhitov/ai-course" target="_blank">открытый код ↗</a>
-        <a href="https://madzhitov.ru" target="_blank">madzhitov.ru ↗</a>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <div>© 2026 Руслан Маджитов · MIT</div>
-      <div>бесплатно · открытый код · на русском</div>
+    <div class="tropa-footer">
+      <div class="tf-line">бесплатно · открытый код · на русском</div>
+      <div class="tf-sub">© 2026 Руслан Маджитов · MIT · <a href="https://t.me/artefakty_ai" target="_blank">@artefakty_ai</a> · <a href="https://github.com/madzhitov/ai-course" target="_blank">github</a></div>
     </div>
   `;
 }
@@ -26802,26 +26771,20 @@ function renderLesson(id) {
     </div>
   `;
 
-  // Breadcrumbs
-  const phaseInfo = (() => {
-    if (lesson.track === 'claude') return { tag: 'Claude Deep Dive', cls: 'pc' };
-    if (lesson.track === 'projects') return { tag: 'Мини-проекты', cls: 'pp' };
-    if (lesson.track === 'industry') return { tag: 'Индустрии', cls: 'pi' };
-    if (lesson.track === 'everyday') return { tag: 'AI каждый день', cls: 'pe' };
-    if (lesson.track === 'vibe') return { tag: 'Вайб Код Вам Дам', cls: 'pv' };
-    const phaseNames = { 1: 'Фаза 1. Пользователь', 2: 'Фаза 2. Строитель', 3: 'Фаза 3. Практик', 4: 'Фаза 4. Инженер' };
-    return { tag: phaseNames[lesson.phase] || 'Курс', cls: 'p' + lesson.phase };
-  })();
-  const lessonNum = typeof lesson.id === 'number' ? `Урок ${lesson.id}` : String(lesson.id).toUpperCase();
-  const breadcrumbs = `
-    <div class="breadcrumbs">
-      <a href="#home" onclick="openStaticPage('home'); return false;">Главная</a>
-      <span class="sep">›</span>
-      <span class="phase-tag ${phaseInfo.cls}">${phaseInfo.tag}</span>
-      <span class="sep">›</span>
-      <span class="current">${lessonNum}</span>
-    </div>
-  `;
+  // Тропа: тихий возврат туда, откуда пришёл — к Уровню (шаги Пути) или
+  // к Тропинке. Без старых хлебных крошек «Главная › Фаза › Урок N».
+  let backLink;
+  if (lesson.track) {
+    const track = TRACKS.find(t => t.id === lesson.track);
+    const tname = track ? track.title.replace(/^[🟣🛠💼🏠🥋]\s*/, '') : 'тропинка';
+    backLink = `<button class="tmap-zoom" onclick="openSection('${lesson.track}')">← ${tname}</button>`;
+  } else {
+    const lv = LEVELS.find(l => l.steps.includes(lesson.id));
+    backLink = lv
+      ? `<button class="tmap-zoom" onclick="openLevel(${lv.n})">← Уровень ${lv.n} · ${lv.title}</button>`
+      : `<button class="tmap-zoom" onclick="openPath()">← весь Путь</button>`;
+  }
+  const breadcrumbs = `<div class="lesson-back">${backLink}</div>`;
 
   let body;
   if (lesson.content) {
@@ -26830,11 +26793,10 @@ function renderLesson(id) {
   } else {
     body = `
       ${breadcrumbs}
-      <h1>Урок ${lesson.id}. ${lesson.title}</h1>
+      <h1>${typeof lesson.id === 'number' ? `Шаг ${lesson.id}. ` : ''}${lesson.title}</h1>
       ${timeMeta}
       <div class="lesson-meta">
-        <span><strong>Фаза:</strong> ${lesson.phase}</span>
-        <span><strong>Статус:</strong> черновик</span>
+        <span><strong>статус:</strong> скоро</span>
       </div>
       <div class="draft-notice">
         <h3>✏️ Этот урок ещё пишется</h3>
