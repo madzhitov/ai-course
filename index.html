@@ -3866,10 +3866,36 @@ main {
 .tmap-zoom:hover { color: var(--ink); }
 .lesson-back { margin: 0 0 1.4rem; }
 .lesson-back .tmap-zoom { font-size: 15px; margin-bottom: 0; }
-/* Тропа: тихий футер одной строкой (как в эталоне v8), а не витрина-сетка */
+/* Тропа: тихий футер одной строкой (как в эталоне v7), а не витрина-сетка */
 .tropa-footer { margin-top: 3rem; padding-top: 1.3rem; border-top: 0.5px solid var(--line); text-align: center; }
 .tropa-footer .tf-line { font-size: 14px; color: var(--faint); }
 .tropa-footer .tf-sub { font-size: 13px; color: var(--faint); margin-top: 0.5rem; opacity: 0.85; }
+
+/* ── Хедер по эталону v7: «AI Курс.» + Алёша + тема ── */
+.top-nav-logo .brand-dot { color: var(--accent); }
+.hdr-btn { height: 40px; min-width: 40px; padding: 0 12px; border-radius: 11px; border: none; background: transparent; color: var(--text-muted); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font: inherit; font-size: 15px; transition: .15s; }
+.hdr-btn:hover { background: var(--panel); color: var(--ink); }
+.hdr-btn.hdr-ico { padding: 0 10px; }
+.hdr-amk { width: 24px; height: 24px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+.top-nav-right { display: flex !important; align-items: center; gap: 4px; }
+
+/* ── Блок Интро на карте Пути (эталон v7) ── */
+.tmap-intro { position: relative; background: var(--panel); border: 0.5px solid var(--line); border-radius: var(--r); padding: 1.25rem 3rem 1.3rem 1.4rem; margin: 0 0 2.1rem; }
+.tmap-intro p { margin: 0 0 0.55rem; }
+.tmap-intro p:last-child { margin: 0; }
+.tmap-intro .lead { font-size: 17px; color: var(--ink); }
+.tmap-intro .soft { font-size: 15px; color: var(--muted); line-height: 1.6; }
+.tmap-intro-x { position: absolute; top: 0.7rem; right: 0.7rem; width: 34px; height: 34px; border: none; background: transparent; color: var(--faint); cursor: pointer; border-radius: 9px; display: flex; align-items: center; justify-content: center; transition: .15s; }
+.tmap-intro-x:hover { background: var(--bg); color: var(--ink); }
+
+/* ── Страница «О пути»: мягкая карта + статья (эталон v7) ── */
+.tmap-pathmap { margin: 0 0 1.9rem; max-width: 520px; }
+.tmap-pathmap svg { display: block; width: 100%; height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .tmap-pathmap svg { animation: tdraw 1.25s ease-out both; }
+  @keyframes tdraw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+}
+.tmap-article p { font-size: 17px; line-height: 1.75; color: var(--ink); margin: 0 0 1.1rem; }
 .tropa-footer a { color: var(--muted); }
 .tropa-footer a:hover { color: var(--ink); }
 .tmap-rail { position: relative; }
@@ -3950,20 +3976,20 @@ main {                                                    /* одна центр
     <span></span><span></span><span></span>
   </button>
   <a href="#home" class="top-nav-logo" onclick="openStaticPage('home'); return false;">
-    <span class="brand-mark">A</span><span class="brand-name">AI&nbsp;Курс</span>
+    <span class="brand-name">AI&nbsp;Курс<span class="brand-dot">.</span></span>
   </a>
-  <nav class="top-nav-links">
-    <a href="#section-main" data-section="main" onclick="openSection('main'); return false;">Основной курс</a>
-    <a href="#section-everyday" data-section="everyday" onclick="openSection('everyday'); return false;">AI каждый день</a>
-    <a href="#section-claude" data-section="claude" onclick="openSection('claude'); return false;">Погружение в Клод</a>
-    <a href="#section-projects" data-section="projects" onclick="openSection('projects'); return false;">Мини-проекты за час</a>
-    <a href="#section-industry" data-section="industry" onclick="openSection('industry'); return false;">Индустрии</a>
-    <a href="#section-vibe" data-section="vibe" onclick="openSection('vibe'); return false;" class="nav-vibe">🥋 Вайб Код Вам Дам</a>
+  <!-- скрытые секц-ссылки оставлены для совместимости с setActiveTopNav (display:none) -->
+  <nav class="top-nav-links" aria-hidden="true">
+    <a data-section="main" onclick="openSection('main'); return false;"></a>
+    <a data-section="everyday" onclick="openSection('everyday'); return false;"></a>
+    <a data-section="claude" onclick="openSection('claude'); return false;"></a>
+    <a data-section="projects" onclick="openSection('projects'); return false;"></a>
+    <a data-section="industry" onclick="openSection('industry'); return false;"></a>
+    <a data-section="vibe" onclick="openSection('vibe'); return false;"></a>
   </nav>
   <div class="top-nav-right">
-    <a href="#glossary" onclick="openGlossary(); return false;">Глоссарий</a>
-    <a href="#resources" onclick="openStaticPage('resources'); return false;">Источники</a>
-    <a href="https://t.me/artefakty_ai" target="_blank" class="tg-link">@artefakty_ai</a>
+    <button class="hdr-btn" onclick="aleshaToggle()" aria-label="позвать Алёшу"><span class="hdr-amk">А</span>Алёша</button>
+    <button class="hdr-btn hdr-ico" onclick="toggleTheme()" aria-label="тема"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor" stroke="none"/></svg></button>
   </div>
 </header>
 
@@ -28157,6 +28183,7 @@ function openStaticPage(name) {
   trackEvent(`page-${name}`, `Static page: ${name}`);
 
   if (name === 'home') renderPathMap();
+  else if (name === 'opath') renderPathAbout();
   else if (name === 'about') renderAbout();
   else if (name === 'howto') renderHowTo();
   else if (name === 'faq') renderFAQ();
@@ -29410,12 +29437,72 @@ function renderPathMap() {
       rows += `<div class="tmap-row top"><div class="tmap-mk gate">${T_LOCK}</div><div class="tmap-gatecard" onclick="openSection('vibe')"><div class="ttl">Ворота — а что там?</div><div class="dsc">Додзё · ${gateOpen() ? 'путь открыт, заходи когда готов' : 'сними обувь, здесь свои правила'}</div></div></div>`;
     }
   }
+  let introClosed = false; try { introClosed = localStorage.getItem('tropa-intro') === 'closed'; } catch (e) {}
+  const intro = introClosed ? '' : `
+      <div class="tmap-intro" id="tmap-intro">
+        <button class="tmap-intro-x" onclick="closeIntro()" aria-label="закрыть"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        <p class="lead">Путник, ты на Тропе к познанию AI. Идём спокойно, по одному шагу.</p>
+        <p class="soft">Вехи отмечают, что ты собрал руками. Тропинки уводят вбок, к интересному. Рядом AI-помощник Алёша: поможет и мягко проведёт, без экзаменов.</p>
+        <p class="soft">Троп много, подход один: бережный и последовательный.</p>
+        <p style="margin:0.85rem 0 0"><a onclick="openStaticPage('opath')" style="font-size:15px; color:var(--accent); cursor:pointer">О пути →</a></p>
+      </div>`;
   document.getElementById('lesson-content').innerHTML = `
     <div class="tmap tmap-view">
+      ${intro}
       <div class="tmap-head">Путь <span class="sub">· от пользователя к создателю</span></div>
       <div class="tmap-rail"><div class="tmap-rln"></div>${rows}</div>
       <div class="tmap-acall"><div class="bar" onclick="aleshaToggle()"><div class="a-mk">А</div><span>позвать Алёшу</span></div></div>
       <div class="tmap-foot">Тропинки рядом — <a onclick="openSection('claude')">Claude</a> · <a onclick="openSection('projects')">мини-проекты</a> · <a onclick="openSection('industry')">индустрии</a> · <a onclick="openSection('everyday')">AI каждый день</a></div>
+    </div>`;
+  renderFooter();
+}
+
+function closeIntro() {
+  const el = document.getElementById('tmap-intro');
+  if (el) el.style.display = 'none';
+  try { localStorage.setItem('tropa-intro', 'closed'); } catch (e) {}
+}
+
+// «О пути» — отдельная страница Тропы с мягкой SVG-картой (эталон v7).
+// Это НЕ «О курсе» (renderAbout) — там другой контент, его не трогаем.
+function renderPathAbout() {
+  document.getElementById('lesson-content').innerHTML = `
+    <div class="tmap tmap-view">
+      <button class="tmap-zoom" onclick="openStaticPage('home')">← назад</button>
+      <div class="tmap-head">О пути</div>
+      <figure class="tmap-pathmap">
+        <svg viewBox="0 0 480 205" width="100%" role="img" aria-label="Карта пути: от пользователя к создателю, с тропинками и Воротами" preserveAspectRatio="xMidYMid meet">
+          <path d="M40,130 C80,118 95,105 130,105 C175,105 175,140 215,140 C260,140 260,108 300,108 C340,108 340,135 370,135 C405,135 420,122 440,120" fill="none" stroke="var(--faint)" stroke-width="2" stroke-linecap="round" stroke-dasharray="1 8"/>
+          <path d="M130,105 Q112,80 110,58" fill="none" stroke="var(--faint)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="1 8" opacity="0.65"/>
+          <path d="M175,128 Q175,158 175,176" fill="none" stroke="var(--faint)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="1 8" opacity="0.65"/>
+          <path d="M245,128 Q252,95 255,66" fill="none" stroke="var(--faint)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="1 8" opacity="0.65"/>
+          <path d="M330,120 Q330,150 330,170" fill="none" stroke="var(--faint)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="1 8" opacity="0.65"/>
+          <circle cx="110" cy="52" r="3" fill="var(--faint)"/>
+          <circle cx="175" cy="182" r="3" fill="var(--faint)"/>
+          <circle cx="255" cy="60" r="3" fill="var(--faint)"/>
+          <circle cx="330" cy="176" r="3" fill="var(--faint)"/>
+          <circle cx="40" cy="130" r="4" fill="var(--muted)"/>
+          <circle cx="130" cy="105" r="4" fill="var(--muted)"/>
+          <circle cx="215" cy="140" r="4" fill="var(--muted)"/>
+          <circle cx="300" cy="108" r="9" fill="var(--bg)" stroke="var(--muted)" stroke-width="1.5"/>
+          <circle cx="370" cy="135" r="4" fill="none" stroke="var(--faint)" stroke-width="1.5"/>
+          <circle cx="440" cy="120" r="6" fill="var(--accent)"/>
+          <text x="55" y="150" text-anchor="middle" font-size="13" fill="var(--muted)">пользователь</text>
+          <text x="300" y="90" text-anchor="middle" font-size="13" fill="var(--muted)">Ворота</text>
+          <text x="370" y="153" text-anchor="middle" font-size="12" fill="var(--faint)">глубина</text>
+          <text x="440" y="140" text-anchor="middle" font-size="13" fill="var(--accent)">создатель</text>
+          <text x="185" y="40" text-anchor="middle" font-size="12" fill="var(--faint)">тропинки</text>
+        </svg>
+      </figure>
+      <div class="tmap-article">
+        <p>Это не куча уроков, а путь. Спокойный, от пользователя к создателю.</p>
+        <p>Мы не показываем гору. Ты всегда видишь, где стоишь и какой шаг следующий, не больше. Так проще идти и проще вернуться.</p>
+        <p>Вехи отмечают то, что ты собрал руками. Ты выходишь с тем, что построил, а не с сертификатом. Маленькая вещь, которая работает, дороже бумажки.</p>
+        <p>Тропинки уводят вбок, к интересному: Claude, мини-проекты, AI на каждый день, темы под профессии. Хочешь — свернёшь. Не хочешь — идёшь прямо.</p>
+        <p>Рядом AI-помощник Алёша. Он подскажет простыми словами и тихо сверит, что получилось. Не экзаменует и не давит. Его зовут, когда нужно, он не висит над душой.</p>
+        <p>Дальше, за Воротами, лежит Додзё. Это Вайб Код Вам Дам: вайбкодинг как боевое искусство, мир для тех, кто пришёл всерьёз, со своими правилами. Заглянуть можно сейчас. Войдёшь, если захочешь и будешь готов.</p>
+        <p>Подход один на все тропы: бережно, по порядку, в своём темпе. Бесплатно, открыто, на русском. Спешить некуда, важно понять и научиться делать.</p>
+      </div>
     </div>`;
   renderFooter();
 }
@@ -30490,7 +30577,7 @@ if (hashMatch) {
   openGlossary(glossaryTermHash[1]);
 } else if (staticHash === 'glossary') {
   openGlossary();
-} else if (['home', 'about', 'howto', 'faq', 'changelog', 'resources', 'admin', 'my-progress'].includes(staticHash)) {
+} else if (['home', 'opath', 'about', 'howto', 'faq', 'changelog', 'resources', 'admin', 'my-progress'].includes(staticHash)) {
   openStaticPage(staticHash);
 } else {
   // По умолчанию — Home
