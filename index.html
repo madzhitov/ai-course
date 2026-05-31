@@ -3902,6 +3902,37 @@ main {
   @keyframes tmapfade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 }
 
+/* ============================================================
+   ТРОПА — каркас на ВСЕХ ширинах: бургер всегда, сайдбар-дровер,
+   одна центральная колонка, без верхнего меню-секций. Кладётся
+   последним, чтобы перекрыть старые десктопные правила (постоянный
+   сайдбар + main margin-left + top-nav-links).
+   ============================================================ */
+.menu-toggle { display: flex !important; }              /* бургер виден на любой ширине */
+.top-nav-links { display: none !important; }            /* меню-секций убрано — навигация = две карты + Разделы */
+.top-nav-right a:not(.tg-link) { display: none !important; } /* глоссарий/источники живут в «Разделы» */
+
+.sidebar {                                               /* всегда выезжающий дровер */
+  width: min(320px, 86vw) !important;
+  transform: translateX(-100%);
+  transition: transform 0.24s ease;
+  box-shadow: 4px 0 24px rgba(0,0,0,0.14);
+  z-index: 199;
+}
+body.sidebar-open .sidebar { transform: translateX(0); }
+.sidebar-backdrop { top: 56px; }                         /* затемнение под шапкой */
+
+main {                                                    /* одна центральная колонка */
+  margin-left: auto !important;
+  margin-right: auto !important;
+  max-width: 680px !important;
+  padding: 2rem 1.4rem 4rem !important;
+}
+@media (min-width: 769px) {
+  .top-nav .menu-toggle { display: flex !important; }    /* перебиваем старое «скрыть бургер на десктопе» */
+  .lesson-content { max-width: 100% !important; }        /* колонку держит main, не дублируем */
+}
+
 </style>
 </head>
 <body>
