@@ -4069,6 +4069,11 @@ const TRACK_LESSONS = [
   { id: "v8", track: "vibe", title: "Продвинутые ката: Skills, MCP, субагенты как комбо", duration: 45 },
   { id: "v9", track: "vibe", title: "Спарринг с Claude: итеративный диалог и контекст", duration: 40 },
   { id: "v10", track: "vibe", title: "Кю/Дан и котоваза: оцени свой пояс", duration: 35 },
+  { id: "v11", track: "vibe", title: "📚 Справочник: основы веба", duration: 50 },
+  { id: "v12", track: "vibe", title: "📚 Справочник: данные и API", duration: 45 },
+  { id: "v13", track: "vibe", title: "📚 Справочник: инструменты разработчика", duration: 40 },
+  { id: "v14", track: "vibe", title: "📚 Справочник: от кода к продукту", duration: 40 },
+  { id: "v15", track: "vibe", title: "📚 Справочник: продвинутые темы", duration: 60 },
 ];
 
 // ============================================================
@@ -25139,6 +25144,1338 @@ registerLesson("v10", `
 
 `);
 
+
+registerLesson("v11", `
+<h1>📚 Справочник: основы веба</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> Как работает интернет, frontend, backend, Node.js, фреймворки. Карта территории, без воды.</span>
+  <span><strong>Время:</strong> ~50 минут</span>
+  <span><strong>Главы гайда:</strong> 1–5</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Этот урок — часть <strong>«Справочника по веб-разработке для не-разработчиков»</strong>. Это не ката (как v1–v10), а карта территории. Здесь — концепты, которые AI генерирует в твоих проектах и которые тебе важно понимать, чтобы не быть слепым.</p>
+<p>Без снобизма, без воды, с примерами из реальной жизни. После всех 5 модулей у тебя будет полная картина: от того, как браузер делает запрос, до того, как мониторить продакшен.</p>
+
+<hr />
+<h2>1. Как работает интернет — базовая модель</h2>
+<p>Когда пользователь вводит адрес сайта в браузере, происходит четыре шага.</p>
+<p><strong>Шаг 1 — DNS.</strong> Браузер спрашивает у DNS-сервера: «Какой IP-адрес у этого домена?» DNS — это телефонная книга интернета. Домен — человекочитаемое имя (google.com), IP-адрес — числовой адрес сервера (142.250.80.46).</p>
+<p><strong>Шаг 2 — Запрос.</strong> Браузер отправляет HTTP-запрос на этот IP-адрес. Запрос содержит: метод (GET — дай мне страницу), URL (/catalog/shoes), заголовки (язык, тип браузера, куки).</p>
+<p><strong>Шаг 3 — Сервер.</strong> Сервер получает запрос, обрабатывает его (достаёт данные из базы, рендерит HTML) и отправляет ответ.</p>
+<p><strong>Шаг 4 — Рендеринг.</strong> Браузер получает HTML, CSS и JavaScript, рисует страницу на экране.</p>
+<p>Всё, что ты строишь как разработчик — это про шаги 3 и 4: что происходит на сервере (backend) и что видит пользователь (frontend).</p>
+<h3>Протоколы</h3>
+<p><strong>HTTP/HTTPS</strong> — протокол общения браузера с сервером. HTTPS — зашифрованная версия (замочек в адресной строке). Современные хостинги (Vercel, Netlify) настраивают HTTPS автоматически.</p>
+<p><strong>URL</strong> — адрес ресурса. Разберём: <code>https://myshop.com/catalog/shoes?color=red&amp;size=42</code>
+- <code>https://</code> — протокол
+- <code>myshop.com</code> — домен
+- <code>/catalog/shoes</code> — путь (route)
+- <code>?color=red&amp;size=42</code> — параметры запроса (query params)</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Открой любой сайт и нажми Cmd+Option+I (Mac) или F12 (Windows)</li>
+<li>Перейди во вкладку Network</li>
+<li>Обнови страницу — увидишь все запросы, которые делает браузер</li>
+<li>Кликни на первый запрос — посмотри заголовки, статус-код, время ответа</li>
+</ol>
+</div><hr />
+<h2>2. Frontend — что видит пользователь</h2>
+<p>Frontend — это всё, что работает в браузере пользователя. Три базовых технологии:</p>
+<h3>HTML — структура</h3>
+<p>Скелет страницы. Определяет что на странице: заголовок, текст, картинка, кнопка, форма.</p>
+<pre><code class="language-html">&lt;header&gt;
+  &lt;h1&gt;Мой магазин&lt;/h1&gt;
+  &lt;nav&gt;
+    &lt;a href=&quot;/catalog&quot;&gt;Каталог&lt;/a&gt;
+    &lt;a href=&quot;/about&quot;&gt;О нас&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;
+</code></pre>
+<h3>CSS — внешний вид</h3>
+<p>Как это выглядит: цвета, шрифты, отступы, анимации.</p>
+<pre><code class="language-css">header {
+  background-color: #000;
+  color: #fff;
+  font-family: 'Helvetica', sans-serif;
+  padding: 20px;
+}
+</code></pre>
+<h3>JavaScript — поведение</h3>
+<p>Что происходит при взаимодействии: нажал кнопку → открылось меню, прокрутил → появилась анимация, ввёл email → отправилась форма.</p>
+<pre><code class="language-javascript">button.addEventListener('click', () =&gt; {
+  menu.classList.toggle('open');
+});
+</code></pre>
+<h3>Tailwind CSS — утилитарный подход</h3>
+<p>Вместо написания CSS-файлов ты добавляешь классы прямо в HTML. Это как конструктор — собираешь внешний вид из готовых кубиков.</p>
+<p>Обычный CSS:</p>
+<pre><code class="language-css">.button { background: black; color: white; padding: 8px 16px; border-radius: 4px; }
+</code></pre>
+<p>Tailwind:</p>
+<pre><code class="language-html">&lt;button class=&quot;bg-black text-white px-4 py-2 rounded&quot;&gt;Купить&lt;/button&gt;
+</code></pre>
+<p>Результат одинаковый, но с Tailwind не нужно переключаться между файлами, а AI-модели генерируют его значительно лучше, чем обычный CSS.</p>
+<h3>React — компонентный подход</h3>
+<p>React разбивает интерфейс на переиспользуемые компоненты. Кнопка — компонент. Карточка товара — компонент. Шапка сайта — компонент.</p>
+<pre><code class="language-jsx">function ProductCard({ name, price, image }) {
+  return (
+    &lt;div className=&quot;border rounded p-4&quot;&gt;
+      &lt;img src={image} alt={name} /&gt;
+      &lt;h3&gt;{name}&lt;/h3&gt;
+      &lt;p&gt;{price} ₽&lt;/p&gt;
+      &lt;button&gt;В корзину&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<p>Один раз написал ProductCard — используешь на странице каталога 50 раз с разными данными.</p>
+<h3>SPA vs SSR vs SSG</h3>
+<p><strong>SPA (Single Page Application)</strong> — весь сайт загружается одним файлом, переходы между страницами без перезагрузки. Быстро работает, но Google плохо индексирует. Обычный React.</p>
+<p><strong>SSR (Server-Side Rendering)</strong> — сервер генерирует HTML для каждого запроса. Google видит готовую страницу. Медленнее первая загрузка, но лучше для SEO. Next.js умеет это.</p>
+<p><strong>SSG (Static Site Generation)</strong> — HTML генерируется один раз при сборке, а не при каждом запросе. Самый быстрый вариант для контента, который редко меняется. Идеально для блогов, лендингов, документации.</p>
+<p>Next.js позволяет комбинировать все три подхода на одном сайте: каталог — SSR (данные актуальные), блог — SSG (контент статичный), личный кабинет — SPA (не нужен SEO).</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Открой DevTools (Cmd+Option+I), вкладка Elements</li>
+<li>Найди любой элемент на странице, измени его текст или цвет прямо в браузере</li>
+<li>Обнови страницу — изменения пропадут (ты менял только свою локальную копию)</li>
+<li>Попробуй попросить AI (Claude, ChatGPT): «Создай карточку товара на React + Tailwind с фото, названием, ценой и кнопкой»</li>
+</ol>
+</div><hr />
+<h2>3. Backend — что работает на сервере</h2>
+<p>Backend — это код, который пользователь не видит. Он работает на сервере и отвечает за:</p>
+<p><strong>Бизнес-логику</strong> — «при оформлении заказа проверь наличие, рассчитай доставку, спиши деньги, отправь уведомление менеджеру».</p>
+<p><strong>Работу с данными</strong> — чтение и запись в базу данных.</p>
+<p><strong>Интеграции</strong> — общение с платёжными системами, отправка email, работа с внешними API.</p>
+<p><strong>Безопасность</strong> — проверка прав, валидация данных, защита от атак.</p>
+<h3>Языки бэкенда</h3>
+<ul>
+<li><strong>JavaScript/TypeScript</strong> (через Node.js) — один язык для фронта и бэка, лучший выбор для вайб-кодинга</li>
+<li><strong>Python</strong> (Django, FastAPI) — популярен в ML/AI и data science</li>
+<li><strong>Go</strong> — быстрый, для высоконагруженных систем</li>
+<li><strong>PHP</strong> — WordPress, Laravel, старые проекты</li>
+<li><strong>Ruby</strong> — Ruby on Rails, стартапы</li>
+</ul>
+<p>Для вайб-кодинга JavaScript/TypeScript — лучший выбор: один язык везде, AI-модели генерируют его лучше всего, огромная экосистема пакетов.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Открой DevTools → Network на любом сайте с авторизацией</li>
+<li>Залогинься и посмотри, какие запросы уходят: POST /api/login, какие данные отправляются, что приходит в ответ</li>
+<li>Обрати внимание: пароль не виден в ответе, только токен — это работа бэкенда</li>
+</ol>
+</div><hr />
+<h2>4. Node.js — движок всего</h2>
+<h3>Что это</h3>
+<p>JavaScript изначально работал только в браузере — двигал кнопки, менял цвета. В 2009 году Райан Даль создал Node.js — среду, которая позволяет JavaScript работать на сервере, как Python или Java.</p>
+<h3>Зачем нужен</h3>
+<p>Без Node.js ты не можешь:
+- Запустить сервер, который обрабатывает запросы
+- Читать и писать файлы на диске
+- Работать с базой данных
+- Отправлять email
+- Запускать инструменты разработки (npm, webpack, ESLint)</p>
+<h3>Где он используется</h3>
+<ul>
+<li><strong>Next.js</strong> работает поверх Node.js</li>
+<li><strong>npm</strong> — это часть Node.js</li>
+<li><strong>Claude Code</strong> установлен через npm, работает на Node.js</li>
+<li><strong>Vercel</strong> запускает твой код в Node.js runtime</li>
+<li>Любой серверный JavaScript — это Node.js</li>
+</ul>
+<h3>Как установить</h3>
+<pre><code class="language-bash"># через Homebrew на macOS
+brew install node
+
+# проверить версию
+node --version
+npm --version     # npm ставится вместе с Node.js
+</code></pre>
+<h3>TypeScript</h3>
+<p>TypeScript — это JavaScript с типами. Вместо «переменная может быть чем угодно» ты говоришь «это число» или «это строка».</p>
+<p>JavaScript:</p>
+<pre><code class="language-javascript">function getPrice(product) {
+  return product.price * 1.2;  // А если product.price — не число? Ошибка в рантайме.
+}
+</code></pre>
+<p>TypeScript:</p>
+<pre><code class="language-typescript">function getPrice(product: { price: number }): number {
+  return product.price * 1.2;  // Компилятор не даст передать не-число
+}
+</code></pre>
+<p>TypeScript ловит ошибки до запуска кода. Все современные проекты используют его. AI-модели генерируют TypeScript лучше, потому что типы дают им больше контекста.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Установи Node.js: <code>brew install node</code> (macOS) или скачай с nodejs.org</li>
+<li>Открой терминал и набери: <code>node -e "console.log('Hello from Node.js!')"</code></li>
+<li>Создай файл <code>test.js</code> с содержимым <code>console.log(2 + 2)</code>, запусти: <code>node test.js</code></li>
+<li>Ты только что запустил JavaScript на сервере — без браузера</li>
+</ol>
+</div><hr />
+<h2>5. Фреймворки — почему не пишут с нуля</h2>
+<p>Фреймворк — это набор готовых решений для типовых задач. Без него каждый проект начинается с изобретения колеса: как делать роутинг, как обрабатывать формы, как оптимизировать загрузку.</p>
+<h3>Next.js — главный фреймворк для вайб-кодинга</h3>
+<p>Next.js = React + маршрутизация + серверный рендеринг + API-роуты + оптимизация. Создан командой Vercel — поэтому деплой на Vercel работает идеально.</p>
+<p><strong>App Router</strong> — структура папок определяет URL:</p>
+<pre><code>src/app/
+├── page.tsx                    → mysite.com/
+├── catalog/
+│   ├── page.tsx                → /catalog
+│   └── [slug]/
+│       └── page.tsx            → /catalog/shoes, /catalog/bags, ...
+├── about/
+│   └── page.tsx                → /about
+├── api/
+│   └── orders/
+│       └── route.ts            → API endpoint /api/orders
+└── layout.tsx                  → Общий layout (шапка, подвал)
+</code></pre>
+<p><code>[slug]</code> — динамический сегмент. Один файл обрабатывает /catalog/shoes, /catalog/bags и любой другой slug.</p>
+<p><strong>API Routes</strong> — серверные функции прямо в Next.js. Не нужен отдельный бэкенд:</p>
+<pre><code class="language-typescript">// src/app/api/orders/route.ts
+export async function POST(request: Request) {
+  const body = await request.json();
+  // сохранить заказ в базу
+  // отправить уведомление менеджеру
+  return Response.json({ success: true });
+}
+</code></pre>
+<h3>Другие фреймворки (для общей картины)</h3>
+<ul>
+<li><strong>Express.js</strong> — минималистичный бэкенд-фреймворк для Node.js. Старый, но популярен</li>
+<li><strong>Nuxt.js</strong> — аналог Next.js, но для Vue вместо React</li>
+<li><strong>SvelteKit</strong> — аналог Next.js для Svelte. Модный, лаконичный</li>
+<li><strong>Remix</strong> — альтернатива Next.js от создателей React Router</li>
+<li><strong>Astro</strong> — для контентных сайтов, супер-быстрый</li>
+</ul>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Создай проект: <code>npx create-next-app@latest my-first-app --typescript --tailwind --app</code></li>
+<li>Зайди в папку: <code>cd my-first-app</code></li>
+<li>Запусти: <code>npm run dev</code></li>
+<li>Открой в браузере http://localhost:3000 — ты увидишь работающий сайт</li>
+<li>Открой файл <code>src/app/page.tsx</code>, измени текст, сохрани — страница обновится автоматически</li>
+</ol>
+</div><hr />
+<div class="callout callout-info">
+<strong>📌 Что дальше:</strong> следующий модуль справочника — <strong>v12 (Данные и API)</strong>. Можно пройти подряд, можно вернуться к ката-урокам (v1–v10) и применять теорию на практике.
+</div>
+
+`);
+
+
+registerLesson("v12", `
+<h1>📚 Справочник: данные и API</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> Базы данных, API, авторизация. Как части системы общаются и где живут данные.</span>
+  <span><strong>Время:</strong> ~45 минут</span>
+  <span><strong>Главы гайда:</strong> 6–8</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Этот урок — часть <strong>«Справочника по веб-разработке для не-разработчиков»</strong>. Это не ката (как v1–v10), а карта территории. Здесь — концепты, которые AI генерирует в твоих проектах и которые тебе важно понимать, чтобы не быть слепым.</p>
+<p>Без снобизма, без воды, с примерами из реальной жизни. После всех 5 модулей у тебя будет полная картина: от того, как браузер делает запрос, до того, как мониторить продакшен.</p>
+
+<hr />
+<h2>6. Базы данных — где живут данные</h2>
+<h3>Реляционные (SQL)</h3>
+<p>Данные хранятся в таблицах со связями. Как Excel, но мощнее.</p>
+<p>Таблица <code>products</code>:</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>price</th>
+<th>category_id</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Кроссовки Air</td>
+<td>12000</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Рюкзак Urban</td>
+<td>5500</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>Таблица <code>categories</code>:</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>slug</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Обувь</td>
+<td>shoes</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Сумки</td>
+<td>bags</td>
+</tr>
+</tbody>
+</table>
+<p>Связь: products.category_id → categories.id. Один запрос — получаешь товар с категорией.</p>
+<pre><code class="language-sql">SELECT products.name, products.price, categories.name as category
+FROM products
+JOIN categories ON products.category_id = categories.id
+WHERE categories.slug = 'shoes';
+</code></pre>
+<p><strong>PostgreSQL</strong> — золотой стандарт. Надёжный, мощный, бесплатный.</p>
+<h3>NoSQL (документные)</h3>
+<p>Данные хранятся как JSON-документы, без жёсткой схемы.</p>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;abc123&quot;,
+  &quot;name&quot;: &quot;Кроссовки Air&quot;,
+  &quot;price&quot;: 12000,
+  &quot;category&quot;: &quot;Обувь&quot;,
+  &quot;details&quot;: {
+    &quot;material&quot;: &quot;Кожа&quot;,
+    &quot;colors&quot;: [&quot;black&quot;, &quot;white&quot;],
+    &quot;sizes&quot;: [40, 41, 42, 43]
+  }
+}
+</code></pre>
+<p>Гибко (можно добавить любое поле без миграции), но сложнее делать связи и аналитику.</p>
+<p><strong>MongoDB</strong> — самая популярная NoSQL. <strong>Firebase Firestore</strong> — от Google, удобна для мобильных приложений.</p>
+<h3>Supabase — бэкенд из коробки</h3>
+<p>Supabase = PostgreSQL + готовые обёртки. Вместо написания SQL вручную:</p>
+<pre><code class="language-typescript">// Получить все товары категории «Обувь»
+const { data } = await supabase
+  .from('products')
+  .select('name, price, categories(name)')
+  .eq('categories.slug', 'shoes');
+</code></pre>
+<p>Supabase автоматически генерирует REST API для каждой таблицы. Создал таблицу — API готов. Плюс авторизация, хранилище файлов, realtime-подписки — всё в одной коробке.</p>
+<h3>ORM — прослойка между кодом и базой</h3>
+<p>ORM (Object-Relational Mapping) позволяет работать с базой как с объектами в коде, без написания SQL.</p>
+<p><strong>Prisma</strong> (самый популярный для TypeScript):</p>
+<pre><code class="language-typescript">// Схема (prisma/schema.prisma)
+model Product {
+  id         Int      @id @default(autoincrement())
+  name       String
+  price      Int
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+}
+
+// Использование в коде
+const products = await prisma.product.findMany({
+  where: { category: { slug: 'shoes' } },
+  include: { category: true }
+});
+</code></pre>
+<p><strong>Drizzle</strong> — более лёгкий ORM, ближе к SQL, но с типизацией.</p>
+<p>Для вайб-кодинга Supabase SDK достаточно — он проще ORM и отлично работает с AI-генерацией.</p>
+<h3>Миграции</h3>
+<p>Миграция — это версионное изменение структуры базы данных. Как Git, но для схемы данных.</p>
+<pre><code class="language-sql">-- Миграция: добавляем поле discount в таблицу products
+ALTER TABLE products ADD COLUMN discount INTEGER DEFAULT 0;
+</code></pre>
+<p>Миграции позволяют: откатить изменения, синхронизировать базу между разработчиками, деплоить изменения схемы вместе с кодом.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Зарегистрируйся на app.supabase.com (бесплатно)</li>
+<li>Создай новый проект</li>
+<li>Зайди в Table Editor, создай таблицу <code>products</code> с полями: id, name (text), price (int4)</li>
+<li>Добавь 3-5 товаров вручную через интерфейс</li>
+<li>Перейди в SQL Editor и выполни: <code>SELECT * FROM products WHERE price &gt; 5000</code></li>
+<li>Ты только что сделал запрос к реальной базе данных</li>
+</ol>
+</div><hr />
+<h2>7. API — как части системы общаются</h2>
+<p>API (Application Programming Interface) — это контракт между двумя системами: «если ты пришлёшь мне запрос в таком формате, я отвечу в таком формате».</p>
+<h3>REST API</h3>
+<p>Самый распространённый тип. Использует HTTP-методы:</p>
+<ul>
+<li><strong>GET</strong> — получить данные. <code>GET /api/products</code> → список товаров</li>
+<li><strong>POST</strong> — создать. <code>POST /api/orders</code> + тело запроса → новый заказ</li>
+<li><strong>PUT/PATCH</strong> — обновить. <code>PATCH /api/products/1</code> → изменить товар</li>
+<li><strong>DELETE</strong> — удалить. <code>DELETE /api/products/1</code> → удалить товар</li>
+</ul>
+<p>Ответ приходит в формате JSON:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: [
+    { &quot;id&quot;: 1, &quot;name&quot;: &quot;Кроссовки Air&quot;, &quot;price&quot;: 12000 },
+    { &quot;id&quot;: 2, &quot;name&quot;: &quot;Рюкзак Urban&quot;, &quot;price&quot;: 5500 }
+  ],
+  &quot;total&quot;: 2
+}
+</code></pre>
+<h3>Webhook</h3>
+<p>Webhook — это «обратный API». Вместо того чтобы ты спрашивал сервер «есть новый заказ?» каждую секунду, сервер сам стучится к тебе, когда заказ появляется.</p>
+<p>Примеры:
+- <strong>Telegram Bot</strong> — Telegram присылает webhook на твой сервер при каждом сообщении боту
+- <strong>Stripe / ЮKassa</strong> — присылают webhook при успешной оплате
+- <strong>GitHub</strong> — присылает webhook при каждом push в репозиторий</p>
+<h3>Статус-коды HTTP</h3>
+<ul>
+<li><strong>200</strong> — Ок, всё хорошо</li>
+<li><strong>201</strong> — Создано (после POST)</li>
+<li><strong>301</strong> — Перенаправление (постоянное)</li>
+<li><strong>400</strong> — Плохой запрос (ошибка клиента)</li>
+<li><strong>401</strong> — Не авторизован (нет токена)</li>
+<li><strong>403</strong> — Запрещено (токен есть, но прав нет)</li>
+<li><strong>404</strong> — Не найдено</li>
+<li><strong>500</strong> — Ошибка сервера</li>
+</ul>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Открой терминал и выполни: <code>curl https://jsonplaceholder.typicode.com/posts/1</code></li>
+<li>Ты только что сделал GET-запрос к API и получил JSON-ответ</li>
+<li>Попробуй: <code>curl https://jsonplaceholder.typicode.com/posts?userId=1</code> — фильтрация через query params</li>
+<li>Открой DevTools → Network на любом сайте и посмотри статус-коды запросов</li>
+</ol>
+</div><hr />
+<h2>8. Авторизация — кто ты и что тебе можно</h2>
+<h3>Аутентификация vs Авторизация</h3>
+<p><strong>Аутентификация</strong> — кто ты? Процесс подтверждения личности. Логин + пароль, отпечаток пальца, Face ID.</p>
+<p><strong>Авторизация</strong> — что тебе можно? Проверка прав. Обычный пользователь видит свои заказы, админ видит все заказы.</p>
+<h3>Как работает сессия</h3>
+<ol>
+<li>Пользователь вводит email + пароль</li>
+<li>Сервер проверяет: хэширует пароль и сравнивает с хэшем в базе</li>
+<li>Если совпало — генерирует <strong>JWT-токен</strong> (JSON Web Token)</li>
+<li>Токен отправляется браузеру и сохраняется в cookie</li>
+<li>При каждом следующем запросе браузер автоматически отправляет cookie с токеном</li>
+<li>Сервер проверяет токен и понимает, кто делает запрос</li>
+</ol>
+<h3>JWT-токен</h3>
+<p>JWT — это зашифрованная строка из трёх частей:</p>
+<pre><code>eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMjN9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+</code></pre>
+<p>Внутри (если расшифровать среднюю часть):</p>
+<pre><code class="language-json">{
+  &quot;user_id&quot;: 123,
+  &quot;email&quot;: &quot;user@example.com&quot;,
+  &quot;role&quot;: &quot;admin&quot;,
+  &quot;exp&quot;: 1717200000
+}
+</code></pre>
+<p>Токен подписан секретным ключом сервера. Если кто-то изменит содержимое — подпись не совпадёт, сервер отклонит.</p>
+<h3>OAuth — «Войти через Google»</h3>
+<p>Вместо хранения паролей ты делегируешь аутентификацию Google/Yandex/VK:</p>
+<ol>
+<li>Пользователь нажимает «Войти через Google»</li>
+<li>Перенаправляется на Google, вводит свой пароль Google</li>
+<li>Google спрашивает: «Разрешить сайту X доступ к вашему email?»</li>
+<li>Пользователь соглашается</li>
+<li>Google отправляет код на твой сервер</li>
+<li>Твой сервер обменивает код на данные пользователя (email, имя)</li>
+<li>Создаётся сессия — без хранения чужого пароля на твоей стороне</li>
+</ol>
+<h3>RLS (Row Level Security)</h3>
+<p>Защита на уровне базы данных в Supabase/PostgreSQL. Пишешь правила прямо в базе:</p>
+<pre><code class="language-sql">-- Пользователь видит только свои заказы
+CREATE POLICY &quot;Users see own orders&quot;
+  ON orders FOR SELECT
+  USING (auth.uid() = user_id);
+
+-- Админ видит все заказы
+CREATE POLICY &quot;Admins see all orders&quot;
+  ON orders FOR SELECT
+  USING (auth.jwt() -&gt;&gt; 'role' = 'admin');
+</code></pre>
+<p>Даже если в коде баг — база не отдаст чужие данные. Второй рубеж обороны.</p>
+<h3>Готовые решения (не пиши авторизацию с нуля)</h3>
+<ul>
+<li><strong>Supabase Auth</strong> — встроено в Supabase, поддерживает email, OAuth, magic links</li>
+<li><strong>Clerk</strong> — красивые готовые компоненты для входа/регистрации</li>
+<li><strong>NextAuth (Auth.js)</strong> — библиотека для Next.js, гибкая</li>
+<li><strong>Firebase Auth</strong> — от Google, простая интеграция</li>
+</ul>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>В своём проекте Supabase зайди в Authentication → Settings</li>
+<li>Включи Email provider (включён по умолчанию)</li>
+<li>Попробуй создать пользователя через Authentication → Users → Add User</li>
+<li>Зайди на jwt.io, вставь любой JWT-токен — увидишь его содержимое в расшифрованном виде</li>
+</ol>
+</div><hr />
+<div class="callout callout-info">
+<strong>📌 Что дальше:</strong> следующий модуль справочника — <strong>v13 (Инструменты разработчика)</strong>. Можно пройти подряд, можно вернуться к ката-урокам (v1–v10) и применять теорию на практике.
+</div>
+
+`);
+
+
+registerLesson("v13", `
+<h1>📚 Справочник: инструменты разработчика</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> Git, npm, .env, спецификация. Без этого невозможна командная работа и деплой.</span>
+  <span><strong>Время:</strong> ~40 минут</span>
+  <span><strong>Главы гайда:</strong> 9–12</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Этот урок — часть <strong>«Справочника по веб-разработке для не-разработчиков»</strong>. Это не ката (как v1–v10), а карта территории. Здесь — концепты, которые AI генерирует в твоих проектах и которые тебе важно понимать, чтобы не быть слепым.</p>
+<p>Без снобизма, без воды, с примерами из реальной жизни. После всех 5 модулей у тебя будет полная картина: от того, как браузер делает запрос, до того, как мониторить продакшен.</p>
+
+<hr />
+<h2>9. Git и репозитории — контроль версий</h2>
+<h3>Что такое Git</h3>
+<p>Git — система контроля версий. Она отслеживает каждое изменение в коде и позволяет: вернуться к любой предыдущей версии, работать нескольким людям над одним проектом, создавать параллельные ветки для экспериментов.</p>
+<h3>Основные концепции</h3>
+<p><strong>Репозиторий (repo)</strong> — папка проекта, за которой следит Git. Локальный репозиторий — на твоём компьютере. Удалённый (remote) — на GitHub.</p>
+<p><strong>Коммит (commit)</strong> — снимок состояния проекта в конкретный момент. Как «сохранение» в игре. Коммит фиксирует изменения локально — на сайте ничего не меняется.</p>
+<pre><code class="language-bash">git add .                                    # Подготовить все изменения
+git commit -m &quot;Добавил страницу каталога&quot;    # Сохранить снимок
+</code></pre>
+<p><strong>Push</strong> — отправить коммиты на GitHub. Код уехал в облако, но сайт ещё не обновился.</p>
+<p><strong>Деплой</strong> — Vercel подхватывает push и публикует сайт. Вот теперь пользователи видят изменения.</p>
+<p>Цепочка: <strong>коммит</strong> (сохранил локально) → <strong>push</strong> (отправил на GitHub) → <strong>деплой</strong> (Vercel собрал и опубликовал).</p>
+<p><strong>Ветка (branch)</strong> — параллельная линия разработки. Основная ветка — <code>main</code>. Хочешь добавить новую фичу — создаёшь ветку, работаешь в ней, потом сливаешь обратно.</p>
+<pre><code class="language-bash">git checkout -b feature/catalog    # Создать ветку и переключиться
+# ... работаешь ...
+git checkout main                  # Вернуться в main
+git merge feature/catalog          # Слить изменения
+</code></pre>
+<p><strong>Pull</strong> — скачать изменения с GitHub (сделанные другими или на другом компьютере).</p>
+<pre><code class="language-bash">git pull origin main               # Скачать последнюю версию
+</code></pre>
+<h3>GitHub</h3>
+<p>GitHub — платформа для хранения репозиториев. Как Google Drive для кода. Vercel подключается к GitHub и автоматически деплоит при каждом push.</p>
+<h3>.gitignore</h3>
+<p>Файл, который говорит Git, что НЕ нужно отслеживать:</p>
+<pre><code>node_modules/      # Зависимости (тяжёлые, ставятся через npm install)
+.env.local         # Секреты (API-ключи, пароли)
+.next/             # Сборка Next.js
+</code></pre>
+<p>Никогда не коммить <code>node_modules</code> и <code>.env</code> — первое огромное и восстанавливается автоматически, второе секретное.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Создай аккаунт на github.com (если нет)</li>
+<li>В терминале в папке проекта: <code>git init</code> → <code>git add .</code> → <code>git commit -m "First commit"</code></li>
+<li>Создай репозиторий на GitHub, скопируй URL</li>
+<li><code>git remote add origin https://github.com/username/repo.git</code></li>
+<li><code>git push -u origin main</code></li>
+<li>Открой GitHub — твой код там</li>
+</ol>
+</div><hr />
+<h2>10. npm — менеджер пакетов</h2>
+<h3>Что это</h3>
+<p>npm (Node Package Manager) — магазин готового кода. 2+ миллиона пакетов: от React до библиотеки для отправки email.</p>
+<h3>Основные команды</h3>
+<pre><code class="language-bash">npm init                    # Инициализировать новый проект (создаёт package.json)
+npm install                 # Установить все зависимости из package.json
+npm install grammy          # Установить конкретный пакет
+npm install -D typescript   # Установить как dev-зависимость
+npm uninstall grammy        # Удалить пакет
+npm run dev                 # Запустить скрипт «dev» из package.json
+npm run build               # Собрать проект для продакшена
+</code></pre>
+<h3>package.json — паспорт проекта</h3>
+<p>Самый важный файл в любом Node.js проекте:</p>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;my-shop&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;scripts&quot;: {
+    &quot;dev&quot;: &quot;next dev&quot;,
+    &quot;build&quot;: &quot;next build&quot;,
+    &quot;start&quot;: &quot;next start&quot;,
+    &quot;lint&quot;: &quot;next lint&quot;
+  },
+  &quot;dependencies&quot;: {
+    &quot;next&quot;: &quot;^14.0.0&quot;,
+    &quot;react&quot;: &quot;^18.2.0&quot;,
+    &quot;@supabase/supabase-js&quot;: &quot;^2.38.0&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;typescript&quot;: &quot;^5.0.0&quot;
+  }
+}
+</code></pre>
+<p><strong>dependencies</strong> — пакеты для работы приложения. <strong>devDependencies</strong> — пакеты только для разработки (TypeScript, линтеры).</p>
+<h3>package-lock.json</h3>
+<p>Фиксирует точные версии всех пакетов. Гарантирует одинаковые версии у тебя и на сервере. Коммитится в Git, но не редактируется вручную.</p>
+<h3>node_modules</h3>
+<p>Папка со скачанными пакетами. Может весить сотни мегабайт. Не коммитится в Git — восстанавливается командой <code>npm install</code>.</p>
+<h3>Альтернативы</h3>
+<ul>
+<li><strong>pnpm</strong> — быстрее, экономит место на диске</li>
+<li><strong>yarn</strong> — от Facebook, параллельная установка</li>
+<li><strong>bun</strong> — сверхбыстрый, заменяет и npm, и Node.js</li>
+</ul>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Зайди в папку своего Next.js проекта</li>
+<li>Открой <code>package.json</code> — найди секции scripts, dependencies</li>
+<li>Выполни <code>npm run dev</code> — это запустит скрипт <code>next dev</code> из package.json</li>
+<li>Установи пакет: <code>npm install dayjs</code> — библиотека для работы с датами</li>
+<li>Открой <code>package.json</code> снова — увидишь dayjs в dependencies</li>
+</ol>
+</div><hr />
+<h2>11. Файл .env — секреты проекта</h2>
+<h3>Что это</h3>
+<p>Файл с переменными окружения (environment variables). Хранит всё, что нельзя класть в код: API-ключи, пароли, строки подключения к базе.</p>
+<h3>Пример .env.local</h3>
+<pre><code class="language-env"># База данных
+SUPABASE_URL=https://xxxxx.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+# AI
+ANTHROPIC_API_KEY=sk-ant-api03-...
+
+# Платежи
+STRIPE_SECRET_KEY=sk_live_...
+
+# Email
+RESEND_API_KEY=re_...
+</code></pre>
+<h3>Правила</h3>
+<p><strong>1. Никогда не коммить в Git.</strong> Добавь <code>.env.local</code> в <code>.gitignore</code>. Если ты случайно закоммитил API-ключ — считай его скомпрометированным. Пересоздай.</p>
+<p><strong>2. Разные файлы для разных сред.</strong> <code>.env.local</code> для разработки на твоём компьютере, переменные в Vercel Dashboard для продакшена.</p>
+<p><strong>3. Public vs Secret.</strong> В Next.js переменные доступны на фронте (в браузере пользователя) только если начинаются с <code>NEXT_PUBLIC_</code>:</p>
+<pre><code class="language-env"># Только на сервере (безопасно)
+ANTHROPIC_API_KEY=sk-ant-...
+
+# Видно и в браузере (публично)
+NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
+</code></pre>
+<p>Не добавляй NEXT_PUBLIC_ к секретным ключам — они станут видны всем.</p>
+<h3>Как использовать в коде</h3>
+<pre><code class="language-typescript">const apiKey = process.env.ANTHROPIC_API_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+</code></pre>
+<h3>Где хранить для продакшена</h3>
+<ul>
+<li><strong>Vercel</strong> — Dashboard → Settings → Environment Variables</li>
+<li><strong>GitHub Actions</strong> — Settings → Secrets</li>
+<li><strong>Supabase</strong> — Edge Functions → Secrets</li>
+</ul>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Создай файл <code>.env.local</code> в корне проекта</li>
+<li>Добавь: <code>NEXT_PUBLIC_APP_NAME=My First App</code></li>
+<li>В <code>page.tsx</code> используй: <code>&lt;h1&gt;{process.env.NEXT_PUBLIC_APP_NAME}&lt;/h1&gt;</code></li>
+<li>Перезапусти <code>npm run dev</code> (переменные читаются при старте)</li>
+<li>Проверь, что <code>.env.local</code> есть в <code>.gitignore</code></li>
+</ol>
+</div><hr />
+<h2>12. Спека (ТЗ) — что строим и зачем</h2>
+<h3>Что такое спека</h3>
+<p>Спека (спецификация, ТЗ, PRD) — документ, который описывает что нужно построить, для кого и зачем. Без спеки разработка превращается в «а давай ещё вот это добавим» бесконечно.</p>
+<h3>Минимальная структура</h3>
+<p><strong>1. Проблема</strong> — что сейчас не так?</p>
+<blockquote>
+<p>Клиенты интернет-магазина не могут отследить статус доставки. Менеджеры тратят 2 часа в день на ответы в мессенджерах.</p>
+</blockquote>
+<p><strong>2. Решение</strong> — что строим?</p>
+<blockquote>
+<p>Личный кабинет: история заказов, трекинг доставки, повторный заказ.</p>
+</blockquote>
+<p><strong>3. Целевая аудитория</strong> — для кого?</p>
+<blockquote>
+<p>Существующие клиенты, 500-1000 человек, регулярные покупатели.</p>
+</blockquote>
+<p><strong>4. Функциональные требования</strong> — что конкретно должно работать?</p>
+<blockquote>
+<ul>
+<li>Авторизация через email + magic link</li>
+<li>Список заказов с фильтрами по дате и статусу</li>
+<li>Детали заказа: состав, стоимость, трекинг-номер</li>
+<li>Повторный заказ одной кнопкой</li>
+</ul>
+</blockquote>
+<p><strong>5. Нефункциональные требования</strong> — как должно работать?</p>
+<blockquote>
+<ul>
+<li>Загрузка &lt; 2 секунды</li>
+<li>Мобильная адаптация</li>
+<li>Мультиязычность (RU/EN)</li>
+</ul>
+</blockquote>
+<p><strong>6. Метрики успеха</strong> — как понять, что получилось?</p>
+<blockquote>
+<ul>
+<li>50% клиентов зарегистрировались за месяц</li>
+<li>Время ответа менеджеров сократилось на 40%</li>
+</ul>
+</blockquote>
+<h3>Спека для AI</h3>
+<p>Когда работаешь с Claude Code или v0, спека — это твой промпт. Чем детальнее — тем точнее результат. Вместо «сделай каталог» пиши: «Сделай страницу каталога с сеткой 3 колонки, фильтрами по категориям слева, сортировкой по цене/новизне, карточки с фото, названием и ценой в рублях, по клику — модальное окно с деталями».</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Выбери проект, который хочешь построить (магазин, блог, дашборд, бот)</li>
+<li>Напиши спеку по шаблону выше — 1 страница максимум</li>
+<li>Отдай спеку AI (Claude, ChatGPT): «Вот спека моего проекта. Разбей на этапы разработки и предложи структуру файлов для Next.js»</li>
+<li>Сравни результат — насколько детальная спека влияет на качество ответа</li>
+</ol>
+</div><hr />
+<div class="callout callout-info">
+<strong>📌 Что дальше:</strong> следующий модуль справочника — <strong>v14 (От кода к продукту)</strong>. Можно пройти подряд, можно вернуться к ката-урокам (v1–v10) и применять теорию на практике.
+</div>
+
+`);
+
+
+registerLesson("v14", `
+<h1>📚 Справочник: от кода к продукту</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> Деплой, мобильная разработка, полная архитектура типовых проектов.</span>
+  <span><strong>Время:</strong> ~40 минут</span>
+  <span><strong>Главы гайда:</strong> 13–15</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Этот урок — часть <strong>«Справочника по веб-разработке для не-разработчиков»</strong>. Это не ката (как v1–v10), а карта территории. Здесь — концепты, которые AI генерирует в твоих проектах и которые тебе важно понимать, чтобы не быть слепым.</p>
+<p>Без снобизма, без воды, с примерами из реальной жизни. После всех 5 модулей у тебя будет полная картина: от того, как браузер делает запрос, до того, как мониторить продакшен.</p>
+
+<hr />
+<h2>13. Деплой — как код становится сайтом</h2>
+<h3>Что такое деплой</h3>
+<p>Деплой (deploy) — процесс публикации кода на сервер, чтобы сайт стал доступен по URL. Это последний шаг: написал код → задеплоил → пользователи видят.</p>
+<h3>Этапы деплоя</h3>
+<pre><code>Код на твоём компьютере
+    ↓ git push
+GitHub (репозиторий)
+    ↓ автоматический триггер
+Vercel (CI/CD pipeline)
+    ↓ npm install → npm run build → проверки
+Продакшен (https://mysite.com)
+</code></pre>
+<h3>CI/CD</h3>
+<p><strong>CI (Continuous Integration)</strong> — автоматическая проверка кода при каждом push: тесты, линтинг, сборка. Если что-то сломалось — деплой не пройдёт.</p>
+<p><strong>CD (Continuous Deployment)</strong> — автоматический деплой после прохождения всех проверок. Push в main → через 30-60 секунд новая версия на сайте.</p>
+<h3>Preview Deployments</h3>
+<p>Vercel создаёт отдельный URL для каждой ветки и каждого pull request. Ты можешь запушить экспериментальную ветку, получить уникальный URL, показать клиенту для проверки и слить в main только когда всё ок.</p>
+<h3>Домены</h3>
+<p>Vercel даёт бесплатный домен (<code>project.vercel.app</code>). Для продакшена подключаешь свой: в DNS-настройках домена указываешь CNAME-запись на Vercel, в Vercel Dashboard добавляешь домен. SSL (HTTPS) настраивается автоматически.</p>
+<h3>Serverless vs Server</h3>
+<p><strong>Serverless</strong> (Vercel, AWS Lambda) — код запускается по запросу. Нет постоянного сервера. Платишь за использование. Масштабируется автоматически. Идеально для сайтов и API.</p>
+<p><strong>Server</strong> (VPS, Dedicated) — постоянно работающий сервер. Нужен для WebSocket, фоновых задач, тяжёлых вычислений. Примеры: DigitalOcean, Hetzner.</p>
+<p>Для большинства проектов serverless — оптимальный выбор.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Зарегистрируйся на vercel.com через GitHub</li>
+<li>Нажми «Add New Project» → импортируй свой репозиторий с GitHub</li>
+<li>Vercel сам определит, что это Next.js, и настроит всё</li>
+<li>Через минуту сайт будет доступен по URL вида <code>my-app.vercel.app</code></li>
+<li>Измени что-нибудь в коде, сделай <code>git push</code> — через 30 секунд изменения на сайте</li>
+</ol>
+</div><hr />
+<h2>14. Мобильная разработка — отличия от веба</h2>
+<h3>Три подхода</h3>
+<p><strong>Нативные приложения</strong> — Swift (iOS) / Kotlin (Android), отдельный код для каждой платформы. Максимальная производительность, полный доступ к функциям устройства. Но два разных проекта.</p>
+<p><strong>Кроссплатформенные</strong> — один код для обеих платформ.
+- <strong>React Native / Expo</strong> — JavaScript/React. Если знаешь React для веба — порог входа минимальный. Expo упрощает сборку и публикацию.
+- <strong>Flutter</strong> — Dart (язык от Google), быстрый рендеринг, красивые UI.</p>
+<p><strong>PWA (Progressive Web App)</strong> — веб-сайт, который работает как приложение. Добавляется на домашний экран, работает офлайн. Проще всего, но ограниченный доступ к устройству.</p>
+<h3>React Native + Expo</h3>
+<pre><code>Один JavaScript/TypeScript код
+    ↓
+Expo компилирует
+    ↓
+├── iOS-приложение (App Store)
+└── Android-приложение (Google Play)
+</code></pre>
+<p>Различия от веба:
+- Вместо HTML-тегов (<code>&lt;div&gt;</code>, <code>&lt;p&gt;</code>) — React Native компоненты (<code>&lt;View&gt;</code>, <code>&lt;Text&gt;</code>)
+- Вместо CSS — StyleSheet или NativeWind (Tailwind для мобайла)
+- Навигация через React Navigation, а не URL-роутинг
+- Доступ к камере, микрофону, уведомлениям через Expo SDK</p>
+<pre><code class="language-jsx">// Веб (React)
+&lt;div className=&quot;p-4 bg-white rounded&quot;&gt;
+  &lt;p className=&quot;text-lg font-bold&quot;&gt;Привет&lt;/p&gt;
+&lt;/div&gt;
+
+// Мобайл (React Native)
+&lt;View style={styles.card}&gt;
+  &lt;Text style={styles.title}&gt;Привет&lt;/Text&gt;
+&lt;/View&gt;
+</code></pre>
+<h3>Supabase на мобайле</h3>
+<p>Тот же <code>@supabase/supabase-js</code> работает и в React Native. Один бэкенд для сайта и мобильного приложения — база, авторизация, хранилище файлов.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Установи Expo: <code>npx create-expo-app my-mobile-app</code></li>
+<li>Запусти: <code>cd my-mobile-app &amp;&amp; npx expo start</code></li>
+<li>Скачай Expo Go на телефон, отсканируй QR-код — увидишь приложение на своём устройстве</li>
+<li>Измени текст в <code>app/(tabs)/index.tsx</code>, сохрани — приложение обновится мгновенно</li>
+</ol>
+</div><hr />
+<h2>15. Полная архитектура — как всё связано</h2>
+<h3>Типовой интернет-магазин</h3>
+<pre><code>                    Пользователь
+                         │
+                    Браузер / Телефон
+                         │
+                ┌────────┴────────┐
+                │   Vercel CDN    │  ← Глобальная сеть серверов
+                └────────┬────────┘
+                         │
+              ┌──────────┴──────────┐
+              │    Next.js (App)    │  ← Работает на Node.js
+              │                     │
+              │  React + Tailwind   │  ← Интерфейс
+              │  API Routes         │  ← Серверная логика
+              └──────────┬──────────┘
+                         │
+        ┌───────┬────────┼────────┬──────────┐
+        │       │        │        │          │
+   Supabase   CMS     Платежи  Telegram   Email
+   (данные)  (контент) (оплата)  (бот)    (письма)
+</code></pre>
+<p><strong>Supabase</strong> — хранит пользователей, товары, заказы; авторизация; файлы (фотографии); realtime-обновления.</p>
+<p><strong>CMS (Sanity, Strapi, Contentful)</strong> — редактор контента. Маркетолог пишет статьи через удобный интерфейс, Next.js подтягивает контент на сайт.</p>
+<p><strong>Платежи (Stripe, ЮKassa)</strong> — обработка оплаты. Webhook уведомляет сервер об успешной оплате.</p>
+<p><strong>Telegram-бот</strong> — уведомления менеджерам о новых заказах.</p>
+<p><strong>Email (Resend, SendGrid)</strong> — подтверждение заказа, восстановление пароля.</p>
+<h3>Типовой SaaS-дашборд</h3>
+<pre><code>              Пользователь (маркетолог, аналитик)
+                         │
+                    Браузер
+                         │
+              ┌──────────┴──────────┐
+              │   Next.js + v0.dev  │  ← UI генерируется через AI
+              └──────────┬──────────┘
+                         │
+        ┌────────────────┼────────────────┐
+        │                │                │
+   Supabase         Внешние API       Stripe
+   (данные,         (Метрика,         (подписки
+    авторизация)     Analytics)        на сервис)
+</code></pre>
+<h3>Мобильное приложение</h3>
+<pre><code>                    Пользователь
+                         │
+                    iOS / Android
+                         │
+              ┌──────────┴──────────┐
+              │  React Native (Expo) │
+              └──────────┬──────────┘
+                         │
+              ┌──────────┴──────────┐
+              │      Supabase       │
+              │  PostgreSQL + Auth   │
+              │  Storage + Realtime  │
+              └─────────────────────┘
+</code></pre>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Нарисуй архитектуру своего проекта (на бумаге или в Miro/FigJam)</li>
+<li>Определи: что будет на фронте, что на бэке, какие внешние сервисы нужны</li>
+<li>Для каждого блока выбери технологию из тех, что описаны в этом гайде</li>
+<li>Покажи схему AI (Claude, ChatGPT) и попроси: «Оцени эту архитектуру и предложи улучшения»</li>
+</ol>
+</div><hr />
+<div class="callout callout-info">
+<strong>📌 Что дальше:</strong> следующий модуль справочника — <strong>v15 (Продвинутые темы)</strong>. Можно пройти подряд, можно вернуться к ката-урокам (v1–v10) и применять теорию на практике.
+</div>
+
+`);
+
+
+registerLesson("v15", `
+<h1>📚 Справочник: продвинутые темы</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> Отладка, тесты, кэш, мониторинг, SEO, безопасность. Что отличает прототип от продукта.</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Главы гайда:</strong> 16–24</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Этот урок — часть <strong>«Справочника по веб-разработке для не-разработчиков»</strong>. Это не ката (как v1–v10), а карта территории. Здесь — концепты, которые AI генерирует в твоих проектах и которые тебе важно понимать, чтобы не быть слепым.</p>
+<p>Без снобизма, без воды, с примерами из реальной жизни. После всех 5 модулей у тебя будет полная картина: от того, как браузер делает запрос, до того, как мониторить продакшен.</p>
+
+<hr />
+<h2>16. Отладка — как искать и чинить ошибки</h2>
+<p>Отладка (debugging) — это 50% времени разработчика. Код не работает — нужно понять почему.</p>
+<h3>Console.log — простейший инструмент</h3>
+<p>Вставляешь <code>console.log()</code> в код, чтобы увидеть, что происходит:</p>
+<pre><code class="language-typescript">async function getProducts(categorySlug: string) {
+  console.log('Запрос категории:', categorySlug);
+
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('category_slug', categorySlug);
+
+  console.log('Данные:', data);
+  console.log('Ошибка:', error);
+
+  return data;
+}
+</code></pre>
+<h3>DevTools браузера</h3>
+<p><strong>Cmd+Option+I</strong> (macOS) или <strong>F12</strong> (Windows) в Chrome:</p>
+<p><strong>Console</strong> — логи, ошибки, предупреждения. Красные строки — ошибки. Кликни на ошибку — попадёшь в строку кода.</p>
+<p><strong>Network</strong> — все запросы страницы. Видишь: URL, метод, статус-код, время. Если 500 — проблема на сервере. Если 404 — неправильный URL.</p>
+<p><strong>Elements</strong> — живое дерево HTML/CSS. Можешь менять стили прямо в браузере.</p>
+<p><strong>Application</strong> — cookies, localStorage, сессии.</p>
+<h3>Чтение ошибок</h3>
+<pre><code>Error: Cannot read properties of undefined (reading 'price')
+    at ProductCard (src/components/ProductCard.tsx:12:24)
+</code></pre>
+<p>Читаем: файл <code>ProductCard.tsx</code>, строка 12. Пытаемся прочитать <code>.price</code> у <code>undefined</code> — значит, объект не передан или пустой.</p>
+<h3>Типичные ошибки</h3>
+<p><strong>«Module not found»</strong> — пакет не установлен. Запусти <code>npm install</code>.</p>
+<p><strong>«Variable is undefined»</strong> — забыл добавить в <code>.env.local</code> или не перезапустил dev-сервер.</p>
+<p><strong>«CORS error»</strong> — фронтенд обращается к API на другом домене. Используй API Routes (один домен).</p>
+<p><strong>«Hydration mismatch»</strong> — сервер и клиент сгенерировали разный HTML. Обычно из-за <code>window</code>/<code>document</code> в серверном компоненте.</p>
+<h3>Отладка с AI</h3>
+<p>Самый эффективный подход: скопируй полный текст ошибки и вставь как промпт в AI. Не пересказывай ошибку своими словами — дай точный текст. AI видит паттерн и находит причину быстрее.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Открой DevTools → Console на любом сайте — посмотри, есть ли ошибки</li>
+<li>Специально сломай что-нибудь в своём проекте (удали import) — прочитай ошибку</li>
+<li>Скопируй ошибку в Claude или ChatGPT, попроси объяснить и починить</li>
+</ol>
+</div><hr />
+<h2>17. Тестирование — как проверять, что код работает</h2>
+<p>Тесты — это код, который проверяет другой код. Автоматически, при каждом изменении.</p>
+<h3>Три уровня</h3>
+<p><strong>Юнит-тесты</strong> — проверяют одну функцию:</p>
+<pre><code class="language-typescript">test('скидка 20% на 10000', () =&gt; {
+  expect(calculateDiscount(10000, 20)).toBe(8000);
+});
+</code></pre>
+<p><strong>Интеграционные тесты</strong> — несколько частей вместе: API-роут + база данных.</p>
+<pre><code class="language-typescript">test('GET /api/products возвращает товары', async () =&gt; {
+  const response = await fetch('/api/products');
+  expect(response.status).toBe(200);
+  const data = await response.json();
+  expect(data.length).toBeGreaterThan(0);
+});
+</code></pre>
+<p><strong>E2E тесты</strong> — весь сценарий от лица пользователя:</p>
+<pre><code class="language-typescript">test('пользователь добавляет товар в корзину', async ({ page }) =&gt; {
+  await page.goto('/catalog');
+  await page.click('[data-testid=&quot;product-card&quot;]');
+  await page.click('button:has-text(&quot;В корзину&quot;)');
+  await page.goto('/cart');
+  await expect(page.locator('.cart-item')).toHaveCount(1);
+});
+</code></pre>
+<h3>Инструменты</h3>
+<ul>
+<li><strong>Vitest</strong> — быстрый, современный, для юнит/интеграционных тестов</li>
+<li><strong>Playwright</strong> — E2E-тесты от Microsoft, в реальных браузерах</li>
+<li><strong>Cypress</strong> — E2E-тесты с красивым интерфейсом</li>
+</ul>
+<h3>Когда писать тесты</h3>
+<p>Золотое правило для вайб-кодинга: тестируй бизнес-логику (расчёты, валидации) и критические пути (авторизация, оплата). Не тестируй вёрстку — она меняется слишком часто.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Установи Vitest: <code>npm install -D vitest</code></li>
+<li>Создай файл <code>utils.test.ts</code>, напиши простой тест для любой функции</li>
+<li>Запусти: <code>npx vitest run</code></li>
+<li>Сломай функцию — увидишь, как тест ловит ошибку</li>
+</ol>
+</div><hr />
+<h2>18. Линтинг и форматирование — чистый код на автомате</h2>
+<h3>ESLint — ловит ошибки</h3>
+<p>Анализирует код и находит проблемы: неиспользуемые переменные, потенциальные баги, нарушения стиля. Next.js включает ESLint по умолчанию.</p>
+<pre><code class="language-bash">npm run lint     # Проверить весь проект
+</code></pre>
+<h3>Prettier — форматирует автоматически</h3>
+<p>Приводит код к единому стилю: отступы, кавычки, длина строк. Файл <code>.prettierrc</code>:</p>
+<pre><code class="language-json">{
+  &quot;semi&quot;: true,
+  &quot;singleQuote&quot;: true,
+  &quot;tabWidth&quot;: 2,
+  &quot;trailingComma&quot;: &quot;all&quot;
+}
+</code></pre>
+<h3>Настройка в VS Code</h3>
+<p>Установи расширения ESLint и Prettier, включи «Format on Save» — код форматируется при каждом сохранении автоматически.</p>
+<h3>Husky + lint-staged</h3>
+<p>Автоматическая проверка перед каждым коммитом. Если ESLint нашёл ошибку — коммит не пройдёт.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Выполни <code>npm run lint</code> в своём Next.js проекте</li>
+<li>Установи Prettier: <code>npm install -D prettier</code></li>
+<li>Создай <code>.prettierrc</code> с настройками выше</li>
+<li>Установи расширение Prettier в VS Code, включи Format on Save</li>
+</ol>
+</div><hr />
+<h2>19. Middleware — промежуточный слой</h2>
+<p>Middleware — код между запросом пользователя и основным обработчиком. Как охранник на входе: проверяет пропуск, прежде чем пустить.</p>
+<h3>Middleware в Next.js</h3>
+<p>Файл <code>middleware.ts</code> в корне проекта:</p>
+<pre><code class="language-typescript">import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+export function middleware(request: NextRequest) {
+  // Защита приватных страниц
+  if (request.nextUrl.pathname.startsWith('/account')) {
+    const token = request.cookies.get('auth-token');
+    if (!token) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ['/account/:path*', '/admin/:path*'],
+};
+</code></pre>
+<h3>Типичные задачи</h3>
+<ul>
+<li><strong>Авторизация</strong> — проверить токен до загрузки страницы</li>
+<li><strong>Локализация</strong> — определить язык и показать правильную версию</li>
+<li><strong>A/B тестирование</strong> — показать версию A или B</li>
+<li><strong>Rate limiting</strong> — ограничить количество запросов</li>
+</ul>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Создай файл <code>middleware.ts</code> в корне Next.js проекта</li>
+<li>Добавь простой middleware, который логирует каждый запрос: <code>console.log(request.nextUrl.pathname)</code></li>
+<li>Открой сайт и посмотри логи в терминале — увидишь каждый запрос</li>
+</ol>
+</div><hr />
+<h2>20. Кэширование — как ускорить сайт</h2>
+<h3>Зачем</h3>
+<p>Без кэша: каждый раз сервер идёт в базу, достаёт данные, рендерит HTML. 500-2000мс. С кэшем: первый запрос 500мс, все следующие — 20мс.</p>
+<h3>Уровни кэша</h3>
+<p><strong>Браузерный</strong> — браузер сохраняет картинки, CSS, JS. При повторном визите не скачивает заново.</p>
+<p><strong>CDN</strong> — серверы Vercel по миру сохраняют HTML. Пользователь получает страницу с ближайшего сервера.</p>
+<p><strong>Серверный</strong> — приложение сохраняет результаты запросов в память (Redis).</p>
+<p><strong>ISR (Incremental Static Regeneration)</strong> — золотая середина в Next.js:</p>
+<pre><code class="language-typescript">// Страница обновляется каждые 60 секунд
+export const revalidate = 60;
+
+export default async function CatalogPage() {
+  const products = await getProducts();
+  return &lt;ProductGrid products={products} /&gt;;
+}
+</code></pre>
+<p>Первый посетитель — свежие данные за 500мс. Следующие 60 секунд — кэш за 20мс. Фоновое обновление.</p>
+<h3>Инвалидация</h3>
+<p>Когда кэш устарел? Два подхода: по времени (живёт N секунд) или по событию (обновили товар → сбросили кэш).</p>
+<pre><code class="language-typescript">import { revalidatePath } from 'next/cache';
+
+export async function updateProduct(id: number, data: any) {
+  await supabase.from('products').update(data).eq('id', id);
+  revalidatePath('/catalog');  // Сбросить кэш
+}
+</code></pre>
+<h3>Что кэшировать, а что нет</h3>
+<p>Кэшировать: каталог, статьи, статические страницы. Не кэшировать: корзину, личный кабинет, страницу оплаты — всё уникальное для пользователя.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Добавь <code>export const revalidate = 60</code> в любую страницу Next.js</li>
+<li>Задеплой на Vercel</li>
+<li>Открой страницу, обнови — заметь скорость (она будет приходить из кэша)</li>
+</ol>
+</div><hr />
+<h2>21. WebSocket и Realtime — живые данные</h2>
+<h3>Проблема</h3>
+<p>HTTP: клиент спрашивает → сервер отвечает → соединение закрыто. Для чата или уведомлений нужно, чтобы сервер мог сам послать данные.</p>
+<h3>WebSocket</h3>
+<p>Соединение открывается один раз и остаётся. Двусторонний обмен в реальном времени.</p>
+<pre><code>HTTP:       Клиент → Сервер → Клиент (закрыл)
+WebSocket:  Клиент ↔ Сервер (постоянное соединение)
+</code></pre>
+<h3>Supabase Realtime</h3>
+<p>Подписка на изменения таблицы:</p>
+<pre><code class="language-typescript">const subscription = supabase
+  .channel('orders')
+  .on(
+    'postgres_changes',
+    { event: 'INSERT', schema: 'public', table: 'orders' },
+    (payload) =&gt; {
+      console.log('Новый заказ:', payload.new);
+    }
+  )
+  .subscribe();
+</code></pre>
+<h3>Где используется</h3>
+<p>Чаты, уведомления, live-дашборды, синхронизация между устройствами, стриминг ответов AI.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>В Supabase Dashboard → Realtime → включи для таблицы <code>products</code></li>
+<li>В коде подпишись на изменения (пример выше)</li>
+<li>Открой приложение и вручную добавь товар в Supabase — увидишь обновление без перезагрузки</li>
+</ol>
+</div><hr />
+<h2>22. Мониторинг — как узнать, что сайт упал</h2>
+<p>Без мониторинга ты узнаёшь о проблемах от клиентов. С мониторингом — получаешь уведомление за минуту до них.</p>
+<h3>Sentry — ловит ошибки</h3>
+<p>Перехватывает ошибки в продакшене: что сломалось, строка кода, какой пользователь пострадал.</p>
+<pre><code class="language-bash">npm install @sentry/nextjs
+npx @sentry/wizard@latest -i nextjs
+</code></pre>
+<p>Бесплатный план — 5,000 ошибок в месяц.</p>
+<h3>Vercel Analytics</h3>
+<p>Встроено: Web Vitals, посещаемость, география. Включается одним кликом в Dashboard.</p>
+<h3>PostHog — продуктовая аналитика</h3>
+<p>Действия пользователей: какие страницы смотрят, куда кликают, где бросают корзину. Open source.</p>
+<h3>Uptime-мониторинг</h3>
+<p>UptimeRobot (бесплатный) — проверяет каждую минуту, работает ли сайт. Если упал — SMS/Telegram.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Зарегистрируйся на sentry.io (бесплатно)</li>
+<li>Установи Sentry в свой проект: <code>npx @sentry/wizard@latest -i nextjs</code></li>
+<li>Задеплой и специально вызови ошибку — увидишь её в Sentry Dashboard</li>
+</ol>
+</div><hr />
+<h2>23. SEO для разработчика — чтобы Google нашёл</h2>
+<h3>Почему SEO — дело разработчика</h3>
+<p>Если сайт на обычном React (SPA) — Google видит пустой <code>&lt;div id="root"&gt;</code>. На Next.js с SSR — полноценную страницу. Техническая часть определяет, проиндексируется ли сайт вообще.</p>
+<h3>Meta-теги</h3>
+<pre><code class="language-typescript">export const metadata = {
+  title: 'Мой магазин — кроссовки и аксессуары',
+  description: 'Оригинальные кроссовки и аксессуары с доставкой по России.',
+};
+</code></pre>
+<h3>Open Graph — как ссылка выглядит в мессенджерах</h3>
+<p>Когда кто-то кидает ссылку в Telegram — Open Graph определяет картинку, заголовок и описание:</p>
+<pre><code class="language-typescript">export const metadata = {
+  openGraph: {
+    title: 'Air Max 2026 — Мой магазин',
+    description: 'Новая коллекция кроссовок',
+    images: ['/images/air-max-og.jpg'],   // 1200x630px
+  },
+};
+</code></pre>
+<h3>Sitemap и robots.txt</h3>
+<pre><code class="language-typescript">// src/app/sitemap.ts
+export default async function sitemap() {
+  const products = await getProducts();
+  return [
+    { url: 'https://myshop.com', lastModified: new Date() },
+    ...products.map((p) =&gt; ({
+      url: \`https://myshop.com/catalog/\${p.slug}\`,
+      lastModified: p.updated_at,
+    })),
+  ];
+}
+</code></pre>
+<h3>Structured Data (JSON-LD)</h3>
+<p>Помогает Google показать цену и рейтинг прямо в поиске:</p>
+<pre><code class="language-typescript">&lt;script type=&quot;application/ld+json&quot;&gt;
+{JSON.stringify({
+  &quot;@context&quot;: &quot;https://schema.org&quot;,
+  &quot;@type&quot;: &quot;Product&quot;,
+  &quot;name&quot;: &quot;Кроссовки Air Max&quot;,
+  &quot;offers&quot;: {
+    &quot;@type&quot;: &quot;Offer&quot;,
+    &quot;price&quot;: &quot;12000&quot;,
+    &quot;priceCurrency&quot;: &quot;RUB&quot;,
+    &quot;availability&quot;: &quot;https://schema.org/InStock&quot;
+  }
+})}
+&lt;/script&gt;
+</code></pre>
+<h3>Core Web Vitals</h3>
+<p>Google измеряет: <strong>LCP</strong> (когда контент стал видим, цель &lt; 2.5с), <strong>INP</strong> (реакция на клик, &lt; 200мс), <strong>CLS</strong> (прыгает ли контент, &lt; 0.1).</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Добавь metadata с title и description в свой <code>page.tsx</code></li>
+<li>Добавь Open Graph — скинь ссылку в Telegram, проверь, как выглядит</li>
+<li>Открой PageSpeed Insights (web.dev/measure), вбей URL — посмотри Core Web Vitals</li>
+</ol>
+</div><hr />
+<h2>24. Безопасность — от чего защищаться</h2>
+<h3>XSS (Cross-Site Scripting)</h3>
+<p>Атакующий внедряет JavaScript в поле ввода. Защита: React автоматически экранирует текст. Не используй <code>dangerouslySetInnerHTML</code> с пользовательскими данными.</p>
+<h3>SQL-инъекции</h3>
+<p>Атакующий вставляет SQL-код в поле ввода. Защита: Supabase SDK и ORM используют параметризованные запросы — инъекция невозможна.</p>
+<pre><code class="language-typescript">// ОПАСНО
+const result = await db.query(\`SELECT * FROM users WHERE id = '\${userId}'\`);
+
+// БЕЗОПАСНО
+const result = await supabase.from('users').select('*').eq('id', userId);
+</code></pre>
+<h3>CSRF (Cross-Site Request Forgery)</h3>
+<p>Чужой сайт отправляет запрос от имени залогиненного пользователя. Защита: SameSite cookies, CSRF-токены. Next.js Server Actions имеют встроенную защиту.</p>
+<h3>CORS</h3>
+<p>Браузер запрещает запросы между разными доменами. Это защита — evil.com не может обратиться к твоему API. Если нужно разрешить — настрой заголовки явно.</p>
+<h3>Rate Limiting</h3>
+<p>Ограничение запросов от одного пользователя. Без него бот может положить сервер 10,000 запросами в секунду. Для продакшена: Vercel Edge Middleware или Upstash Redis.</p>
+<h3>Защита API-ключей</h3>
+<p>API-ключи никогда не попадают на фронтенд. Проверь: если ключ в переменной с <code>NEXT_PUBLIC_</code> — он видим всем. Секретные ключи — только в серверном коде.</p>
+<h3>Supabase RLS — последний рубеж</h3>
+<p>Даже если весь код сломан, RLS не даст получить чужие данные:</p>
+<pre><code class="language-sql">ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+CREATE POLICY &quot;users_own_orders&quot; ON orders
+  FOR ALL USING (auth.uid() = user_id);
+</code></pre>
+<h3>Чеклист безопасности</h3>
+<ul>
+<li>RLS включён на всех таблицах с данными пользователей</li>
+<li>API-ключи не начинаются с NEXT_PUBLIC_</li>
+<li>.env.local в .gitignore</li>
+<li>HTTPS (Vercel настраивает автоматически)</li>
+<li>Rate limiting на публичных API</li>
+<li>Webhook-подписи проверяются (Stripe, ЮKassa)</li>
+</ul>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Проверь свой <code>.gitignore</code> — есть ли там <code>.env.local</code>?</li>
+<li>Зайди в Supabase → Table Editor → любая таблица → RLS — включён ли?</li>
+<li>Поищи в своём коде <code>NEXT_PUBLIC_</code> — нет ли среди них секретных ключей?</li>
+</ol>
+</div><hr />
+<h1>Приложения</h1>
+<hr />
+<h2>25. Словарь терминов</h2>
+<p><strong>API</strong> — интерфейс для программного взаимодействия. Контракт «что отправить → что получить».</p>
+<p><strong>Auth</strong> — авторизация и аутентификация. Система «кто ты и что тебе можно».</p>
+<p><strong>Backend</strong> — серверная часть приложения. Бизнес-логика, данные, безопасность.</p>
+<p><strong>Branch</strong> — ветка в Git. Параллельная линия разработки.</p>
+<p><strong>Build</strong> — процесс сборки проекта из исходного кода в готовые файлы.</p>
+<p><strong>Cache (кэш)</strong> — сохранённый результат для ускорения повторных запросов.</p>
+<p><strong>CDN</strong> — Content Delivery Network. Сеть серверов по миру для быстрой доставки контента.</p>
+<p><strong>CI/CD</strong> — автоматическая проверка и развёртывание кода.</p>
+<p><strong>Commit</strong> — зафиксированное изменение в Git. Снимок состояния проекта. Не меняет сайт — только сохраняет прогресс локально.</p>
+<p><strong>Component</strong> — переиспользуемый блок интерфейса в React.</p>
+<p><strong>Console.log</strong> — простейший инструмент отладки. Выводит данные в консоль.</p>
+<p><strong>Core Web Vitals</strong> — метрики Google для оценки скорости сайта (LCP, INP, CLS).</p>
+<p><strong>CORS</strong> — правила безопасности браузера для запросов между доменами.</p>
+<p><strong>CRUD</strong> — Create, Read, Update, Delete. Четыре базовые операции с данными.</p>
+<p><strong>CSRF</strong> — Cross-Site Request Forgery. Атака через подделку запросов.</p>
+<p><strong>CSS</strong> — язык стилей. Внешний вид HTML-элементов.</p>
+<p><strong>Debug (отладка)</strong> — процесс поиска и исправления ошибок.</p>
+<p><strong>Deploy (деплой)</strong> — публикация кода на сервер. Делает сайт доступным пользователям.</p>
+<p><strong>DevTools</strong> — инструменты разработчика в браузере (Cmd+Option+I).</p>
+<p><strong>DNS</strong> — превращает доменное имя в IP-адрес.</p>
+<p><strong>DOM</strong> — структура HTML-страницы в виде дерева объектов.</p>
+<p><strong>E2E</strong> — End-to-End тестирование полного сценария.</p>
+<p><strong>Endpoint</strong> — конкретный URL в API. <code>/api/products</code> — эндпоинт для товаров.</p>
+<p><strong>.env</strong> — файл с секретными переменными окружения.</p>
+<p><strong>ESLint</strong> — инструмент проверки кода на ошибки.</p>
+<p><strong>Fetch</strong> — функция JavaScript для HTTP-запросов.</p>
+<p><strong>Framework</strong> — каркас приложения с готовыми решениями.</p>
+<p><strong>Frontend</strong> — клиентская часть. Интерфейс для пользователя.</p>
+<p><strong>Git</strong> — система контроля версий.</p>
+<p><strong>GitHub</strong> — платформа для хранения Git-репозиториев.</p>
+<p><strong>HTML</strong> — язык разметки. Структура веб-страницы.</p>
+<p><strong>HTTP</strong> — протокол передачи данных в интернете.</p>
+<p><strong>Husky</strong> — запуск скриптов перед Git-коммитами.</p>
+<p><strong>ISR</strong> — Incremental Static Regeneration. Обновление статических страниц по таймеру.</p>
+<p><strong>JavaScript</strong> — язык программирования для веба и серверов.</p>
+<p><strong>JSON</strong> — формат обмена данными.</p>
+<p><strong>JSON-LD</strong> — формат структурированных данных для поисковиков.</p>
+<p><strong>JWT</strong> — JSON Web Token. Зашифрованный токен авторизации.</p>
+<p><strong>LCP</strong> — Largest Contentful Paint. Время отрисовки главного контента.</p>
+<p><strong>Linter</strong> — инструмент проверки кода.</p>
+<p><strong>Middleware</strong> — промежуточный слой между запросом и обработчиком.</p>
+<p><strong>Migration</strong> — версионное изменение структуры базы данных.</p>
+<p><strong>Node.js</strong> — среда выполнения JavaScript на сервере.</p>
+<p><strong>npm</strong> — менеджер пакетов для Node.js.</p>
+<p><strong>OAuth</strong> — авторизация через внешние сервисы (Google, Yandex).</p>
+<p><strong>Open Graph</strong> — мета-теги для отображения ссылки в соцсетях.</p>
+<p><strong>ORM</strong> — работа с базой через объекты вместо SQL.</p>
+<p><strong>Package</strong> — готовый код для переиспользования (библиотека).</p>
+<p><strong>PR (Pull Request)</strong> — запрос на слияние ветки. Место для ревью кода.</p>
+<p><strong>Props</strong> — параметры, передаваемые React-компоненту.</p>
+<p><strong>Push</strong> — отправка коммитов на GitHub. Не равно деплою.</p>
+<p><strong>Query</strong> — запрос к базе данных или API.</p>
+<p><strong>Rate Limiting</strong> — ограничение количества запросов.</p>
+<p><strong>React</strong> — библиотека для построения интерфейсов из компонентов.</p>
+<p><strong>Repo (repository)</strong> — хранилище кода с историей изменений.</p>
+<p><strong>REST</strong> — архитектурный стиль API с HTTP-методами.</p>
+<p><strong>RLS</strong> — Row Level Security. Защита данных на уровне строк в PostgreSQL.</p>
+<p><strong>Route</strong> — связь между URL и компонентом/обработчиком.</p>
+<p><strong>Runtime</strong> — среда выполнения кода (Node.js, браузер).</p>
+<p><strong>SDK</strong> — набор инструментов для работы с сервисом.</p>
+<p><strong>Sentry</strong> — сервис мониторинга ошибок в продакшене.</p>
+<p><strong>Serverless</strong> — код запускается по запросу, без постоянного сервера.</p>
+<p><strong>Sitemap</strong> — список страниц сайта для поисковиков.</p>
+<p><strong>SQL</strong> — язык запросов к реляционным базам данных.</p>
+<p><strong>SSE</strong> — Server-Sent Events. Односторонний стрим от сервера к клиенту.</p>
+<p><strong>SSG</strong> — Static Site Generation. HTML генерируется при сборке.</p>
+<p><strong>SSR</strong> — Server-Side Rendering. HTML генерируется при каждом запросе.</p>
+<p><strong>State</strong> — состояние компонента. Данные, которые меняются во времени.</p>
+<p><strong>Tailwind</strong> — утилитарный CSS-фреймворк. Стили через классы.</p>
+<p><strong>Token</strong> — цифровой пропуск для авторизации.</p>
+<p><strong>TypeScript</strong> — JavaScript с типами. Ловит ошибки до запуска.</p>
+<p><strong>Unit Test</strong> — тест отдельной функции в изоляции.</p>
+<p><strong>Uptime</strong> — время непрерывной работы сервиса.</p>
+<p><strong>URL</strong> — адрес ресурса в интернете.</p>
+<p><strong>Vercel</strong> — платформа для хостинга и деплоя.</p>
+<p><strong>Webhook</strong> — сервер присылает данные при событии.</p>
+<p><strong>WebSocket</strong> — двусторонняя связь в реальном времени.</p>
+<p><strong>XSS</strong> — Cross-Site Scripting. Атака через вредоносный JavaScript.</p>
+<hr />
+<h2>Рекомендуемый стек для старта</h2>
+<table>
+<thead>
+<tr>
+<th>Задача</th>
+<th>Инструмент</th>
+<th>Стоимость</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Фронтенд + бэкенд</td>
+<td>Next.js</td>
+<td>Бесплатно</td>
+</tr>
+<tr>
+<td>Стили</td>
+<td>Tailwind CSS</td>
+<td>Бесплатно</td>
+</tr>
+<tr>
+<td>База данных + авторизация</td>
+<td>Supabase</td>
+<td>Бесплатно (Free tier)</td>
+</tr>
+<tr>
+<td>Деплой</td>
+<td>Vercel</td>
+<td>Бесплатно (Hobby)</td>
+</tr>
+<tr>
+<td>Контроль версий</td>
+<td>Git + GitHub</td>
+<td>Бесплатно</td>
+</tr>
+<tr>
+<td>AI для кода</td>
+<td>Claude Code</td>
+<td>Подписка / API</td>
+</tr>
+<tr>
+<td>Прототипирование UI</td>
+<td>v0.dev</td>
+<td>$5 кредитов бесплатно</td>
+</tr>
+<tr>
+<td>Мобильное приложение</td>
+<td>React Native + Expo</td>
+<td>Бесплатно</td>
+</tr>
+<tr>
+<td>Мониторинг ошибок</td>
+<td>Sentry</td>
+<td>Бесплатно (5K ошибок)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>Автор: Руслан Маджитов · madzhitov.ru</em>
+<em>Последнее обновление: май 2026</em></p>
+<div class="callout callout-info">
+<strong>📌 Конец справочника.</strong> У тебя теперь есть карта всей территории — от DNS до мониторинга. Возвращайся к этим модулям как к словарю, когда AI генерирует что-то непонятное. И главное — иди в ката-уроки v1–v10 и применяй.
+</div>
+
+`);
+
 // ============================================================
 // Состояние и UI
 // ============================================================
@@ -27560,6 +28897,20 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-05-31",
+    title: "📚 Справочник по веб-разработке в вайб-тропинке (v11–v15)",
+    tag: "new",
+    items: [
+      "Добавил 5 новых уроков в тропинку «Вайб Код Вам Дам» — мини-курс «Справочник» из 25 глав от Руслана: вся карта веб-разработки для не-разработчиков",
+      "v11 «Основы веба»: интернет, frontend (HTML/CSS/JS/Tailwind/React), backend, Node.js, фреймворки (Next.js)",
+      "v12 «Данные и API»: БД (SQL/NoSQL/Supabase/ORM), REST/webhooks/HTTP, авторизация (JWT/OAuth/RLS)",
+      "v13 «Инструменты разработчика»: Git/GitHub, npm и package.json, .env-секреты, спецификация",
+      "v14 «От кода к продукту»: деплой (Vercel), мобайл (PWA/React Native/Expo), типовые архитектуры",
+      "v15 «Продвинутые темы»: отладка, тесты, кэш, мониторинг, SEO, безопасность, рекомендуемый стек",
+      "Вайб-тропинка теперь 15/15: 10 ката (v1–v10) + 5 модулей справочника (v11–v15). Главы 1–24 гайда + приложения"
+    ]
+  },
   {
     date: "2026-05-29",
     title: "📚 Большой выпуск: +29 уроков за раз (88 готовы из 134)",
