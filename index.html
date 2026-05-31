@@ -3855,6 +3855,53 @@ main {
 .quiz-result-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 .quiz-result-actions button { font-family: inherit; }
 
+/* ============================================================
+   ТРОПА — карты Пути и Уровня. Namespace .tmap, чтобы не цеплять
+   существующие .card/.row/.rail/.head в остальном сайте.
+   ============================================================ */
+.tmap { max-width: 640px; margin: 0 auto; padding: 0.5rem 0 1rem; }
+.tmap-head { font-size: 21px; font-weight: 500; margin: 0 0 1.6rem; color: var(--ink); }
+.tmap-head .sub { font-size: 14px; font-weight: 400; color: var(--faint); }
+.tmap-zoom { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; color: var(--muted); cursor: pointer; user-select: none; margin-bottom: 1.2rem; background: none; border: none; padding: 0; font-family: inherit; }
+.tmap-zoom:hover { color: var(--ink); }
+.tmap-rail { position: relative; }
+.tmap-rln { position: absolute; left: 16px; top: 24px; bottom: 24px; width: 2px; background: var(--line); }
+.tmap-row { display: flex; gap: 17px; align-items: center; padding: 11px 0; position: relative; }
+.tmap-row.top { align-items: flex-start; }
+.tmap-mk { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--panel); z-index: 1; }
+.tmap-mk.done { background: var(--done-soft); color: var(--done); }
+.tmap-mk.now { background: var(--accent-soft); margin-top: 17px; }
+.tmap-mk.now i { width: 11px; height: 11px; border-radius: 50%; background: var(--accent); display: block; }
+.tmap-mk.lock { color: var(--faint); border: 0.5px solid var(--line); }
+.tmap-mk.gate { color: var(--muted); border: 0.5px solid var(--line-strong); margin-top: 17px; }
+.tmap-mk.a { background: var(--accent-soft); color: var(--accent); font-size: 13px; font-weight: 600; }
+.tmap-lbl { font-size: 17px; color: var(--faint); }
+.tmap-lbl .mut { font-size: 13px; }
+.tmap-lbl.live { color: var(--ink); }
+.tmap-card { flex: 1; background: var(--card); border: 2px solid var(--accent); border-radius: var(--r); padding: 1.2rem 1.35rem; }
+.tmap-card .eye { font-size: 13px; color: var(--accent); margin-bottom: 6px; }
+.tmap-card .ttl { font-size: 19px; font-weight: 500; margin-bottom: 4px; color: var(--ink); }
+.tmap-card .dsc { font-size: 15px; color: var(--muted); margin-bottom: 17px; }
+.tmap-go { font-family: inherit; font-size: 16px; color: var(--ink); background: transparent; border: 0.5px solid var(--line-strong); border-radius: 10px; padding: 11px 19px; cursor: pointer; transition: .15s; }
+.tmap-go:hover { background: var(--accent-soft); border-color: var(--accent); }
+.tmap-go:active { transform: scale(.98); }
+.tmap-gatecard { flex: 1; background: var(--panel); border: 2px solid var(--line-strong); border-radius: var(--r); padding: 1.2rem 1.35rem; cursor: pointer; transition: .15s; }
+.tmap-gatecard:hover { border-color: var(--muted); }
+.tmap-gatecard .ttl { font-size: 19px; font-weight: 500; margin-bottom: 4px; color: var(--ink); }
+.tmap-gatecard .dsc { font-size: 15px; color: var(--muted); }
+.tmap-foot { margin-top: 1.6rem; padding-top: 1rem; border-top: 0.5px solid var(--line); font-size: 14px; color: var(--faint); line-height: 1.7; }
+.tmap-foot a { color: var(--muted); cursor: pointer; }
+.tmap-foot a:hover { color: var(--ink); }
+.tmap-acall { margin-top: 1.8rem; border-top: 0.5px solid var(--line); padding-top: 1.1rem; }
+.tmap-acall .bar { display: inline-flex; align-items: center; gap: 11px; cursor: pointer; user-select: none; }
+.tmap-acall .bar .a-mk { width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+.tmap-acall .bar span { font-size: 15px; color: var(--faint); }
+.tmap-acall .bar:hover span { color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) {
+  .tmap-view { animation: tmapfade .26s ease; }
+  @keyframes tmapfade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+}
+
 </style>
 </head>
 <body>
@@ -4009,6 +4056,65 @@ const PHASES = [
   { id: 3, title: "Фаза 3. Практик", subtitle: "Что под капотом ИИ" },
   { id: 4, title: "Фаза 4. Инженер", subtitle: "Классический ML, fine-tuning, продакшен" },
 ];
+
+// ============================================================
+// УРОВНИ (Тропа) — группировка ШАГОВ поверх существующих id уроков.
+// Это слой ОТОБРАЖЕНИЯ: id и прогресс не меняются, перенумерации нет.
+// Уровни режут поперёк старых фаз. Веха базы — заглушка, тело вставим
+// отдельно через registerLesson (это контент, не оболочка).
+// ============================================================
+const VEKHA_BASE = 'vekha-base';  // id-заглушка Вехи Уровня 2 (тела пока нет)
+function rangeIds(a, b) { const r = []; for (let i = a; i <= b; i++) r.push(i); return r; }
+
+const LEVELS = [
+  { n: 1, title: "Понять и заговорить",
+    dsc: "первые шаги: что такое ИИ и как с ним договориться",
+    steps: [1, 4, 3], gated: false },
+  { n: 2, title: "Свой помощник",
+    dsc: "впереди Веха — собранный руками помощник",
+    steps: [10, VEKHA_BASE], gated: false, vekha: VEKHA_BASE },
+  // ── Ворота встают здесь, после Вехи базы ──
+  { n: 3, title: "Строитель",
+    dsc: "приложения и агенты",
+    steps: [2, 5, 6, 7, 8, 9, 11, 12].concat(rangeIds(13, 30)), gated: true },
+  { n: 4, title: "Практик",
+    dsc: "что под капотом ИИ",
+    steps: rangeIds(31, 50), gated: true },
+  { n: 5, title: "Инженер",
+    dsc: "классический ML, fine-tuning, продакшен",
+    steps: rangeIds(51, 72), gated: true },
+];
+
+// Узлы шагов уровня: {id, title, kind:'step'|'vekha', done, placeholder}
+function levelSteps(level) {
+  return level.steps.map(sid => {
+    if (sid === VEKHA_BASE) {
+      return { id: VEKHA_BASE, title: "Веха: протокол встречи → задачи", kind: 'vekha', done: isCompleted(VEKHA_BASE), placeholder: !findLesson(VEKHA_BASE) };
+    }
+    const l = findLesson(sid);
+    return { id: sid, title: l ? l.title : ('Шаг ' + sid), kind: 'step', done: isCompleted(sid), placeholder: !(l && l.content) };
+  });
+}
+// Гейтинг мягкий: пока Вехи нет, «база сдана» = пройден реальный шаг базы (урок 10).
+// Когда тело Вехи появится — ужесточим до isCompleted(VEKHA_BASE).
+function baseReady() { return isCompleted(VEKHA_BASE) || isCompleted(10); }
+function levelHasProgress(level) { return level.steps.some(sid => sid !== VEKHA_BASE && isCompleted(sid)); }
+function levelDone(level) {
+  const real = levelSteps(level).filter(s => !s.placeholder);
+  return real.length > 0 && real.every(s => s.done);
+}
+// Уровень за Воротами заперт ТОЛЬКО если база не сдана И внутри нет прогресса
+// (бывалый пользователь со старыми галочками не теряет доступ — защита прогресса).
+function isLevelLocked(level) {
+  if (!level.gated) return false;
+  if (baseReady()) return false;
+  if (levelHasProgress(level)) return false;
+  return true;
+}
+function currentLevel() {
+  for (const lv of LEVELS) { if (isLevelLocked(lv)) continue; if (!levelDone(lv)) return lv; }
+  return LEVELS[LEVELS.length - 1];
+}
 
 // Параллельные тропинки — отдельные ветки рядом с главным путём
 const TRACKS = [
@@ -28180,7 +28286,7 @@ function openStaticPage(name) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   trackEvent(`page-${name}`, `Static page: ${name}`);
 
-  if (name === 'home') renderHome();
+  if (name === 'home') renderPathMap();
   else if (name === 'about') renderAbout();
   else if (name === 'howto') renderHowTo();
   else if (name === 'faq') renderFAQ();
@@ -29400,6 +29506,82 @@ function renderChangelog() {
 // ============================================================
 // HOME (новый лендинг)
 // ============================================================
+
+// ============================================================
+// ТРОПА — рендер двух карт. Прогресс/уроки не трогаем: читаем
+// isCompleted, открываем существующий openLesson(id).
+// ============================================================
+let currentMapLevel = null;  // null = карта Пути; число = карта Уровня
+const T_CHECK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg>';
+const T_LOCK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+function gateOpen() { return baseReady(); }
+function openPath() { currentMapLevel = null; renderPathMap(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function openLevel(n) { currentMapLevel = n; renderLevel(n); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function renderPathMap() {
+  currentLessonId = null;
+  const ub = document.getElementById('update-banner'); if (ub) ub.style.display = 'none';  // глобальный счётчик уходит (закон 1)
+  const nowLv = currentLevel();
+  let rows = '';
+  for (const lv of LEVELS) {
+    const locked = isLevelLocked(lv);
+    const done = levelDone(lv);
+    const isNow = (lv.n === nowLv.n) && !done && !locked;
+    if (done) {
+      rows += `<div class="tmap-row"><div class="tmap-mk done">${T_CHECK}</div><div class="tmap-lbl">Уровень ${lv.n} · ${lv.title} <span class="mut">· пройден</span></div></div>`;
+    } else if (isNow) {
+      rows += `<div class="tmap-row top"><div class="tmap-mk now"><i></i></div><div class="tmap-card"><div class="eye">ты здесь</div><div class="ttl">Уровень ${lv.n} · ${lv.title}</div><div class="dsc">${lv.dsc}</div><button class="tmap-go" onclick="openLevel(${lv.n})">Войти в уровень →</button></div></div>`;
+    } else if (locked) {
+      rows += `<div class="tmap-row"><div class="tmap-mk lock">${T_LOCK}</div><div class="tmap-lbl">Уровень ${lv.n} · ${lv.title}</div></div>`;
+    } else {
+      rows += `<div class="tmap-row"><div class="tmap-mk" style="cursor:pointer" onclick="openLevel(${lv.n})"><i style="width:9px;height:9px;border-radius:50%;background:var(--faint);display:block"></i></div><div class="tmap-lbl live" style="cursor:pointer" onclick="openLevel(${lv.n})">Уровень ${lv.n} · ${lv.title}</div></div>`;
+    }
+    if (lv.n === 2) {
+      rows += `<div class="tmap-row top"><div class="tmap-mk gate">${T_LOCK}</div><div class="tmap-gatecard" onclick="openSection('vibe')"><div class="ttl">Ворота — а что там?</div><div class="dsc">Додзё · ${gateOpen() ? 'путь открыт, заходи когда готов' : 'сними обувь, здесь свои правила'}</div></div></div>`;
+    }
+  }
+  document.getElementById('lesson-content').innerHTML = `
+    <div class="tmap tmap-view">
+      <div class="tmap-head">Путь <span class="sub">· от пользователя к создателю</span></div>
+      <div class="tmap-rail"><div class="tmap-rln"></div>${rows}</div>
+      <div class="tmap-acall"><div class="bar" onclick="aleshaToggle()"><div class="a-mk">А</div><span>позвать Алёшу</span></div></div>
+      <div class="tmap-foot">Тропинки рядом — <a onclick="openSection('claude')">Claude</a> · <a onclick="openSection('projects')">мини-проекты</a> · <a onclick="openSection('industry')">индустрии</a> · <a onclick="openSection('everyday')">AI каждый день</a></div>
+    </div>`;
+  renderFooter();
+}
+
+function renderLevel(n) {
+  const lv = LEVELS.find(l => l.n === n);
+  if (!lv) { openPath(); return; }
+  const steps = levelSteps(lv);
+  let nowIdx = steps.findIndex(s => !s.placeholder && !s.done);
+  const total = steps.filter(s => !s.placeholder).length;
+  const pos = Math.min((nowIdx === -1 ? total : nowIdx + 1), total || 1);
+  let rows = '';
+  steps.forEach((s, idx) => {
+    const openId = (typeof s.id === 'number') ? s.id : `'${s.id}'`;
+    if (s.kind === 'vekha') {
+      rows += `<div class="tmap-row"><div class="tmap-mk lock">${T_LOCK}</div><div class="tmap-lbl">Веха · протокол встречи → задачи <span class="mut">· скоро</span></div></div>`;
+      return;
+    }
+    if (s.done) {
+      rows += `<div class="tmap-row"><div class="tmap-mk done">${T_CHECK}</div><div class="tmap-lbl">${s.title} <span class="mut">· пройдено</span></div></div>`;
+    } else if (idx === nowIdx) {
+      const dur = (findLesson(s.id) || {}).duration;
+      rows += `<div class="tmap-row top"><div class="tmap-mk now"><i></i></div><div class="tmap-card"><div class="eye">сейчас здесь</div><div class="ttl">${s.title}</div><div class="dsc">${s.placeholder ? 'скоро' : '~' + (dur || '') + ' мин'}</div>${s.placeholder ? '' : `<button class="tmap-go" onclick="openLesson(${openId})">Идти →</button>`}</div></div>`;
+    } else {
+      rows += `<div class="tmap-row"><div class="tmap-mk lock">${T_LOCK}</div><div class="tmap-lbl">${s.title}</div></div>`;
+    }
+  });
+  const kalitka = `<div class="tmap-row"><div class="tmap-mk a">А</div><div class="tmap-lbl" style="font-size:14px;color:var(--muted)">Калитка · Алёша сверит: «покажи, что собрал»</div></div>`;
+  document.getElementById('lesson-content').innerHTML = `
+    <div class="tmap tmap-view">
+      <button class="tmap-zoom" onclick="openPath()">← весь Путь</button>
+      <div class="tmap-head">Уровень ${lv.n} · ${lv.title} <span class="sub">${total ? '· шаг ' + pos + ' из ' + total : ''}</span></div>
+      <div class="tmap-rail"><div class="tmap-rln"></div>${rows}${kalitka}</div>
+    </div>`;
+  renderFooter();
+}
 
 function renderHome() {
   const total = allLessons().length;
