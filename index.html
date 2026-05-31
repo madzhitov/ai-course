@@ -26673,47 +26673,44 @@ function renderFooter() {
       <div class="footer-brand">
         <div class="alesha-logo">A</div>
         <h4>AI Курс</h4>
-        <p>Бесплатный практический курс по ИИ на русском. От пользователя к создателю. 139 уроков с AI-наставником, 93 готовы.</p>
+        <p>тихий путь от пользователя к создателю. рядом Алёша, в конце каждого уровня — Веха, собранная руками.</p>
       </div>
 
       <div class="footer-col">
-        <h5>Курс</h5>
-        <a onclick="openSection('main')">Главный путь</a>
+        <h5>путь</h5>
+        <a onclick="openStaticPage('home')">весь путь</a>
+        <a onclick="openStaticPage('about')">о пути</a>
+        <a onclick="openSection('vibe')">ворота · додзё</a>
+      </div>
+
+      <div class="footer-col">
+        <h5>тропинки</h5>
+        <a onclick="openSection('claude')">Claude</a>
+        <a onclick="openSection('projects')">мини-проекты</a>
+        <a onclick="openSection('industry')">индустрии</a>
         <a onclick="openSection('everyday')">AI каждый день</a>
-        <a onclick="openSection('claude')">Claude Deep Dive</a>
-        <a onclick="openSection('projects')">Мини-проекты</a>
-        <a onclick="openSection('industry')">Индустрии</a>
-        <a onclick="openSection('vibe')">🥋 Вайб Код Вам Дам</a>
-        <a onclick="openGlossary()">Глоссарий</a>
       </div>
 
       <div class="footer-col">
-        <h5>Сообщество</h5>
-        <a href="https://t.me/artefakty_ai" target="_blank">Канал @artefakty_ai ↗</a>
-        <a onclick="openStaticPage('changelog')">Что нового</a>
-        <a onclick="openStaticPage('changelog')">Pet-проекты (скоро)</a>
+        <h5>ещё</h5>
+        <a onclick="openStaticPage('howto')">как заниматься</a>
+        <a onclick="openGlossary()">глоссарий</a>
+        <a onclick="openStaticPage('faq')">частые вопросы</a>
+        <a onclick="openStaticPage('resources')">источники</a>
+        <a onclick="openStaticPage('changelog')">что нового</a>
       </div>
 
       <div class="footer-col">
-        <h5>Ресурсы</h5>
-        <a onclick="openStaticPage('about')">О курсе</a>
-        <a onclick="openStaticPage('howto')">Как заниматься</a>
-        <a onclick="openStaticPage('faq')">FAQ</a>
-        <a onclick="openStaticPage('resources')">Источники</a>
-      </div>
-
-      <div class="footer-col">
-        <h5>Open Source</h5>
-        <a href="https://github.com/madzhitov/ai-course" target="_blank">GitHub репо ↗</a>
-        <a href="https://ai.madzhitov.ru" target="_blank">ai.madzhitov.ru ↗</a>
-        <a>MIT-лицензия</a>
+        <h5>рядом</h5>
+        <a href="https://t.me/artefakty_ai" target="_blank">канал @artefakty_ai ↗</a>
+        <a href="https://github.com/madzhitov/ai-course" target="_blank">открытый код ↗</a>
         <a href="https://madzhitov.ru" target="_blank">madzhitov.ru ↗</a>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <div>© 2026 Руслан Маджитов · MIT-лицензия</div>
-      <div>Сделано с ❤️ и Claude · Канал: <a href="https://t.me/artefakty_ai" target="_blank" style="color: var(--text); font-weight: 500;">@artefakty_ai</a></div>
+      <div>© 2026 Руслан Маджитов · MIT</div>
+      <div>бесплатно · открытый код · на русском</div>
     </div>
   `;
 }
