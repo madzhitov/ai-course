@@ -3864,12 +3864,23 @@ main {
 .tmap-head .sub { font-size: 14px; font-weight: 400; color: var(--faint); }
 .tmap-zoom { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; color: var(--muted); cursor: pointer; user-select: none; margin-bottom: 1.2rem; background: none; border: none; padding: 0; font-family: inherit; }
 .tmap-zoom:hover { color: var(--ink); }
-.lesson-back { margin: 0 0 1.4rem; }
-.lesson-back .tmap-zoom { font-size: 15px; margin-bottom: 0; }
+/* Заметный back-link/крошка: pill, а не тихий текст */
+.lesson-back { margin: 0 0 1.6rem; }
+.lesson-back .tmap-zoom,
+.tmap-back-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: inherit; font-size: 15px; font-weight: 500;
+  color: var(--ink); background: var(--panel);
+  border: 0.5px solid var(--line-strong); border-radius: 11px;
+  padding: 9px 16px 9px 13px; cursor: pointer; margin-bottom: 0;
+  transition: .15s;
+}
+.lesson-back .tmap-zoom:hover,
+.tmap-back-pill:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.tmap-back-pill { margin: 0 0 1.6rem; }
 /* Тропа: тихий футер одной строкой (как в эталоне v7), а не витрина-сетка */
-.tropa-footer { margin-top: 3rem; padding-top: 1.3rem; border-top: 0.5px solid var(--line); text-align: center; }
-.tropa-footer .tf-line { font-size: 14px; color: var(--faint); }
-.tropa-footer .tf-sub { font-size: 13px; color: var(--faint); margin-top: 0.5rem; opacity: 0.85; }
+/* Футер строго как в эталоне v7: одна тихая строка, без рамки и центровки */
+.tropa-footer { margin-top: 3rem; padding: 1.5rem 0 3.5rem; font-size: 14px; color: var(--faint); }
 
 /* ── Хедер по эталону v7: «AI Курс.» + Алёша + тема ── */
 .top-nav-logo .brand-dot { color: var(--accent); }
@@ -3896,8 +3907,6 @@ main {
   @keyframes tdraw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 }
 .tmap-article p { font-size: 17px; line-height: 1.75; color: var(--ink); margin: 0 0 1.1rem; }
-.tropa-footer a { color: var(--muted); }
-.tropa-footer a:hover { color: var(--ink); }
 .tmap-rail { position: relative; }
 .tmap-rln { position: absolute; left: 16px; top: 24px; bottom: 24px; width: 2px; background: var(--line); }
 .tmap-row { display: flex; gap: 17px; align-items: center; padding: 11px 0; position: relative; }
@@ -26733,12 +26742,7 @@ function updateProgressUI() {
 function renderFooter() {
   const footer = document.getElementById('site-footer');
   if (!footer) return;
-  footer.innerHTML = `
-    <div class="tropa-footer">
-      <div class="tf-line">бесплатно · открытый код · на русском</div>
-      <div class="tf-sub">© 2026 Руслан Маджитов · MIT · <a href="https://t.me/artefakty_ai" target="_blank">@artefakty_ai</a> · <a href="https://github.com/madzhitov/ai-course" target="_blank">github</a></div>
-    </div>
-  `;
+  footer.innerHTML = `<div class="tropa-footer">бесплатно · открытый код · на русском</div>`;
 }
 
 function openLesson(id) {
@@ -27968,6 +27972,7 @@ function renderTrackSection(trackId) {
   const meta = descriptions[trackId];
 
   let html = `
+    <button class="tmap-back-pill" onclick="openStaticPage('home')">← весь Путь · тропинка</button>
     <h1 style="display:flex; align-items:center; gap:14px;"><span style="display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:10px; background: var(--bg-soft); color: var(--text);">${phaseIcon(trackId)}</span>${meta.title}</h1>
     <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1.5rem;">${meta.hero}</p>
 
