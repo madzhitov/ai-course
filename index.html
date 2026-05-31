@@ -3942,57 +3942,6 @@ main {
 
   <input type="text" class="search-box" id="search-box" placeholder="Поиск по урокам  (⌘K)" oninput="onSearchInput(this.value)" onfocus="onSearchInput(this.value)" onkeydown="if(event.key==='Escape'){this.value=''; closeSearchOverlay(); this.blur();}">
 
-  <div class="global-progress">
-    <div class="global-progress-label">
-      <span>Общий прогресс</span>
-      <span id="global-progress-text">0 / 72</span>
-    </div>
-    <div class="progress-bar"><div class="progress-bar-fill" id="global-progress-bar" style="width: 0%"></div></div>
-  </div>
-
-  <div class="phase">
-    <div class="phase-header" style="cursor: default;">
-      <div>
-        <div class="phase-title">Введение</div>
-        <div class="phase-progress-mini">Начни здесь</div>
-      </div>
-    </div>
-    <div class="phase-lessons">
-      <button class="lesson-link static-link" data-static="home" onclick="openStaticPage('home')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
-        <span class="title">Главная</span>
-      </button>
-      <button class="lesson-link static-link" data-static="my-progress" onclick="openStaticPage('my-progress')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16V9"/><path d="M12 16V6"/><path d="M17 16v-4"/></svg></span>
-        <span class="title">Мой прогресс</span>
-      </button>
-      <button class="lesson-link static-link" data-static="about" onclick="openStaticPage('about')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span>
-        <span class="title">О курсе</span>
-      </button>
-      <button class="lesson-link static-link" data-static="howto" onclick="openStaticPage('howto')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
-        <span class="title">Как заниматься</span>
-      </button>
-      <button class="lesson-link static-link" data-static="faq" onclick="openStaticPage('faq')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span>
-        <span class="title">FAQ</span>
-      </button>
-      <button class="lesson-link static-link" data-static="glossary" onclick="openGlossary()">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></span>
-        <span class="title">Глоссарий</span>
-      </button>
-      <button class="lesson-link static-link" data-static="changelog" onclick="openStaticPage('changelog')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6z"/></svg></span>
-        <span class="title">Что нового</span>
-      </button>
-      <button class="lesson-link static-link" data-static="resources" onclick="openStaticPage('resources')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg></span>
-        <span class="title">Источники</span>
-      </button>
-    </div>
-  </div>
-
   <nav id="lesson-nav"></nav>
   <nav id="track-nav"></nav>
 </aside>
@@ -26635,137 +26584,76 @@ function toggleCompleted(id) {
   renderLesson(currentLessonId);
 }
 
+// Тропа: бургер открывает панель «Разделы» — Путь (Уровни), Тропинки, Ещё.
+// Сайдбар фаз и список всех уроков убраны (закон 1: карта районов, не улиц).
 function buildNav() {
-  // Главный путь — фазы
   const nav = document.getElementById('lesson-nav');
-  nav.innerHTML = '';
-
-  const mainHeader = document.createElement('div');
-  mainHeader.className = 'phase';
-  mainHeader.innerHTML = `
-    <div class="phase-header" style="cursor: default; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
-      <div>
-        <div class="phase-title" style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Главный путь</div>
-      </div>
-    </div>
-  `;
-  nav.appendChild(mainHeader);
-
-  // Определяем активную фазу (содержит текущий урок)
-  const currentLesson = currentLessonId ? findLesson(currentLessonId) : null;
-  const activePhaseId = (currentLesson && typeof currentLesson.id === 'number') ? currentLesson.phase : null;
-
-  PHASES.forEach(phase => {
-    const phaseLessons = LESSONS.filter(l => l.phase === phase.id);
-    const completedCount = phaseLessons.filter(l => isCompleted(l.id)).length;
-    const phaseEl = document.createElement('div');
-    // По умолчанию свёрнуты неактивные фазы (кроме первой при первом заходе)
-    const shouldCollapse = activePhaseId !== null ? (phase.id !== activePhaseId) : (phase.id !== 1);
-    phaseEl.className = 'phase' + (shouldCollapse ? ' collapsed' : '');
-    phaseEl.setAttribute('data-phase', String(phase.id));
-    phaseEl.innerHTML = `
-      <div class="phase-header" onclick="this.parentElement.classList.toggle('collapsed')">
-        <div>
-          <div class="phase-title"><span class="phase-toggle">▼</span><span class="phase-icon">${phaseIcon(phase.id)}</span>${phase.title}</div>
-          <div class="phase-progress-mini">${phase.subtitle}</div>
-        </div>
-        <div class="phase-progress-mini">${completedCount}/${phaseLessons.length}</div>
-      </div>
-      <div class="phase-lessons" id="phase-${phase.id}-lessons"></div>
-    `;
-    nav.appendChild(phaseEl);
-    const lessonsContainer = phaseEl.querySelector(`#phase-${phase.id}-lessons`);
-    phaseLessons.forEach(lesson => {
-      const link = document.createElement('button');
-      const completed = isCompleted(lesson.id);
-      link.className = 'lesson-link' + (completed ? ' completed' : '') + (lesson.draft ? ' draft' : '') + (lesson.id === currentLessonId ? ' active' : '');
-      link.dataset.lessonId = lesson.id;
-      link.dataset.title = lesson.title.toLowerCase();
-      link.innerHTML = `
-        <span class="num">${lesson.id}.</span>
-        <span class="title">${lesson.title}</span>
-        <span class="status">${completed ? '✓' : ''}</span>
-      `;
-      link.onclick = () => openLesson(lesson.id);
-      lessonsContainer.appendChild(link);
-    });
-
-    // Квиз в конце фазы
-    const phaseDoneCount = phaseLessons.filter(l => l.content).length;
-    if (phaseDoneCount >= 5) {
-      const quizLink = document.createElement('button');
-      const quizDone = progress[`quiz_phase_${phase.id}`];
-      quizLink.className = 'lesson-link' + (quizDone ? ' completed' : '');
-      quizLink.dataset.title = `квиз фаза ${phase.id}`;
-      quizLink.innerHTML = `
-        <span class="num">🎓</span>
-        <span class="title">Квиз: проверь себя</span>
-        <span class="status">${quizDone ? '✓' : ''}</span>
-      `;
-      quizLink.onclick = () => openQuiz(phase.id);
-      lessonsContainer.appendChild(quizLink);
-    }
-  });
-
-  // Параллельные тропинки
   const trackNav = document.getElementById('track-nav');
+  if (!nav || !trackNav) return;
+  nav.innerHTML = '';
   trackNav.innerHTML = '';
 
-  const tracksHeader = document.createElement('div');
-  tracksHeader.className = 'phase';
-  tracksHeader.innerHTML = `
-    <div class="phase-header" style="cursor: default; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 0.5rem; margin-top: 1rem;">
-      <div>
-        <div class="phase-title" style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Параллельные тропинки</div>
-      </div>
-    </div>
-  `;
-  trackNav.appendChild(tracksHeader);
+  const groupHeader = (label, mt) => `<div class="phase-header" style="cursor:default;border-bottom:1px solid var(--border);padding-bottom:0.5rem;margin:${mt?'1rem':'0'} 0 0.5rem;"><div><div class="phase-title" style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">${label}</div></div></div>`;
 
-  const activeTrack = (currentLesson && currentLesson.track) ? currentLesson.track : null;
+  // ── Путь ──
+  const nowLv = currentLevel();
+  const pathEl = document.createElement('div');
+  pathEl.className = 'phase';
+  let p = groupHeader('Путь', false) + '<div class="phase-lessons">';
+  p += `<button class="lesson-link" onclick="closeSidebar();openStaticPage('home')"><span class="num">🗺</span><span class="title">Весь Путь</span></button>`;
+  for (const lv of LEVELS) {
+    const locked = isLevelLocked(lv), done = levelDone(lv);
+    const isNow = lv.n === nowLv.n && !done && !locked;
+    if (locked) {
+      p += `<button class="lesson-link draft" style="opacity:.55" onclick="closeSidebar();openStaticPage('home')"><span class="num">🔒</span><span class="title">Уровень ${lv.n} · ${lv.title}</span></button>`;
+    } else {
+      const cls = 'lesson-link' + (done ? ' completed' : '') + (isNow ? ' active' : '');
+      const mark = done ? '✓' : (isNow ? '◆' : '○');
+      p += `<button class="${cls}" onclick="closeSidebar();openLevel(${lv.n})"><span class="num">${mark}</span><span class="title">Уровень ${lv.n} · ${lv.title}</span><span class="status">${done ? '✓' : ''}</span></button>`;
+    }
+    if (lv.n === 2) {
+      p += `<button class="lesson-link" onclick="closeSidebar();openSection('vibe')"><span class="num">⛩</span><span class="title">Ворота · Додзё</span></button>`;
+    }
+  }
+  p += '</div>';
+  pathEl.innerHTML = p;
+  nav.appendChild(pathEl);
 
-  TRACKS.forEach(track => {
-    const trackLessons = TRACK_LESSONS.filter(l => l.track === track.id);
-    const completedCount = trackLessons.filter(l => isCompleted(l.id)).length;
-    const trackEl = document.createElement('div');
-    const shouldCollapse = activeTrack ? (track.id !== activeTrack) : true;
-    trackEl.className = 'phase' + (shouldCollapse ? ' collapsed' : '');
-    trackEl.setAttribute('data-phase', track.id === 'claude' ? 'c' : track.id === 'projects' ? 'p' : 'i');
-    trackEl.innerHTML = `
-      <div class="phase-header" onclick="this.parentElement.classList.toggle('collapsed')">
-        <div>
-          <div class="phase-title"><span class="phase-toggle">▼</span><span class="phase-icon">${phaseIcon(track.id)}</span>${track.title.replace(/^[🟣🛠💼]\s*/, '')}</div>
-          <div class="phase-progress-mini">${track.subtitle}</div>
-        </div>
-        <div class="phase-progress-mini">${completedCount}/${trackLessons.length}</div>
-      </div>
-      <div class="phase-lessons" id="track-${track.id}-lessons"></div>
-    `;
-    trackNav.appendChild(trackEl);
-    const lessonsContainer = trackEl.querySelector(`#track-${track.id}-lessons`);
-    trackLessons.forEach(lesson => {
-      const link = document.createElement('button');
-      const completed = isCompleted(lesson.id);
-      link.className = 'lesson-link' + (completed ? ' completed' : '') + (lesson.draft ? ' draft' : '') + (lesson.id === currentLessonId ? ' active' : '');
-      link.dataset.lessonId = lesson.id;
-      link.dataset.title = lesson.title.toLowerCase();
-      link.innerHTML = `
-        <span class="num">${lesson.id.toUpperCase()}</span>
-        <span class="title">${lesson.title}</span>
-        <span class="status">${completed ? '✓' : ''}</span>
-      `;
-      link.onclick = () => openLesson(lesson.id);
-      lessonsContainer.appendChild(link);
-    });
+  // ── Тропинки (vibe — это Ворота, не тропинка) ──
+  const trEl = document.createElement('div');
+  trEl.className = 'phase';
+  let t = groupHeader('Тропинки', true) + '<div class="phase-lessons">';
+  TRACKS.filter(tr => tr.id !== 'vibe').forEach(tr => {
+    const doneN = TRACK_LESSONS.filter(l => l.track === tr.id && isCompleted(l.id)).length;
+    t += `<button class="lesson-link" onclick="closeSidebar();openSection('${tr.id}')"><span class="num">${tr.icon}</span><span class="title">${tr.title.replace(/^[🟣🛠💼🏠🥋]\s*/, '')}</span><span class="status">${doneN ? '✓' : ''}</span></button>`;
   });
+  t += '</div>';
+  trEl.innerHTML = t;
+  trackNav.appendChild(trEl);
+
+  // ── Ещё (статические страницы; data-static нужен setActiveStaticLink) ──
+  const moreEl = document.createElement('div');
+  moreEl.className = 'phase';
+  const pages = [['my-progress', 'Мой прогресс'], ['about', 'О курсе'], ['howto', 'Как заниматься'], ['faq', 'FAQ'], ['glossary', 'Глоссарий'], ['changelog', 'Что нового'], ['resources', 'Источники']];
+  let m = groupHeader('Ещё', true) + '<div class="phase-lessons">';
+  pages.forEach(([id, label]) => {
+    const handler = id === 'glossary' ? 'openGlossary()' : `openStaticPage('${id}')`;
+    m += `<button class="lesson-link static-link" data-static="${id}" onclick="closeSidebar();${handler}"><span class="num">·</span><span class="title">${label}</span></button>`;
+  });
+  m += '</div>';
+  moreEl.innerHTML = m;
+  trackNav.appendChild(moreEl);
 }
 
 function updateProgressUI() {
   const all = allLessons();
   const total = all.length;
   const done = all.filter(l => isCompleted(l.id)).length;
-  document.getElementById('global-progress-text').textContent = `${done} / ${total}`;
-  document.getElementById('global-progress-bar').style.width = `${(done / total * 100).toFixed(1)}%`;
+  // Глобальный счётчик «N из всего» убран по закону 1 Тропы — элементы могут отсутствовать.
+  const gpt = document.getElementById('global-progress-text');
+  if (gpt) gpt.textContent = `${done} / ${total}`;
+  const gpb = document.getElementById('global-progress-bar');
+  if (gpb) gpb.style.width = `${(done / total * 100).toFixed(1)}%`;
 
   // Бейдж сверху — реальные цифры
   const banner = document.getElementById('banner-progress');
