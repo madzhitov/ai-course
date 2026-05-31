@@ -25,31 +25,45 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js">
 </script>
 <style>
 :root {
-  /* Editorial light palette — monochrome + один blue accent */
-  --bg: #ffffff;
-  --bg-sidebar: #fafaf9;
-  --bg-card: #ffffff;
-  --bg-code: #f5f5f4;
-  --bg-elevated: #f9f9f8;
-  --bg-soft: #f5f5f4;
-  --text: #0a0a0a;
-  --text-muted: #6b6b6b;
-  --text-soft: #a8a8a8;
-  --border: #e7e5e4;
-  --border-soft: #f0efed;
-  --border-strong: rgba(0,0,0,0.12);
+  /* Tropa palette (light) — бумажный фон, тёплый уголь, один фиолетовый акцент.
+     Дефолтная тема. Тёмная — опция через [data-theme="dark"]. */
+  --bg: #FAF8F3;
+  --panel: #F1EFE9;
+  --card: #FFFFFF;
+  --ink: #211F1B;
+  --muted: #6b6a64;
+  --faint: #9d9a90;
+  --line: rgba(0,0,0,0.09);
+  --line-strong: rgba(0,0,0,0.17);
+  --done: #2f8f5b;
+  --done-soft: rgba(47,143,91,0.10);
+  --r: 14px;
 
-  /* Accent в editorial — это сам text. CTA-кнопка чёрная. */
-  --accent: #0a0a0a;
-  --accent-hover: #2a2a2a;
-  --accent-soft: #f5f5f4;
-  --accent-text: #0a0a0a;
+  /* Старые имена → tropa-палитра (оболочка и тела уроков наследуют сами) */
+  --bg-sidebar: var(--panel);
+  --bg-card: var(--card);
+  --bg-code: #f1efe9;
+  --bg-elevated: var(--panel);
+  --bg-soft: var(--panel);
+  --text: var(--ink);
+  --text-muted: var(--muted);
+  --text-soft: var(--faint);
+  --border: var(--line);
+  --border-soft: rgba(0,0,0,0.05);
+  --border-strong: var(--line-strong);
+
+  /* Один акцент — фиолетовый, только на действии «сейчас / иди» */
+  --accent: #6d28d9;
+  --accent-hover: #5b21b6;
+  --accent-soft: rgba(109,40,217,0.09);
+  --accent-text: #ffffff;
 
   /* Highlight blue — только для callout и hover-ссылок */
   --link: #2563eb;
@@ -86,25 +100,34 @@
 }
 
 [data-theme="dark"] {
-  /* Editorial dark — глубокий чёрный + тёплый off-white текст */
-  --bg: #0a0a0b;
-  --bg-sidebar: #0f0f10;
-  --bg-card: #131316;
-  --bg-code: #18181b;
-  --bg-elevated: #1a1a1d;
-  --bg-soft: #18181b;
-  --text: #f2f2f3;
-  --text-muted: #8a8a92;
-  --text-soft: #5a5a62;
-  --border: rgba(255,255,255,0.07);
-  --border-soft: rgba(255,255,255,0.04);
-  --border-strong: rgba(255,255,255,0.15);
+  /* Tropa palette (dark) — глубокий уголь, тёплый off-white, светлая лаванда-акцент */
+  --bg: #0e0e10;
+  --panel: #151517;
+  --card: #1c1c20;
+  --ink: #ECEAE3;
+  --muted: #9b988f;
+  --faint: #6a6862;
+  --line: rgba(255,255,255,0.08);
+  --line-strong: rgba(255,255,255,0.18);
+  --done: #85b394;
+  --done-soft: rgba(133,179,148,0.13);
 
-  /* В dark accent = белый текст; CTA-кнопка остаётся «инвертная» */
-  --accent: #f2f2f3;
-  --accent-hover: #ffffff;
-  --accent-soft: rgba(255,255,255,0.06);
-  --accent-text: #f2f2f3;
+  --bg-sidebar: var(--panel);
+  --bg-card: var(--card);
+  --bg-code: #1c1c20;
+  --bg-elevated: var(--panel);
+  --bg-soft: var(--panel);
+  --text: var(--ink);
+  --text-muted: var(--muted);
+  --text-soft: var(--faint);
+  --border: var(--line);
+  --border-soft: rgba(255,255,255,0.04);
+  --border-strong: var(--line-strong);
+
+  --accent: #9b8cf5;
+  --accent-hover: #b3a6ff;
+  --accent-soft: rgba(155,140,245,0.15);
+  --accent-text: #14121c;
 
   --link: #60a5fa;
   --link-soft: rgba(96, 165, 250, 0.12);
@@ -156,8 +179,8 @@ img, svg, video, canvas, iframe {
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
+  font-family: "Golos Text", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-feature-settings: "tnum";
   background: var(--bg);
   color: var(--text);
   line-height: 1.7;
