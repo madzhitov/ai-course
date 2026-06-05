@@ -1,0 +1,1400 @@
+{
+  "course": "AI Курс",
+  "site": "https://ai.madzhitov.ru",
+  "updated": "2026-05-31",
+  "total": 139,
+  "published": 93,
+  "note": "Даты по урокам не отслеживаются; updated — дата последнего релиза курса (из CHANGELOG).",
+  "lessons": [
+    {
+      "id": 1,
+      "track": "main",
+      "phase": 1,
+      "title": "Что такое генеративный ИИ и как он работает",
+      "duration": 50,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/1.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-1"
+    },
+    {
+      "id": 2,
+      "track": "main",
+      "phase": 1,
+      "title": "Семейства LLM: GPT, Claude, Gemini, Llama, Mistral",
+      "duration": 45,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/2.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-2"
+    },
+    {
+      "id": 3,
+      "track": "main",
+      "phase": 1,
+      "title": "Ответственное использование ИИ — риски и как с ними жить",
+      "duration": 50,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/3.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-3"
+    },
+    {
+      "id": 4,
+      "track": "main",
+      "phase": 1,
+      "title": "Основы промпт-инжиниринга",
+      "duration": 50,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/4.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-4"
+    },
+    {
+      "id": 5,
+      "track": "main",
+      "phase": 1,
+      "title": "Продвинутые техники промптов: CoT, ReAct, chaining",
+      "duration": 50,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/5.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-5"
+    },
+    {
+      "id": 6,
+      "track": "main",
+      "phase": 1,
+      "title": "Первое приложение — генерация текста через API",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/6.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-6"
+    },
+    {
+      "id": 7,
+      "track": "main",
+      "phase": 1,
+      "title": "Чат-приложение с памятью",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/7.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-7"
+    },
+    {
+      "id": 8,
+      "track": "main",
+      "phase": 1,
+      "title": "Поиск с эмбеддингами (semantic search)",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/8.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-8"
+    },
+    {
+      "id": 9,
+      "track": "main",
+      "phase": 1,
+      "title": "Генерация изображений",
+      "duration": 45,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/9.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-9"
+    },
+    {
+      "id": 10,
+      "track": "main",
+      "phase": 1,
+      "title": "Low-code приложения с ИИ",
+      "duration": 50,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/10.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-10"
+    },
+    {
+      "id": 11,
+      "track": "main",
+      "phase": 1,
+      "title": "UX для ИИ-приложений",
+      "duration": 45,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/11.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-11"
+    },
+    {
+      "id": 12,
+      "track": "main",
+      "phase": 1,
+      "title": "Безопасность ИИ-приложений",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/12.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-12"
+    },
+    {
+      "id": 13,
+      "track": "main",
+      "phase": 2,
+      "title": "Function Calling — ИИ вызывает твои функции",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/13.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-13"
+    },
+    {
+      "id": 14,
+      "track": "main",
+      "phase": 2,
+      "title": "RAG и векторные БД",
+      "duration": 70,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/14.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-14"
+    },
+    {
+      "id": 15,
+      "track": "main",
+      "phase": 2,
+      "title": "Жизненный цикл GenAI-приложения",
+      "duration": 50,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/15.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-15"
+    },
+    {
+      "id": 16,
+      "track": "main",
+      "phase": 2,
+      "title": "Что такое ИИ-агенты",
+      "duration": 45,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/16.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-16"
+    },
+    {
+      "id": 17,
+      "track": "main",
+      "phase": 2,
+      "title": "Обзор агентских фреймворков",
+      "duration": 55,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/17.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-17"
+    },
+    {
+      "id": 18,
+      "track": "main",
+      "phase": 2,
+      "title": "Паттерны проектирования агентов",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/18.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-18"
+    },
+    {
+      "id": 19,
+      "track": "main",
+      "phase": 2,
+      "title": "Использование инструментов агентами",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/19.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-19"
+    },
+    {
+      "id": 20,
+      "track": "main",
+      "phase": 2,
+      "title": "Agentic RAG",
+      "duration": 55,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/20.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-20"
+    },
+    {
+      "id": 21,
+      "track": "main",
+      "phase": 2,
+      "title": "Доверие и безопасность агентов",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/21.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-21"
+    },
+    {
+      "id": 22,
+      "track": "main",
+      "phase": 2,
+      "title": "Планирование задач агентом",
+      "duration": 55,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/22.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-22"
+    },
+    {
+      "id": 23,
+      "track": "main",
+      "phase": 2,
+      "title": "Мульти-агентные системы",
+      "duration": 70,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/23.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-23"
+    },
+    {
+      "id": 24,
+      "track": "main",
+      "phase": 2,
+      "title": "Метакогниция и саморефлексия агентов",
+      "duration": 50,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/24.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-24"
+    },
+    {
+      "id": 25,
+      "track": "main",
+      "phase": 2,
+      "title": "Контекст-инжиниринг и память агентов",
+      "duration": 60,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/25.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-25"
+    },
+    {
+      "id": 26,
+      "track": "main",
+      "phase": 2,
+      "title": "Microsoft Agent Framework",
+      "duration": 55,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/26.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-26"
+    },
+    {
+      "id": 27,
+      "track": "main",
+      "phase": 2,
+      "title": "Browser-use агенты",
+      "duration": 60,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/27.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-27"
+    },
+    {
+      "id": 28,
+      "track": "main",
+      "phase": 2,
+      "title": "Агентские протоколы (MCP)",
+      "duration": 50,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/28.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-28"
+    },
+    {
+      "id": 29,
+      "track": "main",
+      "phase": 2,
+      "title": "Агенты в продакшене",
+      "duration": 70,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/29.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-29"
+    },
+    {
+      "id": 30,
+      "track": "main",
+      "phase": 2,
+      "title": "Повторение фазы 2: чек-лист агента",
+      "duration": 30,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/30.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-30"
+    },
+    {
+      "id": 31,
+      "track": "main",
+      "phase": 3,
+      "title": "Введение в ИИ как науку",
+      "duration": 45,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/31.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-31"
+    },
+    {
+      "id": 32,
+      "track": "main",
+      "phase": 3,
+      "title": "Символьный ИИ и графы знаний",
+      "duration": 50,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/32.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-32"
+    },
+    {
+      "id": 33,
+      "track": "main",
+      "phase": 3,
+      "title": "Перцептрон — самая простая нейросеть",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/33.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-33"
+    },
+    {
+      "id": 34,
+      "track": "main",
+      "phase": 3,
+      "title": "Свой framework для нейросетей на NumPy",
+      "duration": 90,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/34.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-34"
+    },
+    {
+      "id": 35,
+      "track": "main",
+      "phase": 3,
+      "title": "Знакомство с PyTorch / TensorFlow",
+      "duration": 70,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/35.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-35"
+    },
+    {
+      "id": 36,
+      "track": "main",
+      "phase": 3,
+      "title": "Введение в компьютерное зрение",
+      "duration": 50,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/36.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-36"
+    },
+    {
+      "id": 37,
+      "track": "main",
+      "phase": 3,
+      "title": "Свёрточные нейросети (CNN)",
+      "duration": 70,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/37.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-37"
+    },
+    {
+      "id": 38,
+      "track": "main",
+      "phase": 3,
+      "title": "Transfer Learning",
+      "duration": 60,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/38.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-38"
+    },
+    {
+      "id": 39,
+      "track": "main",
+      "phase": 3,
+      "title": "Автоэнкодеры",
+      "duration": 55,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/39.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-39"
+    },
+    {
+      "id": 40,
+      "track": "main",
+      "phase": 3,
+      "title": "GAN — генеративно-состязательные сети",
+      "duration": 70,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/40.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-40"
+    },
+    {
+      "id": 41,
+      "track": "main",
+      "phase": 3,
+      "title": "Object Detection",
+      "duration": 60,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/41.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-41"
+    },
+    {
+      "id": 42,
+      "track": "main",
+      "phase": 3,
+      "title": "Сегментация изображений",
+      "duration": 60,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/42.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-42"
+    },
+    {
+      "id": 43,
+      "track": "main",
+      "phase": 3,
+      "title": "Представление текста (BoW, TF-IDF)",
+      "duration": 50,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/43.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-43"
+    },
+    {
+      "id": 44,
+      "track": "main",
+      "phase": 3,
+      "title": "Эмбеддинги слов (Word2Vec, GloVe)",
+      "duration": 60,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/44.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-44"
+    },
+    {
+      "id": 45,
+      "track": "main",
+      "phase": 3,
+      "title": "Языковое моделирование",
+      "duration": 55,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/45.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-45"
+    },
+    {
+      "id": 46,
+      "track": "main",
+      "phase": 3,
+      "title": "Рекуррентные сети (RNN, LSTM)",
+      "duration": 70,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/46.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-46"
+    },
+    {
+      "id": 47,
+      "track": "main",
+      "phase": 3,
+      "title": "Генеративные сети для текста (seq2seq, attention)",
+      "duration": 70,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/47.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-47"
+    },
+    {
+      "id": 48,
+      "track": "main",
+      "phase": 3,
+      "title": "Трансформеры",
+      "duration": 90,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/48.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-48"
+    },
+    {
+      "id": 49,
+      "track": "main",
+      "phase": 3,
+      "title": "Извлечение сущностей (NER)",
+      "duration": 50,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/49.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-49"
+    },
+    {
+      "id": 50,
+      "track": "main",
+      "phase": 3,
+      "title": "Большие языковые модели изнутри",
+      "duration": 70,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/50.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-50"
+    },
+    {
+      "id": 51,
+      "track": "main",
+      "phase": 4,
+      "title": "Что такое машинное обучение",
+      "duration": 45,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/51.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-51"
+    },
+    {
+      "id": 52,
+      "track": "main",
+      "phase": 4,
+      "title": "История ML",
+      "duration": 40,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/52.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-52"
+    },
+    {
+      "id": 53,
+      "track": "main",
+      "phase": 4,
+      "title": "Этика и справедливость в ML",
+      "duration": 50,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/53.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-53"
+    },
+    {
+      "id": 54,
+      "track": "main",
+      "phase": 4,
+      "title": "Техники ML: train/test/val, метрики, кросс-валидация",
+      "duration": 60,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/54.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-54"
+    },
+    {
+      "id": 55,
+      "track": "main",
+      "phase": 4,
+      "title": "Инструменты регрессии (scikit-learn, pandas)",
+      "duration": 55,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/55.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-55"
+    },
+    {
+      "id": 56,
+      "track": "main",
+      "phase": 4,
+      "title": "Подготовка и очистка данных",
+      "duration": 60,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/56.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-56"
+    },
+    {
+      "id": 57,
+      "track": "main",
+      "phase": 4,
+      "title": "Линейная и полиномиальная регрессия",
+      "duration": 60,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/57.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-57"
+    },
+    {
+      "id": 58,
+      "track": "main",
+      "phase": 4,
+      "title": "Логистическая регрессия",
+      "duration": 60,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/58.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-58"
+    },
+    {
+      "id": 59,
+      "track": "main",
+      "phase": 4,
+      "title": "Веб-приложение с ML-моделью",
+      "duration": 70,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/59.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-59"
+    },
+    {
+      "id": 60,
+      "track": "main",
+      "phase": 4,
+      "title": "Введение в классификацию",
+      "duration": 50,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/60.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-60"
+    },
+    {
+      "id": 61,
+      "track": "main",
+      "phase": 4,
+      "title": "Классификаторы: kNN, SVM, Decision Tree",
+      "duration": 65,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/61.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-61"
+    },
+    {
+      "id": 62,
+      "track": "main",
+      "phase": 4,
+      "title": "Random Forest, Gradient Boosting, XGBoost",
+      "duration": 70,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/62.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-62"
+    },
+    {
+      "id": 63,
+      "track": "main",
+      "phase": 4,
+      "title": "Прикладная классификация — сквозной проект",
+      "duration": 90,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/63.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-63"
+    },
+    {
+      "id": 64,
+      "track": "main",
+      "phase": 4,
+      "title": "Кластеризация (k-means, DBSCAN)",
+      "duration": 60,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/64.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-64"
+    },
+    {
+      "id": 65,
+      "track": "main",
+      "phase": 4,
+      "title": "NLP в классическом ML",
+      "duration": 55,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/65.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-65"
+    },
+    {
+      "id": 66,
+      "track": "main",
+      "phase": 4,
+      "title": "Временные ряды (ARIMA, Prophet)",
+      "duration": 65,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/66.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-66"
+    },
+    {
+      "id": 67,
+      "track": "main",
+      "phase": 4,
+      "title": "Reinforcement Learning — основы",
+      "duration": 70,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/67.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-67"
+    },
+    {
+      "id": 68,
+      "track": "main",
+      "phase": 4,
+      "title": "RL с OpenAI Gym",
+      "duration": 70,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/68.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-68"
+    },
+    {
+      "id": 69,
+      "track": "main",
+      "phase": 4,
+      "title": "Real-world кейсы и MLOps",
+      "duration": 60,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/69.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-69"
+    },
+    {
+      "id": 70,
+      "track": "main",
+      "phase": 4,
+      "title": "Fine-tuning LLM (SFT, LoRA, QLoRA)",
+      "duration": 80,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/70.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-70"
+    },
+    {
+      "id": 71,
+      "track": "main",
+      "phase": 4,
+      "title": "Маленькие языковые модели (SLM)",
+      "duration": 50,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/71.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-71"
+    },
+    {
+      "id": 72,
+      "track": "main",
+      "phase": 4,
+      "title": "Open-source модели и экосистема",
+      "duration": 55,
+      "published": false,
+      "url": "https://ai.madzhitov.ru/lessons/72.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-72"
+    },
+    {
+      "id": "c1",
+      "track": "claude",
+      "phase": null,
+      "title": "Claude Artifacts — генерация кода и UI прямо в чате",
+      "duration": 40,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/c1.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-c1"
+    },
+    {
+      "id": "c2",
+      "track": "claude",
+      "phase": null,
+      "title": "Claude Projects — память и контекст для задач",
+      "duration": 35,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/c2.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-c2"
+    },
+    {
+      "id": "c3",
+      "track": "claude",
+      "phase": null,
+      "title": "MCP — Model Context Protocol",
+      "duration": 50,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/c3.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-c3"
+    },
+    {
+      "id": "c4",
+      "track": "claude",
+      "phase": null,
+      "title": "Computer Use — Claude управляет компьютером",
+      "duration": 50,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/c4.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-c4"
+    },
+    {
+      "id": "c5",
+      "track": "claude",
+      "phase": null,
+      "title": "Claude Code — CLI для разработчиков",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/c5.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-c5"
+    },
+    {
+      "id": "c6",
+      "track": "claude",
+      "phase": null,
+      "title": "Prompt caching — экономим на длинных контекстах",
+      "duration": 35,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/c6.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-c6"
+    },
+    {
+      "id": "c7",
+      "track": "claude",
+      "phase": null,
+      "title": "Constitutional AI и safety в Claude",
+      "duration": 40,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/c7.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-c7"
+    },
+    {
+      "id": "c8",
+      "track": "claude",
+      "phase": null,
+      "title": "Claude vs GPT vs Gemini: когда что",
+      "duration": 35,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/c8.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-c8"
+    },
+    {
+      "id": "c9",
+      "track": "claude",
+      "phase": null,
+      "title": "Claude Skills — пре-настроенные навыки",
+      "duration": 40,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/c9.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-c9"
+    },
+    {
+      "id": "p1",
+      "track": "projects",
+      "phase": null,
+      "title": "Telegram-бот для саммари длинных переписок",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p1.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p1"
+    },
+    {
+      "id": "p2",
+      "track": "projects",
+      "phase": null,
+      "title": "RAG над своими заметками (Obsidian / Notion)",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p2.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p2"
+    },
+    {
+      "id": "p3",
+      "track": "projects",
+      "phase": null,
+      "title": "Свой MCP-сервер: подключаем Claude к Notion / Linear / своему API",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p3.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p3"
+    },
+    {
+      "id": "p4",
+      "track": "projects",
+      "phase": null,
+      "title": "Анализ счетов и чеков через Claude Vision: фото → таблица расходов",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p4.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p4"
+    },
+    {
+      "id": "p5",
+      "track": "projects",
+      "phase": null,
+      "title": "AI-ресёрчер конкурентов с ежедневным TG-дайджестом",
+      "duration": 75,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p5.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p5"
+    },
+    {
+      "id": "p6",
+      "track": "projects",
+      "phase": null,
+      "title": "Self-hosted Perplexity: Q&A с поиском по твоим данным",
+      "duration": 75,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p6.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p6"
+    },
+    {
+      "id": "p7",
+      "track": "projects",
+      "phase": null,
+      "title": "AI-помощник для встреч: транскрипция + summary + задачи в Notion",
+      "duration": 90,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p7.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p7"
+    },
+    {
+      "id": "p8",
+      "track": "projects",
+      "phase": null,
+      "title": "Анти-спам: AI классифицирует входящие письма и отвечает на простые",
+      "duration": 75,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p8.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p8"
+    },
+    {
+      "id": "p9",
+      "track": "projects",
+      "phase": null,
+      "title": "Семантический поиск по своему Telegram-каналу или чату",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p9.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p9"
+    },
+    {
+      "id": "p10",
+      "track": "projects",
+      "phase": null,
+      "title": "Авто-ревьюер pull request'ов на GitHub",
+      "duration": 90,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p10.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p10"
+    },
+    {
+      "id": "p11",
+      "track": "projects",
+      "phase": null,
+      "title": "Голосовой AI-ассистент: Whisper + Claude + TTS на твоём железе",
+      "duration": 90,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p11.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p11"
+    },
+    {
+      "id": "p12",
+      "track": "projects",
+      "phase": null,
+      "title": "Свой Claude Skill: упаковываем рутинную задачу в навык",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p12.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p12"
+    },
+    {
+      "id": "p13",
+      "track": "projects",
+      "phase": null,
+      "title": "Browser-расширение «AI рядом с текстом»: объяснить, упростить, перевести выделенное",
+      "duration": 75,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p13.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p13"
+    },
+    {
+      "id": "p14",
+      "track": "projects",
+      "phase": null,
+      "title": "Локальный AI на Ollama: всё работает на твоём ноутбуке, без облака",
+      "duration": 75,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p14.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p14"
+    },
+    {
+      "id": "p15",
+      "track": "projects",
+      "phase": null,
+      "title": "Личный AI-секретарь: автоответы на типовые email + дневной чек-ин",
+      "duration": 90,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p15.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p15"
+    },
+    {
+      "id": "p16",
+      "track": "projects",
+      "phase": null,
+      "title": "AI-репетитор Сократическим методом: интерактивная среда для школьника",
+      "duration": 75,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p16.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p16"
+    },
+    {
+      "id": "p17",
+      "track": "projects",
+      "phase": null,
+      "title": "Конспект лекции из аудио: Whisper + Claude → структурированный markdown",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p17.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p17"
+    },
+    {
+      "id": "p18",
+      "track": "projects",
+      "phase": null,
+      "title": "Генератор Anki-карточек из PDF учебника для подготовки к экзамену",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p18.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p18"
+    },
+    {
+      "id": "p19",
+      "track": "projects",
+      "phase": null,
+      "title": "TG-бот для саммари длинных чатов на GigaChat (без VPN)",
+      "duration": 75,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p19.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p19"
+    },
+    {
+      "id": "p20",
+      "track": "projects",
+      "phase": null,
+      "title": "AI-помощник продавца Wildberries на YandexGPT",
+      "duration": 90,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p20.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p20"
+    },
+    {
+      "id": "p21",
+      "track": "projects",
+      "phase": null,
+      "title": "Локальный AI-секретарь на Ollama — без облака и подписок",
+      "duration": 75,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p21.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p21"
+    },
+    {
+      "id": "p22",
+      "track": "projects",
+      "phase": null,
+      "title": "RAG для своих документов (госуслуги, медкарта, договоры) на локальных моделях",
+      "duration": 90,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/p22.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-p22"
+    },
+    {
+      "id": "i1",
+      "track": "industry",
+      "phase": null,
+      "title": "ИИ для юристов: договоры, документы, поиск",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/i1.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-i1"
+    },
+    {
+      "id": "i2",
+      "track": "industry",
+      "phase": null,
+      "title": "ИИ для маркетинга: контент, исследование, персонализация",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/i2.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-i2"
+    },
+    {
+      "id": "i3",
+      "track": "industry",
+      "phase": null,
+      "title": "ИИ для HR: резюме, найм, обучение",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/i3.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-i3"
+    },
+    {
+      "id": "i4",
+      "track": "industry",
+      "phase": null,
+      "title": "ИИ для разработчиков: вне Cursor и Copilot",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/i4.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-i4"
+    },
+    {
+      "id": "i5",
+      "track": "industry",
+      "phase": null,
+      "title": "ИИ для финансов: отчёты, анализ, прогнозы",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/i5.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-i5"
+    },
+    {
+      "id": "i6",
+      "track": "industry",
+      "phase": null,
+      "title": "ИИ для фэшн-бренда: лукбуки, описания, тон голоса, тренды",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/i6.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-i6"
+    },
+    {
+      "id": "i7",
+      "track": "industry",
+      "phase": null,
+      "title": "ИИ для YouTube и видеомейкеров: сценарии, превью, дубляж",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/i7.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-i7"
+    },
+    {
+      "id": "i8",
+      "track": "industry",
+      "phase": null,
+      "title": "ИИ для Beauty (визажист, мастер маникюра, парикмахер): соцсети, портфолио, клиенты",
+      "duration": 50,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/i8.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-i8"
+    },
+    {
+      "id": "i9",
+      "track": "industry",
+      "phase": null,
+      "title": "ИИ для риэлторов и недвижимости: описания, переговоры, документы",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/i9.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-i9"
+    },
+    {
+      "id": "i10",
+      "track": "industry",
+      "phase": null,
+      "title": "ИИ для учителей и репетиторов: материалы, проверка работ, индивидуализация",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/i10.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-i10"
+    },
+    {
+      "id": "e1",
+      "track": "everyday",
+      "phase": null,
+      "title": "Фото холодильника → ужин: знакомство с мультимодальным AI",
+      "duration": 25,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/e1.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-e1"
+    },
+    {
+      "id": "e2",
+      "track": "everyday",
+      "phase": null,
+      "title": "Помощник родителя: объясни ребёнку и сказка на ночь",
+      "duration": 30,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/e2.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-e2"
+    },
+    {
+      "id": "e3",
+      "track": "everyday",
+      "phase": null,
+      "title": "Меню недели и список покупок для семьи",
+      "duration": 25,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/e3.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-e3"
+    },
+    {
+      "id": "e4",
+      "track": "everyday",
+      "phase": null,
+      "title": "Школьник: разбор задачи, флешкарты, проверка эссе",
+      "duration": 35,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/e4.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-e4"
+    },
+    {
+      "id": "e5",
+      "track": "everyday",
+      "phase": null,
+      "title": "Резюме под вакансию + cover letter + тренажёр собеседования",
+      "duration": 40,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/e5.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-e5"
+    },
+    {
+      "id": "e6",
+      "track": "everyday",
+      "phase": null,
+      "title": "Карточки товаров для Wildberries / Avito / Ozon по фото",
+      "duration": 30,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/e6.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-e6"
+    },
+    {
+      "id": "e7",
+      "track": "everyday",
+      "phase": null,
+      "title": "Ответы на отзывы + контент-план для соцсетей",
+      "duration": 35,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/e7.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-e7"
+    },
+    {
+      "id": "e8",
+      "track": "everyday",
+      "phase": null,
+      "title": "План поездки + переводчик меню по фото в путешествии",
+      "duration": 40,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/e8.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-e8"
+    },
+    {
+      "id": "e9",
+      "track": "everyday",
+      "phase": null,
+      "title": "Разговорный партнёр на изучаемом языке (voice mode)",
+      "duration": 30,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/e9.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-e9"
+    },
+    {
+      "id": "e10",
+      "track": "everyday",
+      "phase": null,
+      "title": "Разбор медвыписки, договора, счёта — что я подписываю?",
+      "duration": 35,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/e10.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-e10"
+    },
+    {
+      "id": "e11",
+      "track": "everyday",
+      "phase": null,
+      "title": "AI без VPN — какие модели работают из коробки",
+      "duration": 35,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/e11.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-e11"
+    },
+    {
+      "id": "v1",
+      "track": "vibe",
+      "phase": null,
+      "title": "Додзё-кун: вайбкодинг — это боевое искусство, а не дисциплина",
+      "duration": 35,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/v1.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-v1"
+    },
+    {
+      "id": "v2",
+      "track": "vibe",
+      "phase": null,
+      "title": "Белый пояс: первая ката чистого листа",
+      "duration": 30,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/v2.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-v2"
+    },
+    {
+      "id": "v3",
+      "track": "vibe",
+      "phase": null,
+      "title": "Выбор оружия: додзё инструментов (Cursor, v0, Lovable, Bolt, Replit, Windsurf)",
+      "duration": 40,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/v3.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-v3"
+    },
+    {
+      "id": "v4",
+      "track": "vibe",
+      "phase": null,
+      "title": "Ката тёмного экрана: дебаг вайбом",
+      "duration": 35,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/v4.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-v4"
+    },
+    {
+      "id": "v5",
+      "track": "vibe",
+      "phase": null,
+      "title": "Главный антипаттерн: не воюй с моделью (айкидо вайбкодинга)",
+      "duration": 30,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/v5.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-v5"
+    },
+    {
+      "id": "v6",
+      "track": "vibe",
+      "phase": null,
+      "title": "От прототипа к продукту: когда перестать вайбить",
+      "duration": 40,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/v6.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-v6"
+    },
+    {
+      "id": "v7",
+      "track": "vibe",
+      "phase": null,
+      "title": "Вайб Клод Вам Дам: Claude как сэнсэй (Artifacts, Claude Code в режиме вайба)",
+      "duration": 45,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/v7.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-v7"
+    },
+    {
+      "id": "v8",
+      "track": "vibe",
+      "phase": null,
+      "title": "Продвинутые ката: Skills, MCP, субагенты как комбо",
+      "duration": 45,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/v8.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-v8"
+    },
+    {
+      "id": "v9",
+      "track": "vibe",
+      "phase": null,
+      "title": "Спарринг с Claude: итеративный диалог и контекст",
+      "duration": 40,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/v9.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-v9"
+    },
+    {
+      "id": "v10",
+      "track": "vibe",
+      "phase": null,
+      "title": "Кю/Дан и котоваза: оцени свой пояс",
+      "duration": 35,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/v10.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-v10"
+    },
+    {
+      "id": "v11",
+      "track": "vibe",
+      "phase": null,
+      "title": "📚 Справочник: основы веба",
+      "duration": 50,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/v11.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-v11"
+    },
+    {
+      "id": "v12",
+      "track": "vibe",
+      "phase": null,
+      "title": "📚 Справочник: данные и API",
+      "duration": 45,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/v12.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-v12"
+    },
+    {
+      "id": "v13",
+      "track": "vibe",
+      "phase": null,
+      "title": "📚 Справочник: инструменты разработчика",
+      "duration": 40,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/v13.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-v13"
+    },
+    {
+      "id": "v14",
+      "track": "vibe",
+      "phase": null,
+      "title": "📚 Справочник: от кода к продукту",
+      "duration": 40,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/v14.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-v14"
+    },
+    {
+      "id": "v15",
+      "track": "vibe",
+      "phase": null,
+      "title": "📚 Справочник: продвинутые темы",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/v15.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-v15"
+    }
+  ]
+}
