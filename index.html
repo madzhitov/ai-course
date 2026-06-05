@@ -24,37 +24,61 @@
 <!-- Inter font for editorial style -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js">
 </script>
 <style>
 :root {
-  /* Editorial light palette — monochrome + один blue accent */
-  --bg: #ffffff;
-  --bg-sidebar: #fafaf9;
-  --bg-card: #ffffff;
-  --bg-code: #f5f5f4;
-  --bg-elevated: #f9f9f8;
-  --bg-soft: #f5f5f4;
-  --text: #0a0a0a;
-  --text-muted: #6b6b6b;
-  --text-soft: #a8a8a8;
-  --border: #e7e5e4;
-  --border-soft: #f0efed;
-  --border-strong: rgba(0,0,0,0.12);
+  /* ===== Палитра ХВОЯ (Тропа), светлая. Дефолт. =====
+     Первоклассные токены макета + старые имена как алиасы — чтобы весь
+     существующий сайт переоделся сам, без правки его разметки. */
+  --hvoya-bg: #f4f1ea;
+  --hvoya-panel: #fffdf8;
+  --hvoya-card: #efeadf;
+  --hvoya-line: #e0d9c9;
+  --hvoya-ink: #23201a;
+  --hvoya-muted: #6f675b;
+  --hvoya-faint: #aaa18f;
+  --hvoya-accent: #2f6b50;
+  --hvoya-accent-soft: #e4efe9;
+  --hvoya-accent-mid: #a9cdbb;
+  --side: 288px; --header: 108px;
 
-  /* Accent в editorial — это сам text. CTA-кнопка чёрная. */
-  --accent: #0a0a0a;
-  --accent-hover: #2a2a2a;
-  --accent-soft: #f5f5f4;
-  --accent-text: #0a0a0a;
+  /* короткие алиасы для новых компонентов (как в макете) */
+  --bg: var(--hvoya-bg);
+  --panel: var(--hvoya-panel);
+  --card: var(--hvoya-card);
+  --line: var(--hvoya-line);
+  --ink: var(--hvoya-ink);
+  --muted: var(--hvoya-muted);
+  --faint: var(--hvoya-faint);
+  --accent-mid: var(--hvoya-accent-mid);
 
-  /* Highlight blue — только для callout и hover-ссылок */
-  --link: #2563eb;
-  --link-soft: #dbeafe;
-  --link-border: rgba(37, 99, 235, 0.2);
+  /* старые имена сайта → ХВОЯ */
+  --bg-sidebar: var(--hvoya-panel);
+  --bg-card: var(--hvoya-panel);
+  --bg-code: var(--hvoya-card);
+  --bg-elevated: var(--hvoya-card);
+  --bg-soft: var(--hvoya-card);
+  --text: var(--hvoya-ink);
+  --text-muted: var(--hvoya-muted);
+  --text-soft: var(--hvoya-faint);
+  --border: var(--hvoya-line);
+  --border-soft: var(--hvoya-line);
+  --border-strong: var(--hvoya-faint);
+
+  /* Акцент = хвойный зелёный (один акцент на действие/«ты здесь») */
+  --accent: var(--hvoya-accent);
+  --accent-hover: #26543f;
+  --accent-soft: var(--hvoya-accent-soft);
+  --accent-text: #ffffff;
+
+  /* ссылки/хайлайт — в акцент, не синий */
+  --link: var(--hvoya-accent);
+  --link-soft: var(--hvoya-accent-soft);
+  --link-border: var(--hvoya-accent-mid);
 
   /* Категории — пастельные пары bg/text */
   --cat-prompts: #dbeafe;       --cat-prompts-text: #2563eb;
@@ -80,35 +104,54 @@
   --warning: #d97706;           --warning-soft: #fef3c7;
   --danger: #dc2626;            --danger-soft: #fee2e2;
 
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
-  --shadow: 0 4px 12px rgba(0,0,0,0.06);
-  --shadow-lg: 0 10px 30px rgba(0,0,0,0.08);
+  /* Тропа: иерархия светом, не тенью — тени выключены */
+  --shadow-sm: none;
+  --shadow: none;
+  --shadow-lg: none;
 }
 
 [data-theme="dark"] {
-  /* Editorial dark — глубокий чёрный + тёплый off-white текст */
-  --bg: #0a0a0b;
-  --bg-sidebar: #0f0f10;
-  --bg-card: #131316;
-  --bg-code: #18181b;
-  --bg-elevated: #1a1a1d;
-  --bg-soft: #18181b;
-  --text: #f2f2f3;
-  --text-muted: #8a8a92;
-  --text-soft: #5a5a62;
-  --border: rgba(255,255,255,0.07);
-  --border-soft: rgba(255,255,255,0.04);
-  --border-strong: rgba(255,255,255,0.15);
+  /* ===== Палитра ХВОЯ, тёмная ===== */
+  --hvoya-bg: #13140f;
+  --hvoya-panel: #191b14;
+  --hvoya-card: #1c1f17;
+  --hvoya-line: #2a2c22;
+  --hvoya-ink: #eaece2;
+  --hvoya-muted: #9aa08c;
+  --hvoya-faint: #585c4c;
+  --hvoya-accent: #5fae86;
+  --hvoya-accent-soft: #12251c;
+  --hvoya-accent-mid: #2c5742;
 
-  /* В dark accent = белый текст; CTA-кнопка остаётся «инвертная» */
-  --accent: #f2f2f3;
-  --accent-hover: #ffffff;
-  --accent-soft: rgba(255,255,255,0.06);
-  --accent-text: #f2f2f3;
+  --bg: var(--hvoya-bg);
+  --panel: var(--hvoya-panel);
+  --card: var(--hvoya-card);
+  --line: var(--hvoya-line);
+  --ink: var(--hvoya-ink);
+  --muted: var(--hvoya-muted);
+  --faint: var(--hvoya-faint);
+  --accent-mid: var(--hvoya-accent-mid);
 
-  --link: #60a5fa;
-  --link-soft: rgba(96, 165, 250, 0.12);
-  --link-border: rgba(96, 165, 250, 0.25);
+  --bg-sidebar: var(--hvoya-panel);
+  --bg-card: var(--hvoya-panel);
+  --bg-code: var(--hvoya-card);
+  --bg-elevated: var(--hvoya-card);
+  --bg-soft: var(--hvoya-card);
+  --text: var(--hvoya-ink);
+  --text-muted: var(--hvoya-muted);
+  --text-soft: var(--hvoya-faint);
+  --border: var(--hvoya-line);
+  --border-soft: var(--hvoya-line);
+  --border-strong: var(--hvoya-faint);
+
+  --accent: var(--hvoya-accent);
+  --accent-hover: #6fc096;
+  --accent-soft: var(--hvoya-accent-soft);
+  --accent-text: #13140f;
+
+  --link: var(--hvoya-accent);
+  --link-soft: var(--hvoya-accent-soft);
+  --link-border: var(--hvoya-accent-mid);
 
   --cat-prompts: #1e3a8a;       --cat-prompts-text: #93c5fd;
   --cat-agents: #581c87;        --cat-agents-text: #d8b4fe;
@@ -156,8 +199,8 @@ img, svg, video, canvas, iframe {
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
+  font-family: "Golos Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-feature-settings: "tnum";
   background: var(--bg);
   color: var(--text);
   line-height: 1.7;
@@ -3831,6 +3874,15 @@ main {
 .quiz-result-hint { font-size: 14px; color: var(--text); margin-bottom: 20px; line-height: 1.5; }
 .quiz-result-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 .quiz-result-actions button { font-family: inherit; }
+
+/* ===== ТРОПА L1: шрифты ХВОЯ ===== */
+/* Код → JetBrains Mono (перекрывает старые SF Mono/monospace по месту) */
+code, pre, kbd, samp,
+.lesson-content code, .lesson-content pre code {
+  font-family: "JetBrains Mono", ui-monospace, "SF Mono", Monaco, Consolas, monospace !important;
+}
+/* Крупные титулы → Cormorant Unicase (применяется к каркасу в L2-L3) */
+.hvoya-title { font-family: "Cormorant Unicase", Georgia, serif; font-weight: 700; letter-spacing: .01em; }
 
 </style>
 </head>
