@@ -3884,6 +3884,32 @@ code, pre, kbd, samp,
 /* Крупные титулы → Cormorant Unicase (применяется к каркасу в L2-L3) */
 .hvoya-title { font-family: "Cormorant Unicase", Georgia, serif; font-weight: 700; letter-spacing: .01em; }
 
+/* ===== ТРОПА L2: мачта + навигация в хедере ===== */
+.hvoya-masthead { display:flex; flex-direction:column; gap:1px; line-height:1.04; text-decoration:none; }
+.hvoya-masthead .mh-word { font-size:clamp(20px,2.2vw,27px); letter-spacing:.01em; color:var(--ink); }
+.hvoya-masthead .mh-word b { color:var(--accent); }
+.hvoya-masthead .mh-tag { font-family:"Golos Text",sans-serif; font-weight:600; font-size:13px; color:var(--muted); letter-spacing:.03em; }
+.hvoya-masthead .brand-mark { display:none; }
+/* пункты верхней навигации — Cormorant, тихие, акцент на hover */
+.top-nav-links a { font-family:"Cormorant Unicase",Georgia,serif !important; font-size:17px !important; font-weight:600 !important; letter-spacing:.015em; color:var(--muted) !important; }
+.top-nav-links a:hover, .top-nav-links a.active { color:var(--accent) !important; background:transparent !important; }
+.nav-vibe { color:var(--muted) !important; background:transparent !important; border:none !important; box-shadow:none !important; font-weight:600 !important; }
+.nav-vibe:hover { color:var(--accent) !important; }
+.top-nav-right a { font-family:"Golos Text",sans-serif; }
+
+/* ===== ТРОПА L2: сайдбар ===== */
+.sidebar-title { font-family:"Cormorant Unicase",Georgia,serif !important; font-weight:700 !important; letter-spacing:.01em !important; color:var(--ink) !important; }
+.sidebar { background:var(--panel) !important; border-right:1px solid var(--line) !important; }
+.phase-title { color:var(--ink); }
+.aside-label { font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--faint); font-weight:600; }
+/* мягкие ссылки-указатели */
+.lesson-link.static-link { color:var(--muted); }
+.lesson-link.static-link:hover { color:var(--accent); background:var(--accent-soft); }
+.lesson-link.static-link.active { color:var(--accent); background:var(--accent-soft); }
+
+/* ===== ТРОПА L2: футер ===== */
+.f-word, .footer-brand h4 { font-family:"Cormorant Unicase",Georgia,serif !important; font-weight:700; letter-spacing:.015em; }
+
 </style>
 </head>
 <body>
@@ -3892,16 +3918,17 @@ code, pre, kbd, samp,
   <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Меню">
     <span></span><span></span><span></span>
   </button>
-  <a href="#home" class="top-nav-logo" onclick="openStaticPage('home'); return false;">
-    <span class="brand-mark">A</span><span class="brand-name">AI&nbsp;Курс</span>
+  <a href="#home" class="top-nav-logo hvoya-masthead" onclick="openStaticPage('home'); return false;">
+    <span class="mh-word hvoya-title">AI&nbsp;Курс<b>.</b></span>
+    <span class="mh-tag">От пользователя к создателю</span>
   </a>
   <nav class="top-nav-links">
-    <a href="#section-main" data-section="main" onclick="openSection('main'); return false;">Основной курс</a>
+    <a href="#section-main" data-section="main" onclick="openSection('main'); return false;">Основной путь</a>
     <a href="#section-everyday" data-section="everyday" onclick="openSection('everyday'); return false;">AI каждый день</a>
     <a href="#section-claude" data-section="claude" onclick="openSection('claude'); return false;">Погружение в Клод</a>
     <a href="#section-projects" data-section="projects" onclick="openSection('projects'); return false;">Мини-проекты за час</a>
     <a href="#section-industry" data-section="industry" onclick="openSection('industry'); return false;">Индустрии</a>
-    <a href="#section-vibe" data-section="vibe" onclick="openSection('vibe'); return false;" class="nav-vibe">🥋 Вайб Код Вам Дам</a>
+    <a href="#section-vibe" data-section="vibe" onclick="openSection('vibe'); return false;" class="nav-vibe">Вайб Код Вам Дам</a>
   </nav>
   <div class="top-nav-right">
     <a href="#glossary" onclick="openGlossary(); return false;">Глоссарий</a>
@@ -3924,13 +3951,7 @@ code, pre, kbd, samp,
 
   <input type="text" class="search-box" id="search-box" placeholder="Поиск по урокам  (⌘K)" oninput="onSearchInput(this.value)" onfocus="onSearchInput(this.value)" onkeydown="if(event.key==='Escape'){this.value=''; closeSearchOverlay(); this.blur();}">
 
-  <div class="global-progress">
-    <div class="global-progress-label">
-      <span>Общий прогресс</span>
-      <span id="global-progress-text">0 / 72</span>
-    </div>
-    <div class="progress-bar"><div class="progress-bar-fill" id="global-progress-bar" style="width: 0%"></div></div>
-  </div>
+  <!-- Тропа: глобальный прогресс-бар убран (карта, не витрина) -->
 
   <div class="phase">
     <div class="phase-header" style="cursor: default;">
@@ -26687,8 +26708,11 @@ function updateProgressUI() {
   const all = allLessons();
   const total = all.length;
   const done = all.filter(l => isCompleted(l.id)).length;
-  document.getElementById('global-progress-text').textContent = `${done} / ${total}`;
-  document.getElementById('global-progress-bar').style.width = `${(done / total * 100).toFixed(1)}%`;
+  // Тропа: глобальный счётчик/бар убран — элементы могут отсутствовать
+  const _gpt = document.getElementById('global-progress-text');
+  if (_gpt) _gpt.textContent = `${done} / ${total}`;
+  const _gpb = document.getElementById('global-progress-bar');
+  if (_gpb) _gpb.style.width = `${(done / total * 100).toFixed(1)}%`;
 
   // Бейдж сверху — реальные цифры
   const banner = document.getElementById('banner-progress');
