@@ -208,7 +208,7 @@ body {
   min-height: 100vh;
   font-size: 17px;
   transition: background 0.2s, color 0.2s;
-  padding-top: 56px;
+  padding-top: var(--header);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -325,7 +325,7 @@ body.sidebar-open .menu-toggle span:nth-child(3) { transform: translateY(-7px) r
 .sidebar-backdrop {
   display: none;
   position: fixed;
-  top: 56px; left: 0; right: 0; bottom: 0;
+  top: var(--header); left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.45);
   z-index: 99;
   animation: fadeIn 0.2s;
@@ -341,7 +341,7 @@ body.sidebar-open .sidebar-backdrop { display: block; }
   padding: 1.5rem 0.85rem;
   overflow-y: auto;
   position: fixed;
-  top: 56px; left: 0; bottom: 0;
+  top: var(--header); left: 0; bottom: 0;
   z-index: 100;
 }
 
@@ -3895,9 +3895,9 @@ code, pre, kbd, samp,
 .tropa-header .h-row1 { display:flex; align-items:center; justify-content:space-between; height:64px; padding:0 clamp(16px,3vw,28px); }
 .tropa-header .h-left { display:flex; align-items:center; gap:12px; }
 .tropa-header .masthead { display:flex; flex-direction:column; gap:1px; line-height:1.04; text-decoration:none; cursor:pointer; }
-.tropa-header .mh-word { font-size:clamp(20px,2.2vw,28px); letter-spacing:.01em; color:var(--ink); }
+.tropa-header .mh-word { font-size:clamp(22px,2.4vw,30px); font-weight:700; letter-spacing:.01em; color:var(--ink); }
 .tropa-header .mh-word b { color:var(--accent); }
-.tropa-header .mh-tag { font-family:"Cormorant Unicase",Georgia,serif; font-weight:600; font-size:clamp(13px,1.3vw,16px); color:var(--muted); letter-spacing:.03em; }
+.tropa-header .mh-tag { font-family:"Cormorant Unicase",Georgia,serif; font-weight:600; font-size:clamp(12.5px,1.25vw,15.5px); color:var(--muted); letter-spacing:.04em; }
 .tropa-header .h-right { display:flex; align-items:center; gap:8px; }
 .tropa-header .aly-hbtn { display:flex; align-items:center; gap:8px; padding:5px 14px 5px 6px; border:1px solid var(--line); border-radius:22px; background:var(--card); cursor:pointer; font-family:"Golos Text",sans-serif; font-size:14px; color:var(--muted); transition:.15s; }
 .tropa-header .aly-hbtn:hover { border-color:var(--accent-mid); color:var(--ink); }
@@ -3911,8 +3911,7 @@ code, pre, kbd, samp,
 .tropa-header .h-nav .nav-sep { width:1px; height:15px; background:var(--line); flex-shrink:0; }
 .tropa-header .burger { display:none; width:36px; height:36px; border:1px solid var(--line); border-radius:8px; background:var(--card); cursor:pointer; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
 .tropa-header .burger span { display:block; width:14px; height:1.5px; background:var(--ink); border-radius:2px; }
-/* контент под двухрядным хедером */
-body { padding-top:var(--header) !important; }
+/* контент под двухрядным хедером — основное правило уже на body (var(--header)) */
 @media (max-width:900px) {
   :root { --header:62px; }
   .tropa-header .h-nav { display:none; }
