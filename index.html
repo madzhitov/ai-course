@@ -3884,30 +3884,80 @@ code, pre, kbd, samp,
 /* Крупные титулы → Cormorant Unicase (применяется к каркасу в L2-L3) */
 .hvoya-title { font-family: "Cormorant Unicase", Georgia, serif; font-weight: 700; letter-spacing: .01em; }
 
+/* ===== ТРОПА F2: двухстрочный хедер-мачта (эталон) ===== */
+:root { --header: 108px; }
+.tropa-header {
+  position: fixed; top:0; left:0; right:0; height:var(--header); z-index:200;
+  display:flex; flex-direction:column; align-items:stretch; padding:0; gap:0;
+  background:color-mix(in srgb, var(--panel) 92%, transparent);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.tropa-header .h-row1 { display:flex; align-items:center; justify-content:space-between; height:64px; padding:0 clamp(16px,3vw,28px); }
+.tropa-header .h-left { display:flex; align-items:center; gap:12px; }
+.tropa-header .masthead { display:flex; flex-direction:column; gap:1px; line-height:1.04; text-decoration:none; cursor:pointer; }
+.tropa-header .mh-word { font-size:clamp(20px,2.2vw,28px); letter-spacing:.01em; color:var(--ink); }
+.tropa-header .mh-word b { color:var(--accent); }
+.tropa-header .mh-tag { font-family:"Golos Text",sans-serif; font-weight:600; font-size:clamp(12px,1.2vw,14px); color:var(--muted); letter-spacing:.03em; }
+.tropa-header .h-right { display:flex; align-items:center; gap:8px; }
+.tropa-header .aly-hbtn { display:flex; align-items:center; gap:8px; padding:6px 13px; border:1px solid var(--line); border-radius:22px; background:var(--card); cursor:pointer; font-family:"Golos Text",sans-serif; font-size:14px; color:var(--muted); transition:.15s; }
+.tropa-header .aly-hbtn:hover { border-color:var(--accent-mid); color:var(--ink); }
+.tropa-header .aly-mk { width:22px; height:22px; border-radius:50%; background:var(--accent-soft); color:var(--accent); font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+.tropa-header .icon-btn { width:38px; height:38px; border:1px solid var(--line); border-radius:9px; background:var(--card); cursor:pointer; font-size:16px; color:var(--muted); display:flex; align-items:center; justify-content:center; }
+.tropa-header .icon-btn:hover { color:var(--ink); border-color:var(--accent-mid); }
+.tropa-header .h-nav { display:flex; align-items:center; gap:16px; height:44px; padding:0 clamp(16px,3vw,28px); border-top:1px solid var(--line); overflow-x:auto; scrollbar-width:none; }
+.tropa-header .h-nav::-webkit-scrollbar { display:none; }
+.tropa-header .h-nav a { font-family:"Cormorant Unicase",Georgia,serif; font-size:17px; font-weight:600; letter-spacing:.015em; color:var(--muted); cursor:pointer; white-space:nowrap; text-decoration:none; }
+.tropa-header .h-nav a:hover { color:var(--accent); }
+.tropa-header .h-nav .nav-sep { width:1px; height:15px; background:var(--line); flex-shrink:0; }
+.tropa-header .burger { display:none; width:36px; height:36px; border:1px solid var(--line); border-radius:8px; background:var(--card); cursor:pointer; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
+.tropa-header .burger span { display:block; width:14px; height:1.5px; background:var(--ink); border-radius:2px; }
+/* контент под двухрядным хедером */
+body { padding-top:var(--header) !important; }
+@media (max-width:900px) {
+  :root { --header:62px; }
+  .tropa-header .h-nav { display:none; }
+  .tropa-header .aly-name { display:none; }
+  .tropa-header .aly-hbtn { padding:6px; }
+  .tropa-header .burger { display:flex; }
+}
+
 </style>
 </head>
 <body>
 
-<header class="top-nav">
-  <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Меню">
-    <span></span><span></span><span></span>
-  </button>
-  <a href="#home" class="top-nav-logo" onclick="openStaticPage('home'); return false;">
-    <span class="brand-mark">A</span><span class="brand-name">AI&nbsp;Курс</span>
-  </a>
-  <nav class="top-nav-links">
-    <a href="#section-main" data-section="main" onclick="openSection('main'); return false;">Основной курс</a>
-    <a href="#section-everyday" data-section="everyday" onclick="openSection('everyday'); return false;">AI каждый день</a>
-    <a href="#section-claude" data-section="claude" onclick="openSection('claude'); return false;">Погружение в Клод</a>
-    <a href="#section-projects" data-section="projects" onclick="openSection('projects'); return false;">Мини-проекты за час</a>
-    <a href="#section-industry" data-section="industry" onclick="openSection('industry'); return false;">Индустрии</a>
-    <a href="#section-vibe" data-section="vibe" onclick="openSection('vibe'); return false;" class="nav-vibe">🥋 Вайб Код Вам Дам</a>
-  </nav>
-  <div class="top-nav-right">
-    <a href="#glossary" onclick="openGlossary(); return false;">Глоссарий</a>
-    <a href="#resources" onclick="openStaticPage('resources'); return false;">Источники</a>
-    <a href="https://t.me/artefakty_ai" target="_blank" class="tg-link">@artefakty_ai</a>
+<!-- ТРОПА F2: двухстрочная мачта по эталону. Старые секц-ссылки скрыты
+     (data-section нужны setActiveTopNav); видимая навигация — в .h-nav. -->
+<header class="top-nav tropa-header">
+  <div class="h-row1">
+    <div class="h-left">
+      <button class="burger menu-toggle" onclick="toggleSidebar()" aria-label="Меню"><span></span><span></span><span></span></button>
+      <a class="masthead" href="#home" onclick="openStaticPage('home'); return false;">
+        <span class="mh-word hvoya-title">AI&nbsp;Курс<b>.</b></span>
+        <span class="mh-tag">От пользователя к создателю</span>
+      </a>
+    </div>
+    <div class="h-right">
+      <button class="aly-hbtn" onclick="aleshaToggle()" aria-label="Алёша"><span class="aly-mk">А</span><span class="aly-name">Алёша</span></button>
+      <button class="icon-btn theme-toggle" onclick="toggleTheme()" aria-label="Тема"><span id="theme-icon">◐</span><span id="theme-label" style="display:none"></span></button>
+    </div>
   </div>
+  <nav class="h-nav">
+    <a onclick="openSection('main'); return false;">Основной путь</a>
+    <span class="nav-sep"></span>
+    <a onclick="openStaticPage('home'); return false;">5 тропинок</a>
+    <span class="nav-sep"></span>
+    <a onclick="openStaticPage('about'); return false;">О курсе</a>
+  </nav>
+  <!-- скрытые секц-ссылки для setActiveTopNav -->
+  <nav class="top-nav-links" aria-hidden="true" style="display:none">
+    <a data-section="main" onclick="openSection('main'); return false;"></a>
+    <a data-section="everyday" onclick="openSection('everyday'); return false;"></a>
+    <a data-section="claude" onclick="openSection('claude'); return false;"></a>
+    <a data-section="projects" onclick="openSection('projects'); return false;"></a>
+    <a data-section="industry" onclick="openSection('industry'); return false;"></a>
+    <a data-section="vibe" onclick="openSection('vibe'); return false;"></a>
+  </nav>
 </header>
 
 <div class="sidebar-backdrop" onclick="closeSidebar()"></div>
