@@ -3889,8 +3889,9 @@ code, pre, kbd, samp,
 .tropa-header {
   position: fixed; top:0; left:0; right:0; height:var(--header); z-index:200;
   display:flex; flex-direction:column; align-items:stretch; padding:0; gap:0;
-  background:var(--panel);
-  border-bottom:1px solid var(--line);
+  background:color-mix(in srgb, var(--hvoya-panel) 90%, transparent) !important;
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--hvoya-line) !important;
 }
 .tropa-header .h-row1 { display:flex; align-items:center; justify-content:space-between; height:64px; padding:0 clamp(16px,3vw,28px); }
 .tropa-header .h-left { display:flex; align-items:center; gap:12px; }
@@ -3926,7 +3927,7 @@ code, pre, kbd, samp,
 
 <!-- ТРОПА F2: двухстрочная мачта по эталону. Старые секц-ссылки скрыты
      (data-section нужны setActiveTopNav); видимая навигация — в .h-nav. -->
-<header class="top-nav tropa-header">
+<header class="tropa-header">
   <div class="h-row1">
     <div class="h-left">
       <button class="burger menu-toggle" onclick="toggleSidebar()" aria-label="Меню"><span></span><span></span><span></span></button>
