@@ -3931,6 +3931,21 @@ code, pre, kbd, samp,
 .alesha-widget { box-shadow:none !important; border:1px solid var(--line) !important; }
 .alesha-logo { background:var(--accent) !important; color:#fff !important; }
 
+/* ===== ТРОПА L5: приглушаем громкий vibe-banner (карта, не витрина) ===== */
+.vibe-banner { background:var(--card) !important; color:var(--ink) !important; border:1px solid var(--line) !important; border-left:3px solid var(--accent) !important; box-shadow:none !important; border-radius:14px !important; }
+.vibe-banner:hover { transform:none !important; box-shadow:none !important; border-color:var(--accent-mid) !important; }
+.vibe-banner::after { content:"" !important; display:none !important; }      /* убрать эмодзи-водяк 🥋 */
+.vibe-banner-tag { background:var(--accent-soft) !important; color:var(--accent) !important; font-weight:700 !important; letter-spacing:.12em !important; }
+.vibe-banner-title { font-family:"Cormorant Unicase",Georgia,serif !important; font-weight:700 !important; color:var(--ink) !important; }
+.vibe-banner-sub { color:var(--muted) !important; opacity:1 !important; }
+.vibe-banner-cta { background:var(--accent) !important; color:#fff !important; }
+.vibe-banner:hover .vibe-banner-cta { transform:none !important; }
+.vibe-foot { background:var(--accent) !important; color:#fff !important; box-shadow:none !important; font-weight:700 !important; }
+.vibe-irony { color:var(--faint) !important; }
+/* nav-vibe: убрать градиент-пилюлю, как остальные пункты */
+.top-nav-links a.nav-vibe, .top-nav-links a.nav-vibe:hover, .top-nav-links a.nav-vibe.section-active { background:transparent !important; color:var(--muted) !important; }
+.top-nav-links a.nav-vibe:hover, .top-nav-links a.nav-vibe.section-active { color:var(--accent) !important; }
+
 </style>
 </head>
 <body>
