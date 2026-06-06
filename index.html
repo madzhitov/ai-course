@@ -3889,8 +3889,7 @@ code, pre, kbd, samp,
 .tropa-header {
   position: fixed; top:0; left:0; right:0; height:var(--header); z-index:200;
   display:flex; flex-direction:column; align-items:stretch; padding:0; gap:0;
-  background:color-mix(in srgb, var(--panel) 92%, transparent);
-  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  background:var(--panel);
   border-bottom:1px solid var(--line);
 }
 .tropa-header .h-row1 { display:flex; align-items:center; justify-content:space-between; height:64px; padding:0 clamp(16px,3vw,28px); }
@@ -3898,11 +3897,11 @@ code, pre, kbd, samp,
 .tropa-header .masthead { display:flex; flex-direction:column; gap:1px; line-height:1.04; text-decoration:none; cursor:pointer; }
 .tropa-header .mh-word { font-size:clamp(20px,2.2vw,28px); letter-spacing:.01em; color:var(--ink); }
 .tropa-header .mh-word b { color:var(--accent); }
-.tropa-header .mh-tag { font-family:"Golos Text",sans-serif; font-weight:600; font-size:clamp(12px,1.2vw,14px); color:var(--muted); letter-spacing:.03em; }
+.tropa-header .mh-tag { font-family:"Golos Text",sans-serif; font-weight:500; font-size:clamp(12px,1.2vw,14px); color:var(--muted); letter-spacing:.02em; }
 .tropa-header .h-right { display:flex; align-items:center; gap:8px; }
-.tropa-header .aly-hbtn { display:flex; align-items:center; gap:8px; padding:6px 13px; border:1px solid var(--line); border-radius:22px; background:var(--card); cursor:pointer; font-family:"Golos Text",sans-serif; font-size:14px; color:var(--muted); transition:.15s; }
+.tropa-header .aly-hbtn { display:flex; align-items:center; gap:8px; padding:5px 14px 5px 6px; border:1px solid var(--line); border-radius:22px; background:var(--card); cursor:pointer; font-family:"Golos Text",sans-serif; font-size:14px; color:var(--muted); transition:.15s; }
 .tropa-header .aly-hbtn:hover { border-color:var(--accent-mid); color:var(--ink); }
-.tropa-header .aly-mk { width:22px; height:22px; border-radius:50%; background:var(--accent-soft); color:var(--accent); font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+.tropa-header .aly-mk { width:24px; height:24px; border-radius:50%; background:var(--accent-soft); color:var(--accent); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .tropa-header .icon-btn { width:38px; height:38px; border:1px solid var(--line); border-radius:9px; background:var(--card); cursor:pointer; font-size:16px; color:var(--muted); display:flex; align-items:center; justify-content:center; }
 .tropa-header .icon-btn:hover { color:var(--ink); border-color:var(--accent-mid); }
 .tropa-header .h-nav { display:flex; align-items:center; gap:16px; height:44px; padding:0 clamp(16px,3vw,28px); border-top:1px solid var(--line); overflow-x:auto; scrollbar-width:none; }
@@ -3938,15 +3937,13 @@ body { padding-top:var(--header) !important; }
       </a>
     </div>
     <div class="h-right">
-      <button class="aly-hbtn" onclick="aleshaToggle()" aria-label="Алёша"><span class="aly-mk">А</span><span class="aly-name">Алёша</span></button>
+      <button class="aly-hbtn" onclick="aleshaToggle()" aria-label="Алёша"><span class="aly-mk"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg></span><span class="aly-name">Алёша</span></button>
       <button class="icon-btn theme-toggle" onclick="toggleTheme()" aria-label="Тема"><span id="theme-icon">◐</span><span id="theme-label" style="display:none"></span></button>
     </div>
   </div>
   <nav class="h-nav">
     <a onclick="openSection('main'); return false;">Основной путь</a>
-    <span class="nav-sep"></span>
     <a onclick="openStaticPage('home'); return false;">5 тропинок</a>
-    <span class="nav-sep"></span>
     <a onclick="openStaticPage('about'); return false;">О курсе</a>
   </nav>
   <!-- скрытые секц-ссылки для setActiveTopNav -->
