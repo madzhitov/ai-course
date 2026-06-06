@@ -3910,6 +3910,15 @@ code, pre, kbd, samp,
 /* ===== ТРОПА L2: футер ===== */
 .f-word, .footer-brand h4 { font-family:"Cormorant Unicase",Georgia,serif !important; font-weight:700; letter-spacing:.015em; }
 
+/* ===== ТРОПА L3: главная ===== */
+.hero-v2 h1.hvoya-title { font-size:clamp(30px,5vw,50px); letter-spacing:-.02em; line-height:1.08; }
+.hero-v2 .tagline { color:var(--muted); }
+.btn-primary-v2 { background:var(--accent) !important; color:#fff !important; border-color:var(--accent) !important; }
+.btn-primary-v2:hover { background:var(--accent-hover) !important; }
+.btn-secondary-v2:hover { border-color:var(--accent) !important; color:var(--accent) !important; }
+.resume-banner { background:var(--accent-soft); border:1px solid var(--accent-mid); }
+.resume-banner-icon { color:var(--accent); display:inline-flex; }
+
 </style>
 </head>
 <body>
@@ -29491,7 +29500,7 @@ function renderHome() {
   // Большой баннер «Продолжить» в верху главной, если есть прогресс
   const resumeBanner = (anyCompleted && nextLesson) ? `
     <div class="resume-banner" onclick="openLesson(${typeof nextLesson.id === 'string' ? `'${nextLesson.id}'` : nextLesson.id})">
-      <div class="resume-banner-icon">▶</div>
+      <div class="resume-banner-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg></div>
       <div class="resume-banner-body">
         <div class="resume-banner-eyebrow">Продолжить с того места</div>
         <div class="resume-banner-title">${typeof nextLesson.id === 'number' ? `Урок ${nextLesson.id}. ` : ''}${nextLesson.title}</div>
@@ -29523,7 +29532,7 @@ function renderHome() {
   document.getElementById('lesson-content').innerHTML = `
     ${resumeBanner}
     <div class="hero-v2">
-      <h1>От первых промптов<br>до своих AI-приложений.</h1>
+      <h1 class="hvoya-title">От первых промптов<br>до своих AI-приложений.</h1>
       <p class="tagline">
         ${total} уроков на русском, AI-наставник в каждом, готовые pet-проекты с кодом. Полный путь — не «5 минут попробовать», а до уровня, где сможешь делать сам.
       </p>
