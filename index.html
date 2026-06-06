@@ -3921,6 +3921,41 @@ code, pre, kbd, samp,
   .tropa-header .burger { display:flex; }
 }
 
+/* ===== ТРОПА F3: сайдбар ОДИН-В-ОДИН из эталона (контейнер .sidebar) ===== */
+.sidebar { width:var(--side) !important; top:var(--header) !important; bottom:0; left:0; z-index:30;
+  background:var(--panel) !important; border-right:1px solid var(--line) !important;
+  overflow-y:auto; padding:20px 14px 48px !important; scrollbar-width:thin; }
+.sidebar .aside-label { font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--faint); padding:0 8px 8px; font-weight:600; }
+.sidebar .aside-sub { font-size:13px; color:var(--muted); padding:0 8px 18px; line-height:1.55; }
+.sidebar .level { margin-bottom:4px; }
+.sidebar .level-h { display:flex; align-items:center; gap:10px; padding:8px; border-radius:9px; cursor:pointer; transition:.12s; }
+.sidebar .level-h:hover { background:var(--card); }
+.sidebar .lnum { width:22px; height:22px; border-radius:50%; border:1.5px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:11px; color:var(--muted); flex-shrink:0; font-weight:700; transition:.15s; }
+.sidebar .level.done .lnum { background:var(--accent); border-color:var(--accent); color:#fff; }
+.sidebar .level.active .lnum { border-color:var(--accent); color:var(--accent); }
+.sidebar .level-name { flex:1; font-size:14.5px; font-weight:600; color:var(--ink); }
+.sidebar .level-meta { font-size:11px; color:var(--faint); }
+.sidebar .steps { padding:2px 0 8px 18px; margin-left:18px; border-left:1.5px solid var(--line); }
+.sidebar .step { display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; cursor:pointer; font-size:13.5px; color:var(--muted); transition:.12s; }
+.sidebar .step:hover { background:var(--card); color:var(--ink); }
+.sidebar .sdot { width:8px; height:8px; border-radius:50%; border:1.5px solid var(--faint); flex-shrink:0; transition:.15s; }
+.sidebar .step.done .sdot { background:var(--accent); border-color:var(--accent); }
+.sidebar .step.done { color:var(--ink); }
+.sidebar .step.current { background:transparent; color:var(--accent); font-weight:600; }
+.sidebar .step.current .sdot { background:var(--accent); border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+.sidebar .step.more { color:var(--faint); font-size:12.5px; padding-left:25px; cursor:default; }
+.sidebar .step.more:hover { background:transparent; color:var(--faint); }
+.sidebar .deeper .level-h { opacity:.4; }
+.sidebar .deeper .level-h:hover { opacity:.7; background:var(--card); }
+.sidebar .trails { margin-top:20px; padding-top:16px; border-top:1px solid var(--line); }
+.sidebar .trail { display:flex; align-items:center; gap:9px; padding:7px 8px; border-radius:7px; cursor:pointer; font-size:13.5px; color:var(--muted); transition:.12s; }
+.sidebar .trail:hover { background:var(--card); color:var(--ink); }
+.sidebar .trail .tarr { display:inline-flex; align-items:center; justify-content:center; color:var(--muted); width:18px; }
+.sidebar .trail .tarr svg { width:16px; height:16px; display:block; }
+.sidebar .trail:hover .tarr { color:var(--accent); }
+.sidebar .aside-link { font-size:13.5px; color:var(--muted); padding:6px 8px; border-radius:7px; cursor:pointer; transition:color .12s,background .12s; }
+.sidebar .aside-link:hover { color:var(--accent); background:var(--accent-soft); }
+
 </style>
 </head>
 <body>
@@ -26605,129 +26640,84 @@ function toggleCompleted(id) {
   renderLesson(currentLessonId);
 }
 
+// ТРОПА F3: сайдбар по эталону — уровни «ты здесь» + тропинки + указатели.
+// Данные наши (PHASES/LESSONS/TRACKS), классы и структура из tropa-layout-mockup.
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+const TRAIL_ICONS = {
+  claude: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>',
+  projects: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>',
+  industry: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+  everyday: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
+  vibe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
+};
+
 function buildNav() {
-  // Главный путь — фазы
   const nav = document.getElementById('lesson-nav');
-  nav.innerHTML = '';
-
-  const mainHeader = document.createElement('div');
-  mainHeader.className = 'phase';
-  mainHeader.innerHTML = `
-    <div class="phase-header" style="cursor: default; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
-      <div>
-        <div class="phase-title" style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Главный путь</div>
-      </div>
-    </div>
-  `;
-  nav.appendChild(mainHeader);
-
-  // Определяем активную фазу (содержит текущий урок)
+  if (!nav) return;
   const currentLesson = currentLessonId ? findLesson(currentLessonId) : null;
-  const activePhaseId = (currentLesson && typeof currentLesson.id === 'number') ? currentLesson.phase : null;
+  const activePhaseId = (currentLesson && typeof currentLesson.id === 'number') ? currentLesson.phase : 1;
 
+  let html = '<div class="aside-label">Главный путь</div><div class="aside-sub">Где подсвечено — там ты.</div>';
+
+  // Уровни = фазы. Активный уровень раскрыт со списком шагов; остальные — тихие (deeper).
   PHASES.forEach(phase => {
     const phaseLessons = LESSONS.filter(l => l.phase === phase.id);
-    const completedCount = phaseLessons.filter(l => isCompleted(l.id)).length;
-    const phaseEl = document.createElement('div');
-    // По умолчанию свёрнуты неактивные фазы (кроме первой при первом заходе)
-    const shouldCollapse = activePhaseId !== null ? (phase.id !== activePhaseId) : (phase.id !== 1);
-    phaseEl.className = 'phase' + (shouldCollapse ? ' collapsed' : '');
-    phaseEl.setAttribute('data-phase', String(phase.id));
-    phaseEl.innerHTML = `
-      <div class="phase-header" onclick="this.parentElement.classList.toggle('collapsed')">
-        <div>
-          <div class="phase-title"><span class="phase-toggle">▼</span><span class="phase-icon">${phaseIcon(phase.id)}</span>${phase.title}</div>
-          <div class="phase-progress-mini">${phase.subtitle}</div>
-        </div>
-        <div class="phase-progress-mini">${completedCount}/${phaseLessons.length}</div>
-      </div>
-      <div class="phase-lessons" id="phase-${phase.id}-lessons"></div>
-    `;
-    nav.appendChild(phaseEl);
-    const lessonsContainer = phaseEl.querySelector(`#phase-${phase.id}-lessons`);
-    phaseLessons.forEach(lesson => {
-      const link = document.createElement('button');
-      const completed = isCompleted(lesson.id);
-      link.className = 'lesson-link' + (completed ? ' completed' : '') + (lesson.draft ? ' draft' : '') + (lesson.id === currentLessonId ? ' active' : '');
-      link.dataset.lessonId = lesson.id;
-      link.dataset.title = lesson.title.toLowerCase();
-      link.innerHTML = `
-        <span class="num">${lesson.id}.</span>
-        <span class="title">${lesson.title}</span>
-        <span class="status">${completed ? '✓' : ''}</span>
-      `;
-      link.onclick = () => openLesson(lesson.id);
-      lessonsContainer.appendChild(link);
-    });
+    const doneCount = phaseLessons.filter(l => isCompleted(l.id)).length;
+    const isActive = phase.id === activePhaseId;
+    const isDone = doneCount === phaseLessons.length && phaseLessons.length > 0;
+    const name = phase.title.replace(/^Фаза\s*\d+\.\s*/, '');
 
-    // Квиз в конце фазы
-    const phaseDoneCount = phaseLessons.filter(l => l.content).length;
-    if (phaseDoneCount >= 5) {
-      const quizLink = document.createElement('button');
-      const quizDone = progress[`quiz_phase_${phase.id}`];
-      quizLink.className = 'lesson-link' + (quizDone ? ' completed' : '');
-      quizLink.dataset.title = `квиз фаза ${phase.id}`;
-      quizLink.innerHTML = `
-        <span class="num">🎓</span>
-        <span class="title">Квиз: проверь себя</span>
-        <span class="status">${quizDone ? '✓' : ''}</span>
-      `;
-      quizLink.onclick = () => openQuiz(phase.id);
-      lessonsContainer.appendChild(quizLink);
+    if (isActive) {
+      html += `<div class="level active">
+        <div class="level-h"><span class="lnum">${phase.id}</span><span class="level-name">${esc(name)}</span></div>
+        <div class="steps">`;
+      const shown = phaseLessons.slice(0, 6);
+      shown.forEach(lesson => {
+        const done = isCompleted(lesson.id);
+        const cur = lesson.id === currentLessonId;
+        const cls = 'step' + (done ? ' done' : '') + (cur ? ' current' : '');
+        const oid = (typeof lesson.id === 'number') ? lesson.id : `'${lesson.id}'`;
+        html += `<div class="${cls}" onclick="openLesson(${oid})"><span class="sdot"></span>${esc(lesson.title)}</div>`;
+      });
+      if (phaseLessons.length > shown.length) {
+        html += `<div class="step more">… и ещё ${phaseLessons.length - shown.length} шагов</div>`;
+      }
+      html += `</div></div>`;
+    } else {
+      const cls = 'level deeper' + (isDone ? ' done' : '');
+      html += `<div class="${cls}" onclick="openLesson(${phaseLessons[0] ? phaseLessons[0].id : 1})">
+        <div class="level-h"><span class="lnum">${phase.id}</span><span class="level-name">${esc(name)}</span><span class="level-meta" style="margin-left:auto">${phaseLessons.length} шагов</span></div>
+      </div>`;
     }
   });
 
-  // Параллельные тропинки
-  const trackNav = document.getElementById('track-nav');
-  trackNav.innerHTML = '';
-
-  const tracksHeader = document.createElement('div');
-  tracksHeader.className = 'phase';
-  tracksHeader.innerHTML = `
-    <div class="phase-header" style="cursor: default; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 0.5rem; margin-top: 1rem;">
-      <div>
-        <div class="phase-title" style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Параллельные тропинки</div>
-      </div>
-    </div>
-  `;
-  trackNav.appendChild(tracksHeader);
-
-  const activeTrack = (currentLesson && currentLesson.track) ? currentLesson.track : null;
-
-  TRACKS.forEach(track => {
-    const trackLessons = TRACK_LESSONS.filter(l => l.track === track.id);
-    const completedCount = trackLessons.filter(l => isCompleted(l.id)).length;
-    const trackEl = document.createElement('div');
-    const shouldCollapse = activeTrack ? (track.id !== activeTrack) : true;
-    trackEl.className = 'phase' + (shouldCollapse ? ' collapsed' : '');
-    trackEl.setAttribute('data-phase', track.id === 'claude' ? 'c' : track.id === 'projects' ? 'p' : 'i');
-    trackEl.innerHTML = `
-      <div class="phase-header" onclick="this.parentElement.classList.toggle('collapsed')">
-        <div>
-          <div class="phase-title"><span class="phase-toggle">▼</span><span class="phase-icon">${phaseIcon(track.id)}</span>${track.title.replace(/^[🟣🛠💼]\s*/, '')}</div>
-          <div class="phase-progress-mini">${track.subtitle}</div>
-        </div>
-        <div class="phase-progress-mini">${completedCount}/${trackLessons.length}</div>
-      </div>
-      <div class="phase-lessons" id="track-${track.id}-lessons"></div>
-    `;
-    trackNav.appendChild(trackEl);
-    const lessonsContainer = trackEl.querySelector(`#track-${track.id}-lessons`);
-    trackLessons.forEach(lesson => {
-      const link = document.createElement('button');
-      const completed = isCompleted(lesson.id);
-      link.className = 'lesson-link' + (completed ? ' completed' : '') + (lesson.draft ? ' draft' : '') + (lesson.id === currentLessonId ? ' active' : '');
-      link.dataset.lessonId = lesson.id;
-      link.dataset.title = lesson.title.toLowerCase();
-      link.innerHTML = `
-        <span class="num">${lesson.id.toUpperCase()}</span>
-        <span class="title">${lesson.title}</span>
-        <span class="status">${completed ? '✓' : ''}</span>
-      `;
-      link.onclick = () => openLesson(lesson.id);
-      lessonsContainer.appendChild(link);
-    });
+  // Тропинки — line-иконки, клик → openSection
+  html += '<div class="trails"><div class="aside-label">Тропинки</div>';
+  TRACKS.forEach(t => {
+    const icon = TRAIL_ICONS[t.id] || '';
+    const name = t.title.replace(/^[^\wА-Яа-яA-Z]+\s*/, '');
+    html += `<div class="trail" onclick="openSection('${t.id}')"><span class="tarr">${icon}</span>${esc(name)}</div>`;
   });
+
+  // Указатели — статические страницы
+  html += '<div class="aside-label" style="margin-top:20px">Указатели</div>';
+  const pointers = [
+    ['about','О курсе'], ['howto','Как заниматься'], ['faq','FAQ'],
+    ['resources','Источники'], ['glossary','Глоссарий'], ['changelog','Что нового'],
+    ['my-progress','Мой путь'],
+  ];
+  pointers.forEach(([id,label]) => {
+    const handler = id === 'glossary' ? 'openGlossary()' : `openStaticPage('${id}')`;
+    html += `<div class="aside-link" onclick="${handler}">${label}</div>`;
+  });
+  html += '</div>';
+
+  nav.innerHTML = html;
+
+  // track-nav больше не используется (всё в одном сайдбаре) — очищаем
+  const trackNav = document.getElementById('track-nav');
+  if (trackNav) trackNav.innerHTML = '';
 }
 
 function updateProgressUI() {
