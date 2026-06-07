@@ -3843,10 +3843,11 @@ code, pre, kbd, samp,
 .tropa-header .mh-word b { color:var(--accent); }
 .tropa-header .mh-tag { font-family:"Cormorant Unicase",Georgia,serif; font-weight:600; font-size:clamp(12.5px,1.25vw,15.5px); color:var(--muted); letter-spacing:.04em; }
 .tropa-header .h-right { display:flex; align-items:center; gap:8px; }
-.tropa-header .aly-hbtn { display:flex; align-items:center; gap:8px; height:38px; box-sizing:border-box; padding:0 14px 0 6px; border:1px solid var(--line); border-radius:22px; background:var(--card); cursor:pointer; font-family:"Golos Text",sans-serif; font-size:14px; color:var(--muted); transition:.15s; }
+.tropa-header .aly-hbtn { display:inline-flex; align-items:center; gap:8px; height:40px; box-sizing:border-box; padding:0 14px 0 8px; border:1px solid var(--line); border-radius:22px; background:var(--card); cursor:pointer; font-family:"Golos Text",sans-serif; font-size:14px; color:var(--muted); transition:.15s; }
+.tropa-header .aly-hbtn .aly-ava { width:24px; height:24px; border-radius:50%; flex:0 0 auto; font-size:12px; }
 .tropa-header .aly-hbtn:hover { border-color:var(--accent-mid); color:var(--ink); }
 .tropa-header .aly-mk { width:28px; height:28px; border-radius:50%; background:var(--accent-soft); color:var(--accent); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.tropa-header .icon-btn { width:38px; height:38px; box-sizing:border-box; border:1px solid var(--line); border-radius:8px; background:var(--card); cursor:pointer; font-size:16px; line-height:1; color:var(--muted); display:flex; align-items:center; justify-content:center; }
+.tropa-header .icon-btn { width:40px; height:40px; box-sizing:border-box; border:1px solid var(--line); border-radius:8px; background:var(--card); cursor:pointer; font-size:16px; line-height:1; color:var(--muted); display:flex; align-items:center; justify-content:center; }
 .tropa-header .icon-btn:hover { color:var(--ink); border-color:var(--accent-mid); }
 .tropa-header .h-nav { display:flex !important; align-items:center !important; gap:18px; height:44px !important; padding:0 clamp(16px,3vw,28px) !important; border-top:1px solid var(--line); overflow-x:auto; scrollbar-width:none; }
 .tropa-header .h-nav::-webkit-scrollbar { display:none; }
@@ -3901,7 +3902,7 @@ code, pre, kbd, samp,
 
 /* ===== ТРОПА F4: lean-главная (компоненты эталона, scoped под .home) ===== */
 .home { position:relative; }
-.home .home-status { display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:13px; color:var(--muted); padding:18px clamp(20px,6vw,72px) 0; max-width:760px; }
+.home .home-status { display:flex; align-items:center; justify-content:space-between; width:100%; gap:16px; font-size:13px; color:var(--muted); padding:18px clamp(20px,6vw,72px) 0; }
 .home .home-status .hs-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); flex-shrink:0; }
 .home .home-status b { color:var(--ink); font-weight:600; }
 .home .home-status a { color:var(--accent); cursor:pointer; margin-left:auto; font-weight:600; white-space:nowrap; text-decoration:none; }
@@ -4068,7 +4069,7 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
       </a>
     </div>
     <div class="h-right">
-      <button class="aly-hbtn" onclick="aleshaToggle()" aria-label="Алёша"><span class="aly-mk"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 13.5a4 4 0 0 0 7 0"/><circle cx="9" cy="10" r="0.7" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="0.7" fill="currentColor" stroke="none"/></svg></span><span class="aly-name">Алёша</span></button>
+      <button class="aly-hbtn" onclick="aleshaToggle()" aria-label="Алёша"><span class="alesha-logo aly-ava">А</span><span class="aly-name">Алёша</span></button>
       <button class="icon-btn theme-toggle" onclick="toggleTheme()" aria-label="Тема"><span id="theme-icon">◐</span><span id="theme-label" style="display:none"></span></button>
     </div>
   </div>
