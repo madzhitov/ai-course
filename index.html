@@ -3937,6 +3937,37 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 .site-footer .f-links span { cursor:pointer; color:var(--muted); }
 .site-footer .f-links span:hover { color:var(--ink); }
 
+/* ===== ТРОПА F5: урок (оболочка) ===== */
+.lesson-view { max-width: 760px; }
+#lesson-content h1 { font-family:"Cormorant Unicase",Georgia,serif; font-weight:700; letter-spacing:-.01em; font-size:clamp(26px,3.6vw,40px); line-height:1.12; color:var(--ink); }
+#lesson-content .breadcrumbs { display:flex; align-items:center; flex-wrap:wrap; gap:8px; font-size:12.5px; color:var(--muted); margin:0 0 14px; padding:0; border:none; }
+#lesson-content .breadcrumbs a { color:var(--muted); text-decoration:none; border:none; }
+#lesson-content .breadcrumbs a:hover { color:var(--accent); }
+#lesson-content .breadcrumbs .sep { color:var(--faint); }
+#lesson-content .breadcrumbs .current { color:var(--ink); font-weight:600; }
+#lesson-content .breadcrumbs .phase-tag { background:transparent; color:var(--accent); padding:0; font-weight:600; border:none; font-size:12.5px; }
+#lesson-content .lesson-time-meta { display:flex; flex-wrap:wrap; align-items:center; gap:6px 14px; font-size:12.5px; color:var(--muted); margin:8px 0 24px; }
+#lesson-content .lesson-time-meta strong { color:var(--ink); font-weight:600; }
+#lesson-content .lesson-time-meta .dot { width:3px; height:3px; background:var(--faint); border-radius:50%; opacity:1; }
+#lesson-content .lesson-actions { margin-top:40px; padding-top:22px; border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
+#lesson-content .complete-checkbox { display:flex; align-items:center; gap:9px; font-size:14px; color:var(--ink); cursor:pointer; }
+#lesson-content .nav-buttons { display:flex; gap:10px; }
+#lesson-content .nav-btn { padding:9px 16px; border:1px solid var(--line); border-radius:10px; background:var(--panel); color:var(--ink); font-family:inherit; font-weight:600; font-size:13.5px; cursor:pointer; }
+#lesson-content .nav-btn:hover:not(:disabled) { border-color:var(--accent); color:var(--accent); }
+#lesson-content .nav-btn:disabled { opacity:.4; cursor:default; }
+/* поля .poly (на будущее — контент в уроки не выдумываем) */
+.poly{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px 16px;margin:22px 0;font-size:13.5px;line-height:1.58;color:var(--muted)}
+.poly p{margin:0}
+.poly b{color:var(--ink)}
+.poly-aly{border-left:3px solid var(--accent)}
+.poly-head{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-weight:700;font-size:12px}
+.poly-aly .poly-head{color:var(--accent)}
+.poly-fact .poly-head{color:var(--faint);text-transform:uppercase;letter-spacing:.09em;font-size:10.5px}
+.poly-mark{width:20px;height:20px;border-radius:50%;background:var(--accent-soft);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.poly-mark svg{width:12px;height:12px;color:var(--accent)}
+.poly-ask{display:inline-block;margin-top:9px;color:var(--accent);font-weight:600;font-size:12.5px;cursor:pointer}
+.poly-ask:hover{text-decoration:underline}
+
 </style>
 </head>
 <body>
@@ -26759,10 +26790,10 @@ function renderLesson(id) {
   const courseUpdated = (typeof CHANGELOG !== 'undefined' && CHANGELOG[0]) ? fmtDate(CHANGELOG[0].date) : '';
   const timeMeta = `
     <div class="lesson-time-meta">
-      <span>⏱ <strong>~${lesson.duration} мин</strong> чтения</span>
+      <span><strong>~${lesson.duration} мин</strong> чтения</span>
       <span class="dot"></span>
-      <span>📝 <strong>30–60 мин</strong> практики</span>
-      ${courseUpdated ? `<span class="dot"></span><span>🔄 обновлено: <strong>${courseUpdated}</strong></span>` : ''}
+      <span><strong>30–60 мин</strong> практики</span>
+      ${courseUpdated ? `<span class="dot"></span><span>обновлено <strong>${courseUpdated}</strong></span>` : ''}
     </div>
   `;
 
@@ -26801,7 +26832,7 @@ function renderLesson(id) {
         <span><strong>Статус:</strong> черновик</span>
       </div>
       <div class="draft-notice">
-        <h3>✏️ Этот урок ещё пишется</h3>
+        <h3>Этот урок ещё пишется</h3>
         <p>Подробное содержание появится в одной из следующих итераций. Темп: ~2 урока в день, в порядке очереди.</p>
         ${availableRange ? `<p>Сейчас доступно из главного пути: <strong>${availableRange}</strong>. Спецветки тоже частично готовы — смотри <a href="#changelog" onclick="openStaticPage('changelog'); return false;">«Что нового»</a>.</p>` : ''}
       </div>
@@ -26842,7 +26873,7 @@ function renderLesson(id) {
     </div>
   `;
 
-  container.innerHTML = body + shareSection + actions;
+  container.innerHTML = '<div class="lesson-view">' + body + shareSection + actions + '</div>';
 
   // Post-render enhancements
   enhanceCodeBlocks(container);
