@@ -24,37 +24,61 @@
 <!-- Inter font for editorial style -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js">
 </script>
 <style>
 :root {
-  /* Editorial light palette — monochrome + один blue accent */
-  --bg: #ffffff;
-  --bg-sidebar: #fafaf9;
-  --bg-card: #ffffff;
-  --bg-code: #f5f5f4;
-  --bg-elevated: #f9f9f8;
-  --bg-soft: #f5f5f4;
-  --text: #0a0a0a;
-  --text-muted: #6b6b6b;
-  --text-soft: #a8a8a8;
-  --border: #e7e5e4;
-  --border-soft: #f0efed;
-  --border-strong: rgba(0,0,0,0.12);
+  /* ===== Палитра ХВОЯ (Тропа), светлая. Дефолт. =====
+     Первоклассные токены макета + старые имена как алиасы — чтобы весь
+     существующий сайт переоделся сам, без правки его разметки. */
+  --hvoya-bg: #f4f1ea;
+  --hvoya-panel: #fffdf8;
+  --hvoya-card: #efeadf;
+  --hvoya-line: #e0d9c9;
+  --hvoya-ink: #23201a;
+  --hvoya-muted: #6f675b;
+  --hvoya-faint: #aaa18f;
+  --hvoya-accent: #2f6b50;
+  --hvoya-accent-soft: #e4efe9;
+  --hvoya-accent-mid: #a9cdbb;
+  --side: 288px; --header: 108px;
 
-  /* Accent в editorial — это сам text. CTA-кнопка чёрная. */
-  --accent: #0a0a0a;
-  --accent-hover: #2a2a2a;
-  --accent-soft: #f5f5f4;
-  --accent-text: #0a0a0a;
+  /* короткие алиасы для новых компонентов (как в макете) */
+  --bg: var(--hvoya-bg);
+  --panel: var(--hvoya-panel);
+  --card: var(--hvoya-card);
+  --line: var(--hvoya-line);
+  --ink: var(--hvoya-ink);
+  --muted: var(--hvoya-muted);
+  --faint: var(--hvoya-faint);
+  --accent-mid: var(--hvoya-accent-mid);
 
-  /* Highlight blue — только для callout и hover-ссылок */
-  --link: #2563eb;
-  --link-soft: #dbeafe;
-  --link-border: rgba(37, 99, 235, 0.2);
+  /* старые имена сайта → ХВОЯ */
+  --bg-sidebar: var(--hvoya-panel);
+  --bg-card: var(--hvoya-panel);
+  --bg-code: var(--hvoya-card);
+  --bg-elevated: var(--hvoya-card);
+  --bg-soft: var(--hvoya-card);
+  --text: var(--hvoya-ink);
+  --text-muted: var(--hvoya-muted);
+  --text-soft: var(--hvoya-faint);
+  --border: var(--hvoya-line);
+  --border-soft: var(--hvoya-line);
+  --border-strong: var(--hvoya-faint);
+
+  /* Акцент = хвойный зелёный (один акцент на действие/«ты здесь») */
+  --accent: var(--hvoya-accent);
+  --accent-hover: #26543f;
+  --accent-soft: var(--hvoya-accent-soft);
+  --accent-text: #ffffff;
+
+  /* ссылки/хайлайт — в акцент, не синий */
+  --link: var(--hvoya-accent);
+  --link-soft: var(--hvoya-accent-soft);
+  --link-border: var(--hvoya-accent-mid);
 
   /* Категории — пастельные пары bg/text */
   --cat-prompts: #dbeafe;       --cat-prompts-text: #2563eb;
@@ -80,35 +104,54 @@
   --warning: #d97706;           --warning-soft: #fef3c7;
   --danger: #dc2626;            --danger-soft: #fee2e2;
 
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
-  --shadow: 0 4px 12px rgba(0,0,0,0.06);
-  --shadow-lg: 0 10px 30px rgba(0,0,0,0.08);
+  /* Тропа: иерархия светом, не тенью — тени выключены */
+  --shadow-sm: none;
+  --shadow: none;
+  --shadow-lg: none;
 }
 
 [data-theme="dark"] {
-  /* Editorial dark — глубокий чёрный + тёплый off-white текст */
-  --bg: #0a0a0b;
-  --bg-sidebar: #0f0f10;
-  --bg-card: #131316;
-  --bg-code: #18181b;
-  --bg-elevated: #1a1a1d;
-  --bg-soft: #18181b;
-  --text: #f2f2f3;
-  --text-muted: #8a8a92;
-  --text-soft: #5a5a62;
-  --border: rgba(255,255,255,0.07);
-  --border-soft: rgba(255,255,255,0.04);
-  --border-strong: rgba(255,255,255,0.15);
+  /* ===== Палитра ХВОЯ, тёмная ===== */
+  --hvoya-bg: #13140f;
+  --hvoya-panel: #191b14;
+  --hvoya-card: #1c1f17;
+  --hvoya-line: #2a2c22;
+  --hvoya-ink: #eaece2;
+  --hvoya-muted: #9aa08c;
+  --hvoya-faint: #585c4c;
+  --hvoya-accent: #5fae86;
+  --hvoya-accent-soft: #12251c;
+  --hvoya-accent-mid: #2c5742;
 
-  /* В dark accent = белый текст; CTA-кнопка остаётся «инвертная» */
-  --accent: #f2f2f3;
-  --accent-hover: #ffffff;
-  --accent-soft: rgba(255,255,255,0.06);
-  --accent-text: #f2f2f3;
+  --bg: var(--hvoya-bg);
+  --panel: var(--hvoya-panel);
+  --card: var(--hvoya-card);
+  --line: var(--hvoya-line);
+  --ink: var(--hvoya-ink);
+  --muted: var(--hvoya-muted);
+  --faint: var(--hvoya-faint);
+  --accent-mid: var(--hvoya-accent-mid);
 
-  --link: #60a5fa;
-  --link-soft: rgba(96, 165, 250, 0.12);
-  --link-border: rgba(96, 165, 250, 0.25);
+  --bg-sidebar: var(--hvoya-panel);
+  --bg-card: var(--hvoya-panel);
+  --bg-code: var(--hvoya-card);
+  --bg-elevated: var(--hvoya-card);
+  --bg-soft: var(--hvoya-card);
+  --text: var(--hvoya-ink);
+  --text-muted: var(--hvoya-muted);
+  --text-soft: var(--hvoya-faint);
+  --border: var(--hvoya-line);
+  --border-soft: var(--hvoya-line);
+  --border-strong: var(--hvoya-faint);
+
+  --accent: var(--hvoya-accent);
+  --accent-hover: #6fc096;
+  --accent-soft: var(--hvoya-accent-soft);
+  --accent-text: #13140f;
+
+  --link: var(--hvoya-accent);
+  --link-soft: var(--hvoya-accent-soft);
+  --link-border: var(--hvoya-accent-mid);
 
   --cat-prompts: #1e3a8a;       --cat-prompts-text: #93c5fd;
   --cat-agents: #581c87;        --cat-agents-text: #d8b4fe;
@@ -156,8 +199,8 @@ img, svg, video, canvas, iframe {
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
+  font-family: "Golos Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-feature-settings: "tnum";
   background: var(--bg);
   color: var(--text);
   line-height: 1.7;
@@ -165,7 +208,7 @@ body {
   min-height: 100vh;
   font-size: 17px;
   transition: background 0.2s, color 0.2s;
-  padding-top: 56px;
+  padding-top: var(--header);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -282,7 +325,7 @@ body.sidebar-open .menu-toggle span:nth-child(3) { transform: translateY(-7px) r
 .sidebar-backdrop {
   display: none;
   position: fixed;
-  top: 56px; left: 0; right: 0; bottom: 0;
+  top: var(--header); left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.45);
   z-index: 99;
   animation: fadeIn 0.2s;
@@ -298,7 +341,7 @@ body.sidebar-open .sidebar-backdrop { display: block; }
   padding: 1.5rem 0.85rem;
   overflow-y: auto;
   position: fixed;
-  top: 56px; left: 0; bottom: 0;
+  top: var(--header); left: 0; bottom: 0;
   z-index: 100;
 }
 
@@ -1395,16 +1438,11 @@ main {
 @media (min-width: 769px) {
   main {
     margin-left: 300px;
-    padding: 2.5rem 3.5rem 4rem;
+    padding: 0 3.5rem 4rem;
     max-width: 1200px;
   }
 }
-/* Reserve space for sticky Alesha widget on desktop */
-@media (min-width: 1100px) {
-  body:has(.alesha-widget.is-lesson:not(.is-collapsed-desktop)) main {
-    padding-right: 420px;
-  }
-}
+/* Алёша плавает внизу-справа — место под неё в main не резервируем */
 
 .update-banner {
   background: var(--accent-soft);
@@ -1609,96 +1647,50 @@ main {
   box-shadow: 0 10px 40px rgba(0,0,0,0.4);
 }
 
-/* DESKTOP: sticky right-rail */
-@media (min-width: 1100px) {
-  .alesha-widget.is-lesson {
-    position: fixed;
-    right: 24px;
-    top: 90px;
-    width: 360px;
-    max-height: calc(100vh - 130px);
-  }
-  .alesha-widget.is-collapsed-desktop {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    overflow: visible;
-    background: linear-gradient(135deg, var(--brand-accent), var(--brand-accent-2));
-    cursor: pointer;
-  }
-  .alesha-widget.is-collapsed-desktop > *:not(.alesha-collapse-icon) { display: none; }
-  .alesha-widget.is-collapsed-desktop .alesha-collapse-icon {
-    display: flex; align-items: center; justify-content: center;
-    width: 100%; height: 100%;
-    color: #fff; font-weight: 800;
-  }
-  .alesha-widget.is-collapsed-desktop .alesha-collapse-icon::before {
-    content: 'А';
-    font-size: 1.4rem;
-  }
+/* Алёша: плавающий пузырь внизу-справа на ВСЕХ экранах (десктоп = как мобилка).
+   Свёрнуто — кружок «А»; по клику раскрывается вверх в панель. */
+.alesha-widget.is-lesson {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: visible;
+  background: linear-gradient(135deg, var(--brand-accent), var(--brand-accent-2));
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
 }
-
-/* MOBILE/TABLET: floating button + slide-up sheet */
-@media (max-width: 1099px) {
-  .alesha-widget.is-lesson {
-    position: fixed;
-    bottom: 16px;
-    right: 16px;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    overflow: visible;
-    background: linear-gradient(135deg, var(--brand-accent), var(--brand-accent-2));
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
-  }
-  .alesha-widget.is-lesson > *:not(.alesha-collapse-icon) { display: none; }
-  .alesha-widget .alesha-collapse-icon {
-    display: flex; align-items: center; justify-content: center;
-    width: 100%; height: 100%;
-    color: #fff; font-weight: 800;
-  }
-  .alesha-widget .alesha-collapse-icon::before {
-    content: 'А';
-    font-size: 1.4rem;
-  }
-  .alesha-widget.is-open {
-    width: calc(100vw - 24px);
-    max-width: 420px;
-    height: calc(100vh - 80px);
-    max-height: 600px;
-    border-radius: 14px;
-    background: var(--bg, #fff);
-    cursor: default;
-    overflow: hidden;
-  }
-  .alesha-widget.is-open > *:not(.alesha-collapse-icon) { display: flex; }
-  .alesha-widget.is-open .alesha-collapse-icon {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 32px; height: 32px;
-    background: rgba(0,0,0,0.08);
-    color: var(--text, #1a1a1a);
-    border-radius: 50%;
-    z-index: 5;
-    cursor: pointer;
-  }
-  .alesha-widget.is-open .alesha-collapse-icon::before {
-    content: '✕';
-    font-size: 1rem;
-    font-weight: 600;
-  }
-  .alesha-widget.is-open .alesha-collapse-icon:hover {
-    background: rgba(0,0,0,0.15);
-  }
-  [data-theme="dark"] .alesha-widget.is-open { background: #18181b; }
-  [data-theme="dark"] .alesha-widget.is-open .alesha-collapse-icon {
-    background: rgba(255,255,255,0.1);
-    color: #fff;
-  }
+.alesha-widget.is-lesson > *:not(.alesha-collapse-icon) { display: none; }
+.alesha-widget .alesha-collapse-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 100%;
+  color: #fff; font-weight: 800;
 }
+.alesha-widget .alesha-collapse-icon::before { content: 'А'; font-size: 1.4rem; }
+.alesha-widget.is-open {
+  width: calc(100vw - 48px);
+  max-width: 400px;
+  height: calc(100vh - var(--header) - 48px);
+  max-height: 620px;
+  border-radius: 14px;
+  background: var(--bg, #fff);
+  border: 1px solid var(--line);
+  cursor: default;
+  overflow: hidden;
+}
+.alesha-widget.is-open > *:not(.alesha-collapse-icon) { display: flex; }
+.alesha-widget.is-open .alesha-collapse-icon {
+  position: absolute; top: 10px; right: 10px;
+  width: 32px; height: 32px;
+  background: rgba(0,0,0,0.08); color: var(--text, #1a1a1a);
+  border-radius: 50%; z-index: 5; cursor: pointer;
+}
+.alesha-widget.is-open .alesha-collapse-icon::before { content: '✕'; font-size: 1rem; font-weight: 600; }
+.alesha-widget.is-open .alesha-collapse-icon:hover { background: rgba(0,0,0,0.15); }
+[data-theme="dark"] .alesha-widget.is-open { background: #18181b; }
+[data-theme="dark"] .alesha-widget.is-open .alesha-collapse-icon { background: rgba(255,255,255,0.1); color: #fff; }
 
 /* Collapse button on desktop — small minimize icon top-right of widget */
 .alesha-min-btn {
@@ -1711,7 +1703,7 @@ main {
   border-radius: 4px;
 }
 .alesha-min-btn:hover { color: var(--accent); background: var(--bg-card); }
-@media (max-width: 1099px) { .alesha-min-btn { display: none; } }
+.alesha-min-btn { display: none; } /* закрытие даёт ✕ collapse-icon — второй крестик убран */
 .alesha-header {
   display: flex;
   align-items: center;
@@ -2807,7 +2799,7 @@ main {
 .global-progress .progress-bar-fill { background: var(--text) !important; }
 
 /* === Update banner: преобразую в чистый thin top-strip === */
-.update-banner { background: var(--bg-soft) !important; border: none !important; border-bottom: 1px solid var(--border) !important; border-radius: 0 !important; padding: 6px 1rem !important; font-size: 12px !important; color: var(--text-muted) !important; margin: -2.5rem -3.5rem 1.5rem !important; }
+.update-banner { background: var(--bg-soft) !important; border: none !important; border-bottom: 1px solid var(--border) !important; border-radius: 0 !important; padding: 6px 1rem !important; font-size: 12px !important; color: var(--text-muted) !important; margin: 0 -3.5rem 1.5rem !important; }
 .update-banner strong { color: var(--text); font-weight: 600; }
 .update-banner a { color: var(--link) !important; font-weight: 500 !important; }
 .live-dot { background: #22c55e; }
@@ -2872,10 +2864,10 @@ main {
 .alesha-logo { background: var(--text) !important; color: var(--bg) !important; }
 [data-theme="dark"] .alesha-logo { background: var(--text) !important; color: var(--bg) !important; }
 
-/* === Alesha widget (right rail) — editorial === */
-.alesha-widget { box-shadow: none !important; border: 1px solid var(--border) !important; background: var(--bg-card) !important; border-radius: 12px !important; }
-.alesha-widget.is-collapsed-desktop { background: var(--text) !important; }
-.alesha-widget.is-collapsed-desktop .alesha-collapse-icon::before { color: var(--bg); }
+/* === Alesha widget — editorial (пузырь внизу-справа на ВСЕХ экранах) === */
+.alesha-widget.is-lesson { background: var(--text) !important; border: none !important; border-radius: 50% !important; box-shadow: 0 6px 20px rgba(0,0,0,0.22) !important; }
+.alesha-widget.is-lesson .alesha-collapse-icon::before { color: var(--bg); }
+.alesha-widget.is-open { background: var(--bg-card) !important; border: 1px solid var(--border) !important; border-radius: 14px !important; box-shadow: 0 14px 44px rgba(0,0,0,0.18) !important; }
 .alesha-header { border-bottom: 1px solid var(--border) !important; padding: 14px 16px !important; }
 .alesha-header-title { font-size: 14px !important; font-weight: 700 !important; }
 .alesha-msg.user .alesha-msg-body { background: var(--text) !important; color: var(--bg) !important; }
@@ -2887,13 +2879,6 @@ main {
 .alesha-input button:hover { background: var(--accent-hover) !important; }
 .alesha-input textarea:focus { border-color: var(--text) !important; }
 .alesha-typing span { background: var(--text-muted); }
-
-/* Mobile Alesha button — editorial */
-@media (max-width: 1099px) {
-  .alesha-widget.is-lesson { background: var(--text) !important; box-shadow: 0 6px 20px rgba(0,0,0,0.2) !important; }
-  .alesha-widget.is-lesson .alesha-collapse-icon::before { color: var(--bg); }
-  .alesha-widget.is-open { background: var(--bg-card) !important; }
-}
 
 /* === Code block copy button === */
 .lesson-content pre .copy-btn { background: var(--bg) !important; border: 1px solid var(--border) !important; color: var(--text-muted) !important; }
@@ -3832,96 +3817,285 @@ main {
 .quiz-result-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 .quiz-result-actions button { font-family: inherit; }
 
+/* ===== ТРОПА L1: шрифты ХВОЯ ===== */
+/* Код → JetBrains Mono (перекрывает старые SF Mono/monospace по месту) */
+code, pre, kbd, samp,
+.lesson-content code, .lesson-content pre code {
+  font-family: "JetBrains Mono", ui-monospace, "SF Mono", Monaco, Consolas, monospace !important;
+}
+/* Крупные титулы → Cormorant Unicase (применяется к каркасу в L2-L3) */
+.hvoya-title { font-family: "Cormorant Unicase", Georgia, serif; font-weight: 700; letter-spacing: .01em; }
+
+/* ===== ТРОПА F2: двухстрочный хедер-мачта (эталон) ===== */
+:root { --header: 108px; }
+.tropa-header {
+  position: fixed; top:0; left:0; right:0; height:var(--header) !important; z-index:200;
+  display:flex !important; flex-direction:column !important; align-items:stretch !important; padding:0 !important; gap:0 !important;
+  background:color-mix(in srgb, var(--hvoya-panel) 90%, transparent) !important;
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--hvoya-line) !important;
+}
+.tropa-header .h-row1 { display:flex !important; align-items:center; justify-content:space-between; height:64px !important; padding:0 clamp(16px,3vw,28px) !important; flex:0 0 64px; }
+.tropa-header .h-nav { flex:0 0 44px; }
+.tropa-header .h-left { display:flex; align-items:center; gap:12px; }
+.tropa-header .masthead { display:flex; flex-direction:column; gap:1px; line-height:1.04; text-decoration:none; cursor:pointer; }
+.tropa-header .mh-word { font-size:clamp(22px,2.4vw,30px); font-weight:700; letter-spacing:.01em; color:var(--ink); }
+.tropa-header .mh-word b { color:var(--accent); }
+.tropa-header .mh-tag { font-family:"Cormorant Unicase",Georgia,serif; font-weight:600; font-size:clamp(12.5px,1.25vw,15.5px); color:var(--muted); letter-spacing:.04em; }
+.tropa-header .h-right { display:flex; align-items:center; gap:8px; }
+.tropa-header .aly-hbtn { display:flex; align-items:center; gap:8px; height:38px; box-sizing:border-box; padding:0 14px 0 6px; border:1px solid var(--line); border-radius:22px; background:var(--card); cursor:pointer; font-family:"Golos Text",sans-serif; font-size:14px; color:var(--muted); transition:.15s; }
+.tropa-header .aly-hbtn:hover { border-color:var(--accent-mid); color:var(--ink); }
+.tropa-header .aly-mk { width:28px; height:28px; border-radius:50%; background:var(--accent-soft); color:var(--accent); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.tropa-header .icon-btn { width:38px; height:38px; box-sizing:border-box; border:1px solid var(--line); border-radius:8px; background:var(--card); cursor:pointer; font-size:16px; line-height:1; color:var(--muted); display:flex; align-items:center; justify-content:center; }
+.tropa-header .icon-btn:hover { color:var(--ink); border-color:var(--accent-mid); }
+.tropa-header .h-nav { display:flex !important; align-items:center !important; gap:18px; height:44px !important; padding:0 clamp(16px,3vw,28px) !important; border-top:1px solid var(--line); overflow-x:auto; scrollbar-width:none; }
+.tropa-header .h-nav::-webkit-scrollbar { display:none; }
+.tropa-header .h-nav a { font-family:"Cormorant Unicase",Georgia,serif; font-size:17px; font-weight:600; letter-spacing:.015em; color:var(--muted); cursor:pointer; white-space:nowrap; text-decoration:none; }
+.tropa-header .h-nav a:hover { color:var(--accent); }
+.tropa-header .h-nav .nav-sep { width:1px; height:15px; background:var(--line); flex-shrink:0; }
+.tropa-header .burger { display:none; width:36px; height:36px; border:1px solid var(--line); border-radius:8px; background:var(--card); cursor:pointer; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
+.tropa-header .burger span { display:block; width:14px; height:1.5px; background:var(--ink); border-radius:2px; }
+/* контент под двухрядным хедером — основное правило уже на body (var(--header)) */
+@media (max-width:900px) {
+  :root { --header:64px; }
+  .tropa-header .h-nav { display:none !important; } /* база .h-nav has display:flex !important — иначе не скрывается */
+  .tropa-header .aly-name { display:none !important; }
+  .tropa-header .aly-hbtn { padding:6px; }
+  .tropa-header .burger { display:flex; }
+}
+
+/* ===== ТРОПА F3: сайдбар ОДИН-В-ОДИН из эталона (контейнер .sidebar) ===== */
+.sidebar { width:var(--side) !important; top:var(--header) !important; bottom:0; left:0; z-index:30;
+  background:var(--panel) !important; border-right:1px solid var(--line) !important;
+  overflow-y:auto; padding:20px 14px 48px !important; scrollbar-width:thin; }
+.sidebar .aside-label { font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--faint); padding:0 8px 8px; font-weight:600; }
+.sidebar .aside-sub { font-size:13px; color:var(--muted); padding:0 8px 18px; line-height:1.55; }
+.sidebar .level { margin-bottom:4px; }
+.sidebar .level-h { display:flex; align-items:center; gap:10px; padding:8px; border-radius:9px; cursor:pointer; transition:.12s; }
+.sidebar .level-h:hover { background:var(--card); }
+.sidebar .lnum { width:22px; height:22px; border-radius:50%; border:1.5px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:11px; color:var(--muted); flex-shrink:0; font-weight:700; transition:.15s; }
+.sidebar .level.done .lnum { background:var(--accent); border-color:var(--accent); color:#fff; }
+.sidebar .level.active .lnum { border-color:var(--accent); color:var(--accent); }
+.sidebar .level-name { flex:1; font-size:14.5px; font-weight:600; color:var(--ink); }
+.sidebar .level-meta { font-size:11px; color:var(--faint); }
+.sidebar .steps { padding:2px 0 8px 18px; margin-left:18px; border-left:1.5px solid var(--line); }
+.sidebar .step { display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; cursor:pointer; font-size:13.5px; color:var(--muted); transition:.12s; }
+.sidebar .step:hover { background:var(--card); color:var(--ink); }
+.sidebar .sdot { width:8px; height:8px; border-radius:50%; border:1.5px solid var(--faint); flex-shrink:0; transition:.15s; }
+.sidebar .step.done .sdot { background:var(--accent); border-color:var(--accent); }
+.sidebar .step.done { color:var(--ink); }
+.sidebar .step.current { background:transparent; color:var(--accent); font-weight:600; }
+.sidebar .step.current .sdot { background:var(--accent); border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+.sidebar .step.more { color:var(--faint); font-size:12.5px; padding-left:25px; cursor:default; }
+.sidebar .step.more:hover { background:transparent; color:var(--faint); }
+.sidebar .deeper .level-h { opacity:.4; }
+.sidebar .deeper .level-h:hover { opacity:.7; background:var(--card); }
+.sidebar .trails { margin-top:20px; padding-top:16px; border-top:1px solid var(--line); }
+.sidebar .trail { display:flex; align-items:center; gap:9px; padding:7px 8px; border-radius:7px; cursor:pointer; font-size:13.5px; color:var(--muted); transition:.12s; }
+.sidebar .trail:hover { background:var(--card); color:var(--ink); }
+.sidebar .trail .tarr { display:inline-flex; align-items:center; justify-content:center; color:var(--muted); width:18px; }
+.sidebar .trail .tarr svg { width:16px; height:16px; display:block; }
+.sidebar .trail:hover .tarr { color:var(--accent); }
+.sidebar .aside-link { font-size:13.5px; color:var(--muted); padding:6px 8px; border-radius:7px; cursor:pointer; transition:color .12s,background .12s; }
+.sidebar .aside-link:hover { color:var(--accent); background:var(--accent-soft); }
+
+/* ===== ТРОПА F4: lean-главная (компоненты эталона, scoped под .home) ===== */
+.home { position:relative; }
+.home .home-status { display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:13px; color:var(--muted); padding:18px clamp(20px,6vw,72px) 0; max-width:760px; }
+.home .home-status .hs-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+.home .home-status b { color:var(--ink); font-weight:600; }
+.home .home-status a { color:var(--accent); cursor:pointer; margin-left:auto; font-weight:600; white-space:nowrap; text-decoration:none; }
+.home .home-status a:hover { text-decoration:underline; }
+.home .intro { padding:32px clamp(20px,6vw,72px) 12px; max-width:760px; }
+.home .badge { display:inline-flex; align-items:center; gap:7px; padding:5px 12px; border:1px solid var(--line); border-radius:20px; font-size:13px; color:var(--muted); margin-bottom:20px; background:transparent; }
+.home .badge .bdot { width:8px; height:8px; border-radius:50%; background:var(--accent); }
+.home .intro h1 { font-family:"Cormorant Unicase",Georgia,serif; font-size:clamp(30px,5vw,50px); font-weight:700; letter-spacing:-.03em; line-height:1.08; margin-bottom:14px; color:var(--ink); }
+.home .intro .lead { font-size:17px; color:var(--muted); max-width:500px; line-height:1.65; margin-bottom:28px; }
+.home .start-btn { display:inline-flex; align-items:center; gap:10px; padding:13px 22px; background:var(--accent); color:#fff; border:none; border-radius:12px; cursor:pointer; font-size:16px; font-family:inherit; font-weight:600; transition:.15s; }
+.home .start-btn:hover { background:#26543f; transform:translateY(-1px); }
+.home .start-btn-sec { display:inline-flex; align-items:center; padding:11px 17px; border-radius:12px; border:1px solid var(--line); background:var(--panel); color:var(--ink); font-family:inherit; font-weight:600; font-size:14px; cursor:pointer; }
+.home .start-btn-sec:hover { border-color:var(--accent); color:var(--accent); }
+.home .home-author { font-size:13px; color:var(--muted); margin-top:20px; line-height:1.5; }
+.home .home-author a { color:var(--accent); text-decoration:none; }
+.home .home-author b { color:var(--ink); }
+.home .home-invite { background:var(--card); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:13px; padding:15px 17px; font-size:13.5px; color:var(--muted); line-height:1.55; max-width:760px; margin:6px clamp(20px,6vw,72px) 0; }
+.home .home-invite b { color:var(--ink); display:block; margin-bottom:3px; font-size:14px; }
+.home .home-invite a { color:var(--accent); font-weight:600; cursor:pointer; white-space:nowrap; }
+.home .home-sec { max-width:760px; padding:0 clamp(20px,6vw,72px); }
+.home .cont-line { display:flex; flex-direction:column; gap:2px; background:var(--accent-soft); border:1px solid var(--accent-mid); border-radius:12px; padding:13px 16px; margin:18px 0 0; cursor:pointer; max-width:760px; }
+.home .cont-eye { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); font-weight:700; }
+.home .cont-ttl { font-size:15px; color:var(--ink); font-weight:600; }
+.home .opath-link { display:inline-block; margin-top:18px; color:var(--accent); font-weight:600; font-size:15px; cursor:pointer; text-decoration:none; border-bottom:1px solid var(--accent-mid); }
+
+/* ===== ТРОПА: футер эталона (вордмарк Cormorant + 8 ссылок в строку) ===== */
+footer.site-footer { background:transparent; border:none; padding:0; margin:56px 0 0; display:block; color:var(--ink); font-size:inherit; }
+.site-footer .footer-in { max-width:920px; margin:0; padding:32px clamp(20px,6vw,72px) 50px; border-top:1px solid var(--line); }
+.site-footer .f-inner { display:flex; flex-direction:column; gap:14px; }
+.site-footer .f-word { font-family:"Cormorant Unicase",Georgia,serif; font-weight:700; font-size:clamp(16px,1.7vw,21px); letter-spacing:.015em; color:var(--ink); }
+.site-footer .f-word .mh-dot { color:var(--accent); }
+.site-footer .f-links { display:flex; gap:14px; font-size:13px; color:var(--muted); flex-wrap:wrap; }
+.site-footer .f-links span { cursor:pointer; color:var(--muted); }
+.site-footer .f-links span:hover { color:var(--ink); }
+
+/* ===== ТРОПА F5: урок (оболочка) ===== */
+.lesson-view { max-width: 760px; }
+#lesson-content h1 { font-family:"Cormorant Unicase",Georgia,serif; font-weight:700; letter-spacing:-.01em; font-size:clamp(26px,3.6vw,40px); line-height:1.12; color:var(--ink); }
+#lesson-content .breadcrumbs { display:flex; align-items:center; flex-wrap:wrap; gap:8px; font-size:12.5px; color:var(--muted); margin:0 0 14px; padding:0; border:none; }
+#lesson-content .breadcrumbs a { color:var(--muted); text-decoration:none; border:none; }
+#lesson-content .breadcrumbs a:hover { color:var(--accent); }
+#lesson-content .breadcrumbs .sep { color:var(--faint); }
+#lesson-content .breadcrumbs .current { color:var(--ink); font-weight:600; }
+#lesson-content .breadcrumbs .phase-tag { background:transparent; color:var(--accent); padding:0; font-weight:600; border:none; font-size:12.5px; }
+#lesson-content .lesson-time-meta { display:flex; flex-wrap:wrap; align-items:center; gap:6px 14px; font-size:12.5px; color:var(--muted); margin:8px 0 24px; }
+#lesson-content .lesson-time-meta strong { color:var(--ink); font-weight:600; }
+#lesson-content .lesson-time-meta .dot { width:3px; height:3px; background:var(--faint); border-radius:50%; opacity:1; }
+#lesson-content .lesson-actions { margin-top:40px; padding-top:22px; border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
+#lesson-content .complete-checkbox { display:flex; align-items:center; gap:9px; font-size:14px; color:var(--ink); cursor:pointer; }
+#lesson-content .nav-buttons { display:flex; gap:10px; }
+#lesson-content .nav-btn { padding:9px 16px; border:1px solid var(--line); border-radius:10px; background:var(--panel); color:var(--ink); font-family:inherit; font-weight:600; font-size:13.5px; cursor:pointer; }
+#lesson-content .nav-btn:hover:not(:disabled) { border-color:var(--accent); color:var(--accent); }
+#lesson-content .nav-btn:disabled { opacity:.4; cursor:default; }
+/* поля .poly (на будущее — контент в уроки не выдумываем) */
+.poly{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px 16px;margin:22px 0;font-size:13.5px;line-height:1.58;color:var(--muted)}
+.poly p{margin:0}
+.poly b{color:var(--ink)}
+.poly-aly{border-left:3px solid var(--accent)}
+.poly-head{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-weight:700;font-size:12px}
+.poly-aly .poly-head{color:var(--accent)}
+.poly-fact .poly-head{color:var(--faint);text-transform:uppercase;letter-spacing:.09em;font-size:10.5px}
+.poly-mark{width:20px;height:20px;border-radius:50%;background:var(--accent-soft);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.poly-mark svg{width:12px;height:12px;color:var(--accent)}
+.poly-ask{display:inline-block;margin-top:9px;color:var(--accent);font-weight:600;font-size:12.5px;cursor:pointer}
+.poly-ask:hover{text-decoration:underline}
+
+/* ===== ТРОПА F5/F6: «карта, не витрина» — гасим тени/градиенты карточек секций/тропинок/маршрутов ===== */
+.lesson-card-v2, .route-card { background:var(--card) !important; border:1px solid var(--line) !important; box-shadow:none !important; background-image:none !important; border-radius:13px !important; }
+.lesson-card-v2:hover, .route-card:hover { border-color:var(--accent-mid) !important; transform:none !important; box-shadow:none !important; }
+.lesson-card-thumb, .route-card-icon { background:var(--accent-soft) !important; color:var(--accent) !important; box-shadow:none !important; background-image:none !important; }
+.cat-tag, .route-card-cta { background:transparent !important; color:var(--accent) !important; padding:0 !important; box-shadow:none !important; }
+.quiz-cta { background:var(--accent-soft) !important; color:var(--accent) !important; border:1px solid var(--accent-mid) !important; box-shadow:none !important; }
+.routes-heading { font-family:"Cormorant Unicase",Georgia,serif; }
+
+/* ===== ТРОПА F5: обзор тропинок (trailsView) + back-link страницы тропинки ===== */
+#lesson-content .sub-lead { font-size:16px; color:var(--muted); line-height:1.6; margin:0 0 8px; max-width:640px; }
+.track-cards { display:flex; flex-direction:column; gap:12px; margin:18px 0 8px; max-width:640px; }
+.track-card { display:flex; gap:14px; padding:16px 18px; background:var(--card); border:1px solid var(--line); border-radius:14px; cursor:pointer; transition:border-color .15s; }
+.track-card:hover { border-color:var(--accent-mid); }
+.track-card-icon { flex-shrink:0; color:var(--accent); }
+.track-card-icon svg { width:24px; height:24px; display:block; }
+.track-card-tag { font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); font-weight:700; margin-bottom:5px; }
+.track-card-body h3 { font-family:"Golos Text",sans-serif; font-size:16px; font-weight:600; margin:0 0 6px; color:var(--ink); }
+.track-card-body p { font-size:14px; margin:0; color:var(--muted); }
+.track-back { display:inline-block; margin-bottom:14px; color:var(--muted); cursor:pointer; font-size:14px; }
+.track-back:hover { color:var(--accent); }
+/* §M О курсе: тихая строка вместо баров */
+#lesson-content .about-quiet { font-size:14px; color:var(--muted); line-height:1.6; margin:0 0 18px; padding-bottom:18px; border-bottom:1px solid var(--line); max-width:640px; }
+/* §B Мой путь: тихая карта прогресса (без баров/пончиков/процентов) */
+#lesson-content .sec-lead { font-size:14px; color:var(--muted); margin:0 0 14px; max-width:640px; }
+#lesson-content .mp-h2 { font-family:"Golos Text",sans-serif; font-size:21px; font-weight:700; letter-spacing:-.01em; margin:28px 0 6px; color:var(--ink); }
+.pp-items { display:flex; flex-direction:column; gap:4px; max-width:640px; }
+.pp-item { display:flex; align-items:center; gap:12px; padding:11px 14px; border:1px solid var(--line); border-radius:11px; background:var(--panel); cursor:pointer; transition:border-color .15s,background .15s; }
+.pp-item:hover, .pp-item.here { border-color:var(--accent-mid); background:var(--accent-soft); }
+.pp-num { width:26px; height:26px; border-radius:50%; background:var(--card); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--muted); flex-shrink:0; }
+.pp-item.here .pp-num { background:var(--accent); color:#fff; }
+.pp-title { font-weight:600; font-size:15px; flex:1; color:var(--ink); }
+.pp-meta { font-size:12px; color:var(--faint); white-space:nowrap; }
+.pp-item.here .pp-meta { color:var(--accent); font-weight:600; }
+.mp-steps { display:flex; flex-wrap:wrap; gap:9px; max-width:640px; margin-top:8px; }
+.mp-step { cursor:pointer; line-height:0; }
+.mp-dot { width:11px; height:11px; border-radius:50%; border:1.5px solid var(--faint); display:block; transition:.15s; }
+.mp-step.done .mp-dot { background:var(--accent); border-color:var(--accent); }
+.mp-step.current .mp-dot { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+.mp-step:hover .mp-dot { border-color:var(--accent); }
+/* §L Тропинка-деталь: тихие нумерованные строки */
+.tv-list { margin-top:16px; max-width:640px; }
+.tv-row { display:flex; align-items:baseline; gap:15px; padding:13px 0; border-bottom:1px solid var(--line); cursor:pointer; }
+.tv-row:hover .tv-t { color:var(--accent); }
+.tv-n { font-size:12px; color:var(--faint); font-variant-numeric:tabular-nums; min-width:20px; flex-shrink:0; }
+.tv-t { flex:1; font-size:15px; color:var(--ink); line-height:1.4; }
+.tv-d { font-size:12.5px; color:var(--faint); white-space:nowrap; }
+.tv-sources { font-size:13px; color:var(--muted); line-height:1.55; margin-top:24px; padding-top:16px; border-top:1px solid var(--line); max-width:640px; }
+.tv-sources a { color:var(--accent); }
+/* §C Маршруты: карточки-строки + line-иконки */
+#lesson-content .routes-grid { display:flex; flex-direction:column; gap:12px; max-width:640px; margin-top:8px; }
+.route-card { display:flex !important; gap:14px; padding:16px 18px !important; text-align:left; width:100%; align-items:flex-start; border-radius:14px !important; }
+.route-card-icon { flex-shrink:0; color:var(--accent); width:auto !important; height:auto !important; }
+.route-card-icon svg { width:24px; height:24px; display:block; }
+.route-card-body { flex:1; min-width:0; }
+.route-card-title { font-family:"Golos Text",sans-serif; font-size:16px; font-weight:600; color:var(--ink); margin-bottom:4px; }
+.route-card-meta { font-size:11px; letter-spacing:.04em; color:var(--faint); margin-bottom:6px; text-transform:uppercase; }
+.route-card-desc { font-size:14px; color:var(--muted); line-height:1.5; }
+.rc-prog { color:var(--accent); font-size:11px; margin-left:6px; font-weight:600; }
+.route-card.hl { border-color:var(--accent) !important; box-shadow:0 0 0 3px var(--accent-soft) !important; }
+/* §E приглашение-маршруты: на десктопе абсолютом в правом жёлобе рядом с hero */
+@media (min-width:1024px){ .home .home-invite { position:absolute; top:64px; right:0; width:250px; margin:0; } }
+/* §D Что нового: тихая лента */
+.cl-list { max-width:640px; }
+.cl-entry { padding:20px 0; border-bottom:1px solid var(--line); }
+.cl-entry:first-child { padding-top:4px; }
+.cl-date { font-size:12px; color:var(--faint); margin-bottom:6px; }
+.cl-title { font-family:"Golos Text",sans-serif; font-size:17px; font-weight:700; color:var(--ink); display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin-bottom:8px; }
+.cl-tag { font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; font-weight:700; padding:2px 8px; border-radius:999px; background:var(--accent-soft); color:var(--accent); }
+.cl-items { margin:0; padding-left:18px; }
+.cl-items li { font-size:14px; color:var(--muted); line-height:1.55; margin-bottom:4px; }
+/* §G Глоссарий: чипы + тихие записи (без коробов/✎/«Урок N») */
+.gloss-search { width:100%; max-width:640px; padding:11px 14px; font-size:15px; font-family:inherit; border:1px solid var(--line); border-radius:11px; background:var(--panel); color:var(--ink); margin:0 0 14px; box-sizing:border-box; }
+.gloss-search:focus { outline:none; border-color:var(--accent-mid); }
+.gloss-chips { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:18px; max-width:760px; }
+.gchip { font-size:12.5px; color:var(--muted); background:var(--card); border:1px solid var(--line); border-radius:999px; padding:5px 12px; cursor:pointer; }
+.gchip:hover { color:var(--accent); border-color:var(--accent-mid); }
+.gloss-cat { font-family:"Golos Text",sans-serif; font-size:13px; font-weight:700; letter-spacing:.1em; color:var(--faint); text-transform:uppercase; margin:28px 0 4px; }
+#lesson-content .glossary-terms { max-width:640px; }
+#lesson-content .glossary-term.gt { background:none !important; border:none !important; border-bottom:1px solid var(--line) !important; border-radius:0 !important; padding:12px 0 !important; box-shadow:none !important; display:block !important; border-left:none !important; }
+.gt-name { font-weight:600; font-size:15px; color:var(--ink); margin-bottom:3px; }
+.gt-def { font-size:14px; color:var(--muted); line-height:1.55; }
+/* §M автор-callout: зелёная левая полоса (бьёт .callout{border-left:none!important}) */
+#lesson-content .callout.about-author { border-left:3px solid var(--accent) !important; background:var(--accent-soft) !important; }
+
 </style>
 </head>
 <body>
 
-<header class="top-nav">
-  <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Меню">
-    <span></span><span></span><span></span>
-  </button>
-  <a href="#home" class="top-nav-logo" onclick="openStaticPage('home'); return false;">
-    <span class="brand-mark">A</span><span class="brand-name">AI&nbsp;Курс</span>
-  </a>
-  <nav class="top-nav-links">
-    <a href="#section-main" data-section="main" onclick="openSection('main'); return false;">Основной курс</a>
-    <a href="#section-everyday" data-section="everyday" onclick="openSection('everyday'); return false;">AI каждый день</a>
-    <a href="#section-claude" data-section="claude" onclick="openSection('claude'); return false;">Погружение в Клод</a>
-    <a href="#section-projects" data-section="projects" onclick="openSection('projects'); return false;">Мини-проекты за час</a>
-    <a href="#section-industry" data-section="industry" onclick="openSection('industry'); return false;">Индустрии</a>
-    <a href="#section-vibe" data-section="vibe" onclick="openSection('vibe'); return false;" class="nav-vibe">🥋 Вайб Код Вам Дам</a>
-  </nav>
-  <div class="top-nav-right">
-    <a href="#glossary" onclick="openGlossary(); return false;">Глоссарий</a>
-    <a href="#resources" onclick="openStaticPage('resources'); return false;">Источники</a>
-    <a href="https://t.me/artefakty_ai" target="_blank" class="tg-link">@artefakty_ai</a>
+<!-- ТРОПА F2: двухстрочная мачта по эталону. Старые секц-ссылки скрыты
+     (data-section нужны setActiveTopNav); видимая навигация — в .h-nav. -->
+<header class="tropa-header">
+  <div class="h-row1">
+    <div class="h-left">
+      <button class="burger menu-toggle" onclick="toggleSidebar()" aria-label="Меню"><span></span><span></span><span></span></button>
+      <a class="masthead" href="#home" onclick="openStaticPage('home'); return false;">
+        <span class="mh-word hvoya-title">AI&nbsp;Курс<b>.</b></span>
+        <span class="mh-tag">От пользователя к создателю</span>
+      </a>
+    </div>
+    <div class="h-right">
+      <button class="aly-hbtn" onclick="aleshaToggle()" aria-label="Алёша"><span class="aly-mk"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 13.5a4 4 0 0 0 7 0"/><circle cx="9" cy="10" r="0.7" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="0.7" fill="currentColor" stroke="none"/></svg></span><span class="aly-name">Алёша</span></button>
+      <button class="icon-btn theme-toggle" onclick="toggleTheme()" aria-label="Тема"><span id="theme-icon">◐</span><span id="theme-label" style="display:none"></span></button>
+    </div>
   </div>
+  <nav class="h-nav">
+    <a onclick="openSection('main'); return false;">Основной путь</a>
+    <a onclick="openStaticPage('trails'); return false;">5 тропинок</a>
+    <a onclick="openStaticPage('about'); return false;">О курсе</a>
+  </nav>
+  <!-- скрытые секц-ссылки для setActiveTopNav -->
+  <nav class="top-nav-links" aria-hidden="true" style="display:none">
+    <a data-section="main" onclick="openSection('main'); return false;"></a>
+    <a data-section="everyday" onclick="openSection('everyday'); return false;"></a>
+    <a data-section="claude" onclick="openSection('claude'); return false;"></a>
+    <a data-section="projects" onclick="openSection('projects'); return false;"></a>
+    <a data-section="industry" onclick="openSection('industry'); return false;"></a>
+    <a data-section="vibe" onclick="openSection('vibe'); return false;"></a>
+  </nav>
 </header>
 
 <div class="sidebar-backdrop" onclick="closeSidebar()"></div>
 
 <aside class="sidebar">
-  <div class="sidebar-header">
-    <div class="sidebar-title">От пользователя<br>к создателю</div>
-  </div>
-
-  <button class="theme-toggle" onclick="toggleTheme()">
-    <span id="theme-icon">🌙</span>
-    <span id="theme-label">Тёмная тема</span>
-  </button>
-
-  <input type="text" class="search-box" id="search-box" placeholder="Поиск по урокам  (⌘K)" oninput="onSearchInput(this.value)" onfocus="onSearchInput(this.value)" onkeydown="if(event.key==='Escape'){this.value=''; closeSearchOverlay(); this.blur();}">
-
-  <div class="global-progress">
-    <div class="global-progress-label">
-      <span>Общий прогресс</span>
-      <span id="global-progress-text">0 / 72</span>
-    </div>
-    <div class="progress-bar"><div class="progress-bar-fill" id="global-progress-bar" style="width: 0%"></div></div>
-  </div>
-
-  <div class="phase">
-    <div class="phase-header" style="cursor: default;">
-      <div>
-        <div class="phase-title">Введение</div>
-        <div class="phase-progress-mini">Начни здесь</div>
-      </div>
-    </div>
-    <div class="phase-lessons">
-      <button class="lesson-link static-link" data-static="home" onclick="openStaticPage('home')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
-        <span class="title">Главная</span>
-      </button>
-      <button class="lesson-link static-link" data-static="my-progress" onclick="openStaticPage('my-progress')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16V9"/><path d="M12 16V6"/><path d="M17 16v-4"/></svg></span>
-        <span class="title">Мой прогресс</span>
-      </button>
-      <button class="lesson-link static-link" data-static="about" onclick="openStaticPage('about')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span>
-        <span class="title">О курсе</span>
-      </button>
-      <button class="lesson-link static-link" data-static="howto" onclick="openStaticPage('howto')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
-        <span class="title">Как заниматься</span>
-      </button>
-      <button class="lesson-link static-link" data-static="faq" onclick="openStaticPage('faq')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span>
-        <span class="title">FAQ</span>
-      </button>
-      <button class="lesson-link static-link" data-static="glossary" onclick="openGlossary()">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></span>
-        <span class="title">Глоссарий</span>
-      </button>
-      <button class="lesson-link static-link" data-static="changelog" onclick="openStaticPage('changelog')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6z"/></svg></span>
-        <span class="title">Что нового</span>
-      </button>
-      <button class="lesson-link static-link" data-static="resources" onclick="openStaticPage('resources')">
-        <span class="num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg></span>
-        <span class="title">Источники</span>
-      </button>
-    </div>
-  </div>
+  <!-- Тропа: статичный блок (тема/поиск/прогресс-бар/Введение-ссылки) убран —
+       тема в хедере, поиск по ⌘K, ссылки в «Указателях». Скрытые элементы
+       сохранены, т.к. на них завязаны toggleTheme/поиск. -->
+  <input type="text" id="search-box" style="display:none" oninput="onSearchInput(this.value)">
+  <span id="global-progress-text" style="display:none"></span><span id="global-progress-bar" style="display:none"></span>
 
   <nav id="lesson-nav"></nav>
   <nav id="track-nav"></nav>
@@ -4602,7 +4776,7 @@ registerLesson(1, `
 </figure>
 
 <div class="sandbox" data-sandbox="temperature">
-  <div class="sandbox-loading">⚡ Загружаю интерактивную песочницу…</div>
+  <div class="sandbox-loading">Загружаю интерактивную песочницу…</div>
 </div>
 
 <table>
@@ -25146,7 +25320,7 @@ registerLesson("v10", `
 
 
 registerLesson("v11", `
-<h1>📚 Справочник: основы веба</h1>
+<h1>Справочник: основы веба</h1>
 
 <div class="lesson-meta">
   <span><strong>Цель:</strong> Как работает интернет, frontend, backend, Node.js, фреймворки. Карта территории, без воды.</span>
@@ -25366,7 +25540,7 @@ export async function POST(request: Request) {
 
 
 registerLesson("v12", `
-<h1>📚 Справочник: данные и API</h1>
+<h1>Справочник: данные и API</h1>
 
 <div class="lesson-meta">
   <span><strong>Цель:</strong> Базы данных, API, авторизация. Как части системы общаются и где живут данные.</span>
@@ -25614,7 +25788,7 @@ CREATE POLICY &quot;Admins see all orders&quot;
 
 
 registerLesson("v13", `
-<h1>📚 Справочник: инструменты разработчика</h1>
+<h1>Справочник: инструменты разработчика</h1>
 
 <div class="lesson-meta">
   <span><strong>Цель:</strong> Git, npm, .env, спецификация. Без этого невозможна командная работа и деплой.</span>
@@ -25826,7 +26000,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
 
 registerLesson("v14", `
-<h1>📚 Справочник: от кода к продукту</h1>
+<h1>Справочник: от кода к продукту</h1>
 
 <div class="lesson-meta">
   <span><strong>Цель:</strong> Деплой, мобильная разработка, полная архитектура типовых проектов.</span>
@@ -25984,7 +26158,7 @@ Expo компилирует
 
 
 registerLesson("v15", `
-<h1>📚 Справочник: продвинутые темы</h1>
+<h1>Справочник: продвинутые темы</h1>
 
 <div class="lesson-meta">
   <span><strong>Цель:</strong> Отладка, тесты, кэш, мониторинг, SEO, безопасность. Что отличает прототип от продукта.</span>
@@ -26506,129 +26680,106 @@ function toggleCompleted(id) {
   renderLesson(currentLessonId);
 }
 
+// ТРОПА F3: сайдбар по эталону — уровни «ты здесь» + тропинки + указатели.
+// Данные наши (PHASES/LESSONS/TRACKS), классы и структура из tropa-layout-mockup.
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function pluralUrok(n){ const a=n%10,b=n%100; return (a===1&&b!==11)?'урок':((a>=2&&a<=4)&&(b<10||b>=20)?'урока':'уроков'); }
+function shortLessonLabel(title){ if(!title) return ''; const s=String(title); const m=s.split(/\s*[:—]\s*/); if(m.length>1) return m[0].trim(); const w=s.split(/\s+/); return w.length>4 ? w.slice(0,4).join(' ') : s; }
+function fmtDateRu(iso){ if(!iso) return ''; const M=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря']; const p=String(iso).split('-'); if(p.length!==3) return iso; return `${parseInt(p[2],10)} ${M[parseInt(p[1],10)-1]} ${p[0]}`; }
+function stripEmoji(s){ return String(s).replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu,'').replace(/\s{2,}/g,' ').trim(); }
+
+const TRAIL_ICONS = {
+  claude: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>',
+  projects: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>',
+  industry: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+  everyday: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
+  vibe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
+};
+
+// Единый источник «ты здесь»: открытый урок, иначе — ближайший непройденный
+// готовый урок главного пути (тот же, что питает «Продолжить с того места»).
+function resumeLesson() {
+  const open = currentLessonId ? findLesson(currentLessonId) : null;
+  if (open && typeof open.id === 'number') return open;
+  const next = LESSONS.find(l => l.content && !isCompleted(l.id));
+  return next || LESSONS[0];
+}
+
 function buildNav() {
-  // Главный путь — фазы
   const nav = document.getElementById('lesson-nav');
-  nav.innerHTML = '';
+  if (!nav) return;
+  const hereLesson = resumeLesson();
+  const hereId = hereLesson ? hereLesson.id : null;
+  const activePhaseId = hereLesson ? hereLesson.phase : 1;
 
-  const mainHeader = document.createElement('div');
-  mainHeader.className = 'phase';
-  mainHeader.innerHTML = `
-    <div class="phase-header" style="cursor: default; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
-      <div>
-        <div class="phase-title" style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Главный путь</div>
-      </div>
-    </div>
-  `;
-  nav.appendChild(mainHeader);
+  let html = '<div class="aside-label">Главный путь</div>';
 
-  // Определяем активную фазу (содержит текущий урок)
-  const currentLesson = currentLessonId ? findLesson(currentLessonId) : null;
-  const activePhaseId = (currentLesson && typeof currentLesson.id === 'number') ? currentLesson.phase : null;
-
+  // Уровни = фазы. Активный уровень раскрыт со списком шагов; остальные — тихие (deeper).
   PHASES.forEach(phase => {
     const phaseLessons = LESSONS.filter(l => l.phase === phase.id);
-    const completedCount = phaseLessons.filter(l => isCompleted(l.id)).length;
-    const phaseEl = document.createElement('div');
-    // По умолчанию свёрнуты неактивные фазы (кроме первой при первом заходе)
-    const shouldCollapse = activePhaseId !== null ? (phase.id !== activePhaseId) : (phase.id !== 1);
-    phaseEl.className = 'phase' + (shouldCollapse ? ' collapsed' : '');
-    phaseEl.setAttribute('data-phase', String(phase.id));
-    phaseEl.innerHTML = `
-      <div class="phase-header" onclick="this.parentElement.classList.toggle('collapsed')">
-        <div>
-          <div class="phase-title"><span class="phase-toggle">▼</span><span class="phase-icon">${phaseIcon(phase.id)}</span>${phase.title}</div>
-          <div class="phase-progress-mini">${phase.subtitle}</div>
-        </div>
-        <div class="phase-progress-mini">${completedCount}/${phaseLessons.length}</div>
-      </div>
-      <div class="phase-lessons" id="phase-${phase.id}-lessons"></div>
-    `;
-    nav.appendChild(phaseEl);
-    const lessonsContainer = phaseEl.querySelector(`#phase-${phase.id}-lessons`);
-    phaseLessons.forEach(lesson => {
-      const link = document.createElement('button');
-      const completed = isCompleted(lesson.id);
-      link.className = 'lesson-link' + (completed ? ' completed' : '') + (lesson.draft ? ' draft' : '') + (lesson.id === currentLessonId ? ' active' : '');
-      link.dataset.lessonId = lesson.id;
-      link.dataset.title = lesson.title.toLowerCase();
-      link.innerHTML = `
-        <span class="num">${lesson.id}.</span>
-        <span class="title">${lesson.title}</span>
-        <span class="status">${completed ? '✓' : ''}</span>
-      `;
-      link.onclick = () => openLesson(lesson.id);
-      lessonsContainer.appendChild(link);
-    });
+    const doneCount = phaseLessons.filter(l => isCompleted(l.id)).length;
+    const isActive = phase.id === activePhaseId;
+    const isDone = doneCount === phaseLessons.length && phaseLessons.length > 0;
+    const name = phase.title.replace(/^Фаза\s*\d+\.\s*/, '');
 
-    // Квиз в конце фазы
-    const phaseDoneCount = phaseLessons.filter(l => l.content).length;
-    if (phaseDoneCount >= 5) {
-      const quizLink = document.createElement('button');
-      const quizDone = progress[`quiz_phase_${phase.id}`];
-      quizLink.className = 'lesson-link' + (quizDone ? ' completed' : '');
-      quizLink.dataset.title = `квиз фаза ${phase.id}`;
-      quizLink.innerHTML = `
-        <span class="num">🎓</span>
-        <span class="title">Квиз: проверь себя</span>
-        <span class="status">${quizDone ? '✓' : ''}</span>
-      `;
-      quizLink.onclick = () => openQuiz(phase.id);
-      lessonsContainer.appendChild(quizLink);
+    if (isActive) {
+      html += `<div class="level active">
+        <div class="level-h"><span class="lnum">${phase.id}</span><span class="level-name">${esc(name)}</span></div>
+        <div class="steps">`;
+      // Окно вокруг «ты здесь»: показываем шаги рядом с текущим, а не всегда первые.
+      const hereIdx = phaseLessons.findIndex(l => l.id === hereId);
+      let start = 0;
+      if (hereIdx > 4) start = hereIdx - 2;
+      const shown = phaseLessons.slice(start, start + 6);
+      if (start > 0) html += `<div class="step more">↑ предыдущие ${start} ${pluralUrok(start)}</div>`;
+      shown.forEach(lesson => {
+        const done = isCompleted(lesson.id);
+        const cur = lesson.id === hereId;
+        const cls = 'step' + (done ? ' done' : '') + (cur ? ' current' : '');
+        const oid = (typeof lesson.id === 'number') ? lesson.id : `'${lesson.id}'`;
+        const idAttr = cur ? ' id="curStep"' : '';
+        html += `<div class="${cls}"${idAttr} onclick="openLesson(${oid})"><span class="sdot"></span>${esc(shortLessonLabel(lesson.title))}</div>`;
+      });
+      const tail = phaseLessons.length - (start + shown.length);
+      if (tail > 0) html += `<div class="step more">… и ещё ${tail} ${pluralUrok(tail)}</div>`;
+      html += `</div></div>`;
+    } else {
+      const cls = 'level deeper' + (isDone ? ' done' : '');
+      html += `<div class="${cls}" onclick="openLesson(${phaseLessons[0] ? phaseLessons[0].id : 1})">
+        <div class="level-h"><span class="lnum">${phase.id}</span><span class="level-name">${esc(name)}</span><span class="level-meta" style="margin-left:auto">${phaseLessons.length} ${pluralUrok(phaseLessons.length)}</span></div>
+      </div>`;
     }
   });
 
-  // Параллельные тропинки
-  const trackNav = document.getElementById('track-nav');
-  trackNav.innerHTML = '';
-
-  const tracksHeader = document.createElement('div');
-  tracksHeader.className = 'phase';
-  tracksHeader.innerHTML = `
-    <div class="phase-header" style="cursor: default; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 0.5rem; margin-top: 1rem;">
-      <div>
-        <div class="phase-title" style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Параллельные тропинки</div>
-      </div>
-    </div>
-  `;
-  trackNav.appendChild(tracksHeader);
-
-  const activeTrack = (currentLesson && currentLesson.track) ? currentLesson.track : null;
-
-  TRACKS.forEach(track => {
-    const trackLessons = TRACK_LESSONS.filter(l => l.track === track.id);
-    const completedCount = trackLessons.filter(l => isCompleted(l.id)).length;
-    const trackEl = document.createElement('div');
-    const shouldCollapse = activeTrack ? (track.id !== activeTrack) : true;
-    trackEl.className = 'phase' + (shouldCollapse ? ' collapsed' : '');
-    trackEl.setAttribute('data-phase', track.id === 'claude' ? 'c' : track.id === 'projects' ? 'p' : 'i');
-    trackEl.innerHTML = `
-      <div class="phase-header" onclick="this.parentElement.classList.toggle('collapsed')">
-        <div>
-          <div class="phase-title"><span class="phase-toggle">▼</span><span class="phase-icon">${phaseIcon(track.id)}</span>${track.title.replace(/^[🟣🛠💼]\s*/, '')}</div>
-          <div class="phase-progress-mini">${track.subtitle}</div>
-        </div>
-        <div class="phase-progress-mini">${completedCount}/${trackLessons.length}</div>
-      </div>
-      <div class="phase-lessons" id="track-${track.id}-lessons"></div>
-    `;
-    trackNav.appendChild(trackEl);
-    const lessonsContainer = trackEl.querySelector(`#track-${track.id}-lessons`);
-    trackLessons.forEach(lesson => {
-      const link = document.createElement('button');
-      const completed = isCompleted(lesson.id);
-      link.className = 'lesson-link' + (completed ? ' completed' : '') + (lesson.draft ? ' draft' : '') + (lesson.id === currentLessonId ? ' active' : '');
-      link.dataset.lessonId = lesson.id;
-      link.dataset.title = lesson.title.toLowerCase();
-      link.innerHTML = `
-        <span class="num">${lesson.id.toUpperCase()}</span>
-        <span class="title">${lesson.title}</span>
-        <span class="status">${completed ? '✓' : ''}</span>
-      `;
-      link.onclick = () => openLesson(lesson.id);
-      lessonsContainer.appendChild(link);
-    });
+  // Тропинки — line-иконки, клик → openSection
+  html += '<div class="trails"><div class="aside-label">Тропинки</div>';
+  TRACKS.forEach(t => {
+    const icon = TRAIL_ICONS[t.id] || '';
+    const name = t.title.replace(/^[^\wА-Яа-яA-Z]+\s*/, '');
+    html += `<div class="trail" onclick="openSection('${t.id}')"><span class="tarr">${icon}</span>${esc(name)}</div>`;
   });
+
+  // Указатели — статические страницы
+  html += '<div class="aside-label" style="margin-top:20px">Указатели</div>';
+  const pointers = [
+    ['about','О курсе'], ['howto','Как заниматься'], ['faq','FAQ'],
+    ['resources','Источники'], ['glossary','Глоссарий'], ['changelog','Что нового'],
+    ['my-progress','Мой путь'], ['routes','Маршруты'],
+  ];
+  pointers.forEach(([id,label]) => {
+    const handler = id === 'glossary' ? 'openGlossary()' : `openStaticPage('${id}')`;
+    html += `<div class="aside-link" onclick="${handler}">${label}</div>`;
+  });
+  html += '</div>';
+
+  nav.innerHTML = html;
+  // Прокрутить сайдбар к «ты здесь»
+  const cur = nav.querySelector('#curStep');
+  if (cur && cur.scrollIntoView) { try { cur.scrollIntoView({ block: 'nearest' }); } catch(e){} }
+
+  // track-nav больше не используется (всё в одном сайдбаре) — очищаем
+  const trackNav = document.getElementById('track-nav');
+  if (trackNav) trackNav.innerHTML = '';
 }
 
 function updateProgressUI() {
@@ -26660,51 +26811,20 @@ function renderFooter() {
   const footer = document.getElementById('site-footer');
   if (!footer) return;
   footer.innerHTML = `
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="alesha-logo">A</div>
-        <h4>AI Курс</h4>
-        <p>Бесплатный практический курс по ИИ на русском. От пользователя к создателю. 139 уроков с AI-наставником, 93 готовы.</p>
+    <div class="footer-in">
+      <div class="f-inner">
+        <span class="f-word">AI&nbsp;Курс <b class="mh-dot">•</b> От&nbsp;пользователя к&nbsp;создателю</span>
+        <div class="f-links">
+          <span onclick="openStaticPage('about')">О курсе</span>
+          <span onclick="openStaticPage('howto')">Как заниматься</span>
+          <span onclick="openStaticPage('faq')">FAQ</span>
+          <span onclick="openStaticPage('resources')">Источники</span>
+          <span onclick="openGlossary()">Глоссарий</span>
+          <span onclick="openStaticPage('changelog')">Что нового</span>
+          <span onclick="openStaticPage('my-progress')">Мой путь</span>
+          <span onclick="openStaticPage('routes')">Маршруты</span>
+        </div>
       </div>
-
-      <div class="footer-col">
-        <h5>Курс</h5>
-        <a onclick="openSection('main')">Главный путь</a>
-        <a onclick="openSection('everyday')">AI каждый день</a>
-        <a onclick="openSection('claude')">Claude Deep Dive</a>
-        <a onclick="openSection('projects')">Мини-проекты</a>
-        <a onclick="openSection('industry')">Индустрии</a>
-        <a onclick="openSection('vibe')">🥋 Вайб Код Вам Дам</a>
-        <a onclick="openGlossary()">Глоссарий</a>
-      </div>
-
-      <div class="footer-col">
-        <h5>Сообщество</h5>
-        <a href="https://t.me/artefakty_ai" target="_blank">Канал @artefakty_ai ↗</a>
-        <a onclick="openStaticPage('changelog')">Что нового</a>
-        <a onclick="openStaticPage('changelog')">Pet-проекты (скоро)</a>
-      </div>
-
-      <div class="footer-col">
-        <h5>Ресурсы</h5>
-        <a onclick="openStaticPage('about')">О курсе</a>
-        <a onclick="openStaticPage('howto')">Как заниматься</a>
-        <a onclick="openStaticPage('faq')">FAQ</a>
-        <a onclick="openStaticPage('resources')">Источники</a>
-      </div>
-
-      <div class="footer-col">
-        <h5>Open Source</h5>
-        <a href="https://github.com/madzhitov/ai-course" target="_blank">GitHub репо ↗</a>
-        <a href="https://ai.madzhitov.ru" target="_blank">ai.madzhitov.ru ↗</a>
-        <a>MIT-лицензия</a>
-        <a href="https://madzhitov.ru" target="_blank">madzhitov.ru ↗</a>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <div>© 2026 Руслан Маджитов · MIT-лицензия</div>
-      <div>Сделано с ❤️ и Claude · Канал: <a href="https://t.me/artefakty_ai" target="_blank" style="color: var(--text); font-weight: 500;">@artefakty_ai</a></div>
     </div>
   `;
 }
@@ -26758,10 +26878,10 @@ function renderLesson(id) {
   const courseUpdated = (typeof CHANGELOG !== 'undefined' && CHANGELOG[0]) ? fmtDate(CHANGELOG[0].date) : '';
   const timeMeta = `
     <div class="lesson-time-meta">
-      <span>⏱ <strong>~${lesson.duration} мин</strong> чтения</span>
+      <span><strong>~${lesson.duration} мин</strong> чтения</span>
       <span class="dot"></span>
-      <span>📝 <strong>30–60 мин</strong> практики</span>
-      ${courseUpdated ? `<span class="dot"></span><span>🔄 обновлено: <strong>${courseUpdated}</strong></span>` : ''}
+      <span><strong>30–60 мин</strong> практики</span>
+      ${courseUpdated ? `<span class="dot"></span><span>обновлено <strong>${courseUpdated}</strong></span>` : ''}
     </div>
   `;
 
@@ -26800,7 +26920,7 @@ function renderLesson(id) {
         <span><strong>Статус:</strong> черновик</span>
       </div>
       <div class="draft-notice">
-        <h3>✏️ Этот урок ещё пишется</h3>
+        <h3>Этот урок ещё пишется</h3>
         <p>Подробное содержание появится в одной из следующих итераций. Темп: ~2 урока в день, в порядке очереди.</p>
         ${availableRange ? `<p>Сейчас доступно из главного пути: <strong>${availableRange}</strong>. Спецветки тоже частично готовы — смотри <a href="#changelog" onclick="openStaticPage('changelog'); return false;">«Что нового»</a>.</p>` : ''}
       </div>
@@ -26841,7 +26961,7 @@ function renderLesson(id) {
     </div>
   `;
 
-  container.innerHTML = body + shareSection + actions;
+  container.innerHTML = '<div class="lesson-view">' + body + shareSection + actions + '</div>';
 
   // Post-render enhancements
   enhanceCodeBlocks(container);
@@ -27225,11 +27345,7 @@ function aleshaHide() {
 function aleshaToggle() {
   const w = document.getElementById('alesha-widget');
   if (!w) return;
-  if (window.innerWidth >= 1100) {
-    w.classList.toggle('is-collapsed-desktop');
-  } else {
-    w.classList.toggle('is-open');
-  }
+  w.classList.toggle('is-open');
 }
 
 function initAlesha(lesson) {
@@ -27467,6 +27583,70 @@ function lessonCard(lesson) {
 // ============================================================
 // Маршруты — рендер блока и логика опросника
 // ============================================================
+
+function renderTrails() {
+  const tracks = [
+    { id: 'claude',   title: 'Claude Deep Dive',          sub: 'Всё что важно про Claude.' },
+    { id: 'projects', title: 'Мини-проекты «За 1 час»',   sub: 'Рабочие пет-проекты, каждый — за час.' },
+    { id: 'industry', title: 'Темы под индустрии',        sub: 'ИИ для конкретных профессий.' },
+    { id: 'everyday', title: 'AI каждый день',            sub: 'Применения для всех, без кода.' },
+    { id: 'vibe',     title: 'Вайб Код Вам Дам',          sub: 'Вайбкодинг как боевое искусство.' },
+  ];
+  const plural = n => { const a = n % 10, b = n % 100; return (a === 1 && b !== 11) ? 'урок' : ((a >= 2 && a <= 4) && (b < 10 || b >= 20) ? 'урока' : 'уроков'); };
+  const cards = tracks.map(t => {
+    const n = TRACK_LESSONS.filter(l => l.track === t.id).length;
+    return `<div class="track-card" onclick="openSection('${t.id}')">
+      <div class="track-card-icon">${TRAIL_ICONS[t.id] || ''}</div>
+      <div class="track-card-body"><div class="track-card-tag">${n} ${plural(n)}</div><h3>${t.title}</h3><p>${t.sub}</p></div>
+    </div>`;
+  }).join('');
+  document.getElementById('lesson-content').innerHTML = `
+    <div class="lesson-view"><div class="lc-wrap static-about">
+      <h1>Тропинки</h1>
+      <p class="sub-lead">Параллельные серии рядом с главным путём — в них можно нырять в любой момент, не дожидаясь конца фаз. Выбери тропинку.</p>
+      <div class="track-cards">${cards}</div>
+    </div></div>
+  `;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+const ROUTE_ICONS = {
+  'daily-life':   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>',
+  'kids-learn':   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  'marketplace':  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>',
+  'profession':   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+  'no-vpn':       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>',
+  'build-product':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+  'pet-projects': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>',
+  'claude-deep':  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>',
+  'full-picture': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.62v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.38V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></svg>',
+};
+function renderRoutes() {
+  const cards = ROUTES.map(r => {
+    const lessons = r.lessons || [];
+    const cir = lessons.filter(lid => isCompleted(lid)).length;
+    const progress = (lessons.length && cir > 0) ? `<span class="rc-prog">✓ ${cir}/${lessons.length}</span>` : '';
+    return `<button class="route-card" id="rc-${r.id}" onclick="openRoute('${r.id}')" type="button">
+      <div class="route-card-icon">${ROUTE_ICONS[r.id] || ''}</div>
+      <div class="route-card-body">
+        <div class="route-card-title">${r.title}${progress}</div>
+        <div class="route-card-meta">${r.meta}</div>
+        <div class="route-card-desc">${r.description}</div>
+      </div>
+    </button>`;
+  }).join('');
+  document.getElementById('lesson-content').innerHTML = `
+    <div class="lesson-view">
+      <h1>Маршруты</h1>
+      <p class="sub-lead">Идти строго по порядку не обязательно. Если идёшь с целью — вот короткие маршруты под неё. А не уверен — пройди мини-квиз, подберём.</p>
+      <div id="routes-quiz-container"></div>
+      <h2 class="mp-h2">Все маршруты</h2>
+      <div class="routes-grid">${cards}</div>
+    </div>
+  `;
+  if (typeof openRouteQuiz === 'function') openRouteQuiz();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
 function renderRoutesBlock() {
   const totalPassed = allLessons().filter(l => isCompleted(l.id)).length;
@@ -27840,11 +28020,9 @@ function renderMainSection() {
       Последовательный маршрут от пользователя ChatGPT до уровня ML-инженера. 4 фазы, ${LESSONS.length} уроков.
     </p>
 
-    <div class="stats-grid-v2">
-      ${statCard({ icon: '📚', label: 'Уроков', value: total, theme: 'prompts' })}
-      ${statCard({ icon: '✓', label: 'Опубликовано', value: written, theme: 'projects' })}
-      ${statCard({ icon: '🎯', label: 'Пройдено', value: done, theme: 'claude' })}
-      ${statCard({ icon: '⏱', label: 'Часов', value: '~' + hours, theme: 'industry' })}
+    <div class="home-status" style="margin:0 0 26px;padding:0;max-width:none">
+      <span class="hs-dot"></span>
+      <span>${written} из ${total} уроков готовы${done ? ` · пройдено ${done}` : ''} · ~${hours} часов</span>
     </div>
 
     <h2>Фазы</h2>
@@ -27941,28 +28119,23 @@ function renderTrackSection(trackId) {
   };
 
   const meta = descriptions[trackId];
+  const taglines = { claude: 'Всё что важно про Claude', projects: 'Рабочие пет-проекты, каждый — за час', industry: 'ИИ для конкретных профессий', everyday: 'Применения для всех, без кода', vibe: 'Вайбкодинг как боевое искусство' };
+  const n = lessons.length;
 
-  let html = `
-    <h1 style="display:flex; align-items:center; gap:14px;"><span style="display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:10px; background: var(--bg-soft); color: var(--text);">${phaseIcon(trackId)}</span>${meta.title}</h1>
-    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1.5rem;">${meta.hero}</p>
-
-    <div class="stats-grid-v2">
-      ${statCard({ icon: '📚', label: 'Уроков', value: lessons.length, theme: meta.theme })}
-      ${statCard({ icon: '✓', label: 'Опубликовано', value: written, theme: 'projects' })}
-      ${statCard({ icon: '🎯', label: 'Пройдено', value: done, theme: 'agents' })}
-      ${statCard({ icon: '⏱', label: 'Часов', value: '~' + hours, theme: 'industry' })}
-    </div>
-
-    <h2>Уроки в тропинке</h2>
-    <div class="lesson-cards-grid">
-  `;
-
-  lessons.forEach(lesson => {
-    html += lessonCard(lesson);
+  let rows = '';
+  lessons.forEach((lesson, i) => {
+    const oid = typeof lesson.id === 'number' ? lesson.id : `'${lesson.id}'`;
+    rows += `<div class="tv-row" onclick="openLesson(${oid})"><span class="tv-n">${i + 1}</span><span class="tv-t">${esc(lesson.title)}</span><span class="tv-d">${lesson.duration} мин</span></div>`;
   });
 
-  html += `</div>
-    <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 2rem; padding: 1rem 1.25rem; background: var(--bg-sidebar); border-radius: 12px;">${meta.sources}</p>
+  const html = `
+    <div class="lesson-view">
+      <a class="track-back" onclick="openStaticPage('trails')">← Все тропинки</a>
+      <h1>${meta.title}</h1>
+      <p class="sub-lead">${taglines[trackId] || ''} · ${n} ${pluralUrok(n)}</p>
+      <div class="tv-list">${rows}</div>
+      ${meta.sources ? `<p class="tv-sources">${meta.sources}</p>` : ''}
+    </div>
   `;
 
   document.getElementById('lesson-content').innerHTML = html;
@@ -28165,6 +28338,8 @@ function openStaticPage(name) {
   else if (name === 'resources') renderResources();
   else if (name === 'admin') renderAdmin();
   else if (name === 'my-progress') renderMyProgress();
+  else if (name === 'routes') renderRoutes();
+  else if (name === 'trails') renderTrails();
 }
 
 // ============================================================
@@ -28472,55 +28647,32 @@ const GLOSSARY = [
 
 function renderGlossary(highlightId = null) {
   const total = GLOSSARY.length;
+  const pterm = n => { const a = n % 10, b = n % 100; return (a === 1 && b !== 11) ? 'термин' : ((a >= 2 && a <= 4) && (b < 10 || b >= 20) ? 'термина' : 'терминов'); };
+  const chips = GLOSSARY_CATEGORIES.filter(c => GLOSSARY.some(t => t.category === c.id))
+    .map(c => `<a class="gchip" onclick="document.getElementById('gcat-${c.id}').scrollIntoView({behavior:'smooth',block:'start'})">${c.title}</a>`).join('');
 
   let html = `
-    <h1>📖 Глоссарий</h1>
-    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
-      ${total} терминов и аббревиатур из всех уроков. На каждый термин можно дать прямую ссылку — например, <code>${location.origin}${location.pathname}#glossary-cot</code>.
-    </p>
-
-    <input type="text" class="search-box" id="glossary-search" placeholder="Найти термин..." style="width: 100%; padding: 0.75rem 1rem; font-size: 1rem; margin-bottom: 1.5rem;" oninput="filterGlossary(this.value)">
-
-    <div id="glossary-content">
+    <div class="lesson-view">
+      <h1>Глоссарий</h1>
+      <p class="sub-lead">${total} ${pterm(total)} курса — коротко и по делу. Ищи по названию или листай по разделам.</p>
+      <input type="text" class="gloss-search" id="glossary-search" placeholder="Поиск термина…" oninput="filterGlossary(this.value)">
+      <div class="gloss-chips">${chips}</div>
+      <div id="glossary-content">
   `;
 
   GLOSSARY_CATEGORIES.forEach(cat => {
     const terms = GLOSSARY.filter(t => t.category === cat.id);
     if (terms.length === 0) return;
-
-    html += `<h2 style="margin-top: 2rem;" data-cat="${cat.id}">${cat.title}</h2>`;
-    html += '<div class="glossary-terms">';
-
+    html += `<h2 class="gloss-cat" id="gcat-${cat.id}" data-cat="${cat.id}">${cat.title}</h2><div class="glossary-terms">`;
     terms.forEach(t => {
-      const lessonsLinks = (t.lessons || []).map(lid => {
-        const l = findLesson(lid);
-        if (!l) return '';
-        return `<a href="#lesson-${lid}" onclick="openLesson(${typeof lid === 'string' ? `'${lid}'` : lid}); return false;" style="font-size: 0.85rem;">Урок ${lid}</a>`;
-      }).filter(Boolean).join(' · ');
-
       const allText = `${t.term} ${(t.aliases || []).join(' ')} ${t.short}`.toLowerCase();
-      const isHighlighted = t.id === highlightId;
-
-      html += `
-        <div class="glossary-term" id="glossary-${t.id}" data-search="${allText}" data-cat="${cat.id}" style="${isHighlighted ? 'background: var(--accent-soft); border-left-color: var(--accent);' : ''}">
-          <div class="glossary-term-header">
-            <h3>${t.term}</h3>
-            <a href="#glossary-${t.id}" class="glossary-anchor" onclick="copyAnchor('${t.id}'); return false;" title="Скопировать ссылку">🔗</a>
-          </div>
-          <p>${t.short}</p>
-          ${lessonsLinks ? `<div class="glossary-lessons">${lessonsLinks}</div>` : ''}
-        </div>
-      `;
+      html += `<div class="glossary-term gt" id="glossary-${t.id}" data-search="${allText}" data-cat="${cat.id}"><div class="gt-name">${t.term}</div><div class="gt-def">${t.short}</div></div>`;
     });
-
     html += '</div>';
   });
 
-  html += '</div>';
-
+  html += `</div></div>`;
   document.getElementById('lesson-content').innerHTML = html;
-
-  // Прокрутить к выделенному термину
   if (highlightId) {
     setTimeout(() => {
       const el = document.getElementById(`glossary-${highlightId}`);
@@ -28569,12 +28721,10 @@ function copyAnchor(termId) {
 
 function renderResources() {
   document.getElementById('lesson-content').innerHTML = `
-    <h1>📚 Источники и где учиться дальше</h1>
-    <p style="color: var(--text-muted); margin-bottom: 2rem;">
-      Курс — это не «то откуда я всё взял», это <strong>последовательный путь, собранный из лучших источников</strong>. Ниже — что читать дополнительно, по темам.
-    </p>
+    <h1>Источники</h1>
+    <p class="sub-lead">Курс — не «откуда я всё взял», а последовательный путь, собранный из лучших источников. Ниже — что читать дополнительно, по темам.</p>
 
-    <h2>🟣 Anthropic / Claude — официальные источники</h2>
+    <h2>Anthropic / Claude — официальные</h2>
     <p>Если работаешь с Claude — это must-read.</p>
     <ul>
       <li><a href="https://docs.claude.com" target="_blank"><strong>docs.claude.com</strong></a> — официальная документация. Лучшая в индустрии.</li>
@@ -28586,7 +28736,7 @@ function renderResources() {
       <li><a href="https://modelcontextprotocol.io" target="_blank"><strong>modelcontextprotocol.io</strong></a> — спецификация MCP.</li>
     </ul>
 
-    <h2>🎓 Образовательные ресурсы по AI/ML</h2>
+    <h2>Образовательные ресурсы по AI / ML</h2>
     <ul>
       <li><a href="https://www.youtube.com/@AndrejKarpathy" target="_blank"><strong>Andrej Karpathy</strong> на YouTube</a> — лучшие на свете лекции про LLM. Особенно «Let's build GPT from scratch» и «Intro to Large Language Models». Всё бесплатно.</li>
       <li><a href="https://simonwillison.net" target="_blank"><strong>Simon Willison's blog</strong></a> — лучший источник «что нового и что важно». Создатель Datasette, ведёт практически ежедневно.</li>
@@ -28596,7 +28746,7 @@ function renderResources() {
       <li><a href="https://www.fast.ai" target="_blank"><strong>fast.ai</strong></a> — практический курс от Jeremy Howard. «Top-down» подход — сразу делать, разбираться по ходу.</li>
     </ul>
 
-    <h2>🛠 Инструменты и фреймворки</h2>
+    <h2>Инструменты и фреймворки</h2>
     <ul>
       <li><a href="https://python.langchain.com" target="_blank"><strong>LangChain</strong></a> — стандарт-де-факто для LLM-приложений на Python.</li>
       <li><a href="https://docs.llamaindex.ai" target="_blank"><strong>LlamaIndex</strong></a> — фреймворк специально под RAG и работу с данными.</li>
@@ -28606,7 +28756,7 @@ function renderResources() {
       <li><a href="https://www.trychroma.com" target="_blank"><strong>Chroma</strong></a> и <a href="https://qdrant.tech" target="_blank"><strong>Qdrant</strong></a> — векторные БД.</li>
     </ul>
 
-    <h2>👥 Сообщества и блоги практиков</h2>
+  <h2> Сообщества и блоги практиков</h2>
     <ul>
       <li><a href="https://eugeneyan.com" target="_blank"><strong>Eugene Yan</strong></a> — applied ML в проде, очень много про LLM-eval и архитектуру.</li>
       <li><a href="https://hamel.dev" target="_blank"><strong>Hamel Husain</strong></a> — fine-tuning, evals, ML-консалтинг.</li>
@@ -28615,7 +28765,7 @@ function renderResources() {
       <li>Twitter/X: <strong>@karpathy, @simonw, @swyx, @hwchase17 (LangChain), @jeremyphoward (fast.ai), @rasbt (Sebastian Raschka)</strong>.</li>
     </ul>
 
-    <h2>🇷🇺 На русском</h2>
+  <h2> На русском</h2>
     <ul>
       <li><a href="https://yandex.cloud/ru/docs/yandexgpt" target="_blank">Документация YandexGPT</a> — для тех кто работает с российскими моделями.</li>
       <li><a href="https://developers.sber.ru/docs/ru/gigachat/individuals-quickstart" target="_blank">GigaChat Quickstart</a> — старт со Сбером.</li>
@@ -28623,7 +28773,7 @@ function renderResources() {
       <li>Telegram-каналы: <strong>@addmeto</strong> (Григорий Бакунов про технологии), <strong>@gonzo_ML</strong> (научные статьи разбирают), <strong>@denissexy</strong> (Денис Ширяев — продуктовый AI).</li>
     </ul>
 
-    <h2>📰 Чтобы быть в курсе</h2>
+    <h2>Чтобы быть в курсе</h2>
     <ul>
       <li><a href="https://anthropic.com/news" target="_blank">Anthropic blog</a> — новости про Claude.</li>
       <li><a href="https://openai.com/blog" target="_blank">OpenAI blog</a> — новости про GPT.</li>
@@ -28631,7 +28781,7 @@ function renderResources() {
       <li><a href="https://buttondown.email/ainews" target="_blank">AI News</a> — ежедневный дайджест.</li>
     </ul>
 
-    <h2>🎙 Подкасты</h2>
+  <h2> Подкасты</h2>
     <ul>
       <li><strong>Latent Space</strong> — практика AI-индустрии.</li>
       <li><strong>Lex Fridman Podcast</strong> — длинные интервью с топовыми исследователями.</li>
@@ -28639,7 +28789,7 @@ function renderResources() {
       <li><strong>No Priors</strong> — фокус на стартапах.</li>
     </ul>
 
-    <h2>💡 Как использовать всё это</h2>
+  <h2> Как использовать всё это</h2>
     <ol>
       <li><strong>Не читай всё.</strong> Из этого списка выбери 3–5 источников и подпишись.</li>
       <li><strong>Один длинный контент в неделю.</strong> Лекция Karpathy, статья Raschka, эпизод Latent Space.</li>
@@ -28648,7 +28798,7 @@ function renderResources() {
     </ol>
 
     <div class="callout callout-info">
-      <strong>📌 Совет:</strong> на каждый из этих источников я буду <strong>точечно</strong> ссылаться внутри уроков, когда тема того требует. Этот список — твоя shortlist для самостоятельного развития.
+   <strong> Совет:</strong> на каждый из этих источников я буду <strong>точечно</strong> ссылаться внутри уроков, когда тема того требует. Этот список — твоя shortlist для самостоятельного развития.
     </div>
 
     <p style="text-align: center; margin-top: 3rem; color: var(--text-muted); font-size: 0.9rem;">
@@ -28783,7 +28933,7 @@ function renderQuiz(phaseId) {
   let answers = JSON.parse(localStorage.getItem(stateKey) || '{}');
 
   let html = `
-    <h1>🎓 ${quiz.title}</h1>
+    <h1>${quiz.title}</h1>
     <p style="color: var(--text-muted); margin-bottom: 2rem;">${quiz.description}</p>
     <div class="quiz-progress" id="quiz-progress">Отвечено: 0 из ${quiz.questions.length}</div>
   `;
@@ -28897,6 +29047,19 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-06-07",
+    title: "Новый дизайн «Тропа»",
+    tag: "new",
+    items: [
+      "Полный редизайн в спокойной палитре ХВОЯ: тёплая бумага и хвойный зелёный, заголовки Cormorant Unicase, текст Golos Text",
+      "Главная стала тише — путь, а не витрина: без громких счётчиков и диаграмм",
+      "«Мой путь» — спокойная карта прогресса: где ты сейчас и что рядом, без процентов и баллов",
+      "Алёша теперь зовётся кнопкой и живёт внизу-справа, не перекрывая урок",
+      "Обзор тропинок, маршруты с мини-квизом, глоссарий с живым поиском и чипами-категориями",
+      "Спокойный интерфейс без эмодзи, монохромные иконки одного набора"
+    ]
+  },
   {
     date: "2026-05-31",
     title: "📚 Справочник по веб-разработке в вайб-тропинке (v11–v15)",
@@ -29099,7 +29262,7 @@ const CHANGELOG = [
   },
   {
     date: "2026-05-17",
-    title: "⚡ Первая интерактивная песочница — в Уроке 1",
+    title: "Первая интерактивная песочница — в Уроке 1",
     tag: "new",
     items: [
       "В Уроке 1 (раздел «Температура») появилась интерактивная песочница — двигаешь ползунок T от 0 до 2, видишь как меняются вероятности токенов в реальном времени",
@@ -29338,36 +29501,35 @@ function renderChangelog() {
   const totalAll = allLessons().length;
 
   let html = `
-    <h1>📰 Что нового</h1>
-    <p style="color: var(--text-muted); margin-bottom: 2rem;">
-      Курс активно растёт. Последнее обновление: <strong>${fmtDate(CHANGELOG[0].date)}</strong>.
-      Готово полных уроков: <strong>${written}</strong> из ${totalAll}.
-    </p>
-
+    <div class="lesson-view">
+      <h1>Что нового</h1>
+      <p class="sub-lead">Курс активно растёт. Последнее обновление — ${fmtDateRu(CHANGELOG[0].date)}. Готово ${written} ${pluralUrok(written)} из ${totalAll}.</p>
+      <div class="cl-list">
   `;
 
   CHANGELOG.forEach(entry => {
+    const tagLabel = entry.tag === 'new' ? 'Новое' : entry.tag === 'fix' ? 'Правка' : 'Апдейт';
     html += `
-      <div class="changelog-entry">
-        <div class="changelog-date">${fmtDate(entry.date)}</div>
-        <h3><span class="tag tag-${entry.tag}">${entry.tag === 'new' ? 'Новое' : entry.tag === 'fix' ? 'Правка' : 'Апдейт'}</span>${entry.title}</h3>
-        <ul>
-          ${entry.items.map(i => `<li>${i}</li>`).join('')}
-        </ul>
+      <div class="cl-entry">
+        <div class="cl-date">${fmtDateRu(entry.date)}</div>
+        <div class="cl-title"><span class="cl-tag ${entry.tag}">${tagLabel}</span>${stripEmoji(entry.title)}</div>
+        <ul class="cl-items">${entry.items.map(i => `<li>${stripEmoji(i)}</li>`).join('')}</ul>
       </div>
     `;
   });
 
   html += `
-    <div class="callout callout-info" style="margin-top: 2rem;">
-      <h3>📅 Ближайшие планы</h3>
-      <ul>
-        <li>Уроки 9–12 — генерация картинок, low-code, UX, безопасность (закрывает Фазу 1)</li>
-        <li>Уроки 17–22 — продолжение Фазы 2: агентские фреймворки, паттерны, инструменты, agentic RAG, безопасность, планирование</li>
-        <li>Уроки c7–c8 — финал Claude Deep Dive: Constitutional AI и сравнение моделей</li>
-        <li>Мини-проекты p3–p10 — 8 свежих идей в работе (MCP-сервер, Vision-чеки, ресёрчер, перплексити, встречи и т.д.)</li>
-        <li>Tone of voice ревью существующих уроков</li>
-      </ul>
+        <div class="cl-entry">
+          <div class="cl-title">Ближайшие планы</div>
+          <ul class="cl-items">
+            <li>Уроки 9–12 — генерация картинок, low-code, UX, безопасность (закрывает Фазу 1)</li>
+            <li>Уроки 17–22 — продолжение Фазы 2: агентские фреймворки, паттерны, инструменты, agentic RAG, безопасность, планирование</li>
+            <li>Уроки c7–c8 — финал Claude Deep Dive: Constitutional AI и сравнение моделей</li>
+            <li>Мини-проекты p3–p10 — 8 свежих идей в работе</li>
+            <li>Tone of voice ревью существующих уроков</li>
+          </ul>
+        </div>
+      </div>
     </div>
   `;
 
@@ -29380,262 +29542,44 @@ function renderChangelog() {
 
 function renderHome() {
   const total = allLessons().length;
-  const done = allLessons().filter(l => isCompleted(l.id)).length;
   const written = allLessons().filter(l => l.content).length;
   const lastUpdate = fmtDate(CHANGELOG[0].date);
 
-  // Donut: прогресс по 4 фазам + 3 трекам
-  const donutSegments = [
-    { label: 'Фаза 1', value: LESSONS.filter(l => l.phase === 1 && isCompleted(l.id)).length, color: '#7c3aed' },
-    { label: 'Фаза 2', value: LESSONS.filter(l => l.phase === 2 && isCompleted(l.id)).length, color: '#a78bfa' },
-    { label: 'Фаза 3', value: LESSONS.filter(l => l.phase === 3 && isCompleted(l.id)).length, color: '#c4b5fd' },
-    { label: 'Фаза 4', value: LESSONS.filter(l => l.phase === 4 && isCompleted(l.id)).length, color: '#ddd6fe' },
-    { label: 'Тропинки', value: TRACK_LESSONS.filter(l => isCompleted(l.id)).length, color: '#16a34a' },
-  ];
-
-  // Continue learning — 3 ближайших готовых, не пройденных урока
-  const continueLessons = allLessons()
-    .filter(l => l.content && !isCompleted(l.id))
-    .slice(0, 3);
-
-  // «Продолжить с того места» — ближайший непройденный готовый урок
-  // (для пользователя который уже прошёл хотя бы один)
-  const nextLesson = allLessons().find(l => l.content && !isCompleted(l.id));
+  // «Продолжить с того места» — реальный текущий/ближайший непройденный урок
   const anyCompleted = allLessons().some(l => isCompleted(l.id));
-
-  const continueSection = continueLessons.length === 0 ? '' : `
-    <div class="home-aside-section">
-      <h3>Продолжить обучение</h3>
-      <div class="continue-learning">
-        ${continueLessons.map(l => continueCard(l)).join('')}
-      </div>
-    </div>
-  `;
-
-  // Большой баннер «Продолжить» в верху главной, если есть прогресс
-  const resumeBanner = (anyCompleted && nextLesson) ? `
-    <div class="resume-banner" onclick="openLesson(${typeof nextLesson.id === 'string' ? `'${nextLesson.id}'` : nextLesson.id})">
-      <div class="resume-banner-icon">▶</div>
-      <div class="resume-banner-body">
-        <div class="resume-banner-eyebrow">Продолжить с того места</div>
-        <div class="resume-banner-title">${typeof nextLesson.id === 'number' ? `Урок ${nextLesson.id}. ` : ''}${nextLesson.title}</div>
-        <div class="resume-banner-meta">~${nextLesson.duration} мин чтения</div>
-      </div>
-      <div class="resume-banner-cta">→</div>
-    </div>
-  ` : '';
-
-  // Если что-то пройдено — donut, иначе показать «начать»
-  const hasProgress = donutSegments.some(s => s.value > 0);
-
-  // Алёша announcement banner
-  const aleshaBanner = `
-    <div class="alesha-announce">
-      <span class="alesha-logo lg">А</span>
-      <div class="alesha-announce-body">
-        <div class="alesha-announce-eyebrow"><svg class="ico ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg> Новое</div>
-        <div class="alesha-announce-title">Алёша — AI-наставник прямо в уроке</div>
-        <div class="alesha-announce-text">
-          Спроси что угодно про конкретный урок — Алёша ответит за 5 секунд.
-          Понимает контекст, не галлюцинирует за рамками темы, бесплатно для тебя.
+  const r = resumeLesson();
+  const rLabel = (r && typeof r.id === 'number') ? `Урок ${r.id} · ${r.title}` : (r ? r.title : '');
+  const rArg = r ? (typeof r.id === 'number' ? r.id : `'${r.id}'`) : '1';
+  const contLine = (anyCompleted && r) ? `
+      <div class="home-sec">
+        <div class="cont-line" onclick="openLesson(${rArg})">
+          <span class="cont-eye">Продолжить с того места</span>
+          <span class="cont-ttl">${rLabel} →</span>
         </div>
-        <button class="alesha-announce-btn" onclick="openLesson(1); setTimeout(()=>{ if(window.innerWidth < 1100) aleshaToggle(); },500);">Попробовать →</button>
-      </div>
-    </div>
-  `;
+      </div>` : '';
 
   document.getElementById('lesson-content').innerHTML = `
-    ${resumeBanner}
-    <div class="hero-v2">
-      <h1>От первых промптов<br>до своих AI-приложений.</h1>
-      <p class="tagline">
-        ${total} уроков на русском, AI-наставник в каждом, готовые pet-проекты с кодом. Полный путь — не «5 минут попробовать», а до уровня, где сможешь делать сам.
-      </p>
-      <p class="tagline" style="margin-top: 0.5rem; font-weight: 500; color: var(--text);">
-        Артефакты, а не сертификаты.
-      </p>
-      <div class="hero-cta-v2">
-        <button class="btn-primary-v2" onclick="openLesson(1)">${hasProgress ? 'Продолжить курс' : 'Начать с Урока 1'} →</button>
-        <button class="btn-secondary-v2" onclick="openStaticPage('about')">Чем отличается</button>
+    <div class="home">
+      <div class="home-status">
+        <span class="hs-dot"></span>
+        <span><b>Курс активно обновляется.</b> Готово ${written} из ${total} уроков · обновлено ${lastUpdate}</span>
+        <a onclick="openStaticPage('changelog')">Что нового →</a>
       </div>
-      <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1.5rem;">
-        Курс собирает и постоянно обновляет <strong>Руслан Маджитов</strong> · Канал: <a href="https://t.me/artefakty_ai" target="_blank" style="color: var(--accent); font-weight: 600;">@artefakty_ai</a> · Связь: <a href="https://t.me/madzhitov" target="_blank" style="color: var(--text-muted); font-weight: 500;">@madzhitov</a>
-      </p>
-    </div>
-
-    ${renderRoutesBlock()}
-
-    <div class="vibe-banner" onclick="openSection('vibe')">
-      <span class="vibe-banner-tag">Новая тропинка</span>
-      <div class="vibe-banner-title">Вайб Код Вам Дам</div>
-      <div class="vibe-stage">
-        <img class="vibe-mascot-img" src="vibe-mascot.png" alt="VKVD на шпагате между КОД и КЛОД">
-        <span class="vibe-foot kod">КОД</span>
-        <span class="vibe-foot klod">КЛОД</span>
+      <div class="intro">
+        <div class="badge"><span class="bdot"></span>Бесплатный курс по AI</div>
+        <h1>От первых промптов<br>до своих AI-приложений</h1>
+        <p class="lead">${total} уроков на русском, AI-наставник в каждом, готовые pet-проекты с кодом. Полный путь — не «5 минут попробовать», а до уровня, где сможешь делать сам.</p>
+        <p class="lead" style="font-weight:600;color:var(--ink);margin-top:-6px">Артефакты, а не сертификаты.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="start-btn" onclick="openLesson(1)">Начать с Урока 1 →</button>
+          <button class="start-btn-sec" onclick="openStaticPage('about')">Чем отличается</button>
+        </div>
+        <p class="home-author">Курс собирает и обновляет <a href="https://madzhitov.ru" target="_blank"><b>Руслан Маджитов</b></a> · канал <a href="https://t.me/artefakty_ai" target="_blank">@artefakty_ai</a> · связь <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a></p>
       </div>
-      <div class="vibe-banner-sub">Вайбкодинг как боевое искусство. VKVD садится на шпагат между двумя AI-моделями и ставит тебе навык, который останется, когда модель в десятый раз сменит версию.</div>
-      <button class="vibe-banner-cta" type="button">Войти в додзё →</button>
-      <div class="vibe-irony">&lt;/irony mode&gt;</div>
+      <div class="home-invite"><b>Есть конкретная задача?</b> Подберём короткий маршрут под неё — <a onclick="openStaticPage('routes')">пройди мини-квиз →</a></div>
+      ${contLine}
+      <div class="home-sec"><a class="opath-link" onclick="openStaticPage('about')">Как устроен путь и чем он отличается — О&nbsp;курсе →</a></div>
     </div>
-
-    ${aleshaBanner}
-
-    <div class="stats-grid-v2">
-      ${statCard({ icon: '📚', label: 'Уроков всего', value: total, theme: 'prompts' })}
-      ${statCard({ icon: '✓', label: 'Опубликовано', value: written, theme: 'projects' })}
-      ${statCard({ icon: '🎯', label: 'Пройдено вами', value: done, theme: 'claude' })}
-      ${statCard({ icon: '⏱', label: 'Часов изучения', value: '~150', theme: 'industry' })}
-    </div>
-
-    <div class="home-grid">
-      <div>
-        ${hasProgress ? `
-          <h2 style="border-top: none; padding-top: 0; margin-top: 0;">Твой прогресс</h2>
-          ${donutChart(donutSegments, done, 'пройдено')}
-        ` : ''}
-
-        <h2 ${hasProgress ? '' : 'style="border-top: none; padding-top: 0; margin-top: 0;"'}>Структура курса</h2>
-        <p style="color: var(--text-muted); margin-bottom: 1.25rem;">Главный путь — 4 фазы, ${LESSONS.length} уроков по порядку. Параллельные тропинки — углублённые серии, в которые можно нырять параллельно.</p>
-
-        <div class="lesson-cards-grid">
-          <div class="lesson-card-v2" onclick="openSection('main')">
-            <div class="lesson-card-thumb">${phaseIcon(1)}</div>
-            <div class="lesson-card-body">
-              <span class="cat-tag cat-t-fundamentals">ГЛАВНЫЙ ПУТЬ</span>
-              <h3>${LESSONS.length} уроков в 4 фазах</h3>
-              <div class="lesson-card-meta">
-                <span>Пользователь → Инженер</span>
-                <span class="badge badge-ongoing">${LESSONS.filter(l => isCompleted(l.id)).length}/${LESSONS.length}</span>
-              </div>
-            </div>
-          </div>
-          <div class="lesson-card-v2" onclick="openSection('claude')">
-            <div class="lesson-card-thumb">${phaseIcon('claude')}</div>
-            <div class="lesson-card-body">
-              <span class="cat-tag cat-t-claude">ТРОПИНКА</span>
-              <h3>Claude Deep Dive</h3>
-              <div class="lesson-card-meta">
-                <span>Artifacts, MCP, Computer Use</span>
-                <span class="badge badge-ongoing">${TRACK_LESSONS.filter(l => l.track === 'claude' && l.content).length}/${TRACK_LESSONS.filter(l => l.track === 'claude').length}</span>
-              </div>
-            </div>
-          </div>
-          <div class="lesson-card-v2" onclick="openSection('projects')">
-            <div class="lesson-card-thumb">${phaseIcon('projects')}</div>
-            <div class="lesson-card-body">
-              <span class="cat-tag cat-t-projects">ТРОПИНКА</span>
-              <h3>Мини-проекты «За 1 час»</h3>
-              <div class="lesson-card-meta">
-                <span>TG-бот, RAG, голос, MCP, Skills, Ollama</span>
-                <span class="badge badge-ongoing">${TRACK_LESSONS.filter(l => l.track === 'projects' && l.content).length}/${TRACK_LESSONS.filter(l => l.track === 'projects').length}</span>
-              </div>
-            </div>
-          </div>
-          <div class="lesson-card-v2" onclick="openSection('industry')">
-            <div class="lesson-card-thumb">${phaseIcon('industry')}</div>
-            <div class="lesson-card-body">
-              <span class="cat-tag cat-t-industry">ТРОПИНКА</span>
-              <h3>Темы под индустрии</h3>
-              <div class="lesson-card-meta">
-                <span>Юристы, маркетинг, HR, разработчики, финансы</span>
-                <span class="badge badge-ongoing">${TRACK_LESSONS.filter(l => l.track === 'industry' && l.content).length}/${TRACK_LESSONS.filter(l => l.track === 'industry').length}</span>
-              </div>
-            </div>
-          </div>
-          <div class="lesson-card-v2" onclick="openSection('everyday')">
-            <div class="lesson-card-thumb">${phaseIcon('everyday')}</div>
-            <div class="lesson-card-body">
-              <span class="cat-tag cat-t-everyday">ТРОПИНКА · NEW</span>
-              <h3>AI каждый день</h3>
-              <div class="lesson-card-meta">
-                <span>Для семьи, школьника, малого бизнеса — без кода</span>
-                <span class="badge badge-ongoing">${TRACK_LESSONS.filter(l => l.track === 'everyday' && l.content).length}/${TRACK_LESSONS.filter(l => l.track === 'everyday').length}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <h2>Что ты получишь</h2>
-        <div class="lesson-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
-          <div class="lesson-card-v2" onclick="openSection('main')">
-            <div class="lesson-card-thumb">${phaseIcon(1)}</div>
-            <div class="lesson-card-body">
-              <h3>Один последовательный путь</h3>
-              <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Не «10 разных курсов» — один маршрут от пользователя ChatGPT до уровня инженера.</p>
-            </div>
-          </div>
-          <div class="lesson-card-v2" onclick="openSection('claude')">
-            <div class="lesson-card-thumb">${phaseIcon('claude')}</div>
-            <div class="lesson-card-body">
-              <h3>Глубоко про Claude</h3>
-              <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Artifacts, Projects, MCP, Computer Use, Claude Code — самая детальная серия на русском.</p>
-            </div>
-          </div>
-          <div class="lesson-card-v2" onclick="openSection('projects')">
-            <div class="lesson-card-thumb">${phaseIcon('projects')}</div>
-            <div class="lesson-card-body">
-              <h3>Артефакты, а не сертификаты</h3>
-              <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">После каждого блока — рабочая вещь: свой агент, свой Skill, свой бот. То, что можно использовать или положить в портфолио.</p>
-            </div>
-          </div>
-          <div class="lesson-card-v2" onclick="openStaticPage('about')">
-            <div class="lesson-card-thumb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg></div>
-            <div class="lesson-card-body">
-              <h3>Полностью бесплатно</h3>
-              <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Никаких подписок и платных уровней. MIT-лицензия — можно использовать в своих программах.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <aside class="home-aside">
-        ${continueSection}
-
-        <div class="home-aside-section">
-          <h3>Telegram-канал автора</h3>
-          <a href="https://t.me/artefakty_ai" target="_blank" rel="noopener" class="continue-card" style="background: var(--bg-card); text-decoration: none; color: inherit; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem;">
-            <div class="continue-icon" style="background: #0a0a0a; color: #fff; display: flex; align-items: center; justify-content: center;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
-            </div>
-            <div class="continue-info">
-              <div class="continue-title">Артефакты, а не сертификаты</div>
-              <div class="continue-meta">@artefakty_ai · 2 поста/неделю</div>
-            </div>
-          </a>
-        </div>
-
-        <div class="home-aside-section">
-          <h3>Источники</h3>
-          <div class="continue-learning">
-            <div class="continue-card" onclick="openStaticPage('resources')" style="background: var(--bg-card);">
-              <div class="continue-icon" style="background: var(--cat-claude); color: var(--cat-claude-text);">📚</div>
-              <div class="continue-info">
-                <div class="continue-title">Anthropic, Karpathy, Willison</div>
-                <div class="continue-meta">Полный список →</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="home-aside-section">
-          <h3>Свежее</h3>
-          <div class="continue-learning">
-            <div class="continue-card" onclick="openStaticPage('changelog')" style="background: var(--bg-card);">
-              <div class="continue-icon" style="background: var(--cat-projects); color: var(--cat-projects-text);">📰</div>
-              <div class="continue-info">
-                <div class="continue-title">Что нового</div>
-                <div class="continue-meta">${fmtDate(CHANGELOG[0].date)} · обновление</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </aside>
-    </div>
-
-    <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-top: 3rem;">
-      Курс активно обновляется · Последнее обновление: ${lastUpdate} · ${written}/${total} уроков готово
-    </p>
   `;
 }
 
@@ -29652,203 +29596,46 @@ function subscribeEmail(event) {
 // MY PROGRESS — дашборд в light-friendly стиле (Option 2)
 // ============================================================
 function renderMyProgress() {
-  const all = allLessons();
-  const total = all.length;
-  const done = all.filter(l => isCompleted(l.id)).length;
-  const written = all.filter(l => l.content).length;
-  const donePct = total ? Math.round(done / total * 100) : 0;
-  const writtenPct = total ? Math.round(written / total * 100) : 0;
+  const r = resumeLesson();
+  const phaseName = id => (PHASES.find(p => p.id === id)?.title || '').replace(/^Фаза\s*\d+\.\s*/, '');
+  const curPhaseId = (r && typeof r.id === 'number') ? (LESSONS.find(l => l.id === r.id)?.phase || 1) : 1;
+  const curPhaseLessons = LESSONS.filter(l => l.phase === curPhaseId);
+  const curIdx = r ? curPhaseLessons.findIndex(l => l.id === r.id) : -1;
+  const rId = r ? (typeof r.id === 'number' ? r.id : `'${r.id}'`) : '1';
+  const rNum = (r && typeof r.id === 'number') ? `Урок ${r.id} — ` : '';
+  const contTtl = `Фаза ${curPhaseId} · ${rNum}${r ? r.title : 'Урок 1'} →`;
 
-  // Phase progress
-  const phaseStats = PHASES.map(phase => {
-    const lessons = LESSONS.filter(l => l.phase === phase.id);
-    const phaseDone = lessons.filter(l => isCompleted(l.id)).length;
-    const phaseWritten = lessons.filter(l => l.content).length;
-    return {
-      id: phase.id,
-      title: phase.title.replace('Фаза ' + phase.id + '. ', ''),
-      sub: phase.subtitle,
-      done: phaseDone,
-      written: phaseWritten,
-      total: lessons.length,
-      donePct: lessons.length ? Math.round(phaseDone / lessons.length * 100) : 0,
-      writtenPct: lessons.length ? Math.round(phaseWritten / lessons.length * 100) : 0,
-    };
-  });
+  const ppItems = PHASES.map(p => {
+    const lessons = LESSONS.filter(l => l.phase === p.id);
+    const isCur = p.id === curPhaseId;
+    const meta = isCur ? `урок ${curIdx >= 0 ? curIdx + 1 : 1} из ${lessons.length} · здесь ты` : 'впереди';
+    return `<div class="pp-item${isCur ? ' here' : ''}" onclick="openSection('main')"><span class="pp-num">${p.id}</span><span class="pp-title">${phaseName(p.id)}</span><span class="pp-meta">${meta}</span></div>`;
+  }).join('');
 
-  const trackStats = TRACKS.map(track => {
-    const lessons = TRACK_LESSONS.filter(l => l.track === track.id);
-    const tDone = lessons.filter(l => isCompleted(l.id)).length;
-    const tWritten = lessons.filter(l => l.content).length;
-    return {
-      id: track.id,
-      title: track.title,
-      done: tDone,
-      written: tWritten,
-      total: lessons.length,
-      donePct: lessons.length ? Math.round(tDone / lessons.length * 100) : 0,
-    };
-  });
-
-  // Continue learning — следующие 3 готовых непройденных
-  const nextLessons = all.filter(l => l.content && !isCompleted(l.id)).slice(0, 3);
-
-  // Streak: считаем последние N дней по completed_at если есть, иначе - просто статус
-  // Простая версия — показываем когда последняя активность была (по any localStorage timestamp)
-  const lastVisit = localStorage.getItem('first_visit');
-  const daysSinceStart = lastVisit ? Math.floor((Date.now() - new Date(lastVisit).getTime()) / 86400000) : 0;
-
-  // Estimated finish based on rate
-  const remaining = written - done;
-  const dailyRate = 1;
-  const daysToFinish = Math.ceil(remaining / dailyRate);
+  const steps = curPhaseLessons.map(l => {
+    const done = isCompleted(l.id);
+    const cur = r && l.id === r.id;
+    const cls = 'mp-step' + (done ? ' done' : '') + (cur ? ' current' : '');
+    const oid = typeof l.id === 'number' ? l.id : `'${l.id}'`;
+    return `<span class="${cls}" onclick="openLesson(${oid})" title="${esc(l.title)}"><span class="mp-dot"></span></span>`;
+  }).join('');
 
   document.getElementById('lesson-content').innerHTML = `
-    <div class="mp-hello">
-      <div class="mp-hello-text">
-        <div class="mp-eyebrow">Личный дашборд</div>
-        <h1>Твой прогресс</h1>
-        <p>${done === 0
-          ? 'Ты ещё не отметил ни одного урока пройденным. Начни с Урока 1 — он самый важный, объясняет «что под капотом» LLM.'
-          : `Молодец! Прошёл ${done} из ${total} уроков. Продолжай в том же темпе — впереди ещё ${remaining} готовых.`}</p>
+    <div class="lesson-view">
+      <h1>Мой путь</h1>
+      <p class="sub-lead">Где ты сейчас, что прошёл и что рядом. Без процентов и баллов — это путь, а не табло.</p>
+      <div class="cont-line" onclick="openLesson(${rId})" style="margin-top:18px">
+        <span class="cont-eye">Ты здесь</span>
+        <span class="cont-ttl">${contTtl}</span>
       </div>
-      <div class="mp-cta">
-        ${nextLessons.length > 0
-          ? `<button class="mp-cta-btn" onclick="openLesson(${typeof nextLessons[0].id === 'string' ? `'${nextLessons[0].id}'` : nextLessons[0].id})">Продолжить →</button>`
-          : `<button class="mp-cta-btn" onclick="openLesson(1)">Начать с Урока 1 →</button>`
-        }
-      </div>
-    </div>
-
-    <div class="mp-grid">
-
-      <!-- Gauge card -->
-      <div class="mp-card mp-gauge-card">
-        <div class="mp-card-head">
-          <h3>Общий прогресс</h3>
-          <span class="mp-pill">${donePct}%</span>
-        </div>
-        <div class="mp-gauge">
-          <svg viewBox="0 0 200 120">
-            <path d="M 20 110 A 80 80 0 0 1 180 110" fill="none" stroke="var(--border-soft, #f0efed)" stroke-width="16" stroke-linecap="round"/>
-            <path d="M 20 110 A 80 80 0 0 1 180 110" fill="none" stroke="url(#mp-grad)" stroke-width="16" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="${251 - (251 * donePct / 100)}"/>
-            <defs>
-              <linearGradient id="mp-grad" x1="0" x2="1">
-                <stop offset="0" stop-color="#a78bfa"/>
-                <stop offset="1" stop-color="#ec4899"/>
-              </linearGradient>
-            </defs>
-          </svg>
-          <div class="mp-gauge-center">
-            <div class="mp-gauge-num">${done}</div>
-            <div class="mp-gauge-of">из ${total}</div>
-          </div>
-        </div>
-        <div class="mp-row-pair">
-          <div><div class="mp-num">${written}</div><div class="mp-sub">уроков доступно</div></div>
-          <div><div class="mp-num">${remaining}</div><div class="mp-sub">осталось пройти</div></div>
-        </div>
-      </div>
-
-      <!-- Continue learning -->
-      <div class="mp-card mp-continue-card">
-        <div class="mp-card-head">
-          <h3>Продолжить обучение</h3>
-        </div>
-        ${nextLessons.length === 0
-          ? `<div class="mp-empty">Все доступные уроки пройдены! Жди новых — выпускаем по 2 в неделю.</div>`
-          : nextLessons.map(l => {
-              const theme = lessonTheme(l);
-              const idStr = typeof l.id === 'string' ? `'${l.id}'` : l.id;
-              const lessonNum = typeof l.id === 'number' ? `Урок ${l.id}` : String(l.id).toUpperCase();
-              return `
-                <div class="continue-card" onclick="openLesson(${idStr})">
-                  <div class="continue-icon" style="background: var(--cat-${theme.catKey}); color: var(--cat-${theme.catKey}-text);">${theme.icon}</div>
-                  <div class="continue-info">
-                    <div class="continue-title">${l.title}</div>
-                    <div class="continue-meta">${lessonNum} · ${l.duration} мин</div>
-                  </div>
-                  <div class="continue-arrow">→</div>
-                </div>
-              `;
-            }).join('')
-        }
-      </div>
-
-      <!-- Phases -->
-      <div class="mp-card mp-phases-card">
-        <div class="mp-card-head">
-          <h3>Главный путь — 4 фазы</h3>
-          <a class="mp-link" onclick="openSection('main'); return false;">Все уроки →</a>
-        </div>
-        <div class="mp-phases">
-          ${phaseStats.map(p => `
-            <div class="mp-phase-row" style="--phase-color: var(--phase-${p.id}-dot);">
-              <div class="mp-phase-info">
-                <div class="mp-phase-name"><span class="mp-phase-icon">${phaseIcon(p.id)}</span> Фаза ${p.id}. ${p.title}</div>
-                <div class="mp-phase-sub">${p.sub}</div>
-              </div>
-              <div class="mp-phase-stat">
-                <div class="mp-phase-num">${p.done} / ${p.total}</div>
-                <div class="mp-phase-bar"><div class="mp-phase-fill" style="width: ${p.donePct}%; background: var(--phase-${p.id}-dot);"></div></div>
-                <div class="mp-phase-written">${p.written} готово</div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-
-      <!-- Tracks -->
-      <div class="mp-card mp-tracks-card">
-        <div class="mp-card-head">
-          <h3>Параллельные тропинки</h3>
-        </div>
-        <div class="mp-tracks">
-          ${trackStats.map((t, i) => `
-            <div class="mp-track" onclick="openSection('${t.id}')" style="--track-color: var(--phase-${t.id === 'claude' ? 'c' : t.id === 'projects' ? 'p' : 'i'}-dot);">
-              <div class="mp-track-head">
-                <span class="mp-track-icon">${phaseIcon(t.id)}</span>
-                <div class="mp-track-name">${t.title.replace(/^[🟣🛠💼]\s/, '')}</div>
-              </div>
-              <div class="mp-track-stat">${t.done} / ${t.total}</div>
-              <div class="mp-track-bar"><div class="mp-track-fill" style="width: ${t.donePct}%;"></div></div>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-
-      <!-- Activity / motivation -->
-      <div class="mp-card mp-motivation-card">
-        <div class="mp-card-head"><h3>На этой неделе</h3></div>
-        <div class="mp-motivation-stats">
-          <div class="mp-motivation-stat">
-            <div class="mp-big">${daysSinceStart}</div>
-            <div class="mp-sub">дней с курсом</div>
-          </div>
-          <div class="mp-motivation-stat">
-            <div class="mp-big">${done}</div>
-            <div class="mp-sub">уроков пройдено всего</div>
-          </div>
-          <div class="mp-motivation-stat">
-            <div class="mp-big">${daysToFinish || '∞'}</div>
-            <div class="mp-sub">дней до финиша<br>(при 1 уроке/день)</div>
-          </div>
-        </div>
-        <p class="mp-tip">💡 <strong>Совет:</strong> регулярность важнее темпа. 1 урок каждый день > 5 уроков в один день.</p>
-      </div>
-
-      <!-- Алёша tip -->
-      <div class="mp-card mp-alesha-card">
-        <div class="mp-card-head"><h3>Спрашивай Алёшу</h3></div>
-        <div class="mp-alesha-body">
-          <div class="alesha-logo lg" style="margin-bottom: 12px;">A</div>
-          <p>В каждом уроке справа — виджет «Алёша». Спрашивай что угодно по теме урока — ответит за 5 секунд. Бесплатно для тебя.</p>
-          ${nextLessons[0] ? `<button class="mp-cta-btn mp-cta-btn-ghost" onclick="openLesson(${typeof nextLessons[0].id === 'string' ? `'${nextLessons[0].id}'` : nextLessons[0].id})">Открыть урок →</button>` : ''}
-        </div>
-      </div>
-
+      <h2 class="mp-h2">Главный путь</h2>
+      <p class="sec-lead">Где подсвечено — там ты. Закрашенное пройдено, кольцо — текущий шаг.</p>
+      <div class="pp-items">${ppItems}</div>
+      <h2 class="mp-h2">Шаги Фазы ${curPhaseId} · ${phaseName(curPhaseId)}</h2>
+      <div class="mp-steps">${steps}</div>
     </div>
   `;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function renderAbout() {
@@ -29868,23 +29655,9 @@ function renderAbout() {
       Бесплатный курс по искусственному интеллекту на русском языке. Один последовательный путь от полного нуля до уровня инженера.
     </p>
 
-    <div class="about-progress-block">
-      <div class="about-progress-row">
-        <span><strong>${written}</strong> из ${total} уроков готово</span>
-        <span style="color: var(--text-muted);">${writtenPct}%</span>
-      </div>
-      <div class="progress-bar"><div class="progress-bar-fill" style="width: ${writtenPct}%"></div></div>
-      <div class="about-progress-row" style="margin-top: 0.5rem;">
-        <span><strong>${done}</strong> из ${total} пройдено тобой</span>
-        <span style="color: var(--text-muted);">${donePct}%</span>
-      </div>
-      <div class="progress-bar"><div class="progress-bar-fill" style="width: ${donePct}%; background: var(--accent-soft, #a78bfa);"></div></div>
-      <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.75rem 0 0;">
-        ${totalMain} уроков в главном пути · ${totalTracks} в параллельных тропинках · 4 фазы
-      </p>
-    </div>
+    <p class="about-quiet">${totalMain} ${pluralUrok(totalMain)} в главном пути, ещё ~${totalTracks} в параллельных тропинках, 4 фазы. Курс активно дописывается — где готово, то и проходишь.</p>
 
-    <div class="callout callout-info" style="margin-bottom: 1rem;">
+    <div class="callout callout-info about-author" style="margin-bottom: 1rem;">
       Курс собирает и постоянно обновляет <strong>Руслан Маджитов</strong>. Делюсь практикой, которую сам прохожу — пишу про работу с Claude, агентов, ML-инжиниринг и интеграции в реальные продукты.
       Telegram для вопросов и предложений: <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a>.
     </div>
@@ -29916,11 +29689,11 @@ function renderAbout() {
     <h2>Для кого этот курс</h2>
     <p>Если ты:</p>
     <ul>
-      <li>📌 Активно пользуешься ChatGPT/Claude, но чувствуешь что используешь на 10% возможностей.</li>
-      <li>📌 Хочешь встроить ИИ в свою работу или продукт, но не знаешь с чего начать.</li>
-      <li>📌 Слышал про «агентов», «RAG», «embeddings» и хочешь разобраться, что это и зачем.</li>
-      <li>📌 Думаешь о смене карьеры в ИИ-сферу и нужна структурированная база.</li>
-      <li>📌 Просто любопытен — что там под капотом ChatGPT.</li>
+      <li>Активно пользуешься ChatGPT/Claude, но чувствуешь что используешь на 10% возможностей.</li>
+      <li>Хочешь встроить ИИ в свою работу или продукт, но не знаешь с чего начать.</li>
+      <li>Слышал про «агентов», «RAG», «embeddings» и хочешь разобраться, что это и зачем.</li>
+      <li>Думаешь о смене карьеры в ИИ-сферу и нужна структурированная база.</li>
+      <li>Просто любопытен — что там под капотом ChatGPT.</li>
     </ul>
     <p>...то этот курс — твой. <strong>Подготовка не требуется.</strong> Достаточно базовой компьютерной грамотности. Программирование пригодится с 6-го урока, но даже его можно осваивать по ходу.</p>
 
@@ -30055,18 +29828,18 @@ function renderAbout() {
 
     <h2>И ещё несколько вещей</h2>
     <ul>
-      <li>🎯 <strong>Один путь</strong>, а не пять разных курсов с пересечениями.</li>
-      <li>🇷🇺 <strong>На русском</strong>, с примерами под русскоязычный контекст.</li>
-      <li>🔄 <strong>Прогресс сохраняется</strong> в браузере. Закрыл вкладку — продолжишь с того же места.</li>
-      <li>📱 <strong>Работает на любом устройстве.</strong></li>
-      <li>👨‍💻 <strong>Открытый код</strong> — можешь делать pull request с правками.</li>
+      <li><strong>Один путь</strong>, а не пять разных курсов с пересечениями.</li>
+   <li> <strong>На русском</strong>, с примерами под русскоязычный контекст.</li>
+      <li><strong>Прогресс сохраняется</strong> в браузере. Закрыл вкладку — продолжишь с того же места.</li>
+   <li> <strong>Работает на любом устройстве.</strong></li>
+   <li> <strong>Открытый код</strong> — можешь делать pull request с правками.</li>
     </ul>
 
     <h2>В чём принципиальное отличие</h2>
     <p>Обычные курсы про AI делают одно из двух:</p>
     <ul>
-      <li>📚 <strong>Учат одному инструменту</strong> — «как пользоваться ChatGPT», «5 промптов которые», и подобные программы-знакомства. Это полезно как первый шаг, но не даёт общей картины.</li>
-      <li>🎓 <strong>Учат теории глубоко и сухо</strong> — академические курсы (Coursera, Stanford) про математику нейросетей. Хорошо для научной карьеры, плохо для применения.</li>
+      <li><strong>Учат одному инструнту</strong> — «как пользоваться ChatGPT», «5 промптов которые», и подобные программы-знакомства. Это полезно как первый шаг, но не даёт общей картины.</li>
+      <li><strong>Учат теории глубоко и сухо</strong> — академические курсы (Coursera, Stanford) про математику нейросетей. Хорошо для научной карьеры, плохо для применения.</li>
     </ul>
 
     <p>Этот курс — <strong>между этими крайностями</strong>. Не «как нажать кнопку», но и не «градиентный спуск по матрицам». Это <strong>AI literacy для практиков</strong>:</p>
@@ -30084,7 +29857,7 @@ function renderAbout() {
 
     <div class="roadmap-block">
       <div class="roadmap-section">
-        <div class="roadmap-section-title">📚 Уроки</div>
+        <div class="roadmap-section-title">Уроки</div>
         <ul>
           <li>Доделать Фазу 2 (агенты) — уроки 23–30 про мульти-агентные системы, метакогницию, MCP, агентов в проде</li>
           <li>Развернуть Фазу 3 (Практик) — компьютерное зрение, NLP, трансформеры</li>
@@ -30093,7 +29866,7 @@ function renderAbout() {
       </div>
 
       <div class="roadmap-section">
-        <div class="roadmap-section-title">⚡ Интерактив</div>
+        <div class="roadmap-section-title">Интерактив</div>
         <ul>
           <li>Песочница температуры уже есть в Уроке 1 — следом будут токенизатор, контекстное окно, эмбеддинги</li>
           <li>Возможность запускать Python прямо в браузере для практических уроков</li>
@@ -30102,7 +29875,7 @@ function renderAbout() {
       </div>
 
       <div class="roadmap-section">
-        <div class="roadmap-section-title">🤝 Сообщество</div>
+    <div class="roadmap-section-title"> Сообщество</div>
         <ul>
           <li>Запуск Telegram-канала — анонсы новых уроков, личный опыт автора, разборы</li>
           <li>Чат подписчиков — для вопросов и взаимопомощи</li>
@@ -30112,7 +29885,7 @@ function renderAbout() {
       </div>
 
       <div class="roadmap-section">
-        <div class="roadmap-section-title">🎯 Качество и доступность</div>
+        <div class="roadmap-section-title">Качество и доступность</div>
         <ul>
           <li>Сертификаты по окончании фазы — PDF с QR на публичный профиль</li>
           <li>Алёша с памятью — будет помнить твои предыдущие диалоги между сессиями</li>
@@ -30151,11 +29924,9 @@ function renderAbout() {
 
 function renderHowTo() {
   document.getElementById('lesson-content').innerHTML = `
-    <h1>🎯 Как заниматься</h1>
+    <h1>Как заниматься</h1>
 
-    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2rem;">
-      Просто читать недостаточно. Ниже — 7 принципов, которые отличают людей, прошедших курс, от тех кто бросил на 5-м уроке.
-    </p>
+    <p class="sub-lead">Просто читать недостаточно. Ниже — 7 принципов, которые отличают тех, кто прошёл курс, от тех, кто бросил на пятом уроке.</p>
 
     <h2>1. Не больше 1 урока в день</h2>
     <p>Кажется заманчивым «пройти всё за выходные» — не пройдёшь. Один глубокий урок в день усваивается, накопленные за полгода знания остаются. Двадцать поверхностно прочитанных уроков забываются за неделю.</p>
@@ -30225,7 +29996,7 @@ function renderHowTo() {
     <p><strong>...я хочу пропустить теорию и сразу к коду?</strong> — Тогда тебе пригодятся сразу Уроки 6, 7, 8 (API, чат, semantic search). Но через 1–2 недели вернись и прочитай теоретические — пригодятся.</p>
 
     <div class="callout callout-info" style="margin-top: 3rem;">
-      <strong>📌 Закрепление:</strong> прежде чем идти к Уроку 1, реши:
+   <strong> Закрепление:</strong> прежде чем идти к Уроку 1, реши:
       <ul>
         <li>Какой у меня темп? (1/день, 2/день, по выходным?)</li>
         <li>Какая моя сквозная задача? (Какой проект я буду делать через все фазы?)</li>
@@ -30242,7 +30013,8 @@ function renderHowTo() {
 
 function renderFAQ() {
   document.getElementById('lesson-content').innerHTML = `
-    <h1>❓ FAQ — Часто задаваемые вопросы</h1>
+    <h1>Частые вопросы</h1>
+    <p class="sub-lead">Коротко о том, что чаще всего спрашивают про курс.</p>
 
     <h2>Курс правда бесплатный?</h2>
     <p>Да. Полностью. Никаких подписок, регистраций, лид-магнитов, premium-уровней. Контент открыт по MIT-лицензии — можно даже использовать в своих проектах со ссылкой.</p>
@@ -30380,7 +30152,6 @@ function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme');
   const next = current === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
-  document.getElementById('theme-icon').textContent = next === 'dark' ? '☀️' : '🌙';
   document.getElementById('theme-label').textContent = next === 'dark' ? 'Светлая тема' : 'Тёмная тема';
   localStorage.setItem(THEME_KEY, next);
 }
@@ -30389,7 +30160,6 @@ function toggleTheme() {
 const savedTheme = localStorage.getItem(THEME_KEY);
 if (savedTheme) {
   document.documentElement.setAttribute('data-theme', savedTheme);
-  document.getElementById('theme-icon').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
   document.getElementById('theme-label').textContent = savedTheme === 'dark' ? 'Светлая тема' : 'Тёмная тема';
 }
 
