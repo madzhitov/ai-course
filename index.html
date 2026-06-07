@@ -3957,6 +3957,34 @@ code, pre, kbd, samp,
 .sidebar .aside-link { font-size:13.5px; color:var(--muted); padding:6px 8px; border-radius:7px; cursor:pointer; transition:color .12s,background .12s; }
 .sidebar .aside-link:hover { color:var(--accent); background:var(--accent-soft); }
 
+/* ===== ТРОПА F4: lean-главная (компоненты эталона, scoped под .home) ===== */
+.home { position:relative; }
+.home .home-status { display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:13px; color:var(--muted); padding:18px clamp(20px,6vw,72px) 0; max-width:760px; }
+.home .home-status .hs-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+.home .home-status b { color:var(--ink); font-weight:600; }
+.home .home-status a { color:var(--accent); cursor:pointer; margin-left:auto; font-weight:600; white-space:nowrap; text-decoration:none; }
+.home .home-status a:hover { text-decoration:underline; }
+.home .intro { padding:32px clamp(20px,6vw,72px) 12px; max-width:760px; }
+.home .badge { display:inline-flex; align-items:center; gap:7px; padding:5px 12px; border:1px solid var(--line); border-radius:20px; font-size:13px; color:var(--muted); margin-bottom:20px; background:transparent; }
+.home .badge .bdot { width:8px; height:8px; border-radius:50%; background:var(--accent); }
+.home .intro h1 { font-family:"Cormorant Unicase",Georgia,serif; font-size:clamp(30px,5vw,50px); font-weight:700; letter-spacing:-.03em; line-height:1.08; margin-bottom:14px; color:var(--ink); }
+.home .intro .lead { font-size:17px; color:var(--muted); max-width:500px; line-height:1.65; margin-bottom:28px; }
+.home .start-btn { display:inline-flex; align-items:center; gap:10px; padding:13px 22px; background:var(--accent); color:#fff; border:none; border-radius:12px; cursor:pointer; font-size:16px; font-family:inherit; font-weight:600; transition:.15s; }
+.home .start-btn:hover { background:#26543f; transform:translateY(-1px); }
+.home .start-btn-sec { display:inline-flex; align-items:center; padding:11px 17px; border-radius:12px; border:1px solid var(--line); background:var(--panel); color:var(--ink); font-family:inherit; font-weight:600; font-size:14px; cursor:pointer; }
+.home .start-btn-sec:hover { border-color:var(--accent); color:var(--accent); }
+.home .home-author { font-size:13px; color:var(--muted); margin-top:20px; line-height:1.5; }
+.home .home-author a { color:var(--accent); text-decoration:none; }
+.home .home-author b { color:var(--ink); }
+.home .home-invite { background:var(--card); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:13px; padding:15px 17px; font-size:13.5px; color:var(--muted); line-height:1.55; max-width:760px; margin:6px clamp(20px,6vw,72px) 0; }
+.home .home-invite b { color:var(--ink); display:block; margin-bottom:3px; font-size:14px; }
+.home .home-invite a { color:var(--accent); font-weight:600; cursor:pointer; white-space:nowrap; }
+.home .home-sec { max-width:760px; padding:0 clamp(20px,6vw,72px); }
+.home .cont-line { display:flex; flex-direction:column; gap:2px; background:var(--accent-soft); border:1px solid var(--accent-mid); border-radius:12px; padding:13px 16px; margin:18px 0 0; cursor:pointer; max-width:760px; }
+.home .cont-eye { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); font-weight:700; }
+.home .cont-ttl { font-size:15px; color:var(--ink); font-weight:600; }
+.home .opath-link { display:inline-block; margin-top:18px; color:var(--accent); font-weight:600; font-size:15px; cursor:pointer; text-decoration:none; border-bottom:1px solid var(--accent-mid); }
+
 </style>
 </head>
 <body>
@@ -26666,7 +26694,7 @@ function buildNav() {
   const pointers = [
     ['about','О курсе'], ['howto','Как заниматься'], ['faq','FAQ'],
     ['resources','Источники'], ['glossary','Глоссарий'], ['changelog','Что нового'],
-    ['my-progress','Мой путь'],
+    ['my-progress','Мой путь'], ['routes','Маршруты'],
   ];
   pointers.forEach(([id,label]) => {
     const handler = id === 'glossary' ? 'openGlossary()' : `openStaticPage('${id}')`;
@@ -27521,6 +27549,21 @@ function lessonCard(lesson) {
 // Маршруты — рендер блока и логика опросника
 // ============================================================
 
+function renderRoutes() {
+  document.getElementById('lesson-content').innerHTML = `
+    <div class="home">
+      <div class="intro">
+        <h1>Маршруты под задачу</h1>
+        <p class="lead">Не уверен, с чего начать? Выбери ближайший сценарий — это короткий маршрут из 3–7 уроков. Или ответь на 3 вопроса, и подскажу.</p>
+      </div>
+      <div class="home-sec">
+        ${renderRoutesContent('С чего начать?', 'Выбери ближайший сценарий — это маршрут из 3–7 уроков.')}
+      </div>
+    </div>
+  `;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function renderRoutesBlock() {
   const totalPassed = allLessons().filter(l => isCompleted(l.id)).length;
 
@@ -28218,6 +28261,7 @@ function openStaticPage(name) {
   else if (name === 'resources') renderResources();
   else if (name === 'admin') renderAdmin();
   else if (name === 'my-progress') renderMyProgress();
+  else if (name === 'routes') renderRoutes();
 }
 
 // ============================================================
@@ -29433,262 +29477,44 @@ function renderChangelog() {
 
 function renderHome() {
   const total = allLessons().length;
-  const done = allLessons().filter(l => isCompleted(l.id)).length;
   const written = allLessons().filter(l => l.content).length;
   const lastUpdate = fmtDate(CHANGELOG[0].date);
 
-  // Donut: прогресс по 4 фазам + 3 трекам
-  const donutSegments = [
-    { label: 'Фаза 1', value: LESSONS.filter(l => l.phase === 1 && isCompleted(l.id)).length, color: '#7c3aed' },
-    { label: 'Фаза 2', value: LESSONS.filter(l => l.phase === 2 && isCompleted(l.id)).length, color: '#a78bfa' },
-    { label: 'Фаза 3', value: LESSONS.filter(l => l.phase === 3 && isCompleted(l.id)).length, color: '#c4b5fd' },
-    { label: 'Фаза 4', value: LESSONS.filter(l => l.phase === 4 && isCompleted(l.id)).length, color: '#ddd6fe' },
-    { label: 'Тропинки', value: TRACK_LESSONS.filter(l => isCompleted(l.id)).length, color: '#16a34a' },
-  ];
-
-  // Continue learning — 3 ближайших готовых, не пройденных урока
-  const continueLessons = allLessons()
-    .filter(l => l.content && !isCompleted(l.id))
-    .slice(0, 3);
-
-  // «Продолжить с того места» — ближайший непройденный готовый урок
-  // (для пользователя который уже прошёл хотя бы один)
-  const nextLesson = allLessons().find(l => l.content && !isCompleted(l.id));
+  // «Продолжить с того места» — реальный текущий/ближайший непройденный урок
   const anyCompleted = allLessons().some(l => isCompleted(l.id));
-
-  const continueSection = continueLessons.length === 0 ? '' : `
-    <div class="home-aside-section">
-      <h3>Продолжить обучение</h3>
-      <div class="continue-learning">
-        ${continueLessons.map(l => continueCard(l)).join('')}
-      </div>
-    </div>
-  `;
-
-  // Большой баннер «Продолжить» в верху главной, если есть прогресс
-  const resumeBanner = (anyCompleted && nextLesson) ? `
-    <div class="resume-banner" onclick="openLesson(${typeof nextLesson.id === 'string' ? `'${nextLesson.id}'` : nextLesson.id})">
-      <div class="resume-banner-icon">▶</div>
-      <div class="resume-banner-body">
-        <div class="resume-banner-eyebrow">Продолжить с того места</div>
-        <div class="resume-banner-title">${typeof nextLesson.id === 'number' ? `Урок ${nextLesson.id}. ` : ''}${nextLesson.title}</div>
-        <div class="resume-banner-meta">~${nextLesson.duration} мин чтения</div>
-      </div>
-      <div class="resume-banner-cta">→</div>
-    </div>
-  ` : '';
-
-  // Если что-то пройдено — donut, иначе показать «начать»
-  const hasProgress = donutSegments.some(s => s.value > 0);
-
-  // Алёша announcement banner
-  const aleshaBanner = `
-    <div class="alesha-announce">
-      <span class="alesha-logo lg">А</span>
-      <div class="alesha-announce-body">
-        <div class="alesha-announce-eyebrow"><svg class="ico ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg> Новое</div>
-        <div class="alesha-announce-title">Алёша — AI-наставник прямо в уроке</div>
-        <div class="alesha-announce-text">
-          Спроси что угодно про конкретный урок — Алёша ответит за 5 секунд.
-          Понимает контекст, не галлюцинирует за рамками темы, бесплатно для тебя.
+  const r = resumeLesson();
+  const rLabel = (r && typeof r.id === 'number') ? `Урок ${r.id} · ${r.title}` : (r ? r.title : '');
+  const rArg = r ? (typeof r.id === 'number' ? r.id : `'${r.id}'`) : '1';
+  const contLine = (anyCompleted && r) ? `
+      <div class="home-sec">
+        <div class="cont-line" onclick="openLesson(${rArg})">
+          <span class="cont-eye">Продолжить с того места</span>
+          <span class="cont-ttl">${rLabel} →</span>
         </div>
-        <button class="alesha-announce-btn" onclick="openLesson(1); setTimeout(()=>{ if(window.innerWidth < 1100) aleshaToggle(); },500);">Попробовать →</button>
-      </div>
-    </div>
-  `;
+      </div>` : '';
 
   document.getElementById('lesson-content').innerHTML = `
-    ${resumeBanner}
-    <div class="hero-v2">
-      <h1>От первых промптов<br>до своих AI-приложений.</h1>
-      <p class="tagline">
-        ${total} уроков на русском, AI-наставник в каждом, готовые pet-проекты с кодом. Полный путь — не «5 минут попробовать», а до уровня, где сможешь делать сам.
-      </p>
-      <p class="tagline" style="margin-top: 0.5rem; font-weight: 500; color: var(--text);">
-        Артефакты, а не сертификаты.
-      </p>
-      <div class="hero-cta-v2">
-        <button class="btn-primary-v2" onclick="openLesson(1)">${hasProgress ? 'Продолжить курс' : 'Начать с Урока 1'} →</button>
-        <button class="btn-secondary-v2" onclick="openStaticPage('about')">Чем отличается</button>
+    <div class="home">
+      <div class="home-status">
+        <span class="hs-dot"></span>
+        <span><b>Курс активно обновляется.</b> Готово ${written} из ${total} уроков · обновлено ${lastUpdate}</span>
+        <a onclick="openStaticPage('changelog')">Что нового →</a>
       </div>
-      <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1.5rem;">
-        Курс собирает и постоянно обновляет <strong>Руслан Маджитов</strong> · Канал: <a href="https://t.me/artefakty_ai" target="_blank" style="color: var(--accent); font-weight: 600;">@artefakty_ai</a> · Связь: <a href="https://t.me/madzhitov" target="_blank" style="color: var(--text-muted); font-weight: 500;">@madzhitov</a>
-      </p>
-    </div>
-
-    ${renderRoutesBlock()}
-
-    <div class="vibe-banner" onclick="openSection('vibe')">
-      <span class="vibe-banner-tag">Новая тропинка</span>
-      <div class="vibe-banner-title">Вайб Код Вам Дам</div>
-      <div class="vibe-stage">
-        <img class="vibe-mascot-img" src="vibe-mascot.png" alt="VKVD на шпагате между КОД и КЛОД">
-        <span class="vibe-foot kod">КОД</span>
-        <span class="vibe-foot klod">КЛОД</span>
+      <div class="intro">
+        <div class="badge"><span class="bdot"></span>Бесплатный курс по AI</div>
+        <h1>От первых промптов<br>до своих AI-приложений</h1>
+        <p class="lead">${total} уроков на русском, AI-наставник в каждом, готовые pet-проекты с кодом. Полный путь — не «5 минут попробовать», а до уровня, где сможешь делать сам.</p>
+        <p class="lead" style="font-weight:600;color:var(--ink);margin-top:-6px">Артефакты, а не сертификаты.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="start-btn" onclick="openLesson(1)">Начать с Урока 1 →</button>
+          <button class="start-btn-sec" onclick="openStaticPage('about')">Чем отличается</button>
+        </div>
+        <p class="home-author">Курс собирает и обновляет <a href="https://madzhitov.ru" target="_blank"><b>Руслан Маджитов</b></a> · канал <a href="https://t.me/artefakty_ai" target="_blank">@artefakty_ai</a> · связь <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a></p>
       </div>
-      <div class="vibe-banner-sub">Вайбкодинг как боевое искусство. VKVD садится на шпагат между двумя AI-моделями и ставит тебе навык, который останется, когда модель в десятый раз сменит версию.</div>
-      <button class="vibe-banner-cta" type="button">Войти в додзё →</button>
-      <div class="vibe-irony">&lt;/irony mode&gt;</div>
+      <div class="home-invite"><b>Есть конкретная задача?</b> Подберём короткий маршрут под неё — <a onclick="openStaticPage('routes')">пройди мини-квиз →</a></div>
+      ${contLine}
+      <div class="home-sec"><a class="opath-link" onclick="openStaticPage('about')">Как устроен путь и чем он отличается — О&nbsp;курсе →</a></div>
     </div>
-
-    ${aleshaBanner}
-
-    <div class="stats-grid-v2">
-      ${statCard({ icon: '📚', label: 'Уроков всего', value: total, theme: 'prompts' })}
-      ${statCard({ icon: '✓', label: 'Опубликовано', value: written, theme: 'projects' })}
-      ${statCard({ icon: '🎯', label: 'Пройдено вами', value: done, theme: 'claude' })}
-      ${statCard({ icon: '⏱', label: 'Часов изучения', value: '~150', theme: 'industry' })}
-    </div>
-
-    <div class="home-grid">
-      <div>
-        ${hasProgress ? `
-          <h2 style="border-top: none; padding-top: 0; margin-top: 0;">Твой прогресс</h2>
-          ${donutChart(donutSegments, done, 'пройдено')}
-        ` : ''}
-
-        <h2 ${hasProgress ? '' : 'style="border-top: none; padding-top: 0; margin-top: 0;"'}>Структура курса</h2>
-        <p style="color: var(--text-muted); margin-bottom: 1.25rem;">Главный путь — 4 фазы, ${LESSONS.length} уроков по порядку. Параллельные тропинки — углублённые серии, в которые можно нырять параллельно.</p>
-
-        <div class="lesson-cards-grid">
-          <div class="lesson-card-v2" onclick="openSection('main')">
-            <div class="lesson-card-thumb">${phaseIcon(1)}</div>
-            <div class="lesson-card-body">
-              <span class="cat-tag cat-t-fundamentals">ГЛАВНЫЙ ПУТЬ</span>
-              <h3>${LESSONS.length} уроков в 4 фазах</h3>
-              <div class="lesson-card-meta">
-                <span>Пользователь → Инженер</span>
-                <span class="badge badge-ongoing">${LESSONS.filter(l => isCompleted(l.id)).length}/${LESSONS.length}</span>
-              </div>
-            </div>
-          </div>
-          <div class="lesson-card-v2" onclick="openSection('claude')">
-            <div class="lesson-card-thumb">${phaseIcon('claude')}</div>
-            <div class="lesson-card-body">
-              <span class="cat-tag cat-t-claude">ТРОПИНКА</span>
-              <h3>Claude Deep Dive</h3>
-              <div class="lesson-card-meta">
-                <span>Artifacts, MCP, Computer Use</span>
-                <span class="badge badge-ongoing">${TRACK_LESSONS.filter(l => l.track === 'claude' && l.content).length}/${TRACK_LESSONS.filter(l => l.track === 'claude').length}</span>
-              </div>
-            </div>
-          </div>
-          <div class="lesson-card-v2" onclick="openSection('projects')">
-            <div class="lesson-card-thumb">${phaseIcon('projects')}</div>
-            <div class="lesson-card-body">
-              <span class="cat-tag cat-t-projects">ТРОПИНКА</span>
-              <h3>Мини-проекты «За 1 час»</h3>
-              <div class="lesson-card-meta">
-                <span>TG-бот, RAG, голос, MCP, Skills, Ollama</span>
-                <span class="badge badge-ongoing">${TRACK_LESSONS.filter(l => l.track === 'projects' && l.content).length}/${TRACK_LESSONS.filter(l => l.track === 'projects').length}</span>
-              </div>
-            </div>
-          </div>
-          <div class="lesson-card-v2" onclick="openSection('industry')">
-            <div class="lesson-card-thumb">${phaseIcon('industry')}</div>
-            <div class="lesson-card-body">
-              <span class="cat-tag cat-t-industry">ТРОПИНКА</span>
-              <h3>Темы под индустрии</h3>
-              <div class="lesson-card-meta">
-                <span>Юристы, маркетинг, HR, разработчики, финансы</span>
-                <span class="badge badge-ongoing">${TRACK_LESSONS.filter(l => l.track === 'industry' && l.content).length}/${TRACK_LESSONS.filter(l => l.track === 'industry').length}</span>
-              </div>
-            </div>
-          </div>
-          <div class="lesson-card-v2" onclick="openSection('everyday')">
-            <div class="lesson-card-thumb">${phaseIcon('everyday')}</div>
-            <div class="lesson-card-body">
-              <span class="cat-tag cat-t-everyday">ТРОПИНКА · NEW</span>
-              <h3>AI каждый день</h3>
-              <div class="lesson-card-meta">
-                <span>Для семьи, школьника, малого бизнеса — без кода</span>
-                <span class="badge badge-ongoing">${TRACK_LESSONS.filter(l => l.track === 'everyday' && l.content).length}/${TRACK_LESSONS.filter(l => l.track === 'everyday').length}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <h2>Что ты получишь</h2>
-        <div class="lesson-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
-          <div class="lesson-card-v2" onclick="openSection('main')">
-            <div class="lesson-card-thumb">${phaseIcon(1)}</div>
-            <div class="lesson-card-body">
-              <h3>Один последовательный путь</h3>
-              <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Не «10 разных курсов» — один маршрут от пользователя ChatGPT до уровня инженера.</p>
-            </div>
-          </div>
-          <div class="lesson-card-v2" onclick="openSection('claude')">
-            <div class="lesson-card-thumb">${phaseIcon('claude')}</div>
-            <div class="lesson-card-body">
-              <h3>Глубоко про Claude</h3>
-              <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Artifacts, Projects, MCP, Computer Use, Claude Code — самая детальная серия на русском.</p>
-            </div>
-          </div>
-          <div class="lesson-card-v2" onclick="openSection('projects')">
-            <div class="lesson-card-thumb">${phaseIcon('projects')}</div>
-            <div class="lesson-card-body">
-              <h3>Артефакты, а не сертификаты</h3>
-              <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">После каждого блока — рабочая вещь: свой агент, свой Skill, свой бот. То, что можно использовать или положить в портфолио.</p>
-            </div>
-          </div>
-          <div class="lesson-card-v2" onclick="openStaticPage('about')">
-            <div class="lesson-card-thumb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg></div>
-            <div class="lesson-card-body">
-              <h3>Полностью бесплатно</h3>
-              <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Никаких подписок и платных уровней. MIT-лицензия — можно использовать в своих программах.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <aside class="home-aside">
-        ${continueSection}
-
-        <div class="home-aside-section">
-          <h3>Telegram-канал автора</h3>
-          <a href="https://t.me/artefakty_ai" target="_blank" rel="noopener" class="continue-card" style="background: var(--bg-card); text-decoration: none; color: inherit; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem;">
-            <div class="continue-icon" style="background: #0a0a0a; color: #fff; display: flex; align-items: center; justify-content: center;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
-            </div>
-            <div class="continue-info">
-              <div class="continue-title">Артефакты, а не сертификаты</div>
-              <div class="continue-meta">@artefakty_ai · 2 поста/неделю</div>
-            </div>
-          </a>
-        </div>
-
-        <div class="home-aside-section">
-          <h3>Источники</h3>
-          <div class="continue-learning">
-            <div class="continue-card" onclick="openStaticPage('resources')" style="background: var(--bg-card);">
-              <div class="continue-icon" style="background: var(--cat-claude); color: var(--cat-claude-text);">📚</div>
-              <div class="continue-info">
-                <div class="continue-title">Anthropic, Karpathy, Willison</div>
-                <div class="continue-meta">Полный список →</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="home-aside-section">
-          <h3>Свежее</h3>
-          <div class="continue-learning">
-            <div class="continue-card" onclick="openStaticPage('changelog')" style="background: var(--bg-card);">
-              <div class="continue-icon" style="background: var(--cat-projects); color: var(--cat-projects-text);">📰</div>
-              <div class="continue-info">
-                <div class="continue-title">Что нового</div>
-                <div class="continue-meta">${fmtDate(CHANGELOG[0].date)} · обновление</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </aside>
-    </div>
-
-    <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-top: 3rem;">
-      Курс активно обновляется · Последнее обновление: ${lastUpdate} · ${written}/${total} уроков готово
-    </p>
   `;
 }
 
