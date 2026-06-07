@@ -9,31 +9,212 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Урок 19. Использование инструментов агентами">
 <meta property="og:description" content="Урок 19 из курса AI на русском. Использование инструментов агентами. ~60 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/19.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/19.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/19.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Урок 19. Использование инструментов агентами">
 <meta name="twitter:description" content="Урок 19 из курса AI на русском. Использование инструментов агентами. ~60 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/19.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/19.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/19.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-19');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Урок 19. Использование инструментов агентами","description":"Урок 19 из курса AI на русском. Использование инструментов агентами. ~60 мин.","url":"https://ai.madzhitov.ru/lessons/19.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/19.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 2. Строитель</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 19</span></div>
 <h1>Урок 19. Использование инструментов агентами</h1>
-<p>Урок 19 из курса AI на русском. Использование инструментов агентами. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-19">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> проектировать tools для агентов так, чтобы они работали стабильно и были безопасны</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Источник:</strong> ai-agents-for-beginners/04 + Anthropic «Tool use best practices»</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Function calling (Урок 13) — это «как технически вызвать tool». Этот урок — «как спроектировать tools для агента так, чтобы он реально работал». 80% багов агентов в проде — это не модель, а плохо спроектированные инструменты.</p>
+<p>К концу урока ты сможешь:</p>
+<ul>
+<li>Решать, какие операции выносить в tools, а какие оставлять модели.</li>
+<li>Писать описания (descriptions) так, чтобы агент выбирал правильно.</li>
+<li>Делать tools idempotent и safe-by-default.</li>
+<li>Группировать tools в наборы под задачу.</li>
+</ul>
+
+<h2>1. Что такое tool в современном понимании</h2>
+<p>Tool — это <strong>именованная функция с описанием и схемой параметров</strong>, которую модель может вызвать в ходе работы.</p>
+<pre><code>{
+  "name": "get_weather",
+  "description": "Получить текущую погоду в городе",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "city": { "type": "string", "description": "Название города на русском" },
+      "units": { "type": "string", "enum": ["celsius", "fahrenheit"] }
+    },
+    "required": ["city"]
+  }
+}</code></pre>
+<p>Модель видит этот JSON и решает: вызывать ли, с какими параметрами, что делать с результатом. Всё остальное — твоя ответственность.</p>
+
+<h2>2. Что выносить в tools, а что нет</h2>
+<table>
+<tr><th>Вынести в tool</th><th>Оставить модели</th></tr>
+<tr><td>Получение свежих данных (поиск, БД, API)</td><td>Анализ и интерпретация</td></tr>
+<tr><td>Действия с побочным эффектом (отправка письма, запись в БД)</td><td>Решение «что делать дальше»</td></tr>
+<tr><td>Точные расчёты (Python для математики)</td><td>Объяснение результата</td></tr>
+<tr><td>Доступ к приватным данным юзера</td><td>Форматирование ответа</td></tr>
+<tr><td>Любая операция, где галлюцинация = катастрофа</td><td>Творческие задачи</td></tr>
+</table>
+<p><strong>Антипаттерн:</strong> делать tool для «сгенерируй ответ на основе X». Это уже умеет модель сама, не плоди прокси.</p>
+
+<h2>3. Description — главное оружие</h2>
+<p>Модель выбирает tool по его <strong>description</strong>. Плохое описание = модель не вызовет нужный tool или вызовет не тот.</p>
+<p><strong>Плохо:</strong></p>
+<pre><code>"description": "Поиск"</code></pre>
+<p><strong>Хорошо:</strong></p>
+<pre><code>"description": "Полнотекстовый поиск по базе документов компании. Возвращает топ-5 самых релевантных абзацев. Использовать когда пользователь спрашивает фактологический вопрос о продукте, политиках, истории компании. НЕ использовать для текущих новостей или общих знаний о мире."</code></pre>
+<p><strong>Что включать:</strong></p>
+<ul>
+<li><strong>Что делает</strong> (одна фраза).</li>
+<li><strong>Когда использовать</strong> (1–2 примера).</li>
+<li><strong>Когда НЕ использовать</strong> — критично, помогает агенту не путать tools.</li>
+<li><strong>Формат возврата</strong> (одна фраза).</li>
+</ul>
+
+<h2>4. Параметры — тоже описывай</h2>
+<p>Description для каждого параметра — не лень, а необходимость:</p>
+<pre><code>"city": {
+  "type": "string",
+  "description": "Город на русском. Например: 'Москва', 'Санкт-Петербург'. Если пользователь дал английское название — переведи."
+}</code></pre>
+<p>Без описания модель путает: «Питер» → передаёт «Питер» вместо «Санкт-Петербург», API не находит.</p>
+
+<h2>5. Идемпотентность и безопасность</h2>
+<p><strong>Идемпотентный tool</strong> — повторный вызов с теми же параметрами даёт тот же результат и не делает ничего лишнего.</p>
+<ul>
+<li>✅ <code>get_user(id=123)</code> — идемпотентный (read-only).</li>
+<li>❌ <code>send_email(to, body)</code> — НЕ идемпотентный (каждый вызов = новое письмо).</li>
+</ul>
+<p>Модели могут <strong>повторять вызовы</strong> при сбоях или из-за «думают, что не сработало». Поэтому неидемпотентные tools должны:</p>
+<ol>
+<li>Принимать <code>idempotency_key</code> или <code>request_id</code> — клиент его генерирует, сервер проверяет, что не выполнял.</li>
+<li>Возвращать <strong>чёткое подтверждение</strong>: «отправлено по ID 12345».</li>
+<li>Для критичных действий — <strong>требовать confirmation flag</strong>: <code>send_email(to, body, confirmed=true)</code>. Модель должна явно подтвердить.</li>
+</ol>
+
+<h2>6. Принцип least privilege</h2>
+<p>Tool должен делать <strong>ровно одно</strong>, а не «всё про пользователей».</p>
+<p><strong>Плохо:</strong> <code>manage_user(action, user_id, ...)</code> — может удалить, создать, обновить. Опасно.</p>
+<p><strong>Хорошо:</strong> три отдельных tool:</p>
+<ul>
+<li><code>get_user(id)</code> — read-only.</li>
+<li><code>update_user_name(id, name)</code> — узкое действие.</li>
+<li><code>delete_user(id, confirmed=true)</code> — критичное, с явным флагом.</li>
+</ul>
+<p>Узкие tools легче описать, легче ограничить, легче дебажить.</p>
+
+<h2>7. Группировка tools в наборы</h2>
+<p>Если у тебя 50 tools — модель путается. Решение: <strong>toolset under intent</strong>.</p>
+<p>Сначала модель выбирает <strong>«какой задачей сейчас занимаемся»</strong> (research, send_email, query_db) — это router. Дальше открывается набор из 3–5 tools под эту задачу.</p>
+<p>На практике:</p>
+<ul>
+<li>В системном промпте — «у тебя есть три режима: explore (поиск), act (действия), reflect (анализ)».</li>
+<li>В каждый момент — даёшь модели только tools одного режима.</li>
+<li>Когда модель решает «теперь нужно действовать» — она переключает режим.</li>
+</ul>
+
+<h2>8. Что возвращать tool'у</h2>
+<p>Модель читает результат. Если результат — 10MB JSON, она утонет.</p>
+<p><strong>Правила хорошего результата:</strong></p>
+<ul>
+<li><strong>Кратко.</strong> 500–2000 символов максимум на ответ. Если данных больше — пагинация или summary.</li>
+<li><strong>Структурированно.</strong> JSON, не сырой HTML.</li>
+<li><strong>С пометкой об ошибках.</strong> <code>{"error": "user not found", "user_id": 123}</code> — модель прочитает и нормально среагирует. Не выкидывай stack trace в return.</li>
+<li><strong>С метаданными.</strong> <code>{"results": [...], "total": 1500, "showing": 5}</code> — модель поймёт, что есть ещё, и спросит уточнение.</li>
+</ul>
+
+<h2>9. Streaming и параллельные tool calls</h2>
+<p>Современные модели (Claude 3.5+, GPT-4o) умеют:</p>
+<ul>
+<li><strong>Параллельные tool calls</strong> — модель за один шаг вызывает 3–5 tools одновременно. Если три запроса независимы — это в 3 раза быстрее.</li>
+<li><strong>Streaming с tool use</strong> — модель может стримить размышление, потом вызвать tool, потом стримить дальше.</li>
+</ul>
+<p><strong>Что это значит для тебя:</strong> когда проектируешь, думай — какие tools могут идти параллельно? Если да — модель сама их распараллелит, без особых усилий.</p>
+
+<h2>10. Тонкости и подводные камни</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Слишком много tools.</strong> Больше 15 в одном наборе — модель начинает выбирать хаотично. Группируй.</li>
+<li><strong>Совпадающие имена.</strong> <code>search()</code> и <code>find()</code> — модель путает. Используй разные глаголы или namespace: <code>db_search</code> vs <code>web_search</code>.</li>
+<li><strong>Игнор ошибок tool.</strong> Модель часто продолжает «как будто всё ок», даже если tool вернул error. Возвращай ошибки явно и предсказуемо.</li>
+<li><strong>Долгие tools.</strong> Если tool работает 30 секунд — пользователь не дождётся. Сделай async: возвращай job_id, потом polling tool для статуса.</li>
+<li><strong>Нет audit log.</strong> В проде — обязательно логируй каждый вызов: какой tool, с какими параметрами, что вернул, сколько занял.</li>
+</ul>
+</div>
+
+<h2>11. MCP — стандарт для tools (упоминание)</h2>
+<p>В 2024 Anthropic выпустили <strong>Model Context Protocol</strong> — открытый стандарт описания tools. Любой MCP-сервер можно подключить к Claude, Cursor, Zed, ChatGPT GPTs (через переходники).</p>
+<p>Подробнее — Урок 28 «Агентские протоколы (MCP)» и мини-проект p3 «Свой MCP-сервер».</p>
+
+<h2>12. Глоссарий</h2>
+<div class="glossary-term"><h3>Tool / Function</h3><p>Именованная функция с описанием и схемой, которую модель может вызвать.</p></div>
+<div class="glossary-term"><h3>Tool description</h3><p>Текстовое описание, по которому модель выбирает tool. Главное оружие проектировщика.</p></div>
+<div class="glossary-term"><h3>Idempotency key</h3><p>Уникальный ключ запроса. Сервер проверяет, что не выполнял ранее с тем же ключом.</p></div>
+<div class="glossary-term"><h3>Least privilege</h3><p>Принцип «минимум прав». Tool делает ровно одно действие.</p></div>
+<div class="glossary-term"><h3>Parallel tool use</h3><p>Модель вызывает несколько независимых tools одновременно.</p></div>
+
+<h2>13. Практика (60 минут)</h2>
+<ol>
+<li>Возьми задачу: «помощник, который ищет в моих Notion-заметках и создаёт там же новые задачи».</li>
+<li>Спроектируй 4–5 tools: search_notes, get_note, create_task, update_task_status, list_tasks.</li>
+<li>Напиши для каждого description (включая «когда НЕ использовать»).</li>
+<li>Реализуй на Anthropic SDK с tool_use.</li>
+<li>Протестируй на 5 разных запросах. Где агент промахнулся — улучши description.</li>
+<li>Запиши в <code>progress.md</code> — какие правки описаний дали максимальный эффект.</li>
+</ol>
+
+<h2>14. Проверь себя</h2>
+<p><strong>1. Что выносить в tools, что оставлять модели?</strong><br>В tools — данные, действия, точные расчёты. Модели — анализ, интерпретация, формулировки.</p>
+<p><strong>2. Что важнее: схема параметров или description?</strong><br>Description. Если схема правильная, но описание плохое — модель не вызовет.</p>
+<p><strong>3. Что такое идемпотентность и зачем она tools'ам?</strong><br>Повторный вызов с теми же параметрами = тот же результат. Защита от повторных вызовов модели при сбоях.</p>
+<p><strong>4. Чем плох tool <code>manage_user(action, ...)</code>?</strong><br>Слишком широкий. Лучше отдельные узкие tools — легче ограничить, описать и дебажить.</p>
+<p><strong>5. Когда нужна группировка tools?</strong><br>Когда их больше 15. Группируй по intent/режиму: «explore», «act», «reflect».</p>
+
+<h2>15. Что должно остаться в голове</h2>
+<ol>
+<li>В tools — данные и действия. Модели — интерпретация.</li>
+<li>Description с «когда использовать» И «когда НЕ использовать» — критично.</li>
+<li>Идемпотентность для критичных действий. Idempotency key.</li>
+<li>Least privilege: узкие tools, не швейцарские ножи.</li>
+<li>Группируй tools по intent если их больше 15.</li>
+<li>Возвращай кратко, структурированно, с метаданными.</li>
+<li>Параллельные tool calls — бесплатное ускорение.</li>
+<li>Audit log в проде — обязательно.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> прочитай <a href="https://docs.anthropic.com/en/docs/tool-use" target="_blank">Tool use best practices от Anthropic</a> — это твой стандарт-документ при проектировании tools.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-19">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

@@ -9,31 +9,202 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Урок 18. Паттерны проектирования агентов">
 <meta property="og:description" content="Урок 18 из курса AI на русском. Паттерны проектирования агентов. ~60 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/18.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/18.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/18.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Урок 18. Паттерны проектирования агентов">
 <meta name="twitter:description" content="Урок 18 из курса AI на русском. Паттерны проектирования агентов. ~60 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/18.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/18.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/18.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-18');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Урок 18. Паттерны проектирования агентов","description":"Урок 18 из курса AI на русском. Паттерны проектирования агентов. ~60 мин.","url":"https://ai.madzhitov.ru/lessons/18.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/18.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 2. Строитель</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 18</span></div>
 <h1>Урок 18. Паттерны проектирования агентов</h1>
-<p>Урок 18 из курса AI на русском. Паттерны проектирования агентов. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-18">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> освоить базовые паттерны проектирования агентов и понимать, какой применять в каком случае</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Источник:</strong> ai-agents-for-beginners/04 + Anthropic «Building effective agents»</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>«Агент» — это не один паттерн, а целый зоопарк. Без знания паттернов ты будешь:</p>
+<ul>
+<li>Делать сложного multi-agent там, где хватает простого workflow.</li>
+<li>Делать примитивный ReAct там, где нужен Reflexion.</li>
+<li>Не использовать роутинг и каждый раз тратить на полную модель.</li>
+</ul>
+<p>Anthropic в 2024 разделили на два класса: <strong>workflows</strong> (детерминированные цепочки) и <strong>agents</strong> (LLM сам решает шаги). Этот урок проходит по обеим категориям.</p>
+
+<h2>1. Workflows vs Agents — фундамент</h2>
+<table>
+<tr><th></th><th>Workflow</th><th>Agent</th></tr>
+<tr><td>Логика шагов</td><td>Описана в коде</td><td>Решает LLM</td></tr>
+<tr><td>Предсказуемость</td><td>Высокая</td><td>Низкая</td></tr>
+<tr><td>Стоимость</td><td>Дешевле</td><td>Дороже</td></tr>
+<tr><td>Гибкость</td><td>Низкая</td><td>Высокая</td></tr>
+<tr><td>Когда применять</td><td>Задача структурирована</td><td>Задача открытая / неструктурированная</td></tr>
+</table>
+<p><strong>Эвристика:</strong> начинай с workflow. Переходи на agent только когда видишь, что workflow не покрывает все ветки.</p>
+
+<h2>2. Базовые workflow-паттерны</h2>
+
+<h3>Prompt chaining</h3>
+<p>Серия LLM-вызовов, выход одного — вход другого. Каждый шаг делает одну задачу. Между шагами можно вставить детерминированную проверку.</p>
+<p><strong>Пример:</strong> сделать пост в Telegram → LLM 1: написать тезисы → проверка длины → LLM 2: переписать как пост → LLM 3: добавить эмодзи и хештеги.</p>
+
+<h3>Routing</h3>
+<p>LLM-роутер классифицирует входящий запрос и направляет в правильный «специализированный» путь.</p>
+<p><strong>Пример:</strong> запрос в поддержку → LLM-классификатор: billing / technical / sales → нужный pipeline.</p>
+<p>Выгода: каждая ветка может использовать <em>другую</em> модель (дешёвую для простого, дорогую для сложного) или другой системный промпт.</p>
+
+<h3>Parallelization</h3>
+<p>Один и тот же вход обрабатывается несколькими LLM параллельно, результаты агрегируются.</p>
+<p><strong>Sectioning:</strong> разделить большую задачу на параллельные подзадачи. «Проанализируй PR» = «безопасность» + «стиль» + «производительность» параллельно.</p>
+<p><strong>Voting:</strong> один и тот же запрос — N раз, мажоритарный ответ. Для критичных решений.</p>
+
+<h3>Orchestrator-Workers</h3>
+<p>Центральный LLM-«оркестратор» разбивает задачу на подзадачи и поручает их «работникам». В отличие от чистого parallelization, здесь оркестратор сам решает, на сколько подзадач разбить.</p>
+<p><strong>Пример:</strong> код-ревью большого PR — оркестратор смотрит структуру и поручает: «один работник смотрит auth/, другой db/, третий UI/».</p>
+
+<h3>Evaluator-Optimizer</h3>
+<p>Один LLM генерирует, другой критикует. Цикл, пока критик не одобрит.</p>
+<p><strong>Пример:</strong> «напиши SQL-запрос → SQL-эксперт проверит → если ошибка, перепиши».</p>
+
+<h2>3. Agent-паттерны</h2>
+
+<h3>ReAct (Reasoning + Acting)</h3>
+<p>Базовый паттерн агента. LLM на каждом шаге пишет: «думаю: ... → действие: tool X с параметрами Y». Tool возвращает результат. Цикл продолжается, пока LLM не скажет «Готово».</p>
+<p>Все современные LLM с tools = реализация ReAct под капотом.</p>
+<p><strong>Когда хорошо:</strong> однонаправленные задачи с 2–10 шагами.</p>
+
+<h3>Plan-and-Execute</h3>
+<p>В отличие от ReAct, агент сначала <strong>составляет план</strong> из всех шагов (planning step), затем выполняет шаги. Если что-то ломается — может перепланировать.</p>
+<p><strong>Когда хорошо:</strong> длинные задачи на 10+ шагов, где «думать на каждом шагу заново» нерационально.</p>
+
+<h3>Reflexion (self-critique)</h3>
+<p>После выполнения задачи агент сам критикует свой результат и итерирует. По сути — Evaluator-Optimizer, но один агент в обеих ролях.</p>
+<p><strong>Когда хорошо:</strong> код, который должен компилироваться и проходить тесты; решение математических задач.</p>
+
+<h3>Tool-using agent с retry/fallback</h3>
+<p>Продакшен-вариант ReAct. Каждый tool call обёрнут в try/except. При неудаче:</p>
+<ul>
+<li>Retry с экспоненциальным бекоффом (transient errors).</li>
+<li>Fallback на другую модель/tool.</li>
+<li>Запись в audit log.</li>
+</ul>
+
+<h2>4. Multi-agent паттерны</h2>
+
+<h3>Hierarchical (Supervisor + Workers)</h3>
+<p>Главный агент-супервизор делит задачу на подзадачи и распределяет их по «работникам». Каждый работник специализирован (Researcher, Writer, Critic, Coder).</p>
+<p>Это масштабирование Orchestrator-Workers с LLM-оркестратором.</p>
+
+<h3>Collaborative (round-robin)</h3>
+<p>Несколько агентов равноправно общаются друг с другом. Используется в AutoGen и CrewAI.</p>
+
+<h3>Debate</h3>
+<p>Два агента занимают противоположные позиции. Третий-судья выносит решение. Полезно для:</p>
+<ul>
+<li>Спорных вопросов (Pro vs Contra).</li>
+<li>Качества ответа (один пишет, другой критикует).</li>
+</ul>
+
+<h2>5. Производственные паттерны (rеsilience)</h2>
+<ul>
+<li><strong>Retry</strong> с экспоненциальным бекоффом — для transient errors (rate limits, network).</li>
+<li><strong>Circuit breaker</strong> — после N подряд ошибок прекращай попытки на T минут.</li>
+<li><strong>Timeout</strong> на каждый LLM-вызов и на весь агент целиком.</li>
+<li><strong>Idempotency keys</strong> — чтобы повторный запуск не сделал действие дважды.</li>
+<li><strong>Cost budget</strong> — лимит токенов на одну сессию агента.</li>
+<li><strong>Human-in-the-loop</strong> для критичных действий.</li>
+</ul>
+
+<h2>6. Когда какой паттерн выбирать</h2>
+<table>
+<tr><th>Задача</th><th>Паттерн</th></tr>
+<tr><td>Шаги известны, нужна стабильность</td><td>Workflow (chaining)</td></tr>
+<tr><td>Запрос может относиться к разным сценариям</td><td>Routing</td></tr>
+<tr><td>Большая задача с параллельными частями</td><td>Parallelization / Orchestrator-Workers</td></tr>
+<tr><td>Качество критично, нужна само-проверка</td><td>Evaluator-Optimizer / Reflexion</td></tr>
+<tr><td>2–10 шагов с неизвестным порядком</td><td>ReAct</td></tr>
+<tr><td>10+ шагов, нужен план</td><td>Plan-and-Execute</td></tr>
+<tr><td>Разные роли с разными знаниями/инструментами</td><td>Multi-agent (Hierarchical)</td></tr>
+<tr><td>Спорный/субъективный вопрос</td><td>Debate</td></tr>
+</table>
+
+<h2>7. Тонкости и подводные камни</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Чем сложнее паттерн, тем дороже.</strong> Multi-agent debate может стоить в 10 раз больше, чем простой запрос. Используй когда оправдано.</li>
+<li><strong>Каскадирующие ошибки.</strong> В цепочке из 10 шагов с 95% точностью каждый — итоговая точность ~60%. Считай заранее.</li>
+<li><strong>Перепланирование</strong> в Plan-and-Execute может зациклиться. Ограничивай число итераций.</li>
+<li><strong>Multi-agent не значит «лучше».</strong> Часто один хорошо настроенный агент превосходит трёх плохих.</li>
+<li><strong>Reflexion может ухудшать ответ.</strong> Если первоначальный ответ был хорошим, а критик придирается — повторная итерация может всё испортить. Тестируй.</li>
+</ul>
+</div>
+
+<h2>8. Глоссарий</h2>
+<div class="glossary-term"><h3>Workflow</h3><p>Цепочка LLM-вызовов с детерминированными переходами в коде.</p></div>
+<div class="glossary-term"><h3>Agent</h3><p>LLM сам решает следующий шаг и инструмент. Высокая гибкость, низкая предсказуемость.</p></div>
+<div class="glossary-term"><h3>ReAct</h3><p>Reasoning + Acting. Базовый паттерн: «думаю → действую → наблюдаю → думаю».</p></div>
+<div class="glossary-term"><h3>Reflexion</h3><p>Самокритика после выполнения, итерация до удовлетворительного результата.</p></div>
+<div class="glossary-term"><h3>Orchestrator-Workers</h3><p>LLM-оркестратор разбивает задачу и распределяет по специализированным работникам.</p></div>
+<div class="glossary-term"><h3>Circuit breaker</h3><p>Производственный паттерн: после N ошибок временно отключить компонент, не нагружать.</p></div>
+
+<h2>9. Практика (60 минут)</h2>
+<ol>
+<li>Возьми задачу: «найди в этом репозитории все TODO и оцени, какие критичны».</li>
+<li>Реализуй сначала как <strong>workflow</strong> (chain: grep TODO → LLM rank).</li>
+<li>Реализуй как <strong>ReAct-агент</strong> (LLM с tools: list_files, read_file, grep).</li>
+<li>Реализуй как <strong>Orchestrator-Workers</strong> (один LLM решает на сколько папок разбить, по агенту на каждую).</li>
+<li>Сравни: время, токены, качество, простота кода.</li>
+<li>Запиши в <code>progress.md</code>, какой паттерн выиграл и почему.</li>
+</ol>
+
+<h2>10. Проверь себя</h2>
+<p><strong>1. Когда workflow лучше agent?</strong><br>Шаги структурированы и известны. Нужна предсказуемость и дешевизна.</p>
+<p><strong>2. Чем ReAct отличается от Plan-and-Execute?</strong><br>ReAct думает шаг за шагом, Plan-and-Execute сначала строит весь план, потом выполняет.</p>
+<p><strong>3. Что такое Reflexion и зачем?</strong><br>Самокритика после выполнения с итерацией. Когда качество критично (код, расчёты).</p>
+<p><strong>4. Почему «multi-agent ≠ всегда лучше»?</strong><br>Стоимость растёт мультипликативно. Каскадирующие ошибки. Координация добавляет ошибок.</p>
+<p><strong>5. Что такое circuit breaker и от чего защищает?</strong><br>После N подряд ошибок отключает компонент на T минут. Защищает от лавинного нагружения внешних сервисов.</p>
+
+<h2>11. Что должно остаться в голове</h2>
+<ol>
+<li>Workflow (код решает) vs Agent (LLM решает). Начинай с workflow.</li>
+<li>Workflow-паттерны: chaining, routing, parallelization, orchestrator-workers, evaluator-optimizer.</li>
+<li>Agent-паттерны: ReAct (база), Plan-and-Execute (длинные задачи), Reflexion (само-проверка).</li>
+<li>Multi-agent: hierarchical, collaborative, debate — оправданы только когда дают измеримый прирост.</li>
+<li>Производственные: retry, circuit breaker, timeout, idempotency, cost budget, human-in-the-loop.</li>
+<li>Считай каскадирующую точность — 10 шагов × 95% ≈ 60% общая.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> прочитай <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank">«Building effective agents» от Anthropic</a> — это лучший один пост 2024 про практическое проектирование агентов.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-18">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

@@ -9,31 +9,283 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="📚 Справочник: данные и API">
 <meta property="og:description" content="V12 из курса AI на русском. 📚 Справочник: данные и API. ~45 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/v12.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/v12.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/v12.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="📚 Справочник: данные и API">
 <meta name="twitter:description" content="V12 из курса AI на русском. 📚 Справочник: данные и API. ~45 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/v12.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/v12.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/v12.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-v12');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"📚 Справочник: данные и API","description":"V12 из курса AI на русском. 📚 Справочник: данные и API. ~45 мин.","url":"https://ai.madzhitov.ru/lessons/v12.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/v12.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
-<h1>📚 Справочник: данные и API</h1>
-<p>V12 из курса AI на русском. 📚 Справочник: данные и API. ~45 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-v12">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">V12</span></div>
+<h1>Справочник: данные и API</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> Базы данных, API, авторизация. Как части системы общаются и где живут данные.</span>
+  <span><strong>Время:</strong> ~45 минут</span>
+  <span><strong>Главы гайда:</strong> 6–8</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Этот урок — часть <strong>«Справочника по веб-разработке для не-разработчиков»</strong>. Это не ката (как v1–v10), а карта территории. Здесь — концепты, которые AI генерирует в твоих проектах и которые тебе важно понимать, чтобы не быть слепым.</p>
+<p>Без снобизма, без воды, с примерами из реальной жизни. После всех 5 модулей у тебя будет полная картина: от того, как браузер делает запрос, до того, как мониторить продакшен.</p>
+
+<hr />
+<h2>6. Базы данных — где живут данные</h2>
+<h3>Реляционные (SQL)</h3>
+<p>Данные хранятся в таблицах со связями. Как Excel, но мощнее.</p>
+<p>Таблица <code>products</code>:</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>price</th>
+<th>category_id</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Кроссовки Air</td>
+<td>12000</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Рюкзак Urban</td>
+<td>5500</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>Таблица <code>categories</code>:</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>slug</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Обувь</td>
+<td>shoes</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Сумки</td>
+<td>bags</td>
+</tr>
+</tbody>
+</table>
+<p>Связь: products.category_id → categories.id. Один запрос — получаешь товар с категорией.</p>
+<pre><code class="language-sql">SELECT products.name, products.price, categories.name as category
+FROM products
+JOIN categories ON products.category_id = categories.id
+WHERE categories.slug = 'shoes';
+</code></pre>
+<p><strong>PostgreSQL</strong> — золотой стандарт. Надёжный, мощный, бесплатный.</p>
+<h3>NoSQL (документные)</h3>
+<p>Данные хранятся как JSON-документы, без жёсткой схемы.</p>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;abc123&quot;,
+  &quot;name&quot;: &quot;Кроссовки Air&quot;,
+  &quot;price&quot;: 12000,
+  &quot;category&quot;: &quot;Обувь&quot;,
+  &quot;details&quot;: {
+    &quot;material&quot;: &quot;Кожа&quot;,
+    &quot;colors&quot;: [&quot;black&quot;, &quot;white&quot;],
+    &quot;sizes&quot;: [40, 41, 42, 43]
+  }
+}
+</code></pre>
+<p>Гибко (можно добавить любое поле без миграции), но сложнее делать связи и аналитику.</p>
+<p><strong>MongoDB</strong> — самая популярная NoSQL. <strong>Firebase Firestore</strong> — от Google, удобна для мобильных приложений.</p>
+<h3>Supabase — бэкенд из коробки</h3>
+<p>Supabase = PostgreSQL + готовые обёртки. Вместо написания SQL вручную:</p>
+<pre><code class="language-typescript">// Получить все товары категории «Обувь»
+const { data } = await supabase
+  .from('products')
+  .select('name, price, categories(name)')
+  .eq('categories.slug', 'shoes');
+</code></pre>
+<p>Supabase автоматически генерирует REST API для каждой таблицы. Создал таблицу — API готов. Плюс авторизация, хранилище файлов, realtime-подписки — всё в одной коробке.</p>
+<h3>ORM — прослойка между кодом и базой</h3>
+<p>ORM (Object-Relational Mapping) позволяет работать с базой как с объектами в коде, без написания SQL.</p>
+<p><strong>Prisma</strong> (самый популярный для TypeScript):</p>
+<pre><code class="language-typescript">// Схема (prisma/schema.prisma)
+model Product {
+  id         Int      @id @default(autoincrement())
+  name       String
+  price      Int
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+}
+
+// Использование в коде
+const products = await prisma.product.findMany({
+  where: { category: { slug: 'shoes' } },
+  include: { category: true }
+});
+</code></pre>
+<p><strong>Drizzle</strong> — более лёгкий ORM, ближе к SQL, но с типизацией.</p>
+<p>Для вайб-кодинга Supabase SDK достаточно — он проще ORM и отлично работает с AI-генерацией.</p>
+<h3>Миграции</h3>
+<p>Миграция — это версионное изменение структуры базы данных. Как Git, но для схемы данных.</p>
+<pre><code class="language-sql">-- Миграция: добавляем поле discount в таблицу products
+ALTER TABLE products ADD COLUMN discount INTEGER DEFAULT 0;
+</code></pre>
+<p>Миграции позволяют: откатить изменения, синхронизировать базу между разработчиками, деплоить изменения схемы вместе с кодом.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Зарегистрируйся на app.supabase.com (бесплатно)</li>
+<li>Создай новый проект</li>
+<li>Зайди в Table Editor, создай таблицу <code>products</code> с полями: id, name (text), price (int4)</li>
+<li>Добавь 3-5 товаров вручную через интерфейс</li>
+<li>Перейди в SQL Editor и выполни: <code>SELECT * FROM products WHERE price &gt; 5000</code></li>
+<li>Ты только что сделал запрос к реальной базе данных</li>
+</ol>
+</div><hr />
+<h2>7. API — как части системы общаются</h2>
+<p>API (Application Programming Interface) — это контракт между двумя системами: «если ты пришлёшь мне запрос в таком формате, я отвечу в таком формате».</p>
+<h3>REST API</h3>
+<p>Самый распространённый тип. Использует HTTP-методы:</p>
+<ul>
+<li><strong>GET</strong> — получить данные. <code>GET /api/products</code> → список товаров</li>
+<li><strong>POST</strong> — создать. <code>POST /api/orders</code> + тело запроса → новый заказ</li>
+<li><strong>PUT/PATCH</strong> — обновить. <code>PATCH /api/products/1</code> → изменить товар</li>
+<li><strong>DELETE</strong> — удалить. <code>DELETE /api/products/1</code> → удалить товар</li>
+</ul>
+<p>Ответ приходит в формате JSON:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: [
+    { &quot;id&quot;: 1, &quot;name&quot;: &quot;Кроссовки Air&quot;, &quot;price&quot;: 12000 },
+    { &quot;id&quot;: 2, &quot;name&quot;: &quot;Рюкзак Urban&quot;, &quot;price&quot;: 5500 }
+  ],
+  &quot;total&quot;: 2
+}
+</code></pre>
+<h3>Webhook</h3>
+<p>Webhook — это «обратный API». Вместо того чтобы ты спрашивал сервер «есть новый заказ?» каждую секунду, сервер сам стучится к тебе, когда заказ появляется.</p>
+<p>Примеры:
+- <strong>Telegram Bot</strong> — Telegram присылает webhook на твой сервер при каждом сообщении боту
+- <strong>Stripe / ЮKassa</strong> — присылают webhook при успешной оплате
+- <strong>GitHub</strong> — присылает webhook при каждом push в репозиторий</p>
+<h3>Статус-коды HTTP</h3>
+<ul>
+<li><strong>200</strong> — Ок, всё хорошо</li>
+<li><strong>201</strong> — Создано (после POST)</li>
+<li><strong>301</strong> — Перенаправление (постоянное)</li>
+<li><strong>400</strong> — Плохой запрос (ошибка клиента)</li>
+<li><strong>401</strong> — Не авторизован (нет токена)</li>
+<li><strong>403</strong> — Запрещено (токен есть, но прав нет)</li>
+<li><strong>404</strong> — Не найдено</li>
+<li><strong>500</strong> — Ошибка сервера</li>
+</ul>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Открой терминал и выполни: <code>curl https://jsonplaceholder.typicode.com/posts/1</code></li>
+<li>Ты только что сделал GET-запрос к API и получил JSON-ответ</li>
+<li>Попробуй: <code>curl https://jsonplaceholder.typicode.com/posts?userId=1</code> — фильтрация через query params</li>
+<li>Открой DevTools → Network на любом сайте и посмотри статус-коды запросов</li>
+</ol>
+</div><hr />
+<h2>8. Авторизация — кто ты и что тебе можно</h2>
+<h3>Аутентификация vs Авторизация</h3>
+<p><strong>Аутентификация</strong> — кто ты? Процесс подтверждения личности. Логин + пароль, отпечаток пальца, Face ID.</p>
+<p><strong>Авторизация</strong> — что тебе можно? Проверка прав. Обычный пользователь видит свои заказы, админ видит все заказы.</p>
+<h3>Как работает сессия</h3>
+<ol>
+<li>Пользователь вводит email + пароль</li>
+<li>Сервер проверяет: хэширует пароль и сравнивает с хэшем в базе</li>
+<li>Если совпало — генерирует <strong>JWT-токен</strong> (JSON Web Token)</li>
+<li>Токен отправляется браузеру и сохраняется в cookie</li>
+<li>При каждом следующем запросе браузер автоматически отправляет cookie с токеном</li>
+<li>Сервер проверяет токен и понимает, кто делает запрос</li>
+</ol>
+<h3>JWT-токен</h3>
+<p>JWT — это зашифрованная строка из трёх частей:</p>
+<pre><code>eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMjN9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+</code></pre>
+<p>Внутри (если расшифровать среднюю часть):</p>
+<pre><code class="language-json">{
+  &quot;user_id&quot;: 123,
+  &quot;email&quot;: &quot;user@example.com&quot;,
+  &quot;role&quot;: &quot;admin&quot;,
+  &quot;exp&quot;: 1717200000
+}
+</code></pre>
+<p>Токен подписан секретным ключом сервера. Если кто-то изменит содержимое — подпись не совпадёт, сервер отклонит.</p>
+<h3>OAuth — «Войти через Google»</h3>
+<p>Вместо хранения паролей ты делегируешь аутентификацию Google/Yandex/VK:</p>
+<ol>
+<li>Пользователь нажимает «Войти через Google»</li>
+<li>Перенаправляется на Google, вводит свой пароль Google</li>
+<li>Google спрашивает: «Разрешить сайту X доступ к вашему email?»</li>
+<li>Пользователь соглашается</li>
+<li>Google отправляет код на твой сервер</li>
+<li>Твой сервер обменивает код на данные пользователя (email, имя)</li>
+<li>Создаётся сессия — без хранения чужого пароля на твоей стороне</li>
+</ol>
+<h3>RLS (Row Level Security)</h3>
+<p>Защита на уровне базы данных в Supabase/PostgreSQL. Пишешь правила прямо в базе:</p>
+<pre><code class="language-sql">-- Пользователь видит только свои заказы
+CREATE POLICY &quot;Users see own orders&quot;
+  ON orders FOR SELECT
+  USING (auth.uid() = user_id);
+
+-- Админ видит все заказы
+CREATE POLICY &quot;Admins see all orders&quot;
+  ON orders FOR SELECT
+  USING (auth.jwt() -&gt;&gt; 'role' = 'admin');
+</code></pre>
+<p>Даже если в коде баг — база не отдаст чужие данные. Второй рубеж обороны.</p>
+<h3>Готовые решения (не пиши авторизацию с нуля)</h3>
+<ul>
+<li><strong>Supabase Auth</strong> — встроено в Supabase, поддерживает email, OAuth, magic links</li>
+<li><strong>Clerk</strong> — красивые готовые компоненты для входа/регистрации</li>
+<li><strong>NextAuth (Auth.js)</strong> — библиотека для Next.js, гибкая</li>
+<li><strong>Firebase Auth</strong> — от Google, простая интеграция</li>
+</ul>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>В своём проекте Supabase зайди в Authentication → Settings</li>
+<li>Включи Email provider (включён по умолчанию)</li>
+<li>Попробуй создать пользователя через Authentication → Users → Add User</li>
+<li>Зайди на jwt.io, вставь любой JWT-токен — увидишь его содержимое в расшифрованном виде</li>
+</ol>
+</div><hr />
+<div class="callout callout-info">
+<strong>📌 Что дальше:</strong> следующий модуль справочника — <strong>v13 (Инструменты разработчика)</strong>. Можно пройти подряд, можно вернуться к ката-урокам (v1–v10) и применять теорию на практике.
+</div>
+
+
+    <div class="pp-open"><a href="/#lesson-v12">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

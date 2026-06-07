@@ -9,31 +9,477 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Урок 8. Поиск с эмбеддингами (semantic search)">
 <meta property="og:description" content="Урок 8 из курса AI на русском. Поиск с эмбеддингами (semantic search). ~60 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/8.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/8.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/8.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Урок 8. Поиск с эмбеддингами (semantic search)">
 <meta name="twitter:description" content="Урок 8 из курса AI на русском. Поиск с эмбеддингами (semantic search). ~60 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/8.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/8.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/8.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-8');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Урок 8. Поиск с эмбеддингами (semantic search)","description":"Урок 8 из курса AI на русском. Поиск с эмбеддингами (semantic search). ~60 мин.","url":"https://ai.madzhitov.ru/lessons/8.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/8.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 8</span></div>
 <h1>Урок 8. Поиск с эмбеддингами (semantic search)</h1>
-<p>Урок 8 из курса AI на русском. Поиск с эмбеддингами (semantic search). ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-8">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять как ИИ ищет «по смыслу» и сделать свой semantic-поисковик</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/08</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Обычный поиск ищет <strong>совпадения слов</strong>. Если у тебя в заметках есть запись «как корректно расстаться с компанией», а ты ищешь «как уволиться без скандала» — обычный grep ничего не найдёт. Semantic search найдёт, потому что понимает смысл.</p>
+<p>Это <strong>фундаментальная техника</strong>:</p>
+<ul>
+<li>Под капотом RAG (урок 14) — самой популярной паттерны для работы с документами.</li>
+<li>Поиск по своим заметкам, тикетам, документам.</li>
+<li>Дедупликация (найти похожие вопросы в FAQ).</li>
+<li>Кластеризация (группировка отзывов по темам).</li>
+<li>Рекомендации.</li>
+</ul>
+<p>К концу урока у тебя будет рабочий поисковик по твоим собственным заметкам, понимающий запросы на естественном языке.</p>
+
+<h2>1. Что такое embedding</h2>
+
+<h3>Идея</h3>
+<p><strong>Embedding</strong> (эмбеддинг, векторное представление) — это превращение текста в <strong>массив чисел фиксированной длины</strong>, отражающий смысл этого текста. Тексты с близким смыслом имеют близкие векторы; разные — далёкие.</p>
+
+<p>Длина вектора зависит от модели:</p>
+<ul>
+<li><code>text-embedding-3-small</code> — 1536 чисел.</li>
+<li><code>text-embedding-3-large</code> — 3072 числа.</li>
+<li>BGE-M3 — 1024.</li>
+<li>Старая <code>text-embedding-ada-002</code> — 1536.</li>
+</ul>
+
+<h3>Упрощённое представление</h3>
+<p>Представь, что ты строишь координатную систему смыслов. Каждый текст — точка в этом пространстве. Похожие смыслы — рядом.</p>
+
+<pre><code>"Я хочу есть"        → [0.21, -0.45, 0.12, ...]   (1536 чисел)
+"Хочу пиццу"         → [0.20, -0.43, 0.15, ...]   (близко)
+"Голоден"            → [0.22, -0.44, 0.10, ...]   (близко)
+"Где Эйфелева башня" → [-0.50, 0.31, -0.20, ...]  (далеко)
+"Париж — столица"    → [-0.48, 0.30, -0.22, ...]  (далеко от еды, близко к башне)</code></pre>
+
+<p>Конечно реальные числа намного сложнее и не интерпретируемы напрямую — каждое из 1536 «измерений» отвечает за какой-то смысловой аспект, выученный моделью на огромном корпусе.</p>
+
+<h3>Откуда берутся эмбеддинги</h3>
+<p>Тренируются специальные модели (отдельные от chat-моделей):</p>
+<ul>
+<li><strong>OpenAI:</strong> text-embedding-3-small/large.</li>
+<li><strong>Open-source:</strong> BGE, E5, Sentence Transformers, BERT.</li>
+<li><strong>Cohere:</strong> embed-multilingual-v3.</li>
+<li><strong>Google:</strong> text-embedding-005.</li>
+</ul>
+
+<p>Под капотом это нейросеть-трансформер, которая пропускает текст через свои слои и выдаёт вектор. Принцип: текст подаётся на вход, выход последнего слоя усредняется и нормализуется.</p>
+
+<h2>2. Косинусное сходство — как мерить «близость» векторов</h2>
+
+<p>Когда у нас есть векторы — нам нужна метрика близости. Стандарт — <strong>cosine similarity</strong>.</p>
+
+<h3>Формула на пальцах</h3>
+<p>Косинус угла между двумя векторами. Значения от -1 до 1:</p>
+<ul>
+<li><code>1.0</code> — векторы совпадают (одинаковый смысл).</li>
+<li><code>0.7–0.9</code> — близкий смысл.</li>
+<li><code>0.3–0.6</code> — связанные темы.</li>
+<li><code>0.0</code> — не связаны.</li>
+<li><code>-1.0</code> — противоположны (редко на эмбеддингах текста).</li>
+</ul>
+
+<h3>Реализация на Python</h3>
+<pre><code>import numpy as np
+
+def cosine_similarity(a, b):
+    a, b = np.array(a), np.array(b)
+    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+# или, если векторы уже нормализованы (как у OpenAI):
+# просто скалярное произведение
+def dot(a, b):
+    return sum(x*y for x, y in zip(a, b))</code></pre>
+
+<h3>Альтернативные метрики</h3>
+<ul>
+<li><strong>Euclidean distance</strong> — евклидово расстояние. Работает, но cosine обычно лучше для текста.</li>
+<li><strong>Dot product</strong> — для нормализованных векторов = cosine. Быстрее.</li>
+<li><strong>Manhattan</strong> — почти не используется для текста.</li>
+</ul>
+
+<h2>3. Pipeline semantic search</h2>
+
+<p>Стандартная схема (для всех векторных систем):</p>
+
+<pre><code>┌─────────────────┐    ┌──────────┐    ┌──────────────┐    ┌──────────┐
+│ Документы (.md, │ -> │ Chunking │ -> │ Embedding    │ -> │ Vector   │
+│ pdf, txt, ...)  │    │          │    │ model        │    │ DB       │
+└─────────────────┘    └──────────┘    └──────────────┘    └──────────┘
+
+                                                                │
+                            запрос пользователя                  │
+                                    │                            │
+                                    ▼                            │
+                            ┌──────────────┐                     │
+                            │ Embedding    │                     │
+                            │ model        │                     │
+                            └──────────────┘                     │
+                                    │                            │
+                                    ▼                            │
+                            ┌──────────────────────────────────┐ │
+                            │ Поиск ближайших по cosine sim    │◄┘
+                            └──────────────────────────────────┘
+                                    │
+                                    ▼
+                            топ-K результатов</code></pre>
+
+<h3>Этапы</h3>
+
+<p><strong>1. Chunking — нарезка документов.</strong></p>
+<p>Документ редко влезает целиком в эмбеддинг. Нарезаем на куски по 200–800 токенов с небольшим перекрытием (50 токенов overlap), чтобы не разрывать важные связи.</p>
+
+<p><strong>2. Embedding — превращение в векторы.</strong></p>
+<p>Каждый chunk прогоняем через embedding-модель.</p>
+
+<p><strong>3. Storage — хранение в векторной БД.</strong></p>
+<p>Сохраняем (id, embedding, original_text, metadata).</p>
+
+<p><strong>4. Query — поиск.</strong></p>
+<p>Эмбеддим запрос, ищем top-K ближайших chunks по cosine.</p>
+
+<p><strong>5. Return — отдаём пользователю.</strong></p>
+<p>Возвращаем найденные тексты + score близости.</p>
+
+<h2>4. Векторные базы — что выбрать</h2>
+
+<table>
+<tr><th>БД</th><th>Тип</th><th>Когда брать</th></tr>
+<tr><td><strong>Chroma</strong></td><td>Local file / server</td><td>Прототипы, обучение, маленькие проекты</td></tr>
+<tr><td><strong>FAISS</strong> (Meta)</td><td>Library, не БД</td><td>Огромные объёмы, in-memory, ML</td></tr>
+<tr><td><strong>Qdrant</strong></td><td>Self-host, cloud</td><td>Production, фичи, фильтры</td></tr>
+<tr><td><strong>Weaviate</strong></td><td>Self-host, cloud</td><td>Hybrid search, GraphQL</td></tr>
+<tr><td><strong>Pinecone</strong></td><td>Cloud only</td><td>Managed, без админа</td></tr>
+<tr><td><strong>pgvector</strong></td><td>Postgres extension</td><td>Уже есть Postgres</td></tr>
+<tr><td><strong>Milvus</strong></td><td>Cloud / self-host</td><td>Enterprise, миллиарды векторов</td></tr>
+<tr><td><strong>LanceDB</strong></td><td>Embedded</td><td>Локально + аналитика</td></tr>
+</table>
+
+<p>Для обучения и большинства задач — Chroma. Для production среднего масштаба — Qdrant или pgvector. Для огромных объёмов — Milvus / Pinecone.</p>
+
+<h2>5. Полный пример с Chroma</h2>
+
+<pre><code>pip install chromadb openai</code></pre>
+
+<pre><code>from openai import OpenAI
+import chromadb
+
+client = OpenAI()
+chroma = chromadb.PersistentClient(path="./chroma_db")
+collection = chroma.get_or_create_collection("notes")
+
+def embed(text: str) -> list[float]:
+    """Получить эмбеддинг текста через OpenAI."""
+    response = client.embeddings.create(
+        model="text-embedding-3-small",
+        input=text
+    )
+    return response.data[0].embedding
+
+# 1. Индексация заметок
+notes = [
+    "Сегодня встретился с Иваном, обсудили сроки запуска MVP.",
+    "Купить корм коту, заехать в зоомагазин в среду.",
+    "Идея: сервис для автоматической генерации тестов из ТЗ.",
+    "Дед-лайн по статье — пятница.",
+    "Почитать про векторные базы данных.",
+    "В четверг забрать ребёнка из садика в 17:00.",
+    "TODO: написать ответ HR в Лаборатории Касперского."
+]
+
+# Эмбеддим и кладём в Chroma
+embeddings = [embed(note) for note in notes]
+collection.add(
+    ids=[f"note_{i}" for i in range(len(notes))],
+    embeddings=embeddings,
+    documents=notes
+)
+
+# 2. Поиск
+def search(query: str, k: int = 3):
+    query_emb = embed(query)
+    results = collection.query(
+        query_embeddings=[query_emb],
+        n_results=k
+    )
+    return list(zip(results["documents"][0], results["distances"][0]))
+
+# Пробуем
+print(search("что мне нужно купить?"))
+# → найдёт «корм коту»
+
+print(search("какие у меня дед-лайны?"))
+# → найдёт «статья пятница» и MVP
+
+print(search("задачи связанные с детьми"))
+# → найдёт «забрать ребёнка»
+
+print(search("есть ли у меня вакансии или офферы?"))
+# → найдёт «HR в Лаборатории Касперского»</code></pre>
+
+<p>Заметь — в каждом случае модель находит правильный chunk, хотя <strong>прямых совпадений слов</strong> нет.</p>
+
+<h2>6. Стратегии чанкинга</h2>
+
+<h3>Простая нарезка</h3>
+<pre><code>def chunk_text(text: str, chunk_size: int = 500, overlap: int = 50):
+    chunks = []
+    start = 0
+    while start < len(text):
+        end = start + chunk_size
+        chunks.append(text[start:end])
+        start = end - overlap
+    return chunks</code></pre>
+<p>Минус — режет посередине предложения.</p>
+
+<h3>По параграфам</h3>
+<pre><code>chunks = text.split("\n\n")</code></pre>
+<p>Натуральные границы, но размеры разные.</p>
+
+<h3>По смыслу (рекомендуется)</h3>
+<p>Используй <code>RecursiveCharacterTextSplitter</code> из LangChain или его аналог:</p>
+<pre><code>def smart_chunk(text, max_size=500):
+    # сначала по параграфам, потом по предложениям, потом по словам
+    paragraphs = text.split("\n\n")
+    chunks = []
+    current = ""
+    for p in paragraphs:
+        if len(current) + len(p) <= max_size:
+            current += "\n\n" + p
+        else:
+            if current: chunks.append(current.strip())
+            if len(p) > max_size:
+                # длинный параграф — режем по предложениям
+                sentences = p.split(". ")
+                ...
+            else:
+                current = p
+    if current: chunks.append(current.strip())
+    return chunks</code></pre>
+
+<h3>Размер chunk — компромисс</h3>
+<ul>
+<li><strong>Маленькие (~100 токенов)</strong> — точный поиск, но теряется контекст.</li>
+<li><strong>Средние (~500)</strong> — стандарт.</li>
+<li><strong>Большие (~2000)</strong> — широкий контекст, но смешивает темы.</li>
+</ul>
+<p>Для большинства задач 500 + overlap 50 — рабочая точка.</p>
+
+<h2>7. Hybrid search — комбо semantic + keyword</h2>
+
+<p>Иногда semantic пропускает запросы, где важно <strong>точное слово</strong> (имя продукта, артикул, аббревиатура). Hybrid search комбинирует:</p>
+
+<ul>
+<li><strong>Semantic</strong> (эмбеддинги) — для смысла.</li>
+<li><strong>BM25 / keyword</strong> — для точных совпадений.</li>
+<li><strong>Reranking</strong> — пересортировка финальных результатов второй моделью (cross-encoder).</li>
+</ul>
+
+<p>Поддерживается в Weaviate, Qdrant, Elasticsearch + плагины. Для прода почти всегда выигрывает у чистого semantic.</p>
+
+<h2>8. Стоимость эмбеддингов</h2>
+
+<p>Цены OpenAI:</p>
+<ul>
+<li>text-embedding-3-small: <strong>$0.02 / 1M токенов</strong> input.</li>
+<li>text-embedding-3-large: <strong>$0.13 / 1M</strong>.</li>
+</ul>
+
+<p>Реально:</p>
+<ul>
+<li>Эмбеддинг 1000 заметок по 200 токенов = 200k токенов = <strong>$0.004</strong>. Копейки.</li>
+<li>Эмбеддинг целой Wikipedia (~3 миллиарда токенов) = <strong>$60</strong>.</li>
+</ul>
+
+<p>Однажды эмбеддишь — потом только запросы. Запрос — 1 эмбеддинг = ~50 токенов = $0.000001. Очень дёшево.</p>
+
+<h2>9. Open-source эмбеддинги</h2>
+
+<p>Если не хочешь платить или нужна приватность — open-source модели через <code>sentence-transformers</code>:</p>
+
+<pre><code>pip install sentence-transformers</code></pre>
+
+<pre><code>from sentence_transformers import SentenceTransformer
+
+# Качественная мультиязычная модель
+model = SentenceTransformer("BAAI/bge-m3")
+
+# Один раз скачается (~2 ГБ), потом работает локально
+embedding = model.encode("Привет мир")  # numpy array длиной 1024
+
+# Батчем для скорости
+embeddings = model.encode(texts, batch_size=32, show_progress_bar=True)</code></pre>
+
+<p>Качество BGE-M3 на русском сравнимо с OpenAI. Бесплатно после скачивания. На современном CPU — ~50 эмбеддингов/сек, на GPU — тысячи.</p>
+
+<h2>10. Тонкости и подводные камни</h2>
+
+<h3>Метаданные</h3>
+<p>Сохраняй вместе с эмбеддингами полезные метаданные — потом можно фильтровать:</p>
+<pre><code>collection.add(
+    ids=["note_1"],
+    embeddings=[emb],
+    documents=[note],
+    metadatas=[{"date": "2026-05-04", "tag": "work", "author": "me"}]
+)
+
+# Поиск с фильтром
+collection.query(
+    query_embeddings=[q_emb],
+    n_results=5,
+    where={"tag": "work"}
+)</code></pre>
+
+<h3>Несовпадение моделей при поиске</h3>
+<p>Если эмбеддил коллекцию моделью X, а ищешь моделью Y — результаты будут полным мусором. Векторные пространства разных моделей <strong>несовместимы</strong>. Запиши в metadata, какой моделью эмбеддил.</p>
+
+<h3>Multilingual проблемы</h3>
+<p>Не все embedding-модели хорошо работают на русском. Хорошие на русском:</p>
+<ul>
+<li>OpenAI text-embedding-3-* — отлично.</li>
+<li>BGE-M3 — отлично, мультиязычно.</li>
+<li>multilingual-e5-large — отлично.</li>
+<li>cohere multilingual-v3 — отлично.</li>
+</ul>
+<p>Старая ada-002 на русском была слабее, но всё ещё рабочая.</p>
+
+<h3>Когда semantic проигрывает</h3>
+<ul>
+<li>Поиск по точным артикулам, ID, кодам.</li>
+<li>Очень короткие запросы (1–2 слова).</li>
+<li>Тексты на узком жаргоне, где модель не училась.</li>
+</ul>
+<p>Решение — hybrid search (см. секция 7).</p>
+
+<h3>Скейл</h3>
+<p>Cosine similarity между N векторами и одним запросом — O(N). При 1M документов это ~100ms на CPU. Для бо́льших объёмов — приближённый поиск (ANN — Approximate Nearest Neighbor): HNSW, IVF. Все нормальные векторные БД делают это автоматически.</p>
+
+<h2>11. Глоссарий</h2>
+<ul>
+<li><strong>Embedding</strong> — числовой вектор, представляющий смысл текста.</li>
+<li><strong>Cosine similarity</strong> — мера близости двух векторов (-1...1).</li>
+<li><strong>Chunk</strong> — кусок исходного документа.</li>
+<li><strong>Chunking</strong> — стратегия нарезки документов.</li>
+<li><strong>Vector DB</strong> — хранилище векторов с быстрым поиском.</li>
+<li><strong>k-NN</strong> — k-Nearest Neighbors, поиск k ближайших.</li>
+<li><strong>ANN</strong> — Approximate Nearest Neighbor, быстрый приближённый поиск.</li>
+<li><strong>HNSW</strong> — Hierarchical Navigable Small World, популярный ANN-алгоритм.</li>
+<li><strong>BM25</strong> — классический keyword-алгоритм.</li>
+<li><strong>Hybrid search</strong> — combo semantic + keyword.</li>
+<li><strong>Reranking</strong> — пересортировка результатов второй моделью.</li>
+<li><strong>Cross-encoder</strong> — модель для reranking, оценивает пару (query, doc).</li>
+<li><strong>Sentence Transformers</strong> — Python-библиотека для embedding-моделей.</li>
+</ul>
+
+<h2>12. Практика (60 минут)</h2>
+
+<h3>Упражнение 1. Свой semantic-поисковик (25 минут)</h3>
+<ol>
+<li>Возьми 30–50 своих заметок (Obsidian export, txt-файлы, копипаст).</li>
+<li>Создай скрипт <code>indexer.py</code>: читает все файлы, разбивает на чанки (по параграфам), эмбеддит и кладёт в Chroma.</li>
+<li>Создай <code>search.py</code>: принимает запрос, выводит топ-3 релевантных заметок.</li>
+<li>Поиграйся: задавай вопросы на естественном языке, не используя слова из самих заметок.</li>
+</ol>
+
+<h3>Упражнение 2. Сравни с grep (10 минут)</h3>
+<ol>
+<li>Возьми 5 запросов от упр. 1.</li>
+<li>Для каждого попробуй также найти через <code>grep</code> по ключевым словам.</li>
+<li>Сравни: где semantic умнее? Где grep точнее?</li>
+</ol>
+
+<h3>Упражнение 3. Local embedding (15 минут)</h3>
+<ol>
+<li>Установи <code>sentence-transformers</code>.</li>
+<li>Перепиши <code>indexer.py</code> с локальной BGE-M3.</li>
+<li>Сравни время и качество с OpenAI-версией.</li>
+</ol>
+
+<h3>Упражнение 4. Метаданные и фильтры (10 минут)</h3>
+<ol>
+<li>В <code>indexer.py</code> добавь metadata: дата создания файла, имя файла, размер.</li>
+<li>В <code>search.py</code> добавь фильтр: «только за последний месяц», «только из такого-то файла».</li>
+</ol>
+
+<h2>13. Проверь себя</h2>
+
+<p><strong>1. Что такое embedding одним предложением?</strong><br>
+Числовой вектор фиксированной длины, представляющий смысл текста. Близкие смыслы = близкие векторы.</p>
+
+<p><strong>2. Почему semantic search умнее keyword?</strong><br>
+Понимает синонимы, перефразировки, смысловые связи. Находит «купить корм коту» по запросу «что нужно купить».</p>
+
+<p><strong>3. Зачем чанкать документы перед эмбеддингом?</strong><br>
+(а) Документ не влезает целиком (лимит embedding-модели). (б) Маленькие куски дают точный поиск. (в) Гранулярность результатов — пользователь видит релевантный кусок, а не всю книгу.</p>
+
+<p><strong>4. Какая мера близости используется?</strong><br>
+Cosine similarity (косинус угла). Для нормализованных векторов эквивалентно скалярному произведению.</p>
+
+<p><strong>5. Назови 3 векторные БД.</strong><br>
+Chroma, Qdrant, Pinecone (или Weaviate, pgvector, Milvus, LanceDB, FAISS).</p>
+
+<p><strong>6. Я эмбеддил коллекцию ada-002. Можно искать в ней с text-embedding-3-small?</strong><br>
+Нет. Векторные пространства разных моделей несовместимы — поиск выдаст мусор. Нужно переэмбеддить всё одной моделью.</p>
+
+<p><strong>7. Стандартный размер chunk?</strong><br>
+500 токенов с overlap 50. Зависит от задачи: для точного поиска факта — меньше (~200), для широкого контекста — больше (~1000).</p>
+
+<p><strong>8. Когда нужен hybrid search?</strong><br>
+Когда важны точные совпадения (артикулы, имена, аббревиатуры) И смысл одновременно. Чистый semantic иногда пропускает важные точные совпадения.</p>
+
+<p><strong>9. Что такое ANN и зачем?</strong><br>
+Approximate Nearest Neighbor — приближённый поиск ближайших векторов. Жертвует точностью ради скорости. Нужен при объёме &gt;100k векторов, иначе линейный поиск медленный.</p>
+
+<p><strong>10. Бесплатные embedding-модели для русского?</strong><br>
+BGE-M3, multilingual-e5-large — обе через <code>sentence-transformers</code>, работают локально, качество как у OpenAI.</p>
+
+<h2>14. Что должно остаться в голове</h2>
+<ol>
+<li><strong>Embedding</strong> — вектор смысла. База всего semantic-мира.</li>
+<li><strong>Cosine similarity</strong> — стандартная мера близости.</li>
+<li><strong>Pipeline:</strong> chunks → embed → vector DB → query embed → top-K.</li>
+<li><strong>Chroma</strong> для прототипов; <strong>Qdrant / pgvector</strong> для прода.</li>
+<li><strong>Chunking</strong> 500 + overlap 50 — рабочая точка.</li>
+<li><strong>Hybrid search</strong> побеждает чистый semantic в проде.</li>
+<li><strong>OpenAI embeddings</strong> для удобства; <strong>BGE-M3</strong> для приватности и экономии.</li>
+<li><strong>Метаданные</strong> в БД для фильтров — обязательно.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> у тебя теперь есть рабочий поисковик по своим заметкам. Это база для урока 14, где мы превратим его в полноценный RAG (модель будет генерировать ответы на основе найденных кусков). Сохрани <code>indexer.py</code> и <code>search.py</code>.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-8">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

@@ -9,31 +9,349 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Урок 2. Семейства LLM: GPT, Claude, Gemini, Llama, Mistral">
 <meta property="og:description" content="Урок 2 из курса AI на русском. Семейства LLM: GPT, Claude, Gemini, Llama, Mistral. ~45 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/2.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/2.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/2.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Урок 2. Семейства LLM: GPT, Claude, Gemini, Llama, Mistral">
 <meta name="twitter:description" content="Урок 2 из курса AI на русском. Семейства LLM: GPT, Claude, Gemini, Llama, Mistral. ~45 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/2.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/2.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/2.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-2');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Урок 2. Семейства LLM: GPT, Claude, Gemini, Llama, Mistral","description":"Урок 2 из курса AI на русском. Семейства LLM: GPT, Claude, Gemini, Llama, Mistral. ~45 мин.","url":"https://ai.madzhitov.ru/lessons/2.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/2.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 2</span></div>
 <h1>Урок 2. Семейства LLM: GPT, Claude, Gemini, Llama, Mistral</h1>
-<p>Урок 2 из курса AI на русском. Семейства LLM: GPT, Claude, Gemini, Llama, Mistral. ~45 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-2">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> научиться выбирать LLM под задачу</span>
+  <span><strong>Время:</strong> ~45 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/02</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>К 2026 году рынок LLM — это не «есть ChatGPT и есть всё остальное». Это десятки моделей с разными сильными сторонами, ценами и лицензиями. Если ты выбираешь модель <strong>наугад</strong>, ты:</p>
+<ul>
+<li>Переплачиваешь в 10–30 раз за задачи, где хватило бы дешёвой модели.</li>
+<li>Получаешь хуже качество там, где другая модель сильнее.</li>
+<li>Не можешь использовать ИИ там, где данные нельзя выпускать в облако.</li>
+<li>Привязываешься к одному вендору.</li>
+</ul>
+<p>Цель — научить тебя <strong>за 30 секунд выбирать правильную модель</strong> под задачу. Это не «знать всё», это иметь рабочую матрицу решений.</p>
+
+<h2>1. Карта рынка: кто есть кто</h2>
+
+<h3>Большая четвёрка проприетарных моделей</h3>
+
+<p><strong>OpenAI (GPT, ChatGPT).</strong> Партнёр Microsoft. Линейка: GPT-4o, GPT-4o-mini, o1, o3, o4-mini.</p>
+<ul>
+<li>GPT-4o — флагман, мультимодальный (текст + картинки + аудио).</li>
+<li>o1/o3 — «reasoning» модели со встроенным Chain-of-Thought (пошаговое рассуждение перед ответом); медленнее и дороже, но решают то, что флагманы не вывозят.</li>
+</ul>
+
+<p><strong>Anthropic (Claude).</strong> Конкурент №1. Акцент на безопасности и качестве рассуждений. Линейка: Claude Opus, Sonnet, Haiku.</p>
+<ul>
+<li>Opus — флагман, силён в анализе документов и коде.</li>
+<li>Sonnet — рабочая лошадка, лучший баланс цена/качество на 2026.</li>
+<li>Haiku — самая быстрая.</li>
+</ul>
+
+<p><strong>Google (Gemini).</strong> Сильно интегрирован с Google ecosystem.</p>
+<ul>
+<li>Gemini 1.5 Pro — окно контекста до <strong>1 миллиона токенов</strong>.</li>
+<li>Flash — быстрая дешёвая.</li>
+</ul>
+
+<p><strong>Microsoft (Phi и Copilot).</strong> Phi — «маленькие но умные» (3.5–14B). Копилоты в Office, GitHub — это GPT-4 + кастомизации.</p>
+
+<h3>Большая тройка open-source</h3>
+
+<p><strong>Meta (Llama).</strong> Llama 3.1, 3.2, 3.3. Размеры: 1B, 3B, 8B, 70B, 405B. Llama 3.1 405B сравнима с GPT-4o.</p>
+
+<p><strong>Mistral AI (Франция).</strong> Mistral 7B, Mixtral 8x7B (MoE), Mistral Large. Часть открытые (Apache 2.0), часть проприетарные.</p>
+
+<p><strong>DeepSeek (Китай).</strong> DeepSeek-V3, DeepSeek-R1 (reasoning). Полностью open-source (MIT). R1 показал результаты сопоставимые с o1 при кратно меньшей цене.</p>
+
+<h3>Специализированные модели</h3>
+<ul>
+<li><strong>Whisper</strong> — распознавание речи (open-source).</li>
+<li><strong>DALL·E 3, Stable Diffusion, Flux, Midjourney</strong> — генерация картинок.</li>
+<li><strong>ElevenLabs, Cartesia</strong> — синтез голоса.</li>
+<li><strong>CodeLlama, DeepSeek-Coder, Qwen2.5-Coder</strong> — модели для кода.</li>
+<li><strong>text-embedding-3, BGE, E5</strong> — эмбеддинги для поиска.</li>
+</ul>
+
+<h2>2. Что отличает модели — 7 ключевых параметров</h2>
+
+<h3>1. Размер (B параметров)</h3>
+<ul>
+<li><strong>0.5–4B</strong> — tiny, для on-device.</li>
+<li><strong>7–14B</strong> — small, для локального запуска на 1 GPU.</li>
+<li><strong>30–70B</strong> — mid-large, нужен сервер.</li>
+<li><strong>100B+</strong> — large, через API облачных провайдеров.</li>
+</ul>
+
+<h3>2. Контекстное окно</h3>
+<table>
+<tr><th>Модель</th><th>Контекст</th></tr>
+<tr><td>GPT-3.5 (старая)</td><td>16k</td></tr>
+<tr><td>GPT-4o</td><td>128k</td></tr>
+<tr><td>Claude 3.5 Sonnet</td><td>200k</td></tr>
+<tr><td>Llama 3.1</td><td>128k</td></tr>
+<tr><td>Gemini 1.5 Pro</td><td>1M (миллион)</td></tr>
+<tr><td>DeepSeek-V3</td><td>128k</td></tr>
+</table>
+<p>На практике: 128k ≈ среднего размера роман. 200k ≈ длинный технический документ + переписка.</p>
+
+<h3>3. Качество (бенчмарки)</h3>
+<p>Главные: MMLU (общие знания), GPQA, HumanEval/MBPP (программирование), MATH (математика).</p>
+<p>Бенчмарки врут — смотри живые сравнения: <a href="https://chat.lmsys.org" target="_blank">Chatbot Arena</a>, где модели оценивают вслепую люди.</p>
+
+<h3>4. Скорость (тоkens/sec)</h3>
+<ul>
+<li>Haiku/Flash/4o-mini: <strong>80–150 tok/s</strong> — почти мгновенно.</li>
+<li>Sonnet/4o: <strong>40–80 tok/s</strong> — комфортно.</li>
+<li>Opus/o1: <strong>15–40 tok/s</strong> — заметно тормозит.</li>
+<li>Reasoning модели: первые <strong>5–60 секунд</strong> на «thinking».</li>
+</ul>
+
+<h3>5. Цена (за миллион токенов)</h3>
+<table>
+<tr><th>Модель</th><th>Input</th><th>Output</th></tr>
+<tr><td>GPT-4o</td><td>$2.50</td><td>$10.00</td></tr>
+<tr><td>GPT-4o-mini</td><td>$0.15</td><td>$0.60</td></tr>
+<tr><td>o1</td><td>$15.00</td><td>$60.00</td></tr>
+<tr><td>Claude Opus 4</td><td>$15.00</td><td>$75.00</td></tr>
+<tr><td>Claude Sonnet 4</td><td>$3.00</td><td>$15.00</td></tr>
+<tr><td>Claude Haiku</td><td>$0.25</td><td>$1.25</td></tr>
+<tr><td>Gemini 1.5 Pro</td><td>$1.25</td><td>$5.00</td></tr>
+<tr><td>Gemini 1.5 Flash</td><td>$0.075</td><td>$0.30</td></tr>
+<tr><td>Llama 3.1 70B</td><td>$0.35</td><td>$0.40</td></tr>
+<tr><td>DeepSeek-V3</td><td>$0.14</td><td>$0.28</td></tr>
+</table>
+
+<p><strong>Реальный пример:</strong> промпт 1000 токенов + ответ 500. GPT-4o = $0.0075 (~70 коп). GPT-4o-mini = $0.00045 (~4 коп). Разница 100x на массовых задачах.</p>
+
+<h3>6. Мультимодальность</h3>
+<ul>
+<li>Картинки на вход: GPT-4o, Claude 3.5+, Gemini, Llama 3.2 Vision.</li>
+<li>Аудио на вход: GPT-4o, Gemini.</li>
+<li>Видео на вход: Gemini 1.5 Pro.</li>
+<li>Картинки на выход: DALL·E, Imagen, Flux. (LLM сама не рисует — вызывает image-модель.)</li>
+</ul>
+
+<h3>7. Лицензия и приватность</h3>
+<ul>
+<li><strong>Closed (proprietary):</strong> OpenAI, Anthropic, Google. Данные летят в облако вендора.</li>
+<li><strong>Open weights (Llama, Mistral, DeepSeek):</strong> скачиваешь .safetensors, запускаешь у себя. Полная приватность.</li>
+<li><strong>Полностью open (OLMo, Pythia):</strong> открыты не только веса, но и код тренировки и данные.</li>
+</ul>
+
+<h2>3. Типы моделей — это не одна вещь</h2>
+<ul>
+<li><strong>Chat models</strong> — то, что ты привык называть LLM. GPT-4o, Claude Sonnet.</li>
+<li><strong>Embedding models</strong> — превращают текст в числовой вектор. text-embedding-3, BGE-M3.</li>
+<li><strong>Image models</strong> — DALL·E 3, Stable Diffusion XL, Flux.1.</li>
+<li><strong>Audio models</strong> — STT (Whisper, Deepgram) и TTS (ElevenLabs).</li>
+<li><strong>Reasoning models</strong> — со встроенным Chain-of-Thought (CoT, пошаговое рассуждение). o1, o3, DeepSeek-R1, Gemini 2.0 Thinking.</li>
+<li><strong>Specialised:</strong> code (CodeLlama, Qwen-Coder), math.</li>
+</ul>
+
+<h2>4. Open-source vs Proprietary</h2>
+
+<div class="callout callout-info">
+<strong>Преимущества Proprietary (GPT, Claude, Gemini):</strong>
+<ul>
+<li>✅ Лучшее качество на топовых задачах.</li>
+<li>✅ Не нужна инфраструктура — заплатил, дёрнул API.</li>
+<li>✅ Готовая мультимодальность.</li>
+<li>✅ Поддержка вендора, SLA.</li>
+</ul>
+<strong>Минусы:</strong>
+<ul>
+<li>❌ Данные уходят в облако вендора.</li>
+<li>❌ Vendor lock-in.</li>
+<li>❌ Ценообразование не в твоих руках.</li>
+<li>❌ Rate limits.</li>
+</ul>
+</div>
+
+<div class="callout callout-success">
+<strong>Преимущества Open-source (Llama, Mistral):</strong>
+<ul>
+<li>✅ Полная приватность — данные не выходят за периметр.</li>
+<li>✅ Бесплатно после развёртки.</li>
+<li>✅ Полный fine-tuning.</li>
+<li>✅ Нет rate limits.</li>
+</ul>
+<strong>Минусы:</strong>
+<ul>
+<li>❌ Качество хуже топов на самых сложных задачах.</li>
+<li>❌ Нужна инфра: GPU, deployment.</li>
+<li>❌ Слабее с мультимодальностью.</li>
+</ul>
+</div>
+
+<h3>Когда что брать</h3>
+<table>
+<tr><th>Сценарий</th><th>Выбор</th></tr>
+<tr><td>Прототип</td><td>Proprietary mini (4o-mini, Haiku)</td></tr>
+<tr><td>Продакшен, простые задачи</td><td>Proprietary mini или OS на инфре</td></tr>
+<tr><td>Сложные рассуждения, code</td><td>Topовая proprietary (Opus, GPT-4o, o1)</td></tr>
+<tr><td>Конфиденциальные данные</td><td>Self-host OS или Azure OpenAI с DPA</td></tr>
+<tr><td>Регулируемая отрасль</td><td>Self-host OS или вендор с compliance</td></tr>
+<tr><td>Офлайн / on-device</td><td>Маленькая OS-модель (Phi, Llama 3.2 1B/3B)</td></tr>
+</table>
+
+<h2>5. Как читать бенчмарки и не сесть в лужу</h2>
+<p><strong>Что не так с бенчмарками:</strong></p>
+<ol>
+<li><strong>Натаскивание на тест.</strong> Если данные бенчмарка попали в обучение — contamination.</li>
+<li><strong>Уход в нишу.</strong> Модель может быть топ-1 в MMLU, но плохо писать письма.</li>
+<li><strong>Маленькая разница в цифрах = шум.</strong> 88.7% vs 88.3% MMLU — не значит ничего.</li>
+</ol>
+<p><strong>Что полезно:</strong></p>
+<ol>
+<li><a href="https://chat.lmsys.org" target="_blank">Chatbot Arena</a> — реальные люди голосуют вслепую.</li>
+<li><a href="https://artificialanalysis.ai" target="_blank">Artificial Analysis</a> — сравнение по качеству, скорости, цене.</li>
+<li><strong>Свои evals:</strong> для твоей задачи прогони 20–50 запросов через модели и оцени руками.</li>
+</ol>
+
+<h2>6. Реальные сценарии — как я бы выбрал</h2>
+
+<h3>Сценарий 1: чат-бот поддержки</h3>
+<p>10 000 диалогов в месяц. 100 000 ответов × 500 токенов = 50M output. При $10/M (4o) = $500. При $0.6/M (4o-mini) = $30. Качество: для FAQ-бота оба справятся.</p>
+<p><strong>Выбор: GPT-4o-mini или Claude Haiku</strong> + RAG.</p>
+
+<h3>Сценарий 2: ассистент юриста</h3>
+<p>Длинные документы, точность критична, конфиденциальные данные.</p>
+<p><strong>Выбор: Claude Sonnet 4 на AWS Bedrock</strong> (с DPA) или <strong>Llama 3.1 70B self-hosted</strong>.</p>
+
+<h3>Сценарий 3: автокатегоризация писем</h3>
+<p>5000 писем в день, 20 категорий, важны скорость и цена.</p>
+<p><strong>Выбор: GPT-4o-mini или Llama 3.1 8B</strong> в режиме structured output.</p>
+
+<h3>Сценарий 4: код-ревьюер в CI/CD</h3>
+<p>Большой контекст, качество понимания кода критично.</p>
+<p><strong>Выбор: Claude Sonnet 4</strong> или <strong>DeepSeek-Coder</strong>.</p>
+
+<h3>Сценарий 5: креативные сценарии для маркетинга</h3>
+<p>Креатив &gt; точность. Объём небольшой.</p>
+<p><strong>Выбор: Claude Opus или GPT-4o с temperature=1.</strong></p>
+
+<h3>Сценарий 6: ассистент медицинского диагноста</h3>
+<p>PHI, HIPAA, точность критична.</p>
+<p><strong>Выбор: Llama 3.1 70B self-hosted on-prem</strong> + RAG + human-in-the-loop.</p>
+
+<h2>7. Глоссарий</h2>
+<ul>
+<li><strong>Параметр</strong> — настраиваемое число в нейросети.</li>
+<li><strong>Контекст</strong> — токены, видимые модели за раз.</li>
+<li><strong>MMLU</strong> — Massive Multitask Language Understanding.</li>
+<li><strong>Chatbot Arena</strong> — слепое голосование за ответы.</li>
+<li><strong>Pareto-frontier</strong> — оптимальные модели по соотношению цены/качества.</li>
+<li><strong>MoE</strong> — Mixture of Experts. Mixtral, DeepSeek-V3.</li>
+<li><strong>Reasoning model</strong> — LLM со встроенной длинной CoT.</li>
+<li><strong>Embedding model</strong> — превращает текст в вектор.</li>
+<li><strong>Self-hosted</strong> — модель на твоей инфраструктуре.</li>
+<li><strong>DPA / BAA</strong> — соглашения о работе с данными.</li>
+<li><strong>TTFT</strong> — Time to First Token.</li>
+</ul>
+
+<h2>8. Практика (60 минут)</h2>
+
+<h3>Упражнение 1. Свой бенчмарк (20 минут)</h3>
+<ol>
+<li>Сформулируй <strong>5 типичных задач</strong> для ИИ.</li>
+<li>Прогони через 3 модели: дешёвую, среднюю, топовую.</li>
+<li>Поставь оценку 1–5 каждому ответу.</li>
+<li>Запиши таблицу в <code>progress.md</code>.</li>
+</ol>
+
+<h3>Упражнение 2. Чтение Arena (10 минут)</h3>
+<p>Зайди на <a href="https://chat.lmsys.org" target="_blank">chat.lmsys.org</a> в режиме Battle, голосуй вслепую 10 раз.</p>
+
+<h3>Упражнение 3. Расчёт стоимости (10 минут)</h3>
+<p>Возьми один кейс. Прикинь объём. Посчитай месячную стоимость для трёх моделей. Формула: <code>запросов × 30 × (input_токенов × input_цена + output_токенов × output_цена) / 1М</code>.</p>
+
+<h3>Упражнение 4. Локальный запуск (бонус)</h3>
+<p>На Mac M1+ или ПК с GPU 8+ ГБ:</p>
+<ol>
+<li>Установи <a href="https://ollama.com" target="_blank">Ollama</a>.</li>
+<li><code>ollama pull llama3.2:3b</code></li>
+<li><code>ollama run llama3.2:3b</code></li>
+</ol>
+
+<h3>Упражнение 5. Матрица выбора (10 минут)</h3>
+<p>Составь таблицу: «Тип задачи / Модель / Почему» — минимум 5 строк.</p>
+
+<h2>9. Проверь себя</h2>
+
+<p><strong>1. Чем reasoning model (o1) отличается от обычной (4o)?</strong><br>
+Перед финальным ответом генерирует длинный «черновик мышления» (CoT). Резко повышает качество на сложных задачах, но медленнее и дороже.</p>
+
+<p><strong>2. У меня 1 миллион токенов входа. Какие модели подходят?</strong><br>
+Только Gemini 1.5 Pro (1M context). Альтернатива: chunking + любая модель.</p>
+
+<p><strong>3. Через интерфейс или через API?</strong><br>
+Через интерфейс — разовые задачи, исследовательский креатив. Через API — автоматизация, ассистенты, скрипты, programmatic-control.</p>
+
+<p><strong>4. «Open weights, но не open data» — что значит?</strong><br>
+Веса опубликованы, можно скачать, дообучать. Но <strong>обучающие данные</strong> не публиковались.</p>
+
+<p><strong>5. Я в России и нет доступа к OpenAI. Что делать?</strong><br>
+(а) Anthropic — работает; (б) YandexGPT, GigaChat; (в) self-host (Llama, DeepSeek через Ollama).</p>
+
+<p><strong>6. Бенчмарки против моих личных тестов — кто прав?</strong><br>
+Ты. На твоих задачах твои evals главнее любого бенчмарка.</p>
+
+<p><strong>7. Mixture of Experts — что это?</strong><br>
+Архитектура, где router выбирает 1–2 эксперта на токен. Mixtral 8x7B = 47B параметров, активны ~13B.</p>
+
+<p><strong>8. Topовая модель или дешёвая для классификации 100 категорий?</strong><br>
+Дешёвая. Объём важнее качества — за миллион писем экономия в 30 раз.</p>
+
+<p><strong>9. Что такое Chatbot Arena?</strong><br>
+Платформа от LMSYS, где люди голосуют за ответы вслепую. Aggregate Elo-рейтинг.</p>
+
+<p><strong>10. 200k контекст — всегда хорошо?</strong><br>
+Не всегда. Цена линейна с длиной, lost in the middle, RAG часто лучше.</p>
+
+<h2>10. Что должно остаться в голове</h2>
+<ol>
+<li>Нет одной «лучшей модели» — есть лучшая под задачу.</li>
+<li>Цена и качество не линейны — 90% задач решает mini-модель в 30 раз дешевле.</li>
+<li>Open-source уже хорош — для большинства задач Llama 70B хватает.</li>
+<li>Бенчмарки шумны — делай свои evals.</li>
+<li>Reasoning models — отдельный класс.</li>
+<li>Контекст — не всегда нужен большой; RAG часто лучше.</li>
+<li>Приватность определяет архитектуру.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> в <code>progress.md</code> запиши свою «матрицу выбора» — 5 строк «тип задачи → модель → почему».
+</div>
+
+    <div class="pp-open"><a href="/#lesson-2">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

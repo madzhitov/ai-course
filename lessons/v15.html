@@ -9,31 +9,529 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="📚 Справочник: продвинутые темы">
 <meta property="og:description" content="V15 из курса AI на русском. 📚 Справочник: продвинутые темы. ~60 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/v15.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/v15.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/v15.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="📚 Справочник: продвинутые темы">
 <meta name="twitter:description" content="V15 из курса AI на русском. 📚 Справочник: продвинутые темы. ~60 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/v15.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/v15.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/v15.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-v15');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"📚 Справочник: продвинутые темы","description":"V15 из курса AI на русском. 📚 Справочник: продвинутые темы. ~60 мин.","url":"https://ai.madzhitov.ru/lessons/v15.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/v15.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
-<h1>📚 Справочник: продвинутые темы</h1>
-<p>V15 из курса AI на русском. 📚 Справочник: продвинутые темы. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-v15">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">V15</span></div>
+<h1>Справочник: продвинутые темы</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> Отладка, тесты, кэш, мониторинг, SEO, безопасность. Что отличает прототип от продукта.</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Главы гайда:</strong> 16–24</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Этот урок — часть <strong>«Справочника по веб-разработке для не-разработчиков»</strong>. Это не ката (как v1–v10), а карта территории. Здесь — концепты, которые AI генерирует в твоих проектах и которые тебе важно понимать, чтобы не быть слепым.</p>
+<p>Без снобизма, без воды, с примерами из реальной жизни. После всех 5 модулей у тебя будет полная картина: от того, как браузер делает запрос, до того, как мониторить продакшен.</p>
+
+<hr />
+<h2>16. Отладка — как искать и чинить ошибки</h2>
+<p>Отладка (debugging) — это 50% времени разработчика. Код не работает — нужно понять почему.</p>
+<h3>Console.log — простейший инструмент</h3>
+<p>Вставляешь <code>console.log()</code> в код, чтобы увидеть, что происходит:</p>
+<pre><code class="language-typescript">async function getProducts(categorySlug: string) {
+  console.log('Запрос категории:', categorySlug);
+
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('category_slug', categorySlug);
+
+  console.log('Данные:', data);
+  console.log('Ошибка:', error);
+
+  return data;
+}
+</code></pre>
+<h3>DevTools браузера</h3>
+<p><strong>Cmd+Option+I</strong> (macOS) или <strong>F12</strong> (Windows) в Chrome:</p>
+<p><strong>Console</strong> — логи, ошибки, предупреждения. Красные строки — ошибки. Кликни на ошибку — попадёшь в строку кода.</p>
+<p><strong>Network</strong> — все запросы страницы. Видишь: URL, метод, статус-код, время. Если 500 — проблема на сервере. Если 404 — неправильный URL.</p>
+<p><strong>Elements</strong> — живое дерево HTML/CSS. Можешь менять стили прямо в браузере.</p>
+<p><strong>Application</strong> — cookies, localStorage, сессии.</p>
+<h3>Чтение ошибок</h3>
+<pre><code>Error: Cannot read properties of undefined (reading 'price')
+    at ProductCard (src/components/ProductCard.tsx:12:24)
+</code></pre>
+<p>Читаем: файл <code>ProductCard.tsx</code>, строка 12. Пытаемся прочитать <code>.price</code> у <code>undefined</code> — значит, объект не передан или пустой.</p>
+<h3>Типичные ошибки</h3>
+<p><strong>«Module not found»</strong> — пакет не установлен. Запусти <code>npm install</code>.</p>
+<p><strong>«Variable is undefined»</strong> — забыл добавить в <code>.env.local</code> или не перезапустил dev-сервер.</p>
+<p><strong>«CORS error»</strong> — фронтенд обращается к API на другом домене. Используй API Routes (один домен).</p>
+<p><strong>«Hydration mismatch»</strong> — сервер и клиент сгенерировали разный HTML. Обычно из-за <code>window</code>/<code>document</code> в серверном компоненте.</p>
+<h3>Отладка с AI</h3>
+<p>Самый эффективный подход: скопируй полный текст ошибки и вставь как промпт в AI. Не пересказывай ошибку своими словами — дай точный текст. AI видит паттерн и находит причину быстрее.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Открой DevTools → Console на любом сайте — посмотри, есть ли ошибки</li>
+<li>Специально сломай что-нибудь в своём проекте (удали import) — прочитай ошибку</li>
+<li>Скопируй ошибку в Claude или ChatGPT, попроси объяснить и починить</li>
+</ol>
+</div><hr />
+<h2>17. Тестирование — как проверять, что код работает</h2>
+<p>Тесты — это код, который проверяет другой код. Автоматически, при каждом изменении.</p>
+<h3>Три уровня</h3>
+<p><strong>Юнит-тесты</strong> — проверяют одну функцию:</p>
+<pre><code class="language-typescript">test('скидка 20% на 10000', () =&gt; {
+  expect(calculateDiscount(10000, 20)).toBe(8000);
+});
+</code></pre>
+<p><strong>Интеграционные тесты</strong> — несколько частей вместе: API-роут + база данных.</p>
+<pre><code class="language-typescript">test('GET /api/products возвращает товары', async () =&gt; {
+  const response = await fetch('/api/products');
+  expect(response.status).toBe(200);
+  const data = await response.json();
+  expect(data.length).toBeGreaterThan(0);
+});
+</code></pre>
+<p><strong>E2E тесты</strong> — весь сценарий от лица пользователя:</p>
+<pre><code class="language-typescript">test('пользователь добавляет товар в корзину', async ({ page }) =&gt; {
+  await page.goto('/catalog');
+  await page.click('[data-testid=&quot;product-card&quot;]');
+  await page.click('button:has-text(&quot;В корзину&quot;)');
+  await page.goto('/cart');
+  await expect(page.locator('.cart-item')).toHaveCount(1);
+});
+</code></pre>
+<h3>Инструменты</h3>
+<ul>
+<li><strong>Vitest</strong> — быстрый, современный, для юнит/интеграционных тестов</li>
+<li><strong>Playwright</strong> — E2E-тесты от Microsoft, в реальных браузерах</li>
+<li><strong>Cypress</strong> — E2E-тесты с красивым интерфейсом</li>
+</ul>
+<h3>Когда писать тесты</h3>
+<p>Золотое правило для вайб-кодинга: тестируй бизнес-логику (расчёты, валидации) и критические пути (авторизация, оплата). Не тестируй вёрстку — она меняется слишком часто.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Установи Vitest: <code>npm install -D vitest</code></li>
+<li>Создай файл <code>utils.test.ts</code>, напиши простой тест для любой функции</li>
+<li>Запусти: <code>npx vitest run</code></li>
+<li>Сломай функцию — увидишь, как тест ловит ошибку</li>
+</ol>
+</div><hr />
+<h2>18. Линтинг и форматирование — чистый код на автомате</h2>
+<h3>ESLint — ловит ошибки</h3>
+<p>Анализирует код и находит проблемы: неиспользуемые переменные, потенциальные баги, нарушения стиля. Next.js включает ESLint по умолчанию.</p>
+<pre><code class="language-bash">npm run lint     # Проверить весь проект
+</code></pre>
+<h3>Prettier — форматирует автоматически</h3>
+<p>Приводит код к единому стилю: отступы, кавычки, длина строк. Файл <code>.prettierrc</code>:</p>
+<pre><code class="language-json">{
+  &quot;semi&quot;: true,
+  &quot;singleQuote&quot;: true,
+  &quot;tabWidth&quot;: 2,
+  &quot;trailingComma&quot;: &quot;all&quot;
+}
+</code></pre>
+<h3>Настройка в VS Code</h3>
+<p>Установи расширения ESLint и Prettier, включи «Format on Save» — код форматируется при каждом сохранении автоматически.</p>
+<h3>Husky + lint-staged</h3>
+<p>Автоматическая проверка перед каждым коммитом. Если ESLint нашёл ошибку — коммит не пройдёт.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Выполни <code>npm run lint</code> в своём Next.js проекте</li>
+<li>Установи Prettier: <code>npm install -D prettier</code></li>
+<li>Создай <code>.prettierrc</code> с настройками выше</li>
+<li>Установи расширение Prettier в VS Code, включи Format on Save</li>
+</ol>
+</div><hr />
+<h2>19. Middleware — промежуточный слой</h2>
+<p>Middleware — код между запросом пользователя и основным обработчиком. Как охранник на входе: проверяет пропуск, прежде чем пустить.</p>
+<h3>Middleware в Next.js</h3>
+<p>Файл <code>middleware.ts</code> в корне проекта:</p>
+<pre><code class="language-typescript">import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+export function middleware(request: NextRequest) {
+  // Защита приватных страниц
+  if (request.nextUrl.pathname.startsWith('/account')) {
+    const token = request.cookies.get('auth-token');
+    if (!token) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ['/account/:path*', '/admin/:path*'],
+};
+</code></pre>
+<h3>Типичные задачи</h3>
+<ul>
+<li><strong>Авторизация</strong> — проверить токен до загрузки страницы</li>
+<li><strong>Локализация</strong> — определить язык и показать правильную версию</li>
+<li><strong>A/B тестирование</strong> — показать версию A или B</li>
+<li><strong>Rate limiting</strong> — ограничить количество запросов</li>
+</ul>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Создай файл <code>middleware.ts</code> в корне Next.js проекта</li>
+<li>Добавь простой middleware, который логирует каждый запрос: <code>console.log(request.nextUrl.pathname)</code></li>
+<li>Открой сайт и посмотри логи в терминале — увидишь каждый запрос</li>
+</ol>
+</div><hr />
+<h2>20. Кэширование — как ускорить сайт</h2>
+<h3>Зачем</h3>
+<p>Без кэша: каждый раз сервер идёт в базу, достаёт данные, рендерит HTML. 500-2000мс. С кэшем: первый запрос 500мс, все следующие — 20мс.</p>
+<h3>Уровни кэша</h3>
+<p><strong>Браузерный</strong> — браузер сохраняет картинки, CSS, JS. При повторном визите не скачивает заново.</p>
+<p><strong>CDN</strong> — серверы Vercel по миру сохраняют HTML. Пользователь получает страницу с ближайшего сервера.</p>
+<p><strong>Серверный</strong> — приложение сохраняет результаты запросов в память (Redis).</p>
+<p><strong>ISR (Incremental Static Regeneration)</strong> — золотая середина в Next.js:</p>
+<pre><code class="language-typescript">// Страница обновляется каждые 60 секунд
+export const revalidate = 60;
+
+export default async function CatalogPage() {
+  const products = await getProducts();
+  return &lt;ProductGrid products={products} /&gt;;
+}
+</code></pre>
+<p>Первый посетитель — свежие данные за 500мс. Следующие 60 секунд — кэш за 20мс. Фоновое обновление.</p>
+<h3>Инвалидация</h3>
+<p>Когда кэш устарел? Два подхода: по времени (живёт N секунд) или по событию (обновили товар → сбросили кэш).</p>
+<pre><code class="language-typescript">import { revalidatePath } from 'next/cache';
+
+export async function updateProduct(id: number, data: any) {
+  await supabase.from('products').update(data).eq('id', id);
+  revalidatePath('/catalog');  // Сбросить кэш
+}
+</code></pre>
+<h3>Что кэшировать, а что нет</h3>
+<p>Кэшировать: каталог, статьи, статические страницы. Не кэшировать: корзину, личный кабинет, страницу оплаты — всё уникальное для пользователя.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Добавь <code>export const revalidate = 60</code> в любую страницу Next.js</li>
+<li>Задеплой на Vercel</li>
+<li>Открой страницу, обнови — заметь скорость (она будет приходить из кэша)</li>
+</ol>
+</div><hr />
+<h2>21. WebSocket и Realtime — живые данные</h2>
+<h3>Проблема</h3>
+<p>HTTP: клиент спрашивает → сервер отвечает → соединение закрыто. Для чата или уведомлений нужно, чтобы сервер мог сам послать данные.</p>
+<h3>WebSocket</h3>
+<p>Соединение открывается один раз и остаётся. Двусторонний обмен в реальном времени.</p>
+<pre><code>HTTP:       Клиент → Сервер → Клиент (закрыл)
+WebSocket:  Клиент ↔ Сервер (постоянное соединение)
+</code></pre>
+<h3>Supabase Realtime</h3>
+<p>Подписка на изменения таблицы:</p>
+<pre><code class="language-typescript">const subscription = supabase
+  .channel('orders')
+  .on(
+    'postgres_changes',
+    { event: 'INSERT', schema: 'public', table: 'orders' },
+    (payload) =&gt; {
+      console.log('Новый заказ:', payload.new);
+    }
+  )
+  .subscribe();
+</code></pre>
+<h3>Где используется</h3>
+<p>Чаты, уведомления, live-дашборды, синхронизация между устройствами, стриминг ответов AI.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>В Supabase Dashboard → Realtime → включи для таблицы <code>products</code></li>
+<li>В коде подпишись на изменения (пример выше)</li>
+<li>Открой приложение и вручную добавь товар в Supabase — увидишь обновление без перезагрузки</li>
+</ol>
+</div><hr />
+<h2>22. Мониторинг — как узнать, что сайт упал</h2>
+<p>Без мониторинга ты узнаёшь о проблемах от клиентов. С мониторингом — получаешь уведомление за минуту до них.</p>
+<h3>Sentry — ловит ошибки</h3>
+<p>Перехватывает ошибки в продакшене: что сломалось, строка кода, какой пользователь пострадал.</p>
+<pre><code class="language-bash">npm install @sentry/nextjs
+npx @sentry/wizard@latest -i nextjs
+</code></pre>
+<p>Бесплатный план — 5,000 ошибок в месяц.</p>
+<h3>Vercel Analytics</h3>
+<p>Встроено: Web Vitals, посещаемость, география. Включается одним кликом в Dashboard.</p>
+<h3>PostHog — продуктовая аналитика</h3>
+<p>Действия пользователей: какие страницы смотрят, куда кликают, где бросают корзину. Open source.</p>
+<h3>Uptime-мониторинг</h3>
+<p>UptimeRobot (бесплатный) — проверяет каждую минуту, работает ли сайт. Если упал — SMS/Telegram.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Зарегистрируйся на sentry.io (бесплатно)</li>
+<li>Установи Sentry в свой проект: <code>npx @sentry/wizard@latest -i nextjs</code></li>
+<li>Задеплой и специально вызови ошибку — увидишь её в Sentry Dashboard</li>
+</ol>
+</div><hr />
+<h2>23. SEO для разработчика — чтобы Google нашёл</h2>
+<h3>Почему SEO — дело разработчика</h3>
+<p>Если сайт на обычном React (SPA) — Google видит пустой <code>&lt;div id="root"&gt;</code>. На Next.js с SSR — полноценную страницу. Техническая часть определяет, проиндексируется ли сайт вообще.</p>
+<h3>Meta-теги</h3>
+<pre><code class="language-typescript">export const metadata = {
+  title: 'Мой магазин — кроссовки и аксессуары',
+  description: 'Оригинальные кроссовки и аксессуары с доставкой по России.',
+};
+</code></pre>
+<h3>Open Graph — как ссылка выглядит в мессенджерах</h3>
+<p>Когда кто-то кидает ссылку в Telegram — Open Graph определяет картинку, заголовок и описание:</p>
+<pre><code class="language-typescript">export const metadata = {
+  openGraph: {
+    title: 'Air Max 2026 — Мой магазин',
+    description: 'Новая коллекция кроссовок',
+    images: ['/images/air-max-og.jpg'],   // 1200x630px
+  },
+};
+</code></pre>
+<h3>Sitemap и robots.txt</h3>
+<pre><code class="language-typescript">// src/app/sitemap.ts
+export default async function sitemap() {
+  const products = await getProducts();
+  return [
+    { url: 'https://myshop.com', lastModified: new Date() },
+    ...products.map((p) =&gt; ({
+      url: `https://myshop.com/catalog/${p.slug}`,
+      lastModified: p.updated_at,
+    })),
+  ];
+}
+</code></pre>
+<h3>Structured Data (JSON-LD)</h3>
+<p>Помогает Google показать цену и рейтинг прямо в поиске:</p>
+<pre><code class="language-typescript">&lt;script type=&quot;application/ld+json&quot;&gt;
+{JSON.stringify({
+  &quot;@context&quot;: &quot;https://schema.org&quot;,
+  &quot;@type&quot;: &quot;Product&quot;,
+  &quot;name&quot;: &quot;Кроссовки Air Max&quot;,
+  &quot;offers&quot;: {
+    &quot;@type&quot;: &quot;Offer&quot;,
+    &quot;price&quot;: &quot;12000&quot;,
+    &quot;priceCurrency&quot;: &quot;RUB&quot;,
+    &quot;availability&quot;: &quot;https://schema.org/InStock&quot;
+  }
+})}
+&lt;/script&gt;
+</code></pre>
+<h3>Core Web Vitals</h3>
+<p>Google измеряет: <strong>LCP</strong> (когда контент стал видим, цель &lt; 2.5с), <strong>INP</strong> (реакция на клик, &lt; 200мс), <strong>CLS</strong> (прыгает ли контент, &lt; 0.1).</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Добавь metadata с title и description в свой <code>page.tsx</code></li>
+<li>Добавь Open Graph — скинь ссылку в Telegram, проверь, как выглядит</li>
+<li>Открой PageSpeed Insights (web.dev/measure), вбей URL — посмотри Core Web Vitals</li>
+</ol>
+</div><hr />
+<h2>24. Безопасность — от чего защищаться</h2>
+<h3>XSS (Cross-Site Scripting)</h3>
+<p>Атакующий внедряет JavaScript в поле ввода. Защита: React автоматически экранирует текст. Не используй <code>dangerouslySetInnerHTML</code> с пользовательскими данными.</p>
+<h3>SQL-инъекции</h3>
+<p>Атакующий вставляет SQL-код в поле ввода. Защита: Supabase SDK и ORM используют параметризованные запросы — инъекция невозможна.</p>
+<pre><code class="language-typescript">// ОПАСНО
+const result = await db.query(`SELECT * FROM users WHERE id = '${userId}'`);
+
+// БЕЗОПАСНО
+const result = await supabase.from('users').select('*').eq('id', userId);
+</code></pre>
+<h3>CSRF (Cross-Site Request Forgery)</h3>
+<p>Чужой сайт отправляет запрос от имени залогиненного пользователя. Защита: SameSite cookies, CSRF-токены. Next.js Server Actions имеют встроенную защиту.</p>
+<h3>CORS</h3>
+<p>Браузер запрещает запросы между разными доменами. Это защита — evil.com не может обратиться к твоему API. Если нужно разрешить — настрой заголовки явно.</p>
+<h3>Rate Limiting</h3>
+<p>Ограничение запросов от одного пользователя. Без него бот может положить сервер 10,000 запросами в секунду. Для продакшена: Vercel Edge Middleware или Upstash Redis.</p>
+<h3>Защита API-ключей</h3>
+<p>API-ключи никогда не попадают на фронтенд. Проверь: если ключ в переменной с <code>NEXT_PUBLIC_</code> — он видим всем. Секретные ключи — только в серверном коде.</p>
+<h3>Supabase RLS — последний рубеж</h3>
+<p>Даже если весь код сломан, RLS не даст получить чужие данные:</p>
+<pre><code class="language-sql">ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+CREATE POLICY &quot;users_own_orders&quot; ON orders
+  FOR ALL USING (auth.uid() = user_id);
+</code></pre>
+<h3>Чеклист безопасности</h3>
+<ul>
+<li>RLS включён на всех таблицах с данными пользователей</li>
+<li>API-ключи не начинаются с NEXT_PUBLIC_</li>
+<li>.env.local в .gitignore</li>
+<li>HTTPS (Vercel настраивает автоматически)</li>
+<li>Rate limiting на публичных API</li>
+<li>Webhook-подписи проверяются (Stripe, ЮKassa)</li>
+</ul>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Проверь свой <code>.gitignore</code> — есть ли там <code>.env.local</code>?</li>
+<li>Зайди в Supabase → Table Editor → любая таблица → RLS — включён ли?</li>
+<li>Поищи в своём коде <code>NEXT_PUBLIC_</code> — нет ли среди них секретных ключей?</li>
+</ol>
+</div><hr />
+<h1>Приложения</h1>
+<hr />
+<h2>25. Словарь терминов</h2>
+<p><strong>API</strong> — интерфейс для программного взаимодействия. Контракт «что отправить → что получить».</p>
+<p><strong>Auth</strong> — авторизация и аутентификация. Система «кто ты и что тебе можно».</p>
+<p><strong>Backend</strong> — серверная часть приложения. Бизнес-логика, данные, безопасность.</p>
+<p><strong>Branch</strong> — ветка в Git. Параллельная линия разработки.</p>
+<p><strong>Build</strong> — процесс сборки проекта из исходного кода в готовые файлы.</p>
+<p><strong>Cache (кэш)</strong> — сохранённый результат для ускорения повторных запросов.</p>
+<p><strong>CDN</strong> — Content Delivery Network. Сеть серверов по миру для быстрой доставки контента.</p>
+<p><strong>CI/CD</strong> — автоматическая проверка и развёртывание кода.</p>
+<p><strong>Commit</strong> — зафиксированное изменение в Git. Снимок состояния проекта. Не меняет сайт — только сохраняет прогресс локально.</p>
+<p><strong>Component</strong> — переиспользуемый блок интерфейса в React.</p>
+<p><strong>Console.log</strong> — простейший инструмент отладки. Выводит данные в консоль.</p>
+<p><strong>Core Web Vitals</strong> — метрики Google для оценки скорости сайта (LCP, INP, CLS).</p>
+<p><strong>CORS</strong> — правила безопасности браузера для запросов между доменами.</p>
+<p><strong>CRUD</strong> — Create, Read, Update, Delete. Четыре базовые операции с данными.</p>
+<p><strong>CSRF</strong> — Cross-Site Request Forgery. Атака через подделку запросов.</p>
+<p><strong>CSS</strong> — язык стилей. Внешний вид HTML-элементов.</p>
+<p><strong>Debug (отладка)</strong> — процесс поиска и исправления ошибок.</p>
+<p><strong>Deploy (деплой)</strong> — публикация кода на сервер. Делает сайт доступным пользователям.</p>
+<p><strong>DevTools</strong> — инструменты разработчика в браузере (Cmd+Option+I).</p>
+<p><strong>DNS</strong> — превращает доменное имя в IP-адрес.</p>
+<p><strong>DOM</strong> — структура HTML-страницы в виде дерева объектов.</p>
+<p><strong>E2E</strong> — End-to-End тестирование полного сценария.</p>
+<p><strong>Endpoint</strong> — конкретный URL в API. <code>/api/products</code> — эндпоинт для товаров.</p>
+<p><strong>.env</strong> — файл с секретными переменными окружения.</p>
+<p><strong>ESLint</strong> — инструмент проверки кода на ошибки.</p>
+<p><strong>Fetch</strong> — функция JavaScript для HTTP-запросов.</p>
+<p><strong>Framework</strong> — каркас приложения с готовыми решениями.</p>
+<p><strong>Frontend</strong> — клиентская часть. Интерфейс для пользователя.</p>
+<p><strong>Git</strong> — система контроля версий.</p>
+<p><strong>GitHub</strong> — платформа для хранения Git-репозиториев.</p>
+<p><strong>HTML</strong> — язык разметки. Структура веб-страницы.</p>
+<p><strong>HTTP</strong> — протокол передачи данных в интернете.</p>
+<p><strong>Husky</strong> — запуск скриптов перед Git-коммитами.</p>
+<p><strong>ISR</strong> — Incremental Static Regeneration. Обновление статических страниц по таймеру.</p>
+<p><strong>JavaScript</strong> — язык программирования для веба и серверов.</p>
+<p><strong>JSON</strong> — формат обмена данными.</p>
+<p><strong>JSON-LD</strong> — формат структурированных данных для поисковиков.</p>
+<p><strong>JWT</strong> — JSON Web Token. Зашифрованный токен авторизации.</p>
+<p><strong>LCP</strong> — Largest Contentful Paint. Время отрисовки главного контента.</p>
+<p><strong>Linter</strong> — инструмент проверки кода.</p>
+<p><strong>Middleware</strong> — промежуточный слой между запросом и обработчиком.</p>
+<p><strong>Migration</strong> — версионное изменение структуры базы данных.</p>
+<p><strong>Node.js</strong> — среда выполнения JavaScript на сервере.</p>
+<p><strong>npm</strong> — менеджер пакетов для Node.js.</p>
+<p><strong>OAuth</strong> — авторизация через внешние сервисы (Google, Yandex).</p>
+<p><strong>Open Graph</strong> — мета-теги для отображения ссылки в соцсетях.</p>
+<p><strong>ORM</strong> — работа с базой через объекты вместо SQL.</p>
+<p><strong>Package</strong> — готовый код для переиспользования (библиотека).</p>
+<p><strong>PR (Pull Request)</strong> — запрос на слияние ветки. Место для ревью кода.</p>
+<p><strong>Props</strong> — параметры, передаваемые React-компоненту.</p>
+<p><strong>Push</strong> — отправка коммитов на GitHub. Не равно деплою.</p>
+<p><strong>Query</strong> — запрос к базе данных или API.</p>
+<p><strong>Rate Limiting</strong> — ограничение количества запросов.</p>
+<p><strong>React</strong> — библиотека для построения интерфейсов из компонентов.</p>
+<p><strong>Repo (repository)</strong> — хранилище кода с историей изменений.</p>
+<p><strong>REST</strong> — архитектурный стиль API с HTTP-методами.</p>
+<p><strong>RLS</strong> — Row Level Security. Защита данных на уровне строк в PostgreSQL.</p>
+<p><strong>Route</strong> — связь между URL и компонентом/обработчиком.</p>
+<p><strong>Runtime</strong> — среда выполнения кода (Node.js, браузер).</p>
+<p><strong>SDK</strong> — набор инструментов для работы с сервисом.</p>
+<p><strong>Sentry</strong> — сервис мониторинга ошибок в продакшене.</p>
+<p><strong>Serverless</strong> — код запускается по запросу, без постоянного сервера.</p>
+<p><strong>Sitemap</strong> — список страниц сайта для поисковиков.</p>
+<p><strong>SQL</strong> — язык запросов к реляционным базам данных.</p>
+<p><strong>SSE</strong> — Server-Sent Events. Односторонний стрим от сервера к клиенту.</p>
+<p><strong>SSG</strong> — Static Site Generation. HTML генерируется при сборке.</p>
+<p><strong>SSR</strong> — Server-Side Rendering. HTML генерируется при каждом запросе.</p>
+<p><strong>State</strong> — состояние компонента. Данные, которые меняются во времени.</p>
+<p><strong>Tailwind</strong> — утилитарный CSS-фреймворк. Стили через классы.</p>
+<p><strong>Token</strong> — цифровой пропуск для авторизации.</p>
+<p><strong>TypeScript</strong> — JavaScript с типами. Ловит ошибки до запуска.</p>
+<p><strong>Unit Test</strong> — тест отдельной функции в изоляции.</p>
+<p><strong>Uptime</strong> — время непрерывной работы сервиса.</p>
+<p><strong>URL</strong> — адрес ресурса в интернете.</p>
+<p><strong>Vercel</strong> — платформа для хостинга и деплоя.</p>
+<p><strong>Webhook</strong> — сервер присылает данные при событии.</p>
+<p><strong>WebSocket</strong> — двусторонняя связь в реальном времени.</p>
+<p><strong>XSS</strong> — Cross-Site Scripting. Атака через вредоносный JavaScript.</p>
+<hr />
+<h2>Рекомендуемый стек для старта</h2>
+<table>
+<thead>
+<tr>
+<th>Задача</th>
+<th>Инструмент</th>
+<th>Стоимость</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Фронтенд + бэкенд</td>
+<td>Next.js</td>
+<td>Бесплатно</td>
+</tr>
+<tr>
+<td>Стили</td>
+<td>Tailwind CSS</td>
+<td>Бесплатно</td>
+</tr>
+<tr>
+<td>База данных + авторизация</td>
+<td>Supabase</td>
+<td>Бесплатно (Free tier)</td>
+</tr>
+<tr>
+<td>Деплой</td>
+<td>Vercel</td>
+<td>Бесплатно (Hobby)</td>
+</tr>
+<tr>
+<td>Контроль версий</td>
+<td>Git + GitHub</td>
+<td>Бесплатно</td>
+</tr>
+<tr>
+<td>AI для кода</td>
+<td>Claude Code</td>
+<td>Подписка / API</td>
+</tr>
+<tr>
+<td>Прототипирование UI</td>
+<td>v0.dev</td>
+<td>$5 кредитов бесплатно</td>
+</tr>
+<tr>
+<td>Мобильное приложение</td>
+<td>React Native + Expo</td>
+<td>Бесплатно</td>
+</tr>
+<tr>
+<td>Мониторинг ошибок</td>
+<td>Sentry</td>
+<td>Бесплатно (5K ошибок)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>Автор: Руслан Маджитов · madzhitov.ru</em>
+<em>Последнее обновление: май 2026</em></p>
+<div class="callout callout-info">
+<strong>📌 Конец справочника.</strong> У тебя теперь есть карта всей территории — от DNS до мониторинга. Возвращайся к этим модулям как к словарю, когда AI генерирует что-то непонятное. И главное — иди в ката-уроки v1–v10 и применяй.
+</div>
+
+
+    <div class="pp-open"><a href="/#lesson-v15">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

@@ -9,31 +9,259 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Урок 34. Свой framework для нейросетей на NumPy">
 <meta property="og:description" content="Урок 34 из курса AI на русском. Свой framework для нейросетей на NumPy. ~90 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/34.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/34.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/34.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Урок 34. Свой framework для нейросетей на NumPy">
 <meta name="twitter:description" content="Урок 34 из курса AI на русском. Свой framework для нейросетей на NumPy. ~90 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/34.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/34.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/34.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-34');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Урок 34. Свой framework для нейросетей на NumPy","description":"Урок 34 из курса AI на русском. Свой framework для нейросетей на NumPy. ~90 мин.","url":"https://ai.madzhitov.ru/lessons/34.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/34.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 3. Практик</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 34</span></div>
 <h1>Урок 34. Свой framework для нейросетей на NumPy</h1>
-<p>Урок 34 из курса AI на русском. Свой framework для нейросетей на NumPy. ~90 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-34">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> построить мини-PyTorch с нуля и понять backprop изнутри</span>
+  <span><strong>Время:</strong> ~90 минут</span>
+  <span><strong>Источник:</strong> AI-For-Beginners/06 + Karpathy «Neural Networks Zero to Hero»</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Можно всю жизнь пользоваться PyTorch и не понимать что внутри. Но один раз написать свой mini-framework на NumPy = понять, как работает backprop, и почему модели иногда «не учатся».</p>
+<p>К концу урока ты:</p>
+<ul>
+<li>Поймёшь, что такое gradient descent на пальцах.</li>
+<li>Сам напишешь backpropagation.</li>
+<li>Обучишь нейросеть распознавать XOR.</li>
+<li>Будешь читать чужой PyTorch-код глубже.</li>
+</ul>
+
+<h2>1. Идея обучения за 30 секунд</h2>
+<p>У нас есть нейросеть с параметрами (веса <code>w</code> и biases <code>b</code>). У нас есть данные (X, y). Мы хотим, чтобы сеть на входе X выдавала y.</p>
+<ol>
+<li><strong>Forward pass:</strong> прогоняем X через сеть, получаем prediction.</li>
+<li><strong>Loss:</strong> считаем ошибку (насколько prediction отличается от y).</li>
+<li><strong>Backward pass:</strong> считаем градиент loss по каждому параметру (как loss изменится, если чуть поменять параметр).</li>
+<li><strong>Update:</strong> сдвигаем параметры в сторону уменьшения loss.</li>
+<li>Повтор пока loss не станет маленьким.</li>
+</ol>
+
+<h2>2. Loss function</h2>
+<p>Самая простая для регрессии — <strong>MSE</strong> (Mean Squared Error):</p>
+<pre><code>L = (1/N) · Σ (y_pred - y_true)²</code></pre>
+<p>Чем больше ошибка — тем больше loss. Цель — минимизировать.</p>
+<p>Для классификации — <strong>Cross-Entropy</strong>:</p>
+<pre><code>L = -Σ y_true · log(y_pred)</code></pre>
+
+<h2>3. Gradient descent на пальцах</h2>
+<p>Loss — это функция от параметров: <code>L(w₁, w₂, ..., wₙ, b₁, ...)</code>. Мы в точке этой функции (текущие значения параметров) и хотим попасть в минимум.</p>
+<p><strong>Градиент</strong> <code>∂L/∂wᵢ</code> = в какую сторону loss растёт быстрее всего по wᵢ. Идём в противоположную сторону:</p>
+<pre><code>w_i ← w_i - learning_rate · ∂L/∂w_i</code></pre>
+<p>Это весь gradient descent в одной формуле.</p>
+
+<h2>4. Chain rule — сердце backprop</h2>
+<p>Сеть из нескольких слоёв = композиция функций. Чтобы посчитать градиент loss по весам первого слоя, нужно «протащить» производную через все слои.</p>
+<p>Chain rule из матанализа:</p>
+<pre><code>Если y = f(g(x)), то  dy/dx = (df/dg) · (dg/dx)</code></pre>
+<p>Для сети из L слоёв: градиент loss по весу w в слое 1 = произведение производных всех слоёв 2..L и самого слоя 1.</p>
+<p><strong>Backpropagation</strong> = алгоритм эффективного вычисления этих градиентов, идя от выхода ко входу.</p>
+
+<h2>5. Минимальный framework</h2>
+<p>Реализуем 4 базовых модуля: Linear, ReLU, Sigmoid, MSE.</p>
+<pre><code>import numpy as np
+
+class Linear:
+    def __init__(self, in_features, out_features):
+        # He init для ReLU
+        self.W = np.random.randn(in_features, out_features) * np.sqrt(2.0 / in_features)
+        self.b = np.zeros(out_features)
+        self.input = None
+        self.grad_W = None
+        self.grad_b = None
+
+    def forward(self, x):
+        self.input = x  # запоминаем для backward
+        return x @ self.W + self.b
+
+    def backward(self, grad_output):
+        # grad по W: x.T @ grad_output
+        self.grad_W = self.input.T @ grad_output
+        self.grad_b = grad_output.sum(axis=0)
+        # grad для предыдущего слоя
+        return grad_output @ self.W.T
+
+
+class ReLU:
+    def __init__(self):
+        self.mask = None
+
+    def forward(self, x):
+        self.mask = (x > 0).astype(float)
+        return x * self.mask
+
+    def backward(self, grad_output):
+        return grad_output * self.mask
+
+
+class Sigmoid:
+    def __init__(self):
+        self.output = None
+
+    def forward(self, x):
+        self.output = 1 / (1 + np.exp(-x))
+        return self.output
+
+    def backward(self, grad_output):
+        return grad_output * self.output * (1 - self.output)
+
+
+class MSE:
+    def forward(self, y_pred, y_true):
+        self.y_pred = y_pred
+        self.y_true = y_true
+        return ((y_pred - y_true) ** 2).mean()
+
+    def backward(self):
+        return 2 * (self.y_pred - self.y_true) / self.y_true.size</code></pre>
+
+<h2>6. Собираем сеть и обучаем XOR</h2>
+<pre><code>class Network:
+    def __init__(self, layers):
+        self.layers = layers
+
+    def forward(self, x):
+        for layer in self.layers:
+            x = layer.forward(x)
+        return x
+
+    def backward(self, grad):
+        for layer in reversed(self.layers):
+            grad = layer.backward(grad)
+
+    def step(self, lr):
+        for layer in self.layers:
+            if isinstance(layer, Linear):
+                layer.W -= lr * layer.grad_W
+                layer.b -= lr * layer.grad_b
+
+
+# XOR data
+X = np.array([[0,0],[0,1],[1,0],[1,1]], dtype=float)
+y = np.array([[0],[1],[1],[0]], dtype=float)
+
+net = Network([
+    Linear(2, 4),
+    ReLU(),
+    Linear(4, 1),
+    Sigmoid(),
+])
+loss_fn = MSE()
+
+for epoch in range(2000):
+    y_pred = net.forward(X)
+    loss = loss_fn.forward(y_pred, y)
+    grad = loss_fn.backward()
+    net.backward(grad)
+    net.step(lr=0.1)
+    if epoch % 200 == 0:
+        print(f"Epoch {epoch}, loss: {loss:.4f}")
+
+print("Predictions:", net.forward(X).round(2))</code></pre>
+<p>Запусти. Через 1000 эпох loss упадёт до ~0.001, predictions станут [[0],[1],[1],[0]]. Ты обучил нейросеть.</p>
+
+<h2>7. Что мы только что сделали</h2>
+<ul>
+<li>Написали <strong>forward pass</strong> через слои.</li>
+<li>Реализовали <strong>backpropagation</strong> через chain rule.</li>
+<li>Сделали <strong>SGD optimizer</strong> (Stochastic Gradient Descent в простейшей форме).</li>
+<li>Использовали <strong>He initialization</strong> для весов.</li>
+<li>Решили <strong>XOR</strong> — задачу, которая убила перцептроны 1969 года.</li>
+</ul>
+<p>~80 строк кода. И это база любого современного фреймворка.</p>
+
+<h2>8. Что добавляют настоящие фреймворки</h2>
+<ul>
+<li><strong>Auto-grad</strong> — автоматически считают backward (не пишешь руками).</li>
+<li><strong>GPU поддержка</strong> — CUDA, MPS.</li>
+<li><strong>Оптимизаторы</strong> — Adam, AdamW, RMSprop (умнее SGD).</li>
+<li><strong>Регуляризация</strong> — dropout, weight decay, batch norm.</li>
+<li><strong>Утилиты</strong> — DataLoader, checkpointing, schedulers.</li>
+<li><strong>Слои</strong> — Conv, LSTM, Attention.</li>
+</ul>
+
+<h2>9. Распространённые ошибки при обучении</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Loss не падает.</strong> Слишком большой learning rate (взрывается) или слишком маленький (не двигается). Попробуй 0.01, 0.001.</li>
+<li><strong>Loss = NaN.</strong> Произошло overflow — обычно из-за высокого LR или sigmoid с очень большими/маленькими z. Проверь масштаб данных.</li>
+<li><strong>Loss падает, точность не растёт.</strong> Метрика неправильно меряет (или есть утечка в данных).</li>
+<li><strong>Веса начинаются с нулей.</strong> Все нейроны учатся одному. Используй случайную инициализацию.</li>
+<li><strong>Vanishing gradients.</strong> Sigmoid в глубоких сетях: градиент стремится к нулю. Лечение — ReLU.</li>
+</ul>
+</div>
+
+<h2>10. Глоссарий</h2>
+<div class="glossary-term"><h3>Forward pass</h3><p>Прогон входа через сеть — получение предсказания.</p></div>
+<div class="glossary-term"><h3>Loss function</h3><p>Функция, которая измеряет ошибку. MSE, Cross-Entropy.</p></div>
+<div class="glossary-term"><h3>Backward pass / Backprop</h3><p>Вычисление градиентов loss по всем параметрам с применением chain rule.</p></div>
+<div class="glossary-term"><h3>Gradient descent</h3><p>Метод оптимизации: идёшь в сторону, противоположную градиенту.</p></div>
+<div class="glossary-term"><h3>Learning rate</h3><p>Размер шага обновления весов. Один из главных гиперпараметров.</p></div>
+<div class="glossary-term"><h3>Epoch</h3><p>Один полный проход по всем данным.</p></div>
+
+<h2>11. Практика (90 минут)</h2>
+<ol>
+<li>Скопируй framework из урока в файл и запусти на XOR.</li>
+<li>Добавь свой слой: <code>Tanh</code> (формула в Уроке 33).</li>
+<li>Попробуй разные learning rate: 0.001, 0.01, 0.1, 1.0 — посмотри что происходит.</li>
+<li>Замени XOR на MNIST (можно через sklearn.datasets) — настоящий датасет.</li>
+<li>Сравни время обучения с PyTorch на той же задаче.</li>
+<li>В <code>progress.md</code> зафиксируй: какие гипер-параметры лучше всего сработали.</li>
+</ol>
+
+<h2>12. Проверь себя</h2>
+<p><strong>1. Цикл обучения нейросети в 4 шагах?</strong><br>Forward → Loss → Backward → Update. Повтор.</p>
+<p><strong>2. Что такое gradient descent?</strong><br>Метод оптимизации: считаем градиент loss по параметру, идём в противоположную сторону.</p>
+<p><strong>3. Зачем chain rule в backprop?</strong><br>Чтобы посчитать градиент loss по весам внутренних слоёв через производные внешних слоёв.</p>
+<p><strong>4. Почему нельзя инициализировать веса нулями?</strong><br>Все нейроны будут учиться одному и тому же — нет смысла в нескольких нейронах.</p>
+<p><strong>5. Что значит «loss = NaN» в логах?</strong><br>Численное переполнение. Обычно: слишком большой LR, или sigmoid с экстремальными значениями. Уменьши LR или нормализуй данные.</p>
+
+<h2>13. Что должно остаться в голове</h2>
+<ol>
+<li>Обучение = Forward + Loss + Backward + Update в цикле.</li>
+<li>Backprop = chain rule, идущий от loss к входам слой за слоем.</li>
+<li>Loss функция = MSE для регрессии, Cross-Entropy для классификации.</li>
+<li>SGD: w ← w − lr · gradient.</li>
+<li>He initialization для ReLU, Xavier для tanh/sigmoid.</li>
+<li>Современные фреймворки = тот же базовый цикл + auto-grad + GPU + optimizers.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> если запустил свой framework и обучил XOR — поздравляю, ты понимаешь больше, чем 90% людей, работающих с ML. Дальше — PyTorch (Урок 35), но идеи те же.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-34">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

@@ -9,31 +9,501 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Урок 7. Чат-приложение с памятью">
 <meta property="og:description" content="Урок 7 из курса AI на русском. Чат-приложение с памятью. ~60 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/7.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/7.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/7.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Урок 7. Чат-приложение с памятью">
 <meta name="twitter:description" content="Урок 7 из курса AI на русском. Чат-приложение с памятью. ~60 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/7.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/7.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/7.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-7');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Урок 7. Чат-приложение с памятью","description":"Урок 7 из курса AI на русском. Чат-приложение с памятью. ~60 мин.","url":"https://ai.madzhitov.ru/lessons/7.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/7.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 7</span></div>
 <h1>Урок 7. Чат-приложение с памятью</h1>
-<p>Урок 7 из курса AI на русском. Чат-приложение с памятью. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-7">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> сделать чат-бот, который помнит контекст разговора</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/07</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Скрипт из урока 6 — однократный вызов: «введи промпт → получи ответ → конец». Реальные ИИ-продукты — почти все чат-формата: бот помнит контекст, продолжает беседу, держит роль. ChatGPT, Claude.ai, корпоративные ассистенты — все построены на одной механике, которую ты освоишь сегодня.</p>
+<p>Отдельная сложность — <strong>память</strong>. LLM stateless: ничего не помнит между вызовами. «Память» — это то, что ты сам подсовываешь в контекст. Этот урок — про разные стратегии, как это делать правильно.</p>
+
+<h2>1. Stateless API и иллюзия памяти</h2>
+
+<p>Вспомни урок 1: каждый запрос к LLM API независим. Модель не «помнит» прошлые сообщения. Если ты хочешь, чтобы она знала контекст — <strong>ты должен отправить весь контекст</strong> в массиве <code>messages</code>:</p>
+
+<pre><code># Запрос 1
+client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "Меня зовут Иван"}]
+)
+# → "Приятно познакомиться, Иван!"
+
+# Запрос 2 — модель ничего не помнит
+client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "Как меня зовут?"}]
+)
+# → "Я не знаю, как вас зовут"
+
+# Запрос 2 правильный — передаём всю историю
+client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "user", "content": "Меня зовут Иван"},
+        {"role": "assistant", "content": "Приятно познакомиться, Иван!"},
+        {"role": "user", "content": "Как меня зовут?"}
+    ]
+)
+# → "Вас зовут Иван."</code></pre>
+
+<p>Вся «память» чат-бота — это твой массив сообщений, который ты ведёшь на стороне приложения и каждый раз отправляешь целиком.</p>
+
+<h2>2. Простейший чат-бот</h2>
+
+<pre><code>import os
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv()
+client = OpenAI()
+
+class ChatBot:
+    def __init__(self, system_prompt: str, model: str = "gpt-4o-mini"):
+        self.model = model
+        self.history = [{"role": "system", "content": system_prompt}]
+
+    def chat(self, user_msg: str) -> str:
+        self.history.append({"role": "user", "content": user_msg})
+
+        response = client.chat.completions.create(
+            model=self.model,
+            messages=self.history,
+            temperature=0.7
+        )
+        reply = response.choices[0].message.content
+
+        # сохраняем ответ в историю — он понадобится в следующих запросах
+        self.history.append({"role": "assistant", "content": reply})
+        return reply
+
+
+# Используем
+bot = ChatBot("Ты помощник по фитнесу. Кратко, по делу. Спрашивай уточняющие вопросы.")
+
+while True:
+    msg = input("Ты: ")
+    if msg.lower() in ("exit", "quit", "выход"):
+        break
+    print("Бот:", bot.chat(msg))</code></pre>
+
+<p>Запускаешь — получаешь рабочий чат с ботом, который помнит весь разговор.</p>
+
+<h2>3. Проблема: контекст растёт</h2>
+
+<p>На 5-м сообщении массив <code>history</code> содержит 11 элементов (1 system + 10 messages), на 50-м — уже 101. Что в этом плохого:</p>
+
+<ol>
+<li><strong>Цена.</strong> Каждый запрос отправляет всю историю. На 50-м сообщении ты платишь за токены 50 предыдущих + новый.</li>
+<li><strong>Лимит.</strong> Контекстное окно ограничено (128k у GPT-4o). На очень длинных диалогах упрёшься.</li>
+<li><strong>Качество.</strong> «Lost in the middle» — модель хуже помнит середину длинного контекста.</li>
+<li><strong>Latency.</strong> Большой контекст обрабатывается дольше.</li>
+</ol>
+
+<p>Решение — <strong>стратегии управления историей</strong>.</p>
+
+<h2>4. Стратегия 1: Sliding Window (скользящее окно)</h2>
+
+<h3>Идея</h3>
+<p>Хранить только последние N сообщений. Старое — забывать.</p>
+
+<pre><code>class ChatBot:
+    def __init__(self, system_prompt: str, max_history: int = 10):
+        self.system_prompt = system_prompt
+        self.max_history = max_history
+        self.history = []
+
+    def chat(self, user_msg: str) -> str:
+        self.history.append({"role": "user", "content": user_msg})
+
+        # отрезаем sliding window
+        recent = self.history[-self.max_history:]
+        messages = [{"role": "system", "content": self.system_prompt}] + recent
+
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=messages,
+            temperature=0.7
+        )
+        reply = response.choices[0].message.content
+        self.history.append({"role": "assistant", "content": reply})
+        return reply</code></pre>
+
+<h3>Когда подходит</h3>
+<ul>
+<li>Короткие фокусные диалоги (helpdesk, FAQ).</li>
+<li>Не нужно помнить детали из начала.</li>
+</ul>
+
+<h3>Минусы</h3>
+<ul>
+<li>Бот «забывает» имя, контекст, ранние решения.</li>
+<li>Резкая граница: 10 сообщений помнит, 11-е — забыл начисто.</li>
+</ul>
+
+<h2>5. Стратегия 2: Summary (саммари)</h2>
+
+<h3>Идея</h3>
+<p>Когда история становится длинной, просим модель <strong>суммировать</strong> старую часть и заменяем её на summary.</p>
+
+<pre><code>class ChatBot:
+    def __init__(self, system_prompt: str, summarize_every: int = 20):
+        self.system_prompt = system_prompt
+        self.summarize_every = summarize_every
+        self.summary = ""
+        self.recent = []  # последние сообщения, не сжатые
+
+    def _summarize_old(self, old_messages):
+        text = "\n".join([f"{m['role']}: {m['content']}" for m in old_messages])
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "Сожми диалог в краткое саммари ключевых фактов и решений (1 абзац)."},
+                {"role": "user", "content": text}
+            ]
+        )
+        return response.choices[0].message.content
+
+    def chat(self, user_msg: str) -> str:
+        self.recent.append({"role": "user", "content": user_msg})
+
+        # компонуем системный промпт с актуальным саммари
+        sys = self.system_prompt
+        if self.summary:
+            sys += f"\n\nКонтекст из предыдущей части диалога: {self.summary}"
+
+        messages = [{"role": "system", "content": sys}] + self.recent
+
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=messages,
+            temperature=0.7
+        )
+        reply = response.choices[0].message.content
+        self.recent.append({"role": "assistant", "content": reply})
+
+        # если накопилось много — сжимаем старое
+        if len(self.recent) >= self.summarize_every:
+            old = self.recent[:-10]   # сжимаем всё кроме последних 10
+            self.recent = self.recent[-10:]
+            new_summary = self._summarize_old(old)
+            self.summary = (
+                f"{self.summary}\n{new_summary}" if self.summary else new_summary
+            )
+
+        return reply</code></pre>
+
+<h3>Когда подходит</h3>
+<ul>
+<li>Длинные обучающие диалоги (репетитор, ментор).</li>
+<li>Долгое сопровождение клиента.</li>
+<li>Когда важны ранние решения и факты.</li>
+</ul>
+
+<h3>Минусы</h3>
+<ul>
+<li>Дополнительные вызовы LLM (1 саммари = 1 запрос).</li>
+<li>Информация теряется при сжатии.</li>
+<li>Качество саммари влияет на всё дальнейшее.</li>
+</ul>
+
+<h2>6. Стратегия 3: Hierarchical (иерархическая)</h2>
+
+<p>Гибрид:</p>
+<ul>
+<li>Последние 5–10 сообщений — целиком.</li>
+<li>Чуть более старые — суммаризированы по 5 в одну запись.</li>
+<li>Древние — глобальное саммари «о чём вообще шёл разговор».</li>
+</ul>
+
+<p>Сложнее в реализации, но даёт хороший баланс «точность недавнего» + «общее понимание».</p>
+
+<h2>7. Стратегия 4: Vector memory (векторная память)</h2>
+
+<p>Самая мощная: храним все сообщения в <strong>векторной БД</strong>, при каждом запросе достаём релевантные текущему вопросу. Это уже <strong>RAG</strong> — будем разбирать в уроке 14. Тут просто упомянем для полноты.</p>
+
+<h2>8. Подсчёт токенов и обрезка</h2>
+
+<p>Чтобы понять, когда применять стратегию — нужно считать токены. Есть библиотека <code>tiktoken</code> (для OpenAI):</p>
+
+<pre><code>pip install tiktoken</code></pre>
+
+<pre><code>import tiktoken
+
+def count_tokens(messages, model="gpt-4o-mini"):
+    enc = tiktoken.encoding_for_model(model)
+    total = 0
+    for m in messages:
+        # в реальности OpenAI добавляет ~4 токена на сообщение для метаданных
+        total += len(enc.encode(m["content"])) + 4
+    return total + 2  # +2 для приоритета</code></pre>
+
+<p>Перед запросом проверяй и обрезай:</p>
+
+<pre><code>MAX_CONTEXT = 100_000  # с запасом
+
+while count_tokens(messages) > MAX_CONTEXT:
+    # удаляем второе сообщение (после system)
+    messages.pop(1)</code></pre>
+
+<h2>9. System prompt — главный инструмент устойчивости</h2>
+
+<p>System prompt задаётся один раз и держит характер бота на весь диалог. Сюда кладём:</p>
+
+<ul>
+<li><strong>Роль и сфера.</strong></li>
+<li><strong>Стиль общения</strong> (тон, длина ответов).</li>
+<li><strong>Правила поведения.</strong></li>
+<li><strong>Что делать в граничных случаях.</strong></li>
+<li><strong>Что НЕ делать.</strong></li>
+</ul>
+
+<h3>Пример хорошего system prompt</h3>
+<pre><code>SYSTEM = """Ты — Никита, виртуальный помощник студии веб-разработки.
+Твоя задача — помочь клиенту понять, подойдём ли мы под его проект.
+
+Стиль:
+- Прямо и по делу, без воды.
+- Короткие ответы (2-4 предложения).
+- На "ты", дружелюбно, но профессионально.
+
+Что ты делаешь:
+- Спрашиваешь про проект клиента: цели, бюджет, сроки.
+- Объясняешь наши услуги (разработка сайтов, мобильные приложения).
+- Если клиент готов — предлагаешь созвон с менеджером.
+
+Что ты НЕ делаешь:
+- Не называешь конкретные цены — это решает менеджер на созвоне.
+- Не обещаешь сроков.
+- Не отвечаешь на вопросы вне темы (политика, погода и т.п.) —
+  вежливо возвращаешь к теме проекта.
+
+Если не знаешь ответа на технический вопрос — скажи прямо
+"уточню у команды и вернусь" и предложи оставить контакты."""</code></pre>
+
+<h2>10. Persistence — сохранение между сессиями</h2>
+
+<p>Если бот должен помнить тебя между запусками — сохраняй историю в файл:</p>
+
+<pre><code>import json
+from pathlib import Path
+
+class ChatBot:
+    def __init__(self, system_prompt, history_file="chat_history.json"):
+        self.system_prompt = system_prompt
+        self.history_file = Path(history_file)
+        self.history = self._load()
+
+    def _load(self):
+        if self.history_file.exists():
+            with open(self.history_file) as f:
+                return json.load(f)
+        return []
+
+    def _save(self):
+        with open(self.history_file, "w") as f:
+            json.dump(self.history, f, ensure_ascii=False, indent=2)
+
+    def chat(self, user_msg):
+        self.history.append({"role": "user", "content": user_msg})
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "system", "content": self.system_prompt}] + self.history[-20:],
+            temperature=0.7
+        )
+        reply = response.choices[0].message.content
+        self.history.append({"role": "assistant", "content": reply})
+        self._save()
+        return reply</code></pre>
+
+<p>Для production — лучше БД (SQLite, Postgres), не JSON-файл.</p>
+
+<h2>11. UI на Streamlit за 30 строк</h2>
+
+<p>Терминал — для отладки. Для пользователей — нужен веб-UI. Streamlit делает это за 5 минут.</p>
+
+<pre><code>pip install streamlit</code></pre>
+
+<p>Файл <code>chat_app.py</code>:</p>
+
+<pre><code>import streamlit as st
+from openai import OpenAI
+client = OpenAI()
+
+st.title("🤖 Мой AI помощник")
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+SYSTEM = "Ты дружелюбный помощник."
+
+# показать историю
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.markdown(msg["content"])
+
+# поле ввода
+if user_msg := st.chat_input("Напиши что-нибудь..."):
+    st.session_state.messages.append({"role": "user", "content": user_msg})
+    with st.chat_message("user"):
+        st.markdown(user_msg)
+
+    # генерируем ответ со streaming
+    with st.chat_message("assistant"):
+        stream = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "system", "content": SYSTEM}] +
+                     st.session_state.messages,
+            stream=True
+        )
+        reply = st.write_stream(stream)
+    st.session_state.messages.append({"role": "assistant", "content": reply})</code></pre>
+
+<p>Запуск:</p>
+<pre><code>streamlit run chat_app.py</code></pre>
+
+<p>Откроется браузер. Получаешь полноценный чат-интерфейс с:</p>
+<ul>
+<li>Аватарами user / assistant.</li>
+<li>Историей в session.</li>
+<li>Streaming ответа.</li>
+<li>Адаптивным дизайном.</li>
+</ul>
+
+<h2>12. Тонкости</h2>
+
+<h3>Не клади всё в system prompt</h3>
+<p>Если у тебя 50-страничный мануал, и ты пихаешь его в system prompt каждого запроса — ты платишь за него каждый раз. Лучше — RAG (урок 14): подгружать релевантные куски только когда нужно.</p>
+
+<h3>System prompt и role-confusion</h3>
+<p>Иногда модель «забывает» о своей роли в долгих диалогах, если пользователь активно её сбивает. Лекарство: <strong>повторять ключевые правила</strong> либо в начале, либо в конце контекста (помним про lost in the middle).</p>
+
+<h3>Идентификация пользователя</h3>
+<p>В мульти-пользовательском боте нельзя смешивать историю разных людей. Каждому юзеру — отдельный <code>history</code>, ключуй по user_id.</p>
+
+<h3>Цензура и фильтры</h3>
+<p>Если бот публичный — добавь Moderation API:</p>
+<pre><code>moderation = client.moderations.create(input=user_msg)
+if moderation.results[0].flagged:
+    return "Я не могу ответить на это."</code></pre>
+
+<h3>Streaming + не блокирующий UI</h3>
+<p>В Streamlit это делается одной строкой <code>st.write_stream(stream)</code>. В голом Flask/FastAPI — через Server-Sent Events.</p>
+
+<h2>13. Глоссарий</h2>
+<ul>
+<li><strong>Conversation history</strong> — массив сообщений диалога.</li>
+<li><strong>Sliding window</strong> — окно последних N сообщений.</li>
+<li><strong>Summary memory</strong> — сжатие старого в короткое описание.</li>
+<li><strong>Hierarchical memory</strong> — многоуровневая память.</li>
+<li><strong>Vector memory</strong> — поиск релевантного по эмбеддингам (RAG).</li>
+<li><strong>tiktoken</strong> — библиотека OpenAI для подсчёта токенов.</li>
+<li><strong>Context overflow</strong> — переполнение контекстного окна.</li>
+<li><strong>Persistence</strong> — сохранение состояния между сессиями.</li>
+<li><strong>Streamlit</strong> — Python-фреймворк для быстрых веб-приложений.</li>
+<li><strong>Moderation API</strong> — фильтр вредного контента.</li>
+</ul>
+
+<h2>14. Практика (60 минут)</h2>
+
+<h3>Упражнение 1. Базовый бот (15 минут)</h3>
+<p>Реализуй <code>ChatBot</code> из секции 2. Запусти в терминале. Поговори с ним 10 сообщений. Заметь, что он помнит контекст.</p>
+
+<h3>Упражнение 2. Sliding window (10 минут)</h3>
+<p>Добавь <code>max_history=4</code>. Дай боту имя в первом сообщении, веди диалог. На 6-м сообщении спроси «как меня зовут?». Должен забыть. Увеличь до 20 — должен помнить.</p>
+
+<h3>Упражнение 3. Persistence (15 минут)</h3>
+<p>Добавь сохранение/загрузку истории из JSON-файла. Перезапусти скрипт между сообщениями. Бот должен помнить всё.</p>
+
+<h3>Упражнение 4. Streamlit-UI (20 минут)</h3>
+<p>Подними <code>chat_app.py</code> из секции 11. Запусти. Поэкспериментируй: добавь кнопку «Очистить историю», изменение системного промпта через sidebar, отображение количества токенов.</p>
+
+<h3>Упражнение 5. Свой характер (бонус)</h3>
+<p>Напиши <strong>хороший</strong> system prompt для бота под свою задачу. Применяй принципы из урока 4. Прогоняй через бота 20 разных запросов, проверь устойчивость роли.</p>
+
+<h2>15. Проверь себя</h2>
+
+<p><strong>1. Почему чат «помнит» если LLM stateless?</strong><br>
+Приложение хранит историю на своей стороне и подставляет её в каждый запрос. Сама LLM ничего не помнит.</p>
+
+<p><strong>2. Что такое sliding window?</strong><br>
+Стратегия памяти: храним только последние N сообщений, остальное выбрасываем.</p>
+
+<p><strong>3. Зачем считать токены?</strong><br>
+Чтобы не упереться в лимит контекста и не платить за лишнее. Также — чтобы заранее обрезать историю.</p>
+
+<p><strong>4. Когда нужен summary вместо sliding window?</strong><br>
+Когда важно помнить ранние решения/факты, но не каждое слово. Жертвуем точностью ради покрытия.</p>
+
+<p><strong>5. Что обязательно в system prompt?</strong><br>
+Роль, стиль общения, что делать, чего не делать, что в граничных случаях.</p>
+
+<p><strong>6. У меня 100 пользователей бота. Что важно?</strong><br>
+Хранить историю отдельно для каждого user_id, никогда не смешивать. Идентифицировать по сессии или auth.</p>
+
+<p><strong>7. Бот теряет роль на 30-м сообщении. Что делать?</strong><br>
+(а) Проверить, не выпал ли system prompt из окна. (б) Дублировать ключевые правила в начале или конце контекста. (в) Использовать summary-стратегию, оставляя главное в саммари.</p>
+
+<p><strong>8. Streamlit vs голый Flask — что выбрать?</strong><br>
+Streamlit — для быстрых прототипов и внутренних инструментов. 30 строк = рабочий чат. Flask/FastAPI — для production: контроль над HTTP, мульти-юзер, аутентификация.</p>
+
+<p><strong>9. Как сохранить историю на 1000 пользователей?</strong><br>
+SQLite или Postgres, таблица <code>(user_id, role, content, timestamp)</code>. JSON-файл подойдёт только для одного пользователя.</p>
+
+<p><strong>10. Как защитить чат от вредных запросов?</strong><br>
+Moderation API на входе и/или выходе. Чёткий system prompt с явным «что не делать». Логирование и алерты на странные паттерны.</p>
+
+<h2>16. Что должно остаться в голове</h2>
+<ol>
+<li><strong>Память = массив <code>messages[]</code></strong>, который ведёшь сам.</li>
+<li><strong>Sliding window</strong> — простой и часто достаточный вариант.</li>
+<li><strong>Summary</strong> — для долгих диалогов с важной историей.</li>
+<li><strong>Vector memory (RAG)</strong> — самая мощная, в уроке 14.</li>
+<li><strong>System prompt</strong> — главный инструмент устойчивости характера.</li>
+<li><strong>Persistence</strong> между сессиями — JSON для прототипа, БД для prod.</li>
+<li><strong>Streamlit</strong> — UI за 30 строк.</li>
+<li><strong>Moderation API</strong> для публичных ботов.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> в <code>my-ai-app/</code> у тебя теперь рабочий чат-бот. Это база для всех будущих проектов — RAG-бот, агент, ассистент. Сохрани шаблон — пригодится.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-7">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

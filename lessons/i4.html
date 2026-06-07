@@ -9,31 +9,212 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="ИИ для разработчиков: вне Cursor и Copilot">
 <meta property="og:description" content="I4 из курса AI на русском. ИИ для разработчиков: вне Cursor и Copilot. ~60 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/i4.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/i4.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/i4.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ИИ для разработчиков: вне Cursor и Copilot">
 <meta name="twitter:description" content="I4 из курса AI на русском. ИИ для разработчиков: вне Cursor и Copilot. ~60 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/i4.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/i4.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/i4.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-i4');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"ИИ для разработчиков: вне Cursor и Copilot","description":"I4 из курса AI на русском. ИИ для разработчиков: вне Cursor и Copilot. ~60 мин.","url":"https://ai.madzhitov.ru/lessons/i4.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/i4.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Индустрия</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">I4</span></div>
 <h1>ИИ для разработчиков: вне Cursor и Copilot</h1>
-<p>I4 из курса AI на русском. ИИ для разработчиков: вне Cursor и Copilot. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-i4">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> расширить use cases AI в разработке за пределы автодополнения кода</span>
+  <span><strong>Время:</strong> ~55 минут</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Cursor и Copilot ты уже используешь. Но «ИИ для разработчика» — это куда больше: код-ревью, миграции, документация, отладка, рефакторинг, навигация по большому коду. Этот урок — про инструменты и приёмы, которые удваивают производительность <em>после</em> базового AI-autocomplete.</p>
+
+<h2>1. Карта инструментов 2026</h2>
+<table>
+<tr><th>Категория</th><th>Инструменты</th><th>Что делает</th></tr>
+<tr><td>Inline-помощник в IDE</td><td>Cursor, GitHub Copilot, Continue.dev</td><td>Автодополнение и чат прямо в редакторе</td></tr>
+<tr><td>Терминальные агенты</td><td>Claude Code, Aider, OpenHands, Codex CLI</td><td>Многошаговые правки в репозитории</td></tr>
+<tr><td>Code review</td><td>CodeRabbit, GitHub Copilot Reviews</td><td>Авто-комменты на PR</td></tr>
+<tr><td>Документация</td><td>Mintlify, ReadMe AI</td><td>Из кода — в доки</td></tr>
+<tr><td>Поиск по коду</td><td>Sourcegraph Cody, Cursor @-mentions</td><td>Семантический поиск</td></tr>
+<tr><td>Дебаг и логи</td><td>Honeycomb AI, Datadog Bits</td><td>Объяснение алертов</td></tr>
+<tr><td>Тесты</td><td>Codium AI, Cursor</td><td>Генерация тестов и покрытия</td></tr>
+<tr><td>Миграции</td><td>Bloop, Cody, Claude Code</td><td>Большие рефакторинги</td></tr>
+</table>
+
+<h2>2. Терминальные агенты — следующий уровень</h2>
+<p><strong>Claude Code, Aider, OpenHands</strong> — это <em>не</em> «чат в IDE». Это <strong>агент в твоём терминале</strong>, который читает репозиторий, делает изменения, запускает тесты, исправляет ошибки.</p>
+<p>Реальный workflow:</p>
+<pre><code># В терминале репозитория:
+claude
+
+# Дальше — диалог:
+&gt; Перепиши все вызовы fetch() на нашу обёртку httpClient в файлах src/.
+
+# Claude читает файлы, делает изменения, запускает тесты, показывает дифф.</code></pre>
+<p>Это решает задачи, которые в IDE-чате тяжелы: «миграция через 50 файлов», «найди все использования X и обнови», «почини все эти тесты».</p>
+
+<h2>3. Code review с ИИ</h2>
+<p><strong>Личный chek-list:</strong> возьми свой PR → отправь в Claude/GPT:</p>
+<pre><code>Дифф моего PR: [diff]
+Контекст: [что я делаю и зачем]
+
+Проверь:
+1. Логические ошибки.
+2. Edge cases, которые я не учёл.
+3. Production-риски (race conditions, deadlocks, утечки).
+4. Стиль кода (не соответствует ли соседним файлам).
+5. Тесты — что я не покрыл.
+6. Безопасность (SQL injection, XSS, утечки данных).
+7. Performance — где O(n²) или N+1.
+
+Каждый пункт с примером из моего кода.</code></pre>
+<p><strong>На команду:</strong> CodeRabbit или Copilot Reviews. Авто-комменты на каждый PR. Качество ~70% полезных комментов; остальное — шум, который ты учишься игнорировать.</p>
+
+<h2>4. Документация</h2>
+<p>«Сгенерируй README» работает плохо. Работает по-другому:</p>
+<pre><code>Я хочу написать раздел README про [feature].
+
+Вот ключевые файлы реализации: [paste code].
+
+Сделай:
+1. Краткое описание (1 абзац) — что это и зачем.
+2. Quick start (5–7 строк).
+3. Полный пример с typical use case.
+4. Список параметров с типами и дефолтами.
+5. Известные ограничения и troubleshooting.
+
+Стиль: примеры с конкретикой, не общие фразы.</code></pre>
+
+<h2>5. Дебаг через ИИ</h2>
+<p>Классический паттерн «вставить ошибку, спросить, что не так» — работает. Лучше:</p>
+<pre><code>Стек трейс: [paste]
+Контекст: что я делал когда упало.
+
+Релевантные файлы: [paste 2–3 файла, где, по-моему, проблема]
+
+Логи перед ошибкой: [paste].
+
+1. Что произошло (твой best guess).
+2. 3 наиболее вероятные причины — от наиболее вероятной к менее.
+3. Для каждой — как проверить.
+4. Что чинит проблему, если причина X.</code></pre>
+<p>Это убирает 90% «попугаев», когда ты копи-пастишь ошибки.</p>
+
+<h2>6. Большие миграции</h2>
+<p>Реальный кейс: «перевести 200 файлов с Class Components на Hooks в React».</p>
+<ol>
+<li>Сначала — <strong>стратегия</strong>. Спроси Claude: «вот один файл, покажи мне рецепт миграции — какие паттерны, какие проблемы».</li>
+<li>Утверди рецепт.</li>
+<li>Claude Code или Aider в режиме «применить ко всем файлам по очереди» с твоим утверждённым рецептом.</li>
+<li>Запускать тесты после каждого файла.</li>
+<li>Ты ревьюешь diff, а не пишешь код.</li>
+</ol>
+
+<h2>7. Навигация в большом коде</h2>
+<p>Зашёл в новый проект, 200k строк. Раньше — неделя на onboarding. Сейчас:</p>
+<pre><code>Sourcegraph Cody / Cursor с @codebase:
+
+&gt; Где в коде реализована логика отмены подписки?
+&gt; Какие сервисы зависят от модуля payments?
+&gt; Объясни поток данных от формы регистрации до сохранения в БД.</code></pre>
+
+<h2>8. Производственные приёмы</h2>
+<ul>
+<li><strong>Promtbook.</strong> Сохраняй свои топ-промпты в notion/markdown. Это твой главный технический актив.</li>
+<li><strong>System prompt для своего стиля.</strong> Описание твоего стандарта кода + примеры → каждый ответ будет в твоём стиле.</li>
+<li><strong>Claude Projects</strong> с прикреплённой документацией твоего проекта — выгоднее, чем каждый раз объяснять контекст.</li>
+<li><strong>Vector-search над репозиторием</strong> (LlamaIndex) — для большого кодбейза.</li>
+<li><strong>Двухмодельная стратегия.</strong> Дешёвая для автодополнения, дорогая для архитектурных вопросов.</li>
+</ul>
+
+<h2>9. Чего избегать</h2>
+<div class="callout callout-danger">
+<ul>
+<li><strong>«AI напишет всю фичу с нуля»</strong> — кончается багами, которые ты не понимаешь.</li>
+<li><strong>Принимать предложения без чтения.</strong> Особенно security-критичный код. Реальные случаи: AI вставил <code>eval()</code>, AI отключил CSRF проверку «для упрощения».</li>
+<li><strong>Загружать секреты в публичный chat.</strong> API ключи, токены, продакшен-конфиги.</li>
+<li><strong>Игнорировать корпоративные политики.</strong> Многие компании запрещают копировать код в публичные модели.</li>
+<li><strong>Слепо верить тестам, которые AI же написал.</strong> Часто они тестируют то, что есть, а не то, что должно быть.</li>
+</ul>
+</div>
+
+<h2>10. Метрика, которую стоит мерять</h2>
+<p>«AI экономит мне N часов в неделю» — туманно. Лучше:</p>
+<ul>
+<li>Время на типовую задачу до и после.</li>
+<li>Количество PR в неделю — личный или командный.</li>
+<li>Время на onboarding нового человека в проект.</li>
+<li>Качество (баги в проде) — не растёт ли?</li>
+</ul>
+
+<h2>11. Тонкости</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Cursor vs Copilot:</strong> Cursor лучше для агентских задач, Copilot — для inline-автодополнения.</li>
+<li><strong>Claude Sonnet 4.5</strong> — топ для серьёзного кода в 2026 (лидер SWE-Bench Verified). GPT-5 — для широты и скорости. Haiku 4.5 / GPT-5 mini — для дешёвого автодополнения.</li>
+<li><strong>Большие репо.</strong> Inline-инструменты с @codebase работают через embeddings, могут пропустить релевантные файлы. Проверяй.</li>
+<li><strong>Open-source альтернативы:</strong> Continue.dev (бесплатный заменитель Cursor), Aider (open-source аналог Claude Code).</li>
+</ul>
+</div>
+
+<h2>12. Глоссарий</h2>
+<div class="glossary-term"><h3>Inline-помощник</h3><p>AI в редакторе с автодополнением и чатом. Cursor, Copilot, Continue.</p></div>
+<div class="glossary-term"><h3>Терминальный агент</h3><p>AI в терминале, действующий через файловую систему и git. Claude Code, Aider.</p></div>
+<div class="glossary-term"><h3>Codebase-aware</h3><p>AI-инструмент, индексирующий весь твой репозиторий и понимающий контекст.</p></div>
+<div class="glossary-term"><h3>Promtbook</h3><p>Твоя личная или командная коллекция отлаженных промптов для рутинных задач.</p></div>
+
+<h2>13. Практика (55 минут)</h2>
+<ol>
+<li>Установи Claude Code или Aider в один из своих репо.</li>
+<li>Дай ему задачу из 5+ файлов — «сделай рефакторинг X».</li>
+<li>Сделай code-review своему последнему PR через промпт выше.</li>
+<li>Создай Claude Project с документацией твоего основного проекта.</li>
+<li>Запиши в <code>progress.md</code> — что новое в твоём workflow.</li>
+</ol>
+
+<h2>14. Проверь себя</h2>
+<p><strong>1. Чем терминальный агент отличается от IDE-чата?</strong><br>Действует через файловую систему, может править несколько файлов и запускать команды. IDE-чат — один файл за раз.</p>
+<p><strong>2. Какой паттерн для больших миграций?</strong><br>Утвердить рецепт на одном файле → агент применяет к остальным → ты ревьюешь diff, а не пишешь код.</p>
+<p><strong>3. Где ИИ опасен в разработке?</strong><br>Security-критичный код, прод-конфиги, секреты, слепое принятие тестов AI.</p>
+<p><strong>4. Что такое promtbook и зачем?</strong><br>Личная/командная коллекция отлаженных промптов — твой главный AI-актив.</p>
+
+<h2>15. Что должно остаться в голове</h2>
+<ol>
+<li>AI в разработке — это не только автодополнение. Терминальные агенты + code review + миграции + дебаг.</li>
+<li>Claude Code / Aider — для многошаговых правок через файловую систему.</li>
+<li>CodeRabbit / Copilot Reviews — авто-комменты на PR.</li>
+<li>Промпт-инжиниринг + promtbook + Claude Projects = твой основной актив.</li>
+<li>Двухмодельная стратегия экономит деньги.</li>
+<li>Безопасность: не вставляй секреты, читай diff перед принятием.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> разработчики 2026 без AI-инструментов — это разработчики 2010 без Git. Не уметь — карьерный риск.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-i4">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

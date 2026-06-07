@@ -9,31 +9,215 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="ИИ для HR: резюме, найм, обучение">
 <meta property="og:description" content="I3 из курса AI на русском. ИИ для HR: резюме, найм, обучение. ~60 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/i3.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/i3.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/i3.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ИИ для HR: резюме, найм, обучение">
 <meta name="twitter:description" content="I3 из курса AI на русском. ИИ для HR: резюме, найм, обучение. ~60 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/i3.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/i3.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/i3.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-i3');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"ИИ для HR: резюме, найм, обучение","description":"I3 из курса AI на русском. ИИ для HR: резюме, найм, обучение. ~60 мин.","url":"https://ai.madzhitov.ru/lessons/i3.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/i3.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Индустрия</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">I3</span></div>
 <h1>ИИ для HR: резюме, найм, обучение</h1>
-<p>I3 из курса AI на русском. ИИ для HR: резюме, найм, обучение. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-i3">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> применять ИИ в найме, оценке и обучении — этично, эффективно и с пониманием рисков</span>
+  <span><strong>Время:</strong> ~50 минут</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>HR — это работа с людьми и текстами о них: вакансии, резюме, интервью, performance-ревью, обучение. ИИ ускоряет всё это многократно. Но <strong>HR-область с самым высоким регуляторным риском</strong>: дискриминация по полу/возрасту/расе через AI — реальные иски в США и предмет EU AI Act. Этот урок — баланс эффективности и осторожности.</p>
+
+<h2>1. Где ИИ помогает</h2>
+<table>
+<tr><th>Задача</th><th>ROI</th><th>Риски</th></tr>
+<tr><td>Написание JD (job description)</td><td>10x скорость</td><td>Низкий</td></tr>
+<tr><td>Скрининг резюме</td><td>5–10x</td><td>⚠ Высокий — bias</td></tr>
+<tr><td>Подготовка вопросов для интервью</td><td>3x</td><td>Низкий</td></tr>
+<tr><td>Суммаризация записей интервью</td><td>5x</td><td>Средний — пропуск нюансов</td></tr>
+<tr><td>Анализ feedback от сотрудников</td><td>10x</td><td>Низкий — анонимизировать</td></tr>
+<tr><td>Персонализированные learning paths</td><td>5x</td><td>Низкий</td></tr>
+<tr><td>Onboarding-документация</td><td>5x</td><td>Низкий</td></tr>
+<tr><td>Performance review draft</td><td>3x</td><td>Средний — обязательная редактура</td></tr>
+<tr><td>Compensation решения</td><td>❌</td><td>Очень высокий</td></tr>
+</table>
+
+<h2>2. JD за 10 минут</h2>
+<pre><code>Сделай job description для роли [название].
+
+Контекст: компания [описание], в команде [состав], основные задачи [список].
+
+Структура:
+1. Краткое описание роли (3 предложения).
+2. Что человек будет делать (5–7 пунктов с конкретикой).
+3. Что мы ищем (must-have, не более 5).
+4. Что будет плюсом (nice-to-have, 3–5).
+5. Что мы предлагаем (без банальностей типа «дружный коллектив»).
+
+Тон: прямой, без HR-канцеляризмов. Никаких «энергичный и проактивный».
+Указать вилку зарплаты [сумма].
+Запрет: дискриминационные формулировки по возрасту, полу, семейному положению.</code></pre>
+
+<h2>3. Скрининг резюме — высокий риск</h2>
+<p>Использование ИИ для отсева кандидатов — <strong>самая опасная зона HR-AI</strong>:</p>
+<ul>
+<li><strong>Bias в модели.</strong> Amazon в 2018 закрыл свой AI-recruiter — он систематически занижал женские резюме (обучен на исторических данных компании).</li>
+<li><strong>EU AI Act (2024).</strong> Высокорисковая категория. Обязательны: документация, прозрачность, human-in-the-loop, audit log.</li>
+<li><strong>US — Title VII Civil Rights Act.</strong> Если AI отсев приводит к disparate impact на защищённую группу — иск.</li>
+<li><strong>NYC AEDT Law (2023).</strong> Любая AI-система для найма должна пройти ежегодный bias audit.</li>
+</ul>
+<p><strong>Что можно безопасно:</strong></p>
+<ul>
+<li>ИИ извлекает структурированные данные (опыт, навыки, образование) — человек решает.</li>
+<li>ИИ генерирует вопросы под конкретное резюме — человек ведёт интервью.</li>
+<li>Никаких автоматических отказов без human review.</li>
+</ul>
+
+<h3>Безопасный промпт-паттерн</h3>
+<pre><code>Извлеки из резюме структурированные данные:
+- Опыт работы (компании, годы, роли).
+- Навыки (технические + soft).
+- Образование.
+- Языки.
+- Релевантность к роли [название] — обоснуй на основе фактов.
+
+НЕ оценивай по возрасту, гендеру, фото, имени.
+НЕ давай финальный вердикт hire/no-hire.
+
+Формат: JSON.</code></pre>
+
+<h2>4. Подготовка к интервью</h2>
+<pre><code>Я провожу интервью на роль [название]. Кандидат: [резюме].
+
+1. 5 поведенческих вопросов с критериями оценки.
+2. 3 кейсовых вопроса с ожидаемой логикой ответа.
+3. 5 уточняющих вопросов про опыт.
+4. Красные флаги, которые нужно проверить.
+5. Что вероятно — сильные стороны, что слабые.
+
+Цель: получить структурированный фидбэк, а не «общее впечатление».</code></pre>
+
+<h2>5. Суммаризация интервью</h2>
+<p>С согласия кандидата запиши интервью → транскрибируй (Whisper) → анализируй:</p>
+<pre><code>Транскрипт интервью: [text]
+
+Сводка:
+1. Каждый ответ кандидата на основные вопросы — суть в 1–2 предложениях.
+2. Оценка по компетенциям (1–5) на основе цитат.
+3. Сильные стороны (3 конкретных).
+4. Слабые стороны (2 конкретных).
+5. Red flags если есть.
+6. Открытые вопросы для следующего раунда.
+
+Никаких выводов про hire/no-hire — это решение интервьюера.</code></pre>
+
+<h2>6. Анализ engagement и фидбэка</h2>
+<p>1000 ответов на survey → кластеризация по темам за 5 минут.</p>
+<pre><code>Вот 1000 анонимных ответов на вопрос «что улучшить в компании»: [data]
+
+Сгруппируй:
+- Темы (5–10).
+- % упоминаний.
+- Топ-3 цитаты для каждой темы.
+- Сентимент (позитив/нейтр/негатив).
+- Приоритет (по частоте × сентименту).</code></pre>
+<p><strong>Важно:</strong> убедись, что данные анонимны до загрузки в ИИ. Не передавай ФИО.</p>
+
+<h2>7. Персональные learning paths</h2>
+<p>На основе:</p>
+<ul>
+<li>Текущей роли сотрудника.</li>
+<li>Карьерных целей.</li>
+<li>Skill gap из performance review.</li>
+</ul>
+<p>ИИ генерирует индивидуальный план на 6–12 месяцев: курсы, книги, проекты, менторы. Раньше — час работы HRD на сотрудника. Сейчас — 5 минут.</p>
+
+<h2>8. Что НИКОГДА не делать</h2>
+<div class="callout callout-danger">
+<ul>
+<li>Автоматически отсеивать кандидатов без human review.</li>
+<li>Принимать решения о compensation/promotion через AI.</li>
+<li>Анализировать поведение сотрудников через AI (мониторинг чатов, кликов) без явного согласия и юридической экспертизы.</li>
+<li>Загружать персональные данные в публичный ChatGPT без enterprise-договора.</li>
+<li>Использовать «predictive hiring» — модели, которые предсказывают «будет ли успешен». Это buzzword 2018 года, в 2024 проиграл в нескольких судах.</li>
+</ul>
+</div>
+
+<h2>9. Compliance — обязательное</h2>
+<ul>
+<li><strong>GDPR / 152-ФЗ:</strong> явное согласие на обработку, право на пояснение AI-решений, право на удаление.</li>
+<li><strong>EU AI Act:</strong> высокорисковая категория, нужны: документация, bias audit ежегодно, human oversight, transparency.</li>
+<li><strong>В РФ — закон о персональных данных + трудовое законодательство.</strong> AI-решения не могут быть основанием увольнения без участия HR.</li>
+<li><strong>Аудит-лог</strong> всех AI-решений в найме — обязателен.</li>
+</ul>
+
+<h2>10. Тонкости</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Брэндовый риск.</strong> «Нас отсеял ИИ» — крайне негативно в соцсетях. Не делай этого, даже если технически законно.</li>
+<li><strong>Перевод JD на другие языки</strong> — Claude/GPT отлично, но всё равно человек должен проверить терминологию.</li>
+<li><strong>Сохраняй промпты как «модельные документы».</strong> Если потом будет аудит, нужно показать, как именно использовали ИИ.</li>
+<li><strong>Дискриминация через скрытые признаки.</strong> «Hobbies: гольф» — может коррелировать с возрастом/полом. ИИ это найдёт, ты можешь не заметить. Регулярные bias-чеки.</li>
+</ul>
+</div>
+
+<h2>11. Глоссарий</h2>
+<div class="glossary-term"><h3>Disparate impact</h3><p>Когда формально нейтральное правило непропорционально влияет на защищённую группу.</p></div>
+<div class="glossary-term"><h3>Bias audit</h3><p>Проверка AI-системы на дискриминационные результаты. Обязателен в Нью-Йорке для AI в найме.</p></div>
+<div class="glossary-term"><h3>Human-in-the-loop (HITL)</h3><p>Человек принимает финальное решение, AI — только assistance.</p></div>
+
+<h2>12. Практика (50 минут)</h2>
+<ol>
+<li>Сделай JD на свою текущую роль через промпт выше.</li>
+<li>Сравни с тем, что у вас написано в HRM — лучше или хуже?</li>
+<li>Возьми 3 анонимных резюме (учебные) → прогон через структурированный экстракт.</li>
+<li>Подготовь 5 вопросов под одно из этих резюме.</li>
+<li>Запиши в <code>progress.md</code>: где ИИ ускорил, где помог поднять качество, где есть риск ошибки.</li>
+</ol>
+
+<h2>13. Проверь себя</h2>
+<p><strong>1. Почему AI-скрининг резюме — высокорисковая зона?</strong><br>Bias в исторических данных, регуляторные требования (EU AI Act, NYC AEDT), brand risk при разоблачении.</p>
+<p><strong>2. Что можно безопасно делать с ИИ в найме?</strong><br>JD, структурированный экстракт из резюме, генерация вопросов, суммаризация интервью с согласия — но решения принимает человек.</p>
+<p><strong>3. Что обязательно по EU AI Act?</strong><br>Документация, bias audit ежегодно, human oversight, transparency.</p>
+<p><strong>4. Где ИИ безопасен почти полностью?</strong><br>Onboarding-документация, learning paths, кластеризация анонимных опросов, JD.</p>
+
+<h2>14. Что должно остаться в голове</h2>
+<ol>
+<li>HR — высокорисковая область для AI. Human-in-the-loop обязателен.</li>
+<li>JD, документация, обучение — почти без рисков.</li>
+<li>Скрининг резюме, оценка кандидатов — только как assistance, не как решение.</li>
+<li>EU AI Act, GDPR, 152-ФЗ — учитывать с первого дня.</li>
+<li>Brand risk: «нас отсеял ИИ» — токсично.</li>
+<li>Аудит-лог всех AI-решений — обязателен.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> в HR — этичный AI > эффективный AI. Один публичный скандал откатывает 5 лет работы. Будь осторожен.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-i3">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

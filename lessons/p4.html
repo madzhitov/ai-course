@@ -9,31 +9,134 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Анализ счетов и чеков через Claude Vision: фото → таблица расходов">
 <meta property="og:description" content="P4 из курса AI на русском. Анализ счетов и чеков через Claude Vision: фото → таблица расходов. ~60 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/p4.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/p4.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/p4.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Анализ счетов и чеков через Claude Vision: фото → таблица расходов">
 <meta name="twitter:description" content="P4 из курса AI на русском. Анализ счетов и чеков через Claude Vision: фото → таблица расходов. ~60 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/p4.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/p4.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p4.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p4');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Анализ счетов и чеков через Claude Vision: фото → таблица расходов","description":"P4 из курса AI на русском. Анализ счетов и чеков через Claude Vision: фото → таблица расходов. ~60 мин.","url":"https://ai.madzhitov.ru/lessons/p4.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/p4.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
-<h1>Анализ счетов и чеков через Claude Vision: фото → таблица расходов</h1>
-<p>P4 из курса AI на русском. Анализ счетов и чеков через Claude Vision: фото → таблица расходов. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p4">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P4</span></div>
+<h1>Проект «За 1 час»: Анализ счетов и чеков через Claude Vision</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> приложение, превращающее фото чека в строку Google Sheets с расходами</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Уровень:</strong> Python + базовый API</span>
+</div>
+
+<h2>Зачем</h2>
+<p>Каждый чек — это потенциальная строка в семейном бюджете, которую никто не заполнит вручную. Раньше нужен был OCR + классификатор + ручная разметка. Сейчас — один вызов Claude с картинкой, и получаешь структурированный JSON.</p>
+
+<h2>Что узнаешь</h2>
+<ul>
+<li>Multimodal Claude API (vision).</li>
+<li>Structured output (JSON-mode).</li>
+<li>Google Sheets API.</li>
+<li>Простой web-UI на Streamlit для загрузки.</li>
+</ul>
+
+<h2>Архитектура</h2>
+<pre><code>Streamlit upload → Claude Sonnet (vision + JSON) → Google Sheets append</code></pre>
+
+<h2>Шаг 1. Установка</h2>
+<pre><code>pip install anthropic streamlit gspread oauth2client</code></pre>
+
+<h2>Шаг 2. Промпт для распознавания</h2>
+<pre><code>EXTRACT_PROMPT = """
+Перед тобой фото чека. Извлеки данные в JSON:
+{
+  "store": "название магазина",
+  "date": "YYYY-MM-DD",
+  "total": число,
+  "currency": "RUB" | "USD" | ...,
+  "category": "groceries" | "restaurant" | "transport" | "other",
+  "items": [{"name": "...", "price": число, "quantity": число}]
+}
+
+Если что-то не видно — null. Не придумывай. Возвращай ТОЛЬКО JSON, без пояснений.
+"""</code></pre>
+
+<h2>Шаг 3. Vision-вызов</h2>
+<pre><code>import anthropic, base64, json
+client = anthropic.Anthropic()
+
+def analyze_receipt(image_bytes):
+    img64 = base64.b64encode(image_bytes).decode()
+    msg = client.messages.create(
+      model="claude-sonnet-4-5",
+      max_tokens=1024,
+      messages=[{
+        "role": "user",
+        "content": [
+          {"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": img64}},
+          {"type": "text", "text": EXTRACT_PROMPT}
+        ]
+      }]
+    )
+    return json.loads(msg.content[0].text)</code></pre>
+
+<h2>Шаг 4. Google Sheets</h2>
+<p>Создай Service Account в console.cloud.google.com, скачай credentials.json, share Google Sheet с email сервиса.</p>
+<pre><code>import gspread
+gc = gspread.service_account(filename="credentials.json")
+sheet = gc.open("My Expenses").sheet1
+
+def append_to_sheet(data):
+    sheet.append_row([data["date"], data["store"], data["category"],
+                      data["total"], data["currency"],
+                      ", ".join(i["name"] for i in data["items"])])</code></pre>
+
+<h2>Шаг 5. Streamlit UI</h2>
+<pre><code>import streamlit as st
+st.title("Receipt → Sheet")
+uploaded = st.file_uploader("Загрузи фото чека", type=["jpg","png","jpeg"])
+if uploaded:
+    st.image(uploaded)
+    if st.button("Обработать"):
+        with st.spinner("Анализирую..."):
+            data = analyze_receipt(uploaded.read())
+            st.json(data)
+            append_to_sheet(data)
+            st.success("Записано в таблицу!")</code></pre>
+<p>Запускай: <code>streamlit run app.py</code>.</p>
+
+<h2>Шаг 6. Расширения</h2>
+<ul>
+<li><strong>Telegram-бот</strong> вместо Streamlit: пересылаешь фото чека → запись в Sheets.</li>
+<li><strong>Анализ за месяц:</strong> отдельный скрипт читает Sheet и через Claude генерирует отчёт.</li>
+<li><strong>OCR в банковских выписках</strong> — то же самое, но с PDF.</li>
+<li><strong>Категоризация по обучаемому списку</strong> — fine-tune категорий под себя.</li>
+</ul>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> Claude Vision + JSON-mode = быстрый OCR-pipeline для любых документов. Накладные, чеки, паспорта, формы — один паттерн.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-p4">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

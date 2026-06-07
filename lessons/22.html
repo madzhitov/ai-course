@@ -9,31 +9,211 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Урок 22. Планирование задач агентом">
 <meta property="og:description" content="Урок 22 из курса AI на русском. Планирование задач агентом. ~55 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/22.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/22.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/22.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Урок 22. Планирование задач агентом">
 <meta name="twitter:description" content="Урок 22 из курса AI на русском. Планирование задач агентом. ~55 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/22.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/22.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/22.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-22');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Урок 22. Планирование задач агентом","description":"Урок 22 из курса AI на русском. Планирование задач агентом. ~55 мин.","url":"https://ai.madzhitov.ru/lessons/22.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/22.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 2. Строитель</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 22</span></div>
 <h1>Урок 22. Планирование задач агентом</h1>
-<p>Урок 22 из курса AI на русском. Планирование задач агентом. ~55 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-22">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> научить агента делать сложные многошаговые задачи через явное планирование</span>
+  <span><strong>Время:</strong> ~55 минут</span>
+  <span><strong>Источник:</strong> ai-agents-for-beginners/07</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Простой ReAct-агент (Урок 18) хорош для 2–10 шагов. На длинных задачах он начинает «теряться»: забывает цель, повторяет шаги, не замечает, что задача уже выполнена.</p>
+<p>Решение — <strong>явное планирование</strong>. Сначала агент пишет план из всех шагов, потом выполняет его, отмечая прогресс. Это:</p>
+<ul>
+<li>Делает поведение предсказуемым (план виден).</li>
+<li>Снижает галлюцинации (модель «видит» что осталось).</li>
+<li>Позволяет «вернуться к плану» если что-то пошло не так.</li>
+<li>Даёт UX-выигрыш: пользователь видит чек-лист, понимает прогресс.</li>
+</ul>
+
+<h2>1. Plan-and-Execute паттерн</h2>
+<pre><code>1. PLAN: модель пишет список шагов.
+2. EXECUTE: для каждого шага — выполняет (tool calls).
+3. UPDATE: после каждого шага — отмечает выполнено/нет.
+4. REPLAN если нужно: что-то сломалось → перестроить план.
+5. FINISH когда план завершён.</code></pre>
+<p>Это диаметрально противоположно ReAct, где модель «думает на каждом шагу». В Plan-and-Execute план — статичный, выполнение — детерминированное.</p>
+
+<h2>2. Структура плана</h2>
+<p>План — это JSON-список задач с зависимостями:</p>
+<pre><code>{
+  "goal": "Собрать утренний дайджест и отправить в Slack",
+  "steps": [
+    { "id": 1, "task": "Получить погоду", "depends_on": [], "status": "pending" },
+    { "id": 2, "task": "Получить топ-5 новостей tech", "depends_on": [], "status": "pending" },
+    { "id": 3, "task": "Получить твои сегодня встречи из календаря", "depends_on": [], "status": "pending" },
+    { "id": 4, "task": "Собрать всё в красивый markdown", "depends_on": [1,2,3], "status": "pending" },
+    { "id": 5, "task": "Отправить в Slack #morning", "depends_on": [4], "status": "pending" }
+  ]
+}</code></pre>
+<p><strong>Зависимости</strong> позволяют параллелить независимые шаги (1, 2, 3 — параллельно).</p>
+
+<h2>3. Промпт для планирования</h2>
+<pre><code>Ты — планировщик задач. Составь план для выполнения цели.
+
+Цель пользователя: {{user_request}}
+
+Доступные инструменты: {{tools}}
+
+Правила:
+- Каждый шаг — атомарный (один tool call или одна задача модели).
+- Указывай зависимости (depends_on).
+- Не больше 10 шагов в плане. Если задача требует больше — разбей на под-цели.
+- Параллельные шаги — без зависимостей друг от друга.
+
+Возвращай ТОЛЬКО JSON.</code></pre>
+
+<h2>4. Executor — выполнение шагов</h2>
+<p>Берёт план, выполняет шаги в правильном порядке.</p>
+<pre><code>def execute(plan):
+    while not all_done(plan):
+        ready = get_ready_steps(plan)  # все depends_on done
+        # параллельно — независимые шаги
+        results = await asyncio.gather(*[run_step(s) for s in ready])
+        for step, result in zip(ready, results):
+            step['status'] = 'done' if not result.error else 'failed'
+            step['result'] = result
+        if any(s['status'] == 'failed' for s in plan['steps']):
+            return replan(plan)
+    return finalize(plan)</code></pre>
+
+<h2>5. Replanning — когда план не работает</h2>
+<p>Иногда:</p>
+<ul>
+<li>Tool вернул unexpected результат.</li>
+<li>Изначальный план был неверный (модель ошиблась с шагами).</li>
+<li>Появилась новая информация.</li>
+</ul>
+<p>Тогда — <strong>replan</strong>: модель видит текущий план + результаты + ошибки, и предлагает обновлённый план.</p>
+<p><strong>Ограничение:</strong> не больше 3 replan'ов на одну задачу. Иначе агент будет вечно «оптимизировать план» и не выполнять.</p>
+
+<h2>6. Когда Plan-and-Execute, а когда ReAct</h2>
+<table>
+<tr><th>Сценарий</th><th>Плюс</th></tr>
+<tr><td>2–5 шагов, неизвестный порядок</td><td>ReAct</td></tr>
+<tr><td>10+ шагов, известная цель</td><td>Plan-and-Execute</td></tr>
+<tr><td>Нужно показать прогресс пользователю</td><td>Plan-and-Execute (план = UI)</td></tr>
+<tr><td>Креативные задачи (написать статью)</td><td>ReAct (нельзя планировать креатив)</td></tr>
+<tr><td>Параллелизация важна</td><td>Plan-and-Execute</td></tr>
+<tr><td>Стоимость критична</td><td>Plan-and-Execute (один большой promp вместо 10 маленьких)</td></tr>
+</table>
+
+<h2>7. Hierarchical Planning</h2>
+<p>Для очень больших задач — два уровня:</p>
+<ul>
+<li><strong>High-level plan</strong> (от пользователя): «провести анализ конкурентов».</li>
+<li>Это разворачивается в 3–5 подцелей: «найти конкурентов», «собрать их продукты», «сравнить цены», «суммировать».</li>
+<li>Каждая подцель — отдельный mini-plan.</li>
+</ul>
+<p>Это похоже на «оркестратор + работники» (Урок 18). Используется в AutoGPT и подобных «autonomous agents».</p>
+
+<h2>8. Tree-of-Thoughts: альтернатива</h2>
+<p>Иногда нужно не «один план», а «несколько вариантов плана». Tree-of-Thoughts (ToT):</p>
+<ol>
+<li>Модель генерирует 3–5 альтернативных планов.</li>
+<li>Каждый оценивается (другой моделью или эвристикой).</li>
+<li>Лучший — выполняется.</li>
+</ol>
+<p>Дорого, но даёт лучшее качество на тонких задачах (математика, сложный код).</p>
+
+<h2>9. Тонкости и подводные камни</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>План слишком оптимистичный.</strong> Модель пишет 5 шагов, реально нужно 12. Решение: «оставь возможность добавить шаги в процессе».</li>
+<li><strong>Слепое следование плану.</strong> На шаге 3 стало ясно, что план неверный — но executor тупо продолжает. Делай health-check после каждого шага.</li>
+<li><strong>Replan loop.</strong> «План плохой → replan → новый план плохой → replan...». Ограничь max_replans=3.</li>
+<li><strong>Cache в долгих планах.</strong> Если задача занимает 5 минут — может вылететь по таймауту. Сохраняй промежуточный state, чтобы можно было продолжить.</li>
+<li><strong>Параллелизация ломает порядок.</strong> Если зависимости описаны неверно — параллельный запуск даст race condition.</li>
+</ul>
+</div>
+
+<h2>10. UX выигрыш</h2>
+<p>Когда у тебя есть явный план — покажи его пользователю:</p>
+<pre><code>📋 Что я собираюсь сделать:
+   ⏳ 1. Получить погоду в Москве
+   ⏳ 2. Получить новости из RSS (тек 5 источников)
+   ⏳ 3. Получить твой календарь на сегодня
+   ⏳ 4. Собрать дайджест
+   ⏳ 5. Отправить в Slack
+
+[выполняется...]
+
+   ✅ 1. Получить погоду (3°C, дождь)
+   ✅ 2. Получить новости (15 заголовков)
+   ⏳ 3. Получаю календарь...</code></pre>
+<p>Это снижает тревожность («что он делает?») и даёт ощущение контроля.</p>
+
+<h2>11. Глоссарий</h2>
+<div class="glossary-term"><h3>Plan-and-Execute</h3><p>Паттерн: сначала весь план, потом выполнение по плану.</p></div>
+<div class="glossary-term"><h3>Replanning</h3><p>Перестроение плана в процессе выполнения, если что-то сломалось.</p></div>
+<div class="glossary-term"><h3>Hierarchical planning</h3><p>Два уровня: high-level цель → подцели → конкретные шаги.</p></div>
+<div class="glossary-term"><h3>Tree-of-Thoughts</h3><p>Несколько альтернативных планов, оценка, выбор лучшего.</p></div>
+
+<h2>12. Практика (55 минут)</h2>
+<ol>
+<li>Возьми задачу: «утренний дайджест в Slack» (как в примере).</li>
+<li>Реализуй два варианта: ReAct и Plan-and-Execute.</li>
+<li>Сравни: время выполнения, токены, читаемость кода.</li>
+<li>В Plan-and-Execute добавь UI для пользователя (список шагов с галочками).</li>
+<li>Подбрось ошибку в одном из tools — посмотри как сработает replan.</li>
+<li>Запиши в <code>progress.md</code>: где Plan-and-Execute выиграл, где ReAct.</li>
+</ol>
+
+<h2>13. Проверь себя</h2>
+<p><strong>1. Когда Plan-and-Execute лучше ReAct?</strong><br>10+ шагов, нужна параллелизация, нужно показать прогресс пользователю, стоимость критична.</p>
+<p><strong>2. Что такое replanning?</strong><br>Перестроение плана в процессе, если шаг провалился или появилась новая инфа. Max 3 раза.</p>
+<p><strong>3. Что описывают <code>depends_on</code> в шагах плана?</strong><br>Зависимости. Шаг не выполняется, пока не выполнены все его dependencies. Независимые шаги — параллельно.</p>
+<p><strong>4. Что такое Tree-of-Thoughts?</strong><br>Генерация нескольких альтернативных планов, оценка, выбор лучшего. Дорого, но даёт качество.</p>
+<p><strong>5. Главный UX-выигрыш от явного плана?</strong><br>Пользователь видит, что агент собирается делать, и понимает прогресс. Снижает тревожность.</p>
+
+<h2>14. Что должно остаться в голове</h2>
+<ol>
+<li>Plan-and-Execute = план целиком впереди, потом выполнение.</li>
+<li>Лучше ReAct когда: 10+ шагов, параллелизация, прогресс-UX.</li>
+<li>План = JSON с шагами и зависимостями.</li>
+<li>Replanning при ошибках, max 3 раза.</li>
+<li>Hierarchical для очень больших задач.</li>
+<li>Tree-of-Thoughts для тонких задач (математика, код).</li>
+<li>Покажи план пользователю — большой UX-выигрыш.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> хороший план = половина работы агента. Учись писать промпты для планировщика — это отдельный навык, не такой как для executor'а.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-22">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

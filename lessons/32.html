@@ -9,31 +9,190 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Урок 32. Символьный ИИ и графы знаний">
 <meta property="og:description" content="Урок 32 из курса AI на русском. Символьный ИИ и графы знаний. ~50 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/32.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/32.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/32.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Урок 32. Символьный ИИ и графы знаний">
 <meta name="twitter:description" content="Урок 32 из курса AI на русском. Символьный ИИ и графы знаний. ~50 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/32.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/32.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/32.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-32');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Урок 32. Символьный ИИ и графы знаний","description":"Урок 32 из курса AI на русском. Символьный ИИ и графы знаний. ~50 мин.","url":"https://ai.madzhitov.ru/lessons/32.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/32.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 3. Практик</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 32</span></div>
 <h1>Урок 32. Символьный ИИ и графы знаний</h1>
-<p>Урок 32 из курса AI на русском. Символьный ИИ и графы знаний. ~50 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-32">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять, чем был старый ИИ и почему knowledge graphs живут и сейчас</span>
+  <span><strong>Время:</strong> ~50 минут</span>
+  <span><strong>Источник:</strong> AI-For-Beginners/03</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Символьный ИИ кажется чем-то из 1970-х, но в реальности его части — knowledge graphs, expert systems, formal reasoning — активно работают в продакшене 2026. Google использует Knowledge Graph для поиска, Amazon для рекомендаций, Bloomberg для финансовой аналитики.</p>
+<p>Без понимания symbolic AI ты не поймёшь, чем гибридные neuro-symbolic подходы лучше чистых нейросетей, и где LLM нужно «прикручивать к графу».</p>
+
+<h2>1. Идея в одном абзаце</h2>
+<p>Символьный ИИ = <strong>правила + факты + логика</strong>. Все знания записываются в виде символов (имена, отношения, правила вывода). Машина выводит новые факты, применяя правила к фактам.</p>
+<pre><code>Факты: Сократ — человек. Все люди смертны.
+Правило: Если X — человек, то X — смертен.
+Вывод: Сократ смертен.</code></pre>
+<p>Это первый класс задач, которые решал ИИ — 50-е и 60-е годы.</p>
+
+<h2>2. Knowledge Representation</h2>
+<p>Главное в символьном AI — <strong>как представить знания</strong>. Подходы:</p>
+<ul>
+<li><strong>Логика первого порядка</strong> — формулы вида <code>∀x: Человек(x) → Смертен(x)</code>.</li>
+<li><strong>Семантические сети / графы</strong> — узлы (сущности) и рёбра (отношения).</li>
+<li><strong>Фреймы</strong> — структуры с слотами (как объекты в ООП).</li>
+<li><strong>Онтологии</strong> — формальные иерархии понятий (Schema.org, OWL).</li>
+<li><strong>Продукционные правила</strong> — «если A и B, то C» (CLIPS, Drools).</li>
+</ul>
+
+<h2>3. Экспертные системы — пик 80-х</h2>
+<p>Идея: эксперт даёт правила своей области, машина применяет их к фактам.</p>
+<ul>
+<li><strong>MYCIN</strong> (1972) — диагностика бактериальных инфекций. ~600 правил, точнее многих врачей.</li>
+<li><strong>DENDRAL</strong> (1965) — определение структуры молекул из масс-спектрометрии.</li>
+<li><strong>XCON</strong> (1980) — конфигурирование компьютеров DEC, сэкономила $25M/год.</li>
+</ul>
+<p>Технологически работало. Коммерчески — индустрия экспертных систем рухнула в 1987–1993:</p>
+<ul>
+<li>Правила хрупкие — каждое новое исключение ломало.</li>
+<li>«Бутылочное горлышко знаний» — экспертов сложно интервьюировать и кодировать.</li>
+<li>Не справлялись с шумом и неопределённостью.</li>
+<li>Не масштабировались — после 1000 правил система становилась неуправляемой.</li>
+</ul>
+
+<h2>4. Knowledge Graphs — что живо в 2026</h2>
+<p>Knowledge Graph (KG) — это граф, где:</p>
+<ul>
+<li><strong>Узлы</strong> = сущности (Москва, Эйфелева башня, Альберт Эйнштейн).</li>
+<li><strong>Рёбра</strong> = отношения (находится_в, спроектирована, родился_в).</li>
+<li><strong>Каждое утверждение</strong> = тройка (subject, predicate, object). RDF-стандарт.</li>
+</ul>
+<pre><code>(Эйфелева_башня, located_in, Париж)
+(Париж, capital_of, Франция)
+(Эйфелева_башня, designed_by, Эйфель)
+(Эйфель, born_in, Дижон)</code></pre>
+<p>Имея KG, можно ответить на вопросы выводом: «кто спроектировал самое известное здание столицы Франции?» — это путь в графе.</p>
+
+<h2>5. Знаменитые KG в продакшене</h2>
+<table>
+<tr><th>KG</th><th>Размер</th><th>Где используется</th></tr>
+<tr><td><strong>Wikidata</strong></td><td>~100M сущностей, 1B утверждений</td><td>Wikipedia, открытые проекты</td></tr>
+<tr><td><strong>Google Knowledge Graph</strong></td><td>500B+ фактов</td><td>Поиск Google, Knowledge Panels справа</td></tr>
+<tr><td><strong>Schema.org</strong></td><td>Стандарт онтологии</td><td>SEO-микроразметка на сайтах</td></tr>
+<tr><td><strong>YAGO</strong></td><td>10M сущностей</td><td>Академический research</td></tr>
+<tr><td><strong>Bloomberg Knowledge Graph</strong></td><td>Финансовая</td><td>Bloomberg Terminal, риски</td></tr>
+<tr><td><strong>Amazon Product Graph</strong></td><td>Миллиарды товаров</td><td>Рекомендации, search</td></tr>
+</table>
+
+<h2>6. Запросы к KG — SPARQL</h2>
+<p>Wikidata можно запрашивать через SPARQL:</p>
+<pre><code>SELECT ?president ?birthplace
+WHERE {
+  ?president wdt:P39 wd:Q11696.    # был президентом США
+  ?president wdt:P19 ?birthplace.  # место рождения
+}</code></pre>
+<p>Это SQL-подобный язык, но для графов. Возвращает всех президентов США и их места рождения.</p>
+
+<h2>7. Где LLM не справится без KG</h2>
+<ul>
+<li><strong>Точные актуальные факты.</strong> «Сколько у компании сотрудников сейчас» — KG обновляется, LLM застряла на cutoff.</li>
+<li><strong>Сложные multi-hop запросы.</strong> «Кто работал над проектами обеих компаний» — естественно для KG, мука для LLM.</li>
+<li><strong>Доказуемость.</strong> Каждое утверждение в KG — это конкретное ребро с источником. LLM «не помнит откуда».</li>
+<li><strong>Согласованность.</strong> KG не даст двух противоречивых ответов на один и тот же вопрос (если правильно построен).</li>
+</ul>
+
+<h2>8. Neuro-Symbolic AI — гибрид</h2>
+<p>Сильный тренд 2024–2026: нейросети + символьное знание.</p>
+<ul>
+<li><strong>LLM + KG retrieval</strong> — модель отвечает, используя факты из графа (вариант RAG).</li>
+<li><strong>LLM генерирует SPARQL</strong> — пользователь задаёт вопрос на естественном языке, LLM пишет запрос к графу.</li>
+<li><strong>AlphaGeometry</strong> — DeepMind решает геометрические задачи: нейросеть генерирует идеи, символьный решатель проверяет.</li>
+<li><strong>Verification</strong> — LLM генерирует утверждение, KG проверяет фактологию.</li>
+</ul>
+
+<h2>9. Когда строить свой KG для своего продукта</h2>
+<table>
+<tr><th>Имеет смысл</th><th>Не имеет</th></tr>
+<tr><td>Данные структурированные с понятными отношениями</td><td>Данные — это текст разной природы</td></tr>
+<tr><td>Запросы — это «связи между сущностями»</td><td>Запросы — это «найди похожее по смыслу»</td></tr>
+<tr><td>Нужна доказуемость источников</td><td>Достаточно «правдоподобно»</td></tr>
+<tr><td>Данные не меняются часто</td><td>Реальное время, миллионы записей/час</td></tr>
+</table>
+<p>Если сомневаешься — начни с vector DB (Урок 14). KG требует серьёзной онтологической работы заранее.</p>
+
+<h2>10. Тонкости и подводные камни</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Онтология — самая дорогая часть.</strong> «Какие у нас сущности и отношения» — это месяцы работы доменных экспертов.</li>
+<li><strong>KG ≠ Neo4j.</strong> Neo4j — это property graph DB. KG — это RDF/triples с формальной семантикой. Часто путают.</li>
+<li><strong>Чистота данных.</strong> Один дубль или плохое отношение портит выводы.</li>
+<li><strong>Reasoning медленный.</strong> Сложные SPARQL-запросы через большой граф = десятки секунд.</li>
+<li><strong>LLM-генерация SPARQL ошибается.</strong> Точность 60–80% на нетривиальных запросах. Нужна валидация.</li>
+</ul>
+</div>
+
+<h2>11. Глоссарий</h2>
+<div class="glossary-term"><h3>Symbolic AI</h3><p>Подход, где знания и логика — символы и правила.</p></div>
+<div class="glossary-term"><h3>Knowledge Graph</h3><p>Граф сущностей и отношений. Часто RDF-формат.</p></div>
+<div class="glossary-term"><h3>Triple / RDF</h3><p>Тройка (subject, predicate, object). Атом знаний в KG.</p></div>
+<div class="glossary-term"><h3>Ontology</h3><p>Формальная иерархия понятий с правилами.</p></div>
+<div class="glossary-term"><h3>SPARQL</h3><p>Язык запросов к RDF-графам. SQL-подобный.</p></div>
+<div class="glossary-term"><h3>Neuro-symbolic AI</h3><p>Гибрид нейросетей с символьными методами.</p></div>
+
+<h2>12. Практика (45 минут)</h2>
+<ol>
+<li>Открой <a href="https://query.wikidata.org" target="_blank">query.wikidata.org</a>. Это публичный KG.</li>
+<li>Выполни 2–3 готовых query из примеров. Посмотри SPARQL.</li>
+<li>Напиши свой: «все писатели, родившиеся в твоём городе».</li>
+<li>Попроси ChatGPT/Claude написать SPARQL по твоему вопросу — посмотри, насколько он точен.</li>
+<li>В <code>progress.md</code> запиши: где KG явно бы помогли твоему продукту, и стоит ли.</li>
+</ol>
+
+<h2>13. Проверь себя</h2>
+<p><strong>1. Чем KG отличается от vector DB?</strong><br>KG — структурированные связи между сущностями. Vector — семантическое сходство текстов. Разные классы задач.</p>
+<p><strong>2. Что такое triple?</strong><br>Тройка (subject, predicate, object). Атом знания в RDF KG.</p>
+<p><strong>3. Почему провалились экспертные системы?</strong><br>Правила хрупкие, экспертов сложно интервьюировать, не справляются с шумом, не масштабируются.</p>
+<p><strong>4. Где KG нужнее, чем LLM?</strong><br>Точные актуальные факты, multi-hop связи, доказуемость источников, согласованность.</p>
+<p><strong>5. Что такое neuro-symbolic AI?</strong><br>Гибрид нейросетей и символьного reasoning. AlphaGeometry, LLM + KG retrieval.</p>
+
+<h2>14. Что должно остаться в голове</h2>
+<ol>
+<li>Символьный AI = правила + факты + логика. Был доминантным до 1990-х.</li>
+<li>Knowledge Graphs живы в Google, Wikidata, Bloomberg, Amazon.</li>
+<li>RDF triples: (subject, predicate, object). SPARQL для запросов.</li>
+<li>LLM + KG — гибрид для точности фактов и доказуемости.</li>
+<li>Строить свой KG — серьёзная онтологическая работа. Начни с vector DB если сомневаешься.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> поиграйся с Wikidata Query Service 15 минут. Это даёт понимание, что такое «структурированные знания» лучше любых статей.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-32">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

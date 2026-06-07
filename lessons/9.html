@@ -9,31 +9,191 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Урок 9. Генерация изображений">
 <meta property="og:description" content="Урок 9 из курса AI на русском. Генерация изображений. ~45 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/9.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/9.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/9.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Урок 9. Генерация изображений">
 <meta name="twitter:description" content="Урок 9 из курса AI на русском. Генерация изображений. ~45 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/9.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/9.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/9.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-9');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Урок 9. Генерация изображений","description":"Урок 9 из курса AI на русском. Генерация изображений. ~45 мин.","url":"https://ai.madzhitov.ru/lessons/9.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/9.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 9</span></div>
 <h1>Урок 9. Генерация изображений</h1>
-<p>Урок 9 из курса AI на русском. Генерация изображений. ~45 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-9">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> уверенно генерировать качественные картинки и понимать, какая модель под какую задачу</span>
+  <span><strong>Время:</strong> ~45 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/09</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Картинки — второй после текста массовый AI-юзкейс. Обложки постов, иллюстрации к статьям, мокапы продукта, концепт-арт, фото-аватарки, рекламные баннеры. Раньше — фотосток или фрилансер. Сейчас — 30 секунд и $0.04.</p>
+<p>Но «нажать кнопку и получить шедевр» не работает. Хороший результат требует:</p>
+<ul>
+<li>Понимания, какая модель сильна в чём.</li>
+<li>Промпта по структуре, а не «нарисуй что-нибудь красивое».</li>
+<li>Знания параметров (aspect ratio, style, seed, steps).</li>
+<li>Понимания этических ограничений.</li>
+</ul>
+
+<h2>1. Как это работает в одном абзаце</h2>
+<p>Под капотом — <strong>diffusion модель</strong>. На обучении ей показывают пары «картинка + текстовое описание», постепенно добавляя в картинку шум, пока она не превратится в чистый шум. Модель учится <strong>обратной задаче</strong>: из шума получить картинку, соответствующую тексту.</p>
+<p>На генерации: модель берёт случайный шум (seed), смотрит на твой текстовый промпт и шаг за шагом (20–50 шагов) убирает шум, превращая его в картинку. Каждый seed даёт <em>свою</em> картинку по тому же промпту — отсюда вариативность.</p>
+
+<h2>2. Что выбрать в 2026</h2>
+<table>
+<tr><th>Модель</th><th>Сильна в</th><th>Слабее в</th><th>Цена/картинка</th><th>Доступ</th></tr>
+<tr><td><strong>DALL·E 3</strong></td><td>Понимание сложных промптов, текст на картинке</td><td>Фотореализм лиц</td><td>$0.04–0.08</td><td>ChatGPT, OpenAI API</td></tr>
+<tr><td><strong>Midjourney v6</strong></td><td>Художественность, концепт-арт</td><td>Точное следование промпту</td><td>~$10/мес</td><td>Discord, веб</td></tr>
+<tr><td><strong>FLUX.1</strong></td><td>Фотореализм, открытая модель</td><td>—</td><td>$0.025 или бесплатно локально</td><td>Replicate, локально</td></tr>
+<tr><td><strong>Stable Diffusion XL</strong></td><td>Гибкость, локальный запуск, fine-tune</td><td>Из коробки слабее</td><td>Бесплатно локально</td><td>ComfyUI, AUTOMATIC1111</td></tr>
+<tr><td><strong>Imagen 3 / Gemini</strong></td><td>Фотореализм, безопасность</td><td>Ограничения по содержанию</td><td>$0.04</td><td>Google AI Studio</td></tr>
+</table>
+<p><strong>Эвристика выбора:</strong></p>
+<ul>
+<li>Иллюстрация к статье/посту → <strong>DALL·E 3</strong> (быстро, точно по промпту, понимает русский).</li>
+<li>Концепт-арт, обложки → <strong>Midjourney</strong>.</li>
+<li>Фотореализм для контента → <strong>FLUX</strong>.</li>
+<li>Хочешь полный контроль и/или privacy → <strong>SDXL локально</strong>.</li>
+</ul>
+
+<h2>3. Структура хорошего промпта</h2>
+<p>Промпт для картинки — это не одно предложение, а <strong>стек слоёв</strong>. Чем больше слоёв задал — тем стабильнее результат.</p>
+<pre><code>[субъект] + [действие/поза] + [окружение] + [стиль] + [освещение] + [камера/композиция] + [качество]</code></pre>
+<p><strong>Пример плохого промпта:</strong></p>
+<pre><code>«красивый кот»</code></pre>
+<p><strong>Пример хорошего промпта:</strong></p>
+<pre><code>«Рыжий мейн-кун сидит на подоконнике в скандинавском интерьере, золотой час, тёплый солнечный свет из окна, вид сбоку, неглубокая глубина резкости, стиль фотографии, 35mm, кинематографично»</code></pre>
+<p><strong>Ключевые слова, которые работают:</strong></p>
+<ul>
+<li><strong>Стиль:</strong> photorealistic, cinematic, watercolor, oil painting, pencil sketch, isometric 3D, flat illustration, pixel art.</li>
+<li><strong>Свет:</strong> golden hour, soft natural light, dramatic shadows, neon, studio lighting.</li>
+<li><strong>Камера:</strong> close-up, wide shot, top-down view, bokeh, 35mm lens, fisheye.</li>
+<li><strong>Композиция:</strong> rule of thirds, symmetric, minimalist, negative space.</li>
+<li><strong>Качество:</strong> high detail, 4k, sharp focus.</li>
+</ul>
+
+<h2>4. Параметры, которые управляют результатом</h2>
+<p><strong>Aspect ratio</strong> (соотношение сторон):</p>
+<ul>
+<li><code>1:1</code> — квадрат, для соцсетей.</li>
+<li><code>16:9</code> — широкий, для обложек/баннеров.</li>
+<li><code>9:16</code> — вертикальный, для сторис/тиктока.</li>
+<li><code>3:2</code> — классическое фото.</li>
+</ul>
+<p><strong>Seed</strong> — стартовое число для генератора случайных чисел. Один и тот же seed + промпт = одна и та же картинка. Используется чтобы:</p>
+<ul>
+<li>Повторить понравившийся вариант.</li>
+<li>Чуть поправить промпт и сравнить с фиксированным seed.</li>
+</ul>
+<p><strong>Steps</strong> (шаги денойзинга) — обычно 20–50. Больше — чуть качественнее и медленнее. Дефолт хорош.</p>
+<p><strong>CFG / Guidance scale</strong> — насколько строго следовать промпту. 7–9 — баланс. &lt;5 модель «фантазирует», &gt;15 — пережаривает.</p>
+<p><strong>Negative prompt</strong> (в SD/Midjourney) — что НЕ должно быть. Полезно: <code>blurry, extra fingers, distorted face, watermark, text</code>.</p>
+
+<h2>5. Image-to-image: править существующее</h2>
+<p>Не только текст → картинка. Все современные модели умеют:</p>
+<ul>
+<li><strong>Image-to-image</strong> — взять картинку и переделать в новом стиле/композиции (фото → акварель).</li>
+<li><strong>Inpainting</strong> — закрасить часть картинки маской и попросить перерисовать только её («убери провод», «замени фон»).</li>
+<li><strong>Outpainting</strong> — расширить картинку за её пределы.</li>
+<li><strong>Variations</strong> — сгенерировать N похожих, но разных.</li>
+</ul>
+<p>В ChatGPT с DALL·E 3 это работает прямо в чате: «возьми эту картинку и сделай мне 4 варианта в стиле комикса».</p>
+
+<h2>6. Цены и реальная экономика</h2>
+<p>На 100 картинок:</p>
+<ul>
+<li>DALL·E 3 standard: ~$4–8</li>
+<li>FLUX через Replicate: ~$2.5</li>
+<li>Midjourney unlimited (Pro $30/мес): эффективно цена 0 после первых сотен</li>
+<li>SDXL локально (Mac M2/RTX 3060): электричество, $0</li>
+</ul>
+<p><strong>Скрытая стоимость:</strong> ты не получаешь хороший вариант с первого раза. Реальный браки — 60–80% генераций. Закладывай 3–5 попыток на одну итоговую картинку.</p>
+
+<h2>7. Этика и юридические тонкости</h2>
+<ul>
+<li><strong>Стиль художника по имени</strong> («in the style of Greg Rutkowski») — серая зона. В Midjourney и SDXL технически работает, но создаёт юридические и этические вопросы. Для коммерции — избегай.</li>
+<li><strong>Знаменитости и публичные люди</strong> — DALL·E 3 и Imagen блокируют. SDXL — нет.</li>
+<li><strong>Дипфейки</strong> — практически везде запрещены в TOS. Юридически в РФ и большинстве стран — статьи о клевете/диффамации.</li>
+<li><strong>Авторские права на результат</strong> — в США суды решили, что чисто AI-сгенерированная картинка <em>не имеет</em> автора и не подлежит копирайту. В РФ — серая зона.</li>
+<li><strong>Тренировочные данные</strong> — почти все модели обучены на картинках из интернета без явного согласия авторов. Этический вопрос открыт.</li>
+</ul>
+
+<h2>8. Тонкости и подводные камни</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Текст на картинке</strong> — DALL·E 3 неплохо рисует короткие надписи (1–3 слова), всё остальное даёт ломанные буквы. Для логотипов и плакатов лучше: сгенерируй фон → добавь текст в Figma/Photoshop.</li>
+<li><strong>Руки и пальцы</strong> — классическая проблема. На 6 пальцев, скрещенные суставы. FLUX и Midjourney v6 это решили почти полностью, SDXL хуже.</li>
+<li><strong>Лица людей</strong> — в массе моделей лица «среднестатистические». Чтобы получить конкретного человека — нужен LoRA fine-tune (Урок 70).</li>
+<li><strong>Слишком много объектов</strong> — больше 3–4 сущностей в сцене модель путает («кот слева, собака справа» → может перепутать).</li>
+<li><strong>Бренды и логотипы</strong> — большинство моделей не нарисуют узнаваемый логотип Apple. Это фича.</li>
+</ul>
+</div>
+
+<h2>9. Глоссарий</h2>
+<div class="glossary-term"><h3>Diffusion model</h3><p>Класс генеративных моделей, обучающихся восстанавливать картинку из шума шаг за шагом. Основа всех современных image-моделей.</p></div>
+<div class="glossary-term"><h3>Seed</h3><p>Стартовое число случайного генератора. Фиксирует «случайность» — один seed = одна картинка при том же промпте.</p></div>
+<div class="glossary-term"><h3>CFG scale (Guidance)</h3><p>Параметр, регулирующий, насколько модель должна следовать промпту. 7–9 — баланс.</p></div>
+<div class="glossary-term"><h3>Inpainting</h3><p>Перерисовка части картинки по маске. Полезно для правки деталей.</p></div>
+<div class="glossary-term"><h3>LoRA</h3><p>Лёгкий fine-tune модели на 20–50 фото конкретного объекта/человека/стиля. Позволяет «научить» SD рисовать тебя.</p></div>
+
+<h2>10. Практика (45 минут)</h2>
+<ol>
+<li><strong>Сделай 4 обложки для своего проекта</strong> (или для этого курса) через DALL·E 3 в ChatGPT. Один промпт с разными стилями: photorealistic / watercolor / 3D isometric / flat illustration.</li>
+<li><strong>Сгенерируй 3 варианта аватарки</strong> в одном стиле, потом через image-to-image попроси «такой же, но в очках».</li>
+<li><strong>Сравни:</strong> один и тот же промпт через DALL·E 3 и через FLUX (Replicate, $0.025). Что лучше для твоей задачи?</li>
+<li><strong>Запиши в <code>progress.md</code></strong> формулу промпта, которая у тебя сработала.</li>
+</ol>
+
+<h2>11. Проверь себя</h2>
+<p><strong>1. Чем DALL·E 3 отличается от Midjourney в практическом смысле?</strong><br>
+DALL·E 3 точнее следует промпту и понимает русский. Midjourney эстетичнее и художественнее «из коробки».</p>
+<p><strong>2. Что такое seed и зачем он нужен?</strong><br>
+Стартовое число случайного генератора. Фиксирует исход — можно повторить картинку или сделать вариации с фиксированным seed, меняя промпт.</p>
+<p><strong>3. Почему модели плохо рисуют текст на картинке?</strong><br>
+Они работают на уровне пикселей, не зная, что такое буквы. Учились по картинкам, где текст случаен и редок. Дальше — лучше через композитинг.</p>
+<p><strong>4. Что делать, если на картинке 6 пальцев?</strong><br>
+Сменить модель (FLUX/MJv6 чинят это), добавить в negative prompt «extra fingers», или inpaint руку отдельно.</p>
+<p><strong>5. Где грань между «вдохновлено» и «копирование стиля» художника?</strong><br>
+Юридически грань размыта. Этически: если ты копируешь конкретного живущего художника без согласия для коммерции — это плохо. «В стиле импрессионизма» — ок.</p>
+
+<h2>12. Что должно остаться в голове</h2>
+<ol>
+<li>Diffusion-модели = шаг за шагом восстанавливают картинку из шума.</li>
+<li>DALL·E 3 для точности и русского; Midjourney для эстетики; FLUX для фотореализма; SDXL для контроля.</li>
+<li>Хороший промпт = слои: субъект + поза + окружение + стиль + свет + камера.</li>
+<li>Seed фиксирует случайность; aspect ratio задаёт формат; CFG=7–9.</li>
+<li>Текст и руки — слабые места моделей; знай ограничения.</li>
+<li>Этика: избегай стиль конкретных живых художников и публичных лиц для коммерции.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> сделай одну обложку для своего следующего поста/статьи через AI и опубликуй. Если получится — добавь в портфолио.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-9">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

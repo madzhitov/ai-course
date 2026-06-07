@@ -9,31 +9,379 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Конспект лекции из аудио: Whisper + Claude → структурированный markdown">
 <meta property="og:description" content="P17 из курса AI на русском. Конспект лекции из аудио: Whisper + Claude → структурированный markdown. ~60 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/p17.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/p17.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/p17.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Конспект лекции из аудио: Whisper + Claude → структурированный markdown">
 <meta name="twitter:description" content="P17 из курса AI на русском. Конспект лекции из аудио: Whisper + Claude → структурированный markdown. ~60 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/p17.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/p17.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p17.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p17');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Конспект лекции из аудио: Whisper + Claude → структурированный markdown","description":"P17 из курса AI на русском. Конспект лекции из аудио: Whisper + Claude → структурированный markdown. ~60 мин.","url":"https://ai.madzhitov.ru/lessons/p17.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/p17.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
-<h1>Конспект лекции из аудио: Whisper + Claude → структурированный markdown</h1>
-<p>P17 из курса AI на русском. Конспект лекции из аудио: Whisper + Claude → структурированный markdown. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p17">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P17</span></div>
+
+<h1>Проект «За 1 час»: Конспект лекции из аудио — Whisper + Claude → markdown</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> пайплайн «записал лекцию на телефон → получил структурированный конспект .md для Obsidian/Notion»</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Уровень:</strong> Python базовый, чуть-чуть терпения с зависимостями</span>
+</div>
+
+<h2>Зачем этот проект</h2>
+<p>Я ходил на двухчасовой воркшоп, записал на диктофон, пришёл домой и не знал, что с этим делать: переслушивать никто не будет, читать сырую транскрипцию на 25 тысяч слов — ещё хуже. Нужен нормальный конспект: тезисы, термины, ключевые идеи, цитаты.</p>
+<p>Whisper расшифрует речь в текст. Но Whisper — глупый писарь: он не понимает, что важно. Это работа для Claude. Связка двух моделей даёт то, чего по отдельности нет: умный конспект из живой речи. Дальше я открываю файл в Obsidian, и материал готов для повторения.</p>
+
+<h2>Что в итоге будет</h2>
+<ul>
+<li>CLI-скрипт: <code>python notes.py lecture.m4a</code> → <code>lecture.md</code> рядом.</li>
+<li>Расшифровка локально через faster-whisper (бесплатно, не требует интернета).</li>
+<li>Структуризация через Claude: тезисы, термины с определениями, повторы (= важное), вопросы для повторения, цитаты.</li>
+<li>Поддержка длинных записей (90+ минут) с разбиением на чанки и сшивкой.</li>
+<li>Готовый markdown с фронтматтером, тегами, оглавлением — drag&amp;drop в Obsidian.</li>
+</ul>
+
+<h2>Требования</h2>
+<ul>
+<li>Python 3.10+.</li>
+<li><code>ffmpeg</code> в системе (Whisper вызывает его для конвертации).</li>
+<li>API-ключ Anthropic.</li>
+<li>На Маке/Линуксе — 10 мин на установку, на Windows — 20.</li>
+</ul>
+
+<h2>Архитектура</h2>
+<pre><code>аудио (m4a / mp3 / wav)
+    ↓
+faster-whisper (локально на CPU/GPU)
+    ↓
+сырой текст транскрипции
+    ↓
+разбиение на чанки по ~6000 слов (если длинная)
+    ↓
+Claude: каждый чанк → структурированный фрагмент
+    ↓
+сшивка фрагментов + общий саммари
+    ↓
+финальный .md файл</code></pre>
+
+<h2>Шаг 1: установка</h2>
+
+<p>Сначала <code>ffmpeg</code>:</p>
+<pre><code class="language-bash"># macOS
+brew install ffmpeg
+
+# Ubuntu/Debian
+sudo apt install ffmpeg
+
+# Windows: скачай бинарь с ffmpeg.org/download.html, добавь в PATH</code></pre>
+
+<p>Проверь: <code>ffmpeg -version</code>.</p>
+
+<p>Дальше python-пакеты:</p>
+<pre><code class="language-bash">mkdir lecture-notes && cd lecture-notes
+python3 -m venv venv && source venv/bin/activate
+pip install faster-whisper anthropic python-dotenv</code></pre>
+
+<p><strong>Замечание:</strong> <code>faster-whisper</code> при первом запуске сам скачает модель (~400 МБ для <code>medium</code>, ~1.5 ГБ для <code>large-v3</code>). На моём MacBook M1 medium расшифровывает час лекции за ~5 минут на CPU. Если есть NVIDIA GPU — будет в разы быстрее.</p>
+
+<p><code>.env</code>:</p>
+<pre><code class="language-bash">ANTHROPIC_API_KEY=sk-ant-...</code></pre>
+
+<h2>Шаг 2: транскрипция</h2>
+
+<p>Файл <code>transcribe.py</code>:</p>
+
+<pre><code class="language-python">from faster_whisper import WhisperModel
+
+def transcribe(audio_path, model_size="medium", language="ru"):
+    """Возвращает полную транскрипцию и список сегментов (для таймкодов)."""
+    # int8 — режим, который работает на CPU быстро и сносно по качеству
+    model = WhisperModel(model_size, device="cpu", compute_type="int8")
+
+    segments, info = model.transcribe(
+        audio_path,
+        language=language,
+        beam_size=5,
+        vad_filter=True,  # выкидывает паузы, ускоряет
+    )
+
+    full_text_parts = []
+    segments_list = []
+
+    for seg in segments:
+        full_text_parts.append(seg.text)
+        segments_list.append({
+            "start": seg.start,
+            "end": seg.end,
+            "text": seg.text.strip(),
+        })
+
+    full_text = " ".join(full_text_parts).strip()
+    return full_text, segments_list, info.duration
+</code></pre>
+
+<p>Чем больше модель — тем лучше качество, но медленнее. Моя рекомендация:</p>
+<ul>
+<li><code>small</code> — для технической речи на русском плохо, не советую.</li>
+<li><code>medium</code> — рабочий минимум для русского.</li>
+<li><code>large-v3</code> — лучше всего, но тяжёлый. Имеет смысл для редких записей, где важно качество.</li>
+</ul>
+
+<h2>Шаг 3: разбиение на чанки</h2>
+
+<p>У Claude контекст большой, но впихивать туда 30к слов одной кучей — плохая идея: модель «теряет середину» и саммари получается рваный. Бьём на чанки по ~6000 слов с перекрытием.</p>
+
+<pre><code class="language-python">def chunk_text(text, chunk_size_words=6000, overlap_words=300):
+    """Делит длинный текст на куски с перекрытием для непрерывности."""
+    words = text.split()
+    if len(words) <= chunk_size_words:
+        return [text]
+
+    chunks = []
+    start = 0
+    while start < len(words):
+        end = min(start + chunk_size_words, len(words))
+        chunks.append(" ".join(words[start:end]))
+        if end == len(words):
+            break
+        start = end - overlap_words
+
+    return chunks
+</code></pre>
+
+<p>Перекрытие в 300 слов нужно, чтобы термин, упомянутый на границе кусков, не потерял контекст.</p>
+
+<h2>Шаг 4: структуризация через Claude</h2>
+
+<p>Это сердце проекта. Промпт спроектирован так, чтобы получить именно конспект, а не пересказ.</p>
+
+<pre><code class="language-python">import os
+from anthropic import Anthropic
+
+client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+
+STRUCTURE_PROMPT = """Перед тобой расшифровка фрагмента лекции (живая устная речь, может быть с оговорками и повторами).
+
+Преврати это в качественный конспект на русском, в формате markdown.
+
+ВАЖНО:
+- Это конспект, а не пересказ. Выкидывай оговорки, «ну», «короче», повторы из-за того что лектор сбился.
+- Сохраняй фактическую плотность. Если лектор привёл пример или число — сохрани его.
+- ЕСЛИ лектор повторил одну мысль 2-3 раза в разных формулировках — это важно, помечай ⭐.
+- Если лектор сказал что-то яркое цитатой — сохраняй в "Цитаты" дословно.
+
+Структура ответа:
+
+## Тезисы
+- Тезис 1
+- Тезис 2 ⭐ (если повторялось)
+- ...
+
+## Термины и определения
+- **Термин** — определение, как лектор его дал
+- ...
+
+## Примеры и кейсы
+- Описание примера/кейса в одном предложении
+- ...
+
+## Цитаты
+> Точная цитата, если была яркая
+> — без атрибуции, просто как цитата
+
+## Вопросы для повторения
+- Вопрос 1?
+- Вопрос 2?
+- (5-7 штук, проверяют главные идеи фрагмента)
+
+Не добавляй преамбулы и заключений. Только структура выше."""
+
+
+def structure_chunk(text):
+    resp = client.messages.create(
+        model="claude-sonnet-4-5",
+        max_tokens=4000,
+        system=STRUCTURE_PROMPT,
+        messages=[{"role": "user", "content": text}],
+    )
+    return resp.content[0].text.strip()
+</code></pre>
+
+<h2>Шаг 5: сшивка чанков</h2>
+
+<p>Если чанков несколько — каждый структурируем отдельно, потом просим Claude слепить их в один документ без дублей.</p>
+
+<pre><code class="language-python">MERGE_PROMPT = """Тебе дано N структурированных конспектов разных фрагментов одной лекции.
+Слей их в единый цельный конспект:
+
+- В каждой секции (Тезисы, Термины, Примеры, Цитаты, Вопросы) — объедини содержимое.
+- Удали дубли (если один тезис встречается в двух фрагментах — оставь одну формулировку).
+- Если термин определён в нескольких фрагментах — оставь самое полное определение.
+- Тезисы упорядочи логически, а не по времени появления.
+- В конце добавь секцию "## TL;DR" — 3-5 предложений общего смысла всей лекции.
+
+Формат — тот же markdown."""
+
+
+def merge_chunks(structured_chunks):
+    if len(structured_chunks) == 1:
+        return structured_chunks[0]
+
+    joined = "\n\n---\n\n".join(
+        f"### Фрагмент {i+1}\n{ch}" for i, ch in enumerate(structured_chunks)
+    )
+
+    resp = client.messages.create(
+        model="claude-sonnet-4-5",
+        max_tokens=8000,
+        system=MERGE_PROMPT,
+        messages=[{"role": "user", "content": joined}],
+    )
+    return resp.content[0].text.strip()
+</code></pre>
+
+<h2>Шаг 6: собираем CLI</h2>
+
+<p>Файл <code>notes.py</code>:</p>
+
+<pre><code class="language-python">import sys
+import os
+from datetime import datetime
+from pathlib import Path
+from dotenv import load_dotenv
+
+from transcribe import transcribe
+from structure import structure_chunk, merge_chunks, chunk_text
+
+load_dotenv()
+
+def make_frontmatter(source_path, duration_sec):
+    """Yaml-фронтматтер для Obsidian."""
+    minutes = int(duration_sec // 60)
+    return f"""---
+source: {Path(source_path).name}
+date: {datetime.now().strftime('%Y-%m-%d')}
+duration_min: {minutes}
+tags: [лекция, конспект, ai-generated]
+---
+
+"""
+
+
+def main():
+    if len(sys.argv) < 2:
+        print("Usage: python notes.py <audio_file>")
+        sys.exit(1)
+
+    audio = sys.argv[1]
+    if not os.path.exists(audio):
+        print(f"Файл не найден: {audio}")
+        sys.exit(1)
+
+    print(f"[1/4] Транскрибирую {audio}...")
+    text, segments, duration = transcribe(audio, model_size="medium")
+    print(f"      Готово: {len(text.split())} слов, {int(duration/60)} мин")
+
+    # сохраняем сырую транскрипцию тоже — на всякий
+    raw_path = Path(audio).with_suffix(".raw.txt")
+    raw_path.write_text(text, encoding="utf-8")
+    print(f"      Сырая транскрипция: {raw_path.name}")
+
+    print("[2/4] Делю на чанки...")
+    chunks = chunk_text(text, chunk_size_words=6000)
+    print(f"      Чанков: {len(chunks)}")
+
+    print("[3/4] Структурирую каждый чанк через Claude...")
+    structured = []
+    for i, ch in enumerate(chunks, 1):
+        print(f"      Чанк {i}/{len(chunks)}...")
+        structured.append(structure_chunk(ch))
+
+    print("[4/4] Сшиваю...")
+    final = merge_chunks(structured)
+
+    out_path = Path(audio).with_suffix(".md")
+    out_path.write_text(
+        make_frontmatter(audio, duration) + final,
+        encoding="utf-8"
+    )
+    print(f"\nГотово: {out_path}")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+
+<h2>Запуск и проверка</h2>
+
+<pre><code class="language-bash">python notes.py путь/к/лекции.m4a</code></pre>
+
+<p>Что увидишь в консоли:</p>
+<pre><code>[1/4] Транскрибирую лекция.m4a...
+      Готово: 12483 слов, 75 мин
+      Сырая транскрипция: лекция.raw.txt
+[2/4] Делю на чанки...
+      Чанков: 3
+[3/4] Структурирую каждый чанк через Claude...
+      Чанк 1/3...
+      Чанк 2/3...
+      Чанк 3/3...
+[4/4] Сшиваю...
+
+Готово: лекция.md</code></pre>
+
+<p>Открой <code>лекция.md</code> в Obsidian (или просто в любом markdown-вьювере) — увидишь нормальный человеческий конспект.</p>
+
+<h2>Расширения</h2>
+
+<ul>
+<li><strong>Batch-обработка папки.</strong> Скрипт <code>batch.py</code>: пройти по папке <code>~/Recordings/</code>, для каждого нового файла (которого ещё нет в .md) — прогнать пайплайн. Запускай раз в день cron-ом.</li>
+<li><strong>Автозапись с диктофона.</strong> На iOS — Shortcuts автоматически выгружает запись из «Диктофон» в iCloud Drive → автоматом подхватывается batch-скриптом → утром на компьютере уже готовый конспект.</li>
+<li><strong>Шеринг в Telegram-канал.</strong> После генерации <code>.md</code> — отправить первые 3000 символов (тезисы + TL;DR) в канал группы/команды. Все остальные участники получают саммари без необходимости слушать запись.</li>
+<li><strong>Спикер-диаризация.</strong> faster-whisper умеет отличать голоса (с <code>pyannote.audio</code>). Для интервью или подкаста — каждый абзац подписан «Спикер 1 / Спикер 2», в конспект попадает «Иванов считает X, Петров возражает Y». Сильно усложняет, но иногда стоит того.</li>
+<li><strong>Свой шаблон.</strong> Если ты учишься в вузе и нужен конспект «для семинара» — переписать промпт под формат предмета (формулы в LaTeX, схемы в mermaid). Один и тот же пайплайн адаптируется под любой формат через <code>STRUCTURE_PROMPT</code>.</li>
+</ul>
+
+<h2>Подводные камни</h2>
+
+<ul>
+<li><strong>Качество транскрипции на русском.</strong> medium-модель путает имена, термины и аббревиатуры. «KPI» становится «кейпиай», «ChatGPT» — «чат-гэпэтэ». Один из способов борьбы — в промпт Claude передавать список ожидаемых терминов («лектор оперирует терминами: SQL, Kubernetes, latency») — он восстановит написание.</li>
+<li><strong>Шумная запись.</strong> Если писал на телефон в большом зале — будет много мусора. Перед транскрипцией стоит прогнать через любой денойзер (есть бесплатные онлайн), или использовать опцию <code>vad_filter=True</code> агрессивнее (см. параметры).</li>
+<li><strong>Длинные паузы / музыка.</strong> Whisper иногда «галлюцинирует» текст в местах тишины — пишет случайные фразы. <code>vad_filter</code> снижает риск, но не убирает. Если видишь в транскрипции странные фразы, не относящиеся к теме — это оно.</li>
+<li><strong>Стоимость API.</strong> Часовая лекция = ~10к слов = ~3 чанка по 6к. Каждый чанк = ~$0.03 на claude-sonnet-4-5. Плюс сшивка. Итого ~$0.15 за лекцию. Дёшево, но если планируешь обрабатывать сотни — лучше брать <code>claude-haiku</code>.</li>
+<li><strong>Whisper жрёт RAM.</strong> На <code>large-v3</code> можно упереться в 4–8 ГБ оперативки. Если ноут слабый — оставайся на <code>medium</code>.</li>
+<li><strong>Этика записи.</strong> Если на лекции платный курс с NDA — подумай, ОК ли отправлять расшифровку в Anthropic. Локальная версия (Whisper + локальная LLM через Ollama) решает приватность, но качество структуризации заметно ниже.</li>
+</ul>
+
+<h2>Что в итоге</h2>
+
+<p>Я гоняю эту штуку уже год по своим лекциям, вебинарам, иногда — длинным звонкам с клиентами (с разрешения). Главный эффект: я перестал бояться двухчасовых записей. Раньше у меня была папка «послушать потом» на 40 файлов, и я знал, что никогда туда не вернусь. Теперь — закинул на ночь скрипт на batch-обработку, утром в Obsidian лежат конспекты, ищу по тегам, нахожу нужное за минуту.</p>
+
+<p>Это типичный пример AI-инструмента, который не делает за тебя работу, а снимает барьер «слишком долго, чтобы начать». А когда барьер снят, ты делаешь в 10 раз больше.</p>
+
+
+    <div class="pp-open"><a href="/#lesson-p17">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

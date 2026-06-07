@@ -9,31 +9,172 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Урок 10. Low-code приложения с ИИ">
 <meta property="og:description" content="Урок 10 из курса AI на русском. Low-code приложения с ИИ. ~50 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/10.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/10.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/10.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Урок 10. Low-code приложения с ИИ">
 <meta name="twitter:description" content="Урок 10 из курса AI на русском. Low-code приложения с ИИ. ~50 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/10.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/10.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/10.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-10');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Урок 10. Low-code приложения с ИИ","description":"Урок 10 из курса AI на русском. Low-code приложения с ИИ. ~50 мин.","url":"https://ai.madzhitov.ru/lessons/10.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/10.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 10</span></div>
 <h1>Урок 10. Low-code приложения с ИИ</h1>
-<p>Урок 10 из курса AI на русском. Low-code приложения с ИИ. ~50 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-10">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> собрать рабочее AI-приложение без кода и понимать, где это правильный путь, а где нет</span>
+  <span><strong>Время:</strong> ~50 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/10</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Не всякая AI-задача требует Python и сервера. Огромный пласт задач — «когда приходит письмо → суммаризируй → положи в Notion» — собирается за 20 минут в low-code инструменте. Без программирования. И работает годами.</p>
+<p>Low-code AI — это особая суперсила, потому что:</p>
+<ul>
+<li>Идею можно проверить за час, а не за неделю.</li>
+<li>Не-разработчики (маркетологи, рекрутеры, юристы) автоматизируют свою работу сами.</li>
+<li>90% реальных AI-юзкейсов в компаниях — это интеграция готовых моделей в существующие данные/процессы, а не разработка моделей.</li>
+</ul>
+
+<h2>1. Что такое «low-code AI»</h2>
+<p>Это инструменты, где ты собираешь приложение из готовых блоков на холсте: триггер (что-то происходит) → шаги (что сделать) → действия (куда положить результат). Один из шагов — вызов LLM.</p>
+<p>Базовый кирпич: <strong>триггер → LLM-шаг → действие</strong>.</p>
+<p>Примеры:</p>
+<ul>
+<li>Новое письмо в Gmail → GPT суммаризирует → пост в Slack.</li>
+<li>Форма на сайте → GPT категоризирует запрос → создаёт тикет в Linear.</li>
+<li>Telegram-сообщение → Claude переводит → отправляет в другой чат.</li>
+<li>RSS-фид → суммаризация → ежедневный дайджест в Notion.</li>
+</ul>
+
+<h2>2. Ландшафт инструментов</h2>
+<table>
+<tr><th>Инструмент</th><th>Сильно в</th><th>Цена</th><th>Кому</th></tr>
+<tr><td><strong>Make</strong> (бывш. Integromat)</td><td>Визуальные сценарии, 1800+ интеграций, дешёвый</td><td>Бесплатно до 1000 операций/мес; $10/мес базовый</td><td>Самый универсальный старт</td></tr>
+<tr><td><strong>Zapier</strong></td><td>Самый широкий каталог, AI built-in</td><td>От $20/мес</td><td>Если уже в экосистеме Zapier</td></tr>
+<tr><td><strong>n8n</strong></td><td>Open-source, self-host, full control</td><td>Бесплатно self-host, $24/мес cloud</td><td>Те, кто хочет приватность и контроль</td></tr>
+<tr><td><strong>Power Automate / Copilot Studio</strong></td><td>Интеграция с MS-экосистемой, ботики</td><td>В составе M365</td><td>Корпоративный мир Microsoft</td></tr>
+<tr><td><strong>Bubble</strong></td><td>Полноценные веб-приложения с UI</td><td>От $32/мес</td><td>Если нужен UI, не только автоматизация</td></tr>
+<tr><td><strong>Retool</strong></td><td>Внутренние дашборды и админки</td><td>Бесплатно до 5 юзеров</td><td>Внутренние tools-приложения</td></tr>
+</table>
+<p><strong>Эвристика выбора:</strong> для начала — <strong>Make</strong>. Бесплатный тариф щедрый, интерфейс понятный, AI-блоки есть.</p>
+
+<h2>3. Полный пример в Make: AI-помощник для писем</h2>
+<p><strong>Задача:</strong> когда приходит письмо в Gmail с темой «Запрос» — GPT категоризирует (продажи / поддержка / спам), пишет 2-строчное саммари и постит в нужный канал Slack.</p>
+<p><strong>Сценарий (5 шагов):</strong></p>
+<ol>
+<li><strong>Триггер:</strong> Gmail — «Watch emails» с фильтром по теме.</li>
+<li><strong>OpenAI:</strong> Create Completion. Промпт: «Категоризируй письмо в одну из категорий: sales / support / spam / other. Верни JSON {category, summary}». В body передаёшь <code>{{1.text}}</code>.</li>
+<li><strong>Router:</strong> ветвится по <code>{{2.category}}</code>.</li>
+<li><strong>Slack:</strong> Send Message в канал #sales, #support и т.п.</li>
+<li><strong>Google Sheets:</strong> Append row — лог всех писем для аналитики.</li>
+</ol>
+<p>Время сборки с нуля — <strong>20 минут</strong>. Стоимость работы — ~$0.0002 за письмо. Сценарий работает 24/7 без сервера.</p>
+
+<h2>4. Microsoft Copilot Studio коротко</h2>
+<p>Если ты в корпоративном Microsoft-мире (Teams, SharePoint, M365), Copilot Studio — твой инструмент. Это no-code конструктор чат-ботов:</p>
+<ul>
+<li>Drag-and-drop диалоговые потоки.</li>
+<li>Готовые коннекторы к 1000+ систем.</li>
+<li>Можно подключить свои данные (SharePoint-документы → RAG-бот).</li>
+<li>Деплой одной кнопкой в Teams.</li>
+</ul>
+<p>В России доступ ограничен — но если работаешь в международной компании, это де-факто стандарт для корпоративных AI-помощников.</p>
+
+<h2>5. Где low-code заканчивается</h2>
+<p>Low-code прекрасен, пока ты в его границах. Где он ломается:</p>
+<ul>
+<li><strong>Сложная бизнес-логика.</strong> Когда «если А и Б, но не В, и при этом дата позже Г, и пользователь из категории Д» — визуальные блоки превращаются в кашу.</li>
+<li><strong>Большой объём.</strong> Make/Zapier берут деньги за каждую операцию. На 100k операций в день код в облаке дешевле в 10–100 раз.</li>
+<li><strong>Низкая задержка.</strong> Low-code платформы добавляют 200–800 мс на шаг. Если нужен реалтайм — не годится.</li>
+<li><strong>Сложные данные/состояние.</strong> Когда нужна нормальная БД, миграции, версионирование — нужен код.</li>
+<li><strong>Тонкая работа с LLM.</strong> Streaming, function calling с многошаговыми диалогами, кастомные эмбеддинги — обычно проще написать.</li>
+</ul>
+
+<h2>6. AI-агенты-конструкторы</h2>
+<p>Отдельный класс — конструкторы AI-агентов:</p>
+<ul>
+<li><strong>OpenAI GPTs</strong> — кастомные GPT-боты с инструментами, бесплатно при подписке ChatGPT Plus.</li>
+<li><strong>Claude Projects</strong> — для долгих задач с контекстом (Урок c2).</li>
+<li><strong>Botpress, Voiceflow</strong> — для голосовых/текстовых ботов.</li>
+<li><strong>Dify, FlowiseAI, n8n с LangChain-нодами</strong> — open-source конструкторы AI-агентов с RAG и tool-use.</li>
+</ul>
+<p>Это middle ground: больше возможностей, чем чистый Make, но не нужен код.</p>
+
+<h2>7. Тонкости и подводные камни</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Цена операций.</strong> Каждый шаг в Make/Zapier = операция. Сценарий из 5 шагов на 1000 событий в день = 150k операций/мес. Прицельно смотри биллинг.</li>
+<li><strong>Hardcoded API-ключи.</strong> Большинство low-code платформ хранят ключи в зашифрованном виде, но это всё равно вне твоего контроля. Для чувствительных данных — self-host (n8n).</li>
+<li><strong>Сложно тестировать.</strong> Нет git, нет CI. Случайно сломал сценарий — пользователи начали получать мусор.</li>
+<li><strong>Сложно мониторить.</strong> Логи есть, но искать ошибку в 100 запусках за сутки — больно. Заранее настраивай error-handler с уведомлением в Slack.</li>
+<li><strong>Vendor lock-in.</strong> Сложно перенести сценарий из Make в Zapier. Если платформа поднимет цены — переезд болезненный.</li>
+</ul>
+</div>
+
+<h2>8. Глоссарий</h2>
+<div class="glossary-term"><h3>Триггер</h3><p>Событие, которое запускает сценарий. Новый email, новая строка в Sheets, расписание.</p></div>
+<div class="glossary-term"><h3>Действие (Action)</h3><p>Шаг, который что-то делает: вызов API, отправка письма, создание записи в БД.</p></div>
+<div class="glossary-term"><h3>Webhook</h3><p>HTTP-ручка, которая принимает данные извне и запускает сценарий. Универсальный триггер.</p></div>
+<div class="glossary-term"><h3>Router</h3><p>Ветвление сценария по условию. Аналог if-else.</p></div>
+<div class="glossary-term"><h3>Iterator</h3><p>Перебор массива. Аналог for-loop.</p></div>
+
+<h2>9. Практика (50 минут)</h2>
+<ol>
+<li><strong>Зарегистрируйся в Make</strong> (бесплатный тариф).</li>
+<li><strong>Собери сценарий:</strong> RSS какого-нибудь блога (или Telegram-канал через Telegram Bot) → OpenAI («суммаризируй в 3 предложения») → результат в Notion/Sheets/себе на email.</li>
+<li><strong>Проверь</strong>, что работает на 3 разных постах.</li>
+<li><strong>Добавь обработку ошибок:</strong> если OpenAI вернул ошибку — отправь в отдельный канал.</li>
+<li><strong>Запиши в <code>progress.md</code></strong>, сколько времени заняло, и сколько операций ушло.</li>
+</ol>
+
+<h2>10. Проверь себя</h2>
+<p><strong>1. Когда low-code лучше, чем код?</strong><br>
+Простая интеграция между сервисами, прототип за час, владелец не-разработчик, объём небольшой (&lt;1000 операций/день).</p>
+<p><strong>2. Когда low-code хуже, чем код?</strong><br>
+Сложная логика, большой объём, низкая задержка, нужен git/CI/тесты, нужны кастомные данные.</p>
+<p><strong>3. Что такое «операция» в Make/Zapier и почему за неё берут деньги?</strong><br>
+Каждый отдельный шаг сценария = операция. Сценарий из 5 шагов на 1 событие = 5 операций. Платишь за фактическое потребление.</p>
+<p><strong>4. Чем GPTs от OpenAI отличаются от Make-сценария?</strong><br>
+GPT — это чат-бот с памятью и инструментами, а Make — автоматизация фоновых процессов. GPT отвечает пользователю, Make работает по триггерам.</p>
+<p><strong>5. Что такое webhook и зачем он нужен в low-code?</strong><br>
+HTTP-эндпоинт. Внешняя система отправляет на него POST с данными → запускается сценарий. Универсальный триггер для систем, у которых нет прямого коннектора.</p>
+
+<h2>11. Что должно остаться в голове</h2>
+<ol>
+<li>Low-code AI = триггер + LLM-шаг + действие. Собирается за 20 минут.</li>
+<li>Make — лучший старт; n8n — если нужна приватность; Zapier — если уже в нём; Copilot Studio — для MS-экосистемы.</li>
+<li>Думай про «операции» — биллинг идёт по ним.</li>
+<li>Low-code заканчивается там, где начинается сложная логика, объём, низкая задержка или кастомные данные.</li>
+<li>Для AI-агентов с UI и контекстом смотри Dify/n8n/Flowise; для чат-ботов в Teams — Copilot Studio.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> возьми одну рутину из своей недели (что делаешь руками регулярно) — и сделай low-code сценарий, который это автоматизирует. Это даст тебе живой кейс «AI экономит мне N часов в неделю».
+</div>
+
+    <div class="pp-open"><a href="/#lesson-10">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

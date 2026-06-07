@@ -9,31 +9,155 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Урок 31. Введение в ИИ как науку">
 <meta property="og:description" content="Урок 31 из курса AI на русском. Введение в ИИ как науку. ~45 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/31.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/31.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/31.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Урок 31. Введение в ИИ как науку">
 <meta name="twitter:description" content="Урок 31 из курса AI на русском. Введение в ИИ как науку. ~45 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/31.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/31.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/31.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-31');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Урок 31. Введение в ИИ как науку","description":"Урок 31 из курса AI на русском. Введение в ИИ как науку. ~45 мин.","url":"https://ai.madzhitov.ru/lessons/31.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/31.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 3. Практик</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 31</span></div>
 <h1>Урок 31. Введение в ИИ как науку</h1>
-<p>Урок 31 из курса AI на русском. Введение в ИИ как науку. ~45 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-31">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять, где сейчас находится ИИ и как мы сюда пришли — без воды и без хайпа</span>
+  <span><strong>Время:</strong> ~45 минут</span>
+  <span><strong>Источник:</strong> AI-For-Beginners/01–02 + Russell &amp; Norvig «AIMA»</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Ты уже умеешь работать с LLM и собирать агентов. Теперь — ныряем под капот: что такое нейросети, как они учатся, чем отличаются от классического ML. Без этой базы дальше будет каша.</p>
+<p>Фаза 3 — про практическое понимание <em>как это работает</em>. Не математические доказательства, а ментальная модель, которая позволяет читать статьи и код.</p>
+
+<h2>1. Что мы вообще называем «ИИ»</h2>
+<p>Термин 1956 года, означал очень разные вещи. Современная вложенная иерархия:</p>
+<pre><code>AI (искусственный интеллект)
+└── ML (машинное обучение)
+    └── Neural Networks (нейросети)
+        └── Deep Learning (глубокие нейросети, ≥3 слоёв)
+            └── Foundation Models (LLM, Vision, etc.)</code></pre>
+<p><strong>AI ≠ ML ≠ DL ≠ LLM</strong> — это разные уровни абстракции. ChatGPT — это <em>LLM</em>, который является <em>Foundation Model</em>, которая является <em>Deep Learning</em> моделью, которая является <em>Neural Network</em>, которая является разновидностью <em>ML</em>, которое — разновидность <em>AI</em>.</p>
+
+<h2>2. Три парадигмы ИИ</h2>
+<table>
+<tr><th>Парадигма</th><th>Идея</th><th>Когда работает</th><th>Когда не работает</th></tr>
+<tr><td><strong>Символьный ИИ</strong></td><td>Закодировать правила и логику</td><td>Чёткие домены: шахматы, теорема Пифагора, экспертные системы</td><td>Распознавание лица, понимание текста, всё что зашумлено</td></tr>
+<tr><td><strong>Коннекционизм (нейросети)</strong></td><td>Учиться на данных, паттерны</td><td>Зашумлённые данные, паттерны, обобщение</td><td>Логика, точные вычисления, объяснимость</td></tr>
+<tr><td><strong>Вероятностный</strong></td><td>Управлять неопределённостью через Байеса</td><td>Малые данные, причинно-следственный анализ</td><td>Крупные данные, сложные паттерны</td></tr>
+</table>
+<p>В 2026 доминирует коннекционизм. Но «победить» так и не получилось — современные системы гибридные (RAG = коннекционизм + символьный поиск, AlphaGo = нейросети + tree search).</p>
+
+<h2>3. История на пальцах (10 ключевых дат)</h2>
+<ul>
+<li><strong>1943</strong> — McCulloch &amp; Pitts: математическая модель нейрона.</li>
+<li><strong>1950</strong> — Тест Тьюринга.</li>
+<li><strong>1956</strong> — Дартмутская конференция, термин «AI».</li>
+<li><strong>1958</strong> — Перцептрон Розенблатта (научается на данных!).</li>
+<li><strong>1969</strong> — Minsky &amp; Papert: перцептрон не может XOR. Зима ИИ.</li>
+<li><strong>1986</strong> — Backpropagation (Rumelhart) — оттаивание.</li>
+<li><strong>2006</strong> — Hinton: «deep learning» взлетает.</li>
+<li><strong>2012</strong> — AlexNet выигрывает ImageNet. CNN-революция в зрении.</li>
+<li><strong>2017</strong> — «Attention Is All You Need» — рождение трансформеров.</li>
+<li><strong>2020+</strong> — GPT-3, ChatGPT, мультимодальные модели, агенты.</li>
+</ul>
+
+<h2>4. Что такое «обучение»</h2>
+<p>Главный сдвиг 21 века — мы не программируем поведение, а <strong>задаём цель</strong> и пускаем модель учиться.</p>
+<ul>
+<li><strong>Supervised</strong> (обучение с учителем) — есть пары (вход, правильный ответ). Модель учится приближать.</li>
+<li><strong>Unsupervised</strong> — есть только входы. Модель ищет структуру (кластеры, эмбеддинги).</li>
+<li><strong>Self-supervised</strong> — модель сама себе создаёт «правильные ответы» из текста (предсказать следующий токен). Так учатся LLM.</li>
+<li><strong>Reinforcement Learning</strong> — учится через награды от среды (роботы, игры, RLHF).</li>
+</ul>
+
+<h2>5. Почему именно сейчас сработало</h2>
+<p>Идеи нейросетей существовали с 1940-х. «Взрыв» 2010-х — это сочетание трёх вещей:</p>
+<ol>
+<li><strong>Данные.</strong> Интернет дал триллионы примеров.</li>
+<li><strong>Вычисления.</strong> GPU из игр оказались идеальны для умножения матриц.</li>
+<li><strong>Архитектуры.</strong> Backprop, CNN, ResNet, Transformer — нашли что хорошо обучается.</li>
+</ol>
+<p>Без любых двух из трёх — ничего бы не сработало.</p>
+
+<h2>6. Что НЕ умеет современный ИИ</h2>
+<ul>
+<li><strong>Думать про физический мир.</strong> Модели не понимают, что стул не пройдёт сквозь стену.</li>
+<li><strong>Точная математика.</strong> LLM плохо считают, нужен Code Interpreter.</li>
+<li><strong>Каузальность.</strong> Видят корреляции, не причины.</li>
+<li><strong>Долгосрочное планирование.</strong> Помнят контекст плохо.</li>
+<li><strong>Обучение online.</strong> Не учатся в процессе использования (без RL).</li>
+<li><strong>Объяснимость.</strong> Внутри — миллиарды чисел, не поддаются прямой интерпретации.</li>
+</ul>
+
+<h2>7. Карта Фазы 3</h2>
+<p>Дальше в фазе мы пройдём:</p>
+<ul>
+<li><strong>32:</strong> Символьный ИИ — корни и где он жив.</li>
+<li><strong>33:</strong> Перцептрон — простейшая нейросеть.</li>
+<li><strong>34:</strong> Свой framework на NumPy — поймём backprop изнутри.</li>
+<li><strong>35:</strong> PyTorch / TensorFlow — современные инструменты.</li>
+<li><strong>36–42:</strong> Computer Vision — CNN, transfer learning, GANs, detection, segmentation.</li>
+<li><strong>43–50:</strong> NLP — эмбеддинги, RNN, attention, transformers, BERT, GPT.</li>
+</ul>
+<p>К концу фазы ты прочитаешь любую ML-статью и поймёшь архитектуру.</p>
+
+<h2>8. Глоссарий</h2>
+<div class="glossary-term"><h3>AI / ML / DL</h3><p>Искусственный интеллект / Машинное обучение / Глубокое обучение — вложенные категории.</p></div>
+<div class="glossary-term"><h3>Supervised learning</h3><p>Обучение на парах (вход, правильный ответ).</p></div>
+<div class="glossary-term"><h3>Self-supervised</h3><p>Модель сама задаёт себе задачу из неразмеченных данных. Так учатся LLM.</p></div>
+<div class="glossary-term"><h3>Foundation model</h3><p>Большая модель, обученная на огромном корпусе, пригодная для fine-tune под разные задачи.</p></div>
+<div class="glossary-term"><h3>Backpropagation</h3><p>Алгоритм 1986 года, делающий обучение нейросетей вычислительно реальным.</p></div>
+
+<h2>9. Практика (45 минут)</h2>
+<ol>
+<li>Прочитай <a href="https://en.wikipedia.org/wiki/Timeline_of_artificial_intelligence" target="_blank">Timeline AI на Wikipedia</a> — это 20 минут хорошо потраченного времени.</li>
+<li>Открой <a href="https://playground.tensorflow.org" target="_blank">playground.tensorflow.org</a>. Поиграйся с XOR / Spiral — увидишь, как нейросеть учится визуально.</li>
+<li>Напиши в <code>progress.md</code>: какие 3 ограничения современного ИИ ты считаешь самыми важными для своей работы.</li>
+</ol>
+
+<h2>10. Проверь себя</h2>
+<p><strong>1. AI, ML, DL, LLM — иерархия?</strong><br>LLM ⊂ Foundation Model ⊂ Deep Learning ⊂ Neural Networks ⊂ ML ⊂ AI.</p>
+<p><strong>2. Три парадигмы ИИ?</strong><br>Символьный, коннекционистский (нейросети), вероятностный.</p>
+<p><strong>3. Почему именно в 2010-х взлетело?</strong><br>Сочетание трёх: данные (интернет), вычисления (GPU), архитектуры (backprop + CNN + Transformer).</p>
+<p><strong>4. Чем self-supervised отличается от supervised?</strong><br>Self-supervised сам создаёт «правильные ответы» из неразмеченных данных. LLM учатся предсказывать следующий токен.</p>
+
+<h2>11. Что должно остаться в голове</h2>
+<ol>
+<li>AI ≠ ML ≠ DL ≠ LLM. Это вложенные категории.</li>
+<li>Три парадигмы: символьный, коннекционизм, вероятностный. Сейчас доминирует коннекционизм.</li>
+<li>«Программирование через обучение» — главный сдвиг 21 века.</li>
+<li>Взлёт = данные + GPU + архитектуры.</li>
+<li>Современный ИИ не умеет каузальность, online-обучение, объяснимость.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> поиграй на playground.tensorflow.org минут 15. Увидеть как нейросеть учится спирали — лучше тысячи слов теории.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-31">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

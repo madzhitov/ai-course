@@ -9,31 +9,208 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Урок 14. RAG и векторные БД">
 <meta property="og:description" content="Урок 14 из курса AI на русском. RAG и векторные БД. ~70 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/14.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/14.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/14.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Урок 14. RAG и векторные БД">
 <meta name="twitter:description" content="Урок 14 из курса AI на русском. RAG и векторные БД. ~70 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/14.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/14.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/14.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-14');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Урок 14. RAG и векторные БД","description":"Урок 14 из курса AI на русском. RAG и векторные БД. ~70 мин.","url":"https://ai.madzhitov.ru/lessons/14.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/14.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
-<h1>Урок 14. RAG и векторные БД</h1>
-<p>Урок 14 из курса AI на русском. RAG и векторные БД. ~70 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-14">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 2. Строитель</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 14</span></div>
+<h1>Урок 14. RAG и векторные базы данных</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять как работает RAG и собрать поисковик по своим документам</span>
+  <span><strong>Время:</strong> ~55 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/15</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Проблема, которую решает RAG, возникает у каждого кто строит AI-продукты:</p>
+<ul>
+<li>Компания хочет чат-бота по своей документации — но документация закрытая, в LLM её нет.</li>
+<li>Хочешь задавать вопросы своим заметкам — LLM их не видела при обучении.</li>
+<li>Нужен помощник по актуальным ценам — у LLM данные устарели на год-два.</li>
+<li>Бот даёт уверенные ответы но иногда явно врёт — нет способа проверить источник.</li>
+</ul>
+<p>RAG (<strong>Retrieval-Augmented Generation</strong>) решает это: вместо того чтобы запихнуть всё в промпт, ты <strong>ищешь только нужное</strong> и даёшь LLM именно те фрагменты, которые релевантны вопросу.</p>
+
+<h2>1. Ментальная модель RAG</h2>
+<p>Аналогия: студент на устном экзамене. Обычный LLM — студент с феноменальной памятью, но не знает ничего про твою компанию. RAG — тот же студент, но с правом принести <strong>шпаргалки</strong>: перед ответом он листает нужные карточки и использует их в ответе.</p>
+<p>RAG — конвейер из двух частей:</p>
+<pre><code>ЧАСТЬ 1: ИНДЕКСИРОВАНИЕ (один раз заранее)
+Документы → Нарезка на чанки → Векторы → Сохранение в БД
+
+ЧАСТЬ 2: РАБОТА С ПОЛЬЗОВАТЕЛЕМ (каждый запрос)
+Вопрос → Вектор → Поиск похожих чанков → Отправка в LLM → Ответ</code></pre>
+
+<h2>2. Embeddings — числовое представление смысла</h2>
+<p><strong>Embedding</strong> — это способ превратить текст в список чисел так, чтобы <strong>похожие по смыслу тексты давали похожие числа</strong>.</p>
+<p>Три фразы: «Кошка сидит на ковре», «Котёнок лежит на подстилке», «Процентная ставка ЦБ выросла». Первые две похожи по смыслу — их векторы будут <strong>близкими в пространстве</strong>, у третьей вектор далёкий.</p>
+<p>Это лучше обычного поиска по ключевым словам: запрос «купить ноутбук» найдёт документ с фразой «приобрести лэптоп» — разные слова, но <strong>смысл близок</strong>. Можно спрашивать на русском, а находить документы на английском.</p>
+
+<h2>3. Чанкинг — нарезка документов</h2>
+<p>Почему нельзя один embedding для всего документа на 100 страниц?</p>
+<ul>
+<li><strong>Качество поиска падает.</strong> Один вектор — усреднение по всему содержимому. HR-раздел и финансовый смешаются.</li>
+<li><strong>Контекстное окно ограничено.</strong> Нашёл документ — но передать его целиком нельзя.</li>
+<li><strong>Стоимость.</strong> Чем больше токенов — тем дороже.</li>
+</ul>
+<p>Стандарт: <strong>500–600 слов с перекрытием 50–100 слов</strong> между чанками — чтобы не потерять смысл на границах. Лучше делить по абзацам или разделам, а не механически.</p>
+
+<h2>4. Векторная база данных</h2>
+<p>Обычные БД плохо подходят: они ищут по точным значениям, но не умеют «найти ближайших соседей в многомерном пространстве». Векторная БД — специализированное хранилище именно для такого поиска.</p>
+<table>
+<tr><th>База</th><th>Особенность</th><th>Когда</th></tr>
+<tr><td>Chroma</td><td>Локальная, простая</td><td>Прототипы и учёба</td></tr>
+<tr><td>Pinecone</td><td>Облачная, масштабируемая</td><td>Продакшен без инфраструктуры</td></tr>
+<tr><td>Qdrant</td><td>Self-hosted, высокая производительность</td><td>Продакшен на своих серверах</td></tr>
+<tr><td>pgvector</td><td>Расширение для PostgreSQL</td><td>Уже используешь Postgres</td></tr>
+</table>
+
+<h2>5. Как работает поиск: косинусное сходство</h2>
+<p><strong>Косинусное сходство</strong> измеряет <strong>угол</strong> между двумя векторами:</p>
+<ul>
+<li>= 1 → идентичны (угол 0°)</li>
+<li>= 0 → не связаны (угол 90°)</li>
+<li>= -1 → противоположны</li>
+</ul>
+<p>Почему угол, а не расстояние? Длина вектора зависит от длины текста, угол — только от <strong>направления</strong>, то есть от смысла.</p>
+
+<h2>6. Полный RAG-конвейер</h2>
+<h3>Этап 1: Индексирование</h3>
+<pre><code>1. Загружаешь документы (PDF, .md, .txt)
+2. Нарезаешь на чанки (~500 слов, с перекрытием)
+3. Каждый чанк → embedding-модель → вектор
+4. Сохраняешь в векторную БД: {вектор, текст, метаданные}</code></pre>
+
+<h3>Этап 2: Ответ на вопрос</h3>
+<pre><code>1. Пользователь задаёт вопрос
+2. Вопрос → embedding → вектор вопроса
+3. Ищем top-K (3–5) ближайших чанков
+4. Составляем промпт: "Ответь используя только этот контекст: [чанки]"
+5. LLM отвечает на основе контекста
+6. Показываем пользователю источники</code></pre>
+
+<h2>7. Важные нюансы</h2>
+<h3>Одна и та же embedding-модель для индексации и поиска</h3>
+<p>Критично: если индексировал через <code>text-embedding-ada-002</code>, а вопросы переводишь через <code>text-embedding-3-small</code> — пространства несовместимы, поиск будет мусором.</p>
+
+<h3>RAG vs Fine-tuning</h3>
+<table>
+<tr><th></th><th>RAG</th><th>Fine-tuning</th></tr>
+<tr><td>Стоимость</td><td>Дёшево</td><td>Очень дорого</td></tr>
+<tr><td>Актуальность данных</td><td>Обновляешь БД — сразу работает</td><td>Нужно переобучение</td></tr>
+<tr><td>Прозрачность</td><td>Видишь источники</td><td>Знания внутри модели</td></tr>
+<tr><td>Лучше для</td><td>Фактических знаний, поиска</td><td>Стиля, поведения</td></tr>
+</table>
+
+<h2>8. Практика: RAG по своим документам</h2>
+<pre><code>pip install openai chromadb</code></pre>
+<pre><code>import os, json, chromadb
+from openai import OpenAI
+
+client = OpenAI(api_key="твой-ключ")
+chroma = chromadb.Client()
+collection = chroma.create_collection("docs", metadata={"hnsw:space": "cosine"})
+
+def embed(text):
+    return client.embeddings.create(
+        model="text-embedding-3-small", input=text
+    ).data[0].embedding
+
+def index_file(filepath):
+    with open(filepath, encoding="utf-8") as f:
+        text = f.read()
+    words = text.split()
+    chunks = [" ".join(words[i:i+500]) for i in range(0, len(words), 450)]
+    for i, chunk in enumerate(chunks):
+        collection.add(
+            ids=[f"{filepath}_{i}"],
+            embeddings=[embed(chunk)],
+            documents=[chunk],
+            metadatas=[{"source": os.path.basename(filepath)}]
+        )
+    print(f"✅ {filepath}: {len(chunks)} чанков")
+
+def ask(question, n=4):
+    results = collection.query(query_embeddings=[embed(question)], n_results=n,
+                               include=["documents", "metadatas", "distances"])
+    chunks = [
+        f"[{results['metadatas'][0][i]['source']}]
+{results['documents'][0][i]}"
+        for i in range(len(results["documents"][0]))
+        if 1 - results["distances"][0][i] > 0.5
+    ]
+    if not chunks:
+        return "❌ В документах нет информации по этому вопросу."
+    
+    context = "
+
+---
+
+".join(chunks)
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "Отвечай ТОЛЬКО на основе контекста. Если ответа нет — так и скажи."},
+            {"role": "user", "content": f"Контекст:
+{context}
+
+Вопрос: {question}"}
+        ],
+        temperature=0.2
+    )
+    return response.choices[0].message.content
+
+# Индексируем свои файлы
+for f in ["notes.txt", "manual.txt"]:
+    if os.path.exists(f):
+        index_file(f)
+
+# Интерактивный режим
+while True:
+    q = input("
+Вопрос: ").strip()
+    if q.lower() in ["выход", "exit"]: break
+    print(ask(q))</code></pre>
+
+<h2>9. Связь с другими уроками</h2>
+<p><strong>Урок 8</strong> — ты уже строил первую систему поиска с embeddings. RAG добавляет этап генерации ответа через LLM. <strong>Урок 13</strong> — функция поиска по БД станет инструментом агента. <strong>Урок 20 (Agentic RAG)</strong> — агент сам переформулирует запрос если первый поиск не дал результата, ищет итеративно. <strong>Урок 25 (Память агента)</strong> — долгосрочная память — это тоже RAG по истории разговоров.</p>
+
+<h2>✅ Контроль урока</h2>
+<ol>
+<li>Что такое embedding и почему похожие тексты дают похожие векторы?</li>
+<li>Зачем нарезать документы на чанки?</li>
+<li>Из каких шагов состоит RAG-конвейер? (два этапа)</li>
+<li>Почему нужно использовать одну embedding-модель для индексации и поиска?</li>
+<li>Чем RAG отличается от fine-tuning? Когда что выбирать?</li>
+</ol>
+
+    <div class="pp-open"><a href="/#lesson-14">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

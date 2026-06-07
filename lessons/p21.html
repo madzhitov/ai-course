@@ -9,31 +9,467 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Локальный AI-секретарь на Ollama — без облака и подписок">
 <meta property="og:description" content="P21 из курса AI на русском. Локальный AI-секретарь на Ollama — без облака и подписок. ~75 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/p21.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/p21.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/p21.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Локальный AI-секретарь на Ollama — без облака и подписок">
 <meta name="twitter:description" content="P21 из курса AI на русском. Локальный AI-секретарь на Ollama — без облака и подписок. ~75 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/p21.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/p21.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p21.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p21');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Локальный AI-секретарь на Ollama — без облака и подписок","description":"P21 из курса AI на русском. Локальный AI-секретарь на Ollama — без облака и подписок. ~75 мин.","url":"https://ai.madzhitov.ru/lessons/p21.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/p21.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
-<h1>Локальный AI-секретарь на Ollama — без облака и подписок</h1>
-<p>P21 из курса AI на русском. Локальный AI-секретарь на Ollama — без облака и подписок. ~75 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p21">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P21</span></div>
+<h1>Проект «За 1 час»: Локальный AI-секретарь на Ollama — без облака и подписок</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> офлайн-версию проекта p15 — утренний разбор почты, классификация и черновики ответов полностью на локальной модели</span>
+  <span><strong>Время:</strong> ~75 минут</span>
+  <span><strong>Уровень:</strong> Python средний, базовое понимание IMAP, 16+ GB RAM на машине</span>
+</div>
+
+<h2>Зачем этот проект</h2>
+<p>Проект p15 делает почти то же самое, но через Claude API. У этого подхода есть три неприятных «но»:</p>
+<ul>
+<li><strong>Приватность.</strong> Содержимое каждого письма уезжает в облако. Если в почте врачебные выписки, NDA, переписка с нотариусом — это твой осознанный выбор, и далеко не все готовы его делать.</li>
+<li><strong>Деньги.</strong> Сто писем в день — копейки, тысяча — уже заметно. На длинной дистанции API-счёт капает.</li>
+<li><strong>Зависимость.</strong> Перебои с платежом, региональные блокировки, лимиты — и скрипт встал.</li>
+</ul>
+<p>Локальная версия снимает все три пункта. Письма не покидают машину, никакие подписки не нужны, всё работает в самолёте. Платишь только электричеством и временем — обработка медленнее, чем у Claude, но для утренней пачки это нормально.</p>
+
+<h2>Что в итоге будет</h2>
+<ul>
+<li>Python-скрипт, запускающийся по cron каждое утро.</li>
+<li>Чтение inbox через IMAP (Mail.ru / Yandex / Gmail — что угодно с поддержкой app-password).</li>
+<li>Классификация через локальную Ollama: <code>urgent / fyi / noise / template</code>.</li>
+<li>На «template» — черновик ответа сохраняется в IMAP-папку «Черновики».</li>
+<li>Дневной чек-ин в Telegram: «3 срочных, 12 FYI, 47 шума. Срочные: …».</li>
+<li>Ни одного облачного запроса с содержимым письма — только TG-бот в самом конце.</li>
+</ul>
+
+<h2>Требования</h2>
+<ul>
+<li>Python 3.10+.</li>
+<li>16 GB RAM минимум (для qwen2.5:7b) или 32 GB (для qwen2.5:14b).</li>
+<li>Mac с Apple Silicon, Linux или Windows. На CPU тоже работает, но в 5–10 раз медленнее.</li>
+<li>Почтовый ящик с включённым IMAP и app-password.</li>
+<li>Telegram-бот (через @BotFather) и свой <code>chat_id</code>.</li>
+<li>Установленный Ollama (см. шаг 1).</li>
+</ul>
+
+<h2>Архитектура</h2>
+<pre><code>cron (8:00 утра)
+    ↓
+main.py
+    ├─→ IMAP: достать письма за последние 24 часа (тема + первые 1500 символов)
+    ├─→ Ollama (qwen2.5): классифицировать каждое (urgent / fyi / noise / template)
+    ├─→ для template: сгенерировать draft → положить в IMAP Drafts
+    └─→ Telegram: отправить дневной чек-ин
+
+Всё локально, наружу уходит только финальное сообщение в Telegram.</code></pre>
+
+<h2>Почему Qwen 2.5, а не Llama 3</h2>
+<p>На локальных моделях главный критерий — качество русского. Llama 3 и 3.1 умеют русский «по остаточному принципу»: понимают, но в генерации часто скатываются в кальки с английского, путают падежи, формулируют коряво. Qwen 2.5 тренировался на заметно большем объёме китайского и русского, и в задачах на русском уверенно его обходит при том же размере. Для классификации с короткими репликами на русском это критично.</p>
+<p>Из практики: на одних и тех же 50 письмах qwen2.5:7b делает 2–3 ошибки классификации, llama3:8b — 7–10. Драфты на русском у Qwen выглядят как нормальный человеческий ответ; у Llama часто «по́жалуйста подтвердите получение данного письма».</p>
+
+<h2>Шаг 1: ставим Ollama и тянем модель</h2>
+
+<p>Ollama — самый простой способ запустить локальную LLM. Сам ставит, сам обновляет, поднимает HTTP-сервер на <code>localhost:11434</code>.</p>
+
+<p>Установка:</p>
+<pre><code class="language-bash"># macOS / Linux
+curl -fsSL https://ollama.com/install.sh | sh
+
+# или скачать .dmg / .exe с ollama.com</code></pre>
+
+<p>Тянем модель. Выбор размера зависит от RAM:</p>
+<ul>
+<li><code>qwen2.5:7b</code> — 4.7 GB на диске, ~6 GB RAM при работе. Для 16 GB-машин.</li>
+<li><code>qwen2.5:14b</code> — 9 GB на диске, ~12 GB RAM. Для 32 GB.</li>
+<li><code>qwen2.5:32b</code> — 20 GB, ~28 GB RAM. Если у тебя сервер или Mac Studio.</li>
+</ul>
+
+<pre><code class="language-bash">ollama pull qwen2.5:7b
+# или
+ollama pull qwen2.5:14b
+
+# проверка — модель должна ответить:
+ollama run qwen2.5:7b "Ответь одним словом: какой сегодня день недели? Просто угадай."</code></pre>
+
+<p>Если на 16 GB запустил 14b — система начнёт уходить в swap, и каждый запрос будет идти по 2–3 минуты. Лучше честно остановиться на 7b и при необходимости подкрутить промпт.</p>
+
+<h2>Шаг 2: проект и зависимости</h2>
+
+<pre><code class="language-bash">mkdir local-secretary && cd local-secretary
+python3 -m venv venv && source venv/bin/activate
+pip install imap-tools ollama python-telegram-bot python-dotenv</code></pre>
+
+<p>Файл <code>.env</code> (добавь в <code>.gitignore</code>):</p>
+<pre><code class="language-bash">IMAP_HOST=imap.mail.ru
+IMAP_USER=you@mail.ru
+IMAP_PASS=xxxxxxxxxxxxxxxx
+OLLAMA_MODEL=qwen2.5:7b
+TG_BOT_TOKEN=1234:AABB...
+TG_CHAT_ID=123456789</code></pre>
+
+<p>Никакого OpenAI/Anthropic-ключа — единственный токен наружу это TG-бот. Если совсем хочется параноидально, можно и Telegram заменить на локальный desktop-notification.</p>
+
+<p><strong>App-password по провайдерам:</strong></p>
+<ul>
+<li><strong>Mail.ru:</strong> account.mail.ru → Безопасность → Пароли для внешних приложений → создать. Хост <code>imap.mail.ru</code>, порт 993.</li>
+<li><strong>Yandex:</strong> id.yandex.ru → Безопасность → Пароли приложений → «Почта». Хост <code>imap.yandex.ru</code>.</li>
+<li><strong>Gmail:</strong> myaccount.google.com → Безопасность → 2-Step Verification → App passwords. Хост <code>imap.gmail.com</code>.</li>
+</ul>
+
+<p>Чтобы узнать свой <code>chat_id</code>: напиши боту @userinfobot — он вернёт твой id.</p>
+
+<h2>Шаг 3: достаём свежие письма</h2>
+
+<p>Файл <code>fetch_inbox.py</code>:</p>
+<pre><code class="language-python">import os
+from datetime import datetime, timedelta
+from dotenv import load_dotenv
+from imap_tools import MailBox, AND
+
+load_dotenv()
+
+
+def fetch_recent_emails(hours=24):
+    since = (datetime.now() - timedelta(hours=hours)).date()
+    emails = []
+
+    with MailBox(os.getenv("IMAP_HOST")).login(
+        os.getenv("IMAP_USER"),
+        os.getenv("IMAP_PASS"),
+        initial_folder="INBOX",
+    ) as mailbox:
+        for msg in mailbox.fetch(AND(date_gte=since), mark_seen=False):
+            emails.append({
+                "uid": msg.uid,
+                "from": msg.from_,
+                "subject": msg.subject or "(без темы)",
+                "date": msg.date.isoformat() if msg.date else "",
+                "body": (msg.text or msg.html or "")[:1500],
+            })
+    return emails
+
+
+if __name__ == "__main__":
+    mails = fetch_recent_emails(24)
+    print(f"Получено {len(mails)} писем за 24 часа")
+    for m in mails[:3]:
+        print(f"  {m['from']} | {m['subject']}")
+</code></pre>
+
+<p>Запусти — должно вывести количество и первые 3 темы.</p>
+
+<h2>Шаг 4: классифицируем через Ollama</h2>
+
+<p>Главное отличие от облачной версии — у локальной 7b-модели контекст 8k токенов и она заметно хуже держит длинные batch-запросы. Если на Claude мы могли отправить пачку из 30 писем в одном запросе, то здесь надёжнее идти по одному. Медленнее, но качество классификации не плывёт.</p>
+
+<p>Файл <code>classify.py</code>:</p>
+<pre><code class="language-python">import json
+import os
+import re
+import ollama
+
+MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:7b")
+
+SYSTEM_PROMPT = """Ты — личный секретарь. Классифицируй письмо в одну из категорий:
+
+- "urgent" — требует ответа сегодня. Прямой вопрос лично мне, дедлайн,
+  проблема в проде, срочная просьба от руководства или клиента.
+- "fyi" — нужно знать, но отвечать не надо. Уведомления о решениях,
+  важные рассылки, отчёты.
+- "noise" — можно не открывать. Маркетинг, спам, авто-уведомления
+  систем (CI/CD, дайджесты, PR-апдейты).
+- "template" — типовой запрос со стандартным ответом: подтверждение
+  слота, запрос документов, "можете созвониться в среду?".
+
+Для "template" добавь поле "draft" — текст черновика ответа на русском,
+в моём стиле: короткий, без воды, без формальностей вроде
+"Добрый день, уважаемый". Просто по делу.
+
+Верни СТРОГО валидный JSON-объект без markdown и без комментариев:
+{"category": "urgent", "reason": "клиент спрашивает про дедлайн"}
+или для template:
+{"category": "template", "reason": "запрос слота",
+ "draft": "Привет! Среда 15:00 подходит. Скину ссылку утром."}
+"""
+
+
+def _extract_json(text):
+    """Локальные модели иногда оборачивают ответ в ```json ... ``` или комментируют.
+    Достаём первый валидный JSON-объект."""
+    text = text.strip()
+    if text.startswith("```"):
+        text = re.sub(r"^```(?:json)?s*", "", text)
+        text = re.sub(r"s*```$", "", text)
+    # на всякий случай ищем первую {...}-структуру
+    match = re.search(r"{.*}", text, re.DOTALL)
+    if match:
+        text = match.group(0)
+    return json.loads(text)
+
+
+def classify_one(email):
+    user_msg = json.dumps({
+        "from": email["from"],
+        "subject": email["subject"],
+        "body_preview": email["body"][:1200],
+    }, ensure_ascii=False)
+
+    resp = ollama.chat(
+        model=MODEL,
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_msg},
+        ],
+        options={"temperature": 0.2, "num_ctx": 8192},
+        format="json",  # ollama умеет принуждать модель к JSON
+    )
+
+    try:
+        return _extract_json(resp["message"]["content"])
+    except json.JSONDecodeError:
+        # фолбэк: если модель совсем сошла с ума — считаем шумом
+        return {"category": "noise", "reason": "parse_error"}
+
+
+def classify_all(emails):
+    out = []
+    for i, e in enumerate(emails, 1):
+        result = classify_one(e)
+        result["uid"] = e["uid"]
+        out.append(result)
+        print(f"  [{i}/{len(emails)}] {result['category']:8} | {e['subject'][:60]}")
+    return out
+</code></pre>
+
+<p>Ключевые параметры:</p>
+<ul>
+<li><code>temperature=0.2</code> — для классификации нам нужна предсказуемость, не креатив.</li>
+<li><code>num_ctx=8192</code> — поднимаем контекст до максимума 7b-модели. По умолчанию Ollama даёт 2048, чего мало.</li>
+<li><code>format="json"</code> — Ollama переключает декодер в режим, гарантирующий валидный JSON. Без этого 5–10% ответов будут битыми.</li>
+</ul>
+
+<h2>Шаг 5: сохраняем черновики в папку Drafts</h2>
+
+<p>Эта часть идентична облачной версии — IMAP-протокол одинаков для Claude и для Ollama.</p>
+
+<p>Файл <code>drafts.py</code>:</p>
+<pre><code class="language-python">import os
+from email.message import EmailMessage
+from imap_tools import MailBox
+
+
+def guess_drafts_folder():
+    host = os.getenv("IMAP_HOST", "")
+    if "gmail" in host:
+        return "[Gmail]/Drafts"
+    if "yandex" in host:
+        return "Drafts"
+    if "mail.ru" in host:
+        return "Черновики"
+    return "Drafts"
+
+
+def save_draft(to_addr, subject, body):
+    msg = EmailMessage()
+    msg["From"] = os.getenv("IMAP_USER")
+    msg["To"] = to_addr
+    msg["Subject"] = (
+        f"Re: {subject}"
+        if not subject.lower().startswith("re:")
+        else subject
+    )
+    msg.set_content(body)
+
+    folder = guess_drafts_folder()
+    with MailBox(os.getenv("IMAP_HOST")).login(
+        os.getenv("IMAP_USER"), os.getenv("IMAP_PASS")
+    ) as mailbox:
+        mailbox.append(msg.as_bytes(), folder)
+</code></pre>
+
+<p>Если не уверен в имени папки — выведи список:</p>
+<pre><code class="language-python">with MailBox(host).login(user, password) as mailbox:
+    for folder in mailbox.folder.list():
+        print(folder.name)
+</code></pre>
+
+<h2>Шаг 6: дневной чек-ин в Telegram</h2>
+
+<p>Файл <code>tg_brief.py</code>:</p>
+<pre><code class="language-python">import os
+from telegram import Bot
+
+
+async def send_brief(stats, urgent_items, draft_count):
+    bot = Bot(token=os.getenv("TG_BOT_TOKEN"))
+
+    lines = [
+        "📬 *Утренний бриф (локально, без облака)*",
+        "",
+        f"🔴 Срочное: {stats.get('urgent', 0)}",
+        f"🟡 FYI: {stats.get('fyi', 0)}",
+        f"⚪️ Шум: {stats.get('noise', 0)}",
+        f"✉️ Черновиков подготовлено: {draft_count}",
+    ]
+
+    if urgent_items:
+        lines.append("")
+        lines.append("*Что важно сегодня:*")
+        for item in urgent_items[:5]:
+            lines.append(f"• _{item['from']}_: {item['subject']}")
+            if item.get("reason"):
+                lines.append(f"  └ {item['reason']}")
+
+    await bot.send_message(
+        chat_id=os.getenv("TG_CHAT_ID"),
+        text="
+".join(lines),
+        parse_mode="Markdown",
+    )
+</code></pre>
+
+<h2>Шаг 7: собираем main.py</h2>
+
+<pre><code class="language-python">import asyncio
+from collections import Counter
+from dotenv import load_dotenv
+
+from fetch_inbox import fetch_recent_emails
+from classify import classify_all
+from drafts import save_draft
+from tg_brief import send_brief
+
+load_dotenv()
+
+
+def main():
+    emails = fetch_recent_emails(hours=24)
+    print(f"Достал {len(emails)} писем")
+
+    if not emails:
+        asyncio.run(send_brief({}, [], 0))
+        return
+
+    results = classify_all(emails)
+    email_by_uid = {e["uid"]: e for e in emails}
+
+    stats = Counter()
+    urgent_items = []
+    draft_count = 0
+
+    for r in results:
+        stats[r["category"]] += 1
+
+        if r["category"] == "urgent":
+            e = email_by_uid.get(r["uid"], {})
+            urgent_items.append({
+                "from": e.get("from", "?"),
+                "subject": e.get("subject", "?"),
+                "reason": r.get("reason", ""),
+            })
+
+        if r["category"] == "template" and r.get("draft"):
+            e = email_by_uid.get(r["uid"])
+            if e:
+                save_draft(e["from"], e["subject"], r["draft"])
+                draft_count += 1
+                print(f"  draft → {e['from']}")
+
+    asyncio.run(send_brief(dict(stats), urgent_items, draft_count))
+    print("Готово.")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+
+<h2>Запуск и проверка</h2>
+
+<p>Сначала проверь, что Ollama жива:</p>
+<pre><code class="language-bash">curl http://localhost:11434/api/tags
+# должен вернуть JSON со списком установленных моделей</code></pre>
+
+<p>Дальше — ручной запуск:</p>
+<pre><code class="language-bash">python main.py</code></pre>
+
+<p>На 50 письмах и qwen2.5:7b на Apple M2 Pro у меня уходит около 4–5 минут (CPU+GPU). На голом CPU — 12–15 минут. Это нормально для утреннего cron, который ты не видишь.</p>
+
+<p>Что проверить:</p>
+<ul>
+<li>В Telegram пришёл бриф с цифрами.</li>
+<li>В папке «Черновики» появились новые драфты на письма-«template».</li>
+<li>Тексты драфтов читаемые на русском, без англицизмов и «уважаемых коллег».</li>
+</ul>
+
+<p>Когда работает — ставь cron:</p>
+<pre><code class="language-bash">crontab -e
+# каждый будний день в 8:00:
+0 8 * * 1-5 cd /path/to/local-secretary && /path/to/venv/bin/python main.py >> log.txt 2>&1</code></pre>
+
+<h2>Сравнение с p15 (Claude-версия)</h2>
+<ul>
+<li><strong>Скорость.</strong> Claude обрабатывает 50 писем за 10–15 секунд, локальная qwen2.5:7b — за 4–5 минут на M-чипе. Для крона разница незаметна, для интерактивного использования — да.</li>
+<li><strong>Качество классификации.</strong> Claude промахивается ~1% случаев, qwen2.5:7b — 5–7%, qwen2.5:14b — 2–3%. Чаще всего ошибки между «fyi» и «noise» (что не критично), реже между «urgent» и «fyi» (тут больно).</li>
+<li><strong>Качество драфтов.</strong> Claude пишет ответ «как живой человек, твоего уровня». Qwen 7b пишет нормально, но иногда слишком формально или с лишним «надеюсь, у вас всё хорошо». 14b — заметно ближе к Claude. Решается few-shot-примерами в системном промпте.</li>
+<li><strong>Деньги.</strong> Claude — порядка $0.5–2 в месяц на средний почтовый ящик. Ollama — $0, если не считать электричество.</li>
+<li><strong>Приватность.</strong> У Ollama содержимое писем не покидает машину. Это главный аргумент для медкарт, договоров и личной переписки.</li>
+</ul>
+
+<h2>Расширения</h2>
+<ul>
+<li><strong>Автотегирование в почте.</strong> Добавляй IMAP-флаги — «Flagged» на urgent, метку «AI-noise» на noise. Потом фильтром в клиенте → шум сразу в архив.</li>
+<li><strong>Экспорт TODO.</strong> Если в письме «сделай X к четвергу» — отдельный класс <code>task</code>, и draft = добавить в Things 3 (URL-схема), Todoist или Obsidian-файл.</li>
+<li><strong>Пятничный недельный отчёт.</strong> Второй cron-джоб в пятницу в 17:00 — пробегает по отправленным письмам за неделю и через Ollama же выдаёт «вот что ты на этой неделе сделал». Удобно для журнала или для отчёта руководителю.</li>
+<li><strong>Few-shot стиль.</strong> Подсунь модели 5–10 своих реальных ответов прямо в SYSTEM_PROMPT — драфты становятся заметно «твоими».</li>
+<li><strong>VIP-список.</strong> «Эти 10 адресов — всегда urgent» хардкодом в коде, до запроса в модель. Письмо от босса или нотариуса не должно зависеть от настроения LLM.</li>
+</ul>
+
+<h2>Подводные камни</h2>
+<ul>
+<li><strong>Медленно на CPU.</strong> Без GPU 7b-модель отвечает 10–20 секунд на письмо. 50 писем = до 15 минут. Если есть Apple Silicon или дискретная NVIDIA — будет в 3–5 раз быстрее, Ollama её подхватывает автоматически.</li>
+<li><strong>Контекст 8k у 7b.</strong> Длинный тред с историей на 100 круток не влезет. Безопасно — обрезать тело письма до 1200–1500 символов, как в коде выше. Иначе модель начнёт «забывать» начало и галлюцинировать.</li>
+<li><strong>Модель промахивается чаще, чем Claude.</strong> Поэтому скрипт ничего не удаляет и не отправляет сам — только классифицирует и кладёт драфт. Все деструктивные действия за тобой.</li>
+<li><strong>Ollama иногда не возвращает валидный JSON.</strong> Даже с <code>format="json"</code> бывают сбои. Поэтому в коде есть фолбэк-парсинг и «если не распарсилось — считаем noise». Лучше пропустить одно письмо, чем уронить весь джоб.</li>
+<li><strong>Память.</strong> Ollama загружает модель в RAM при первом запросе и держит 5 минут. Если cron бежит раз в сутки — каждый раз будет холодный старт ~15–30 секунд на загрузку весов. Можно прогревать: <code>curl http://localhost:11434/api/generate -d '{"model":"qwen2.5:7b","keep_alive":-1}'</code> на старте машины.</li>
+<li><strong>HTML-письма.</strong> У многих рассылок <code>msg.text</code> пустой, всё в <code>msg.html</code>. Фолбэк в коде есть, но HTML-теги забивают контекст. Если у тебя много HTML — подключи <code>html2text</code> для очистки.</li>
+</ul>
+
+<h2>Что в итоге</h2>
+<p>У тебя есть полностью офлайн-версия секретаря. Письма не покидают машину, никаких подписок, никаких блокировок. По качеству qwen2.5:7b проигрывает Claude на 5–10 процентных пунктов точности классификации и заметно скучнее в драфтах — но эти 5–10% часто стоят того, чтобы медкарта и переписка с банком не уезжали в чужой дата-центр.</p>
+
+<p>Связка p15 + p21 даёт интересный паттерн: рабочую почту с NDA — на Ollama, личную с подписками и встречами — на Claude. Один и тот же main.py, отличаются только <code>classify.py</code> и переменные окружения.</p>
+
+<div class="callout callout-success">
+<strong>Готово.</strong> Утренний разбор inbox теперь делается локально и бесплатно. Дальше — недельный отчёт по отправленным письмам, экспорт TODO в Things/Todoist, или замена Telegram на native-нотификацию macOS. Всё это докручивается на той же Ollama без единого запроса в облако.
+</div>
+
+
+    <div class="pp-open"><a href="/#lesson-p21">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

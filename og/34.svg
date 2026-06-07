@@ -1,36 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#9333ea"/>
-      <stop offset="1" stop-color="#6b21a8"/>
-    </linearGradient>
-    <linearGradient id="logo" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#7c3aed"/>
-      <stop offset="1" stop-color="#ec4899"/>
-    </linearGradient>
-  </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
-  <rect x="60" y="60" width="1080" height="510" rx="32" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
-
-  <!-- Brand row -->
-  <g transform="translate(110, 110)">
-    <text x="0" y="48" fill="#fff" font-family="-apple-system, system-ui, sans-serif" font-weight="800" font-size="44">🤖 AI Курс</text>
-    <text x="0" y="78" fill="rgba(255,255,255,0.75)" font-family="-apple-system, system-ui, sans-serif" font-weight="400" font-size="18">От пользователя к создателю</text>
-  </g>
-
-  <!-- Phase tag -->
-  <g transform="translate(110, 240)">
-    <rect x="0" y="0" width="180" height="32" rx="6" fill="rgba(255,255,255,0.25)"/>
-    <text x="15" y="22" fill="#fff" font-family="-apple-system, system-ui, sans-serif" font-weight="700" font-size="14" letter-spacing="1.5">ФАЗА 3. ПРАКТИК</text>
-  </g>
-
-  <!-- Lesson number -->
-  <text x="110" y="320" fill="rgba(255,255,255,0.8)" font-family="-apple-system, system-ui, sans-serif" font-weight="600" font-size="20" letter-spacing="2">УРОК 34</text>
-
-  <!-- Title (up to 3 lines) -->
-  <text x="110" y="380" fill="#fff" font-family="-apple-system, system-ui, sans-serif" font-weight="800" font-size="54" letter-spacing="-1">Свой framework для</text>
-  <text x="110" y="442" fill="#fff" font-family="-apple-system, system-ui, sans-serif" font-weight="800" font-size="54" letter-spacing="-1">нейросетей на NumPy</text>
-
-  <!-- Footer -->
-  <text x="110" y="555" fill="rgba(255,255,255,0.7)" font-family="-apple-system, system-ui, sans-serif" font-weight="500" font-size="18">⏱ 90 мин · madzhitov.github.io/ai-course</text>
+  <rect width="1200" height="630" fill="#f4f1ea"/>
+  <rect x="46" y="46" width="1108" height="538" rx="28" fill="#fffdf8" stroke="#e0d9c9" stroke-width="2"/>
+  <circle cx="122" cy="118" r="11" fill="#2f6b50"/>
+  <text x="150" y="128" fill="#6f675b" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="600">AI Курс · Фаза 3. Практик</text>
+  <text x="118" y="206" fill="#aaa18f" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="2">УРОК 34</text>
+  <text x="116" y="288" fill="#23201a" font-family="Georgia, Times, serif" font-weight="700" font-size="60" letter-spacing="-1">Свой framework для</text>
+  <text x="116" y="358" fill="#23201a" font-family="Georgia, Times, serif" font-weight="700" font-size="60" letter-spacing="-1">нейросетей на NumPy</text>
+  <text x="120" y="556" fill="#aaa18f" font-family="Helvetica, Arial, sans-serif" font-size="22">90 мин · ai.madzhitov.ru</text>
 </svg>

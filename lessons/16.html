@@ -9,31 +9,341 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Урок 16. Что такое ИИ-агенты">
 <meta property="og:description" content="Урок 16 из курса AI на русском. Что такое ИИ-агенты. ~45 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/16.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/16.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/16.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Урок 16. Что такое ИИ-агенты">
 <meta name="twitter:description" content="Урок 16 из курса AI на русском. Что такое ИИ-агенты. ~45 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/16.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/16.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/16.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-16');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Урок 16. Что такое ИИ-агенты","description":"Урок 16 из курса AI на русском. Что такое ИИ-агенты. ~45 мин.","url":"https://ai.madzhitov.ru/lessons/16.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/16.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 2. Строитель</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 16</span></div>
 <h1>Урок 16. Что такое ИИ-агенты</h1>
-<p>Урок 16 из курса AI на русском. Что такое ИИ-агенты. ~45 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-16">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять, что такое агент, чем он отличается от чат-бота и когда он нужен</span>
+  <span><strong>Время:</strong> ~45 минут</span>
+  <span><strong>Источник:</strong> ai-agents-for-beginners/01, anthropic.com/news, lilianweng.github.io</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>2024–2026 — это годы агентов. Slack-боты, code-агенты типа Cursor и Cline, browser-агенты типа Operator, корпоративные copilots — везде агенты. Если ты строишь AI-приложения, ты неизбежно перейдёшь от «один промпт — один ответ» к «много шагов, инструменты, цикл».</p>
+<p>Но между «модным словом» и реально полезным агентом — пропасть. Большинство сегодняшних «агентов» — это просто чат-боты с громким названием. Этот урок — про то, что такое настоящий агент и когда он действительно даёт ценность.</p>
+
+<h2>1. Определение и анатомия</h2>
+
+<p>В простейшей форме:</p>
+
+<blockquote><strong>Агент — это LLM, которая в цикле решает задачу, используя инструменты, пока не достигнет цели.</strong></blockquote>
+
+<p>Четыре ключевых компонента:</p>
+
+<ol>
+<li><strong>«Мозг»</strong> — LLM, которая принимает решения</li>
+<li><strong>Цель</strong> — что нужно сделать (от пользователя)</li>
+<li><strong>Инструменты</strong> — действия в мире (search, send_email, run_code, ...)</li>
+<li><strong>Цикл</strong> — повторяющиеся итерации до достижения цели</li>
+</ol>
+
+<p>Часто добавляют пятый компонент:</p>
+
+<ol start="5">
+<li><strong>Память</strong> — что агент знает о пользователе и о ходе выполнения задачи</li>
+</ol>
+
+<h2>2. Агент vs чат-бот vs RAG vs function calling</h2>
+
+<p>Эти термины часто смешивают. Разберём.</p>
+
+<table>
+<tr><th>Концепт</th><th>Что делает</th><th>Однократно или в цикле?</th></tr>
+<tr><td><strong>Чат-бот</strong></td><td>Отвечает на сообщение текстом, держит контекст диалога</td><td>Один цикл «запрос → ответ»</td></tr>
+<tr><td><strong>RAG</strong></td><td>Перед ответом достаёт релевантные документы и подмешивает в промпт</td><td>Один цикл, но с предварительным retrieval</td></tr>
+<tr><td><strong>Function calling</strong></td><td>В рамках одного ответа модель может вызвать функцию и получить результат</td><td>1-2 цикла «решить → вызвать → ответить»</td></tr>
+<tr><td><strong>Агент</strong></td><td>Многошаговое решение задачи с инструментами и стратегией</td><td>5–100 циклов в одной задаче</td></tr>
+</table>
+
+<p>Главная разница — <strong>автономность и количество шагов</strong>. Function calling — это «один-два инструмента, в одном ответе». Агент — «десятки решений, несколько инструментов, стратегия, проверка результата».</p>
+
+<h2>3. Цикл ReAct — каркас почти всех современных агентов</h2>
+
+<p>Мы коротко касались ReAct в уроке 5. Здесь разберём подробнее как операционный паттерн.</p>
+
+<p>На каждом шаге агент делает три вещи:</p>
+
+<ol>
+<li><strong>Thought</strong> — рассуждает: «что мне нужно?», «какой шаг следующий?»</li>
+<li><strong>Action</strong> — вызывает инструмент: <code>search("погода в Москве")</code></li>
+<li><strong>Observation</strong> — получает результат от инструмента и добавляет в контекст</li>
+</ol>
+
+<p>Дальше — следующий Thought, и так до тех пор, пока не Thought = «всё, у меня есть ответ для пользователя».</p>
+
+<p>Пример сессии агента, который должен ответить «Какая средняя температура в столицах G7?»:</p>
+
+<pre><code>Thought: Мне нужны столицы G7 и температура в каждой
+Action: search("G7 страны и столицы")
+Observation: США (Вашингтон), Япония (Токио), Германия (Берлин)...
+
+Thought: Теперь нужна погода в каждой
+Action: weather("Вашингтон")
+Observation: +12°C
+
+Thought: Следующая...
+Action: weather("Токио")
+Observation: +18°C
+... (повторяется для всех)
+
+Thought: У меня все данные. Считаю среднее.
+Action: calculate(mean of [12, 18, 8, 11, 14, 9, 13])
+Observation: 12.14
+
+Final Answer: Средняя температура в столицах G7 — около 12°C.</code></pre>
+
+<p>Этот же паттерн крутится внутри Claude Desktop с MCP-серверами, внутри Cursor с инструментами, внутри Browser-Use агентов.</p>
+
+<h2>4. Реальные примеры агентов в 2026</h2>
+
+<h3>Coding-агенты</h3>
+<ul>
+<li><strong>Cursor / Cline / Continue</strong> — IDE-плагины. Получают «реализуй фичу X». Читают код, пишут, запускают тесты, чинят ошибки. Используют инструменты read_file, write_file, run_terminal.</li>
+<li><strong>Devin / GitHub Copilot Workspace</strong> — полностью автономные. Дай задачу — он делает PR.</li>
+<li><strong>Claude Code</strong> — CLI-агент от Anthropic. Про него отдельный урок c5.</li>
+</ul>
+
+<h3>Browser-агенты</h3>
+<ul>
+<li><strong>OpenAI Operator</strong> — Claude управляет браузером для пользователя (бронирование, шопинг)</li>
+<li><strong>Browser-Use / Skyvern</strong> — open-source аналоги</li>
+<li><strong>Anthropic Computer Use</strong> — про него урок c4</li>
+</ul>
+
+<h3>Корпоративные ассистенты</h3>
+<ul>
+<li><strong>Customer support агенты</strong> — отвечают на тикеты, ищут в базе знаний, эскалируют сложное</li>
+<li><strong>Sales SDR агенты</strong> — пишут письма, обновляют CRM, бронируют встречи</li>
+<li><strong>Research-агенты</strong> — мониторят рынок, пишут отчёты</li>
+</ul>
+
+<h3>Личные ассистенты</h3>
+<ul>
+<li><strong>Notion AI agents</strong> — выполняют действия в Notion (создать страницу, обновить базу)</li>
+<li><strong>Раelfish-агенты</strong> — мониторят email и автоматизируют рутину</li>
+</ul>
+
+<h2>5. Фреймворки — обзор экосистемы</h2>
+
+<table>
+<tr><th>Фреймворк</th><th>Сильные стороны</th><th>Для кого</th></tr>
+<tr><td><strong>LangChain / LangGraph</strong></td><td>Самый зрелый, огромная экосистема, поддержка всех моделей</td><td>Все, кто пишет на Python; командные проекты</td></tr>
+<tr><td><strong>LlamaIndex</strong></td><td>Лучший для RAG-агентов</td><td>Когда данных много, нужен умный retrieval</td></tr>
+<tr><td><strong>AutoGen (Microsoft)</strong></td><td>Мульти-агентные сценарии «из коробки»</td><td>Сложные сценарии с несколькими ролями</td></tr>
+<tr><td><strong>CrewAI</strong></td><td>Декларативное описание «команды агентов»</td><td>Простые мульти-агентные сценарии</td></tr>
+<tr><td><strong>Pydantic AI</strong></td><td>Сильная типизация, простой API, новый</td><td>Type-safe Python, маленькие проекты</td></tr>
+<tr><td><strong>Anthropic SDK</strong></td><td>Прямой Anthropic API + computer use + tools — без обёрток</td><td>Когда нужен контроль над каждой деталью</td></tr>
+<tr><td><strong>Microsoft Agent Framework</strong></td><td>Корпоративная разработка, .NET и Python</td><td>Корпорации в Microsoft-стеке</td></tr>
+</table>
+
+<p>Подробно про фреймворки в уроке 17. <strong>Краткая рекомендация:</strong> начинай с прямого API + Pydantic AI или LangChain. Не переходи на multi-agent, пока не упрёшься в потолок одиночного агента.</p>
+
+<h2>6. Когда нужен агент, а когда нет</h2>
+
+<h3>Не нужен агент</h3>
+<ul>
+<li>Задача в один шаг — «переведи текст», «сделай summary». Используй просто LLM.</li>
+<li>Задача с одним действием — «зарегистрируй пользователя». Используй function calling.</li>
+<li>Задача поиска в документах — используй RAG.</li>
+<li>Задача с известным алгоритмом — пиши обычный код.</li>
+</ul>
+
+<h3>Нужен агент</h3>
+<ul>
+<li>Задача требует нескольких шагов, и порядок шагов зависит от промежуточных результатов</li>
+<li>Нужно гибко комбинировать инструменты</li>
+<li>Нет жёсткого алгоритма — нужна стратегия</li>
+<li>Готов мириться с тем, что задача может занять 1–10 минут вместо секунд</li>
+</ul>
+
+<p>Простой тест: <strong>можешь ли ты заранее описать в коде последовательность шагов? Если да — пиши код, а не агент.</strong></p>
+
+<h2>7. Тёмные стороны</h2>
+
+<h3>Стоимость</h3>
+<p>10 шагов агента ≈ 10 LLM-вызовов ≈ в 10 раз дороже одного запроса. На сложных задачах — $1–5 за выполнение. Считай экономику.</p>
+
+<h3>Latency</h3>
+<p>30 секунд — 5 минут на типичную задачу. Не подходит для интерактива «спросил — получил».</p>
+
+<h3>Надёжность</h3>
+<p>Каждый шаг = потенциальная ошибка. Если каждый шаг работает в 95% случаев, после 10 шагов точность падает до 60%.</p>
+<p>Поэтому: <strong>чем меньше шагов в одной сессии — тем надёжнее</strong>. Декомпозируй большие задачи.</p>
+
+<h3>Безопасность</h3>
+<p>Агент с инструментами может удалить файлы, отправить деньги, опубликовать что-то. Sandbox + human-in-the-loop для критичного. Подробно в уроке 21.</p>
+
+<h2>8. Дорожная карта на ближайшие 14 уроков (Фаза 2)</h2>
+
+<ul>
+<li><strong>Урок 17:</strong> Обзор агентских фреймворков</li>
+<li><strong>Урок 18:</strong> Паттерны проектирования агентов (ReAct, Plan-and-Execute, Reflection, ToT)</li>
+<li><strong>Урок 19:</strong> Использование инструментов агентами (как давать им API)</li>
+<li><strong>Урок 20:</strong> Agentic RAG — RAG в цикле агента</li>
+<li><strong>Урок 21:</strong> Доверие и безопасность агентов</li>
+<li><strong>Урок 22:</strong> Планирование (как агент декомпозирует задачу)</li>
+<li><strong>Урок 23:</strong> Мульти-агентные системы</li>
+<li><strong>Урок 24:</strong> Метакогниция и саморефлексия</li>
+<li><strong>Урок 25:</strong> Контекст-инжиниринг и память</li>
+<li>...и далее</li>
+</ul>
+
+<h2>9. Глоссарий</h2>
+<ul>
+<li><strong>Агент</strong> — LLM в цикле с инструментами для достижения цели</li>
+<li><strong>Tool / Инструмент</strong> — функция, которую агент может вызывать (search, send_email, run_code)</li>
+<li><strong>ReAct</strong> — паттерн «Thought → Action → Observation» в цикле</li>
+<li><strong>Plan-and-Execute</strong> — сначала составить план, потом выполнять шаги</li>
+<li><strong>Reflection</strong> — агент проверяет и улучшает свой ответ перед финалом</li>
+<li><strong>Multi-agent</strong> — несколько агентов в команде с разными ролями</li>
+<li><strong>Orchestrator</strong> — главный агент, координирующий остальных</li>
+<li><strong>Memory</strong> — что агент помнит между шагами и между задачами</li>
+<li><strong>Sandbox</strong> — изолированная среда исполнения для безопасности</li>
+<li><strong>Human-in-the-loop (HITL)</strong> — обязательное участие человека в критичных решениях</li>
+</ul>
+
+<h2>10. Практика (45 минут)</h2>
+
+<h3>Упражнение 1. Анализ задач из жизни (15 минут)</h3>
+<p>Возьми 5 задач из своей работы. Для каждой реши:</p>
+<ul>
+<li>Можно сделать одним LLM-вызовом? → не агент</li>
+<li>Нужен один tool? → function calling</li>
+<li>Нужно несколько шагов с условной логикой? → агент</li>
+</ul>
+
+<h3>Упражнение 2. Простой агент на 30 строк (30 минут)</h3>
+<p>Базовый ReAct-агент с одним инструментом — калькулятором:</p>
+
+<pre><code>from anthropic import Anthropic
+
+client = Anthropic()
+
+tools = [{
+    "name": "calculator",
+    "description": "Вычисляет математическое выражение",
+    "input_schema": {
+        "type": "object",
+        "properties": {"expression": {"type": "string"}},
+        "required": ["expression"]
+    }
+}]
+
+def run_tool(name, args):
+    if name == "calculator":
+        try:
+            return str(eval(args["expression"]))
+        except Exception as e:
+            return f"Ошибка: {e}"
+
+def agent(task):
+    messages = [{"role": "user", "content": task}]
+    while True:
+        response = client.messages.create(
+            model="claude-sonnet-4-5",
+            max_tokens=1024,
+            tools=tools,
+            messages=messages
+        )
+        if response.stop_reason == "end_turn":
+            for block in response.content:
+                if block.type == "text":
+                    return block.text
+        if response.stop_reason == "tool_use":
+            messages.append({"role": "assistant", "content": response.content})
+            tool_results = []
+            for block in response.content:
+                if block.type == "tool_use":
+                    result = run_tool(block.name, block.input)
+                    tool_results.append({
+                        "type": "tool_result",
+                        "tool_use_id": block.id,
+                        "content": result
+                    })
+            messages.append({"role": "user", "content": tool_results})
+
+print(agent("Если книгу из 480 страниц читать по 30 страниц в день, а в субботу и воскресенье по 50, за сколько дней прочитаю?"))</code></pre>
+
+<p>Этот агент будет вызывать калькулятор несколько раз, рассуждая вслух, пока не получит ответ.</p>
+
+<h2>11. Проверь себя</h2>
+
+<p><strong>1. Какие 4 ключевых компонента у агента?</strong><br>
+Мозг (LLM), цель, инструменты, цикл выполнения. Плюс память — необязательный, но часто пятый.</p>
+
+<p><strong>2. Чем агент отличается от function calling?</strong><br>
+Function calling — один-два инструмента в одном ответе. Агент — десятки шагов в цикле, со стратегией.</p>
+
+<p><strong>3. Что такое цикл ReAct?</strong><br>
+Thought → Action → Observation, повторяется до достижения цели.</p>
+
+<p><strong>4. Когда не нужен агент?</strong><br>
+Когда задача одношаговая, либо когда у тебя есть жёсткий алгоритм — лучше написать обычный код.</p>
+
+<p><strong>5. Что такое сложность ошибки в агенте?</strong><br>
+Точность падает экспоненциально с числом шагов. 95% × 10 шагов ≈ 60% общей точности.</p>
+
+<p><strong>6. Назови 3 фреймворка для агентов.</strong><br>
+LangChain/LangGraph, AutoGen, Pydantic AI, CrewAI, LlamaIndex — любые из них.</p>
+
+<p><strong>7. Что значит «sandbox» в контексте агентов?</strong><br>
+Изолированная среда (Docker, VM), где агент может ошибаться без последствий для системы пользователя.</p>
+
+<p><strong>8. Когда нужен HITL?</strong><br>
+На критичных шагах: трата денег, удаление, отправка во внешние системы, изменения с большим радиусом действия.</p>
+
+<p><strong>9. Сколько шагов идеально в одной агентской сессии?</strong><br>
+Чем меньше, тем надёжнее. Если задача требует много шагов — лучше декомпозировать на несколько отдельных сессий с явной координацией.</p>
+
+<p><strong>10. Какой фреймворк я выберу для своего первого агента?</strong><br>
+Прямой Anthropic SDK + Pydantic AI или LangChain (на выбор). Начинай простым — добавляй сложность по необходимости.</p>
+
+<h2>12. Что должно остаться в голове</h2>
+<ol>
+<li><strong>Агент = LLM + tools + цикл + цель.</strong> Запомни эту формулу.</li>
+<li><strong>ReAct (Thought → Action → Observation)</strong> — основа почти всех агентов.</li>
+<li><strong>Не каждая задача требует агента.</strong> Часто хватает RAG или function calling.</li>
+<li><strong>Агенты дороже, медленнее, менее надёжны</strong> чем простые вызовы.</li>
+<li><strong>Sandbox + HITL</strong> для production-агентов.</li>
+<li><strong>Чем меньше шагов в сессии, тем выше надёжность.</strong></li>
+<li><strong>Дорожная карта</strong> Фазы 2: впереди 14 уроков по агентам подробно.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> идея агентов выглядит магически — но за магией стоит простой цикл «LLM в while-loop с инструментами». В следующем уроке разберём фреймворки, которые этот цикл оборачивают в удобный интерфейс.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-16">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

@@ -9,31 +9,351 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Computer Use — Claude управляет компьютером">
 <meta property="og:description" content="C4 из курса AI на русском. Computer Use — Claude управляет компьютером. ~50 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/c4.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/c4.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/c4.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Computer Use — Claude управляет компьютером">
 <meta name="twitter:description" content="C4 из курса AI на русском. Computer Use — Claude управляет компьютером. ~50 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/c4.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/c4.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/c4.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-c4');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Computer Use — Claude управляет компьютером","description":"C4 из курса AI на русском. Computer Use — Claude управляет компьютером. ~50 мин.","url":"https://ai.madzhitov.ru/lessons/c4.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/c4.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Claude Deep Dive</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">C4</span></div>
 <h1>Computer Use — Claude управляет компьютером</h1>
-<p>C4 из курса AI на русском. Computer Use — Claude управляет компьютером. ~50 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-c4">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять Computer Use — что это, когда полезно, как использовать</span>
+  <span><strong>Время:</strong> ~50 минут</span>
+  <span><strong>Источник:</strong> docs.claude.com/computer-use, anthropic.com/news</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>В октябре 2024 Anthropic выпустил <strong>Computer Use</strong> — возможность Claude <strong>видеть экран компьютера и управлять им мышкой и клавиатурой</strong>. К началу 2026 эта возможность стала стабильной, и теперь её используют в продакшене — для автоматизации, тестирования, помощи пользователям.</p>
+<p>Для русскоязычной индустрии это пока почти не освоено. На английском — десятки use-case'ов, на русском — единицы. Если хочешь делать ИИ-автоматизацию работы (а это огромный рынок), MCP (предыдущий урок) и Computer Use (этот) — твои базовые инструменты.</p>
+
+<h2>1. Что такое Computer Use</h2>
+
+<p>Это <strong>API-фича</strong> Claude (не доступная пока в claude.ai как фича для пользователя), которая даёт модели три инструмента:</p>
+<ol>
+<li><strong>computer</strong> — делать скриншоты, двигать мышь, кликать, набирать текст.</li>
+<li><strong>bash</strong> — выполнять команды в shell.</li>
+<li><strong>text_editor</strong> — читать и редактировать файлы напрямую.</li>
+</ol>
+
+<p>В цикле:</p>
+<pre><code>Запрос пользователя
+     ↓
+Claude делает screenshot
+     ↓
+Видит экран → решает что делать
+     ↓
+Вызывает action: «click(345, 200)» или «type("hello")»
+     ↓
+Действие выполняется на машине
+     ↓
+Claude делает новый screenshot
+     ↓
+... повторяется пока задача не выполнена</code></pre>
+
+<p>Это и есть «агент общего назначения для компьютера». В отличие от агентов с узкими tools (как в уроках 16-19 из главного пути), Computer Use может работать <strong>в любом приложении</strong> — браузер, Excel, Photoshop, твой кастомный софт.</p>
+
+<h2>2. Реальные use-case'ы</h2>
+
+<h3>Автоматизация рутинных задач</h3>
+<ul>
+<li>«Каждый понедельник зайди в админку, скачай отчёт за прошлую неделю, открой Excel, сделай pivot-таблицу, отправь в Slack».</li>
+<li>«Проверь все мои чаты в Telegram, сделай summary за день».</li>
+<li>«Зайди в кабинет банка, скачай выписку, импортируй в Notion».</li>
+</ul>
+
+<h3>QA-тестирование</h3>
+<ul>
+<li>«Прокликай весь user-flow регистрации, протестируй edge cases».</li>
+<li>«Зайди на лендинг, сделай скрин, проверь что всё на месте».</li>
+</ul>
+
+<h3>Заполнение форм</h3>
+<ul>
+<li>«Возьми этот PDF договор, заполни на сайте контрагента форму с нужными полями».</li>
+<li>«Заполни анкеты для подачи в визовые центры по списку клиентов».</li>
+</ul>
+
+<h3>Извлечение данных из старых систем</h3>
+<ul>
+<li>Legacy ERP без API? Computer Use может работать с UI напрямую.</li>
+</ul>
+
+<h3>Работа с приложениями без API</h3>
+<ul>
+<li>Photoshop, Figma, Excel — агент может делать действия в GUI.</li>
+</ul>
+
+<h3>Пользовательский ассистент</h3>
+<ul>
+<li>«Покажи как настроить VPN на этом маке» — агент берёт мышь, открывает System Preferences, показывает.</li>
+</ul>
+
+<h2>3. Архитектура: как это работает технически</h2>
+
+<p>Computer Use — это не магия. Это просто <strong>API loop</strong>:</p>
+
+<pre><code># Псевдокод
+def agent_loop(task):
+    messages = [{"role": "user", "content": task}]
+    while True:
+        response = anthropic.messages.create(
+            model="claude-sonnet-4-5",
+            tools=[
+                {"type": "computer_20250124", "name": "computer", ...},
+                {"type": "bash_20250124", "name": "bash"},
+                {"type": "text_editor_20250124", "name": "text_editor"}
+            ],
+            messages=messages,
+            betas=["computer-use-2025-01-24"]
+        )
+
+        if response.stop_reason == "end_turn":
+            return  # задача готова
+
+        for block in response.content:
+            if block.type == "tool_use":
+                result = execute_tool(block.name, block.input)
+                messages.append({...})  # добавить результат в контекст</code></pre>
+
+<p>Каждое действие — отдельный API-запрос. Claude видит скриншот (как картинку в multimodal-входе), решает действие, ты выполняешь его на реальной/виртуальной машине, шлёшь результат назад.</p>
+
+<h2>4. Безопасность — это критично</h2>
+
+<p>Computer Use может <strong>удалить файлы</strong>, <strong>отправить деньги</strong>, <strong>опубликовать в соцсети</strong>. Поэтому Anthropic <strong>не рекомендует</strong> запускать на твоей основной машине.</p>
+
+<p>Стандартный подход:</p>
+<ol>
+<li><strong>Виртуальная машина</strong> или <strong>Docker-контейнер</strong> — изолированная среда.</li>
+<li>Ограниченный доступ к интернету (whitelist).</li>
+<li>Никаких сохранённых паролей в браузере.</li>
+<li>Логирование всех действий.</li>
+<li>Human-in-the-loop для критических операций (перевод денег, удаление, отправка email).</li>
+</ol>
+
+<p>Anthropic выпустил <a href="https://github.com/anthropics/anthropic-quickstarts/tree/main/computer-use-demo" target="_blank">reference implementation</a> — Docker-образ с Ubuntu, Firefox, libreoffice, всё в песочнице.</p>
+
+<h2>5. Запуск demo за 15 минут</h2>
+
+<h3>Шаг 1. Установи Docker</h3>
+<p>Скачай Docker Desktop с docker.com.</p>
+
+<h3>Шаг 2. Получи API-ключ</h3>
+<p>На <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> создай ключ.</p>
+
+<h3>Шаг 3. Запусти reference image</h3>
+
+<pre><code>export ANTHROPIC_API_KEY=sk-ant-...
+
+docker run \
+  -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY \
+  -v $HOME/.anthropic:/home/computeruse/.anthropic \
+  -p 5900:5900 \
+  -p 8501:8501 \
+  -p 6080:6080 \
+  -p 8080:8080 \
+  -it ghcr.io/anthropics/anthropic-quickstarts:computer-use-demo-latest</code></pre>
+
+<h3>Шаг 4. Открой браузер</h3>
+<p>Перейди на <code>http://localhost:8080</code>. Слева — чат с Claude. Справа — рабочий стол виртуальной машины.</p>
+
+<h3>Шаг 5. Попробуй задачи</h3>
+<ul>
+<li>«Открой Firefox и зайди на github.com».</li>
+<li>«Скачай файл отчёта с этого URL и открой в LibreOffice».</li>
+<li>«Открой текстовый редактор и напиши хайку».</li>
+<li>«Открой калькулятор и посчитай 137 * 89».</li>
+</ul>
+
+<p>Будешь видеть как Claude делает скриншоты, кликает, набирает текст — в реальном времени.</p>
+
+<h2>6. Стоимость и скорость</h2>
+
+<h3>Скорость</h3>
+<ul>
+<li>Каждое действие = 5–30 секунд (скриншот + раздумье + выполнение).</li>
+<li>Простая задача (открыть приложение, сделать одно действие): 30–60 сек.</li>
+<li>Средняя (заполнить форму): 2–5 минут.</li>
+<li>Сложная (multi-step с проверками): 10–30 минут.</li>
+</ul>
+
+<p>Это медленно. Если задачу можно решить через API напрямую — делай через API.</p>
+
+<h3>Стоимость</h3>
+<ul>
+<li>Каждый screenshot — это картинка ~1.6 мегапикселя на вход.</li>
+<li>Стоимость одного шага: ~$0.005–0.05 в зависимости от длины контекста.</li>
+<li>Часовая работа агента: $1–5.</li>
+</ul>
+
+<p>Не дёшево, но в сотни раз дешевле живого человека за рутинную работу.</p>
+
+<h2>7. Computer Use vs другие подходы</h2>
+
+<table>
+<tr><th>Подход</th><th>Когда брать</th><th>Не подходит когда</th></tr>
+<tr><td><strong>Прямой API</strong></td><td>У сервиса есть API</td><td>API нет или ограничен</td></tr>
+<tr><td><strong>Browser-автоматизация</strong> (Playwright)</td><td>Web-задачи, повторяющиеся, нужна скорость</td><td>Нужна гибкость, есть UI вне браузера</td></tr>
+<tr><td><strong>RPA</strong> (UiPath, Power Automate)</td><td>Корпоративная среда, повторяющиеся процессы</td><td>Нестандартные задачи, гибкость</td></tr>
+<tr><td><strong>Computer Use</strong></td><td>Гибкость, любая UI, на лету</td><td>Скорость, цена, надёжность критичны</td></tr>
+</table>
+
+<p>Computer Use — это <strong>«швейцарский нож»</strong>. Хорош в общем случае, плох в узких.</p>
+
+<h2>8. Лимиты и ошибки</h2>
+
+<h3>Что ломается</h3>
+<ul>
+<li><strong>Капчи</strong> — Claude по политике не должен их обходить.</li>
+<li><strong>2FA</strong> — нужен human-in-the-loop.</li>
+<li><strong>Динамические UI</strong> — если кнопка двигается между скриншотами, Claude может промахнуться.</li>
+<li><strong>Длинные задачи</strong> — на 50+ шагах вероятность ошибки растёт.</li>
+</ul>
+
+<h3>Best practices</h3>
+<ol>
+<li><strong>Делай задачи маленькими.</strong> «Скачай отчёт + сделай pivot + отправь» → три отдельных задачи.</li>
+<li><strong>Проверяй промежуточные результаты.</strong> После каждого блока — пусть агент описывает что сделал.</li>
+<li><strong>Логируй всё.</strong> Скриншоты + действия + reasoning — все сохраняй.</li>
+<li><strong>Human-in-the-loop</strong> для критичных шагов: «прежде чем нажать "Отправить" — спроси меня».</li>
+<li><strong>Не давай доступ к продакшену.</strong> Только staging / sandbox.</li>
+</ol>
+
+<h2>9. Что дальше: тренды 2026</h2>
+
+<p>Computer Use бурно развивается. На горизонте:</p>
+<ul>
+<li><strong>Прямой системный доступ</strong> вместо скриншотов (через accessibility API) — быстрее и точнее.</li>
+<li><strong>Локальные модели для Computer Use</strong> — не нужен облачный API, всё на своём GPU.</li>
+<li><strong>Долгие задачи</strong> на часы и дни — с памятью между перезапусками.</li>
+<li><strong>Multi-agent оркестрация</strong> — несколько Computer Use агентов работают параллельно над разными частями задачи.</li>
+</ul>
+
+<p>OpenAI и Google запустили свои аналоги (Operator, Gemini Computer Use) — индустрия движется туда. Я бы поставил на 2026: Computer Use агенты будут стандартом для рутинной работы.</p>
+
+<h2>10. Глоссарий</h2>
+<ul>
+<li><strong>Computer Use</strong> — возможность Claude управлять компьютером через скриншоты + действия.</li>
+<li><strong>computer tool</strong> — встроенный API-tool для скриншотов, мыши, клавиатуры.</li>
+<li><strong>bash tool</strong> — встроенный для shell-команд.</li>
+<li><strong>text_editor tool</strong> — для прямого редактирования файлов.</li>
+<li><strong>Agent loop</strong> — цикл «скриншот → действие → новый скриншот».</li>
+<li><strong>Reference implementation</strong> — Docker-образ Anthropic с готовой средой для Computer Use.</li>
+<li><strong>Human-in-the-loop</strong> — обязательное согласование критичных действий.</li>
+<li><strong>Operator</strong> — аналог Computer Use от OpenAI.</li>
+</ul>
+
+<h2>11. Практика (60 минут)</h2>
+
+<h3>Упражнение 1. Запусти demo (15 минут)</h3>
+<ol>
+<li>Установи Docker.</li>
+<li>Запусти reference image из секции 5.</li>
+<li>Открой <code>http://localhost:8080</code>.</li>
+<li>Попроси Claude: «открой Firefox и зайди на github.com».</li>
+<li>Наблюдай как агент работает.</li>
+</ol>
+
+<h3>Упражнение 2. Простая задача (15 минут)</h3>
+<p>В demo попроси: «открой LibreOffice Calc, создай таблицу из 10 строк с расходами на еду по дням недели, в последней строке — сумма».</p>
+<p>Заметь:</p>
+<ul>
+<li>Сколько шагов понадобилось?</li>
+<li>Сколько времени заняло?</li>
+<li>Где Claude промахнулся / переделывал?</li>
+</ul>
+
+<h3>Упражнение 3. Реальный кейс (15 минут)</h3>
+<p>Подумай о своей задаче, которую ты делаешь регулярно вручную и которая может быть автоматизирована Computer Use. Опиши:</p>
+<ul>
+<li>Шаги (что делаешь руками)</li>
+<li>Какие приложения используешь</li>
+<li>Сколько времени занимает</li>
+<li>Что может пойти не так если автоматизировать</li>
+</ul>
+<p>Если хочешь — попробуй автоматизировать в demo (для безопасности — без реальных аккаунтов, на тестовых данных).</p>
+
+<h3>Упражнение 4. Сравнение (15 минут)</h3>
+<p>Выбери web-задачу. Реализуй её двумя способами:</p>
+<ol>
+<li>Через Playwright (если знаешь).</li>
+<li>Через Computer Use.</li>
+</ol>
+<p>Сравни: время разработки, стоимость, скорость выполнения, надёжность. Ответ обычно: Playwright побеждает в скорости и надёжности, Computer Use — в гибкости и скорости разработки.</p>
+
+<h2>12. Проверь себя</h2>
+
+<p><strong>1. Какие три инструмента доступны Claude в Computer Use?</strong><br>
+computer (скриншот, мышь, клавиатура), bash (shell), text_editor (файлы).</p>
+
+<p><strong>2. Как работает agent loop?</strong><br>
+Claude делает скриншот → решает действие → выполняет → новый скриншот → повторяет пока задача не готова.</p>
+
+<p><strong>3. Где запускать Computer Use?</strong><br>
+В виртуальной машине / Docker-контейнере. Никогда не на основной машине.</p>
+
+<p><strong>4. Когда не использовать Computer Use?</strong><br>
+Когда есть API (быстрее, дешевле, надёжнее). Когда задача скорость-критичная. Когда нужна 100% надёжность.</p>
+
+<p><strong>5. Сколько примерно стоит час работы агента?</strong><br>
+$1–5 в зависимости от сложности и количества скриншотов.</p>
+
+<p><strong>6. Главные риски?</strong><br>
+Удаление файлов, отправка денег, публикация в соцсети, обход паролей. Митигация: sandbox + ограниченный доступ + HITL для критичного.</p>
+
+<p><strong>7. Что делать с капчами?</strong><br>
+По политике Anthropic, Claude не должен их обходить. Нужен HITL — спросить пользователя.</p>
+
+<p><strong>8. Computer Use vs Playwright?</strong><br>
+Playwright — быстрее, надёжнее, дешевле для повторяющихся web-задач. Computer Use — гибче, работает где угодно (не только в браузере), быстрее в разработке.</p>
+
+<p><strong>9. Что делать чтобы повысить надёжность?</strong><br>
+Маленькие задачи, проверка промежуточных результатов, логирование, HITL на критичных шагах, не давать доступ к продакшену.</p>
+
+<p><strong>10. Будущее Computer Use?</strong><br>
+Прямой системный доступ через accessibility API (не скриншоты), локальные модели, долгие задачи с памятью, multi-agent оркестрация. На 2026 — это становится стандартом для рутинной автоматизации.</p>
+
+<h2>13. Что должно остаться в голове</h2>
+<ol>
+<li><strong>Computer Use = «универсальный пользователь компьютера»</strong> — может работать в любом приложении.</li>
+<li><strong>Цикл</strong>: скриншот → действие → скриншот.</li>
+<li><strong>Sandbox обязателен.</strong> Не запускать на основной машине.</li>
+<li><strong>Медленно и дорого</strong> по сравнению с прямым API. Использовать когда API нет или нужна гибкость.</li>
+<li><strong>Reference image</strong> — Docker от Anthropic, можно попробовать за 15 минут.</li>
+<li><strong>HITL</strong> для критичных шагов — обязателен.</li>
+<li><strong>2026 — год Computer Use</strong>. Конкуренты: Operator (OpenAI), Gemini Computer Use (Google).</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> Computer Use радикально расширяет, что может ИИ. Но он не заменяет узкоспециализированные инструменты — он их дополняет. Думай о Computer Use как о «когда у меня нет API и нет времени писать интеграцию».
+</div>
+
+    <div class="pp-open"><a href="/#lesson-c4">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

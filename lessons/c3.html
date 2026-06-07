@@ -9,31 +9,473 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="MCP — Model Context Protocol">
 <meta property="og:description" content="C3 из курса AI на русском. MCP — Model Context Protocol. ~50 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/c3.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/c3.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/c3.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="MCP — Model Context Protocol">
 <meta name="twitter:description" content="C3 из курса AI на русском. MCP — Model Context Protocol. ~50 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/c3.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/c3.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/c3.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-c3');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"MCP — Model Context Protocol","description":"C3 из курса AI на русском. MCP — Model Context Protocol. ~50 мин.","url":"https://ai.madzhitov.ru/lessons/c3.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/c3.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Claude Deep Dive</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">C3</span></div>
 <h1>MCP — Model Context Protocol</h1>
-<p>C3 из курса AI на русском. MCP — Model Context Protocol. ~50 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-c3">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять, что такое MCP и зачем он меняет правила игры с агентами</span>
+  <span><strong>Время:</strong> ~50 минут</span>
+  <span><strong>Источник:</strong> modelcontextprotocol.io, anthropic.com/news</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>В ноябре 2024 Anthropic анонсировал <strong>MCP — Model Context Protocol</strong>, и за полгода он стал чем-то вроде «USB-C для ИИ». Ты подключил MCP-сервер один раз — и любой ИИ-клиент с поддержкой MCP получает к нему доступ. Никаких отдельных интеграций для каждого агента.</p>
+<p>Если раньше каждое ИИ-приложение строило свои конкреткные коннекторы (агент к Slack, агент к Notion, агент к БД — разные коды), то с MCP интеграция пишется один раз. Это резко снижает порог входа и создаёт экосистему.</p>
+<p>Сегодня MCP поддерживают: Claude Desktop, Cursor, Windsurf, Cline, Zed, Continue, и десятки других. Ты сейчас на 100% точно столкнёшься с MCP в работе с агентами в ближайший год.</p>
+
+<h2>1. Что такое MCP в одном предложении</h2>
+
+<blockquote><strong>MCP — это открытый протокол, который стандартизирует, как ИИ-приложения подключаются к внешним источникам данных и инструментам.</strong></blockquote>
+
+<p>Аналогия:</p>
+<ul>
+<li><strong>До USB:</strong> у каждого устройства свой разъём. Принтер ↔ компьютер — свой кабель. Клавиатура — свой. Хочешь новое устройство — новый адаптер.</li>
+<li><strong>После USB:</strong> один разъём. Любое устройство, любой компьютер.</li>
+</ul>
+<p>В мире ИИ-агентов:</p>
+<ul>
+<li><strong>До MCP:</strong> каждый агент имел свои самописные интеграции. Для Slack — одни. Для Postgres — другие. Для GitHub — третьи.</li>
+<li><strong>После MCP:</strong> один протокол. Любой клиент (Claude Desktop, Cursor, ваше приложение) → любой сервер (Slack, Postgres, GitHub).</li>
+</ul>
+
+<h2>2. Архитектура: серверы и клиенты</h2>
+
+<p>В MCP две роли.</p>
+
+<h3>MCP-сервер</h3>
+<p>Программа, которая <strong>что-то умеет делать</strong> и предоставляет это через MCP. Например:</p>
+<ul>
+<li>Сервер файловой системы — позволяет читать/писать файлы.</li>
+<li>Сервер GitHub — даёт доступ к репозиториям, issue, PR.</li>
+<li>Сервер Postgres — выполняет SQL запросы.</li>
+<li>Сервер Slack — отправляет сообщения, читает каналы.</li>
+<li>Сервер Brave Search — веб-поиск.</li>
+<li>Свой кастомный сервер — что угодно.</li>
+</ul>
+<p>Серверы запускаются как отдельные процессы (или как HTTP-сервисы) и говорят с клиентом через JSON-RPC.</p>
+
+<h3>MCP-клиент</h3>
+<p>Это ИИ-приложение, которое подключает серверы и даёт их LLM как доступные инструменты. Примеры клиентов:</p>
+<ul>
+<li><strong>Claude Desktop</strong> — приложение Anthropic, поддерживает MCP из коробки.</li>
+<li><strong>Cursor / Windsurf</strong> — IDE с ИИ.</li>
+<li><strong>Continue, Cline, Zed</strong> — другие IDE-плагины.</li>
+<li><strong>Своё приложение</strong> на Anthropic SDK с MCP-библиотекой.</li>
+</ul>
+
+<h3>Как они общаются</h3>
+<pre><code>┌─────────────┐  JSON-RPC   ┌─────────────┐
+│   Клиент    │ ←─────────→ │   Сервер    │
+│  (Claude    │             │  (filesystem│
+│   Desktop)  │             │  / GitHub / │
+│             │             │   etc)      │
+└─────────────┘             └─────────────┘
+       ↑
+       │ запросы пользователя
+       │
+┌─────────────┐
+│ Пользователь│
+└─────────────┘</code></pre>
+
+<p>Транспорты:</p>
+<ul>
+<li><strong>stdio</strong> — сервер запускается как локальный процесс, общение через stdin/stdout. Самый частый вариант.</li>
+<li><strong>HTTP+SSE</strong> — для удалённых серверов.</li>
+</ul>
+
+<h2>3. Что MCP-сервер может предоставлять</h2>
+
+<p>Три вида «способностей»:</p>
+
+<h3>Tools (инструменты)</h3>
+<p>Похоже на function calling в обычной LLM API. Сервер объявляет: «у меня есть функция <code>create_issue(repo, title, body)</code>». Клиент даёт LLM возможность её вызвать. Когда LLM решает — вызов идёт к серверу, тот выполняет, возвращает результат.</p>
+<p>Примеры:</p>
+<ul>
+<li><code>read_file(path)</code> — читает файл.</li>
+<li><code>execute_sql(query)</code> — выполняет SQL.</li>
+<li><code>send_slack_message(channel, text)</code> — пишет в Slack.</li>
+</ul>
+
+<h3>Resources (ресурсы)</h3>
+<p>Read-only данные, на которые LLM может ссылаться. Например:</p>
+<ul>
+<li>Содержимое файла как ресурс.</li>
+<li>Snapshot базы данных.</li>
+<li>Лог недавних событий.</li>
+</ul>
+<p>Отличие от tools: tools — это <em>действия</em>, resources — <em>данные</em>.</p>
+
+<h3>Prompts (промпты-шаблоны)</h3>
+<p>Сервер может предоставлять готовые шаблоны промптов, которые пользователь явно вызывает. Пример: GitHub-сервер даёт промпт «summarize_pr» — прокручивает весь PR и просит модель сделать summary.</p>
+<p>На практике prompts используются меньше, чем tools и resources.</p>
+
+<h2>4. Реальные серверы — что доступно сейчас</h2>
+
+<p>Anthropic поддерживает каталог официальных серверов на <a href="https://github.com/modelcontextprotocol/servers" target="_blank">github.com/modelcontextprotocol/servers</a>:</p>
+
+<table>
+<tr><th>Сервер</th><th>Что умеет</th></tr>
+<tr><td>filesystem</td><td>Читать/писать файлы в указанных директориях</td></tr>
+<tr><td>github</td><td>Полный доступ к GitHub API: репо, issue, PR, комменты</td></tr>
+<tr><td>git</td><td>Работа с git репозиториями локально</td></tr>
+<tr><td>postgres</td><td>SQL-запросы к Postgres</td></tr>
+<tr><td>sqlite</td><td>SQL-запросы к SQLite файлам</td></tr>
+<tr><td>brave-search</td><td>Веб-поиск через Brave</td></tr>
+<tr><td>slack</td><td>Чтение каналов, отправка сообщений</td></tr>
+<tr><td>memory</td><td>Долговременная knowledge graph память</td></tr>
+<tr><td>puppeteer</td><td>Управление браузером для скрапинга/тестов</td></tr>
+<tr><td>fetch</td><td>HTTP-запросы для веб-данных</td></tr>
+<tr><td>everart, gdrive, sentry, sequentialthinking, time...</td><td>И ещё десятки</td></tr>
+</table>
+
+<p>Плюс community-серверы — на <a href="https://www.pulsemcp.com" target="_blank">pulsemcp.com</a> их сейчас 1000+. Notion, Linear, Stripe, Discord, Spotify, Telegram, ChromaDB, Pinecone — всё есть.</p>
+
+<h2>5. Подключение к Claude Desktop — за 5 минут</h2>
+
+<p>Самый простой способ попробовать MCP — Claude Desktop.</p>
+
+<h3>Шаг 1. Установить Claude Desktop</h3>
+<p>Скачай с <a href="https://claude.ai/download" target="_blank">claude.ai/download</a> (Mac/Windows). Залогинься.</p>
+
+<h3>Шаг 2. Найти конфиг</h3>
+<p>На Mac:</p>
+<pre><code>~/Library/Application Support/Claude/claude_desktop_config.json</code></pre>
+<p>На Windows:</p>
+<pre><code>%APPDATA%\Claude\claude_desktop_config.json</code></pre>
+
+<h3>Шаг 3. Добавить filesystem-сервер</h3>
+<pre><code>{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/yourusername/Documents"
+      ]
+    }
+  }
+}</code></pre>
+
+<p>Замени путь на свой. Этот сервер даст Claude доступ к указанной папке.</p>
+
+<h3>Шаг 4. Перезапусти Claude Desktop</h3>
+<p>В чате слева внизу должна появиться иконка молотка 🔨 — это значит MCP-инструменты подключились. Кликнув на неё, увидишь список доступных tools.</p>
+
+<h3>Шаг 5. Попробуй</h3>
+<p>Спроси Claude:</p>
+<ul>
+<li>«Какие файлы есть в папке?»</li>
+<li>«Прочитай мой <code>todo.md</code> и подскажи, с чего начать сегодня».</li>
+<li>«Создай файл <code>plan.md</code> с планом на неделю».</li>
+</ul>
+
+<p>Claude будет вызывать <code>read_file</code>, <code>list_files</code>, <code>write_file</code>. Каждый вызов он спросит у тебя «можно?» — это safety-фича, не пропусти.</p>
+
+<h2>6. Подключение нескольких серверов одновременно</h2>
+
+<p>Можно подключать сколько угодно серверов:</p>
+
+<pre><code>{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/me/Documents"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_..."
+      }
+    },
+    "sqlite": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sqlite", "/Users/me/notes.db"]
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    }
+  }
+}</code></pre>
+
+<p>Получаешь Claude, который умеет:</p>
+<ul>
+<li>Читать твои файлы.</li>
+<li>Создавать issue в GitHub.</li>
+<li>Запрашивать SQL.</li>
+<li>Помнить факты между сессиями.</li>
+</ul>
+
+<h2>7. Свой MCP-сервер за 30 минут</h2>
+
+<p>Anthropic предоставляет SDK для TypeScript и Python. Соберём минимальный сервер, который возвращает погоду (можно подменить на любую другую логику).</p>
+
+<h3>TypeScript</h3>
+
+<pre><code>npm init -y
+npm install @modelcontextprotocol/sdk zod</code></pre>
+
+<p>Файл <code>weather-server.ts</code>:</p>
+
+<pre><code>import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import {
+  CallToolRequestSchema,
+  ListToolsRequestSchema,
+} from "@modelcontextprotocol/sdk/types.js";
+
+const server = new Server(
+  { name: "weather-server", version: "1.0.0" },
+  { capabilities: { tools: {} } }
+);
+
+// Описание доступных tools
+server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  tools: [{
+    name: "get_weather",
+    description: "Получить текущую погоду в городе",
+    inputSchema: {
+      type: "object",
+      properties: {
+        city: { type: "string", description: "Название города" }
+      },
+      required: ["city"]
+    }
+  }]
+}));
+
+// Обработка вызовов
+server.setRequestHandler(CallToolRequestSchema, async (request) => {
+  if (request.params.name === "get_weather") {
+    const city = request.params.arguments?.city as string;
+    // тут была бы реальная API-погода
+    const fakeData = { city, temp: 18, condition: "облачно" };
+    return {
+      content: [{
+        type: "text",
+        text: `В городе ${city}: ${fakeData.temp}°C, ${fakeData.condition}`
+      }]
+    };
+  }
+  throw new Error("Unknown tool");
+});
+
+const transport = new StdioServerTransport();
+await server.connect(transport);
+console.error("Weather server running on stdio");</code></pre>
+
+<p>Скомпилируй (<code>tsc</code>) и подключи к Claude Desktop:</p>
+
+<pre><code>{
+  "mcpServers": {
+    "weather": {
+      "command": "node",
+      "args": ["/path/to/weather-server.js"]
+    }
+  }
+}</code></pre>
+
+<p>Перезапусти Claude Desktop. Теперь спроси «какая погода в Москве?» — Claude вызовет твой сервер.</p>
+
+<h3>Python</h3>
+<pre><code>pip install mcp</code></pre>
+
+<pre><code>from mcp.server import Server
+from mcp.server.stdio import stdio_server
+import asyncio
+
+server = Server("weather-server")
+
+@server.list_tools()
+async def list_tools():
+    return [{
+        "name": "get_weather",
+        "description": "Получить погоду",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"city": {"type": "string"}},
+            "required": ["city"]
+        }
+    }]
+
+@server.call_tool()
+async def call_tool(name, arguments):
+    if name == "get_weather":
+        return [{"type": "text", "text": f"В {arguments['city']}: +18°C, облачно"}]
+
+async def main():
+    async with stdio_server() as (read, write):
+        await server.run(read, write, server.create_initialization_options())
+
+asyncio.run(main())</code></pre>
+
+<h2>8. MCP vs Function Calling — в чём разница</h2>
+
+<p>На первый взгляд MCP похож на function calling из Урока 13. Но есть существенные отличия.</p>
+
+<table>
+<tr><th>Аспект</th><th>Function Calling</th><th>MCP</th></tr>
+<tr><td>Где определены функции</td><td>В коде твоего приложения</td><td>В отдельном MCP-сервере</td></tr>
+<tr><td>Переиспользование</td><td>Нужно копировать код в каждое приложение</td><td>Один сервер — много клиентов</td></tr>
+<tr><td>Стандартизация</td><td>Каждый делает по-своему</td><td>Единый протокол</td></tr>
+<tr><td>Изоляция</td><td>Функции в том же процессе что и LLM-логика</td><td>Сервер — отдельный процесс с правами</td></tr>
+<tr><td>Динамическая загрузка</td><td>Нужно перезапускать приложение</td><td>Можно подключать/отключать без рестарта</td></tr>
+<tr><td>Безопасность</td><td>Полагается на код приложения</td><td>Sandbox-исполнение в отдельном процессе</td></tr>
+</table>
+
+<p>Function calling — для случаев «у меня одно приложение, я контролирую всё». MCP — когда «я хочу подключить много инструментов многим клиентам».</p>
+
+<h2>9. Тонкости и подводные камни</h2>
+
+<h3>Безопасность</h3>
+<p>MCP-серверы могут читать твой диск, дёргать API, отправлять сообщения. Все они работают <strong>с правами твоего пользователя</strong> и видят твои секреты в env. Подключай только серверы, которым доверяешь.</p>
+<p>Для filesystem-сервера — указывай конкретные папки, не корень. Для github — давай токен с минимальными правами.</p>
+
+<h3>Производительность</h3>
+<p>Каждый MCP-сервер запускается в отдельном процессе (для stdio). При старте Claude Desktop запускает их все. Если у тебя 10 серверов — 10 процессов в фоне.</p>
+
+<h3>Дебаггинг</h3>
+<p>Если сервер падает — Claude Desktop напишет в логе «Failed to connect to <name>». Логи на Mac:</p>
+<pre><code>~/Library/Logs/Claude/mcp.log
+~/Library/Logs/Claude/mcp-server-XXX.log</code></pre>
+
+<h3>Версионирование</h3>
+<p>Серверы развиваются. Если обновился MCP-протокол, старый сервер может не работать. Пинай версию: <code>@modelcontextprotocol/server-filesystem@latest</code>.</p>
+
+<h3>Не все клиенты одинаково умеют</h3>
+<ul>
+<li>Claude Desktop — полная поддержка tools, resources, prompts.</li>
+<li>Cursor — поддерживает tools, resources частично.</li>
+<li>Continue — постепенно догоняет.</li>
+</ul>
+
+<h2>10. Глоссарий</h2>
+<ul>
+<li><strong>MCP (Model Context Protocol)</strong> — открытый протокол Anthropic для подключения LLM к данным/инструментам.</li>
+<li><strong>MCP-сервер</strong> — программа, предоставляющая tools/resources через MCP.</li>
+<li><strong>MCP-клиент</strong> — приложение, использующее MCP-серверы.</li>
+<li><strong>Tools</strong> — функции, которые LLM может вызывать через сервер.</li>
+<li><strong>Resources</strong> — read-only данные с сервера.</li>
+<li><strong>Prompts</strong> — шаблоны промптов от сервера.</li>
+<li><strong>JSON-RPC</strong> — формат сообщений между клиентом и сервером.</li>
+<li><strong>stdio transport</strong> — сервер как локальный процесс, общение через stdin/stdout.</li>
+<li><strong>SSE transport</strong> — Server-Sent Events для удалённых серверов.</li>
+<li><strong>Capabilities</strong> — что сервер умеет (tools / resources / prompts).</li>
+</ul>
+
+<h2>11. Практика (60 минут)</h2>
+
+<h3>Упражнение 1. Filesystem-сервер (15 минут)</h3>
+<ol>
+<li>Установи Claude Desktop.</li>
+<li>Открой <code>claude_desktop_config.json</code>, добавь filesystem-сервер с путём к одной из своих папок.</li>
+<li>Перезапусти Claude Desktop.</li>
+<li>Кликни на иконку 🔨 в чате — увидишь список tools (read_file, list_files, write_file и др.).</li>
+<li>Попроси Claude рассказать, какие файлы у тебя есть, и предложить идеи структуры.</li>
+</ol>
+
+<h3>Упражнение 2. GitHub-сервер (15 минут)</h3>
+<ol>
+<li>На GitHub: Settings → Developer Settings → Personal Access Tokens → создай токен с правом <code>repo</code>.</li>
+<li>Добавь github-сервер в конфиг с этим токеном.</li>
+<li>Перезапусти Claude Desktop.</li>
+<li>Попроси: «покажи мои последние 5 issue в репо <code>X</code>», «создай issue про баг Y».</li>
+</ol>
+
+<h3>Упражнение 3. Memory-сервер (15 минут)</h3>
+<ol>
+<li>Добавь memory-сервер в конфиг.</li>
+<li>Расскажи Claude факты о себе: «я работаю над курсом по ИИ», «мой основной проект — TG-бот для саммари».</li>
+<li>В новой сессии спроси «над чем я сейчас работаю?» — должен помнить.</li>
+</ol>
+
+<h3>Упражнение 4. Свой сервер (30 минут — для разработчиков)</h3>
+<ol>
+<li>Реализуй weather-сервер (или любой другой) на TypeScript / Python из урока.</li>
+<li>Подключи к Claude Desktop.</li>
+<li>Используй в чате.</li>
+</ol>
+
+<h2>12. Проверь себя</h2>
+
+<p><strong>1. MCP в одном предложении?</strong><br>
+Открытый протокол для подключения ИИ-приложений к внешним данным и инструментам стандартным способом.</p>
+
+<p><strong>2. Кто такие сервер и клиент в MCP?</strong><br>
+Сервер — программа, предоставляющая tools/resources. Клиент — ИИ-приложение, использующее их (Claude Desktop, Cursor).</p>
+
+<p><strong>3. Tools vs resources?</strong><br>
+Tools — действия (функции, которые LLM может вызвать). Resources — read-only данные.</p>
+
+<p><strong>4. Как добавить сервер в Claude Desktop?</strong><br>
+Отредактировать <code>claude_desktop_config.json</code>, добавить запись в <code>mcpServers</code>, перезапустить Claude Desktop.</p>
+
+<p><strong>5. Чем MCP лучше function calling?</strong><br>
+Один сервер — много клиентов. Стандартизация. Изоляция в отдельном процессе. Безопасность через sandbox.</p>
+
+<p><strong>6. Главные риски безопасности?</strong><br>
+Серверы работают с правами пользователя. Подключай только доверенные. Минимизируй scope (конкретные папки, токены с минимальными правами).</p>
+
+<p><strong>7. Какой transport использовать?</strong><br>
+stdio — для локальных серверов (90% случаев). SSE — для удалённых.</p>
+
+<p><strong>8. Где смотреть логи если сервер упал?</strong><br>
+Mac: <code>~/Library/Logs/Claude/mcp.log</code> и <code>mcp-server-XXX.log</code>.</p>
+
+<p><strong>9. Как написать свой сервер?</strong><br>
+TypeScript SDK <code>@modelcontextprotocol/sdk</code> или Python <code>mcp</code>. Объявить tools через <code>ListToolsRequestSchema</code>, обрабатывать вызовы через <code>CallToolRequestSchema</code>.</p>
+
+<p><strong>10. Где найти готовые серверы?</strong><br>
+<a href="https://github.com/modelcontextprotocol/servers" target="_blank">github.com/modelcontextprotocol/servers</a> (официальные) и <a href="https://www.pulsemcp.com" target="_blank">pulsemcp.com</a> (community-каталог 1000+ серверов).</p>
+
+<h2>13. Что должно остаться в голове</h2>
+<ol>
+<li><strong>MCP — это «USB-C для ИИ»</strong>: один протокол → много клиентов и серверов.</li>
+<li><strong>Сервер</strong> = программа с tools/resources. <strong>Клиент</strong> = ИИ-приложение.</li>
+<li><strong>Claude Desktop</strong> поддерживает MCP из коробки — самый простой вход.</li>
+<li><strong>Каталог серверов</strong>: filesystem, github, postgres, slack, memory, brave-search и сотни других.</li>
+<li><strong>Свой сервер пишется за 30 минут</strong> на TS/Python.</li>
+<li><strong>Безопасность критична</strong>: серверы работают с правами пользователя.</li>
+<li><strong>MCP — это будущее</strong> агентских инструментов; в 2026 это станет стандартом для ИИ-IDE и десктоп-агентов.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> подключи Claude Desktop хотя бы к filesystem-серверу до перехода к следующему уроку. Без этого механика MCP останется абстрактной.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-c3">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

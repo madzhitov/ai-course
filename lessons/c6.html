@@ -9,31 +9,309 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Prompt caching — экономим на длинных контекстах">
 <meta property="og:description" content="C6 из курса AI на русском. Prompt caching — экономим на длинных контекстах. ~35 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/c6.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/c6.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/c6.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Prompt caching — экономим на длинных контекстах">
 <meta name="twitter:description" content="C6 из курса AI на русском. Prompt caching — экономим на длинных контекстах. ~35 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/c6.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/c6.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/c6.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-c6');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Prompt caching — экономим на длинных контекстах","description":"C6 из курса AI на русском. Prompt caching — экономим на длинных контекстах. ~35 мин.","url":"https://ai.madzhitov.ru/lessons/c6.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/c6.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
-<h1>Prompt caching — экономим на длинных контекстах</h1>
-<p>C6 из курса AI на русском. Prompt caching — экономим на длинных контекстах. ~35 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-c6">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Claude Deep Dive</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">C6</span></div>
+<h1>Prompt Caching — экономим 90% на длинных контекстах</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> освоить prompt caching Anthropic для серьёзной экономии денег</span>
+  <span><strong>Время:</strong> ~35 минут</span>
+  <span><strong>Источник:</strong> docs.claude.com/build-with-claude/prompt-caching</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>У тебя приложение, где в каждом запросе один и тот же system prompt на 5000 токенов с инструкциями? Каждый вызов ты платишь за эти 5000 токенов заново. На сотне вызовов в день — это уже заметные деньги. На тысячах — критично.</p>
+<p><strong>Prompt caching</strong> — фича Anthropic, которая позволяет закэшировать стабильную часть промпта и при следующих вызовах платить за неё <strong>в 10 раз меньше</strong>. Это самая недооценённая оптимизация в работе с LLM.</p>
+
+<h2>1. Как работает</h2>
+
+<p>Без кэширования (обычный поток):</p>
+<pre><code>Запрос 1: [system prompt 5000т] + [user "вопрос 1" 50т]
+  → input: 5050 × $3/M = $0.0152
+
+Запрос 2: [system prompt 5000т] + [user "вопрос 2" 50т]
+  → input: 5050 × $3/M = $0.0152
+  (платим за system prompt снова и снова)</code></pre>
+
+<p>С кэшированием:</p>
+<pre><code>Запрос 1: [system prompt CACHED 5000т] + [user 50т]
+  → cache write: 5000 × $3.75/M = $0.01875 (+25%)
+  → input: 50 × $3/M = $0.00015
+  = $0.019 (чуть дороже)
+
+Запрос 2: [system prompt CACHED 5000т] + [user 50т]
+  → cache read: 5000 × $0.30/M = $0.0015 (10% от обычной цены!)
+  → input: 50 × $3/M = $0.00015
+  = $0.00165 (в 9 раз дешевле)</code></pre>
+
+<p>Чем больше повторов — тем больше экономия. После 10 запросов экономия ~85%. После 100 — ~89%.</p>
+
+<h2>2. Когда выгодно использовать</h2>
+
+<h3>Выгодно</h3>
+<ul>
+<li>Длинный <strong>system prompt</strong> с инструкциями — повторяется в каждом запросе</li>
+<li>Большой <strong>контекст документов</strong> (например, в RAG над одной книгой) — много вопросов к одной книге</li>
+<li>Few-shot примеры — много, на каждый запрос подмешиваются</li>
+<li>Длинный диалог — закэшировать всю историю до текущего хода</li>
+</ul>
+
+<h3>Невыгодно</h3>
+<ul>
+<li>Очень короткие промпты — кэш не покрывает overhead</li>
+<li>Каждый запрос с новыми данными — нечего кэшировать</li>
+<li>Один запрос — не повторишь, не сэкономишь</li>
+</ul>
+
+<p>Минимальный размер для кэширования: <strong>1024 токена</strong> (для Sonnet/Opus) или <strong>2048</strong> (для Haiku).</p>
+
+<h2>3. Цены: запись vs чтение</h2>
+
+<table>
+<tr><th>Операция</th><th>Sonnet 4.5</th><th>Opus 4</th><th>Haiku</th></tr>
+<tr><td>Обычный input</td><td>$3.00/M</td><td>$15.00/M</td><td>$0.80/M</td></tr>
+<tr><td>Cache <strong>write</strong> (+25%)</td><td>$3.75/M</td><td>$18.75/M</td><td>$1.00/M</td></tr>
+<tr><td>Cache <strong>read</strong> (-90%)</td><td>$0.30/M</td><td>$1.50/M</td><td>$0.08/M</td></tr>
+</table>
+
+<p><strong>Cache write</strong> чуть дороже обычного input (+25%). <strong>Cache read</strong> — в 10 раз дешевле. Поэтому кэш окупается уже на 2-м запросе.</p>
+
+<p class="callout"><strong>Цены в таблице — ориентир.</strong> Anthropic периодически их пересматривает, а названия моделей обновляются. Актуальный прайс всегда здесь: <a href="https://www.anthropic.com/pricing" target="_blank">anthropic.com/pricing</a>. Важна не конкретная цифра, а соотношение: write ≈ +25%, read ≈ −90%.</p>
+
+<h2>4. Время жизни кэша</h2>
+
+<p>Два режима:</p>
+<ul>
+<li><strong>5 минут</strong> (по умолчанию) — без доплаты</li>
+<li><strong>1 час</strong> (extended cache, beta) — двойная цена за cache write, но всё ещё дешевле обычной</li>
+</ul>
+
+<p>5 минут — для интерактивных сессий (чат, диалог). 1 час — для batch-обработки, когда несколько запросов с большой паузой.</p>
+
+<p>Кэш можно «дёргать» — каждый раз когда читаешь из него, таймер обнуляется на новые 5 минут (или 1 час).</p>
+
+<h2>5. Как использовать в API</h2>
+
+<p>Простой пример с Python SDK:</p>
+
+<pre><code>from anthropic import Anthropic
+
+client = Anthropic()
+
+system_prompt = "..." * 5000  # длинный, стабильный
+
+response = client.messages.create(
+    model="claude-sonnet-4-5",
+    max_tokens=1024,
+    system=[
+        {
+            "type": "text",
+            "text": system_prompt,
+            "cache_control": {"type": "ephemeral"}  # ← вот так
+        }
+    ],
+    messages=[
+        {"role": "user", "content": "Вопрос пользователя"}
+    ]
+)
+
+# Проверим использование кэша
+print(response.usage)
+# CacheCreationInputTokens: 5000 (на первом запросе)
+# CacheReadInputTokens: 0
+# InputTokens: 8 (всё остальное)</code></pre>
+
+<p>На втором вызове <strong>с тем же system prompt</strong>:</p>
+
+<pre><code>print(response.usage)
+# CacheCreationInputTokens: 0
+# CacheReadInputTokens: 5000  ← из кэша
+# InputTokens: 8</code></pre>
+
+<h2>6. Multi-level caching</h2>
+
+<p>Можно кэшировать сразу несколько частей промпта. Anthropic поддерживает <strong>до 4 cache breakpoint'ов</strong> в одном запросе.</p>
+
+<p>Пример с тремя уровнями:</p>
+
+<pre><code>messages.create(
+    system=[
+        {"type": "text", "text": "Базовые инструкции",
+         "cache_control": {"type": "ephemeral"}}     # уровень 1: стабильный
+    ],
+    messages=[
+        {"role": "user", "content": [
+            {"type": "text", "text": "Большой документ X...",
+             "cache_control": {"type": "ephemeral"}}  # уровень 2: документ
+        ]},
+        {"role": "assistant", "content": "..."},
+        {"role": "user", "content": [
+            {"type": "text", "text": "История разговора...",
+             "cache_control": {"type": "ephemeral"}}  # уровень 3: история
+        ]},
+        {"role": "user", "content": "Новый вопрос пользователя"}  # без кэша
+    ]
+)</code></pre>
+
+<p>Каждый уровень кэшируется независимо. Если документ изменился, кэш на нём сбросится, но базовые инструкции — нет.</p>
+
+<h2>7. Реальные кейсы экономии</h2>
+
+<h3>Чат-бот поддержки</h3>
+<p>System prompt 3000 токенов + few-shot 4000 токенов. Каждый ответ ~500 токенов output.</p>
+<ul>
+<li>Без кэша: 7500 × $3 + 500 × $15 = $0.030 за ответ</li>
+<li>С кэшем (после первого): 7500 × $0.30 + 500 × $15 = $0.010 за ответ</li>
+<li>Экономия: <strong>~67% на input части</strong></li>
+</ul>
+
+<h3>RAG-бот над книгой</h3>
+<p>Книга 80 000 токенов. Юзер задаёт 10 вопросов в сессии.</p>
+<ul>
+<li>Без кэша: 10 × 80 000 × $3 = <strong>$2.40 за сессию</strong></li>
+<li>С кэшем: $0.30 (cache write) + 9 × 80 000 × $0.30 = <strong>$0.52 за сессию</strong></li>
+<li>Экономия: <strong>78%</strong></li>
+</ul>
+
+<h3>Code agent</h3>
+<p>Контекст 50 000 токенов кода. 20 итераций агента в задаче.</p>
+<ul>
+<li>Без кэша: 20 × 50 000 × $3 = $3.00 на задачу</li>
+<li>С кэшем: 1 × $0.19 + 19 × $0.015 = $0.47</li>
+<li>Экономия: <strong>84%</strong></li>
+</ul>
+
+<h2>8. Подводные камни</h2>
+
+<h3>Cache не сработает если</h3>
+<ul>
+<li>Минимальный размер не достигнут (1024 токена для Sonnet)</li>
+<li>Кэш истёк (более 5 минут / 1 часа простоя)</li>
+<li>В кэшируемой части хоть один символ изменился</li>
+<li>Модель сменилась — у каждой модели свой кэш</li>
+</ul>
+
+<h3>Цена кэширования</h3>
+<p>Cache write дороже обычного на 25%. Если ты делаешь только 1 запрос — не экономишь. Окупается со 2-го.</p>
+
+<h3>Безопасность контекста</h3>
+<p>Каждый клиент API имеет свой кэш — между разными аккаунтами он не пересекается. Но внутри своего проекта будь осторожен: если в кэше есть пользовательские данные клиента А, другой клиент Б к ним доступа не получит, но в логах твоего бэкенда они есть.</p>
+
+<h3>Не путать с PromptShield</h3>
+<p>В разных провайдерах разные системы. У OpenAI есть свой prompt caching (с 2024), но цена и поведение отличаются. Урок про Anthropic — для OpenAI смотри их доки.</p>
+
+<h2>9. Глоссарий</h2>
+<ul>
+<li><strong>Prompt caching</strong> — кэширование стабильной части промпта</li>
+<li><strong>Cache write</strong> — первый запрос, формирующий кэш (+25% к цене)</li>
+<li><strong>Cache read</strong> — последующие запросы, читающие из кэша (-90%)</li>
+<li><strong>Cache breakpoint</strong> — место в промпте, где заканчивается кэшируемая часть</li>
+<li><strong>Ephemeral cache</strong> — стандартный 5-минутный кэш</li>
+<li><strong>Extended cache</strong> — 1-часовой кэш (beta, дороже)</li>
+<li><strong>cache_control</strong> — параметр в API для указания кэша</li>
+</ul>
+
+<h2>10. Практика (35 минут)</h2>
+
+<h3>Упражнение 1. Измерь свои расходы (10 минут)</h3>
+<p>Возьми свой pet-проект (бота из урока 7 или RAG из 14). Прогоняй 10 запросов и логируй usage. Посчитай:</p>
+<ul>
+<li>Сколько токенов в system prompt?</li>
+<li>Какую часть запроса можно было бы кэшировать?</li>
+<li>Сколько бы сэкономил с кэшем?</li>
+</ul>
+
+<h3>Упражнение 2. Включи кэш (15 минут)</h3>
+<p>В своём боте добавь <code>cache_control</code> к system prompt:</p>
+
+<pre><code>system=[{
+    "type": "text",
+    "text": SYSTEM_PROMPT,
+    "cache_control": {"type": "ephemeral"}
+}]</code></pre>
+
+<p>Прогоняй сессию из 5–10 запросов. Логируй <code>response.usage.cache_creation_input_tokens</code> и <code>cache_read_input_tokens</code>. Убедись, что после первого запроса всё идёт из кэша.</p>
+
+<h3>Упражнение 3. Multi-level (10 минут)</h3>
+<p>В RAG-боте сделай два уровня кэша: system prompt + большой документ. Проверь usage — должны видеть два уровня кэширования.</p>
+
+<h2>11. Проверь себя</h2>
+
+<p><strong>1. Цена cache read?</strong><br>
+В 10 раз дешевле обычного input (например, $0.30/M для Sonnet вместо $3.00/M).</p>
+
+<p><strong>2. Цена cache write?</strong><br>
+На 25% дороже обычного input ($3.75/M для Sonnet). Окупается со второго запроса.</p>
+
+<p><strong>3. Минимальный размер для кэширования?</strong><br>
+1024 токена для Sonnet/Opus, 2048 для Haiku.</p>
+
+<p><strong>4. Время жизни стандартного кэша?</strong><br>
+5 минут с последнего обращения. Можно расширить до 1 часа в beta.</p>
+
+<p><strong>5. Что кэшировать?</strong><br>
+Стабильные части: system prompt, few-shot примеры, большие документы в контексте, историю диалога до текущего хода.</p>
+
+<p><strong>6. Что не кэшируется?</strong><br>
+Если в кэшируемой части изменился хотя бы один символ — кэш сбрасывается. Будь аккуратен с динамическими частями.</p>
+
+<p><strong>7. Сколько cache breakpoint'ов поддерживается?</strong><br>
+До 4 в одном запросе. Можно кэшировать несколько уровней независимо.</p>
+
+<p><strong>8. Как узнать, что кэш сработал?</strong><br>
+В <code>response.usage</code> поля <code>cache_creation_input_tokens</code> (первый раз) и <code>cache_read_input_tokens</code> (последующие).</p>
+
+<p><strong>9. Окупается ли кэш для 1-разовой задачи?</strong><br>
+Нет. Cache write дороже обычного. Минимум 2 запроса с одним кэшем.</p>
+
+<p><strong>10. Когда лучше всего работает кэширование?</strong><br>
+Когда стабильная часть промпта большая (тысячи токенов) и запросы идут пачкой в интервале до 5 минут.</p>
+
+<h2>12. Что должно остаться в голове</h2>
+<ol>
+<li><strong>Cache read — в 10 раз дешевле</strong> обычного input. Это много.</li>
+<li><strong>Окупается со 2-го запроса.</strong> Cache write +25%.</li>
+<li><strong>Минимум 1024 токена</strong> для кэширования.</li>
+<li><strong>5 минут</strong> жизни кэша — стандарт. 1 час — beta.</li>
+<li><strong>До 4 breakpoint'ов</strong> в одном запросе — multi-level caching.</li>
+<li><strong>Кэшируй:</strong> system prompt, few-shot, большие документы, историю.</li>
+<li><strong>Не кэшируй:</strong> короткие промпты, одноразовые запросы, динамические части.</li>
+</ol>
+
+<div class="callout callout-success">
+<strong>💰 Закрепление:</strong> для серьёзных AI-приложений с тысячами запросов в день prompt caching — это разница между $500/мес и $80/мес. Включи где можешь. Просто проверь в логах, что кэш реально срабатывает.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-c6">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

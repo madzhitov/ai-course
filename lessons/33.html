@@ -9,31 +9,200 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Урок 33. Перцептрон — самая простая нейросеть">
 <meta property="og:description" content="Урок 33 из курса AI на русском. Перцептрон — самая простая нейросеть. ~60 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/33.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/33.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/33.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Урок 33. Перцептрон — самая простая нейросеть">
 <meta name="twitter:description" content="Урок 33 из курса AI на русском. Перцептрон — самая простая нейросеть. ~60 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/33.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/33.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/33.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-33');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Урок 33. Перцептрон — самая простая нейросеть","description":"Урок 33 из курса AI на русском. Перцептрон — самая простая нейросеть. ~60 мин.","url":"https://ai.madzhitov.ru/lessons/33.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/33.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 3. Практик</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 33</span></div>
 <h1>Урок 33. Перцептрон — самая простая нейросеть</h1>
-<p>Урок 33 из курса AI на русском. Перцептрон — самая простая нейросеть. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-33">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять простейшую нейросеть так, чтобы дальше понять все остальные</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Источник:</strong> AI-For-Beginners/04 + Goodfellow «Deep Learning» гл. 6</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Перцептрон — это «hello world» нейросетей. На нём ты поймёшь:</p>
+<ul>
+<li>Что такое «нейрон» в математическом смысле.</li>
+<li>Что такое веса и обучение.</li>
+<li>Что такое функция активации.</li>
+<li>Зачем нужны несколько слоёв (XOR-проблема).</li>
+</ul>
+<p>Без этого понимания CNN, RNN, Transformer — будут магией.</p>
+
+<h2>1. Биологическая мотивация (одно предложение)</h2>
+<p>Нейрон в мозге: получает сигналы от других нейронов через дендриты, суммирует, и если сумма выше порога — посылает сигнал по аксону.</p>
+<p>Математическая абстракция: <strong>взвешенная сумма входов → активация → выход</strong>. Все детали биологии — упрощены до этой схемы.</p>
+
+<h2>2. Формула перцептрона</h2>
+<p>Вход: <code>x₁, x₂, ..., xₙ</code> (например, пиксели картинки).</p>
+<p>Веса: <code>w₁, w₂, ..., wₙ</code> (то, что модель учится подбирать).</p>
+<p>Bias: <code>b</code> (свободный коэффициент).</p>
+<p>Выход:</p>
+<pre><code>z = w₁·x₁ + w₂·x₂ + ... + wₙ·xₙ + b
+y = activation(z)</code></pre>
+<p>То есть: считаешь взвешенную сумму, пропускаешь через функцию активации, получаешь ответ.</p>
+
+<h2>3. Функции активации</h2>
+<table>
+<tr><th>Функция</th><th>Формула</th><th>Где используется</th></tr>
+<tr><td><strong>Step</strong></td><td>1 если z &gt; 0, иначе 0</td><td>Исторический перцептрон Розенблатта</td></tr>
+<tr><td><strong>Sigmoid</strong></td><td>1 / (1 + e⁻ᶻ)</td><td>Бинарная классификация, выход вероятности</td></tr>
+<tr><td><strong>Tanh</strong></td><td>(eᶻ - e⁻ᶻ) / (eᶻ + e⁻ᶻ)</td><td>Раньше — скрытые слои</td></tr>
+<tr><td><strong>ReLU</strong></td><td>max(0, z)</td><td>Стандарт скрытых слоёв сейчас</td></tr>
+<tr><td><strong>Softmax</strong></td><td>eᶻⁱ / Σeᶻⁱ</td><td>Многоклассовая классификация</td></tr>
+</table>
+<p><strong>ReLU</strong> победил, потому что: простой (max), быстрый, не насыщается при больших z, и эмпирически даёт лучшую сходимость.</p>
+
+<h2>4. Геометрический смысл</h2>
+<p>Один перцептрон с step-активацией = <strong>линейный классификатор</strong>. Он рисует <em>гиперплоскость</em> в пространстве признаков и относит точки к классу 0 или 1 в зависимости от того, по какую сторону.</p>
+<p>Для 2D — это просто линия:</p>
+<pre><code>w₁·x + w₂·y + b = 0</code></pre>
+<p>Если точка (x, y) над линией — класс 1, под линией — класс 0.</p>
+
+<h2>5. Как перцептрон учится</h2>
+<p>Розенблатт (1958) предложил простое правило:</p>
+<ol>
+<li>Инициализируй веса случайно.</li>
+<li>Возьми обучающий пример (x, y_true).</li>
+<li>Посчитай y_pred = perceptron(x).</li>
+<li>Если y_pred ≠ y_true → подкрути веса: <code>w_i += learning_rate * (y_true - y_pred) * x_i</code>.</li>
+<li>Повторяй пока ошибки не исчезнут.</li>
+</ol>
+<p><strong>Теорема Розенблатта:</strong> если данные <em>линейно разделимы</em>, это правило сойдётся за конечное число шагов.</p>
+
+<h2>6. XOR-проблема — фатальная для перцептрона</h2>
+<p>Возьми XOR:</p>
+<pre><code>x₁  x₂  XOR
+0   0   0
+0   1   1
+1   0   1
+1   1   0</code></pre>
+<p>Попробуй провести одну прямую, отделяющую (0,0) и (1,1) от (0,1) и (1,0). Не получится. <strong>XOR — не линейно разделим.</strong></p>
+<p>Это убило хайп вокруг перцептронов в 1969 (Minsky &amp; Papert «Perceptrons»). Зима ИИ на 20 лет.</p>
+
+<h2>7. Многослойный перцептрон (MLP) решает XOR</h2>
+<p>Идея: <strong>два слоя</strong> перцептронов вместо одного.</p>
+<p>Первый слой переводит вход в новое пространство, где XOR уже линейно разделим. Второй слой делает линейную классификацию.</p>
+<pre><code>Скрытый слой:
+  h₁ = activation(x₁ + x₂ - 0.5)     // «либо один из x»
+  h₂ = activation(x₁ + x₂ - 1.5)     // «оба x»
+Выходной слой:
+  y = activation(h₁ - h₂ - 0.5)      // «h₁ но не h₂»</code></pre>
+<p>Это и есть XOR. Любая функция может быть приближена многослойным MLP — это <strong>теорема универсальной аппроксимации</strong> (1989).</p>
+
+<h2>8. Простейшая реализация на Python</h2>
+<pre><code>import numpy as np
+
+class Perceptron:
+    def __init__(self, n_features, lr=0.1):
+        self.w = np.zeros(n_features)
+        self.b = 0
+        self.lr = lr
+
+    def predict(self, x):
+        return 1 if (np.dot(self.w, x) + self.b) > 0 else 0
+
+    def train(self, X, y, epochs=100):
+        for _ in range(epochs):
+            for xi, yi in zip(X, y):
+                y_pred = self.predict(xi)
+                error = yi - y_pred
+                self.w += self.lr * error * xi
+                self.b += self.lr * error
+
+# AND функция — линейно разделима
+X = np.array([[0,0],[0,1],[1,0],[1,1]])
+y = np.array([0, 0, 0, 1])
+
+p = Perceptron(n_features=2)
+p.train(X, y, epochs=20)
+print([p.predict(x) for x in X])  # [0, 0, 0, 1] — выучил AND</code></pre>
+
+<h2>9. От перцептрона до современных сетей</h2>
+<p>Современная глубокая сеть = десятки слоёв таких «перцептронов» + ReLU + хитрые архитектуры. Но базовая идея — та же:</p>
+<ol>
+<li>Взвешенная сумма входов.</li>
+<li>Нелинейная активация.</li>
+<li>Передача в следующий слой.</li>
+</ol>
+
+<h2>10. Тонкости и подводные камни</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Без активации многослойный MLP = линейный.</strong> Если активаций нет — любая комбинация линейных преобразований остаётся линейной. Активации — то, что даёт нелинейность.</li>
+<li><strong>Step-активация не дифференцируема.</strong> Для backprop (Урок 34) нужны гладкие функции — sigmoid, tanh, ReLU.</li>
+<li><strong>Веса инициализируй НЕ нулями.</strong> Если все нули — все нейроны учатся одному и тому же. Используй случайную инициализацию (Glorot, He).</li>
+<li><strong>Learning rate важен.</strong> Слишком большой — модель не сходится, слишком малый — учится годами.</li>
+</ul>
+</div>
+
+<h2>11. Глоссарий</h2>
+<div class="glossary-term"><h3>Perceptron</h3><p>Один нейрон: взвешенная сумма входов + активация = выход.</p></div>
+<div class="glossary-term"><h3>Activation function</h3><p>Нелинейная функция, через которую пропускают взвешенную сумму. ReLU — стандарт.</p></div>
+<div class="glossary-term"><h3>Bias</h3><p>Свободный коэффициент в нейроне. Сдвигает гиперплоскость.</p></div>
+<div class="glossary-term"><h3>MLP</h3><p>Multi-Layer Perceptron — несколько слоёв перцептронов. Может приблизить любую функцию.</p></div>
+<div class="glossary-term"><h3>XOR-проблема</h3><p>Один перцептрон не может выучить XOR (не линейно разделим). MLP с скрытым слоем — может.</p></div>
+<div class="glossary-term"><h3>Universal Approximation Theorem</h3><p>Двухслойный MLP с достаточным количеством нейронов может приблизить любую непрерывную функцию.</p></div>
+
+<h2>12. Практика (60 минут)</h2>
+<ol>
+<li>Запусти Python-пример выше. Проверь, что AND учится.</li>
+<li>Попробуй на XOR — увидишь, что перцептрон не сходится (точность остаётся ~50%).</li>
+<li>Открой <a href="https://playground.tensorflow.org" target="_blank">playground.tensorflow.org</a>. Включи режим XOR. Без скрытых слоёв — не работает. Добавь 1 скрытый слой с 4 нейронами — заработает.</li>
+<li>Поиграйся с learning rate, числом эпох, активациями. Записывай, что меняется.</li>
+<li>В <code>progress.md</code> — зарисуй схему «1 нейрон» от руки и подпиши все компоненты.</li>
+</ol>
+
+<h2>13. Проверь себя</h2>
+<p><strong>1. Формула одного нейрона?</strong><br>y = activation(w·x + b), где w — веса, x — вход, b — bias.</p>
+<p><strong>2. Зачем нужна функция активации?</strong><br>Чтобы внести нелинейность. Без неё многослойная сеть остаётся линейной и не лучше одного нейрона.</p>
+<p><strong>3. Почему перцептрон не учит XOR?</strong><br>XOR не линейно разделим. Один нейрон рисует прямую — её нельзя так провести, чтобы отделить (0,1)+(1,0) от (0,0)+(1,1).</p>
+<p><strong>4. Что говорит теорема универсальной аппроксимации?</strong><br>Двухслойный MLP с достаточным числом нейронов может приблизить любую непрерывную функцию.</p>
+<p><strong>5. Почему ReLU стала стандартом?</strong><br>Простая, быстрая, не насыщается при больших z, эмпирически даёт лучшую сходимость и не страдает от vanishing gradient как sigmoid.</p>
+
+<h2>14. Что должно остаться в голове</h2>
+<ol>
+<li>Перцептрон = w·x + b → activation → y. Это весь нейрон.</li>
+<li>Один перцептрон — линейный классификатор. Может решить AND, OR. Не может XOR.</li>
+<li>MLP (скрытый слой) — переводит вход в новое пространство, где задача становится линейной.</li>
+<li>Activation function = источник нелинейности. ReLU — стандарт.</li>
+<li>Веса инициализируй случайно, не нулями.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> запусти простой Python из этого урока и поиграй с playground.tensorflow.org. После этого следующий урок — про обучение более серьёзных сетей — будет понятен.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-33">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

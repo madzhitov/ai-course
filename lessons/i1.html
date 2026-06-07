@@ -9,31 +9,164 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="ИИ для юристов: договоры, документы, поиск">
 <meta property="og:description" content="I1 из курса AI на русском. ИИ для юристов: договоры, документы, поиск. ~60 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/i1.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/i1.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/i1.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ИИ для юристов: договоры, документы, поиск">
 <meta name="twitter:description" content="I1 из курса AI на русском. ИИ для юристов: договоры, документы, поиск. ~60 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/i1.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/i1.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/i1.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-i1');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"ИИ для юристов: договоры, документы, поиск","description":"I1 из курса AI на русском. ИИ для юристов: договоры, документы, поиск. ~60 мин.","url":"https://ai.madzhitov.ru/lessons/i1.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/i1.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Индустрия</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">I1</span></div>
 <h1>ИИ для юристов: договоры, документы, поиск</h1>
-<p>I1 из курса AI на русском. ИИ для юристов: договоры, документы, поиск. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-i1">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять, где ИИ реально экономит время юристу и где категорически нельзя</span>
+  <span><strong>Время:</strong> ~50 минут</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Юридическая работа — текст, текст и ещё раз текст. Чтение договоров, поиск прецедентов, составление документов, ответы клиентам. LLM экономят 30–60% времени на рутине. Но есть жёсткое правило: <strong>модель никогда не принимает решений, только помогает</strong>. Галлюцинация в иске — это карьерные риски.</p>
+
+<h2>1. Что ИИ умеет делать в юриспруденции</h2>
+<table>
+<tr><th>Задача</th><th>Подходит ИИ?</th><th>Уровень риска</th></tr>
+<tr><td>Краткое содержание договора</td><td>✅ Да</td><td>Низкий — юрист проверяет</td></tr>
+<tr><td>Поиск противоречий между документами</td><td>✅ Да</td><td>Низкий</td></tr>
+<tr><td>Первый драфт NDA, оферты, ТЗ</td><td>✅ Да</td><td>Средний — обязательная редактура</td></tr>
+<tr><td>Поиск похожих прецедентов</td><td>✅ Да (с RAG)</td><td>Средний</td></tr>
+<tr><td>Анализ риск-точек в чужом договоре</td><td>✅ Да</td><td>Средний</td></tr>
+<tr><td>Финальная юридическая позиция</td><td>❌ Нет</td><td>Высокий — только юрист</td></tr>
+<tr><td>Цитаты на конкретные статьи / прецеденты</td><td>⚠ Только с поиском</td><td>Высокий — галлюцинации</td></tr>
+</table>
+
+<h2>2. Топ-инструменты</h2>
+<ul>
+<li><strong>Claude (Pro/Team)</strong> — лучший для длинных договоров (200k контекст). Меньше галлюцинирует.</li>
+<li><strong>ChatGPT с file upload</strong> — хорош для черновиков.</li>
+<li><strong>Harvey</strong> — корпоративная legal-LLM, дорого.</li>
+<li><strong>Casetext CoCounsel</strong> — для США, с базой прецедентов.</li>
+<li><strong>«Гарант ИИ», «Консультант+ Smart»</strong> — российский рынок, со связкой к базе.</li>
+<li><strong>Свой RAG над базой документов</strong> (Урок p2) — приватность, контроль.</li>
+</ul>
+
+<h2>3. Промпт-паттерны</h2>
+
+<h3>Анализ чужого договора</h3>
+<pre><code>Ты — старший корпоративный юрист.
+
+Договор:
+&lt;contract&gt;
+[вставить текст]
+&lt;/contract&gt;
+
+Найди:
+1. Несимметричные обязательства (что одна сторона делает, а другая не делает).
+2. Скрытые риски (штрафы, авто-пролонгация, эксклюзивность).
+3. Размытые формулировки («своевременно», «качественно» — без определений).
+4. Отсутствующие пункты (форс-мажор, расторжение, конфиденциальность).
+5. Точки переговоров: что предлагаю исправить, и аргументы.
+
+Формат: таблица. Для каждого риска — серьёзность (1-5) и предложение.</code></pre>
+
+<h3>Первый драфт документа</h3>
+<pre><code>Сделай драфт NDA между [сторона A] и [сторона B].
+Контекст сотрудничества: [описание].
+
+Включи: определение конф.информации, обязательства, срок (3 года), исключения, ответственность, юрисдикция (РФ).
+
+Не включай: пункты, типичные для США, но не для РФ.
+
+После драфта — список из 5 пунктов «о чём подумать перед подписанием».</code></pre>
+
+<h3>Поиск противоречий</h3>
+<p>Загрузи в Claude Projects (Урок c2) набор связанных документов (договор + допсоглашения + переписку). Спроси: «найди все случаи, где условия противоречат друг другу или меняются».</p>
+
+<h2>4. Что НЕ делать</h2>
+<div class="callout callout-danger">
+<ul>
+<li><strong>Не цитируй ИИ-ответ как юридическую позицию.</strong> Только как черновик для проверки.</li>
+<li><strong>Не верь цитатам на статьи кодекса без проверки.</strong> Реальные кейсы в США: юристы получили санкции суда за выдуманные ChatGPT прецеденты.</li>
+<li><strong>Не загружай конф. документы в публичный ChatGPT</strong> без enterprise-договора. Используй: Claude Team (no training opt-out), Azure OpenAI (data residency), локальный.</li>
+<li><strong>Не доверяй ИИ выбор юрисдикции, ставок налогов, размеров неустойки</strong> — конкретные цифры галлюцинируются.</li>
+</ul>
+</div>
+
+<h2>5. Рабочий процесс юриста с ИИ</h2>
+<ol>
+<li><strong>Утро.</strong> ИИ суммаризирует входящие письма и документы за ночь → ты читаешь сводку, выбираешь, что важно.</li>
+<li><strong>Получил договор от контрагента.</strong> Прогон через промпт «Анализ чужого договора» → таблица рисков → переговорная позиция за 15 минут.</li>
+<li><strong>Нужно составить документ.</strong> «Сделай первый драфт» → редактируешь → проверяешь нюансы в Гарант/Консультант+.</li>
+<li><strong>Поиск прецедента.</strong> RAG над своей базой решений или платная legal-AI.</li>
+<li><strong>Клиентский ответ.</strong> ИИ пишет черновик в нужном тоне → ты правишь и подписываешь.</li>
+</ol>
+
+<h2>6. Тонкости</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Конфиденциальность.</strong> Адвокатская тайна по 152-ФЗ требует контроля над тем, кому передаются данные. ChatGPT с дефолтными настройками сохраняет историю 30 дней — это нарушение.</li>
+<li><strong>EU AI Act (2024+).</strong> «Юридический совет» — высокорисковая категория. Если делаешь продукт — нужны прозрачность и аудит.</li>
+<li><strong>Качество русского юридического языка.</strong> Claude и GPT-4o хорошо. Llama хуже.</li>
+<li><strong>Стоимость на одного юриста.</strong> ~$30–50/мес за подписки достаточно для большинства. RAG-инфраструктура — еще $50–200/мес.</li>
+</ul>
+</div>
+
+<h2>7. Глоссарий</h2>
+<div class="glossary-term"><h3>Legal-tech</h3><p>Технологии для юридической работы. ИИ — самая горячая область legal-tech.</p></div>
+<div class="glossary-term"><h3>Discovery / e-discovery</h3><p>Процесс поиска и анализа документов в судебных делах. ИИ автоматизирует первый прогон.</p></div>
+<div class="glossary-term"><h3>Привилегия</h3><p>Adv-client privilege — защита коммуникаций. Передача данных третьим лицам (ChatGPT) может её нарушить.</p></div>
+
+<h2>8. Практика (50 минут)</h2>
+<ol>
+<li>Возьми реальный (или учебный) договор на 5–10 страниц.</li>
+<li>Прогони через промпт «Анализ чужого договора» в Claude Sonnet.</li>
+<li>Сравни с тем, как ты бы анализировал сам — что нашёл, что пропустил.</li>
+<li>Составь свой шаблон промпта под свою специализацию.</li>
+<li>Запиши в <code>progress.md</code>: где ИИ сэкономил время, где наоборот добавил работы (потому что нужна проверка).</li>
+</ol>
+
+<h2>9. Проверь себя</h2>
+<p><strong>1. Где ИИ безопасно применять в юриспруденции?</strong><br>Суммаризация, поиск противоречий, первый драфт, анализ риск-точек — с обязательной финальной проверкой юристом.</p>
+<p><strong>2. Где категорически нельзя?</strong><br>Принятие финальной позиции, цитаты статей/прецедентов без проверки, конфиденциальные документы в публичных моделях.</p>
+<p><strong>3. Почему ChatGPT по умолчанию опасен для юриста?</strong><br>30 дней хранения данных — нарушение конф./привилегии. Нужен enterprise-режим или другая модель.</p>
+<p><strong>4. Что такое RAG над базой документов и зачем юристу?</strong><br>Свой semantic search по своим решениям/договорам — позволяет находить аналоги без передачи данных наружу.</p>
+
+<h2>10. Что должно остаться в голове</h2>
+<ol>
+<li>ИИ — ассистент юриста, не замена. Финальное решение всегда за человеком.</li>
+<li>Безопасно: анализ, драфт, поиск противоречий. Опасно: цитаты, конкретные цифры, финальная позиция.</li>
+<li>Конфиденциальность — Claude Team / Azure OpenAI / локально. Не дефолтный ChatGPT.</li>
+<li>RAG над собственной базой документов даёт максимум контроля.</li>
+<li>Реальная экономия времени — 30–60% на рутине. Стоимость подписок окупается за день.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> юриспруденция — одна из топ-индустрий, где ИИ уже сейчас даёт измеримый эффект. Адаптируй свой workflow и опередишь коллег.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-i1">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

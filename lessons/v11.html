@@ -9,31 +9,255 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="📚 Справочник: основы веба">
 <meta property="og:description" content="V11 из курса AI на русском. 📚 Справочник: основы веба. ~50 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/v11.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/v11.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/v11.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="📚 Справочник: основы веба">
 <meta name="twitter:description" content="V11 из курса AI на русском. 📚 Справочник: основы веба. ~50 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/v11.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/v11.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/v11.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-v11');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"📚 Справочник: основы веба","description":"V11 из курса AI на русском. 📚 Справочник: основы веба. ~50 мин.","url":"https://ai.madzhitov.ru/lessons/v11.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/v11.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
-<h1>📚 Справочник: основы веба</h1>
-<p>V11 из курса AI на русском. 📚 Справочник: основы веба. ~50 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-v11">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">V11</span></div>
+<h1>Справочник: основы веба</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> Как работает интернет, frontend, backend, Node.js, фреймворки. Карта территории, без воды.</span>
+  <span><strong>Время:</strong> ~50 минут</span>
+  <span><strong>Главы гайда:</strong> 1–5</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Этот урок — часть <strong>«Справочника по веб-разработке для не-разработчиков»</strong>. Это не ката (как v1–v10), а карта территории. Здесь — концепты, которые AI генерирует в твоих проектах и которые тебе важно понимать, чтобы не быть слепым.</p>
+<p>Без снобизма, без воды, с примерами из реальной жизни. После всех 5 модулей у тебя будет полная картина: от того, как браузер делает запрос, до того, как мониторить продакшен.</p>
+
+<hr />
+<h2>1. Как работает интернет — базовая модель</h2>
+<p>Когда пользователь вводит адрес сайта в браузере, происходит четыре шага.</p>
+<p><strong>Шаг 1 — DNS.</strong> Браузер спрашивает у DNS-сервера: «Какой IP-адрес у этого домена?» DNS — это телефонная книга интернета. Домен — человекочитаемое имя (google.com), IP-адрес — числовой адрес сервера (142.250.80.46).</p>
+<p><strong>Шаг 2 — Запрос.</strong> Браузер отправляет HTTP-запрос на этот IP-адрес. Запрос содержит: метод (GET — дай мне страницу), URL (/catalog/shoes), заголовки (язык, тип браузера, куки).</p>
+<p><strong>Шаг 3 — Сервер.</strong> Сервер получает запрос, обрабатывает его (достаёт данные из базы, рендерит HTML) и отправляет ответ.</p>
+<p><strong>Шаг 4 — Рендеринг.</strong> Браузер получает HTML, CSS и JavaScript, рисует страницу на экране.</p>
+<p>Всё, что ты строишь как разработчик — это про шаги 3 и 4: что происходит на сервере (backend) и что видит пользователь (frontend).</p>
+<h3>Протоколы</h3>
+<p><strong>HTTP/HTTPS</strong> — протокол общения браузера с сервером. HTTPS — зашифрованная версия (замочек в адресной строке). Современные хостинги (Vercel, Netlify) настраивают HTTPS автоматически.</p>
+<p><strong>URL</strong> — адрес ресурса. Разберём: <code>https://myshop.com/catalog/shoes?color=red&amp;size=42</code>
+- <code>https://</code> — протокол
+- <code>myshop.com</code> — домен
+- <code>/catalog/shoes</code> — путь (route)
+- <code>?color=red&amp;size=42</code> — параметры запроса (query params)</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Открой любой сайт и нажми Cmd+Option+I (Mac) или F12 (Windows)</li>
+<li>Перейди во вкладку Network</li>
+<li>Обнови страницу — увидишь все запросы, которые делает браузер</li>
+<li>Кликни на первый запрос — посмотри заголовки, статус-код, время ответа</li>
+</ol>
+</div><hr />
+<h2>2. Frontend — что видит пользователь</h2>
+<p>Frontend — это всё, что работает в браузере пользователя. Три базовых технологии:</p>
+<h3>HTML — структура</h3>
+<p>Скелет страницы. Определяет что на странице: заголовок, текст, картинка, кнопка, форма.</p>
+<pre><code class="language-html">&lt;header&gt;
+  &lt;h1&gt;Мой магазин&lt;/h1&gt;
+  &lt;nav&gt;
+    &lt;a href=&quot;/catalog&quot;&gt;Каталог&lt;/a&gt;
+    &lt;a href=&quot;/about&quot;&gt;О нас&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;
+</code></pre>
+<h3>CSS — внешний вид</h3>
+<p>Как это выглядит: цвета, шрифты, отступы, анимации.</p>
+<pre><code class="language-css">header {
+  background-color: #000;
+  color: #fff;
+  font-family: 'Helvetica', sans-serif;
+  padding: 20px;
+}
+</code></pre>
+<h3>JavaScript — поведение</h3>
+<p>Что происходит при взаимодействии: нажал кнопку → открылось меню, прокрутил → появилась анимация, ввёл email → отправилась форма.</p>
+<pre><code class="language-javascript">button.addEventListener('click', () =&gt; {
+  menu.classList.toggle('open');
+});
+</code></pre>
+<h3>Tailwind CSS — утилитарный подход</h3>
+<p>Вместо написания CSS-файлов ты добавляешь классы прямо в HTML. Это как конструктор — собираешь внешний вид из готовых кубиков.</p>
+<p>Обычный CSS:</p>
+<pre><code class="language-css">.button { background: black; color: white; padding: 8px 16px; border-radius: 4px; }
+</code></pre>
+<p>Tailwind:</p>
+<pre><code class="language-html">&lt;button class=&quot;bg-black text-white px-4 py-2 rounded&quot;&gt;Купить&lt;/button&gt;
+</code></pre>
+<p>Результат одинаковый, но с Tailwind не нужно переключаться между файлами, а AI-модели генерируют его значительно лучше, чем обычный CSS.</p>
+<h3>React — компонентный подход</h3>
+<p>React разбивает интерфейс на переиспользуемые компоненты. Кнопка — компонент. Карточка товара — компонент. Шапка сайта — компонент.</p>
+<pre><code class="language-jsx">function ProductCard({ name, price, image }) {
+  return (
+    &lt;div className=&quot;border rounded p-4&quot;&gt;
+      &lt;img src={image} alt={name} /&gt;
+      &lt;h3&gt;{name}&lt;/h3&gt;
+      &lt;p&gt;{price} ₽&lt;/p&gt;
+      &lt;button&gt;В корзину&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<p>Один раз написал ProductCard — используешь на странице каталога 50 раз с разными данными.</p>
+<h3>SPA vs SSR vs SSG</h3>
+<p><strong>SPA (Single Page Application)</strong> — весь сайт загружается одним файлом, переходы между страницами без перезагрузки. Быстро работает, но Google плохо индексирует. Обычный React.</p>
+<p><strong>SSR (Server-Side Rendering)</strong> — сервер генерирует HTML для каждого запроса. Google видит готовую страницу. Медленнее первая загрузка, но лучше для SEO. Next.js умеет это.</p>
+<p><strong>SSG (Static Site Generation)</strong> — HTML генерируется один раз при сборке, а не при каждом запросе. Самый быстрый вариант для контента, который редко меняется. Идеально для блогов, лендингов, документации.</p>
+<p>Next.js позволяет комбинировать все три подхода на одном сайте: каталог — SSR (данные актуальные), блог — SSG (контент статичный), личный кабинет — SPA (не нужен SEO).</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Открой DevTools (Cmd+Option+I), вкладка Elements</li>
+<li>Найди любой элемент на странице, измени его текст или цвет прямо в браузере</li>
+<li>Обнови страницу — изменения пропадут (ты менял только свою локальную копию)</li>
+<li>Попробуй попросить AI (Claude, ChatGPT): «Создай карточку товара на React + Tailwind с фото, названием, ценой и кнопкой»</li>
+</ol>
+</div><hr />
+<h2>3. Backend — что работает на сервере</h2>
+<p>Backend — это код, который пользователь не видит. Он работает на сервере и отвечает за:</p>
+<p><strong>Бизнес-логику</strong> — «при оформлении заказа проверь наличие, рассчитай доставку, спиши деньги, отправь уведомление менеджеру».</p>
+<p><strong>Работу с данными</strong> — чтение и запись в базу данных.</p>
+<p><strong>Интеграции</strong> — общение с платёжными системами, отправка email, работа с внешними API.</p>
+<p><strong>Безопасность</strong> — проверка прав, валидация данных, защита от атак.</p>
+<h3>Языки бэкенда</h3>
+<ul>
+<li><strong>JavaScript/TypeScript</strong> (через Node.js) — один язык для фронта и бэка, лучший выбор для вайб-кодинга</li>
+<li><strong>Python</strong> (Django, FastAPI) — популярен в ML/AI и data science</li>
+<li><strong>Go</strong> — быстрый, для высоконагруженных систем</li>
+<li><strong>PHP</strong> — WordPress, Laravel, старые проекты</li>
+<li><strong>Ruby</strong> — Ruby on Rails, стартапы</li>
+</ul>
+<p>Для вайб-кодинга JavaScript/TypeScript — лучший выбор: один язык везде, AI-модели генерируют его лучше всего, огромная экосистема пакетов.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Открой DevTools → Network на любом сайте с авторизацией</li>
+<li>Залогинься и посмотри, какие запросы уходят: POST /api/login, какие данные отправляются, что приходит в ответ</li>
+<li>Обрати внимание: пароль не виден в ответе, только токен — это работа бэкенда</li>
+</ol>
+</div><hr />
+<h2>4. Node.js — движок всего</h2>
+<h3>Что это</h3>
+<p>JavaScript изначально работал только в браузере — двигал кнопки, менял цвета. В 2009 году Райан Даль создал Node.js — среду, которая позволяет JavaScript работать на сервере, как Python или Java.</p>
+<h3>Зачем нужен</h3>
+<p>Без Node.js ты не можешь:
+- Запустить сервер, который обрабатывает запросы
+- Читать и писать файлы на диске
+- Работать с базой данных
+- Отправлять email
+- Запускать инструменты разработки (npm, webpack, ESLint)</p>
+<h3>Где он используется</h3>
+<ul>
+<li><strong>Next.js</strong> работает поверх Node.js</li>
+<li><strong>npm</strong> — это часть Node.js</li>
+<li><strong>Claude Code</strong> установлен через npm, работает на Node.js</li>
+<li><strong>Vercel</strong> запускает твой код в Node.js runtime</li>
+<li>Любой серверный JavaScript — это Node.js</li>
+</ul>
+<h3>Как установить</h3>
+<pre><code class="language-bash"># через Homebrew на macOS
+brew install node
+
+# проверить версию
+node --version
+npm --version     # npm ставится вместе с Node.js
+</code></pre>
+<h3>TypeScript</h3>
+<p>TypeScript — это JavaScript с типами. Вместо «переменная может быть чем угодно» ты говоришь «это число» или «это строка».</p>
+<p>JavaScript:</p>
+<pre><code class="language-javascript">function getPrice(product) {
+  return product.price * 1.2;  // А если product.price — не число? Ошибка в рантайме.
+}
+</code></pre>
+<p>TypeScript:</p>
+<pre><code class="language-typescript">function getPrice(product: { price: number }): number {
+  return product.price * 1.2;  // Компилятор не даст передать не-число
+}
+</code></pre>
+<p>TypeScript ловит ошибки до запуска кода. Все современные проекты используют его. AI-модели генерируют TypeScript лучше, потому что типы дают им больше контекста.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Установи Node.js: <code>brew install node</code> (macOS) или скачай с nodejs.org</li>
+<li>Открой терминал и набери: <code>node -e "console.log('Hello from Node.js!')"</code></li>
+<li>Создай файл <code>test.js</code> с содержимым <code>console.log(2 + 2)</code>, запусти: <code>node test.js</code></li>
+<li>Ты только что запустил JavaScript на сервере — без браузера</li>
+</ol>
+</div><hr />
+<h2>5. Фреймворки — почему не пишут с нуля</h2>
+<p>Фреймворк — это набор готовых решений для типовых задач. Без него каждый проект начинается с изобретения колеса: как делать роутинг, как обрабатывать формы, как оптимизировать загрузку.</p>
+<h3>Next.js — главный фреймворк для вайб-кодинга</h3>
+<p>Next.js = React + маршрутизация + серверный рендеринг + API-роуты + оптимизация. Создан командой Vercel — поэтому деплой на Vercel работает идеально.</p>
+<p><strong>App Router</strong> — структура папок определяет URL:</p>
+<pre><code>src/app/
+├── page.tsx                    → mysite.com/
+├── catalog/
+│   ├── page.tsx                → /catalog
+│   └── [slug]/
+│       └── page.tsx            → /catalog/shoes, /catalog/bags, ...
+├── about/
+│   └── page.tsx                → /about
+├── api/
+│   └── orders/
+│       └── route.ts            → API endpoint /api/orders
+└── layout.tsx                  → Общий layout (шапка, подвал)
+</code></pre>
+<p><code>[slug]</code> — динамический сегмент. Один файл обрабатывает /catalog/shoes, /catalog/bags и любой другой slug.</p>
+<p><strong>API Routes</strong> — серверные функции прямо в Next.js. Не нужен отдельный бэкенд:</p>
+<pre><code class="language-typescript">// src/app/api/orders/route.ts
+export async function POST(request: Request) {
+  const body = await request.json();
+  // сохранить заказ в базу
+  // отправить уведомление менеджеру
+  return Response.json({ success: true });
+}
+</code></pre>
+<h3>Другие фреймворки (для общей картины)</h3>
+<ul>
+<li><strong>Express.js</strong> — минималистичный бэкенд-фреймворк для Node.js. Старый, но популярен</li>
+<li><strong>Nuxt.js</strong> — аналог Next.js, но для Vue вместо React</li>
+<li><strong>SvelteKit</strong> — аналог Next.js для Svelte. Модный, лаконичный</li>
+<li><strong>Remix</strong> — альтернатива Next.js от создателей React Router</li>
+<li><strong>Astro</strong> — для контентных сайтов, супер-быстрый</li>
+</ul>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Создай проект: <code>npx create-next-app@latest my-first-app --typescript --tailwind --app</code></li>
+<li>Зайди в папку: <code>cd my-first-app</code></li>
+<li>Запусти: <code>npm run dev</code></li>
+<li>Открой в браузере http://localhost:3000 — ты увидишь работающий сайт</li>
+<li>Открой файл <code>src/app/page.tsx</code>, измени текст, сохрани — страница обновится автоматически</li>
+</ol>
+</div><hr />
+<div class="callout callout-info">
+<strong>📌 Что дальше:</strong> следующий модуль справочника — <strong>v12 (Данные и API)</strong>. Можно пройти подряд, можно вернуться к ката-урокам (v1–v10) и применять теорию на практике.
+</div>
+
+
+    <div class="pp-open"><a href="/#lesson-v11">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

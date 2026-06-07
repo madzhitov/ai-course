@@ -9,31 +9,175 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Claude vs GPT vs Gemini: когда что">
 <meta property="og:description" content="C8 из курса AI на русском. Claude vs GPT vs Gemini: когда что. ~35 мин.">
-<meta property="og:image" content="https://ai.madzhitov.ru/og/c8.svg">
+<meta property="og:image" content="https://ai.madzhitov.ru/og/c8.png">
 <meta property="og:url" content="https://ai.madzhitov.ru/lessons/c8.html">
 <meta property="og:site_name" content="AI Курс">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Claude vs GPT vs Gemini: когда что">
 <meta name="twitter:description" content="C8 из курса AI на русском. Claude vs GPT vs Gemini: когда что. ~35 мин.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og/c8.svg">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og/c8.png">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/c8.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-c8');
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Claude vs GPT vs Gemini: когда что","description":"C8 из курса AI на русском. Claude vs GPT vs Gemini: когда что. ~35 мин.","url":"https://ai.madzhitov.ru/lessons/c8.html","inLanguage":"ru","image":"https://ai.madzhitov.ru/og/c8.png","isPartOf":{"@type":"Course","name":"AI Курс","url":"https://ai.madzhitov.ru/"},"provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Claude Deep Dive</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">C8</span></div>
 <h1>Claude vs GPT vs Gemini: когда что</h1>
-<p>C8 из курса AI на русском. Claude vs GPT vs Gemini: когда что. ~35 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-c8">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понимать сильные стороны каждой топ-модели и выбирать под задачу</span>
+  <span><strong>Время:</strong> ~35 минут</span>
+  <span><strong>Источник:</strong> Anthropic, OpenAI, Google docs + practical use 2025–2026</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>В 2026 топ-три моделей — Claude (Anthropic), GPT (OpenAI), Gemini (Google). Все три почти на равных в общих бенчмарках, но <strong>в реальных задачах различия большие</strong>. Использовать «модель по привычке» — упускать 30–50% качества. Этот урок даёт практическую матрицу выбора.</p>
+
+<h2>1. Главные различия по характеру</h2>
+<table>
+<tr><th></th><th>Claude (Anthropic)</th><th>GPT (OpenAI)</th><th>Gemini (Google)</th></tr>
+<tr><td><strong>Стиль</strong></td><td>Структурированный, осторожный, аналитический</td><td>Универсальный, охватный, балансирует</td><td>Прямой, технический, иногда сухой</td></tr>
+<tr><td><strong>Топ-модель (нач. 2026)</strong></td><td>Claude Sonnet 4.5 / Opus 4.1</td><td>GPT-5 / GPT-5 Pro</td><td>Gemini 2.5 Pro</td></tr>
+<tr><td><strong>Длинные тексты</strong></td><td>★★★★★ — лучший</td><td>★★★★ хорошо</td><td>★★★★ хорошо</td></tr>
+<tr><td><strong>Код</strong></td><td>★★★★★ — стабильный, лидер SWE-Bench</td><td>★★★★★ — обширнее знаний</td><td>★★★★ — хорош, иногда устарел</td></tr>
+<tr><td><strong>Креатив</strong></td><td>★★★★ — раскрылся в 4.5</td><td>★★★★★ — гибче, GPT-5 заметно прибавил</td><td>★★★ — суше</td></tr>
+<tr><td><strong>Точность фактов</strong></td><td>★★★★ — реже галлюцинирует</td><td>★★★★ — GPT-5 жёстче с фактами, чем 4o</td><td>★★★★ — особенно с поиском Google</td></tr>
+<tr><td><strong>Multimodal</strong></td><td>Текст + картинки + PDF</td><td>Текст + картинки + аудио + видео (Realtime API)</td><td>Все модальности, лучший в видео</td></tr>
+<tr><td><strong>Длинный контекст</strong></td><td>200k стандарт, 1M в beta (Sonnet 4.5)</td><td>400k (GPT-5)</td><td>1M стандарт, 2M доступен</td></tr>
+<tr><td><strong>Цена $/1M tokens (input)</strong></td><td>$3 (Sonnet 4.5) / $15 (Opus 4.1)</td><td>$1.25 (GPT-5)</td><td>$1.25 (Gemini 2.5 Pro)</td></tr>
+</table>
+
+<h2>2. Матрица «когда какую»</h2>
+<table>
+<tr><th>Задача</th><th>Лучший выбор</th><th>Почему</th></tr>
+<tr><td>Длинный документ → суммаризация / Q&amp;A</td><td><strong>Claude</strong></td><td>Лучше держит 100k+ контекст, реже теряет середину</td></tr>
+<tr><td>Тяжёлый код / refactor / архитектура</td><td><strong>Claude Sonnet 4.5</strong></td><td>Лидер SWE-Bench Verified (77%+), стабильнее в больших файлах</td></tr>
+<tr><td>Агентный код (Cursor, Claude Code)</td><td><strong>Claude Sonnet 4.5</strong></td><td>Держит 30+ часов автономной работы, не разваливается на длинных задачах</td></tr>
+<tr><td>Быстрая итерация по коду в IDE</td><td><strong>Claude Haiku 4.5 / GPT-5 mini</strong></td><td>Скорость + цена</td></tr>
+<tr><td>Картинки → описание / OCR</td><td><strong>GPT-5 или Gemini 2.5 Pro</strong></td><td>Лучшая multimodal по сложному layout</td></tr>
+<tr><td>Видео-анализ</td><td><strong>Gemini 2.5 Pro</strong></td><td>Единственный с нативной поддержкой видео в контексте (до 2 часов)</td></tr>
+<tr><td>Творческий текст / диалоги</td><td><strong>GPT-5 / Claude Opus 4.1</strong></td><td>GPT — разнообразие и гибкость, Claude — структура и стиль</td></tr>
+<tr><td>Юридический / медицинский анализ</td><td><strong>Claude Sonnet 4.5</strong></td><td>Меньше галлюцинаций, корректные дисклеймеры</td></tr>
+<tr><td>Function calling / агенты</td><td><strong>Claude Sonnet 4.5 или GPT-5</strong></td><td>Claude — стабильнее держит цепочки 50+ tool calls; GPT — больше готовой экосистемы (Assistants, GPTs)</td></tr>
+<tr><td>Дешёвая массовая классификация</td><td><strong>Gemini 2.5 Flash или GPT-5 nano</strong></td><td>$0.10–0.30 / 1M токенов</td></tr>
+<tr><td>Локально / privacy-critical</td><td><strong>Llama 3.3 70B / Qwen 2.5 / DeepSeek V3</strong></td><td>API всех трёх хранят данные минимум 30 дней, если не enterprise</td></tr>
+</table>
+
+<h2>3. Бенчмарки — почему им нельзя верить полностью</h2>
+<p>MMLU, HumanEval, GPQA, MATH — топ-3 модели набирают близкие баллы. Но:</p>
+<ul>
+<li><strong>Тест-сет загрязнён.</strong> Модели «видели» эти задачи в обучающих данных.</li>
+<li><strong>Узкий охват.</strong> Бенчмарки не покрывают «реальное использование» — длинный код, цепочка из 10 запросов, обработка JSON.</li>
+<li><strong>Стиль не меряется.</strong> Две модели с одинаковыми баллами могут давать совершенно разные ответы по полезности.</li>
+</ul>
+<p><strong>Что меряет лучше:</strong></p>
+<ul>
+<li><strong>LMSys Arena</strong> (chatbot-arena.com) — рейтинг по слепому сравнению живыми пользователями. Лучший proxy реального качества.</li>
+<li><strong>SWE-Bench</strong> — реальные пул-реквесты на GitHub, кто чинит больше.</li>
+<li><strong>Aider Leaderboard</strong> — для кода в реальных репозиториях.</li>
+</ul>
+
+<h2>4. Длинный контекст — большая разница</h2>
+<p>Все три заявляют большой контекст. <strong>Качество на длинном контексте разное.</strong></p>
+<ul>
+<li><strong>Needle in a haystack тест:</strong> прячут одно предложение в 200k токенов и спрашивают про него. Claude 4.5 — почти 100% recall до 1M токенов. GPT-5 — 95%+ до 400k. Gemini 2.5 — 90–98%, держит 1M, на 2M проседает.</li>
+<li><strong>Reasoning over long context:</strong> когда нужно не просто найти, а связать факты в разных местах документа — Claude и GPT-5 существенно лучше Gemini.</li>
+<li><strong>Долгие агентные задачи:</strong> Claude Sonnet 4.5 — единственная модель, которую Anthropic протестировала на 30+ часах автономной работы без распада плана. Это новый класс задачи: «работай весь день сам».</li>
+</ul>
+<p><strong>Практическое следствие:</strong> для серьёзной работы с длинными документами Claude — оптимум.</p>
+
+<h2>5. Цены и стратегия</h2>
+<p>В 2026 цены flagship-моделей сжались в 2–3 раза за год. Реальная экономика на 1M запросов в день (средний запрос 10k input + 1k output):</p>
+<ul>
+<li>Claude Sonnet 4.5 ($3/$15): ~$45/день</li>
+<li>GPT-5 ($1.25/$10): ~$22/день</li>
+<li>Gemini 2.5 Pro ($1.25/$10): ~$22/день</li>
+<li>Claude Haiku 4.5 / GPT-5 mini / Gemini 2.5 Flash: $1–4/день</li>
+<li>Prompt caching снижает повторяющийся input ещё в 10×</li>
+</ul>
+<p><strong>Двухмодельная стратегия:</strong> 80–90% запросов на «дешёвую» модель (Haiku 4.5 / GPT-5 mini / Flash), 10–20% сложных — на flagship (Sonnet 4.5 / GPT-5 / Gemini 2.5 Pro). Простой роутер по эвристике (длина, ключевые слова, наличие кода) экономит 70–90% бюджета без потери качества там, где это видно пользователю.</p>
+
+<h2>6. Tools / Function Calling</h2>
+<ul>
+<li><strong>OpenAI Responses API / GPTs</strong> — самая зрелая и стандартизированная экосистема (тысячи плагинов).</li>
+<li><strong>Claude tools + MCP</strong> — качество вызовов высокое, особенно на цепочках из 50+ шагов. MCP стал индустриальным стандартом для подключения внешних инструментов (поддерживают и OpenAI, и Google).</li>
+<li><strong>Gemini function calling</strong> — догнал технически, но экосистема меньше.</li>
+</ul>
+<p>Уроки 13, 19, 22 в этом курсе работают на всех трёх.</p>
+
+<h2>7. Multimodal — реальные различия</h2>
+<ul>
+<li><strong>Текст + картинки</strong> — все три на одном уровне для простых задач.</li>
+<li><strong>OCR со сложным layout</strong> — GPT-5 и Gemini 2.5 Pro лучше Claude.</li>
+<li><strong>Видео в контексте</strong> — только Gemini. До 2-часового видео в одном запросе.</li>
+<li><strong>Аудио (voice-in/voice-out)</strong> — GPT-5 Realtime API лучший. Gemini Live API — догоняет.</li>
+<li><strong>Генерация картинок</strong> — это <em>другие</em> модели: DALL·E 3 / GPT-Image (OpenAI), Imagen 4 (Google), сторонние Midjourney/FLUX. Anthropic картинки не генерирует.</li>
+</ul>
+
+<h2>8. Тонкости и подводные камни</h2>
+<div class="callout callout-warning">
+<ul>
+<li>Сравнивай <strong>на своих реальных задачах</strong>, не на «общем впечатлении». Сделай 10 типичных промптов и прогони через все три.</li>
+<li><strong>Цены меняются ежеквартально</strong>. Перепроверяй официальные страницы.</li>
+<li><strong>«Лучшая модель» не существует</strong>. Существуют «лучшая под задачу X у бюджета Y в момент Z».</li>
+<li><strong>Vendor lock-in.</strong> Не строй приложение на одной модели — оборачивай в свой слой абстракции (LiteLLM, LangChain), чтобы переключать.</li>
+</ul>
+</div>
+
+<h2>9. Глоссарий</h2>
+<div class="glossary-term"><h3>Needle-in-a-haystack</h3><p>Тест на способность модели найти конкретный факт, спрятанный в очень длинном тексте.</p></div>
+<div class="glossary-term"><h3>LMSys Arena</h3><p>Сайт, где пользователи слепо сравнивают пары моделей. Главный «честный» рейтинг.</p></div>
+<div class="glossary-term"><h3>Двухмодельная стратегия</h3><p>Дешёвая модель для большинства запросов, дорогая — для сложных. Маршрутизация по эвристике или классификатору.</p></div>
+
+<h2>10. Практика (35 минут)</h2>
+<ol>
+<li>Возьми 5 своих типичных запросов из работы.</li>
+<li>Прогони через Claude Sonnet 4.5, GPT-5, Gemini 2.5 Pro (можно через LMSys Arena в режиме direct chat — бесплатно).</li>
+<li>Сравни: качество, скорость, цена.</li>
+<li>Выбери «свою» основную модель и одну альтернативную.</li>
+<li>Запиши в <code>progress.md</code> матрицу: «задача X → модель Y».</li>
+</ol>
+
+<h2>11. Проверь себя</h2>
+<p><strong>1. Когда Claude лучше GPT?</strong><br>Длинные документы (200k+), серьёзный код, юридика/медицина с дисклеймерами, цепочки из 10+ tool calls.</p>
+<p><strong>2. Когда GPT лучше Claude?</strong><br>Творческие задачи без жёстких ограничений, multimodal с аудио/видео-входом, готовая экосистема плагинов (GPTs).</p>
+<p><strong>3. Когда Gemini — выбор?</strong><br>Видео в контексте, дешёвая массовая обработка (Flash), очень длинный контекст (1M+).</p>
+<p><strong>4. Почему стандартным бенчмаркам не стоит доверять?</strong><br>Загрязнены тест-сетами в обучении, узкий охват, не меряют стиль и реальное использование.</p>
+<p><strong>5. Что такое двухмодельная стратегия и зачем?</strong><br>Дешёвая модель для большинства запросов, дорогая для сложных. Экономит 70–90% бюджета без потери качества там, где важно.</p>
+
+<h2>12. Что должно остаться в голове</h2>
+<ol>
+<li>Claude — для длинного контекста, точности, осторожности.</li>
+<li>GPT — для творческих задач, multimodal с аудио, готовой экосистемы.</li>
+<li>Gemini — для видео в контексте, очень длинного окна и дешёвой массовой обработки.</li>
+<li>Бенчмарки врут — смотри LMSys Arena и тестируй на своих задачах.</li>
+<li>Не залипай на одной модели — оборачивай в абстракцию и сравнивай ежеквартально.</li>
+<li>Двухмодельная стратегия (cheap + expensive) экономит до 90%.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> ветка Claude Deep Dive почти полна. После Skills (Урок c9) у тебя будет полная картина: Artifacts, Projects, MCP, Computer Use, Claude Code, prompt caching, Constitutional AI, сравнение с конкурентами и Skills.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-c8">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>
