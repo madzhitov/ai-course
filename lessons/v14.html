@@ -19,21 +19,182 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/v14.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/v14.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-v14');
-</script>
 </head>
 <body>
-<h1>📚 Справочник: от кода к продукту</h1>
-<p>V14 из курса AI на русском. 📚 Справочник: от кода к продукту. ~40 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-v14">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">V14</span></div>
+<h1>Справочник: от кода к продукту</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> Деплой, мобильная разработка, полная архитектура типовых проектов.</span>
+  <span><strong>Время:</strong> ~40 минут</span>
+  <span><strong>Главы гайда:</strong> 13–15</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Этот урок — часть <strong>«Справочника по веб-разработке для не-разработчиков»</strong>. Это не ката (как v1–v10), а карта территории. Здесь — концепты, которые AI генерирует в твоих проектах и которые тебе важно понимать, чтобы не быть слепым.</p>
+<p>Без снобизма, без воды, с примерами из реальной жизни. После всех 5 модулей у тебя будет полная картина: от того, как браузер делает запрос, до того, как мониторить продакшен.</p>
+
+<hr />
+<h2>13. Деплой — как код становится сайтом</h2>
+<h3>Что такое деплой</h3>
+<p>Деплой (deploy) — процесс публикации кода на сервер, чтобы сайт стал доступен по URL. Это последний шаг: написал код → задеплоил → пользователи видят.</p>
+<h3>Этапы деплоя</h3>
+<pre><code>Код на твоём компьютере
+    ↓ git push
+GitHub (репозиторий)
+    ↓ автоматический триггер
+Vercel (CI/CD pipeline)
+    ↓ npm install → npm run build → проверки
+Продакшен (https://mysite.com)
+</code></pre>
+<h3>CI/CD</h3>
+<p><strong>CI (Continuous Integration)</strong> — автоматическая проверка кода при каждом push: тесты, линтинг, сборка. Если что-то сломалось — деплой не пройдёт.</p>
+<p><strong>CD (Continuous Deployment)</strong> — автоматический деплой после прохождения всех проверок. Push в main → через 30-60 секунд новая версия на сайте.</p>
+<h3>Preview Deployments</h3>
+<p>Vercel создаёт отдельный URL для каждой ветки и каждого pull request. Ты можешь запушить экспериментальную ветку, получить уникальный URL, показать клиенту для проверки и слить в main только когда всё ок.</p>
+<h3>Домены</h3>
+<p>Vercel даёт бесплатный домен (<code>project.vercel.app</code>). Для продакшена подключаешь свой: в DNS-настройках домена указываешь CNAME-запись на Vercel, в Vercel Dashboard добавляешь домен. SSL (HTTPS) настраивается автоматически.</p>
+<h3>Serverless vs Server</h3>
+<p><strong>Serverless</strong> (Vercel, AWS Lambda) — код запускается по запросу. Нет постоянного сервера. Платишь за использование. Масштабируется автоматически. Идеально для сайтов и API.</p>
+<p><strong>Server</strong> (VPS, Dedicated) — постоянно работающий сервер. Нужен для WebSocket, фоновых задач, тяжёлых вычислений. Примеры: DigitalOcean, Hetzner.</p>
+<p>Для большинства проектов serverless — оптимальный выбор.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Зарегистрируйся на vercel.com через GitHub</li>
+<li>Нажми «Add New Project» → импортируй свой репозиторий с GitHub</li>
+<li>Vercel сам определит, что это Next.js, и настроит всё</li>
+<li>Через минуту сайт будет доступен по URL вида <code>my-app.vercel.app</code></li>
+<li>Измени что-нибудь в коде, сделай <code>git push</code> — через 30 секунд изменения на сайте</li>
+</ol>
+</div><hr />
+<h2>14. Мобильная разработка — отличия от веба</h2>
+<h3>Три подхода</h3>
+<p><strong>Нативные приложения</strong> — Swift (iOS) / Kotlin (Android), отдельный код для каждой платформы. Максимальная производительность, полный доступ к функциям устройства. Но два разных проекта.</p>
+<p><strong>Кроссплатформенные</strong> — один код для обеих платформ.
+- <strong>React Native / Expo</strong> — JavaScript/React. Если знаешь React для веба — порог входа минимальный. Expo упрощает сборку и публикацию.
+- <strong>Flutter</strong> — Dart (язык от Google), быстрый рендеринг, красивые UI.</p>
+<p><strong>PWA (Progressive Web App)</strong> — веб-сайт, который работает как приложение. Добавляется на домашний экран, работает офлайн. Проще всего, но ограниченный доступ к устройству.</p>
+<h3>React Native + Expo</h3>
+<pre><code>Один JavaScript/TypeScript код
+    ↓
+Expo компилирует
+    ↓
+├── iOS-приложение (App Store)
+└── Android-приложение (Google Play)
+</code></pre>
+<p>Различия от веба:
+- Вместо HTML-тегов (<code>&lt;div&gt;</code>, <code>&lt;p&gt;</code>) — React Native компоненты (<code>&lt;View&gt;</code>, <code>&lt;Text&gt;</code>)
+- Вместо CSS — StyleSheet или NativeWind (Tailwind для мобайла)
+- Навигация через React Navigation, а не URL-роутинг
+- Доступ к камере, микрофону, уведомлениям через Expo SDK</p>
+<pre><code class="language-jsx">// Веб (React)
+&lt;div className=&quot;p-4 bg-white rounded&quot;&gt;
+  &lt;p className=&quot;text-lg font-bold&quot;&gt;Привет&lt;/p&gt;
+&lt;/div&gt;
+
+// Мобайл (React Native)
+&lt;View style={styles.card}&gt;
+  &lt;Text style={styles.title}&gt;Привет&lt;/Text&gt;
+&lt;/View&gt;
+</code></pre>
+<h3>Supabase на мобайле</h3>
+<p>Тот же <code>@supabase/supabase-js</code> работает и в React Native. Один бэкенд для сайта и мобильного приложения — база, авторизация, хранилище файлов.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Установи Expo: <code>npx create-expo-app my-mobile-app</code></li>
+<li>Запусти: <code>cd my-mobile-app &amp;&amp; npx expo start</code></li>
+<li>Скачай Expo Go на телефон, отсканируй QR-код — увидишь приложение на своём устройстве</li>
+<li>Измени текст в <code>app/(tabs)/index.tsx</code>, сохрани — приложение обновится мгновенно</li>
+</ol>
+</div><hr />
+<h2>15. Полная архитектура — как всё связано</h2>
+<h3>Типовой интернет-магазин</h3>
+<pre><code>                    Пользователь
+                         │
+                    Браузер / Телефон
+                         │
+                ┌────────┴────────┐
+                │   Vercel CDN    │  ← Глобальная сеть серверов
+                └────────┬────────┘
+                         │
+              ┌──────────┴──────────┐
+              │    Next.js (App)    │  ← Работает на Node.js
+              │                     │
+              │  React + Tailwind   │  ← Интерфейс
+              │  API Routes         │  ← Серверная логика
+              └──────────┬──────────┘
+                         │
+        ┌───────┬────────┼────────┬──────────┐
+        │       │        │        │          │
+   Supabase   CMS     Платежи  Telegram   Email
+   (данные)  (контент) (оплата)  (бот)    (письма)
+</code></pre>
+<p><strong>Supabase</strong> — хранит пользователей, товары, заказы; авторизация; файлы (фотографии); realtime-обновления.</p>
+<p><strong>CMS (Sanity, Strapi, Contentful)</strong> — редактор контента. Маркетолог пишет статьи через удобный интерфейс, Next.js подтягивает контент на сайт.</p>
+<p><strong>Платежи (Stripe, ЮKassa)</strong> — обработка оплаты. Webhook уведомляет сервер об успешной оплате.</p>
+<p><strong>Telegram-бот</strong> — уведомления менеджерам о новых заказах.</p>
+<p><strong>Email (Resend, SendGrid)</strong> — подтверждение заказа, восстановление пароля.</p>
+<h3>Типовой SaaS-дашборд</h3>
+<pre><code>              Пользователь (маркетолог, аналитик)
+                         │
+                    Браузер
+                         │
+              ┌──────────┴──────────┐
+              │   Next.js + v0.dev  │  ← UI генерируется через AI
+              └──────────┬──────────┘
+                         │
+        ┌────────────────┼────────────────┐
+        │                │                │
+   Supabase         Внешние API       Stripe
+   (данные,         (Метрика,         (подписки
+    авторизация)     Analytics)        на сервис)
+</code></pre>
+<h3>Мобильное приложение</h3>
+<pre><code>                    Пользователь
+                         │
+                    iOS / Android
+                         │
+              ┌──────────┴──────────┐
+              │  React Native (Expo) │
+              └──────────┬──────────┘
+                         │
+              ┌──────────┴──────────┐
+              │      Supabase       │
+              │  PostgreSQL + Auth   │
+              │  Storage + Realtime  │
+              └─────────────────────┘
+</code></pre>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Нарисуй архитектуру своего проекта (на бумаге или в Miro/FigJam)</li>
+<li>Определи: что будет на фронте, что на бэке, какие внешние сервисы нужны</li>
+<li>Для каждого блока выбери технологию из тех, что описаны в этом гайде</li>
+<li>Покажи схему AI (Claude, ChatGPT) и попроси: «Оцени эту архитектуру и предложи улучшения»</li>
+</ol>
+</div><hr />
+<div class="callout callout-info">
+<strong>📌 Что дальше:</strong> следующий модуль справочника — <strong>v15 (Продвинутые темы)</strong>. Можно пройти подряд, можно вернуться к ката-урокам (v1–v10) и применять теорию на практике.
+</div>
+
+
+    <div class="pp-open"><a href="/#lesson-v14">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

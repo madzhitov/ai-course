@@ -19,21 +19,252 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/3.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/3.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-3');
-</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 3</span></div>
 <h1>Урок 3. Ответственное использование ИИ — риски и как с ними жить</h1>
-<p>Урок 3 из курса AI на русском. Ответственное использование ИИ — риски и как с ними жить. ~50 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-3">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> увидеть риски GenAI и систематически их снижать</span>
+  <span><strong>Время:</strong> ~50 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/03</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Большинство курсов прячут этику в финальную главу, которую все пролистывают. Это плохо, потому что:</p>
+<ol>
+<li><strong>Ты как пользователь</strong> — рискуешь утечкой персональных и корпоративных данных.</li>
+<li><strong>Ты как будущий разработчик</strong> — продукты с GenAI будут падать на проде из-за галлюцинаций, инжекшен-атак и bias.</li>
+<li><strong>Регуляция нарастает</strong> — EU AI Act с 2026, AI Act США, российский закон об ИИ.</li>
+</ol>
+
+<h2>1. Карта рисков GenAI</h2>
+<p>Все риски делятся на 4 группы:</p>
+<ul>
+<li><strong>A. Качество вывода:</strong> галлюцинации, bias, устаревшие данные, низкое качество на узких темах.</li>
+<li><strong>B. Приватность и безопасность:</strong> утечки секретов, PII, хранение у вендора.</li>
+<li><strong>C. Юридическое и этическое:</strong> авторские права, дезинформация, решения с последствиями.</li>
+<li><strong>D. Социальные:</strong> замена рабочих мест, эрозия навыков, концентрация власти.</li>
+</ul>
+
+<h2>2. Группа A — качество вывода</h2>
+
+<h3>A1. Галлюцинации — реальные кейсы</h3>
+<ul>
+<li><strong>2023:</strong> юрист в Нью-Йорке сослался на 6 «прецедентов», которые ChatGPT придумал. Получил штраф.</li>
+<li><strong>2024:</strong> Google AI Overview советовал «есть один камень в день» и «приклеивать сыр на пиццу клеем».</li>
+<li><strong>Air Canada:</strong> их чат-бот придумал политику возврата, и суд <strong>обязал</strong> компанию её исполнять.</li>
+</ul>
+<p><strong>Что делать:</strong> RAG, явные инструкции «не выдумывай», проверка цифр и ссылок.</p>
+
+<h3>A2. Bias — системная предвзятость</h3>
+<p>Модель учится на интернете. В интернете много стереотипов.</p>
+<ul>
+<li>«Инженер» → DALL·E чаще генерит мужчин.</li>
+<li>Медицинские диагнозы хуже работают на симптоматике женщин и не-европейцев.</li>
+<li>LLM работают на русском хуже английского.</li>
+</ul>
+<p><strong>Виды bias:</strong> representation, historical, measurement, aggregation.</p>
+<p><strong>Что делать:</strong> не использовать ИИ для решений с защищёнными признаками; тестировать на разных входах; для серьёзных систем — формальные fairness-метрики.</p>
+
+<h3>A3. Устаревшие данные</h3>
+<p>LLM знает мир до своего knowledge cutoff. После — либо не знает, либо обрывочно.</p>
+<p><strong>Что делать:</strong> передавай дату в system prompt; для свежих данных — поиск (Perplexity, ChatGPT Browsing).</p>
+
+<h3>A4. Низкое качество на узкой теме</h3>
+<p>Узкие технические темы, локальные законы, специфические нормативки — модель часто плавает.</p>
+<p><strong>Что делать:</strong> ищи независимое подтверждение; используй модель для формы, а содержание проверяй; RAG над специальным корпусом.</p>
+
+<h2>3. Группа B — приватность</h2>
+
+<h3>B1. Утечка корпоративных секретов</h3>
+<p><strong>Кейсы:</strong> 2023 Samsung — инженер скопировал внутренний код в ChatGPT. Samsung запретил ChatGPT для сотрудников.</p>
+
+<div class="callout callout-danger">
+<strong>Никогда не вводи в публичные ChatGPT/Claude/Gemini:</strong>
+<ul>
+<li>Внутренние документы компании.</li>
+<li>Клиентские базы.</li>
+<li>Контракты с реальными именами.</li>
+<li>Финансовые отчёты до публикации.</li>
+<li>Исходный код, особенно коммерческий.</li>
+<li>Списки сотрудников и зарплат.</li>
+<li>Стратегические планы.</li>
+</ul>
+</div>
+
+<p><strong>Что делать:</strong> Enterprise тарифы (OpenAI, Anthropic), Azure OpenAI, или self-host OS-моделей.</p>
+
+<h3>B2. Утечка PII</h3>
+<p><strong>PII:</strong> имена, email, телефоны, паспорта, СНИЛС, адреса, биометрия, медданные.</p>
+<p><strong>Юридический контекст:</strong> 152-ФЗ (РФ), GDPR (EU, штрафы до 4% оборота!), CCPA (Калифорния).</p>
+<p><strong>Что делать:</strong> анонимизация перед отправкой; готовые библиотеки (Presidio, AWS Comprehend); шифрование логов.</p>
+
+<h3>B3. Misclassification</h3>
+<p>Маркетолог копирует пост, в котором мимоходом упоминается ещё-не-анонсированная функция. Это уже инсайдерская информация.</p>
+<p><strong>Что делать:</strong> внутрикорпоративные политики, обучение, технические DLP-фильтры.</p>
+
+<h3>B4. Хранение у вендора</h3>
+<p>Данные хранятся у вендора до 30 дней для модерации. У вендора может случиться breach (как у OpenAI в 2023).</p>
+
+<h2>4. Группа C — юридические риски</h2>
+
+<h3>C1. Авторские права</h3>
+<p><strong>На входе:</strong> модели учились на копирайтных книгах, статьях, коде. Идут процессы: NYT vs OpenAI, Authors Guild vs OpenAI, Getty vs Stability.</p>
+<p><strong>На выходе:</strong> модель может генерировать текст, похожий на конкретное произведение.</p>
+<p><strong>Что делать:</strong> не публикуй чисто-сгенерированный контент без проверки; не проси «в стиле живого автора» для коммерции.</p>
+
+<h3>C2. Дезинформация</h3>
+<p>GenAI делает производство фейков на порядок дешевле. Deepfake, фейковые новости, astroturfing, фишинг.</p>
+<p><strong>Этическая позиция:</strong> не делай ботов, имитирующих реальных людей; явно указывай, что собеседник — бот.</p>
+
+<h3>C3. Решения с последствиями</h3>
+<p>Найм, кредитный скоринг, правосудие, медицина, контент-модерация. Случаи дискриминации (Amazon HR-инструмент штрафовал «women», COMPAS был расово-предвзятым).</p>
+<p><strong>Принцип:</strong> в решениях с серьёзными последствиями ИИ — <strong>помощник</strong>, а не <strong>решающий</strong>. Human-in-the-loop.</p>
+
+<h3>C4. Использование чужой личности</h3>
+<p>Voice cloning из 5 секунд аудио. Уже использовалось в мошенничествах. Никогда не клонируй живого человека без согласия.</p>
+
+<h2>5. Группа D — социальные риски</h2>
+<ul>
+<li><strong>D1. Замена работы</strong> — ИИ не «забирает работу», но меняет её. Адаптируйся.</li>
+<li><strong>D2. Эрозия навыков</strong> — держи «зону без ИИ»; иногда переписывай руками для тренировки.</li>
+<li><strong>D3. Концентрация власти</strong> — поддерживай open-source, не сажай критическую инфру на одного вендора.</li>
+<li><strong>D4. Списывание</strong> — для обучения ИИ — враг; для исполнения — друг.</li>
+</ul>
+
+<h2>6. Microsoft Responsible AI — формальная рамка</h2>
+<ol>
+<li><strong>Fairness</strong> — справедливость.</li>
+<li><strong>Reliability & Safety</strong> — надёжность.</li>
+<li><strong>Privacy & Security</strong> — приватность.</li>
+<li><strong>Inclusiveness</strong> — доступность для всех.</li>
+<li><strong>Transparency</strong> — прозрачность.</li>
+<li><strong>Accountability</strong> — ответственность за последствия.</li>
+</ol>
+<p>Эти принципы — чек-лист для ревью продукта.</p>
+
+<h2>7. Защитные техники</h2>
+
+<h3>Технические</h3>
+<ul>
+<li><strong>Content moderation API</strong> (OpenAI Moderation, Azure Content Safety).</li>
+<li><strong>PII detection</strong> до отправки в LLM.</li>
+<li><strong>Prompt injection mitigation</strong> — разделение данных и инструкций.</li>
+<li><strong>Rate limiting.</strong></li>
+<li><strong>Logging & audit.</strong></li>
+</ul>
+
+<h3>Архитектурные</h3>
+<ul>
+<li><strong>Human-in-the-loop</strong> для критичных действий.</li>
+<li><strong>Принцип наименьших привилегий.</strong></li>
+<li><strong>Read-only по умолчанию.</strong></li>
+<li><strong>Sandbox-исполнение</strong> сгенерированного кода.</li>
+</ul>
+
+<h3>Процессные</h3>
+<ul>
+<li>Policy документ.</li>
+<li>Тренинги.</li>
+<li>Red team.</li>
+<li>Incident response plan.</li>
+</ul>
+
+<h2>8. Глоссарий</h2>
+<ul>
+<li><strong>Hallucination</strong> — уверенный неправильный ответ.</li>
+<li><strong>Bias</strong> — системная предвзятость.</li>
+<li><strong>PII</strong> — Personally Identifiable Information.</li>
+<li><strong>GDPR</strong> — General Data Protection Regulation (EU).</li>
+<li><strong>152-ФЗ</strong> — закон о персданных РФ.</li>
+<li><strong>DPA</strong> — Data Processing Agreement.</li>
+<li><strong>DLP</strong> — Data Loss Prevention.</li>
+<li><strong>High-risk AI</strong> — категория в EU AI Act.</li>
+<li><strong>Deepfake</strong> — синтетический фейк.</li>
+<li><strong>Red team</strong> — группа атакующих.</li>
+<li><strong>HITL</strong> — Human-in-the-loop.</li>
+</ul>
+
+<h2>9. Практика (60 минут)</h2>
+
+<h3>Упражнение 1. Аудит реального использования</h3>
+<p>Возьми 5 последних диалогов с ИИ. Проверь: PII третьих лиц? Корпоративные секреты? Регулируемые данные?</p>
+
+<h3>Упражнение 2. Список запретов</h3>
+<p>Составь личный список «никогда не делаю с ИИ». Минимум 10 пунктов.</p>
+
+<h3>Упражнение 3. Ты — red team</h3>
+<p>Попробуй сломать своего бота: попроси сказать что-то, чего создатель не хотел; раскрыть system prompt; выполнить инжекшен.</p>
+
+<h3>Упражнение 4. Принципы Responsible AI</h3>
+<p>Возьми идею ИИ-продукта. Пройди по 6 принципам Microsoft Responsible AI.</p>
+
+<h2>10. Проверь себя</h2>
+
+<p><strong>1. Bias vs hallucination?</strong><br>
+Hallucination — модель сочинила факт. Bias — систематическое смещение.</p>
+
+<p><strong>2. Промпт «оцени резюме» — главный риск?</strong><br>
+Bias в найме. По EU AI Act — high-risk, особый режим.</p>
+
+<p><strong>3. Кусок исходного кода в ChatGPT — можно?</strong><br>
+В публичный — рискованно. Нужен Enterprise/Team или Azure OpenAI с DPA.</p>
+
+<p><strong>4. Midjourney «в стиле Hayao Miyazaki» на коммерческом сайте?</strong><br>
+Серая зона/нарушение. Лучше — оригинальный стиль.</p>
+
+<p><strong>5. EU AI Act — что важно?</strong><br>
+High-risk категория с особыми требованиями. Запрет social scoring. Маркировка ИИ-контента. Штрафы до €35M или 7% оборота.</p>
+
+<p><strong>6. Что значит human-in-the-loop?</strong><br>
+В критическом цикле обязательно есть человек, видящий данные и принимающий финальное решение.</p>
+
+<p><strong>7. ChatGPT отказался отвечать на невинный вопрос — это bias?</strong><br>
+Скорее overcautious safety filter. Решается переформулировкой.</p>
+
+<p><strong>8. C2PA — что это?</strong><br>
+Стандарт криптографических подписей для ИИ-картинок. Поддерживают Adobe, Microsoft, OpenAI.</p>
+
+<p><strong>9. Основная защита от prompt injection?</strong><br>
+Разделение данных и инструкций + валидация выхода + наименьшие привилегии. Defence in depth.</p>
+
+<p><strong>10. Я в РФ работаю с OpenAI через VPN — риски?</strong><br>
+ToS-блокировка, 152-ФЗ нарушения, риски для клиентов. Альтернативы — российские модели или self-host.</p>
+
+<h2>11. Что должно остаться в голове</h2>
+<ol>
+<li>4 группы рисков: качество, приватность, юр/этика, социум.</li>
+<li>Не вводи в публичный ChatGPT секреты и PII.</li>
+<li>Bias реален.</li>
+<li>Решения с последствиями — HITL.</li>
+<li>Авторские права — серая зона.</li>
+<li>Регуляции растут.</li>
+<li>Эрозия навыков — держи зону без ИИ.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> добавь в <code>progress.md</code>: 10-пунктовый список «никогда не делаю», принципы Responsible AI на одной идее, главный риск и план его смягчения.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-3">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

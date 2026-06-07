@@ -19,21 +19,441 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/p13.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p13.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p13');
-</script>
 </head>
 <body>
-<h1>Browser-расширение «AI рядом с текстом»: объяснить, упростить, перевести выделенное</h1>
-<p>P13 из курса AI на русском. Browser-расширение «AI рядом с текстом»: объяснить, упростить, перевести выделенное. ~75 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p13">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P13</span></div>
+
+<h1>Проект «За 1 час»: Browser-расширение «AI рядом с текстом»</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> Chrome-расширение — выделил текст → правый клик → объяснить</span>
+  <span><strong>Время:</strong> ~75 минут</span>
+  <span><strong>Уровень:</strong> базовый JavaScript + урок 6 курса</span>
+</div>
+
+<h2>Что в итоге будет</h2>
+<p>Загружаешь в Chrome / Edge / Brave / Arc собственное расширение. На любой странице выделяешь кусок текста, кликаешь правой кнопкой — получаешь пункты «Объяснить», «Упростить», «Перевести». Через 1-2 секунды появляется попап с ответом Claude. Ничего никуда не вставлять, не переключать вкладки — AI прямо в контексте чтения.</p>
+<p>Под капотом — Manifest V3 на чистом JS, без сборщиков, без React, без TypeScript. Минимум, который работает.</p>
+
+<h2>Архитектура</h2>
+<pre><code>┌────────────────────┐
+│ content.js         │ ← живёт на каждой вкладке,
+│ - ловит выделение  │   рисует popup, шлёт сообщения
+│ - рисует popup     │
+└────────┬───────────┘
+         │ chrome.runtime.sendMessage
+         ↓
+┌────────────────────┐
+│ background.js      │ ← service worker, делает fetch к Anthropic,
+│ - context menus    │   потому что content scripts CORS-ограничены
+│ - вызов API        │
+└────────┬───────────┘
+         │ chrome.storage.local
+         ↓
+┌────────────────────┐
+│ popup.html / .js   │ ← страница опций для ввода API-ключа
+└────────────────────┘</code></pre>
+
+<h2>Требования</h2>
+<ul>
+<li>Chrome / Edge / Brave / Arc (любой Chromium 110+).</li>
+<li>Anthropic API-ключ.</li>
+<li>Текстовый редактор и желание потыкаться в DevTools.</li>
+</ul>
+
+<h2>Шаг 1. Скелет расширения</h2>
+<pre><code class="language-bash">mkdir ai-inline && cd ai-inline
+touch manifest.json background.js content.js content.css popup.html popup.js</code></pre>
+
+<h2>Шаг 2. manifest.json</h2>
+<p>Manifest V3 — текущий формат расширений. Главное отличие от V2: вместо background page — service worker, и более строгие разрешения.</p>
+
+<pre><code class="language-json">{
+  "manifest_version": 3,
+  "name": "AI Inline",
+  "version": "0.1.0",
+  "description": "Объяснить, упростить, перевести выделенный текст через Claude",
+
+  "permissions": [
+    "contextMenus",
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+
+  "host_permissions": [
+    "https://api.anthropic.com/*"
+  ],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["&lt;all_urls&gt;"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "action": {
+    "default_title": "AI Inline — настройки",
+    "default_popup": "popup.html"
+  }
+}
+</code></pre>
+
+<p><strong>host_permissions</strong> с явным <code>api.anthropic.com</code> — обязателен, иначе service worker не сможет туда сходить (Manifest V3 строгий с CORS).</p>
+
+<h2>Шаг 3. Хранение API-ключа</h2>
+<p>Никогда не хардкодь ключ в коде расширения. После загрузки в Chrome файлы лежат в plain text на диске, любой увидит. Используем <code>chrome.storage.local</code> + страницу настроек.</p>
+
+<p>Файл <code>popup.html</code>:</p>
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;style&gt;
+    body { font: 14px/1.4 system-ui; width: 320px; padding: 12px; }
+    label { display: block; margin-bottom: 4px; color: #444; }
+    input { width: 100%; padding: 6px 8px; font: inherit;
+            border: 1px solid #ccc; border-radius: 4px; }
+    button { margin-top: 10px; padding: 6px 12px; font: inherit;
+             border: 0; background: #2a2; color: white;
+             border-radius: 4px; cursor: pointer; }
+    #status { margin-top: 8px; color: #555; font-size: 12px; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;label for="key"&gt;Anthropic API key (sk-ant-...)&lt;/label&gt;
+  &lt;input id="key" type="password" placeholder="sk-ant-..."&gt;
+  &lt;button id="save"&gt;Сохранить&lt;/button&gt;
+  &lt;div id="status"&gt;&lt;/div&gt;
+  &lt;script src="popup.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Файл <code>popup.js</code>:</p>
+<pre><code class="language-javascript">const keyInput = document.getElementById("key");
+const statusEl = document.getElementById("status");
+
+chrome.storage.local.get("apiKey", ({ apiKey }) =&gt; {
+  if (apiKey) keyInput.value = apiKey;
+});
+
+document.getElementById("save").addEventListener("click", async () =&gt; {
+  const apiKey = keyInput.value.trim();
+  if (!apiKey.startsWith("sk-ant-")) {
+    statusEl.textContent = "Похоже на не-Anthropic ключ.";
+    return;
+  }
+  await chrome.storage.local.set({ apiKey });
+  statusEl.textContent = "Сохранено.";
+});
+</code></pre>
+
+<h2>Шаг 4. Background worker — контекстное меню + вызов API</h2>
+<p>Контекстные меню регистрируем при установке. Сам вызов API делаем здесь же, потому что content script на arbitrary-сайте CORS-ограничен и не может ходить на anthropic.com.</p>
+
+<p>Файл <code>background.js</code>:</p>
+<pre><code class="language-javascript">const MENU_ITEMS = [
+  { id: "explain",   title: "AI: объяснить",  prompt: explainPrompt },
+  { id: "simplify",  title: "AI: упростить",  prompt: simplifyPrompt },
+  { id: "translate", title: "AI: перевести",  prompt: translatePrompt },
+];
+
+function explainPrompt(text) {
+  return `Объясни простыми словами следующий фрагмент.
+Если есть жаргон или термины — раскрой.
+Длина ответа 3-5 предложений.
+
+Фрагмент:
+"""
+${text}
+"""`;
+}
+
+function simplifyPrompt(text) {
+  return `Перепиши фрагмент проще, короче, без воды.
+Сохрани смысл, убери канцелярит.
+Верни только переписанный текст, без комментариев.
+
+Оригинал:
+"""
+${text}
+"""`;
+}
+
+function translatePrompt(text) {
+  return `Переведи фрагмент. Если оригинал на английском — переведи на русский.
+Если на русском — переведи на английский. В остальных случаях
+переведи на русский. Верни только перевод, без комментариев.
+
+Фрагмент:
+"""
+${text}
+"""`;
+}
+
+chrome.runtime.onInstalled.addListener(() =&gt; {
+  for (const item of MENU_ITEMS) {
+    chrome.contextMenus.create({
+      id: item.id,
+      title: item.title,
+      contexts: ["selection"],
+    });
+  }
+});
+
+chrome.contextMenus.onClicked.addListener(async (info, tab) =&gt; {
+  const item = MENU_ITEMS.find(m =&gt; m.id === info.menuItemId);
+  if (!item || !info.selectionText) return;
+
+  // 1. покажем "загрузка" на вкладке
+  chrome.tabs.sendMessage(tab.id, {
+    type: "show-loading",
+    title: item.title
+  });
+
+  try {
+    const answer = await callClaude(item.prompt(info.selectionText));
+    chrome.tabs.sendMessage(tab.id, { type: "show-answer", text: answer });
+  } catch (err) {
+    chrome.tabs.sendMessage(tab.id, {
+      type: "show-answer",
+      text: `Ошибка: ${err.message}`
+    });
+  }
+});
+
+async function callClaude(prompt) {
+  const { apiKey } = await chrome.storage.local.get("apiKey");
+  if (!apiKey) {
+    throw new Error("API key не задан. Нажми на иконку расширения.");
+  }
+
+  const resp = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-api-key": apiKey,
+      "anthropic-version": "2023-06-01",
+      // нужно для вызова из расширения, иначе 403
+      "anthropic-dangerous-direct-browser-access": "true"
+    },
+    body: JSON.stringify({
+      model: "claude-3-5-haiku-latest",   // быстро и дёшево для inline
+      max_tokens: 600,
+      messages: [{ role: "user", content: prompt }]
+    })
+  });
+
+  if (!resp.ok) {
+    const body = await resp.text();
+    throw new Error(`${resp.status}: ${body.slice(0, 200)}`);
+  }
+
+  const data = await resp.json();
+  return data.content[0].text;
+}
+</code></pre>
+
+<p>Обрати внимание на хедер <code>anthropic-dangerous-direct-browser-access</code>. Без него Anthropic API отвечает 403 при прямом вызове из браузера. Они защищаются от того, что ты случайно встроишь ключ в публичный сайт. Для расширения, где ключ хранится в локальном storage пользователя — окей.</p>
+
+<h2>Шаг 5. Content script — попап на странице</h2>
+<p>Content script вставляется в каждую вкладку. Его задача — нарисовать модальное окно с ответом. Никаких iframe'ов, чтобы не ломать вёрстку чужих сайтов — просто div поверх с высоким z-index.</p>
+
+<p>Файл <code>content.css</code>:</p>
+<pre><code class="language-css">#ai-inline-popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 360px;
+  max-height: 60vh;
+  overflow-y: auto;
+  background: #fff;
+  color: #111;
+  font: 14px/1.5 system-ui, -apple-system, sans-serif;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  padding: 14px 16px;
+  z-index: 2147483647;     /* максимальный */
+}
+#ai-inline-popup header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin: -2px 0 8px;
+}
+#ai-inline-popup h4 {
+  margin: 0; font-size: 13px; color: #666; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .03em;
+}
+#ai-inline-popup button.close {
+  background: none; border: 0; cursor: pointer;
+  font-size: 18px; color: #999; padding: 0 4px;
+}
+#ai-inline-popup .body { white-space: pre-wrap; }
+#ai-inline-popup .loading { color: #888; font-style: italic; }
+</code></pre>
+
+<p>Файл <code>content.js</code>:</p>
+<pre><code class="language-javascript">const POPUP_ID = "ai-inline-popup";
+
+function ensurePopup(title) {
+  let el = document.getElementById(POPUP_ID);
+  if (el) el.remove();
+
+  el = document.createElement("div");
+  el.id = POPUP_ID;
+  el.innerHTML = `
+    &lt;header&gt;
+      &lt;h4&gt;${title}&lt;/h4&gt;
+      &lt;button class="close" aria-label="Закрыть"&gt;×&lt;/button&gt;
+    &lt;/header&gt;
+    &lt;div class="body"&gt;&lt;/div&gt;
+  `;
+  el.querySelector("button.close").addEventListener("click", () =&gt; el.remove());
+  document.body.appendChild(el);
+
+  // закрытие по Esc
+  const onKey = (e) =&gt; {
+    if (e.key === "Escape") { el.remove(); document.removeEventListener("keydown", onKey); }
+  };
+  document.addEventListener("keydown", onKey);
+
+  return el;
+}
+
+chrome.runtime.onMessage.addListener((msg) =&gt; {
+  if (msg.type === "show-loading") {
+    const el = ensurePopup(msg.title);
+    el.querySelector(".body").innerHTML =
+      '&lt;div class="loading"&gt;Думаю...&lt;/div&gt;';
+  }
+  if (msg.type === "show-answer") {
+    const el = document.getElementById(POPUP_ID) || ensurePopup("Ответ");
+    el.querySelector(".body").textContent = msg.text;
+  }
+});
+</code></pre>
+
+<p><code>z-index: 2147483647</code> — это <code>Int32.MAX</code>. Гарантирует, что попап будет поверх любого сайта (часто видел кастомные модалки с z-index 9999999).</p>
+
+<h2>Шаг 6. Загрузка в Chrome</h2>
+<ol>
+<li>Открой <code>chrome://extensions/</code>.</li>
+<li>Включи «Developer mode» (правый верхний).</li>
+<li>«Load unpacked» → выбери папку <code>ai-inline</code>.</li>
+<li>Расширение появится в списке. Кликни на иконку в тулбаре — откроется popup для ввода ключа. Введи и сохрани.</li>
+</ol>
+
+<h2>Запуск и проверка</h2>
+<ol>
+<li>Открой любую статью (Habr, Wikipedia, NYTimes).</li>
+<li>Выдели абзац.</li>
+<li>Правый клик → должен появиться раздел с «AI: объяснить / упростить / перевести».</li>
+<li>Клик → справа сверху появится попап «Думаю…», через 1-2 секунды — ответ.</li>
+</ol>
+
+<p>Если попап не появляется — открой DevTools на странице (Cmd+Opt+I), там увидишь ошибки content script. Service worker отлаживается отдельно: <code>chrome://extensions/</code> → твоё расширение → «service worker» → откроется отдельный DevTools.</p>
+
+<h2>Шаг 7. Добавляем «Резюмировать страницу»</h2>
+<p>Полезное расширение — действие без выделения, на всю страницу.</p>
+
+<p>В <code>background.js</code> добавь пункт меню с другим контекстом:</p>
+<pre><code class="language-javascript">chrome.runtime.onInstalled.addListener(() =&gt; {
+  // ... прежние пункты ...
+  chrome.contextMenus.create({
+    id: "summarize-page",
+    title: "AI: резюме страницы",
+    contexts: ["page"],
+  });
+});
+
+chrome.contextMenus.onClicked.addListener(async (info, tab) =&gt; {
+  if (info.menuItemId === "summarize-page") {
+    chrome.tabs.sendMessage(tab.id, { type: "show-loading", title: "Резюме" });
+
+    // вытащить основной текст со страницы
+    const [{ result: pageText }] = await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: () =&gt; document.body.innerText.slice(0, 20000),
+    });
+
+    try {
+      const answer = await callClaude(
+        `Сделай резюме страницы в 5-7 пунктах. Текст:\n\n${pageText}`
+      );
+      chrome.tabs.sendMessage(tab.id, { type: "show-answer", text: answer });
+    } catch (err) {
+      chrome.tabs.sendMessage(tab.id, {
+        type: "show-answer", text: `Ошибка: ${err.message}`
+      });
+    }
+    return;
+  }
+  // ... остальная логика для selection ...
+});
+</code></pre>
+
+<p>После правки <code>background.js</code> нажми «Reload» на карточке расширения в <code>chrome://extensions/</code> — service worker перезапустится с новой логикой.</p>
+
+<h2>Расширения</h2>
+<ul>
+<li><strong>«Объяснить как 10-летнему» / «Объяснить как PhD»:</strong> два отдельных пункта меню с разными промптами. По одной фразе подбираешь нужный уровень.</li>
+<li><strong>Стриминг ответа:</strong> Anthropic API поддерживает SSE, текст можно показывать по мере поступления — попап перестаёт «зависать на 2 секунды».</li>
+<li><strong>История запросов:</strong> сохраняй в <code>chrome.storage.local</code> последние 50 запросов с ответами. Отдельная страница options.html, чтобы посмотреть.</li>
+<li><strong>Свои промпты:</strong> страница опций, где пользователь добавляет кастомные пункты меню («перевести как маркетолог», «упростить для бабушки»).</li>
+<li><strong>«Найти источники»:</strong> промпт «дай 3 ключевых утверждения из текста и предположи, какие источники их подтвердят/опровергнут». Дальше можно подключить web search через MCP.</li>
+<li><strong>Локальная модель:</strong> вместо Anthropic — Ollama на localhost:11434 (см. p14). Получается полностью офлайн расширение.</li>
+</ul>
+
+<h2>Подводные камни</h2>
+<ul>
+<li><strong>403 от Anthropic.</strong> Забыт хедер <code>anthropic-dangerous-direct-browser-access</code> или ключ просрочен.</li>
+<li><strong>Контекстное меню не появляется.</strong> Проверь, что в manifest есть <code>"contextMenus"</code> в permissions и в коде <code>contexts: ["selection"]</code>.</li>
+<li><strong>Попап ломается на странице.</strong> Сайты с агрессивным CSS могут перебить стили — добавь <code>!important</code> к ключевым правилам или вынеси попап в Shadow DOM.</li>
+<li><strong>Service worker «засыпает».</strong> В MV3 он останавливается через ~30 сек простоя. Не держи там состояние — всё хранение через <code>chrome.storage</code>.</li>
+<li><strong>CSP сайтов.</strong> Content Security Policy у некоторых сайтов блокирует inline-стили. Поэтому отдельный <code>content.css</code>, а не <code>style=""</code>.</li>
+<li><strong>Ключ виден на диске.</strong> Chrome шифрует <code>chrome.storage</code>, но root-доступ к машине = доступ к ключу. Не давай расширение коллегам с своим ключом.</li>
+<li><strong>Анивирусы.</strong> «Чужое» неподписанное расширение иногда вызывает у IT-отдела вопросы. Для команды лучше публиковать через Chrome Web Store (одноразово $5, потом релизы бесплатно).</li>
+</ul>
+
+<h2>Что в итоге</h2>
+<p>В руках:</p>
+<ol>
+<li>Полноценное Manifest V3 расширение на ~250 строк, без сборки и фреймворков.</li>
+<li>Безопасное хранение API-ключа через <code>chrome.storage</code>.</li>
+<li>Понимание разделения content script / service worker / popup — оно одинаковое во всех Chromium-расширениях.</li>
+<li>Фундамент, на котором делается всё: от грамматических корректоров до встроенных переводчиков и AI-собеседников.</li>
+</ol>
+
+<div class="callout callout-success">
+<strong>Идея:</strong> сделай расширение под свою конкретную работу. Чтец длинных PDF? Кнопка «выжимка раздела». Покупаешь криптовалюту? «Объяснить смарт-контракт». Готовишься к экзамену? «Сделай флэш-карточки из выделенного». Расширения — это идеальный формат для гипер-нишевых инструментов «для себя одного».
+</div>
+
+
+    <div class="pp-open"><a href="/#lesson-p13">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

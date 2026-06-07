@@ -19,21 +19,543 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/6.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/6.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-6');
-</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 6</span></div>
 <h1>Урок 6. Первое приложение — генерация текста через API</h1>
-<p>Урок 6 из курса AI на русском. Первое приложение — генерация текста через API. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-6">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> перейти от чата в браузере к программному вызову LLM</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/06</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>До сих пор ты работал с LLM через ChatGPT/Claude.ai — браузерные интерфейсы. Это нормально для разовых задач. Но как только ты хочешь:</p>
+<ul>
+<li>Автоматизировать что-то (обработать 1000 писем, не открывая чат каждый раз).</li>
+<li>Встроить ИИ в свой продукт (приложение, бот, скрипт).</li>
+<li>Контролировать temperature, формат, retries программно.</li>
+<li>Логировать запросы и ответы.</li>
+<li>Платить только за то, что используешь — без подписки на $20/мес.</li>
+</ul>
+<p>...тебе нужен <strong>API</strong>. Это база всего, что мы будем делать дальше — чат-боты, поиск, RAG, агенты. К концу урока у тебя будет рабочий Python-скрипт, который вызывает GPT и возвращает ответ. Это последний барьер между «юзером ИИ» и «тем, кто строит на ИИ».</p>
+
+<h2>1. Что такое API и зачем он</h2>
+
+<h3>API в одном предложении</h3>
+<p><strong>API (Application Programming Interface)</strong> — это интерфейс для общения программ между собой. Веб-API — это URL, на который ты шлёшь HTTP-запрос с данными, и получаешь ответ.</p>
+<p>В случае LLM-провайдеров: ты отправляешь POST-запрос на endpoint вида <code>https://api.openai.com/v1/chat/completions</code> с JSON-телом, описывающим что ты хочешь. В ответ получаешь JSON с сгенерированным текстом.</p>
+
+<h3>API ключ</h3>
+<p>Чтобы провайдер знал, кто ты и кому списывать деньги, к каждому запросу прикладывается <strong>API ключ</strong> — длинная строка вида <code>sk-...XYZ</code>. Это твой пароль и счётчик в одном.</p>
+
+<div class="callout callout-danger">
+<strong>⚠️ Правила безопасности с ключом:</strong>
+<ul>
+<li><strong>Никогда</strong> не пиши ключ прямо в коде.</li>
+<li><strong>Никогда</strong> не коммить в git (даже в private репо).</li>
+<li><strong>Никогда</strong> не показывай в скринах, видео, демо.</li>
+<li><strong>Никогда</strong> не используй в JavaScript-коде на фронтенде (любой пользователь увидит в DevTools).</li>
+<li><strong>Всегда</strong> храни в переменных окружения (<code>.env</code> файл) или в secret manager.</li>
+<li><strong>Сразу отзови ключ</strong>, если случайно засветил.</li>
+</ul>
+</div>
+
+<p>Реальный кейс 2023: разработчики случайно закоммитили ключи на GitHub, боты-сканеры тут же нашли их и начали гонять GPT-4 на полную, у людей утром были счета на $5000–$50000. OpenAI стал автоматически отзывать такие ключи, но не всегда успевает.</p>
+
+<h2>2. Получение ключа</h2>
+
+<h3>OpenAI</h3>
+<ol>
+<li>Зайди на <a href="https://platform.openai.com" target="_blank">platform.openai.com</a> (это <strong>не</strong> тот же что chat.openai.com — отдельный аккаунт для разработчиков).</li>
+<li>Зарегистрируйся или войди.</li>
+<li>Пополни баланс: Billing → Add to credit balance. Минимум $5. Этого хватит на тысячи запросов.</li>
+<li>Создай ключ: API keys → Create new secret key. Скопируй и сохрани в надёжное место — показывается один раз.</li>
+<li>Поставь ограничения: Settings → Limits → Monthly budget. Например, $20/мес. Это страховка от случайного слива денег.</li>
+</ol>
+
+<h3>Anthropic (Claude)</h3>
+<ol>
+<li>Зайди на <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>.</li>
+<li>Аналогично: пополни баланс, создай ключ, поставь лимиты.</li>
+</ol>
+
+<h3>Альтернативы для России</h3>
+<ul>
+<li><strong>Yandex GPT</strong> — yandex.cloud, оплата с российской карты.</li>
+<li><strong>GigaChat</strong> от Сбера — sberbank.ru, требуется регистрация юрлица для API.</li>
+<li><strong>OpenRouter</strong> — единый API к десяткам моделей, может работать через российские карты.</li>
+<li><strong>Прокси-провайдеры</strong> (есть, но не все легальны — на свой риск).</li>
+</ul>
+
+<h2>3. Подготовка окружения</h2>
+
+<h3>Установка Python (если нет)</h3>
+<p>Понадобится Python 3.8+. Проверь:</p>
+<pre><code>python3 --version</code></pre>
+<p>Если нет или версия старая — поставь через python.org или (на Mac) <code>brew install python</code>.</p>
+
+<h3>Виртуальное окружение</h3>
+<p>Хорошая практика — изолировать пакеты под проект:</p>
+<pre><code># Создаём папку проекта
+mkdir my-ai-app && cd my-ai-app
+
+# Создаём виртуальное окружение
+python3 -m venv venv
+
+# Активируем (Mac/Linux)
+source venv/bin/activate
+
+# Активируем (Windows)
+venv\Scripts\activate</code></pre>
+
+<h3>Установка библиотек</h3>
+<pre><code>pip install openai python-dotenv</code></pre>
+<ul>
+<li><code>openai</code> — официальный SDK OpenAI. Аналогично есть <code>anthropic</code>.</li>
+<li><code>python-dotenv</code> — для удобной работы с <code>.env</code> файлом.</li>
+</ul>
+
+<h3>Файл .env</h3>
+<p>Создай в папке проекта файл с именем <code>.env</code> (с точкой!):</p>
+<pre><code>OPENAI_API_KEY=sk-...твой ключ здесь...</code></pre>
+
+<h3>Файл .gitignore</h3>
+<p>Сразу же — чтобы случайно не закоммитить ключ:</p>
+<pre><code># .gitignore
+.env
+venv/
+__pycache__/
+*.pyc</code></pre>
+
+<h2>4. Первый запрос</h2>
+
+<h3>Минимальный пример</h3>
+<pre><code>import os
+from dotenv import load_dotenv
+from openai import OpenAI
+
+# Загружаем .env в переменные окружения
+load_dotenv()
+
+# Создаём клиента (он сам найдёт OPENAI_API_KEY в env)
+client = OpenAI()
+
+# Делаем запрос
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "Ты помощник по русскому языку."},
+        {"role": "user", "content": "Объясни, что такое деепричастие, в одном абзаце."}
+    ],
+    temperature=0.3,
+    max_tokens=300
+)
+
+# Извлекаем текст
+print(response.choices[0].message.content)</code></pre>
+
+<p>Сохрани как <code>hello_ai.py</code>, запусти:</p>
+<pre><code>python hello_ai.py</code></pre>
+<p>Получишь сгенерированный ответ в терминале. Поздравляю — ты только что вызвал LLM из своего кода.</p>
+
+<h2>5. Анатомия запроса</h2>
+
+<p>Разберём каждое поле:</p>
+
+<h3>model</h3>
+<p>Имя модели. Точные строки:</p>
+<ul>
+<li><code>gpt-4o</code>, <code>gpt-4o-mini</code> — флагман и эконом.</li>
+<li><code>gpt-4-turbo</code>, <code>gpt-3.5-turbo</code> — старые но дешёвые.</li>
+<li><code>o1-preview</code>, <code>o1-mini</code> — reasoning.</li>
+</ul>
+<p>Anthropic: <code>claude-3-5-sonnet-20241022</code>, <code>claude-3-haiku-20240307</code> и т.д. (точные имена меняются — смотри документацию).</p>
+
+<h3>messages</h3>
+<p>Массив сообщений диалога. Поддерживаемые роли:</p>
+<ul>
+<li><code>system</code> — инструкция модели на весь диалог.</li>
+<li><code>user</code> — сообщение пользователя.</li>
+<li><code>assistant</code> — предыдущий ответ модели (для контекста).</li>
+<li><code>tool</code> — результат вызова инструмента (для function calling — урок 13).</li>
+</ul>
+
+<h3>temperature</h3>
+<p>0–2. См. урок 4. Для фактических задач — 0–0.3, для креатива — 0.7–1.</p>
+
+<h3>max_tokens</h3>
+<p>Максимум токенов в ответе. Жёсткий лимит, остановит даже на полуслове. Считай чуть больше, чем нужно.</p>
+
+<h3>Другие полезные параметры</h3>
+<pre><code>response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[...],
+    temperature=0.3,
+    max_tokens=300,
+    top_p=1.0,
+    frequency_penalty=0.0,   # -2 до 2, штраф за повторы
+    presence_penalty=0.0,    # -2 до 2, штраф за упоминание темы
+    stop=["\n\n"],         # остановиться при появлении строки
+    response_format={"type": "json_object"},  # только валидный JSON
+    seed=42,                 # для воспроизводимости
+    n=1                      # сколько вариантов сгенерировать
+)</code></pre>
+
+<h2>6. Анатомия ответа</h2>
+
+<p>Объект <code>response</code> содержит много данных:</p>
+<pre><code>{
+  "id": "chatcmpl-abc123",
+  "object": "chat.completion",
+  "created": 1715000000,
+  "model": "gpt-4o-mini-2024-07-18",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Деепричастие — это особая форма глагола..."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 42,
+    "completion_tokens": 187,
+    "total_tokens": 229
+  }
+}</code></pre>
+
+<h3>Что брать в работу</h3>
+<ul>
+<li><code>response.choices[0].message.content</code> — сам сгенерированный текст.</li>
+<li><code>response.choices[0].finish_reason</code>:
+  <ul>
+    <li><code>stop</code> — модель закончила нормально.</li>
+    <li><code>length</code> — упёрлась в <code>max_tokens</code>, ответ обрезан.</li>
+    <li><code>content_filter</code> — заблокировано фильтром.</li>
+    <li><code>tool_calls</code> — попросила вызвать инструмент.</li>
+  </ul>
+</li>
+<li><code>response.usage</code> — твой счётчик стоимости.</li>
+</ul>
+
+<h2>7. Подсчёт стоимости</h2>
+
+<p>Цена считается отдельно для input и output по таблице из урока 2.</p>
+
+<h3>Расчёт на лету</h3>
+<pre><code>def calculate_cost(usage, model="gpt-4o-mini"):
+    prices = {
+        "gpt-4o-mini":   {"input": 0.15, "output": 0.60},
+        "gpt-4o":        {"input": 2.50, "output": 10.00},
+        "o1-mini":       {"input": 3.00, "output": 12.00},
+    }
+    p = prices.get(model, prices["gpt-4o-mini"])
+    cost = (
+        usage.prompt_tokens * p["input"] +
+        usage.completion_tokens * p["output"]
+    ) / 1_000_000
+    return cost
+
+response = client.chat.completions.create(...)
+print(f"Стоимость: ${calculate_cost(response.usage):.6f}")</code></pre>
+
+<h3>Реальные цифры</h3>
+<p>Запрос с промптом 100 токенов и ответом 200 токенов на gpt-4o-mini:</p>
+<ul>
+<li>Input: 100 × $0.15 / 1M = $0.000015</li>
+<li>Output: 200 × $0.60 / 1M = $0.00012</li>
+<li>Итого: ~$0.000135 = ~0.013 цента</li>
+</ul>
+<p>1000 таких запросов = ~$0.14. Очень дёшево.</p>
+
+<h2>8. Streaming — печать ответа по словам</h2>
+
+<p>По умолчанию ответ возвращается целиком в конце генерации. Для чат-интерфейса это плохо — ждёшь 5 секунд белого экрана. Решение — <strong>streaming</strong>:</p>
+
+<pre><code>stream = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "Напиши хайку про код"}],
+    stream=True  # ← включаем streaming
+)
+
+for chunk in stream:
+    delta = chunk.choices[0].delta.content
+    if delta:
+        print(delta, end="", flush=True)
+print()  # перенос строки в конце</code></pre>
+
+<p>Текст печатается по мере генерации — пользователь видит, что что-то происходит.</p>
+
+<h2>9. Обработка ошибок</h2>
+
+<p>В реальной жизни запросы падают. Сети нет, лимит исчерпан, модель перегружена, ключ невалидный. Обрабатывай:</p>
+
+<pre><code>from openai import OpenAI, OpenAIError, RateLimitError, APIConnectionError
+import time
+
+def safe_chat(messages, max_retries=3):
+    for attempt in range(max_retries):
+        try:
+            return client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=messages,
+                timeout=30
+            )
+        except RateLimitError:
+            wait = 2 ** attempt  # exponential backoff: 1, 2, 4 сек
+            print(f"Rate limit, ждём {wait} сек...")
+            time.sleep(wait)
+        except APIConnectionError:
+            print("Сеть упала, retry...")
+            time.sleep(1)
+        except OpenAIError as e:
+            print(f"Ошибка OpenAI: {e}")
+            return None
+    return None</code></pre>
+
+<p>Принципы:</p>
+<ul>
+<li><strong>Retry на временные ошибки</strong> (rate limit, network) с экспоненциальной задержкой.</li>
+<li><strong>Не retry на logical ошибки</strong> (невалидный запрос, кончились деньги).</li>
+<li><strong>Timeout</strong> на каждый запрос — иначе один зависший вызов положит весь скрипт.</li>
+<li><strong>Логирование</strong> — пиши в файл, что и когда вызывалось.</li>
+</ul>
+
+<h2>10. Полный пример: генератор постов</h2>
+
+<pre><code>import os
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv()
+client = OpenAI()
+
+def generate_post(topic: str, tone: str = "neutral", count: int = 3) -> list[str]:
+    """Генерирует N вариантов поста на заданную тему."""
+
+    system = f"""Ты автор LinkedIn-постов в B2B-сегменте.
+Тон: {tone}.
+Длина: 500-700 знаков.
+Формат: одна фраза-крючок, основная мысль, вывод.
+Без хэштегов и эмодзи."""
+
+    posts = []
+    for i in range(count):
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": system},
+                {"role": "user", "content": f"Напиши пост на тему: {topic}"}
+            ],
+            temperature=0.9,  # высокая для разнообразия
+            max_tokens=400
+        )
+        posts.append(response.choices[0].message.content.strip())
+
+    return posts
+
+if __name__ == "__main__":
+    topic = input("Тема поста: ")
+    tone = input("Тон (нейтральный / прямой / провокационный): ") or "нейтральный"
+
+    posts = generate_post(topic, tone, count=3)
+
+    for i, post in enumerate(posts, 1):
+        print(f"\n--- Вариант {i} ---")
+        print(post)</code></pre>
+
+<p>Запуск:</p>
+<pre><code>$ python generator.py
+Тема поста: ошибки наставничества молодых разработчиков
+Тон: прямой
+
+--- Вариант 1 ---
+[три варианта поста]</code></pre>
+
+<h2>11. Тонкости и подводные камни</h2>
+
+<h3>Кеширование запросов</h3>
+<p>Если ты делаешь много одинаковых запросов в разработке — кешируй ответы локально:</p>
+<pre><code>import hashlib, json, os
+
+CACHE_DIR = ".llm_cache"
+os.makedirs(CACHE_DIR, exist_ok=True)
+
+def cached_chat(messages, model="gpt-4o-mini", **kwargs):
+    key_str = json.dumps({"m": model, "msg": messages, **kwargs}, sort_keys=True)
+    key = hashlib.md5(key_str.encode()).hexdigest()
+    path = f"{CACHE_DIR}/{key}.json"
+
+    if os.path.exists(path):
+        with open(path) as f:
+            return json.load(f)["content"]
+
+    response = client.chat.completions.create(model=model, messages=messages, **kwargs)
+    content = response.choices[0].message.content
+
+    with open(path, "w") as f:
+        json.dump({"content": content}, f)
+    return content</code></pre>
+<p>Сэкономит и время, и деньги при разработке.</p>
+
+<h3>Логирование</h3>
+<p>Сохраняй все запросы и ответы — пригодится для дебага и анализа.</p>
+<pre><code>import logging
+logging.basicConfig(filename="llm.log", level=logging.INFO)
+
+logging.info(f"Request: {messages}")
+logging.info(f"Response: {response.choices[0].message.content}")
+logging.info(f"Tokens: {response.usage}")</code></pre>
+
+<h3>Параллельные запросы</h3>
+<p>Если нужно обработать 100 промптов — не делай их последовательно. Используй <code>asyncio</code> или <code>concurrent.futures</code>:</p>
+<pre><code>from concurrent.futures import ThreadPoolExecutor
+
+def process_one(text):
+    return client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": text}]
+    ).choices[0].message.content
+
+with ThreadPoolExecutor(max_workers=10) as ex:
+    results = list(ex.map(process_one, texts))</code></pre>
+<p>10x ускорение. Но осторожно с rate limits — у OpenAI обычно 5000 req/min.</p>
+
+<h3>Структурированный вывод (JSON mode)</h3>
+<p>Если ответ должен парситься программно:</p>
+<pre><code>response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "Отвечай только валидным JSON."},
+        {"role": "user", "content": "Извлеки имя, возраст и роль из: 'Анна, 28 лет, фронтенд'"}
+    ],
+    response_format={"type": "json_object"},
+    temperature=0
+)
+
+import json
+data = json.loads(response.choices[0].message.content)
+# data = {"name": "Анна", "age": 28, "role": "фронтенд"}</code></pre>
+
+<h2>12. Глоссарий</h2>
+<ul>
+<li><strong>API</strong> — Application Programming Interface, способ программного вызова сервиса.</li>
+<li><strong>API key</strong> — секретный токен для авторизации запросов.</li>
+<li><strong>Endpoint</strong> — конкретный URL API.</li>
+<li><strong>SDK</strong> — Software Development Kit, библиотека-обёртка над API.</li>
+<li><strong>.env</strong> — файл для секретов, не идёт в git.</li>
+<li><strong>Rate limit</strong> — лимит запросов в единицу времени.</li>
+<li><strong>Streaming</strong> — постепенный вывод ответа по мере генерации.</li>
+<li><strong>finish_reason</strong> — причина остановки генерации (stop / length / etc).</li>
+<li><strong>usage</strong> — статистика токенов в ответе.</li>
+<li><strong>Exponential backoff</strong> — растущая задержка между retries.</li>
+<li><strong>JSON mode</strong> — гарантированно валидный JSON в ответе.</li>
+</ul>
+
+<h2>13. Практика (60 минут)</h2>
+
+<h3>Упражнение 1. Hello, AI (15 минут)</h3>
+<ol>
+<li>Заведи аккаунт OpenAI, пополни на $5.</li>
+<li>Создай ключ, сохрани в <code>.env</code>.</li>
+<li>Установи <code>openai</code> и <code>python-dotenv</code>.</li>
+<li>Напиши минимальный скрипт hello_ai.py из урока. Запусти.</li>
+<li>Поэкспериментируй: меняй model, temperature, max_tokens. Заметь разницу.</li>
+</ol>
+
+<h3>Упражнение 2. Считаем стоимость (10 минут)</h3>
+<ol>
+<li>Добавь функцию <code>calculate_cost</code> к своему скрипту.</li>
+<li>Сделай 5 разных запросов: коротких и длинных, на gpt-4o-mini и gpt-4o.</li>
+<li>Записывай реальную стоимость каждого. Сравни с теоретическим расчётом.</li>
+</ol>
+
+<h3>Упражнение 3. Генератор контента (20 минут)</h3>
+<ol>
+<li>Возьми пример с генератором постов из урока.</li>
+<li>Адаптируй под свою задачу: 3 варианта email, 5 заголовков, 3 рерайта одного абзаца — что нужно тебе.</li>
+<li>Добавь streaming — пусть текст печатается по мере генерации.</li>
+<li>Сохрани результат в файл с временной меткой.</li>
+</ol>
+
+<h3>Упражнение 4. Обработка ошибок (15 минут)</h3>
+<ol>
+<li>Сломай намеренно: подстави неверный ключ → увидишь <code>AuthenticationError</code>.</li>
+<li>Попробуй очень большой <code>max_tokens</code> — увидишь, что произойдёт.</li>
+<li>Добавь <code>safe_chat</code> с retry. Протестируй.</li>
+<li>Добавь логирование в файл.</li>
+</ol>
+
+<h2>14. Проверь себя</h2>
+
+<p><strong>1. Где хранить API ключ?</strong><br>
+В файле <code>.env</code>, который добавлен в <code>.gitignore</code>. Никогда не в коде, никогда в git, никогда на фронтенде.</p>
+
+<p><strong>2. Что в JSON-ответе содержит сам сгенерированный текст?</strong><br>
+<code>response.choices[0].message.content</code></p>
+
+<p><strong>3. <code>finish_reason: "length"</code> — что значит?</strong><br>
+Модель упёрлась в <code>max_tokens</code> и ответ обрезан. Нужно увеличить лимит или сделать новый запрос с продолжением.</p>
+
+<p><strong>4. Как посчитать стоимость одного запроса?</strong><br>
+Берём из <code>response.usage</code> поля <code>prompt_tokens</code> и <code>completion_tokens</code>, умножаем на цены модели за миллион токенов и делим на миллион.</p>
+
+<p><strong>5. Что такое rate limit?</strong><br>
+Лимит запросов в единицу времени (обычно в минуту). У OpenAI бывает 5000 RPM для платных аккаунтов. При превышении — <code>RateLimitError</code>, нужно подождать.</p>
+
+<p><strong>6. Зачем streaming?</strong><br>
+Чтобы пользователь видел текст по мере генерации, а не белый экран 5 секунд. Резко улучшает воспринимаемую скорость.</p>
+
+<p><strong>7. Что добавить в .gitignore при работе с API?</strong><br>
+Минимум: <code>.env</code>, <code>venv/</code>, <code>__pycache__/</code>, <code>*.pyc</code>, <code>.llm_cache/</code> (если используешь кеш).</p>
+
+<p><strong>8. Как сделать гарантированно валидный JSON в ответе?</strong><br>
+<code>response_format={"type": "json_object"}</code> + явная инструкция в system prompt + temperature=0 + try/except json.loads на стороне кода.</p>
+
+<p><strong>9. Когда retry, а когда нет?</strong><br>
+Retry на временные ошибки: rate limit, network timeout, 5xx. Не retry на логические: невалидный запрос (400), кончились деньги (402), неверный ключ (401).</p>
+
+<p><strong>10. Чем отличаются <code>frequency_penalty</code> и <code>presence_penalty</code>?</strong><br>
+<code>frequency_penalty</code> штрафует за частоту повторений конкретного токена. <code>presence_penalty</code> — за сам факт упоминания темы. Оба от -2 до 2, по умолчанию 0.</p>
+
+<h2>15. Что должно остаться в голове</h2>
+<ol>
+<li><strong>API + ключ + .env</strong> — фундамент любого ИИ-приложения.</li>
+<li><strong>Структура запроса:</strong> model + messages + параметры.</li>
+<li><strong>Структура ответа:</strong> <code>choices[0].message.content</code> + <code>usage</code>.</li>
+<li><strong>Считай стоимость</strong> в каждом скрипте — поможет не сжечь деньги случайно.</li>
+<li><strong>Streaming</strong> для интерактивных интерфейсов.</li>
+<li><strong>Retry с backoff</strong> на временные ошибки.</li>
+<li><strong>JSON mode</strong> для парсинга ответов программно.</li>
+<li><strong>Никогда не клади ключ в код / git / фронтенд.</strong></li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> создай папку <code>my-ai-app/</code> с venv и .env. Это будет твоя лаборатория на следующие уроки. Все скрипты из уроков 7, 8 будут в ней.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-6">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

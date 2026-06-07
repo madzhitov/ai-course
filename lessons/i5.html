@@ -19,21 +19,201 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/i5.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/i5.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-i5');
-</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Индустрия</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">I5</span></div>
 <h1>ИИ для финансов: отчёты, анализ, прогнозы</h1>
-<p>I5 из курса AI на русском. ИИ для финансов: отчёты, анализ, прогнозы. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-i5">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> применять ИИ в финансовом анализе — там, где это надёжно, и обходить там, где опасно</span>
+  <span><strong>Время:</strong> ~50 минут</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Финансы — это анализ, документация, regulation, отчётность. ИИ ускоряет первые две. Третья и четвёртая — высокорисковые: галлюцинация в отчёте регулятору = штраф или хуже. Этот урок — карта применений с честными оценками рисков.</p>
+
+<h2>1. Где ИИ полезен в финансах</h2>
+<table>
+<tr><th>Задача</th><th>ROI</th><th>Риск</th></tr>
+<tr><td>Суммаризация отчётов компаний (10-K, 10-Q)</td><td>10x</td><td>Низкий</td></tr>
+<tr><td>Извлечение данных из PDF</td><td>5–10x</td><td>Средний — проверка обязательна</td></tr>
+<tr><td>Анализ конкурентов</td><td>5x</td><td>Низкий</td></tr>
+<tr><td>Подготовка memo для встреч</td><td>5x</td><td>Низкий</td></tr>
+<tr><td>Документация инвестиционных решений</td><td>3x</td><td>Средний</td></tr>
+<tr><td>Скрипты для расчётов в Python/R</td><td>10x</td><td>Низкий — проверяемо тестами</td></tr>
+<tr><td>Прогнозы / торговые сигналы</td><td>—</td><td>❌ Не надёжно</td></tr>
+<tr><td>Конкретные числовые расчёты</td><td>—</td><td>❌ Модели плохи в арифметике</td></tr>
+<tr><td>Аудит / compliance отчётность</td><td>—</td><td>❌ Регуляторный риск</td></tr>
+</table>
+
+<h2>2. Главное правило: ИИ — для текста, калькулятор — для чисел</h2>
+<p>LLM <strong>плохо считают арифметику</strong>. «Сколько 17% от 4534?» — GPT-5 ответит верно или почти верно. «Чистая прибыль за Q3 если выручка 432.5M, COGS 187.3M, opex 142.8M, амортизация 18.2M, налог 25%?» — может дать уверенно неправильный ответ. Чем больше чисел и шагов — тем выше шанс ошибки.</p>
+<p><strong>Решение: code execution</strong>. Все топ-модели сейчас могут запустить Python для расчётов:</p>
+<ul>
+<li>ChatGPT с Code Interpreter / Advanced Data Analysis.</li>
+<li>Claude Sonnet 4.5 с инструментом Code Execution (через API или в claude.ai).</li>
+<li>Gemini 2.5 Pro в AI Studio.</li>
+</ul>
+<p>Когда модель пишет код для расчёта, проверяй его, не саму цифру.</p>
+
+<h2>3. Анализ компании за 30 минут</h2>
+<p>Раньше: 2–3 дня. Сейчас:</p>
+<ol>
+<li>Скачай 10-K (US) или годовой отчёт.</li>
+<li>Загрузи в Claude (200k контекст вмещает целиком).</li>
+<li>Промпт:</li>
+</ol>
+<pre><code>10-K компании [name] за [year]: прикреплено.
+
+Сделай инвестиционный memo:
+1. Что компания делает (3 предложения).
+2. Источники выручки с долями.
+3. Главные KPI (5 шт) с динамикой 3 года.
+4. Главные риски (Item 1A — Risk Factors).
+5. Изменения в стратегии vs прошлый год.
+6. Что management подчеркивает (MD&amp;A).
+7. Скрытые сигналы: что они НЕ обсуждают, что обсуждали раньше.
+8. 5 уточняющих вопросов, которые я бы задал CFO.
+
+Конкретика, не общие фразы.</code></pre>
+<p>Это даёт сильный первый pass. Дальше — ручная проверка цифр и углубление.</p>
+
+<h2>4. Извлечение данных из PDF</h2>
+<p>Финансовые PDF — кошмар. Таблицы, footnotes, разный layout. ИИ это решает:</p>
+<pre><code>Извлеки из этого PDF все P&amp;L таблицы.
+
+Формат: JSON массив {section, period, line_item, value, currency}.
+Все значения в исходной валюте, не пересчитывай.
+Указывай footnotes если есть.</code></pre>
+<p><strong>Важно:</strong> всегда проверяй пару значений вручную. На сложных layouts модель путает ячейки.</p>
+
+<h2>5. Скрипты для расчётов</h2>
+<p>Это любимый пример с правильным применением ИИ. Запрос: «посчитай WACC». Промпт:</p>
+<pre><code>Напиши Python-скрипт, который считает WACC.
+
+Входные: cost of equity, cost of debt, tax rate, market value of equity, market value of debt.
+
+Скрипт должен:
+1. Принимать значения как аргументы.
+2. Выводить промежуточные значения (weight_equity, weight_debt, after_tax_cost_debt).
+3. Иметь docstring с формулой.
+4. Иметь pytest-тест на одном известном примере.</code></pre>
+<p>Получаешь рабочий скрипт за минуты. Один раз сделал — всю карьеру используешь.</p>
+
+<h2>6. Сравнительный анализ</h2>
+<pre><code>Прикреплены 10-K трёх конкурентов: A, B, C.
+
+Сравни:
+1. Размер (выручка, активы, сотрудники).
+2. Темп роста (3-year CAGR выручки).
+3. Маржинальность (gross / operating / net).
+4. Структура расходов.
+5. R&amp;D как % выручки.
+6. Долговая нагрузка.
+7. Капитальные затраты.
+
+Таблица + 3 ключевых наблюдения, на что обратить внимание.</code></pre>
+
+<h2>7. Документация инвестиционных решений</h2>
+<p>Investment committee требует memo на 5 страниц. ИИ делает первый драфт за минуты:</p>
+<pre><code>Инвестиционный тезис: [твой тезис, 2 абзаца]
+
+Данные: [ключевые цифры из анализа]
+
+Сделай 5-page IC memo:
+1. Executive Summary (1 абзац).
+2. Company Overview.
+3. Investment Thesis (главные 3 точки).
+4. Финансовый анализ (с цифрами).
+5. Риски (минимум 5, с митигациями).
+6. Valuation (диапазон + методы).
+7. Catalysts (что должно сработать).
+8. Структура сделки (предлагаемая).
+
+Стиль: профессионально, конкретно, без воды.</code></pre>
+
+<h2>8. Что НИКОГДА</h2>
+<div class="callout callout-danger">
+<ul>
+<li><strong>Не торгуй по AI-сигналам</strong> без статистической валидации. Модели не предсказывают рынок.</li>
+<li><strong>Не цитируй AI как источник цифр.</strong> Всегда сверяй с оригиналом.</li>
+<li><strong>Не загружай MNPI</strong> (material non-public information) в публичный chat. Юридический риск, регуляторный риск.</li>
+<li><strong>Не используй AI для compliance-отчётности</strong> без human-in-the-loop. Цена ошибки слишком высокая.</li>
+<li><strong>Не делай valuation</strong> где AI «выбирает» multiples. Можешь использовать AI для расчёта DCF при заданных предпосылках — но предпосылки задаёт человек.</li>
+</ul>
+</div>
+
+<h2>9. Регуляторное</h2>
+<ul>
+<li><strong>SEC и FINRA</strong> (US) активно следят за AI в инвестбанках. «Хвалёные» AI-фонды получают вопросы. Документируй, как используешь AI.</li>
+<li><strong>EU AI Act:</strong> кредитный скоринг и страхование — высокорисковая категория. Документация и transparency обязательны.</li>
+<li><strong>Аудит-лог:</strong> для каждого AI-вспомогательного решения — что был промпт, что ответ, что человек решил.</li>
+<li><strong>MiFID II</strong> (EU) — best execution всё ещё ответственность человека, не AI.</li>
+</ul>
+
+<h2>10. Тонкости</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Длинный контекст важен.</strong> 10-K = 200–400 страниц. Claude Sonnet 4.5 (200k стандарт, 1M в beta) вмещает несколько отчётов сразу. Gemini 2.5 Pro — 1M по умолчанию. Это даёт сильное преимущество против моделей с 32k.</li>
+<li><strong>Multimodal критичен для графиков.</strong> Если в PDF графики важны (а они важны) — GPT-5 или Gemini 2.5 Pro лучше понимают их визуально.</li>
+<li><strong>Цена анализа одной компании:</strong> ~$0.5–2 в API. Окупается с первого использования.</li>
+<li><strong>Финансовые модели с AI:</strong> GPT и Claude хорошо генерируют структуру Excel-модели + формулы (через Skills для xlsx), но конкретные предпосылки задаёшь ты.</li>
+</ul>
+</div>
+
+<h2>11. Глоссарий</h2>
+<div class="glossary-term"><h3>10-K / 10-Q</h3><p>Годовой / квартальный отчёт публичной компании в SEC (US). Стандартизирован.</p></div>
+<div class="glossary-term"><h3>MD&amp;A</h3><p>Management Discussion &amp; Analysis — часть отчёта, где руководство комментирует результаты. Источник скрытых сигналов.</p></div>
+<div class="glossary-term"><h3>Code Interpreter</h3><p>Инструмент модели для запуска Python-кода. Главная защита от арифметических галлюцинаций.</p></div>
+<div class="glossary-term"><h3>MNPI</h3><p>Material Non-Public Information — существенная непубличная информация. Утечка = инсайдерская торговля.</p></div>
+
+<h2>12. Практика (50 минут)</h2>
+<ol>
+<li>Возьми 10-K любой публичной компании (sec.gov/edgar).</li>
+<li>Прогон через промпт «инвестиционный memo» в Claude Sonnet.</li>
+<li>Сверь 3 цифры в выводе с оригиналом — все верны?</li>
+<li>Сгенерируй Python-скрипт для одного финансового расчёта.</li>
+<li>Запиши в <code>progress.md</code> где ИИ дал реальное преимущество.</li>
+</ol>
+
+<h2>13. Проверь себя</h2>
+<p><strong>1. Почему ИИ не доверяют арифметику?</strong><br>LLM генерирует токен за токеном, не умножает на самом деле. Решение — code interpreter.</p>
+<p><strong>2. Где в финансах ИИ безопасен?</strong><br>Суммаризация отчётов, извлечение данных, генерация memo, скрипты для расчётов, сравнительный анализ.</p>
+<p><strong>3. Где категорически нельзя?</strong><br>Торговые сигналы без валидации, MNPI в публичных моделях, compliance-отчётность без human review.</p>
+<p><strong>4. Что обязательно при использовании ИИ в инвестбанке?</strong><br>Аудит-лог, документация процесса, human-in-the-loop, compliance review.</p>
+
+<h2>14. Что должно остаться в голове</h2>
+<ol>
+<li>ИИ — для текста, калькулятор/Python — для чисел. Code execution — must.</li>
+<li>10-K анализ за 30 минут — реальный главный кейс.</li>
+<li>Сверяй цифры с оригиналом. Не цитируй AI как источник.</li>
+<li>MNPI — никогда в публичный chat.</li>
+<li>SEC / EU AI Act / MiFID II — учитывай документацию и transparency.</li>
+<li>Claude Sonnet 4.5 (200k–1M) и Gemini 2.5 Pro (1M) — главное оружие для длинных финансовых документов.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> в финансах ИИ — масштабный force multiplier на анализе и документации. Но не игрок на рынке — это распространённое заблуждение.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-i5">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

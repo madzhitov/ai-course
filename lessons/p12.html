@@ -19,21 +19,268 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/p12.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p12.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p12');
-</script>
 </head>
 <body>
-<h1>Свой Claude Skill: упаковываем рутинную задачу в навык</h1>
-<p>P12 из курса AI на русском. Свой Claude Skill: упаковываем рутинную задачу в навык. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p12">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P12</span></div>
+
+<h1>Проект «За 1 час»: Свой Claude Skill — упаковываем рутину в навык</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> Skill «Weekly PR Report», который Claude подхватывает сам</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Уровень:</strong> базовый bash + Claude Desktop (или Claude Code)</span>
+</div>
+
+<h2>Что в итоге будет</h2>
+<p>Папка с одним <code>SKILL.md</code> и парой скриптов, которую Claude Desktop / Claude Code автоматически использует, когда ты пишешь «сделай отчёт по PR за неделю». Никаких отдельных запусков, никаких копирований промптов — просто естественный запрос, который превращается в готовый markdown-отчёт.</p>
+<p>После этого ты сможешь упаковывать любую свою рутину в Skill: утренний дайджест из почты, чек-лист публикации поста, журнал тренировок, протокол ретро — что угодно повторяющееся.</p>
+
+<h2>Теория за 30 секунд (подробности в c9)</h2>
+<p>Skill — это папка на диске с обязательным файлом <code>SKILL.md</code>. В YAML-фронтматтере описано, <em>когда</em> Skill применяется (триггеры). В теле — инструкции, <em>что</em> делать. Опционально рядом лежат вспомогательные скрипты, шаблоны, референсы.</p>
+<p>Claude сам читает <code>SKILL.md</code> при старте сессии (точнее — заголовок и description), и когда видит подходящий запрос — подгружает тело Skill в контекст и выполняет инструкции. От тебя — только сформулировать задачу естественно.</p>
+
+<h2>Требования</h2>
+<ul>
+<li>Claude Code (CLI) или Claude Desktop с поддержкой Skills.</li>
+<li>Git и GitHub CLI (<code>gh</code>) — для примера про PR-отчёт. <code>brew install gh</code> на маке.</li>
+<li>~60 минут.</li>
+</ul>
+
+<h2>Архитектура</h2>
+<pre><code>~/.claude/skills/weekly-pr-report/
+├── SKILL.md          ← триггеры + инструкции для Claude
+├── scripts/
+│   └── fetch_prs.sh  ← вспомогательный скрипт
+└── templates/
+    └── report.md     ← шаблон финального отчёта</code></pre>
+
+<p>Логика работы:</p>
+<ol>
+<li>Ты пишешь Claude: «собери мне отчёт по моим PR за неделю».</li>
+<li>Claude видит совпадение с триггерами Skill — загружает <code>SKILL.md</code>.</li>
+<li>По инструкции вызывает <code>scripts/fetch_prs.sh</code> через bash-tool.</li>
+<li>Парсит JSON, заполняет шаблон, отдаёт тебе готовый markdown.</li>
+</ol>
+
+<h2>Шаг 1. Создаём папку для Skill</h2>
+<p>Skills лежат либо глобально (<code>~/.claude/skills/</code>), либо в проекте (<code>.claude/skills/</code> в корне репозитория). Глобальные доступны везде, проектные — только в этом проекте. Для нашего отчёта берём глобальный:</p>
+
+<pre><code class="language-bash">mkdir -p ~/.claude/skills/weekly-pr-report/scripts
+mkdir -p ~/.claude/skills/weekly-pr-report/templates
+cd ~/.claude/skills/weekly-pr-report</code></pre>
+
+<h2>Шаг 2. Пишем SKILL.md</h2>
+<p>Самая важная часть — это <code>description</code> в frontmatter. Claude по ней решает, релевантен ли Skill запросу. Пиши конкретно, перечисляй типичные формулировки.</p>
+
+<p>Файл <code>SKILL.md</code>:</p>
+<pre><code class="language-markdown">---
+name: weekly-pr-report
+description: |
+  Собирает markdown-отчёт по pull request'ам пользователя за последние 7 дней
+  (или указанный период). Использует gh CLI и шаблон в templates/report.md.
+  Применяется на запросы вида: "сделай отчёт по PR за неделю",
+  "что я закодил на этой неделе", "weekly PR summary",
+  "подведи итоги недели по гитхабу", "отчёт для тимлида".
+---
+
+# Weekly PR Report
+
+Этот Skill готовит сводку по pull request'ам, в которых участвовал
+пользователь за указанный период.
+
+## Когда использовать
+
+Активируйся, когда пользователь просит:
+- отчёт / summary / итоги недели по pull request'ам или коммитам;
+- подготовить материал для 1-1 с менеджером;
+- сводку активности на GitHub.
+
+Если не указан период — бери последние 7 дней.
+
+## Как делать
+
+1. Спроси у пользователя GitHub username, если его нет в контексте сессии
+   и не получается узнать через `gh api user --jq .login`.
+2. Запусти `bash scripts/fetch_prs.sh &lt;USERNAME&gt; &lt;DAYS&gt;`.
+   Он печатает JSON-массив PR со всеми нужными полями.
+3. Раздели PR по статусу: merged / open / closed-without-merge.
+4. Возьми шаблон `templates/report.md`, подставь данные и верни
+   пользователю готовый markdown. Не сокращай, не добавляй своих
+   разделов поверх шаблона.
+
+## Формат итогового отчёта
+
+- Заголовок с диапазоном дат.
+- Краткое резюме (1-2 предложения, что было главным).
+- Списки PR по статусам с ссылками.
+- В каждой строке: `#номер · название · репозиторий · +добавлено / −удалено`.
+
+## Не делай
+
+- Не вызывай GitHub API напрямую через curl — используй скрипт.
+- Не показывай сырой JSON пользователю.
+- Не выдумывай PR, которых нет в выводе скрипта.
+</code></pre>
+
+<p>Пара вещей, которые стоит подчеркнуть.</p>
+<p><strong>description</strong> в YAML — это единственное, что Claude видит без подгрузки полного Skill. Пиши так, чтобы по нему было ясно: что делает, на какие фразы реагирует. Списком формулировок повышаешь шанс срабатывания.</p>
+<p><strong>«Не делай»</strong> — отдельная секция, которая хорошо работает. Без неё Claude часто пытается «улучшить» — добавить рекомендации, переформатировать, посыпать эмодзи. С ней — следует шаблону.</p>
+
+<h2>Шаг 3. Скрипт fetch_prs.sh</h2>
+<p>Skill может выполнять любые shell-команды через bash-tool. Лучше выносить логику в отдельный скрипт — так Claude вызывает один понятный entry point, а не клеит сложную команду с пайпами в каждом запросе.</p>
+
+<p>Файл <code>scripts/fetch_prs.sh</code>:</p>
+<pre><code class="language-bash">#!/usr/bin/env bash
+set -euo pipefail
+
+USERNAME="${1:-}"
+DAYS="${2:-7}"
+
+if [ -z "$USERNAME" ]; then
+  echo "usage: fetch_prs.sh &lt;github_username&gt; [days]" &gt;&amp;2
+  exit 1
+fi
+
+SINCE=$(date -u -v-"${DAYS}"d '+%Y-%m-%d' 2&gt;/dev/null \
+  || date -u -d "-${DAYS} days" '+%Y-%m-%d')
+
+# gh search возвращает только метаданные. Чтобы получить diff stats,
+# отдельно дергаем каждый PR через gh pr view.
+
+gh search prs \
+  --author "$USERNAME" \
+  --updated "&gt;=$SINCE" \
+  --limit 100 \
+  --json number,title,url,state,isDraft,repository,createdAt,updatedAt,closedAt \
+  | jq '[.[] | {
+      number,
+      title,
+      url,
+      state,
+      draft: .isDraft,
+      repo: .repository.nameWithOwner,
+      created: .createdAt,
+      updated: .updatedAt,
+      closed: .closedAt
+    }]'
+</code></pre>
+
+<p>Сделай исполняемым:</p>
+<pre><code class="language-bash">chmod +x ~/.claude/skills/weekly-pr-report/scripts/fetch_prs.sh</code></pre>
+
+<p>На macOS флаг даты другой (<code>-v-7d</code>), на Linux — <code>-d "-7 days"</code>. В скрипте обработаны оба случая.</p>
+
+<h2>Шаг 4. Шаблон отчёта</h2>
+<p>Файл <code>templates/report.md</code>:</p>
+<pre><code class="language-markdown"># Weekly PR Report
+**Период:** {{from}} — {{to}}
+**Автор:** @{{username}}
+
+## TL;DR
+
+{{summary_1_2_sentences}}
+
+## ✅ Merged ({{merged_count}})
+
+{{merged_list}}
+
+## 🔄 In progress ({{open_count}})
+
+{{open_list}}
+
+## ❌ Closed without merge ({{closed_count}})
+
+{{closed_list}}
+
+---
+
+Шаблон строки PR: `- [#{number}]({url}) — {title} · \`{repo}\``
+</code></pre>
+
+<p>Claude знает, что <code>{{...}}</code> — это плейсхолдеры, и заполнит их сам. Никаких jinja или mustache не нужно.</p>
+
+<h2>Шаг 5. Регистрируем Skill</h2>
+<p><strong>Claude Code:</strong> Skills из <code>~/.claude/skills/</code> подхватываются автоматически при старте новой сессии. Перезапусти CLI — и можно проверять.</p>
+<p><strong>Claude Desktop:</strong> Settings → Features → Skills → нажми «Refresh skills» или перезапусти приложение. Skill должен появиться в списке с твоим <code>name</code> и <code>description</code>.</p>
+
+<p>Чтобы убедиться, что Skill виден, попроси в чате: «какие Skills у тебя сейчас доступны?». В ответе должен фигурировать <code>weekly-pr-report</code>.</p>
+
+<h2>Запуск и проверка</h2>
+<p>В новом чате просто пиши:</p>
+<pre><code>сделай мне отчёт по моим PR за неделю,
+github username — madzhitov</code></pre>
+
+<p>Claude должен:</p>
+<ol>
+<li>Вспомнить Skill (видно по фразе вроде «использую weekly-pr-report»).</li>
+<li>Вызвать <code>bash scripts/fetch_prs.sh madzhitov 7</code>.</li>
+<li>Дождаться JSON, отсортировать по статусам.</li>
+<li>Заполнить шаблон и отдать готовый markdown.</li>
+</ol>
+
+<p>У меня первый запуск занимает ~8 секунд (gh search не самый быстрый), повторные — те же 8 секунд, кеш не помогает. Если работаешь над одной задачей и не хочешь дёргать сеть лишний раз — попроси Claude «не запускай скрипт снова, используй прошлый результат».</p>
+
+<h2>Шаг 6. Когда Skill не срабатывает</h2>
+<p>Самая частая проблема — Claude не вызывает Skill сам. Лечится по чек-листу:</p>
+<ol>
+<li>Перезапусти Claude Desktop / новую сессию Claude Code.</li>
+<li>Проверь, что <code>description</code> содержит ключевые слова из твоего запроса.</li>
+<li>Попроси явно: «используй Skill weekly-pr-report».</li>
+<li>Загляни в логи. В Claude Desktop — Help → Open Logs. В Claude Code — ставь флаг <code>--debug</code>, видно, какие Skills загрузились.</li>
+</ol>
+
+<h2>Расширения</h2>
+<ul>
+<li><strong>Skill «утренний дайджест»:</strong> читает unread в Gmail / Slack, делает свод за 5 минут до 10:00. Триггер: «что важного с утра?».</li>
+<li><strong>Skill «чек-лист публикации поста»:</strong> по запросу «опубликовать пост [path]» — проверяет наличие обложки, alt-текстов, длину title/description, прогоняет линтер.</li>
+<li><strong>Skill «журнал тренировок»:</strong> по фразе «записал тренировку: жим 80×5×3» — дописывает в markdown-журнал, считает прогрессию, в конце недели делает свод.</li>
+<li><strong>Skill «протокол 1:1»:</strong> по «сделай заметки для 1:1 с N» — берёт прошлые заметки, открытые задачи N в Jira, формирует agenda.</li>
+<li><strong>Командные Skills через git:</strong> кладёшь Skills в <code>.claude/skills/</code> репозитория — вся команда работает с одинаковыми инструментами.</li>
+</ul>
+
+<h2>Подводные камни</h2>
+<ul>
+<li><strong>Длинный SKILL.md.</strong> Если файл &gt;200 строк — Claude съест много токенов на каждом запуске и может проигнорировать часть инструкций. Дроби на несколько Skills.</li>
+<li><strong>Двусмысленный description.</strong> «Помогает с отчётами» — слишком общо, сработает на всё подряд. «Отчёт по PR за неделю» — точно.</li>
+<li><strong>Пути в скриптах.</strong> Когда Claude вызывает <code>bash scripts/fetch_prs.sh</code>, рабочая директория — та, где он сейчас находится, а не папка Skill. Если скрипту нужны соседние файлы — используй <code>$(dirname "$0")</code>.</li>
+<li><strong>Зависимости.</strong> Skill ожидает, что <code>gh</code> и <code>jq</code> установлены. Если делишься Skill с командой — добавь раздел «Prerequisites» в SKILL.md и проверку наличия в начале скрипта.</li>
+<li><strong>Секреты.</strong> Никогда не клади токены в Skill. Они уходят в контекст и попадают в логи. Только переменные окружения или системный keychain.</li>
+<li><strong>Конфликтующие Skills.</strong> Если у тебя пять Skills с похожим описанием — Claude угадывает. Делай чёткие, непересекающиеся.</li>
+</ul>
+
+<h2>Что в итоге</h2>
+<p>За час ты:</p>
+<ol>
+<li>Понял структуру Skill: <code>SKILL.md</code> + скрипты + шаблоны.</li>
+<li>Написал реально используемый Skill для еженедельного отчёта.</li>
+<li>Освоил формат <code>description</code>, который надёжно цепляется Claude.</li>
+<li>Получил каркас, на который теперь налепливаешь любую другую рутину.</li>
+</ol>
+<p>Skills — это не магия, а способ один раз описать «как ты делаешь X», и больше не объяснять это каждый раз. После третьего-четвёртого Skill начинаешь замечать в работе паттерны, которые раньше делал руками — и они один за другим становятся вызовами на одну фразу.</p>
+
+<div class="callout callout-success">
+<strong>Совет:</strong> заведи проект <code>my-skills</code> на git и храни Skills там. Симлинки в <code>~/.claude/skills/</code> + бэкап + версионирование. На новой машине — клонировал и работаешь.
+</div>
+
+
+    <div class="pp-open"><a href="/#lesson-p12">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

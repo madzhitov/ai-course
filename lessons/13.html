@@ -19,21 +19,199 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/13.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/13.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-13');
-</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 2. Строитель</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 13</span></div>
 <h1>Урок 13. Function Calling — ИИ вызывает твои функции</h1>
-<p>Урок 13 из курса AI на русском. Function Calling — ИИ вызывает твои функции. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-13">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять как работает Function Calling и почему это строительный блок агентов</span>
+  <span><strong>Время:</strong> ~45 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/11</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>В Фазе 1 ты научился разговаривать с LLM: задавать вопросы, получать ответы, писать промпты. Но у такой модели есть потолок: LLM живёт в своём пузыре — она не знает текущую погоду, не умеет запросить твою базу данных, не может отправить email. И даже если ты просишь вернуть структурированный JSON, каждая модель форматирует его по-своему.</p>
+<p><strong>Function Calling</strong> — механизм, который закрывает обе проблемы разом:</p>
+<ol>
+<li>LLM возвращает <strong>строго структурированные данные</strong> — никаких сюрпризов с форматом.</li>
+<li>LLM может «попросить» выполнить реальное действие во внешнем мире — погода, поиск, база данных, отправка сообщения.</li>
+</ol>
+<p>Это <strong>архитектурный сдвиг</strong>: ты переходишь от чат-бота, который отвечает на вопросы, к агенту, который действует. Function Calling — фундамент всех агентных систем.</p>
+
+<h2>1. Проблема, которую решает Function Calling</h2>
+<p>Представь: ты хочешь сделать бота для HR-отдела. Бот принимает резюме и должен занести данные в CRM: имя, должность, опыт, зарплатные ожидания.</p>
+<p>До Function Calling GPT-4 вернёт <code>{"name": "Алексей", "experience": 5}</code>, Claude вернёт <code>{"full_name": "Иванов Алексей", "years": "5 лет"}</code>, Mistral добавит пояснительный текст вокруг JSON. Три модели — три разных ключа, разные типы данных. Твой код упадёт с ошибкой.</p>
+<p>После Function Calling ты один раз описываешь схему — и все модели возвращают строго её.</p>
+
+<h2>2. Ментальная модель: LLM — диспетчер, а не исполнитель</h2>
+<div class="callout callout-warning">
+<strong>Ключевое заблуждение:</strong> «LLM вызывает функцию». Это неправда. LLM не умеет выполнять код. Она только производит текст.
+</div>
+<p>Что происходит на самом деле:</p>
+<pre><code>[Ты] → описываешь функции + вопрос пользователя → [LLM]
+[LLM] → возвращает: "вызови функцию X с аргументами Y" → [Ты]
+[Ты] → вызываешь настоящую функцию X(Y) → получаешь результат
+[Ты] → передаёшь результат обратно → [LLM]
+[LLM] → формулирует ответ для пользователя → [Ты]</code></pre>
+<p>LLM — умный <strong>диспетчер</strong>. Она не делает работу сама, но знает, кому передать задачу и с какими параметрами. Реальную работу делает твой код.</p>
+
+<h2>3. Анатомия Function Calling: три шага</h2>
+<h3>Шаг 1. Ты описываешь функции</h3>
+<p>Перед запросом к LLM ты передаёшь список функций в виде JSON-схем. Схема — это описание: как называется функция, что делает, какие принимает параметры.</p>
+<pre><code>{
+  "name": "get_weather",
+  "description": "Получить текущую погоду в городе",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "city": {
+        "type": "string",
+        "description": "Название города, например: Москва"
+      }
+    },
+    "required": ["city"]
+  }
+}</code></pre>
+<p>Это просто описание на языке JSON — <strong>инструкция для LLM</strong>, не настоящий код.</p>
+
+<h3>Шаг 2. LLM решает, нужна ли функция</h3>
+<p>Пользователь пишет «Какая сейчас погода в Казани?» — LLM смотрит на список функций и возвращает:</p>
+<pre><code>{
+  "function_call": {
+    "name": "get_weather",
+    "arguments": { "city": "Казань" }
+  }
+}</code></pre>
+<p>Если пользователь пишет «Как дела?» — LLM просто ответит текстом, функция не нужна.</p>
+
+<h3>Шаг 3. Ты выполняешь реальный вызов и возвращаешь результат</h3>
+<p>Твой код (не LLM!) берёт имя функции и аргументы, вызывает настоящий API, получает данные и передаёт обратно в LLM. LLM формулирует финальный ответ для пользователя.</p>
+
+<h2>4. Function Calling vs просто «верни JSON»</h2>
+<table>
+<tr><th></th><th>Промпт «верни JSON»</th><th>Function Calling</th></tr>
+<tr><td>Формат</td><td>Может плавать</td><td>Строго по схеме</td></tr>
+<tr><td>Тип данных</td><td>Строки везде</td><td>string, integer, boolean, array</td></tr>
+<tr><td>required поля</td><td>Модель может пропустить</td><td>API гарантирует схему</td></tr>
+<tr><td>Несколько инструментов</td><td>Нельзя</td><td>Можно передать список</td></tr>
+<tr><td>Интеграция в агентный цикл</td><td>Сложно</td><td>Нативно</td></tr>
+</table>
+
+<h2>5. Важные нюансы</h2>
+<h3>Function Calling ≠ Tool Use (но это одно и то же)</h3>
+<p>OpenAI называет это <strong>Function Calling</strong> (старое API) и <strong>Tool Use</strong> (новое). Anthropic (Claude) называет это <strong>Tool Use</strong>. Принцип идентичный — просто разные названия в документации.</p>
+
+<h3>Безопасность: не доверяй аргументам слепо</h3>
+<p>LLM передаёт тебе аргументы для функции — но она может ошибиться или быть обманута через prompt injection. Всегда валидируй аргументы перед выполнением, особенно если функция делает что-то необратимое.</p>
+
+<h3>Один запрос может потребовать несколько функций</h3>
+<p>«Найди курсы по Python и запиши меня на лучший» — это два действия. Современные LLM умеют вызывать несколько функций подряд (parallel tool calls).</p>
+
+<h2>6. Практика: бот с двумя инструментами</h2>
+<pre><code>pip install openai</code></pre>
+<pre><code>import json
+from openai import OpenAI
+
+client = OpenAI(api_key="твой-ключ")
+
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_weather",
+            "description": "Получить текущую погоду в городе",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "city": {"type": "string", "description": "Название города"}
+                },
+                "required": ["city"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "send_email",
+            "description": "Отправить email сообщение",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "to": {"type": "string"},
+                    "subject": {"type": "string"},
+                    "body": {"type": "string"}
+                },
+                "required": ["to", "subject", "body"]
+            }
+        }
+    }
+]
+
+def get_weather(city):
+    data = {"Москва": {"temp": 20, "condition": "солнечно"},
+            "Казань": {"temp": 18, "condition": "облачно"}}
+    w = data.get(city, {"temp": 15, "condition": "неизвестно"})
+    return json.dumps({"city": city, **w}, ensure_ascii=False)
+
+def send_email(to, subject, body):
+    print(f"📧 Email → {to}: {subject}")
+    return json.dumps({"status": "sent"})
+
+available_functions = {"get_weather": get_weather, "send_email": send_email}
+
+def run_agent(user_message):
+    messages = [{"role": "user", "content": user_message}]
+    response = client.chat.completions.create(
+        model="gpt-4o-mini", messages=messages, tools=tools, tool_choice="auto"
+    )
+    message = response.choices[0].message
+    while message.tool_calls:
+        messages.append(message)
+        for tc in message.tool_calls:
+            result = available_functions[tc.function.name](
+                **json.loads(tc.function.arguments)
+            )
+            messages.append({"role": "tool", "tool_call_id": tc.id, "content": result})
+        response = client.chat.completions.create(
+            model="gpt-4o-mini", messages=messages, tools=tools, tool_choice="auto"
+        )
+        message = response.choices[0].message
+    return message.content
+
+print(run_agent("Проверь погоду в Питере и если дождь — предупреди boss@example.com"))</code></pre>
+
+<h2>7. Связь с другими уроками</h2>
+<p><strong>Урок 14 (RAG):</strong> функция поиска по векторной БД станет одним из инструментов агента. <strong>Урок 16 (Агенты):</strong> тот самый <code>while message.tool_calls</code> — это и есть агентный цикл. <strong>Урок 28 (MCP):</strong> стандартный протокол для подключения инструментов — Function Calling, возведённый в стандарт.</p>
+<p>Когда Claude в Cowork вызывает Notion или Asana — это ровно тот же механизм Tool Use. Принцип один везде.</p>
+
+<h2>✅ Контроль урока</h2>
+<ol>
+<li>LLM сама вызывает функции — правда или нет? Объясни.</li>
+<li>Какие три шага составляют один цикл Function Calling?</li>
+<li>Чем Function Calling лучше промпта «верни JSON» для агентных систем?</li>
+<li>Что такое Tool Use и как оно связано с Function Calling?</li>
+<li>Почему нельзя слепо доверять аргументам, которые LLM передаёт в функцию?</li>
+</ol>
+
+    <div class="pp-open"><a href="/#lesson-13">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

@@ -19,21 +19,123 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/p3.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p3.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p3');
-</script>
 </head>
 <body>
-<h1>Свой MCP-сервер: подключаем Claude к Notion / Linear / своему API</h1>
-<p>P3 из курса AI на русском. Свой MCP-сервер: подключаем Claude к Notion / Linear / своему API. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p3">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P3</span></div>
+<h1>Проект «За 1 час»: Свой MCP-сервер для Claude</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> MCP-сервер, который даёт Claude доступ к твоему Notion / Linear / своему API</span>
+  <span><strong>Время:</strong> ~75 минут</span>
+  <span><strong>Уровень:</strong> Python + урок c3 (про MCP)</span>
+</div>
+
+<h2>Зачем</h2>
+<p>MCP (Model Context Protocol) — открытый стандарт от Anthropic, позволяющий Claude подключаться к любым твоим системам единым способом. Один MCP-сервер ты пишешь раз — он работает в Claude Desktop, Claude Code, Cursor, Zed и сотнях других клиентов. Этот проект научит тебя писать свой MCP-сервер за час.</p>
+
+<h2>Что узнаешь</h2>
+<ul>
+<li>Архитектура MCP (resources, tools, prompts).</li>
+<li>Использование Python MCP SDK.</li>
+<li>Подключение сервера к Claude Desktop.</li>
+<li>Дебаг через MCP Inspector.</li>
+</ul>
+
+<h2>Архитектура</h2>
+<pre><code>Claude Desktop ↔ stdio ↔ твой MCP-сервер ↔ Notion API
+                                    ↘ Linear API
+                                    ↘ твоя БД</code></pre>
+
+<h2>Шаг 1. Установка (5 мин)</h2>
+<pre><code>pip install mcp anthropic-mcp</code></pre>
+<p>Создай папку проекта <code>my-mcp</code> и файл <code>server.py</code>.</p>
+
+<h2>Шаг 2. Минимальный сервер (15 мин)</h2>
+<pre><code>from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("my-tools")
+
+@mcp.tool()
+def get_weather(city: str) -&gt; str:
+    """Получает погоду в городе."""
+    # Здесь реальный вызов API
+    return f"В городе {city} +18°C, солнечно"
+
+@mcp.resource("note://daily")
+def daily_note() -&gt; str:
+    """Текущая дневная заметка."""
+    return open("daily.md").read()
+
+if __name__ == "__main__":
+    mcp.run()</code></pre>
+
+<h2>Шаг 3. Подключаем к Claude Desktop (10 мин)</h2>
+<p>Открой <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> (Mac) или <code>%APPDATA%Claudeclaude_desktop_config.json</code> (Win):</p>
+<pre><code>{
+  "mcpServers": {
+    "my-tools": {
+      "command": "python",
+      "args": ["/полный/путь/к/server.py"]
+    }
+  }
+}</code></pre>
+<p>Перезапусти Claude Desktop. В чате появится 🔌-иконка с твоим сервером.</p>
+
+<h2>Шаг 4. Реальный tool — Notion (25 мин)</h2>
+<p>Получи Notion API key (developers.notion.com), share свою базу с интеграцией. Добавь:</p>
+<pre><code>import requests, os
+NOTION_KEY = os.environ["NOTION_KEY"]
+DATABASE_ID = "..."
+
+@mcp.tool()
+def create_notion_task(title: str, status: str = "Todo") -&gt; str:
+    """Создаёт задачу в Notion."""
+    r = requests.post(
+      "https://api.notion.com/v1/pages",
+      headers={"Authorization": f"Bearer {NOTION_KEY}", "Notion-Version": "2022-06-28"},
+      json={"parent": {"database_id": DATABASE_ID},
+            "properties": {"Title": {"title": [{"text": {"content": title}}]},
+                          "Status": {"select": {"name": status}}}}
+    )
+    return f"Created: {r.json().get('url')}"</code></pre>
+
+<h2>Шаг 5. Дебаг через MCP Inspector (10 мин)</h2>
+<pre><code>npx @modelcontextprotocol/inspector python server.py</code></pre>
+<p>Откроется веб-UI на localhost:5173. Можешь тестировать tools без Claude.</p>
+
+<h2>Шаг 6. Расширения</h2>
+<ul>
+<li>Добавь <strong>resources</strong> — статические данные (твоя текущая страница в Notion).</li>
+<li>Добавь <strong>prompts</strong> — шаблоны промптов (review my today's tasks).</li>
+<li>Сделай <strong>auth</strong> через OAuth (для прода).</li>
+<li>Опубликуй на <strong>mcp-servers.dev</strong>.</li>
+</ul>
+
+<h2>Что дальше</h2>
+<p>Прочитай <a href="https://modelcontextprotocol.io" target="_blank">modelcontextprotocol.io</a>. MCP — будущий стандарт для AI-инструментов; писать свои серверы — навык, который окупится.</p>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> через свой MCP-сервер Claude может управлять чем угодно — твоей домашней автоматикой, корпоративными системами, кастомными БД. Это «открыть Claude в свой мир».
+</div>
+
+    <div class="pp-open"><a href="/#lesson-p3">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

@@ -19,21 +19,189 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/11.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/11.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-11');
-</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 11</span></div>
 <h1>Урок 11. UX для ИИ-приложений</h1>
-<p>Урок 11 из курса AI на русском. UX для ИИ-приложений. ~45 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-11">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять, почему ChatGPT-стиль UX работает, и применить эти паттерны к своему AI-приложению</span>
+  <span><strong>Время:</strong> ~45 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/12 + собственная практика</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Качество AI-приложения на 50% — это качество модели. На 50% — это UX. Плохой UX сводит на нет даже GPT-4.</p>
+<p>AI-приложения отличаются от обычных тремя ключевыми вещами:</p>
+<ul>
+<li><strong>Долгий и непредсказуемый ответ</strong> (2–30 секунд, иногда больше).</li>
+<li><strong>Недетерминированный результат</strong> (один и тот же запрос — разные ответы).</li>
+<li><strong>Ошибки правдоподобные</strong> (галлюцинация выглядит как правильный ответ).</li>
+</ul>
+<p>Это требует <em>другого</em> UX. Большинство паттернов уже изобретены в ChatGPT/Claude/Copilot — твоя задача знать их и применять.</p>
+
+<h2>1. Стриминг — главный паттерн</h2>
+<p>Никогда не показывай <strong>спиннер 15 секунд</strong> и потом весь ответ. Стримь токен за токеном. Это:</p>
+<ul>
+<li>Делает приложение <em>в 3 раза «быстрее»</em> по ощущению, при той же фактической скорости.</li>
+<li>Даёт пользователю возможность <strong>остановить генерацию</strong>, если ответ ушёл не туда (сэкономит токены).</li>
+<li>Создаёт ощущение «думающего» собеседника, а не «работающей машины».</li>
+</ul>
+<p>Все провайдеры (OpenAI, Anthropic, Google) поддерживают streaming в API. На стороне фронта — Server-Sent Events (SSE) или WebSocket. Если используешь Vercel AI SDK / Anthropic SDK — стриминг включается одной опцией.</p>
+
+<h2>2. Cancel — всегда</h2>
+<p>Кнопка «Stop». Обязательна. Это <strong>самая важная кнопка</strong> в AI-приложении после Send.</p>
+<p>Почему: пользователь часто видит на первых словах, что модель уходит не туда. Без Stop он ждёт 20 секунд и потом перепишет промпт. Со Stop — отменяет за секунду, экономит токены и время.</p>
+
+<h2>3. Регенерация и сравнение вариантов</h2>
+<p><strong>Regenerate</strong> — повторить запрос, получить другой ответ. ChatGPT, Claude — все умеют. В своём приложении: одна кнопка-завитушка. Технически — отправить тот же промпт с новым seed/случайностью.</p>
+<p><strong>Variations side-by-side.</strong> Полезно для генеративных задач (написание, картинки). Покажи 2–3 варианта рядом, пользователь выберет. Это меняет ментальную модель с «модель пытается угадать что я хочу» на «модель помогает мне выбрать».</p>
+
+<h2>4. Edit-and-resubmit вместо «отправь новое»</h2>
+<p>Когда промпт не сработал, пользователь обычно хочет <strong>чуть подправить</strong>, а не писать заново. ChatGPT даёт edit на каждом своём сообщении — это меняет всю динамику разговора.</p>
+<p>Эта одна фича делает чат на 30% эффективнее.</p>
+
+<h2>5. Прозрачность: «что я могу / чего не могу»</h2>
+<p>AI-приложения часто страдают от <strong>«пустого input»</strong>: пользователь видит чат и не знает, что туда писать. Решения:</p>
+<ul>
+<li><strong>Примеры промптов</strong> при первом открытии (ChatGPT делает это: «Brainstorm names for...», «Suggest a recipe...»).</li>
+<li><strong>Slash-команды</strong> или кнопки быстрых действий — снижают barrier to entry.</li>
+<li><strong>Onboarding tour</strong>: 3 экрана с примерами.</li>
+<li><strong>Явное описание ограничений:</strong> «работаю с текстом, не вижу картинки», «знания до 2024», «не выхожу в интернет».</li>
+</ul>
+
+<h2>6. Источники и confidence — против галлюцинаций</h2>
+<p>Если приложение делает RAG (Урок 14) или работает с фактами:</p>
+<ul>
+<li><strong>Цитаты</strong> рядом с утверждениями. Perplexity делает [1], [2] — пользователь может проверить.</li>
+<li><strong>«Точно знаю / возможно / не уверен»</strong> — попроси модель явно ранжировать свою уверенность в системном промпте и покажи это в UI.</li>
+<li><strong>«Источник:» с гиперссылкой.</strong></li>
+<li>Когда модель не знает — пусть скажет «не знаю», а не придумывает. Это инструкция системного промпта.</li>
+</ul>
+
+<h2>7. Обработка ошибок</h2>
+<p>AI-вызов может упасть. Часто. Что бывает:</p>
+<ul>
+<li><strong>Rate limit</strong> (429) — слишком много запросов.</li>
+<li><strong>Context length exceeded</strong> — пользователь скормил 500-страничный PDF.</li>
+<li><strong>Content policy violation</strong> — модель отказывается.</li>
+<li><strong>Timeout</strong> — модель думает дольше 60 секунд.</li>
+<li><strong>API down</strong> — провайдер лежит.</li>
+</ul>
+<p><strong>Что делать:</strong></p>
+<ul>
+<li>Конкретные сообщения для каждого случая, а не «Something went wrong».</li>
+<li>Кнопка «попробовать снова» с экспоненциальным бекоффом.</li>
+<li>Сохраняй ввод пользователя. Никогда не теряй его промпт при ошибке.</li>
+<li>Fallback на дешёвую/другую модель при rate-limit на дорогой.</li>
+</ul>
+
+<h2>8. Empty states</h2>
+<p>Каждое AI-приложение имеет «пустые» экраны: впервые открыли, нет истории, ничего не загружено. Это огромный шанс показать ценность.</p>
+<p><strong>Что должно быть в empty state:</strong></p>
+<ul>
+<li>Что приложение делает (одна строка).</li>
+<li>3–5 примеров реальных задач, на которые можно нажать.</li>
+<li>Кнопка «Загрузить документ» / «Импортировать» — если применимо.</li>
+</ul>
+
+<h2>9. Микро-UX: что отличает топ-приложения</h2>
+<ul>
+<li><strong>Indicator печатания</strong> — три точки, бегущий курсор, что-то живое.</li>
+<li><strong>Markdown в реальном времени</strong> — рендерь жирный/курсив/код пока идёт стрим.</li>
+<li><strong>Подсветка синтаксиса в коде</strong> — обязательно.</li>
+<li><strong>Кнопка «Copy» на блоках кода.</strong></li>
+<li><strong>Кнопка «Share» / «Export PDF»</strong> для длинных диалогов.</li>
+<li><strong>Сохранение в localStorage</strong> или сервер — пользователи теряют диалог = катастрофа.</li>
+<li><strong>Темная тема</strong> — обязательна, юзеры часто работают вечером.</li>
+<li><strong>Keyboard shortcuts</strong> — Cmd+Enter для отправки, Cmd+K для поиска, ↑ для последнего промпта.</li>
+</ul>
+
+<h2>10. Анти-паттерны</h2>
+<div class="callout callout-danger">
+<strong>🚩 Чего НЕ делать:</strong>
+<ul>
+<li><strong>«Цикл барабана»</strong> на 30 секунд без какой-либо информации.</li>
+<li><strong>Скрытые галлюцинации</strong> — выдавать выдуманные факты как достоверные. Всегда указывай статус.</li>
+<li><strong>«Стерильный chat»</strong> без примеров и onboarding.</li>
+<li><strong>Отправка только по нажатию мыши</strong> — Enter должен работать.</li>
+<li><strong>Терять диалог при перезагрузке.</strong></li>
+<li><strong>Молчаливая ошибка</strong> или generic «Something went wrong».</li>
+<li><strong>Бесконечные ответы без возможности остановить.</strong></li>
+<li><strong>Сообщения 5000 символов сплошным куском</strong> — рендери markdown, разбивай на блоки.</li>
+</ul>
+</div>
+
+<h2>11. Тонкости и подводные камни</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Стриминг ломается на медленной сети.</strong> Тестируй на 3G.</li>
+<li><strong>Перевод стрима в markdown</strong> — в момент рендера буфер может быть незавершён («<code>**жир</code>» без закрытия). Используй проверенные парсеры (marked-streaming, react-markdown с потоковым режимом).</li>
+<li><strong>Cancel должен реально отменять backend-запрос</strong>, а не только UI. Иначе ты платишь за токены, которые не показал.</li>
+<li><strong>Сохранение в localStorage</strong> — лимит ~5MB. Длинные диалоги быстро упрутся.</li>
+<li><strong>Чувствительные данные</strong> — даже в локалшторадж не клади ключи API. Используй серверный прокси.</li>
+</ul>
+</div>
+
+<h2>12. Глоссарий</h2>
+<div class="glossary-term"><h3>Streaming</h3><p>Постепенная отправка ответа токен за токеном через SSE/WebSocket вместо одного blocking-запроса.</p></div>
+<div class="glossary-term"><h3>Empty state</h3><p>Состояние экрана, когда у пользователя ещё нет контента. Критичная точка для onboarding.</p></div>
+<div class="glossary-term"><h3>Optimistic UI</h3><p>Сразу показываем сообщение пользователя в чате, не дожидаясь ответа сервера.</p></div>
+<div class="glossary-term"><h3>Citations</h3><p>Ссылки на источники рядом с утверждениями. Главное оружие против галлюцинаций в UX.</p></div>
+
+<h2>13. Практика (45 минут)</h2>
+<ol>
+<li><strong>Возьми любое своё мини-AI-приложение</strong> (или используй пример из урока 7 — чат-бот).</li>
+<li><strong>Добавь:</strong> streaming, кнопку Stop, кнопку Regenerate, сохранение истории в localStorage, базовые обработчики ошибок.</li>
+<li><strong>Empty state:</strong> 3 примера-кнопки промптов на первом экране.</li>
+<li><strong>Тёмная тема:</strong> переключатель.</li>
+<li><strong>Дай попробовать другу.</strong> Запиши 3 вещи, которые он не понял — это твои UX-долги.</li>
+</ol>
+
+<h2>14. Проверь себя</h2>
+<p><strong>1. Почему стриминг — главный UX-паттерн для AI?</strong><br>
+Делает приложение «в 3 раза быстрее» по ощущению. Даёт возможность остановить плохой ответ. Создаёт ощущение собеседника.</p>
+<p><strong>2. Что должно быть в empty state AI-приложения?</strong><br>
+Что приложение делает + 3–5 примеров промптов, на которые можно нажать.</p>
+<p><strong>3. Как UX борется с галлюцинациями?</strong><br>
+Цитаты с источниками, явный уровень уверенности модели, «не знаю» вместо выдумки.</p>
+<p><strong>4. Что обязательно при ошибке API?</strong><br>
+Не потерять промпт пользователя, показать конкретную причину, кнопку retry, fallback на другую модель если возможно.</p>
+<p><strong>5. Почему Edit-and-resubmit важнее Regenerate?</strong><br>
+Пользователь обычно знает, как поправить промпт. Edit меняет «бросаем кубик заново» на «уточняем намерение».</p>
+
+<h2>15. Что должно остаться в голове</h2>
+<ol>
+<li>Стриминг + Stop + Regenerate — три обязательные кнопки.</li>
+<li>Edit-and-resubmit умножает эффективность в разы.</li>
+<li>Empty state с примерами — твой главный onboarding.</li>
+<li>Цитаты и confidence-уровни — UX-броня против галлюцинаций.</li>
+<li>При ошибке: конкретный текст + сохранённый промпт + retry, никогда не «Something went wrong».</li>
+<li>Сохраняй историю. Тёмная тема. Keyboard shortcuts.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> прокликай ChatGPT и Claude. Зафиксируй, какие 5 UX-приёмов тебе понравились больше всего — и применяй их в своих приложениях.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-11">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

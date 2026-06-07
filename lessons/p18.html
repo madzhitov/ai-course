@@ -19,21 +19,372 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/p18.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p18.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p18');
-</script>
 </head>
 <body>
-<h1>Генератор Anki-карточек из PDF учебника для подготовки к экзамену</h1>
-<p>P18 из курса AI на русском. Генератор Anki-карточек из PDF учебника для подготовки к экзамену. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p18">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P18</span></div>
+
+<h1>Проект «За 1 час»: Генератор Anki-карточек из PDF учебника</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> CLI-скрипт, который из PDF учебника генерирует готовую .apkg-колоду для импорта в Anki</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Уровень:</strong> Python базовый</span>
+</div>
+
+<h2>Зачем этот проект</h2>
+<p>Anki — топовый инструмент для запоминания (spaced repetition реально работает: я выучил испанский так за полтора года, медицинские студенты сдают экзамены на нём). Но есть боль: сделать качественную колоду по учебнику = неделя нудного труда. Большинство людей бросает на этом этапе.</p>
+<p>Этот скрипт делает первый проход за тебя: пробегает по главам PDF, по каждой генерит 10–15 пар вопрос–ответ разной сложности, упаковывает в <code>.apkg</code>-файл. Ты потом проходишься, что-то правишь, что-то выкидываешь — но это в 20 раз быстрее, чем писать с нуля.</p>
+<p>Подчеркну этический момент: это не «учить за тебя». Это инструмент повторения уже изученного материала. Карточки сами по себе ничего не выучивают — учит повторение. Скрипт убирает рутину создания, а не саму учёбу.</p>
+
+<h2>Что в итоге будет</h2>
+<ul>
+<li>CLI: <code>python anki_gen.py учебник.pdf "Биология 8 класс"</code> → <code>biology_8.apkg</code>.</li>
+<li>Извлечение текста из PDF с разбивкой по главам.</li>
+<li>Claude генерит карточки по каждой главе: разные типы (определение, факт, рассуждение).</li>
+<li>Дедупликация близких карточек.</li>
+<li>Готовый файл <code>.apkg</code> — двойной клик → импортируется в Anki Desktop.</li>
+</ul>
+
+<h2>Требования</h2>
+<ul>
+<li>Python 3.10+.</li>
+<li>API-ключ Anthropic.</li>
+<li>Anki Desktop (для импорта результата) — <a href="https://apps.ankiweb.net/">apps.ankiweb.net</a>.</li>
+<li>PDF учебника. Если PDF — сканы картинок, нужен ещё OCR (см. подводные камни).</li>
+</ul>
+
+<h2>Архитектура</h2>
+<pre><code>PDF
+  ↓ (pdfplumber — извлекает текст постранично)
+текст + метаданные страниц
+  ↓ (chapter_split — режем на главы по эвристике)
+[Глава 1, Глава 2, ...]
+  ↓ (для каждой главы: Claude → JSON-карточек)
+[{q, a, tag}, ...]
+  ↓ (genanki)
+deck.apkg</code></pre>
+
+<h2>Шаг 1: установка</h2>
+
+<pre><code class="language-bash">mkdir anki-gen && cd anki-gen
+python3 -m venv venv && source venv/bin/activate
+pip install pdfplumber anthropic genanki python-dotenv</code></pre>
+
+<p><code>.env</code>:</p>
+<pre><code class="language-bash">ANTHROPIC_API_KEY=sk-ant-...</code></pre>
+
+<h2>Шаг 2: извлекаем текст из PDF</h2>
+
+<p>Файл <code>extract.py</code>:</p>
+
+<pre><code class="language-python">import pdfplumber
+import re
+
+def extract_text(pdf_path):
+    """Возвращает список страниц: [{'page': int, 'text': str}]."""
+    pages = []
+    with pdfplumber.open(pdf_path) as pdf:
+        for i, page in enumerate(pdf.pages, 1):
+            text = page.extract_text() or ""
+            # чистим типовой мусор: номера страниц, колонтитулы
+            text = re.sub(r"\n{3,}", "\n\n", text)
+            pages.append({"page": i, "text": text.strip()})
+    return pages
+
+
+def split_into_chapters(pages):
+    """Эвристически разбивает на главы. Ищет паттерны 'Глава N' / '§N' / 'Chapter N'."""
+    full_text = ""
+    page_starts = {}  # позиция → номер страницы
+    for p in pages:
+        page_starts[len(full_text)] = p["page"]
+        full_text += p["text"] + "\n\n"
+
+    # ищем маркеры глав
+    pattern = re.compile(
+        r"^(Глава\s+\d+|§\s*\d+|Chapter\s+\d+|\d+\.\s+[А-ЯA-Z][^\n]{5,80})$",
+        re.MULTILINE
+    )
+
+    matches = list(pattern.finditer(full_text))
+    if len(matches) < 2:
+        # не нашли структуру — режем механически по 8000 символов
+        return _chunk_by_size(full_text, 8000)
+
+    chapters = []
+    for i, m in enumerate(matches):
+        start = m.start()
+        end = matches[i+1].start() if i+1 < len(matches) else len(full_text)
+        title = m.group(0).strip()
+        body = full_text[start:end].strip()
+        # отрезаем слишком короткие (вероятно ложные сработки)
+        if len(body) > 500:
+            chapters.append({"title": title, "text": body})
+
+    return chapters
+
+
+def _chunk_by_size(text, size):
+    chunks = []
+    for i in range(0, len(text), size):
+        chunks.append({"title": f"Часть {i//size + 1}", "text": text[i:i+size]})
+    return chunks
+</code></pre>
+
+<p>Это эвристика — для разных учебников будет ломаться по-разному. Если PDF плохо структурируется — фолбэк на чанки по 8к символов. Для большинства школьных и вузовских учебников паттерн «Глава N» / «§N» работает.</p>
+
+<h2>Шаг 3: генерим карточки через Claude</h2>
+
+<p>Файл <code>cards.py</code>:</p>
+
+<pre><code class="language-python">import os
+import json
+from anthropic import Anthropic
+
+client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+
+CARDS_PROMPT = """Ты помогаешь студенту составить колоду Anki по тексту главы учебника.
+
+Сгенерируй 10-15 карточек по этой главе. Правила:
+
+1. Каждая карточка проверяет ОДНО конкретное знание. Не "расскажи о фотосинтезе",
+   а "что является сырьём для фотосинтеза?".
+2. Вопрос — короткий и однозначный. Ответ — короткий (1-3 предложения).
+3. Разные уровни сложности и типы:
+   - определения (что такое X?)
+   - факты (когда произошло X? сколько X?)
+   - функции/назначение (зачем нужен X?)
+   - сравнения (чем X отличается от Y?)
+   - 1-2 на рассуждение (почему происходит X?)
+4. Покрывай главу равномерно — не все 15 карточек по одному параграфу.
+5. Избегай дублей: если две карточки проверяют одно и то же чуть разными словами — оставь одну.
+6. НЕ выдумывай факты. Если в тексте чего-то нет — не добавляй.
+
+Верни строго JSON-массив:
+[
+  {"q": "Что такое митоз?", "a": "Деление клетки, при котором из одной материнской...", "type": "definition"},
+  {"q": "Сколько хромосом в клетке человека?", "a": "46 (23 пары).", "type": "fact"},
+  ...
+]
+Никакого markdown вокруг, только JSON."""
+
+
+def generate_cards(chapter_title, chapter_text):
+    # обрезаем главу, если очень длинная (контекст не бесконечный)
+    text = chapter_text[:15000]
+
+    resp = client.messages.create(
+        model="claude-sonnet-4-5",
+        max_tokens=3500,
+        system=CARDS_PROMPT,
+        messages=[{
+            "role": "user",
+            "content": f"Глава: {chapter_title}\n\nТекст:\n{text}"
+        }],
+    )
+
+    text_out = resp.content[0].text.strip()
+    if text_out.startswith("```"):
+        text_out = text_out.split("```")[1]
+        if text_out.startswith("json"):
+            text_out = text_out[4:]
+
+    return json.loads(text_out)
+</code></pre>
+
+<h2>Шаг 4: дедупликация</h2>
+
+<p>Иногда Claude в разных главах выдаёт похожие карточки (особенно если в учебнике есть повторы). Простой Jaccard-фильтр по словам вопроса:</p>
+
+<pre><code class="language-python">def jaccard(a, b):
+    sa, sb = set(a.lower().split()), set(b.lower().split())
+    if not sa or not sb:
+        return 0
+    return len(sa & sb) / len(sa | sb)
+
+
+def dedupe(cards, threshold=0.6):
+    """Убирает карточки, вопрос которых >threshold похож на ранее добавленный."""
+    result = []
+    for c in cards:
+        if any(jaccard(c["q"], r["q"]) > threshold for r in result):
+            continue
+        result.append(c)
+    return result
+</code></pre>
+
+<h2>Шаг 5: упаковка в .apkg через genanki</h2>
+
+<pre><code class="language-python">import genanki
+import random
+
+def build_deck(deck_name, cards):
+    # уникальные id (если делаешь две колоды с одинаковым именем — ID разные!)
+    deck_id = random.randrange(1 << 30, 1 << 31)
+    model_id = random.randrange(1 << 30, 1 << 31)
+
+    model = genanki.Model(
+        model_id,
+        "Simple QA",
+        fields=[
+            {"name": "Question"},
+            {"name": "Answer"},
+            {"name": "Type"},
+        ],
+        templates=[{
+            "name": "Card 1",
+            "qfmt": "{{Question}}",
+            "afmt": '{{FrontSide}}<hr id="answer">{{Answer}}<br><br><small>{{Type}}</small>',
+        }],
+        css="""
+        .card { font-family: -apple-system, sans-serif; font-size: 18px; padding: 20px; }
+        small { color: #888; }
+        """
+    )
+
+    deck = genanki.Deck(deck_id, deck_name)
+
+    for c in cards:
+        note = genanki.Note(
+            model=model,
+            fields=[c["q"], c["a"], c.get("type", "")],
+            tags=[c.get("type", "general")],
+        )
+        deck.add_note(note)
+
+    return deck
+
+
+def save_deck(deck, out_path):
+    genanki.Package(deck).write_to_file(out_path)
+</code></pre>
+
+<h2>Шаг 6: собираем CLI</h2>
+
+<p>Файл <code>anki_gen.py</code>:</p>
+
+<pre><code class="language-python">import sys
+import re
+from pathlib import Path
+from dotenv import load_dotenv
+
+from extract import extract_text, split_into_chapters
+from cards import generate_cards
+from deck import build_deck, save_deck, dedupe
+
+load_dotenv()
+
+def slugify(s):
+    return re.sub(r"[^a-z0-9]+", "_", s.lower()).strip("_")[:40]
+
+
+def main():
+    if len(sys.argv) < 3:
+        print('Usage: python anki_gen.py <pdf> "<имя колоды>"')
+        sys.exit(1)
+
+    pdf = sys.argv[1]
+    deck_name = sys.argv[2]
+
+    print(f"[1/4] Извлекаю текст из {pdf}...")
+    pages = extract_text(pdf)
+    print(f"      Страниц: {len(pages)}")
+
+    print("[2/4] Делю на главы...")
+    chapters = split_into_chapters(pages)
+    print(f"      Глав: {len(chapters)}")
+
+    print("[3/4] Генерю карточки...")
+    all_cards = []
+    for i, ch in enumerate(chapters, 1):
+        print(f"      Глава {i}/{len(chapters)}: {ch['title'][:60]}...")
+        try:
+            cards = generate_cards(ch["title"], ch["text"])
+            # тегируем именем главы
+            for c in cards:
+                c["chapter"] = ch["title"]
+            all_cards.extend(cards)
+        except Exception as e:
+            print(f"      ! пропускаю главу: {e}")
+
+    print(f"      Всего карточек: {len(all_cards)}")
+
+    print("[4/4] Дедуп + упаковка...")
+    all_cards = dedupe(all_cards)
+    print(f"      После дедупа: {len(all_cards)}")
+
+    deck = build_deck(deck_name, all_cards)
+    out = f"{slugify(deck_name)}.apkg"
+    save_deck(deck, out)
+    print(f"\nГотово: {out}")
+    print("Открой Anki Desktop → File → Import → выбери файл.")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+
+<h2>Запуск и проверка</h2>
+
+<pre><code class="language-bash">python anki_gen.py biology_textbook.pdf "Биология 8 класс"</code></pre>
+
+<p>Через 1–3 минуты получишь <code>biologiia_8_klass.apkg</code>. В Anki Desktop:</p>
+<ol>
+<li>File → Import → выбери файл.</li>
+<li>В боковой панели появится колода «Биология 8 класс».</li>
+<li>Открой её — увидишь 100–200 карточек с тегами по главам.</li>
+</ol>
+
+<p>Первое, что сделай — пробегись по 20 случайным, выкидывай некачественные сразу (правая кнопка → Delete). Обычно 10–15% идут в мусор, остальное — нормально.</p>
+
+<h2>Расширения</h2>
+
+<ul>
+<li><strong>Cloze-карточки.</strong> Вместо классических Q/A — пропуски в предложении (<code>{{c1::ответ}}</code>). Иногда удобнее для запоминания определений. Промпт переписывается под формат, в genanki есть отдельная модель Cloze.</li>
+<li><strong>Картинки из PDF.</strong> <code>pdfplumber</code> умеет извлекать изображения постранично. Для геометрии/биологии/географии — карточка «что изображено на схеме?» с картинкой. Сильно повышает вовлечение.</li>
+<li><strong>Уровни сложности.</strong> Добавь в промпт «помечай поле difficulty: easy/medium/hard». В Anki через теги можно учить отдельно «только hard» — удобно за день до экзамена.</li>
+<li><strong>Формат ОГЭ/ЕГЭ.</strong> Под конкретный экзамен можно переписать промпт: «формат: задание ЕГЭ типа 2», «вопросы как в кодификаторе ОГЭ по химии». Карточки начинают тренировать ровно то, что спросят на экзамене.</li>
+<li><strong>Импорт обратно в AnkiWeb автоматом.</strong> AnkiConnect (плагин для Anki) даёт HTTP API. Скрипт может загружать колоду напрямую в коллекцию, без ручного импорта. Удобно, если ты регулярно генерируешь колоды.</li>
+<li><strong>Web UI.</strong> Streamlit-обёртка: пользователь загружает PDF, нажимает кнопку, скачивает .apkg. Можно отдать одноклассникам/студентам.</li>
+</ul>
+
+<h2>Подводные камни</h2>
+
+<ul>
+<li><strong>Сканированный PDF.</strong> Если PDF — это фотки страниц, а не текстовый — <code>pdfplumber</code> ничего не извлечёт. Прогони сначала через OCR (например, <code>ocrmypdf</code> — обёртка над Tesseract: <code>ocrmypdf in.pdf out.pdf -l rus</code>). Качество OCR на русском вузовском учебнике обычно норм.</li>
+<li><strong>Школа vs вуз.</strong> Школьные учебники — структурированные, главы чёткие, карточки получаются хорошо. Вузовские монографии — часто без чёткой структуры, эвристика главу не находит, фолбэк на чанки даёт «карточки по случайным кускам». Качество ниже.</li>
+<li><strong>Галлюцинации.</strong> Иногда Claude подмешивает факты, которых в тексте нет (особенно если глава короткая — модель «дополняет» из общих знаний). Промпт явно запрещает, но не на 100%. Перед серьёзным использованием — спот-чек 30 карточек на достоверность.</li>
+<li><strong>Стоимость.</strong> Учебник 200 страниц = ~20 глав = ~20 запросов к API = ~$0.6. Дёшево для разовой задачи, но за серию учебников быстро набегает. На <code>claude-haiku</code> в 5 раз дешевле, но качество карточек заметно хуже — лучше платить за sonnet.</li>
+<li><strong>Один и тот же deck_id перезапишет.</strong> Если в коде захардкодишь ID и сгенерируешь две версии — вторая при импорте сольётся в первую. Поэтому в коде <code>random.randrange</code> при каждом запуске даёт новый ID. Если нужно обновлять одну колоду — сохраняй ID и используй один и тот же.</li>
+<li><strong>Авторское право.</strong> Если учебник — твой личный, для собственного обучения — всё ОК. Если ты массово генерируешь колоды по чужим учебникам и распространяешь — это уже серая зона по авторскому праву.</li>
+<li><strong>Carрточки не равно знание.</strong> Самая частая ошибка — сгенерировал 500 карточек, поставил на повторение, через месяц забросил. Лучше 100 хорошо проработанных карточек, чем 500 механических. Прорежай.</li>
+</ul>
+
+<h2>Что в итоге</h2>
+
+<p>Я делал колоды для подготовки к собеседованиям (System Design, алгоритмы) — 30 минут на главу из <em>Designing Data-Intensive Applications</em> вместо двух дней ручного выписывания. Точность карточек ~85%, остальное правлю на лету. На жену делал колоду по фармакологии для её повышения квалификации — 4 учебника за вечер.</p>
+
+<p>Главная мысль: Anki давно перестала быть «инструментом для медиков-задротов». Это рабочая память для любой профессии, где много фактического материала. Но создание карточек руками — барьер, на котором отваливается 90% людей. Этот скрипт убирает барьер. А дальше — пользоваться или забить — уже не задача инструмента.</p>
+
+
+    <div class="pp-open"><a href="/#lesson-p18">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

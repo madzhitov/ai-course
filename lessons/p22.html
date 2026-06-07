@@ -19,21 +19,482 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/p22.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p22.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p22');
-</script>
 </head>
 <body>
-<h1>RAG для своих документов (госуслуги, медкарта, договоры) на локальных моделях</h1>
-<p>P22 из курса AI на русском. RAG для своих документов (госуслуги, медкарта, договоры) на локальных моделях. ~90 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p22">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P22</span></div>
+<h1>Проект «За 1 час»: Локальный RAG по своим документам — приватный поиск без облака</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> систему семантического поиска по PDF — медкарта, договоры, выписки, рабочие материалы — полностью офлайн</span>
+  <span><strong>Время:</strong> ~90 минут</span>
+  <span><strong>Уровень:</strong> Python средний, понимание основ эмбеддингов полезно, 16+ GB RAM</span>
+</div>
+
+<h2>Зачем этот проект</h2>
+<p>Типичная ситуация: 50 PDF — выписки из банка, медицинские протоколы, договоры аренды, скан паспорта, налоговые квитанции, рабочие методички. Когда нужно найти «сколько я плачу за коммуналку в среднем за полгода» или «что у меня в полисе ДМС про стоматологию» — приходится открывать файлы по одному, листать, искать словом, ругаться.</p>
+<p>Облачные ассистенты эту задачу решают, но в них надо закидывать документы — а медкарта в чужом дата-центре это совсем не то, чего хочется. Локальный RAG (Retrieval-Augmented Generation) делает то же самое, но всё хранится у тебя на диске: эмбеддинги, индекс, ответы — ничего наружу.</p>
+<p>За 90 минут получим CLI: <code>python rag.py index ~/Documents/мои-доки</code> один раз, потом <code>python rag.py ask "..."</code> — и ответ с цитатами и ссылками на конкретные документы и страницы.</p>
+
+<h2>Что в итоге будет</h2>
+<ul>
+<li>Индексатор PDF: извлекает текст (включая таблицы), режет на чанки, считает эмбеддинги.</li>
+<li>Локальная векторная база ChromaDB — хранится в папке проекта.</li>
+<li>CLI с двумя командами: <code>index</code> (проиндексировать папку) и <code>ask</code> (спросить).</li>
+<li>Поиск top-k релевантных фрагментов → подсовываем Ollama → получаем ответ со ссылками на источники.</li>
+<li>Опциональный Streamlit-интерфейс в одну страницу.</li>
+<li>Ни одного облачного запроса. Всё локально, всё бесплатно, всё офлайн-совместимо.</li>
+</ul>
+
+<h2>Требования</h2>
+<ul>
+<li>Python 3.10+.</li>
+<li>16+ GB RAM (для qwen2.5:7b и embeddings одновременно).</li>
+<li>Установленный Ollama (если не ставил — см. проект p21, шаг 1).</li>
+<li>Папка с PDF/TXT-документами, которые хочешь сделать поисковыми.</li>
+<li>~3 GB свободного места на диске под модели и индекс.</li>
+</ul>
+
+<h2>Архитектура</h2>
+<pre><code>ИНДЕКСАЦИЯ (однократно или по cron):
+docs/*.pdf
+  → pdfplumber: извлечь текст постранично
+  → split: разбить на чанки 500–800 токенов с overlap 100
+  → sentence-transformers: посчитать embedding для каждого чанка
+  → ChromaDB: положить (text, embedding, metadata{file, page})
+
+ЗАПРОС:
+"Сколько я плачу за коммуналку?"
+  → sentence-transformers: embedding запроса
+  → ChromaDB: top-5 ближайших чанков
+  → Ollama (qwen2.5): "вот вопрос, вот контекст, ответь и сошлись"
+  → ответ + список источников</code></pre>
+
+<h2>Шаг 1: окружение и зависимости</h2>
+
+<pre><code class="language-bash">mkdir local-rag && cd local-rag
+python3 -m venv venv && source venv/bin/activate
+pip install pdfplumber sentence-transformers chromadb ollama tqdm
+
+# Ollama-модель (если ещё не тянул)
+ollama pull qwen2.5:7b</code></pre>
+
+<p>Структура проекта:</p>
+<pre><code>local-rag/
+├── venv/
+├── docs/                 ← сюда кладёшь свои PDF
+├── chroma_db/            ← создастся автоматически при индексации
+├── rag.py                ← главный CLI
+└── ui.py                 ← опциональный Streamlit
+</code></pre>
+
+<h2>Шаг 2: извлечение текста из PDF</h2>
+
+<p>Я перебрал три библиотеки. PyPDF2 ломается на сложных layout, PyMuPDF (fitz) быстрый и хороший, но лицензия AGPL — для open-source проектов норм, для корпоративного использования бывают вопросы. Pdfplumber медленнее, но из коробки умеет таблицы и проще ставится. Берём его.</p>
+
+<p>Файл <code>extract.py</code>:</p>
+<pre><code class="language-python">import pdfplumber
+from pathlib import Path
+
+
+def extract_pdf_pages(path):
+    """Возвращает список (page_number, text) для PDF."""
+    pages = []
+    with pdfplumber.open(path) as pdf:
+        for i, page in enumerate(pdf.pages, 1):
+            text = page.extract_text() or ""
+            # таблицы — отдельно, склеиваем построчно
+            for table in page.extract_tables() or []:
+                rows = ["	".join(c or "" for c in row) for row in table]
+                text += "
+
+[TABLE]
+" + "
+".join(rows) + "
+[/TABLE]"
+            if text.strip():
+                pages.append((i, text))
+    return pages
+
+
+def extract_any(path):
+    """PDF — постранично, TXT — целиком как одна "страница"."""
+    p = Path(path)
+    if p.suffix.lower() == ".pdf":
+        return extract_pdf_pages(p)
+    if p.suffix.lower() in (".txt", ".md"):
+        return [(1, p.read_text(encoding="utf-8", errors="ignore"))]
+    return []
+</code></pre>
+
+<p>Тестируем:</p>
+<pre><code class="language-bash">python -c "from extract import extract_any; print(extract_any('docs/example.pdf')[0][1][:300])"</code></pre>
+
+<h2>Шаг 3: чанкинг</h2>
+
+<p>Эмбеддинг хорошо работает на коротких связных кусках. Если кинуть в модель целиком 20-страничный договор — получится размытое усреднение «договор о чём-то». Если резать на абзацы по 50 слов — потеряем контекст. Опытно лучше всего ~500–800 токенов с overlap 100 (чтобы фраза, попавшая на границу, всё равно нашлась).</p>
+
+<p>Файл <code>chunk.py</code>:</p>
+<pre><code class="language-python">def chunk_text(text, chunk_size=600, overlap=100):
+    """Грубая разбивка по словам. Для русского работает достаточно хорошо.
+
+    chunk_size — примерное число слов в куске (≈ 800 токенов для русского).
+    overlap — сколько слов перекрывается между соседними чанками.
+    """
+    words = text.split()
+    if not words:
+        return []
+
+    chunks = []
+    step = chunk_size - overlap
+    for start in range(0, len(words), step):
+        chunk = " ".join(words[start:start + chunk_size])
+        if chunk.strip():
+            chunks.append(chunk)
+        if start + chunk_size >= len(words):
+            break
+    return chunks
+</code></pre>
+
+<p>Можно использовать tiktoken для точного подсчёта токенов, но для нашей задачи разбиение «по словам» работает не хуже и не тянет лишних зависимостей.</p>
+
+<h2>Шаг 4: эмбеддинги и ChromaDB</h2>
+
+<p>Для русского лучшая бесплатная мультиязычная модель — <code>sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2</code>. 384-мерные эмбеддинги, ~120 MB на диске, работает мгновенно даже на CPU. Поддерживает 50+ языков, на русском показывает себя на уровне OpenAI ada-002.</p>
+<p>Если у тебя много документов и хочется качества повыше — возьми <code>paraphrase-multilingual-mpnet-base-v2</code> (768-мерные, ~420 MB, точность выше на 5–10%).</p>
+
+<p>ChromaDB — самая простая локальная векторная БД. Хранит всё в SQLite + parquet-файлах в указанной папке. Никакого сервера, никаких портов.</p>
+
+<p>Файл <code>store.py</code>:</p>
+<pre><code class="language-python">import chromadb
+from sentence_transformers import SentenceTransformer
+
+EMBED_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+
+_model = None
+_client = None
+_collection = None
+
+
+def get_model():
+    global _model
+    if _model is None:
+        _model = SentenceTransformer(EMBED_MODEL)
+    return _model
+
+
+def get_collection(persist_dir="./chroma_db"):
+    global _client, _collection
+    if _collection is None:
+        _client = chromadb.PersistentClient(path=persist_dir)
+        _collection = _client.get_or_create_collection(
+            name="documents",
+            metadata={"hnsw:space": "cosine"},
+        )
+    return _collection
+
+
+def embed_texts(texts):
+    model = get_model()
+    # normalize — для cosine-similarity это обязательно
+    return model.encode(texts, normalize_embeddings=True).tolist()
+</code></pre>
+
+<h2>Шаг 5: индексатор</h2>
+
+<p>Файл <code>indexer.py</code>:</p>
+<pre><code class="language-python">import hashlib
+from pathlib import Path
+from tqdm import tqdm
+
+from extract import extract_any
+from chunk import chunk_text
+from store import get_collection, embed_texts
+
+
+def _chunk_id(file_path, page, chunk_idx):
+    raw = f"{file_path}::{page}::{chunk_idx}"
+    return hashlib.md5(raw.encode()).hexdigest()
+
+
+def index_folder(folder, exts=(".pdf", ".txt", ".md")):
+    collection = get_collection()
+    folder = Path(folder)
+    files = [p for p in folder.rglob("*") if p.suffix.lower() in exts]
+    print(f"Найдено {len(files)} документов")
+
+    for path in tqdm(files, desc="Документы"):
+        try:
+            pages = extract_any(path)
+        except Exception as e:
+            print(f"  пропускаю {path.name}: {e}")
+            continue
+
+        ids, docs, metas = [], [], []
+        for page_num, text in pages:
+            for chunk_idx, chunk in enumerate(chunk_text(text)):
+                ids.append(_chunk_id(str(path), page_num, chunk_idx))
+                docs.append(chunk)
+                metas.append({
+                    "file": path.name,
+                    "path": str(path),
+                    "page": page_num,
+                })
+
+        if not docs:
+            continue
+
+        # считаем эмбеддинги пачками по 64 — оптимально для CPU
+        embeddings = []
+        for i in range(0, len(docs), 64):
+            embeddings.extend(embed_texts(docs[i:i + 64]))
+
+        # upsert — если документ переиндексируем, старые куски заменятся
+        collection.upsert(
+            ids=ids,
+            documents=docs,
+            embeddings=embeddings,
+            metadatas=metas,
+        )
+
+    print(f"В индексе теперь {collection.count()} чанков")
+</code></pre>
+
+<h2>Шаг 6: поиск и ответ через Ollama</h2>
+
+<p>Файл <code>query.py</code>:</p>
+<pre><code class="language-python">import ollama
+from store import get_collection, embed_texts
+
+MODEL = "qwen2.5:7b"
+
+SYSTEM_PROMPT = """Ты — ассистент для поиска по личным документам пользователя.
+
+Тебе дают вопрос и фрагменты документов с пометками источников.
+Отвечай ТОЛЬКО на основании этих фрагментов. Не придумывай.
+
+Правила:
+- Если в фрагментах есть прямой ответ — давай его и в конце укажи источники
+  в формате [файл.pdf, стр. N].
+- Если в фрагментах нет нужной информации — честно скажи "в документах
+  этого не нашёл" и не выдумывай.
+- Если в фрагментах есть цифры — приводи их точно, не округляй на свой вкус.
+- Отвечай кратко, по делу, на русском.
+"""
+
+
+def search(query, top_k=5):
+    collection = get_collection()
+    query_emb = embed_texts([query])[0]
+    results = collection.query(
+        query_embeddings=[query_emb],
+        n_results=top_k,
+    )
+    hits = []
+    for doc, meta, dist in zip(
+        results["documents"][0],
+        results["metadatas"][0],
+        results["distances"][0],
+    ):
+        hits.append({
+            "text": doc,
+            "file": meta["file"],
+            "page": meta["page"],
+            "score": 1 - dist,  # cosine distance → similarity
+        })
+    return hits
+
+
+def ask(question, top_k=5):
+    hits = search(question, top_k=top_k)
+
+    if not hits:
+        return "В индексе нет документов. Сначала запусти `index`.", []
+
+    context = "
+
+---
+
+".join(
+        f"[Источник: {h['file']}, стр. {h['page']}]
+{h['text']}"
+        for h in hits
+    )
+
+    user_msg = f"Вопрос: {question}
+
+Фрагменты документов:
+
+{context}"
+
+    resp = ollama.chat(
+        model=MODEL,
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_msg},
+        ],
+        options={"temperature": 0.1, "num_ctx": 8192},
+    )
+    answer = resp["message"]["content"]
+    return answer, hits
+</code></pre>
+
+<h2>Шаг 7: CLI</h2>
+
+<p>Файл <code>rag.py</code>:</p>
+<pre><code class="language-python">import sys
+from indexer import index_folder
+from query import ask
+
+
+def main():
+    if len(sys.argv) &lt; 2:
+        print("Использование:")
+        print("  python rag.py index &lt;папка&gt;")
+        print("  python rag.py ask "&lt;вопрос&gt;"")
+        sys.exit(1)
+
+    cmd = sys.argv[1]
+
+    if cmd == "index":
+        if len(sys.argv) &lt; 3:
+            print("Укажи папку: python rag.py index ./docs")
+            sys.exit(1)
+        index_folder(sys.argv[2])
+
+    elif cmd == "ask":
+        if len(sys.argv) &lt; 3:
+            print("Укажи вопрос: python rag.py ask "..."")
+            sys.exit(1)
+        question = " ".join(sys.argv[2:])
+        answer, hits = ask(question)
+        print("
+=== ОТВЕТ ===
+")
+        print(answer)
+        print("
+=== ИСТОЧНИКИ ===")
+        for h in hits:
+            print(f"  • {h['file']} стр. {h['page']}  (similarity {h['score']:.2f})")
+
+    else:
+        print(f"Неизвестная команда: {cmd}")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+
+<h2>Запуск и проверка</h2>
+
+<p>Кладёшь PDF в <code>docs/</code> и запускаешь:</p>
+<pre><code class="language-bash">python rag.py index docs/
+# Документы: 100%|██████████| 12/12 [00:47&lt;00:00,  3.9s/it]
+# В индексе теперь 384 чанков</code></pre>
+
+<p>Первый запуск тянет модель эмбеддингов (~120 MB). Дальше — только индексация: ~3–5 секунд на средний PDF на M-чипе, ~10–15 секунд на CPU.</p>
+
+<p>Спрашиваем:</p>
+<pre><code class="language-bash">python rag.py ask "Сколько я плачу за коммуналку в среднем за полгода?"
+
+=== ОТВЕТ ===
+По квитанциям за январь–июнь среднемесячный платёж — 7842 рубля.
+Минимум в апреле (6210 ₽), максимум в феврале (9430 ₽).
+[жкх-янв.pdf, стр. 1], [жкх-фев.pdf, стр. 1], [жкх-мар.pdf, стр. 1] ...
+
+=== ИСТОЧНИКИ ===
+  • жкх-фев.pdf стр. 1  (similarity 0.78)
+  • жкх-мар.pdf стр. 1  (similarity 0.76)
+  ...</code></pre>
+
+<p>Время ответа на M-чипе — 8–15 секунд, на CPU — 30–60 секунд (большую часть тратит Ollama на генерацию).</p>
+
+<h2>Опционально: Streamlit-интерфейс</h2>
+
+<p>Если CLI кажется аскетичным — за 30 строк делаем UI:</p>
+
+<pre><code class="language-bash">pip install streamlit</code></pre>
+
+<p>Файл <code>ui.py</code>:</p>
+<pre><code class="language-python">import streamlit as st
+from query import ask
+
+st.set_page_config(page_title="Локальный RAG", page_icon="🔍")
+st.title("🔍 Поиск по документам")
+
+question = st.text_input("Вопрос", placeholder="Например: что у меня в полисе ДМС про стоматологию?")
+
+if question:
+    with st.spinner("Ищу..."):
+        answer, hits = ask(question)
+
+    st.subheader("Ответ")
+    st.write(answer)
+
+    st.subheader("Источники")
+    for h in hits:
+        with st.expander(f"{h['file']} — стр. {h['page']} (similarity {h['score']:.2f})"):
+            st.text(h["text"][:1500])
+</code></pre>
+
+<p>Запуск:</p>
+<pre><code class="language-bash">streamlit run ui.py
+# открывается на http://localhost:8501</code></pre>
+
+<h2>Расширения</h2>
+<ul>
+<li><strong>Разные индексы под категории.</strong> Создай несколько коллекций в Chroma: <code>medical</code>, <code>legal</code>, <code>finance</code>. Запросы — только в одну, иначе медицинский термин может «зацепить» юридический документ.</li>
+<li><strong>OCR для сканов.</strong> Если у тебя фото-документы или сканы без текстового слоя — добавь Tesseract: <code>pip install pytesseract</code>, перед <code>extract_text()</code> прогоняй страницу через OCR. Качество на русском печатном тексте — 95%+ при разумном разрешении.</li>
+<li><strong>Голосовые запросы.</strong> Whisper.cpp локально транскрибирует речь — добавляешь кнопку записи в Streamlit, прогоняешь через Whisper, кидаешь текст в <code>ask()</code>. Идеально для «спросить про лекарство, когда руки в тесте».</li>
+<li><strong>Авто-индексация по cron.</strong> Если документы добавляются регулярно (например, банк раз в месяц шлёт выписку) — раз в день <code>python rag.py index ~/Downloads/банк/</code>. Upsert по hash не дублирует уже проиндексированное.</li>
+<li><strong>Гибридный поиск.</strong> К семантическому добавь BM25-поиск (через <code>rank_bm25</code>) и объедини результаты. Семантика хороша для смысла, BM25 — для точных слов и номеров. Вместе — заметно лучше top-k.</li>
+</ul>
+
+<h2>Подводные камни</h2>
+<ul>
+<li><strong>Качество эмбеддингов на специфической лексике.</strong> Мультиязычная MiniLM хорошо понимает обычный русский, но медицинские термины («гиперэхогенное включение», «АТ-ТПО») или юридические формулы знает хуже. Если вопрос совсем не находится — попробуй переформулировать «человеческими словами» или подними top_k до 10–15.</li>
+<li><strong>Скорость на большом корпусе.</strong> 100 PDF индексируется за 5–10 минут, 1000 — уже за час+. Запускай в фоне или ночью. ChromaDB сам по себе шустрый, бутылочное горлышко — pdfplumber на парсинге.</li>
+<li><strong>Что делать, если top-k не нашёл нужный документ.</strong> Это нормальная ситуация: эмбеддинг — не магия. Подними <code>n_results=10</code>, переформулируй вопрос, или добавь BM25 (см. расширения). В крайнем случае grep по тексту чанков из ChromaDB.</li>
+<li><strong>Hallucinations при пустом контексте.</strong> Если в top-k попадут нерелевантные чанки — qwen2.5:7b может попробовать «дотянуть» ответ из своих знаний. Поэтому в SYSTEM_PROMPT жёстко: «если не нашёл — скажи что не нашёл». Раз в неделю проверяй сомнительные ответы вручную.</li>
+<li><strong>Чанк-граница режет таблицу.</strong> Финансовая таблица из 100 строк попадёт в 3–4 чанка, и в один из них — без заголовка. Запрос «сумма за март» может промахнуться. Лечится либо большим overlap (200 слов вместо 100), либо специальной обработкой таблиц (записывать заголовок в каждый чанк-фрагмент).</li>
+<li><strong>Безопасность хранения.</strong> ChromaDB складывает распознанный текст и эмбеддинги в обычные файлы в <code>./chroma_db/</code>. Если в индексе медкарта и кто-то получает доступ к диску — он получает доступ и к содержимому. Шифруй раздел (FileVault / LUKS), не клади <code>chroma_db/</code> в общие облака типа iCloud Desktop.</li>
+</ul>
+
+<h2>Этика и аккуратность</h2>
+<ul>
+<li>Не индексируй чужие документы без согласия. Договор контрагента — это часто его конфиденциальная информация, даже если у тебя физически есть копия.</li>
+<li>Помни, что распознанный текст лежит у тебя в чистом виде. Если ноутбук уедет в ремонт — индекс надо удалить (или зашифровать ФС заранее).</li>
+<li>RAG — не юрист и не врач. Ответ из медкарты «у тебя нашли X» — повод сходить к врачу, а не диагноз.</li>
+</ul>
+
+<h2>Что в итоге</h2>
+<p>За 90 минут собрали полностью офлайн-систему: индексируешь папку документов, спрашиваешь обычным языком, получаешь ответ с цитатами. Никаких подписок, никаких облаков, никаких утечек. Связка pdfplumber + sentence-transformers + ChromaDB + Ollama — это, по сути, тот же стек, что в дорогих корпоративных RAG-продуктах, только без вендора над тобой.</p>
+
+<p>Дальше — добавляй OCR для сканов, индексы по категориям, голосовые запросы через Whisper. Архитектура линейно растёт: новый шаг — новый модуль, остальное не трогаешь.</p>
+
+<div class="callout callout-success">
+<strong>Готово.</strong> У тебя локальный поиск по личным документам, который ничем не делится с миром. Дальше — индексируй медкарту, договоры, рабочие методички и забудь про «где-то у меня это было». Если захочется поднять качество — поменяй модель эмбеддингов на mpnet или добавь BM25-гибрид в один день работы.
+</div>
+
+
+    <div class="pp-open"><a href="/#lesson-p22">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

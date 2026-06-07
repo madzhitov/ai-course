@@ -19,21 +19,262 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/p1.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p1.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p1');
-</script>
 </head>
 <body>
-<h1>Telegram-бот для саммари длинных переписок</h1>
-<p>P1 из курса AI на русском. Telegram-бот для саммари длинных переписок. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p1">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P1</span></div>
+<h1>Проект «За 1 час»: Telegram-бот для саммари длинных переписок</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> бот, в который пересылаешь чат — получаешь TL;DR</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Уровень:</strong> базовый Python + урок 6 курса</span>
+</div>
+
+<h2>Зачем этот проект</h2>
+<p>Самый частый запрос «зачем мне ИИ»: «у меня по 1000 непрочитанных сообщений в каждом чате». Этот бот решает: пересылаешь ему фрагмент длинной переписки → получаешь краткую выжимку: о чём говорили, какие решения, что от тебя ждут.</p>
+<p>Это полезный личный инструмент + хороший первый pet-проект. После него ты понимаешь, как делается весь стек: Telegram Bot API → backend на Python → вызов LLM → ответ.</p>
+
+<h2>Что узнаешь</h2>
+<ul>
+<li>Как создать бота в Telegram через BotFather.</li>
+<li>Базовая работа с aiogram (фреймворк для TG-ботов на Python).</li>
+<li>Передача длинного текста в LLM с правильным промптом для саммари.</li>
+<li>Деплой бесплатно на Railway / Render / Fly.io.</li>
+</ul>
+
+<h2>Что понадобится</h2>
+<ul>
+<li>Python 3.10+.</li>
+<li>API-ключ OpenAI или Anthropic (см. урок 6).</li>
+<li>Telegram-аккаунт.</li>
+<li>~60 минут.</li>
+</ul>
+
+<h2>Шаг 1. Создаём бота через BotFather (5 минут)</h2>
+
+<ol>
+<li>В Telegram найди <code>@BotFather</code>.</li>
+<li><code>/newbot</code> → имя для отображения (например, «Summary Bot»).</li>
+<li>Username — должен оканчиваться на <code>_bot</code> (например, <code>my_summary_bot</code>).</li>
+<li>Получишь токен вида <code>1234567:AABBccDDeeFFgg</code>. Сохрани в <code>.env</code>.</li>
+</ol>
+
+<h2>Шаг 2. Настройка проекта</h2>
+
+<pre><code>mkdir summary-bot && cd summary-bot
+python3 -m venv venv && source venv/bin/activate
+pip install aiogram openai python-dotenv</code></pre>
+
+<p>Создай <code>.env</code>:</p>
+<pre><code>TG_TOKEN=1234567:AABBccDDeeFFgg
+OPENAI_API_KEY=sk-...</code></pre>
+
+<h2>Шаг 3. Минимальный бот</h2>
+
+<p>Файл <code>bot.py</code>:</p>
+
+<pre><code>import os
+import asyncio
+from dotenv import load_dotenv
+from aiogram import Bot, Dispatcher, F
+from aiogram.types import Message
+from aiogram.filters import Command
+from openai import OpenAI
+
+load_dotenv()
+bot = Bot(token=os.getenv("TG_TOKEN"))
+dp = Dispatcher()
+client = OpenAI()
+
+SUMMARY_PROMPT = """Ты пресс-секретарь. Перед тобой переписка из мессенджера.
+
+Сделай краткое summary в формате:
+
+📌 ТЕМЫ (что обсуждали, 1-3 пункта)
+
+✅ РЕШЕНИЯ (что решили, что-то конкретное)
+
+⚠️ ВОПРОСЫ К НАМ (что ждут от меня лично — если упоминается)
+
+📅 ДАТЫ И ДЕДЛАЙНЫ (если есть)
+
+Будь краток. Не воды, только факты. Если переписка пустая или
+бессмысленная — скажи прямо."""
+
+
+@dp.message(Command("start"))
+async def cmd_start(message: Message):
+    await message.answer(
+        "Привет! Перешли мне или вставь любую длинную переписку — "
+        "я сделаю выжимку. Работает с пересылкой нескольких сообщений подряд."
+    )
+
+
+@dp.message(F.text)
+async def summarize(message: Message):
+    text = message.text
+    if len(text) < 100:
+        await message.answer("Слишком короткое для саммари. Минимум 100 символов.")
+        return
+
+    await message.answer("⏳ Делаю саммари...")
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": SUMMARY_PROMPT},
+            {"role": "user", "content": text}
+        ],
+        temperature=0.3,
+        max_tokens=600
+    )
+
+    summary = response.choices[0].message.content
+    await message.answer(summary, parse_mode="Markdown")
+
+
+async def main():
+    await dp.start_polling(bot)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())</code></pre>
+
+<p>Запуск:</p>
+<pre><code>python bot.py</code></pre>
+
+<p>Перешли в бот любую переписку — увидишь саммари.</p>
+
+<h2>Шаг 4. Улучшения (по желанию)</h2>
+
+<h3>Поддержка пересылки нескольких сообщений</h3>
+
+<p>Если переслать 5 сообщений — каждое прилетит отдельно. Лучше склеить:</p>
+
+<pre><code>from collections import defaultdict
+from datetime import datetime
+
+# буфер: user_id → список (время, текст)
+forward_buffer = defaultdict(list)
+
+@dp.message(F.text)
+async def collect(message: Message):
+    user_id = message.from_user.id
+    forward_buffer[user_id].append((datetime.now(), message.text))
+
+    # ждём 2 секунды без новых сообщений
+    await asyncio.sleep(2)
+
+    # если за это время пришли ещё — выходим (тот вызов отработает)
+    last_time = forward_buffer[user_id][-1][0]
+    if (datetime.now() - last_time).total_seconds() < 1.5:
+        return
+
+    # склеиваем и обрабатываем
+    full_text = "\n\n".join([t for _, t in forward_buffer[user_id]])
+    forward_buffer[user_id] = []
+
+    if len(full_text) < 100:
+        await message.answer("Слишком короткое.")
+        return
+
+    # ... тот же код саммари ...</code></pre>
+
+<h3>Лимит длины</h3>
+
+<p>OpenAI ограничивает контекст 128k токенов. На bot.py 100k символов = ~30k токенов — пройдёт. Но если кто-то пришлёт книгу — упрётся. Добавь:</p>
+
+<pre><code>if len(text) > 200_000:
+    await message.answer("Текст слишком длинный (>200к знаков). Раздели на части.")
+    return</code></pre>
+
+<h3>Стоимость</h3>
+
+<p>На gpt-4o-mini одно саммари 5к слов = ~$0.001. 1000 саммари в месяц = $1. Очень дёшево.</p>
+
+<h3>Защита от спама</h3>
+
+<p>Если выкладываешь публично — добавь rate limit:</p>
+
+<pre><code>from collections import defaultdict
+from time import time
+
+last_request = defaultdict(float)
+
+@dp.message(F.text)
+async def summarize(message: Message):
+    user_id = message.from_user.id
+    if time() - last_request[user_id] < 5:
+        await message.answer("Подожди 5 секунд между запросами.")
+        return
+    last_request[user_id] = time()
+    # ... остальное ...</code></pre>
+
+<h2>Шаг 5. Деплой бесплатно</h2>
+
+<p>Бот пока работает только пока твой ноут включён. Чтобы 24/7 — деплой:</p>
+
+<h3>Вариант 1: Railway (~5 минут)</h3>
+<ol>
+<li>Залогинься на <a href="https://railway.app" target="_blank">railway.app</a> через GitHub.</li>
+<li>New Project → Deploy from GitHub repo (нужно сначала закоммитить).</li>
+<li>Variables: добавь <code>TG_TOKEN</code> и <code>OPENAI_API_KEY</code>.</li>
+<li>Готово. $5 free credit на старт, потом ~$1–3/мес.</li>
+</ol>
+
+<h3>Вариант 2: Render free tier</h3>
+<p>Бесплатно, но засыпает после 15 минут без активности — для бота не очень.</p>
+
+<h3>Вариант 3: Дешёвый VPS</h3>
+<p>Hetzner CX11 = €4/мес, поднимаешь как systemd-сервис. Самый предсказуемый вариант.</p>
+
+<h2>Что дальше — варианты развития</h2>
+
+<ul>
+<li>Поддержка голосовых через Whisper API.</li>
+<li>Несколько режимов: «summary», «найди задачи мне», «оцени тон».</li>
+<li>Кеширование (одинаковый текст → не платить дважды).</li>
+<li>Многоязычная детекция и саммари на языке оригинала.</li>
+<li>Сохранение истории саммари в SQLite.</li>
+<li>Деплой как Telegram Mini App с веб-интерфейсом.</li>
+</ul>
+
+<h2>Что узнал на этом проекте</h2>
+
+<ol>
+<li>Как делается базовая интеграция с Telegram через aiogram.</li>
+<li>Promot-engineering для саммари (структурированный формат, явные секции).</li>
+<li>Обработка длинных текстов и лимитов модели.</li>
+<li>Деплой бесплатно через Railway.</li>
+<li>Простой rate limiting от спама.</li>
+</ol>
+
+<div class="callout callout-success">
+<strong>🚀 Поделись:</strong> если бот работает — расскажи о нём в чате курса в Telegram. Самые удачные проекты учеников будут в показательной галерее.
+</div>
+
+<div class="callout callout-info" style="margin-top: 1.5rem;">
+<strong>Без VPN и подписок:</strong> тот же бот, но на GigaChat — бесплатно до 1М токенов в месяц, оплата с российской карты, без VPN. Полный код — <a href="#lesson-p19" onclick="openLesson('p19'); return false;">урок p19</a>.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-p1">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

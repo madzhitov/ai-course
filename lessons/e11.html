@@ -19,21 +19,333 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/e11.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/e11.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-e11');
-</script>
 </head>
 <body>
-<h1>AI без VPN — какие модели работают из коробки</h1>
-<p>E11 из курса AI на русском. AI без VPN — какие модели работают из коробки. ~35 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-e11">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">E11</span></div>
+
+<h1>Урок e11. AI без VPN — какие модели работают из коробки</h1>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Если ты сейчас в России (или другой стране, где Claude/ChatGPT недоступны напрямую), у тебя три варианта: VPN + зарубежная карта, российские модели или локальный AI на своём ноутбуке. Этот урок — карта местности.</p>
+<p>Главный вопрос — не «что лучше», а <strong>«что окупает заморочки»</strong>. Иногда заморачиваться с VPN ради Claude — оправдано (программирование, сложные тексты). Иногда — нет, и российский GigaChat или китайский DeepSeek справляются. А для совсем чувствительных задач — Ollama на твоём железе, без всяких облаков.</p>
+<p><strong>Важная оговорка:</strong> цены и лимиты на эти сервисы быстро меняются. Я даю структуру и порядки величин. Перед регистрацией — обязательно сверь актуальное в личных кабинетах. Прямые ссылки в каждом разделе.</p>
+
+<h2>1. Карта вариантов на одной странице</h2>
+
+<table>
+<thead>
+<tr><th>Путь</th><th>Качество</th><th>Цена</th><th>Сложность входа</th><th>Когда брать</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>YandexGPT</strong></td><td>Русский — отличный, код и логика — средне</td><td>Дёшево, рубли</td><td>Низкая (есть Yandex ID)</td><td>Тексты, ассистент по-русски, интеграция в Яндекс-экосистему</td></tr>
+<tr><td><strong>GigaChat</strong></td><td>Русский — отличный, код — слабее Yandex</td><td>1 млн токенов/мес бесплатно для физлиц</td><td>Низкая (нужен Сбер ID)</td><td>Тексты, диалоги, картинки (через Kandinsky)</td></tr>
+<tr><td><strong>DeepSeek</strong></td><td>Очень сильный, особенно R1 для reasoning и кода</td><td>Самый дешёвый: $0.14/M input</td><td>Средняя (нужна карта UnionPay или прокси-сервис)</td><td>Код, reasoning, длинные задачи — почти Claude по качеству</td></tr>
+<tr><td><strong>Ollama (локально)</strong></td><td>Зависит от модели и железа: 7B — слабо, 70B — близко к GPT-3.5</td><td>Бесплатно полностью</td><td>Высокая (15 минут на установку)</td><td>Приватность, офлайн, без оплаты, без блокировок</td></tr>
+<tr><td><strong>Claude через VPN</strong></td><td>Топ для большинства задач</td><td>$20/мес + сложная оплата</td><td>Высокая (VPN + посредник для оплаты)</td><td>Сложный код, длинные документы, продвинутые промпты</td></tr>
+</tbody>
+</table>
+
+<p>Дальше разбираем каждый детальнее.</p>
+
+<h2>2. YandexGPT — российский, по рублям, без боли</h2>
+
+<h3>Что это и какие модели</h3>
+<p>LLM от Яндекса, доступная через Yandex Cloud. На момент написания актуальны:</p>
+<ul>
+<li><strong>YandexGPT Lite</strong> — быстрая, дешёвая. Для простых задач (саммари, классификация).</li>
+<li><strong>YandexGPT (Pro)</strong> — основная. Качество ближе к GPT-3.5-Turbo, но по-русски лучше многих зарубежных.</li>
+<li><strong>YandexGPT 5</strong> — последняя версия (на момент 2025), заметно лучше предыдущих по reasoning.</li>
+</ul>
+
+<h3>Регистрация — пошагово</h3>
+<ol>
+<li>Заходишь в Yandex Cloud Console: <a href="https://console.cloud.yandex.ru/" target="_blank">console.cloud.yandex.ru</a></li>
+<li>Логин через Yandex ID (если нет — создашь за минуту)</li>
+<li>Создаёшь облако и каталог (просто нажимаешь «Создать»)</li>
+<li>В каталоге создаёшь <strong>сервисный аккаунт</strong> с ролью <code>ai.languageModels.user</code></li>
+<li>Создаёшь <strong>API-ключ</strong> для этого аккаунта — копируешь и сохраняешь (показывается один раз)</li>
+<li>Привязываешь карту для оплаты (любая российская карта работает)</li>
+</ol>
+
+<h3>Первый запрос — Python</h3>
+
+<pre><code>import requests
+
+FOLDER_ID = "b1g..."     # из консоли Yandex Cloud
+API_KEY   = "AQVN..."    # созданный API-ключ
+
+headers = {
+    "Authorization": f"Api-Key {API_KEY}",
+    "x-folder-id": FOLDER_ID,
+}
+
+data = {
+    "modelUri": f"gpt://{FOLDER_ID}/yandexgpt/latest",
+    "completionOptions": {"temperature": 0.3, "maxTokens": 500},
+    "messages": [
+        {"role": "system", "text": "Ты — внимательный редактор."},
+        {"role": "user", "text": "Сократи: 'В современном мире AI стал...' до 1 предложения."}
+    ]
+}
+
+r = requests.post(
+    "https://llm.api.cloud.yandex.net/foundationModels/v1/completion",
+    headers=headers, json=data
+)
+print(r.json()["result"]["alternatives"][0]["message"]["text"])
+</code></pre>
+
+<h3>Сильные и слабые стороны</h3>
+<p><strong>Сильно:</strong> русский язык, документация на русском, интеграция со Speech / Translate / Vision (тоже от Яндекса), оплата с любой РФ-карты, поддержка по-русски.</p>
+<p><strong>Слабее:</strong> контекстное окно меньше (обычно 8k-32k токенов), код и сложный reasoning — заметно слабее Claude/GPT-4. Function calling есть, но менее зрелый.</p>
+
+<h3>Цены (порядки величин)</h3>
+<p>~₽0.20–0.40 за 1000 токенов входа в YandexGPT Pro. <strong>Проверь актуальное:</strong> <a href="https://yandex.cloud/ru/docs/foundation-models/pricing" target="_blank">yandex.cloud/docs/foundation-models/pricing</a></p>
+
+<h2>3. GigaChat — Сбер, есть приличный бесплатный тир</h2>
+
+<h3>Что это и какие модели</h3>
+<ul>
+<li><strong>GigaChat-Lite</strong> — быстрая, для простого</li>
+<li><strong>GigaChat</strong> — основная</li>
+<li><strong>GigaChat-Pro</strong> — более мощная (платно)</li>
+<li><strong>GigaChat 2</strong> (с сентября 2024) — заметный шаг вперёд</li>
+</ul>
+
+<h3>Регистрация — пошагово</h3>
+<ol>
+<li>Заходишь на <a href="https://developers.sber.ru/portal/products/gigachat" target="_blank">developers.sber.ru → GigaChat</a></li>
+<li>Логин через Сбер ID</li>
+<li>Выбираешь тариф: для физлица есть <strong>бесплатный с 1 млн токенов/месяц</strong></li>
+<li>Получаешь Authorization Key (длинная строка для OAuth2)</li>
+</ol>
+
+<h3>Первый запрос — Python через SDK</h3>
+
+<pre><code>pip install gigachat
+</code></pre>
+
+<pre><code>from gigachat import GigaChat
+
+# Authorization Key из личного кабинета
+AUTH_KEY = "ZGM..."
+
+with GigaChat(credentials=AUTH_KEY, verify_ssl_certs=False) as g:
+    response = g.chat({
+        "messages": [
+            {"role": "system", "content": "Ты — пишешь сухо и по делу."},
+            {"role": "user", "content": "Объясни RAG в 2 предложениях."}
+        ],
+        "temperature": 0.3,
+        "max_tokens": 200,
+    })
+    print(response.choices[0].message.content)
+</code></pre>
+
+<p><em>Примечание про <code>verify_ssl_certs=False</code>:</em> у Сбера свой корневой сертификат (Минцифры). Для прода — установи root-сертификат правильно, для эксперимента в скрипте можно так.</p>
+
+<h3>Сильные и слабые стороны</h3>
+<p><strong>Сильно:</strong> бесплатный тир на 1М токенов/мес — реально много для пет-проекта. Хороший русский, интеграция с Kandinsky для генерации картинок прямо в API. Function calling есть.</p>
+<p><strong>Слабее:</strong> код — слабее Yandex и сильно слабее Claude. Документация местами хуже Яндекса. SSL-сертификат от Минцифры — нужно настраивать.</p>
+
+<h3>Цены</h3>
+<p>1 млн токенов/месяц бесплатно. Сверху — около ₽1.50 за 1000 токенов в Pro. <strong>Актуально здесь:</strong> <a href="https://developers.sber.ru/portal/products/gigachat-api" target="_blank">developers.sber.ru/portal/products/gigachat-api</a></p>
+
+<h2>4. DeepSeek — почти Claude, в 20 раз дешевле</h2>
+
+<h3>Что это</h3>
+<p>Китайская LLM, API совместим с OpenAI. Не блокирует РФ. По качеству — особенно <strong>DeepSeek-R1</strong> (reasoning-модель) — реально близко к GPT-4 и Claude Sonnet на многих задачах, особенно код и логика. Цена на порядок ниже.</p>
+<p>Главная боль: <strong>оплата</strong>. Карты UnionPay принимаются (некоторые российские банки их выпускают), Visa/MC — нет. Или через прокси-сервисы.</p>
+
+<h3>Регистрация</h3>
+<ol>
+<li><a href="https://platform.deepseek.com/" target="_blank">platform.deepseek.com</a> — регистрируешься по email</li>
+<li>Привязываешь карту (UnionPay или через посредника gpt-keys / EasyBank)</li>
+<li>Создаёшь API-ключ</li>
+</ol>
+
+<h3>Первый запрос — Python (как OpenAI)</h3>
+
+<pre><code>pip install openai
+</code></pre>
+
+<pre><code>from openai import OpenAI
+
+client = OpenAI(
+    api_key="sk-...",
+    base_url="https://api.deepseek.com/v1"
+)
+
+resp = client.chat.completions.create(
+    model="deepseek-chat",            # или deepseek-reasoner для R1
+    messages=[
+        {"role": "system", "content": "Ты — старший разработчик. Отвечай кратко."},
+        {"role": "user", "content": "Объясни, почему async/await в Python — это не настоящий параллелизм."}
+    ],
+    temperature=0.3,
+)
+print(resp.choices[0].message.content)
+</code></pre>
+
+<h3>Сильные и слабые стороны</h3>
+<p><strong>Сильно:</strong> почти топ-качество, особенно DeepSeek-R1 для код-задач. Безумно дёшево. OpenAI-совместимый API — переключаешься одной строкой. Не блокирует РФ.</p>
+<p><strong>Слабее:</strong> оплата — главная заморочка. По русскому — приличный, но слабее GigaChat/YandexGPT в специфических нюансах. Контекст у DeepSeek — приличный (64k+).</p>
+
+<h3>Цены</h3>
+<p>~$0.14 за 1М токенов входа на deepseek-chat. Это <strong>в 20 раз дешевле</strong> Claude Sonnet и в 30 раз — GPT-4o. <strong>Актуально:</strong> <a href="https://api-docs.deepseek.com/quick_start/pricing" target="_blank">api-docs.deepseek.com/quick_start/pricing</a></p>
+
+<h2>5. Локально через Ollama — никаких облаков</h2>
+
+<h3>Что это</h3>
+<p>Ollama — программа, которая запускает open-source LLM прямо на твоём ноутбуке. Без интернета, без API-ключей, без оплаты, без передачи данных в облако. Идеально для приватных задач (медкарты, договоры, личная переписка).</p>
+<p>Подробный отдельный проект про это — <strong>p14 «Локальный AI на Ollama»</strong> в тропинке мини-проектов. Здесь — быстрая выжимка.</p>
+
+<h3>Регистрация = установка</h3>
+<ol>
+<li>Скачиваешь Ollama: <a href="https://ollama.com" target="_blank">ollama.com</a> (Mac / Linux / Windows)</li>
+<li>В терминале: <code>ollama pull qwen2.5:7b</code> (скачает ~5 ГБ)</li>
+<li>Запуск: <code>ollama run qwen2.5:7b</code> — и сразу чат в терминале</li>
+</ol>
+
+<h3>Лучшие модели для русского</h3>
+<ul>
+<li><strong>Qwen 2.5 / Qwen 3</strong> — китайская, отлично работает с русским. 7B / 14B / 32B / 72B</li>
+<li><strong>DeepSeek-R1 distilled</strong> — облегчённые версии reasoning-модели</li>
+<li><strong>Llama 3.3</strong> — русский так себе, но топ в коде</li>
+<li><strong>Gemma 2</strong> — лёгкая, быстрая, неплохой русский</li>
+</ul>
+
+<h3>Что выбрать под железо</h3>
+<table>
+<thead><tr><th>RAM</th><th>Модель</th><th>Качество</th></tr></thead>
+<tbody>
+<tr><td>8 ГБ</td><td>3B (gemma2:2b)</td><td>Слабое — для простых задач</td></tr>
+<tr><td>16 ГБ</td><td>7B (qwen2.5:7b)</td><td>Среднее — рабочий уровень</td></tr>
+<tr><td>32 ГБ</td><td>14B–32B</td><td>Хорошее — близко к GPT-3.5</td></tr>
+<tr><td>64+ ГБ или M3 Max/M4</td><td>70B</td><td>Топ — близко к GPT-4</td></tr>
+</tbody>
+</table>
+
+<h3>Сильные и слабые стороны</h3>
+<p><strong>Сильно:</strong> приватность абсолютная. Никаких блокировок. Никакой оплаты. Работает в самолёте.</p>
+<p><strong>Слабее:</strong> на слабом ноутбуке (8 ГБ) — модели маленькие и слабые. Качество — заметно ниже Claude / DeepSeek-R1. Сложно с длинными документами (контекст меньше).</p>
+
+<h2>6. Один и тот же промпт в четырёх моделях — для калибровки</h2>
+
+<p>Чтобы ты понимал реальную разницу, вот пример. Промпт: «Объясни, что такое RAG, для маркетолога без техобразования, в 3 предложениях».</p>
+
+<blockquote>
+<p><strong>YandexGPT Pro:</strong> «RAG (Retrieval-Augmented Generation) — это способ улучшить ответы AI, добавляя к ним информацию из ваших документов. Сначала система ищет нужные тексты в базе, потом передаёт их AI вместе с вопросом. Так AI отвечает на вопросы по вашим материалам, не выдумывая.»</p>
+
+<p><strong>GigaChat:</strong> «RAG — это технология, которая делает AI умнее, давая ему доступ к вашим документам в момент ответа. Вместо того чтобы полагаться только на свои знания, модель сначала ищет нужное в вашей базе, потом строит ответ. Это убирает галлюцинации и позволяет AI работать с актуальными данными вашей компании.»</p>
+
+<p><strong>DeepSeek-V3:</strong> «RAG — это когда AI перед ответом сначала ищет информацию в твоих документах (как поиск в Google по твоей базе), а потом использует найденное для ответа. Без RAG модель отвечает только из того, что знала на момент обучения, и может выдумывать. С RAG — отвечает по твоим реальным материалам, и можно проверить откуда взято.»</p>
+
+<p><strong>Qwen2.5:7b (локально):</strong> «RAG (Retrieval-Augmented Generation) — метод, при котором AI получает данные из внешнего источника. Это помогает давать точные ответы на основе ваших документов. Используется, чтобы AI работал с актуальной информацией.»</p>
+</blockquote>
+
+<p>Видишь разницу: DeepSeek даёт самое разговорное и понятное объяснение. GigaChat и Yandex — приличные, чуть более «корпоративные». Qwen локально — самое сухое, но рабочее.</p>
+
+<p>Это не значит, что DeepSeek всегда лучший — на других задачах расклад меняется. Но видно, что <strong>все четыре варианта дают рабочий результат</strong>. Заморачиваться с VPN ради Claude — оправдано не всегда.</p>
+
+<h2>7. Какой выбрать под твою задачу</h2>
+
+<ul>
+<li><strong>Простые тексты по-русски, ассистент-помощник:</strong> GigaChat (бесплатно 1М/мес) или YandexGPT</li>
+<li><strong>Код, сложные задачи, reasoning:</strong> DeepSeek (если разобрался с оплатой) или Claude через VPN</li>
+<li><strong>Длинные документы, контекстное окно 100k+:</strong> Claude через VPN — пока альтернатив нет</li>
+<li><strong>Приватные данные, медкарты, личное:</strong> Ollama локально</li>
+<li><strong>Картинки + текст:</strong> GigaChat (с Kandinsky) или Yandex Vision + YandexGPT</li>
+<li><strong>Function calling / tool use:</strong> YandexGPT, GigaChat, DeepSeek — все умеют, но Claude/GPT пока зрелее</li>
+</ul>
+
+<h2>8. Чего НЕ ждать</h2>
+
+<ul>
+<li><strong>Полного паритета с Claude/GPT-4.</strong> На сложных задачах (длинная разработка, тонкая работа со стилем) Claude/GPT всё ещё впереди. Это сокращается, но пока правда.</li>
+<li><strong>Vision на уровне Claude.</strong> Распознавание сложных сцен на фото у российских моделей слабее. Простые сценарии (текст с фото, очевидные объекты) — работают.</li>
+<li><strong>Стабильности тарифов.</strong> Все три РФ-friendly сервиса меняют цены и лимиты часто. Закладывай это в планы.</li>
+<li><strong>Опыта «как у ChatGPT».</strong> Веб-интерфейсы Yandex и Сбер — попроще, без Project, без Memory, без Voice mode такого как у ChatGPT. Это API-сервисы первым делом.</li>
+</ul>
+
+<h2>9. Глоссарий</h2>
+
+<dl>
+<dt><strong>API-ключ</strong></dt>
+<dd>Длинная строка-пароль, которую ты передаёшь сервису, чтобы он знал, что это ты. Не показывай никому, не коммить в Git.</dd>
+
+<dt><strong>Токен</strong></dt>
+<dd>Кусочек текста, на которые модель «нарезает» твой запрос. ~3 символа = 1 токен для русского. См. урок 1 курса.</dd>
+
+<dt><strong>OpenAI-совместимый API</strong></dt>
+<dd>Когда новый сервис копирует структуру эндпоинтов OpenAI. Ты можешь использовать любой OpenAI-SDK, просто меняешь <code>base_url</code> и ключ. Это сейчас отраслевой стандарт.</dd>
+
+<dt><strong>OAuth2</strong></dt>
+<dd>Способ авторизации, при котором ты обмениваешь свой Authorization Key на временный токен доступа. У GigaChat именно так. У Yandex и DeepSeek — проще, через постоянный API-ключ.</dd>
+
+<dt><strong>Reasoning-модель</strong></dt>
+<dd>LLM, которая «думает» перед ответом — генерирует невидимый пользователю поток рассуждений, потом даёт финальный ответ. DeepSeek-R1, OpenAI o1 / o3 — примеры. Для сложных задач — заметно лучше обычных моделей.</dd>
+
+<dt><strong>Локальная модель</strong></dt>
+<dd>LLM, запущенная на твоём железе через Ollama, LM Studio или подобное. Не отправляет данные в облако. Качество зависит от размера модели и от RAM ноутбука.</dd>
+</dl>
+
+<h2>10. Практика (25 минут)</h2>
+
+<ol>
+<li><strong>Выбери один сервис для теста.</strong> Самый быстрый старт — GigaChat (есть бесплатный тир). Самый «качественный» вход — Yandex (понятная документация). Самый дешёвый с топ-качеством — DeepSeek (если справишься с оплатой).</li>
+<li><strong>Зарегистрируйся и получи API-ключ</strong> по инструкции из раздела про выбранный сервис.</li>
+<li><strong>Сделай первый запрос</strong> — скопируй Python-пример из урока, вставь свой ключ, запусти. Если нет Python — попроси Claude/ChatGPT (или другую модель) сделать тот же запрос в командной строке через <code>curl</code>.</li>
+<li><strong>Прогон 3 одинаковых промпта</strong> — например, «Саммари этого текста в 5 пунктах» — через выбранную модель и через Claude/ChatGPT (если у тебя есть доступ). Сравни.</li>
+<li><strong>Реши, что брать дальше.</strong> Если для твоих задач выбранный сервис «дотягивает» — отлично, не нужны заморочки с VPN. Если нет — знаешь, ради чего стоит заморочиться.</li>
+</ol>
+
+<h2>11. Проверь себя</h2>
+
+<p><strong>1. Самый дешёвый из трёх облачных вариантов?</strong><br>
+DeepSeek — около $0.14 за миллион входных токенов, на порядок дешевле остальных. Главный «налог» — заморочки с оплатой.</p>
+
+<p><strong>2. Где есть приличный бесплатный тир?</strong><br>
+GigaChat — 1 млн токенов в месяц для физлиц. Это реально много для пет-проекта.</p>
+
+<p><strong>3. Какой вариант полностью приватный?</strong><br>
+Ollama — модель крутится на твоём ноутбуке, ничего не отправляется наружу. Минус — качество зависит от железа.</p>
+
+<p><strong>4. У какой модели картинки в API?</strong><br>
+GigaChat через интеграцию с Kandinsky. У YandexGPT отдельно YandexART, у DeepSeek и Ollama — нет генерации картинок из коробки.</p>
+
+<p><strong>5. Когда всё-таки стоит заморочиться с Claude через VPN?</strong><br>
+Сложный код, очень длинные документы (200k+ токенов), тонкая работа со стилем письма, продвинутые промпт-инженерные паттерны. Для большинства бытовых задач — РФ-friendly варианты справляются.</p>
+
+<h2>12. Что должно остаться в голове</h2>
+
+<ol>
+<li><strong>«AI без VPN» — это реальность, не компромисс.</strong> Для большинства задач YandexGPT / GigaChat / DeepSeek / Ollama дают рабочий результат. Заморачиваться с VPN ради Claude — оправдано не всегда.</li>
+<li><strong>Под каждую задачу — своя модель.</strong> Простой ассистент по-русски — GigaChat. Код и reasoning — DeepSeek. Приватное — Ollama. Универсального ответа нет.</li>
+<li><strong>Бесплатно начать — реально.</strong> 1 млн токенов GigaChat в месяц + локальный Qwen через Ollama = старт без копейки.</li>
+<li><strong>API-стек одинаковый.</strong> Освоил вызов одного — освоил всех. DeepSeek вообще через OpenAI SDK, остальные через requests + одинаковый паттерн.</li>
+<li><strong>Сверяй цены и лимиты в момент использования.</strong> Этот урок даёт карту и порядки величин. Точные цифры быстро устаревают — все три сервиса меняют тарифы регулярно.</li>
+</ol>
+
+
+    <div class="pp-open"><a href="/#lesson-e11">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

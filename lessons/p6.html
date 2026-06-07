@@ -19,21 +19,146 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/p6.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p6.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p6');
-</script>
 </head>
 <body>
-<h1>Self-hosted Perplexity: Q&amp;A с поиском по твоим данным</h1>
-<p>P6 из курса AI на русском. Self-hosted Perplexity: Q&amp;A с поиском по твоим данным. ~75 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p6">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P6</span></div>
+<h1>Проект «За 1 час»: Self-hosted Perplexity — Q&A с поиском по твоим данным</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> веб-приложение, которое ищет по твоим документам + интернету и отвечает с цитатами</span>
+  <span><strong>Время:</strong> ~90 минут</span>
+  <span><strong>Уровень:</strong> Python + urok 14 (RAG)</span>
+</div>
+
+<h2>Зачем</h2>
+<p>Perplexity делает 3 вещи: ищет в сети, читает результаты, отвечает с цитатами. Своя версия даёт: приватность + поиск по твоим данным + контроль модели.</p>
+
+<h2>Архитектура</h2>
+<pre><code>FastAPI ─ user query
+          ↓
+    [parallel]: RAG(my docs) + web_search(SerpAPI/Tavily)
+          ↓
+    Claude with sources → answer with citations
+          ↓
+    Streamlit/Next.js UI</code></pre>
+
+<h2>Шаг 1. Зависимости</h2>
+<pre><code>pip install anthropic chromadb tavily-python fastapi uvicorn streamlit</code></pre>
+
+<h2>Шаг 2. Векторная база с твоими доками (15 мин)</h2>
+<pre><code>import chromadb, anthropic, os
+from pathlib import Path
+
+client = chromadb.PersistentClient(path="./db")
+coll = client.get_or_create_collection("docs")
+
+# Используем Claude эмбеддинги через OpenAI (Anthropic не делает эмбеддинги — берём voyageai или openai)
+import openai
+emb_client = openai.OpenAI()
+
+def embed(texts):
+    return [e.embedding for e in emb_client.embeddings.create(
+      model="text-embedding-3-small", input=texts).data]
+
+def index_docs(folder):
+    docs, ids = [], []
+    for f in Path(folder).rglob("*.md"):
+        docs.append(f.read_text())
+        ids.append(str(f))
+    coll.add(documents=docs, embeddings=embed(docs), ids=ids)</code></pre>
+
+<h2>Шаг 3. Web search (Tavily — 10 мин)</h2>
+<p>Tavily — search API для AI. Получи ключ на tavily.com (бесплатно 1k/мес).</p>
+<pre><code>from tavily import TavilyClient
+tav = TavilyClient(api_key=os.environ["TAVILY_KEY"])
+
+def web_search(query):
+    r = tav.search(query=query, max_results=5, include_raw_content=True)
+    return [{"url": x["url"], "title": x["title"], "content": x["raw_content"][:2000]} for x in r["results"]]</code></pre>
+
+<h2>Шаг 4. Поиск + ответ</h2>
+<pre><code>llm = anthropic.Anthropic()
+
+def answer(query):
+    # Локальные документы
+    q_emb = embed([query])[0]
+    local = coll.query(query_embeddings=[q_emb], n_results=3)
+    local_docs = [{"source": local["ids"][0][i], "content": d}
+                  for i,d in enumerate(local["documents"][0])]
+
+    # Веб
+    web_docs = web_search(query)
+
+    sources = local_docs + web_docs
+
+    # Промпт с источниками
+    src_text = "\n\n".join(f"[{i+1}] {s.get('source') or s.get('url')}:\n{s['content'][:1000]}"
+                            for i, s in enumerate(sources))
+
+    msg = llm.messages.create(
+      model="claude-sonnet-4-5",
+      max_tokens=1500,
+      messages=[{"role": "user", "content": f'''Источники:
+{src_text}
+
+Вопрос: {query}
+
+Ответь, опираясь только на источники. После каждого утверждения — номер источника в [квадратных скобках].
+Если в источниках нет ответа — скажи "не нашёл".
+'''}]
+    )
+    return {"answer": msg.content[0].text, "sources": sources}</code></pre>
+
+<h2>Шаг 5. FastAPI + UI (20 мин)</h2>
+<pre><code>from fastapi import FastAPI
+app = FastAPI()
+
+@app.post("/ask")
+def ask(query: str):
+    return answer(query)</code></pre>
+<p>Простой UI на Streamlit:</p>
+<pre><code>import streamlit as st, requests
+st.title("Мой Perplexity")
+q = st.text_input("Вопрос:")
+if q:
+    with st.spinner("Ищу..."):
+        r = requests.post("http://localhost:8000/ask", params={"query": q}).json()
+        st.markdown(r["answer"])
+        st.divider()
+        st.caption("Источники:")
+        for i, s in enumerate(r["sources"]):
+            st.markdown(f"**[{i+1}]** {s.get('source') or s.get('url')}")</code></pre>
+
+<h2>Расширения</h2>
+<ul>
+<li><strong>Streaming</strong> — токен за токеном (Урок 11).</li>
+<li><strong>Re-ranking</strong> через Cohere — повышает качество источников.</li>
+<li><strong>Follow-up вопросы</strong> — модель сама предлагает.</li>
+<li><strong>Mobile app</strong> через Tauri/Capacitor.</li>
+</ul>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> у тебя теперь своя Perplexity — но с доступом к твоим документам, под твоим контролем.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-p6">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

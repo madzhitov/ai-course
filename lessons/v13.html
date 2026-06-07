@@ -19,21 +19,236 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/v13.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/v13.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-v13');
-</script>
 </head>
 <body>
-<h1>📚 Справочник: инструменты разработчика</h1>
-<p>V13 из курса AI на русском. 📚 Справочник: инструменты разработчика. ~40 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-v13">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">V13</span></div>
+<h1>Справочник: инструменты разработчика</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> Git, npm, .env, спецификация. Без этого невозможна командная работа и деплой.</span>
+  <span><strong>Время:</strong> ~40 минут</span>
+  <span><strong>Главы гайда:</strong> 9–12</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Этот урок — часть <strong>«Справочника по веб-разработке для не-разработчиков»</strong>. Это не ката (как v1–v10), а карта территории. Здесь — концепты, которые AI генерирует в твоих проектах и которые тебе важно понимать, чтобы не быть слепым.</p>
+<p>Без снобизма, без воды, с примерами из реальной жизни. После всех 5 модулей у тебя будет полная картина: от того, как браузер делает запрос, до того, как мониторить продакшен.</p>
+
+<hr />
+<h2>9. Git и репозитории — контроль версий</h2>
+<h3>Что такое Git</h3>
+<p>Git — система контроля версий. Она отслеживает каждое изменение в коде и позволяет: вернуться к любой предыдущей версии, работать нескольким людям над одним проектом, создавать параллельные ветки для экспериментов.</p>
+<h3>Основные концепции</h3>
+<p><strong>Репозиторий (repo)</strong> — папка проекта, за которой следит Git. Локальный репозиторий — на твоём компьютере. Удалённый (remote) — на GitHub.</p>
+<p><strong>Коммит (commit)</strong> — снимок состояния проекта в конкретный момент. Как «сохранение» в игре. Коммит фиксирует изменения локально — на сайте ничего не меняется.</p>
+<pre><code class="language-bash">git add .                                    # Подготовить все изменения
+git commit -m &quot;Добавил страницу каталога&quot;    # Сохранить снимок
+</code></pre>
+<p><strong>Push</strong> — отправить коммиты на GitHub. Код уехал в облако, но сайт ещё не обновился.</p>
+<p><strong>Деплой</strong> — Vercel подхватывает push и публикует сайт. Вот теперь пользователи видят изменения.</p>
+<p>Цепочка: <strong>коммит</strong> (сохранил локально) → <strong>push</strong> (отправил на GitHub) → <strong>деплой</strong> (Vercel собрал и опубликовал).</p>
+<p><strong>Ветка (branch)</strong> — параллельная линия разработки. Основная ветка — <code>main</code>. Хочешь добавить новую фичу — создаёшь ветку, работаешь в ней, потом сливаешь обратно.</p>
+<pre><code class="language-bash">git checkout -b feature/catalog    # Создать ветку и переключиться
+# ... работаешь ...
+git checkout main                  # Вернуться в main
+git merge feature/catalog          # Слить изменения
+</code></pre>
+<p><strong>Pull</strong> — скачать изменения с GitHub (сделанные другими или на другом компьютере).</p>
+<pre><code class="language-bash">git pull origin main               # Скачать последнюю версию
+</code></pre>
+<h3>GitHub</h3>
+<p>GitHub — платформа для хранения репозиториев. Как Google Drive для кода. Vercel подключается к GitHub и автоматически деплоит при каждом push.</p>
+<h3>.gitignore</h3>
+<p>Файл, который говорит Git, что НЕ нужно отслеживать:</p>
+<pre><code>node_modules/      # Зависимости (тяжёлые, ставятся через npm install)
+.env.local         # Секреты (API-ключи, пароли)
+.next/             # Сборка Next.js
+</code></pre>
+<p>Никогда не коммить <code>node_modules</code> и <code>.env</code> — первое огромное и восстанавливается автоматически, второе секретное.</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Создай аккаунт на github.com (если нет)</li>
+<li>В терминале в папке проекта: <code>git init</code> → <code>git add .</code> → <code>git commit -m "First commit"</code></li>
+<li>Создай репозиторий на GitHub, скопируй URL</li>
+<li><code>git remote add origin https://github.com/username/repo.git</code></li>
+<li><code>git push -u origin main</code></li>
+<li>Открой GitHub — твой код там</li>
+</ol>
+</div><hr />
+<h2>10. npm — менеджер пакетов</h2>
+<h3>Что это</h3>
+<p>npm (Node Package Manager) — магазин готового кода. 2+ миллиона пакетов: от React до библиотеки для отправки email.</p>
+<h3>Основные команды</h3>
+<pre><code class="language-bash">npm init                    # Инициализировать новый проект (создаёт package.json)
+npm install                 # Установить все зависимости из package.json
+npm install grammy          # Установить конкретный пакет
+npm install -D typescript   # Установить как dev-зависимость
+npm uninstall grammy        # Удалить пакет
+npm run dev                 # Запустить скрипт «dev» из package.json
+npm run build               # Собрать проект для продакшена
+</code></pre>
+<h3>package.json — паспорт проекта</h3>
+<p>Самый важный файл в любом Node.js проекте:</p>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;my-shop&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;scripts&quot;: {
+    &quot;dev&quot;: &quot;next dev&quot;,
+    &quot;build&quot;: &quot;next build&quot;,
+    &quot;start&quot;: &quot;next start&quot;,
+    &quot;lint&quot;: &quot;next lint&quot;
+  },
+  &quot;dependencies&quot;: {
+    &quot;next&quot;: &quot;^14.0.0&quot;,
+    &quot;react&quot;: &quot;^18.2.0&quot;,
+    &quot;@supabase/supabase-js&quot;: &quot;^2.38.0&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;typescript&quot;: &quot;^5.0.0&quot;
+  }
+}
+</code></pre>
+<p><strong>dependencies</strong> — пакеты для работы приложения. <strong>devDependencies</strong> — пакеты только для разработки (TypeScript, линтеры).</p>
+<h3>package-lock.json</h3>
+<p>Фиксирует точные версии всех пакетов. Гарантирует одинаковые версии у тебя и на сервере. Коммитится в Git, но не редактируется вручную.</p>
+<h3>node_modules</h3>
+<p>Папка со скачанными пакетами. Может весить сотни мегабайт. Не коммитится в Git — восстанавливается командой <code>npm install</code>.</p>
+<h3>Альтернативы</h3>
+<ul>
+<li><strong>pnpm</strong> — быстрее, экономит место на диске</li>
+<li><strong>yarn</strong> — от Facebook, параллельная установка</li>
+<li><strong>bun</strong> — сверхбыстрый, заменяет и npm, и Node.js</li>
+</ul>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Зайди в папку своего Next.js проекта</li>
+<li>Открой <code>package.json</code> — найди секции scripts, dependencies</li>
+<li>Выполни <code>npm run dev</code> — это запустит скрипт <code>next dev</code> из package.json</li>
+<li>Установи пакет: <code>npm install dayjs</code> — библиотека для работы с датами</li>
+<li>Открой <code>package.json</code> снова — увидишь dayjs в dependencies</li>
+</ol>
+</div><hr />
+<h2>11. Файл .env — секреты проекта</h2>
+<h3>Что это</h3>
+<p>Файл с переменными окружения (environment variables). Хранит всё, что нельзя класть в код: API-ключи, пароли, строки подключения к базе.</p>
+<h3>Пример .env.local</h3>
+<pre><code class="language-env"># База данных
+SUPABASE_URL=https://xxxxx.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+# AI
+ANTHROPIC_API_KEY=sk-ant-api03-...
+
+# Платежи
+STRIPE_SECRET_KEY=sk_live_...
+
+# Email
+RESEND_API_KEY=re_...
+</code></pre>
+<h3>Правила</h3>
+<p><strong>1. Никогда не коммить в Git.</strong> Добавь <code>.env.local</code> в <code>.gitignore</code>. Если ты случайно закоммитил API-ключ — считай его скомпрометированным. Пересоздай.</p>
+<p><strong>2. Разные файлы для разных сред.</strong> <code>.env.local</code> для разработки на твоём компьютере, переменные в Vercel Dashboard для продакшена.</p>
+<p><strong>3. Public vs Secret.</strong> В Next.js переменные доступны на фронте (в браузере пользователя) только если начинаются с <code>NEXT_PUBLIC_</code>:</p>
+<pre><code class="language-env"># Только на сервере (безопасно)
+ANTHROPIC_API_KEY=sk-ant-...
+
+# Видно и в браузере (публично)
+NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
+</code></pre>
+<p>Не добавляй NEXT_PUBLIC_ к секретным ключам — они станут видны всем.</p>
+<h3>Как использовать в коде</h3>
+<pre><code class="language-typescript">const apiKey = process.env.ANTHROPIC_API_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+</code></pre>
+<h3>Где хранить для продакшена</h3>
+<ul>
+<li><strong>Vercel</strong> — Dashboard → Settings → Environment Variables</li>
+<li><strong>GitHub Actions</strong> — Settings → Secrets</li>
+<li><strong>Supabase</strong> — Edge Functions → Secrets</li>
+</ul>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Создай файл <code>.env.local</code> в корне проекта</li>
+<li>Добавь: <code>NEXT_PUBLIC_APP_NAME=My First App</code></li>
+<li>В <code>page.tsx</code> используй: <code>&lt;h1&gt;{process.env.NEXT_PUBLIC_APP_NAME}&lt;/h1&gt;</code></li>
+<li>Перезапусти <code>npm run dev</code> (переменные читаются при старте)</li>
+<li>Проверь, что <code>.env.local</code> есть в <code>.gitignore</code></li>
+</ol>
+</div><hr />
+<h2>12. Спека (ТЗ) — что строим и зачем</h2>
+<h3>Что такое спека</h3>
+<p>Спека (спецификация, ТЗ, PRD) — документ, который описывает что нужно построить, для кого и зачем. Без спеки разработка превращается в «а давай ещё вот это добавим» бесконечно.</p>
+<h3>Минимальная структура</h3>
+<p><strong>1. Проблема</strong> — что сейчас не так?</p>
+<blockquote>
+<p>Клиенты интернет-магазина не могут отследить статус доставки. Менеджеры тратят 2 часа в день на ответы в мессенджерах.</p>
+</blockquote>
+<p><strong>2. Решение</strong> — что строим?</p>
+<blockquote>
+<p>Личный кабинет: история заказов, трекинг доставки, повторный заказ.</p>
+</blockquote>
+<p><strong>3. Целевая аудитория</strong> — для кого?</p>
+<blockquote>
+<p>Существующие клиенты, 500-1000 человек, регулярные покупатели.</p>
+</blockquote>
+<p><strong>4. Функциональные требования</strong> — что конкретно должно работать?</p>
+<blockquote>
+<ul>
+<li>Авторизация через email + magic link</li>
+<li>Список заказов с фильтрами по дате и статусу</li>
+<li>Детали заказа: состав, стоимость, трекинг-номер</li>
+<li>Повторный заказ одной кнопкой</li>
+</ul>
+</blockquote>
+<p><strong>5. Нефункциональные требования</strong> — как должно работать?</p>
+<blockquote>
+<ul>
+<li>Загрузка &lt; 2 секунды</li>
+<li>Мобильная адаптация</li>
+<li>Мультиязычность (RU/EN)</li>
+</ul>
+</blockquote>
+<p><strong>6. Метрики успеха</strong> — как понять, что получилось?</p>
+<blockquote>
+<ul>
+<li>50% клиентов зарегистрировались за месяц</li>
+<li>Время ответа менеджеров сократилось на 40%</li>
+</ul>
+</blockquote>
+<h3>Спека для AI</h3>
+<p>Когда работаешь с Claude Code или v0, спека — это твой промпт. Чем детальнее — тем точнее результат. Вместо «сделай каталог» пиши: «Сделай страницу каталога с сеткой 3 колонки, фильтрами по категориям слева, сортировкой по цене/новизне, карточки с фото, названием и ценой в рублях, по клику — модальное окно с деталями».</p>
+<div class="callout callout-info"><h3>🏋️ Практика</h3>
+<ol>
+<li>Выбери проект, который хочешь построить (магазин, блог, дашборд, бот)</li>
+<li>Напиши спеку по шаблону выше — 1 страница максимум</li>
+<li>Отдай спеку AI (Claude, ChatGPT): «Вот спека моего проекта. Разбей на этапы разработки и предложи структуру файлов для Next.js»</li>
+<li>Сравни результат — насколько детальная спека влияет на качество ответа</li>
+</ol>
+</div><hr />
+<div class="callout callout-info">
+<strong>📌 Что дальше:</strong> следующий модуль справочника — <strong>v14 (От кода к продукту)</strong>. Можно пройти подряд, можно вернуться к ката-урокам (v1–v10) и применять теорию на практике.
+</div>
+
+
+    <div class="pp-open"><a href="/#lesson-v13">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

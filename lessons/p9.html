@@ -19,21 +19,124 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/p9.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p9.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p9');
-</script>
 </head>
 <body>
-<h1>Семантический поиск по своему Telegram-каналу или чату</h1>
-<p>P9 из курса AI на русском. Семантический поиск по своему Telegram-каналу или чату. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p9">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P9</span></div>
+<h1>Проект «За 1 час»: Семантический поиск по своему Telegram-каналу или чату</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> поиск «по смыслу» по экспорту своего Telegram-канала или чата</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Уровень:</strong> Python + urok 8 (эмбеддинги)</span>
+</div>
+
+<h2>Зачем</h2>
+<p>В Telegram стандартный поиск — по точным словам. «Где я писал про оптимизацию баз?» — если ты писал «ускорил Postgres», не найдёт. Semantic search решает.</p>
+
+<h2>Что узнаешь</h2>
+<ul>
+<li>Экспорт чата/канала из Telegram.</li>
+<li>Парсинг JSON в чанки.</li>
+<li>Embeddings + ChromaDB.</li>
+<li>Простой CLI или TG-бот для поиска.</li>
+</ul>
+
+<h2>Шаг 1. Экспорт чата (5 мин)</h2>
+<p>Telegram Desktop → Settings → Advanced → Export Telegram data → выбери чат → формат JSON. Получишь <code>result.json</code>.</p>
+
+<h2>Шаг 2. Парсинг</h2>
+<pre><code>import json
+data = json.load(open("result.json"))
+messages = []
+for m in data["messages"]:
+    if m["type"] != "message": continue
+    text = m["text"] if isinstance(m["text"], str) else "".join(
+      t["text"] if isinstance(t, dict) else t for t in m["text"]
+    )
+    if len(text) &lt; 20: continue  # пропускаем «ок», «👍»
+    messages.append({"id": m["id"], "date": m["date"], "from": m.get("from"), "text": text})</code></pre>
+
+<h2>Шаг 3. Эмбеддинги в ChromaDB</h2>
+<pre><code>import chromadb, openai
+client = chromadb.PersistentClient(path="./tg_db")
+coll = client.get_or_create_collection("messages")
+emb_client = openai.OpenAI()
+
+def embed_batch(texts):
+    r = emb_client.embeddings.create(model="text-embedding-3-small", input=texts)
+    return [e.embedding for e in r.data]
+
+# Батчами по 100
+for i in range(0, len(messages), 100):
+    batch = messages[i:i+100]
+    coll.add(
+      ids=[str(m["id"]) for m in batch],
+      documents=[m["text"] for m in batch],
+      embeddings=embed_batch([m["text"] for m in batch]),
+      metadatas=[{"date": m["date"], "from": m["from"] or ""} for m in batch]
+    )
+    print(f"Indexed {i+len(batch)} / {len(messages)}")</code></pre>
+<p>Стоимость: 10k сообщений × средняя длина 200 токенов = 2M токенов × $0.02/1M = $0.04. Один раз.</p>
+
+<h2>Шаг 4. Поиск</h2>
+<pre><code>def search(query, k=5):
+    q_emb = embed_batch([query])[0]
+    r = coll.query(query_embeddings=[q_emb], n_results=k)
+    for i, doc in enumerate(r["documents"][0]):
+        meta = r["metadatas"][0][i]
+        print(f"[{meta['date']}] {meta['from']}: {doc[:200]}...\n")
+
+search("оптимизация баз данных")</code></pre>
+
+<h2>Шаг 5. TG-бот для поиска</h2>
+<pre><code>from aiogram import Bot, Dispatcher, types
+import asyncio
+
+bot = Bot(token=os.environ["TG_BOT_TOKEN"])
+dp = Dispatcher()
+
+@dp.message()
+async def handle(message: types.Message):
+    q_emb = embed_batch([message.text])[0]
+    r = coll.query(query_embeddings=[q_emb], n_results=5)
+    reply = ""
+    for i, doc in enumerate(r["documents"][0]):
+        meta = r["metadatas"][0][i]
+        reply += f"**{meta['date']}** ({meta['from']}):\n{doc[:300]}\n\n"
+    await message.answer(reply, parse_mode="Markdown")
+
+asyncio.run(dp.start_polling(bot))</code></pre>
+
+<h2>Расширения</h2>
+<ul>
+<li><strong>Q&amp;A</strong> — поверх поиска прикручиваешь Claude, который отвечает на вопрос по найденным сообщениям.</li>
+<li><strong>Несколько чатов</strong> сразу — добавь поле <code>chat_name</code> в metadata.</li>
+<li><strong>Инкрементальный апдейт</strong> — раз в день добавляешь новые сообщения через Telethon (TG-клиент-API).</li>
+<li><strong>Фильтр по дате/автору</strong> через метаданные.</li>
+</ul>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> личная Wikipedia из твоих чатов. Особенно полезно для рабочих чатов с архивом обсуждений.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-p9">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

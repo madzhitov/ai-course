@@ -19,21 +19,153 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/c7.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/c7.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-c7');
-</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Claude Deep Dive</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">C7</span></div>
 <h1>Constitutional AI и safety в Claude</h1>
-<p>C7 из курса AI на русском. Constitutional AI и safety в Claude. ~40 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-c7">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять, чем подход Anthropic к безопасности отличается, и как это влияет на работу с Claude</span>
+  <span><strong>Время:</strong> ~40 минут</span>
+  <span><strong>Источник:</strong> Anthropic «Constitutional AI» (2022), «Claude's Constitution» (2023)</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>«Claude — самая безопасная модель» — слышишь часто. Что это значит технически и как это меняет твою работу с ним? Безопасность Claude — не просто фильтр на выходе. Это <strong>встроено в обучение</strong>, и из-за этого Claude:</p>
+<ul>
+<li>Отказывает в некоторых задачах, где GPT согласится.</li>
+<li>Лучше распознаёт двусмысленные запросы.</li>
+<li>Менее склонен к галлюцинациям критичных вещей (медицина, право).</li>
+<li>Лучше держит длинный контекст, не «срываясь» в неуместное.</li>
+</ul>
+
+<h2>1. Стандартный подход — RLHF</h2>
+<p>До 2022 главный способ научить модель быть «полезной и безопасной» — <strong>RLHF</strong> (Reinforcement Learning from Human Feedback):</p>
+<ol>
+<li>Базовая модель генерирует ответы на промпт.</li>
+<li>Люди ранжируют ответы по парам (A лучше B).</li>
+<li>На этих парах тренируется reward model.</li>
+<li>Базовая модель дотренивается, чтобы максимизировать reward.</li>
+</ol>
+<p>Проблема: <strong>дорого</strong>. Нужно нанимать тысячи аннотаторов на месяцы. Кроме того, разметка субъективна и склонна к bias аннотаторов.</p>
+
+<h2>2. Constitutional AI — RLAIF</h2>
+<p>Anthropic в 2022 предложили альтернативу: <strong>RL from AI Feedback</strong>. Идея простая и хитрая.</p>
+<p>Сначала Anthropic пишет «<strong>конституцию</strong>» — список из ~75 принципов в естественном языке: «Не помогай делать оружие». «Будь честным про свои ограничения». «Уважай автономию пользователя». «Не дискриминируй по признакам».</p>
+<p>Дальше двухступенчатый процесс:</p>
+<ol>
+<li><strong>Self-critique:</strong> базовая модель отвечает на промпт → модель сама критикует свой ответ по конституции → переписывает.</li>
+<li><strong>RLAIF:</strong> другая копия модели ранжирует ответы пары (A лучше B) по принципам конституции. На этих парах тренируется reward model. Дальше как RLHF, но без людей-аннотаторов.</li>
+</ol>
+<p>Преимущества:</p>
+<ul>
+<li>В тысячи раз дешевле.</li>
+<li>Принципы — <strong>открытый текст</strong>, можно прочитать и проверить.</li>
+<li>Лучше масштабируется на много языков/тем.</li>
+<li>Принципы можно итеративно улучшать.</li>
+</ul>
+
+<h2>3. «Helpful, Harmless, Honest» — три кита</h2>
+<p>Базовые цели Claude:</p>
+<ul>
+<li><strong>Helpful</strong> — реально полезен пользователю. Не «отказываюсь чтобы быть на всякий случай безопасным».</li>
+<li><strong>Harmless</strong> — не вредит ни пользователю, ни третьим лицам.</li>
+<li><strong>Honest</strong> — не врёт, прямо говорит о неуверенности и ограничениях.</li>
+</ul>
+<p>Эти три цели <strong>часто конфликтуют</strong>. Например: «расскажи как сделать яд» → helpful противоречит harmless. Constitutional AI учит модель балансировать, а не просто отказывать всегда.</p>
+
+<h2>4. Что это значит на практике</h2>
+<p><strong>Claude чаще:</strong></p>
+<ul>
+<li>Уточняет, прежде чем ответить, если запрос двусмысленный.</li>
+<li>Говорит «не знаю» / «не уверен» вместо выдумки.</li>
+<li>Предлагает альтернативу, если задача в серой зоне («помоги написать код для скрапинга» → объяснит, как, плюс предупредит про robots.txt и TOS).</li>
+<li>Отказывает с объяснением, а не «I can't do that».</li>
+</ul>
+<p><strong>Где Claude отказывает там, где GPT согласится:</strong></p>
+<ul>
+<li>Генерация контента «от лица» реальных публичных персон.</li>
+<li>Некоторые юридические/медицинские прямые советы без оговорок.</li>
+<li>Жёсткий контент даже в художественных целях, если нет явного контекста.</li>
+</ul>
+
+<h2>5. Как формулировать запросы, чтобы Claude не отказывал</h2>
+<p>Если Claude отказал в чём-то легитимном, обычно помогает:</p>
+<ol>
+<li><strong>Указать контекст и цель.</strong> «Я security-исследователь, изучаю prompt injection для своей команды» → Claude чаще соглашается обсудить детали атак.</li>
+<li><strong>Спросить через образовательную/защитную рамку.</strong> «Как распознать фишинг» вместо «как написать фишинг».</li>
+<li><strong>Использовать XML-теги</strong> для разграничения: <code>&lt;research_task&gt;...&lt;/research_task&gt;</code> — Claude натренирован уважать структуру.</li>
+<li><strong>Не врать.</strong> Если врёшь про контекст, и модель замечает несостыковки — она усиливает отказ.</li>
+</ol>
+
+<h2>6. Constitutional AI ≠ ничего не запрещено</h2>
+<p>Anthropic явно блокирует через дополнительный слой:</p>
+<ul>
+<li>CBRN-угрозы (chemical, biological, radiological, nuclear).</li>
+<li>Эксплойты для критической инфраструктуры.</li>
+<li>CSAM и связанный контент.</li>
+<li>Конкретные руководства по физическому насилию.</li>
+</ul>
+<p>Эти блоки <strong>не пробиваются</strong> промпт-инжинирингом. Это by design.</p>
+
+<h2>7. Что значит для тебя как разработчика</h2>
+<ul>
+<li><strong>Claude — выбор по умолчанию для пользовательских продуктов</strong> с разнообразной публикой. Меньше шансов «зашкварного» ответа.</li>
+<li><strong>Для творческих задач</strong> (художественный контент, ролевые игры) часто более рестриктивен. Учитывай это при выборе модели.</li>
+<li><strong>Для bus-критичных вещей</strong> (медицина, право, финансы) — Claude добавляет дисклеймеры. Это полезно, но иногда раздражает. Можно частично подавить системным промптом, но не до конца.</li>
+<li><strong>Системный промпт</strong> Claude уважает сильно — больше, чем GPT-4. Для управления тоном и поведением — это плюс.</li>
+</ul>
+
+<h2>8. Глоссарий</h2>
+<div class="glossary-term"><h3>RLHF</h3><p>Reinforcement Learning from Human Feedback. Стандартный способ выровнять модель по человеческим предпочтениям.</p></div>
+<div class="glossary-term"><h3>RLAIF</h3><p>RL from AI Feedback. Вариант, где обратную связь даёт другая модель, опираясь на формальную «конституцию».</p></div>
+<div class="glossary-term"><h3>Constitution</h3><p>Список текстовых принципов, по которым модель критикует свои ответы. Около 75 пунктов у Anthropic, публичны.</p></div>
+<div class="glossary-term"><h3>Helpful / Harmless / Honest</h3><p>Три ключевых параметра, по которым обучают современные модели. Часто конфликтуют — учат балансировать.</p></div>
+
+<h2>9. Практика (30 минут)</h2>
+<ol>
+<li>Прочитай <a href="https://www.anthropic.com/news/claudes-constitution" target="_blank">Claude's Constitution</a> — там 10 минут, и понимание поведения Claude резко вырастет.</li>
+<li>Попробуй промпт, на который Claude отказал. Переформулируй с указанием контекста — заметь разницу.</li>
+<li>Сравни: один и тот же серый запрос Claude vs GPT-4. Запиши, как они ответили.</li>
+</ol>
+
+<h2>10. Проверь себя</h2>
+<p><strong>1. Чем Constitutional AI отличается от RLHF в одном предложении?</strong><br>Обратная связь идёт от другой модели по формальному списку принципов, а не от тысяч живых аннотаторов.</p>
+<p><strong>2. Почему «Helpful, Harmless, Honest» — это компромисс, а не три независимые цели?</strong><br>Они конфликтуют. Идеальная helpful-модель помогает с любой задачей, идеальная harmless — отказывает всегда. Constitutional обучение учит балансу.</p>
+<p><strong>3. Что НЕ пробивается промпт-инжинирингом?</strong><br>Жёстко блокируемые категории (CBRN, CSAM, эксплойты критической инфраструктуры). Они блокируются отдельным слоем, не Constitutional.</p>
+<p><strong>4. В каком сценарии Claude — лучший выбор по умолчанию?</strong><br>Пользовательский продукт с разнообразной публикой и высокими репутационными рисками.</p>
+
+<h2>11. Что должно остаться в голове</h2>
+<ol>
+<li>Constitutional AI = RLAIF поверх списка принципов в текстовом виде.</li>
+<li>Цели Claude: helpful + harmless + honest, балансируются, а не решаются изолированно.</li>
+<li>Claude отказывает чаще GPT в творческих и серых задачах, но реже галлюцинирует в фактах.</li>
+<li>Указание контекста и образовательная рамка помогают обходить ложные отказы.</li>
+<li>CBRN / CSAM / эксплойты — отдельный слой блокировок, не Constitutional.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> прочитай реальную <a href="https://www.anthropic.com/news/claudes-constitution" target="_blank">Claude's Constitution</a> — это меняет восприятие модели с «магической коробки» на «инженерное решение».
+</div>
+
+    <div class="pp-open"><a href="/#lesson-c7">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

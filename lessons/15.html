@@ -19,21 +19,309 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/15.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/15.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-15');
-</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 2. Строитель</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 15</span></div>
 <h1>Урок 15. Жизненный цикл GenAI-приложения</h1>
-<p>Урок 15 из курса AI на русском. Жизненный цикл GenAI-приложения. ~50 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-15">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять, как довести AI-приложение от прототипа до прода и держать его живым</span>
+  <span><strong>Время:</strong> ~50 минут</span>
+  <span><strong>Источник:</strong> generative-ai-for-beginners/14, опыт практики</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>У тебя уже есть три рабочих pet-проекта: API-приложение из урока 6, чат-бот из урока 7, semantic search из урока 8, плюс function calling и RAG из 13 и 14. Они работают на твоей машине. Но <strong>работающее на твоей машине ≠ продакшен</strong>.</p>
+<p>Главная разница между «скриптом» и «приложением»: у приложения есть <strong>жизненный цикл</strong>. Его нужно выпускать, тестировать, мониторить, улучшать. AI-приложения здесь особенно требовательны, потому что:</p>
+<ul>
+<li>LLM <strong>недетерминированы</strong> — один и тот же промпт может давать разные ответы.</li>
+<li>Модели <strong>дрейфуют</strong> — OpenAI или Anthropic обновили модель, и твой промпт сломался.</li>
+<li>Цена <strong>может взорваться</strong> — пользователь повторил один промпт 10 000 раз.</li>
+<li>Качество <strong>трудно измерить</strong> — «хорошо ли модель ответила?» субъективно.</li>
+</ul>
+<p>Этот урок — карта того, как этим управлять.</p>
+
+<h2>1. Шесть этапов жизненного цикла</h2>
+
+<p>Любое серьёзное AI-приложение проходит через шесть этапов:</p>
+
+<ol>
+<li><strong>Use case definition</strong> — что мы делаем и для кого</li>
+<li><strong>Prototyping</strong> — первая работающая версия</li>
+<li><strong>Evaluation</strong> — собираем тесты, измеряем качество</li>
+<li><strong>Deployment</strong> — выкатываем в прод</li>
+<li><strong>Monitoring</strong> — следим за метриками и инцидентами</li>
+<li><strong>Improvement</strong> — итерируем по фидбеку</li>
+</ol>
+
+<p>В отличие от классического software цикла, эти этапы <strong>цикличны</strong> — после Improvement идём снова на Evaluation. И почти всегда крутятся параллельно: один фичу мониторим, другую прототипируем.</p>
+
+<h2>2. Этап 1: Use case — без него всё бесполезно</h2>
+
+<p>Самая частая ошибка: «давайте сделаем AI-чат-бот для нашего сайта». Это не use case, это технология. Правильный use case отвечает на три вопроса:</p>
+
+<ul>
+<li><strong>Какую задачу пользователя</strong> мы решаем? (не «бот», а «помочь клиенту быстро найти подходящий тариф»)</li>
+<li><strong>Как сейчас</strong> решается без AI? (живой менеджер, FAQ, поиск)</li>
+<li><strong>Почему AI</strong> лучше / быстрее / дешевле / приятнее?</li>
+</ul>
+
+<p>Если на третий вопрос нет ответа — не делай AI. Используй существующее. <strong>«AI ради AI» — провал.</strong></p>
+
+<h2>3. Этап 2: Prototyping — быстро, грязно, работающе</h2>
+
+<p>Цель прототипа: <strong>проверить гипотезу за неделю или меньше</strong>. Не идеальный код, не масштабируемая архитектура — рабочий MVP.</p>
+
+<p>Что важно на этом этапе:</p>
+<ul>
+<li>Используй <strong>самую сильную модель</strong> (GPT-4o, Claude Sonnet) — потом оптимизируем</li>
+<li>Пиши <strong>гибкий промпт</strong>, не вылизывай</li>
+<li>Тестируй на <strong>10–20 реальных кейсах</strong>, не на 1000</li>
+<li>Не строй <strong>сложную инфру</strong> — пусть это будет Python-скрипт или Streamlit</li>
+</ul>
+
+<p>Сильный совет: <strong>покажи прототип реальным пользователям как можно раньше</strong>. На этом этапе ты узнаешь, что половина того, что казалось важным, не нужно — а нужно что-то совсем другое.</p>
+
+<h2>4. Этап 3: Evaluation — главная отличительная черта AI-разработки</h2>
+
+<p>У обычного приложения есть unit-тесты: «функция вернула X для входа Y». У AI-приложения такого нет — на одинаковый запрос модель может ответить разными словами, и оба ответа могут быть правильными.</p>
+
+<p>Поэтому используется <strong>eval-фреймворк</strong>: набор тестовых случаев + способ оценить ответ.</p>
+
+<h3>Тест-сет (golden dataset)</h3>
+<p>Набор кейсов, на которых ты проверяешь приложение:</p>
+<pre><code>{
+  "id": "tc_001",
+  "input": "Можно ли сменить тариф в середине месяца?",
+  "expected_topics": ["возможность смены", "перерасчёт", "сроки"],
+  "expected_tone": "дружелюбный, конкретный",
+  "must_include_link": "/help/change-plan"
+}</code></pre>
+<p>20–50 кейсов хватает на старте. Со временем расширяй до 200–500.</p>
+
+<h3>Как оценивать ответ</h3>
+<p>Четыре подхода:</p>
+
+<ol>
+<li><strong>Точные совпадения</strong> — для structured output (JSON-схема правильная? всё на месте?)</li>
+<li><strong>Регулярки / правила</strong> — содержит ли ответ нужную ссылку, не содержит ли запрещённых слов</li>
+<li><strong>LLM-as-judge</strong> — вторая модель (GPT-4) оценивает ответ первой по критериям</li>
+<li><strong>Human review</strong> — самое дорогое, но иногда необходимое</li>
+</ol>
+
+<p>На практике используется комбо: автоматические проверки (1, 2, 3) на каждом коммите + human review раз в неделю.</p>
+
+<h3>Инструменты для eval</h3>
+<ul>
+<li><strong><a href="https://www.promptfoo.dev" target="_blank">Promptfoo</a></strong> — CLI и YAML конфиги, регрессионные тесты для промптов. Самый практичный для старта.</li>
+<li><strong><a href="https://inspect.aisi.org.uk" target="_blank">Inspect</a></strong> — от UK AI Safety Institute, упор на безопасность.</li>
+<li><strong><a href="https://www.langfuse.com" target="_blank">Langfuse</a></strong> — observability + eval в одном.</li>
+<li><strong>Свой скрипт</strong> — 100 строк Python с pytest. Часто этого хватает.</li>
+</ul>
+
+<h2>5. Этап 4: Deployment — куда выкатить</h2>
+
+<p>Базовые варианты в порядке возрастания сложности:</p>
+
+<table>
+<tr><th>Способ</th><th>Когда подходит</th><th>Минусы</th></tr>
+<tr><td><strong>Streamlit Cloud</strong></td><td>Внутренние инструменты, демо для друзей</td><td>Не для большой нагрузки</td></tr>
+<tr><td><strong>Vercel / Netlify</strong></td><td>Frontend + serverless backend</td><td>Лимиты длинных запросов (10 сек)</td></tr>
+<tr><td><strong>Railway / Render / Fly.io</strong></td><td>Long-running апи, простой деплой</td><td>$5–20/мес</td></tr>
+<tr><td><strong>AWS / GCP / Azure</strong></td><td>Серьёзный масштаб</td><td>Сложно, дорого, много возможностей напортачить</td></tr>
+</table>
+
+<p>Главные технические заботы при деплое AI-приложения:</p>
+<ul>
+<li><strong>Секреты:</strong> API ключи в env vars, не в коде</li>
+<li><strong>Rate limits:</strong> на пользователя и на endpoint</li>
+<li><strong>Таймауты:</strong> LLM-вызов может занять 30+ секунд, обычные web-фреймворки этого не любят</li>
+<li><strong>Стриминг:</strong> ответ возвращается по частям, нужно настроить SSE</li>
+<li><strong>Cost limits:</strong> hard cap на день/месяц, чтобы не разорить тебя</li>
+</ul>
+
+<h2>6. Этап 5: Monitoring — что мерить</h2>
+
+<p>Метрики делятся на 4 группы:</p>
+
+<h3>Технические</h3>
+<ul>
+<li>Latency: <strong>p50, p95, p99</strong> — половина запросов быстрее p50, 5% медленнее p95</li>
+<li>Error rate: % запросов с ошибкой</li>
+<li>Throughput: запросов в секунду</li>
+<li>Stream interruption rate: сколько ответов прервалось на полпути</li>
+</ul>
+
+<h3>Финансовые</h3>
+<ul>
+<li>Cost per request: средняя стоимость одного запроса</li>
+<li>Cost per user per day: сколько на тебе зарабатывает / стоит каждый пользователь</li>
+<li>Token usage breakdown: input vs output, по моделям</li>
+</ul>
+
+<h3>Качественные (AI-специфичные)</h3>
+<ul>
+<li>Hallucination rate: % ответов с фактическими ошибками (через автоматические или ручные проверки)</li>
+<li>Refusal rate: % отказов модели отвечать</li>
+<li>User feedback score: thumbs up/down</li>
+<li>Retry rate: сколько пользователей переспрашивают</li>
+</ul>
+
+<h3>Продуктовые</h3>
+<ul>
+<li>Активность: DAU, WAU, retention</li>
+<li>Engagement: сколько сообщений в сессии</li>
+<li>Конверсия: дошли ли до целевого действия</li>
+</ul>
+
+<h3>Инструменты</h3>
+<ul>
+<li><strong><a href="https://www.langfuse.com" target="_blank">Langfuse</a></strong> — best free-tier для AI-observability, open source</li>
+<li><strong><a href="https://www.helicone.ai" target="_blank">Helicone</a></strong> — прокси перед OpenAI/Anthropic, логирует всё</li>
+<li><strong><a href="https://posthog.com" target="_blank">PostHog</a></strong> — продуктовая аналитика + AI-фичи</li>
+<li><strong>Sentry</strong> — ошибки и performance</li>
+</ul>
+
+<h2>7. Этап 6: Improvement — закрываем цикл</h2>
+
+<p>После запуска поступает реальный фидбек — логи, оценки, жалобы. Что с этим делать:</p>
+
+<ol>
+<li><strong>Анализ топ-10 проблемных кейсов</strong> в неделю. Не пытайся починить всё — найди 10 худших и разберись.</li>
+<li><strong>Добавляй их в test-set</strong>. Каждая жалоба становится регрессионным тестом.</li>
+<li><strong>Итерируй промпт</strong> или add knowledge через RAG. Не fine-tune сразу — это последний ресурс.</li>
+<li><strong>A/B-тестируй</strong> новую версию: 10% пользователей на новой, 90% на старой. Через неделю — смотри метрики.</li>
+<li><strong>Rollback план</strong> — если новое плохо, моментально вернись.</li>
+</ol>
+
+<h2>8. Pitfalls — частые грабли</h2>
+
+<h3>Slack-driven development</h3>
+<p>«Менеджер написал в Slack — модель отвечает плохо на X» → разработчик молниеносно правит промпт → завтра новая жалоба про Y → правка → Z → ...</p>
+<p>Без eval-сета вы реактивно носитесь за каждой жалобой, ломая то, что работало.</p>
+
+<h3>Версии моделей</h3>
+<p>OpenAI обновляет <code>gpt-4o</code> без предупреждения. Ваш протестированный промпт может начать вести себя иначе. <strong>Используйте версии:</strong> <code>gpt-4o-2024-11-20</code> вместо просто <code>gpt-4o</code>.</p>
+
+<h3>Стоимость без лимитов</h3>
+<p>Одного бага достаточно: пользователь зацикливается на «попробуй ещё раз», вы платите $500 за день. <strong>Хард-лимиты на пользователя обязательны.</strong></p>
+
+<h3>Логирование PII</h3>
+<p>Если в промптах от пользователей паспортные данные и т.п. — это всё попадает в ваши логи Langfuse / Sentry. Юридический риск. <strong>Маскируйте перед логированием.</strong></p>
+
+<h2>9. Глоссарий</h2>
+<ul>
+<li><strong>Eval / Evaluation</strong> — систематическая оценка качества AI-приложения</li>
+<li><strong>Golden dataset</strong> — эталонный набор тестовых кейсов</li>
+<li><strong>LLM-as-judge</strong> — вторая модель оценивает ответ первой</li>
+<li><strong>Drift</strong> — изменение поведения модели со временем (обновили модель → промпты сломались)</li>
+<li><strong>Observability</strong> — возможность видеть, что происходит внутри приложения в проде</li>
+<li><strong>A/B testing</strong> — две версии параллельно, сравниваем метрики</li>
+<li><strong>Hallucination rate</strong> — % ответов с выдуманными фактами</li>
+<li><strong>Refusal rate</strong> — % отказов модели отвечать (безопасность срабатывает)</li>
+<li><strong>Cost per request / per user</strong> — финансовые KPI</li>
+<li><strong>Promptfoo</strong> — open-source CLI для регрессионных тестов промптов</li>
+<li><strong>Langfuse</strong> — open-source платформа AI-observability и eval</li>
+</ul>
+
+<h2>10. Практика (60 минут)</h2>
+
+<h3>Упражнение 1. Eval-сет для своего проекта (20 минут)</h3>
+<p>Возьми один из своих pet-проектов (бот из урока 7 или RAG из урока 8).</p>
+<ol>
+<li>Запиши 20 реальных запросов, которые ты задавал ему</li>
+<li>Для каждого запроса — что было бы идеальным ответом? (1-2 предложения)</li>
+<li>Сохрани в <code>tests.jsonl</code>:
+<pre><code>{"input": "...", "expected_topics": [...], "must_not_say": [...]}</code></pre></li>
+</ol>
+
+<h3>Упражнение 2. Promptfoo (20 минут)</h3>
+<pre><code>npm install -g promptfoo
+promptfoo init</code></pre>
+<p>В <code>promptfooconfig.yaml</code>:</p>
+<pre><code>prompts:
+  - "Ответь на вопрос пользователя: {{question}}"
+providers:
+  - openai:gpt-4o-mini
+  - openai:gpt-4o
+tests:
+  - vars: { question: "Что такое RAG?" }
+    assert:
+      - type: contains
+        value: "Retrieval"
+      - type: llm-rubric
+        value: "Ответ объясняет RAG понятным языком"</code></pre>
+<p>Запусти <code>promptfoo eval</code>. Сравни две модели на одних кейсах.</p>
+
+<h3>Упражнение 3. Cost monitoring (20 минут)</h3>
+<p>Возьми свой бот из урока 7. Добавь подсчёт <code>usage.total_tokens</code> к каждому вызову. Сохрани в файл <code>usage.jsonl</code>.</p>
+<p>Через неделю использования посмотри: сколько токенов потратил, на чём, был ли спайк (день с резко большим расходом). Это базовый cost monitoring своими руками.</p>
+
+<h2>11. Проверь себя</h2>
+
+<p><strong>1. Чем отличается тестирование AI-приложения от обычного?</strong><br>
+LLM недетерминирован — на одинаковый промпт может давать разные ответы. Поэтому используют eval-сеты (наборы кейсов с ожиданиями) и LLM-as-judge вместо unit-тестов.</p>
+
+<p><strong>2. Что такое golden dataset?</strong><br>
+Эталонный набор тестовых случаев (20–500 штук), на котором проверяешь приложение после каждого изменения. Защищает от регрессий.</p>
+
+<p><strong>3. Когда использовать LLM-as-judge?</strong><br>
+Когда автоматические проверки (регулярки, точные совпадения) не подходят — например, оценить тон, креативность, корректность пересказа. Минус: дорого и сама LLM-судья может ошибаться.</p>
+
+<p><strong>4. Что такое drift модели?</strong><br>
+Изменение поведения модели со временем. OpenAI / Anthropic обновляют свои модели, и старые промпты могут вести себя иначе. Фикс: пиннить версии моделей и тестировать перед апгрейдом.</p>
+
+<p><strong>5. Назови 3 финансовых KPI для AI-приложения.</strong><br>
+Cost per request, cost per user per day, token usage breakdown (input vs output).</p>
+
+<p><strong>6. Что значит p95 latency?</strong><br>
+95% запросов обработаны быстрее этого значения. Если p95 = 3 сек — значит каждый 20-й пользователь ждёт дольше 3 секунд.</p>
+
+<p><strong>7. Почему важны hard cost limits?</strong><br>
+Один баг или зацикливание = $500–5000 за день. Хард-лимиты на пользователя и приложение в OpenAI/Anthropic settings спасают от разорения.</p>
+
+<p><strong>8. Что такое slack-driven development?</strong><br>
+Антипаттерн: реактивно правишь промпты по каждой жалобе из Slack без eval-сета. Ломает то, что работало.</p>
+
+<p><strong>9. Когда A/B-тестировать?</strong><br>
+Перед мажорным изменением промпта или сменой модели. Маленький процент пользователей (5–10%) на новой, остальные на старой. Сравнить метрики через 3–7 дней.</p>
+
+<p><strong>10. Какой инструмент я бы выбрал для observability с нуля?</strong><br>
+Langfuse — open source, бесплатный self-hosted или generous free tier, покрывает логирование + eval + analytics в одном.</p>
+
+<h2>12. Что должно остаться в голове</h2>
+<ol>
+<li><strong>Жизненный цикл AI-приложения цикличен:</strong> use case → prototype → eval → deploy → monitor → improve → eval...</li>
+<li><strong>Eval — главное отличие от обычной разработки.</strong> Без него ты «носишь воду» в реакции на жалобы.</li>
+<li><strong>Golden dataset</strong> важнее красивого кода.</li>
+<li><strong>Пиннить версии моделей</strong> — модели дрейфуют без предупреждения.</li>
+<li><strong>Hard cost limits обязательны</strong> — один баг разорит.</li>
+<li><strong>Метрики:</strong> технические + финансовые + качественные + продуктовые. Все четыре.</li>
+<li><strong>Langfuse + Promptfoo</strong> — стартовый stack для серьёзного приложения.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> следующий шаг — превратить твой pet-проект в «настоящее» приложение. Eval-сет + хотя бы базовый мониторинг + cost limits. После этого имеешь право назвать его «production-ready».
+</div>
+
+    <div class="pp-open"><a href="/#lesson-15">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

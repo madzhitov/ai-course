@@ -19,21 +19,376 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/p15.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p15.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p15');
-</script>
 </head>
 <body>
-<h1>Личный AI-секретарь: автоответы на типовые email + дневной чек-ин</h1>
-<p>P15 из курса AI на русском. Личный AI-секретарь: автоответы на типовые email + дневной чек-ин. ~90 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p15">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P15</span></div>
+
+<h1>Проект «За 1 час»: Личный AI-секретарь — автоответы на email + дневной чек-ин</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> скрипт, который утром читает inbox, классифицирует письма, готовит черновики типовых ответов и присылает дневной чек-ин в Telegram</span>
+  <span><strong>Время:</strong> ~90 минут</span>
+  <span><strong>Уровень:</strong> Python средний, базовое понимание IMAP</span>
+</div>
+
+<h2>Зачем этот проект</h2>
+<p>У меня в почте каждое утро 30–80 писем: часть — реально важные, часть — FYI-рассылки, часть — типовые («подтвердите слот», «пришлите счёт», «можете созвониться в среду?»). Я тратил по 40 минут на разбор, ещё не приступив к работе.</p>
+<p>Этот скрипт делает за меня первый проход: помечает срочное, готовит черновики на типовые письма (я их потом просто проверяю и отправляю одной кнопкой), а в Telegram присылает короткий бриф «у тебя сегодня 3 срочных, 2 встречи на согласование, остальное — мусор». Я начинаю день не с inbox-paralysis, а с понимания картины.</p>
+
+<h2>Что в итоге будет</h2>
+<ul>
+<li>Python-скрипт, запускающийся по cron каждое утро в 8:00.</li>
+<li>Чтение inbox через IMAP, безопасно (app-password, не основной пароль).</li>
+<li>Классификация писем через Claude: срочное / FYI / шум / типовое.</li>
+<li>На «типовое» — готовый draft ответа сохраняется в папке «Черновики» твоего почтового ящика.</li>
+<li>Сообщение в Telegram: «📬 Утренний бриф: 4 срочных, 7 FYI, 12 шум. Подготовил 3 черновика».</li>
+</ul>
+
+<h2>Требования</h2>
+<ul>
+<li>Python 3.10+.</li>
+<li>Почтовый ящик с включённым IMAP (Gmail, Yandex, FastMail, ProtonBridge — что угодно).</li>
+<li><strong>App-password</strong>, а не основной пароль аккаунта (см. ниже).</li>
+<li>API-ключ Anthropic (Claude).</li>
+<li>Telegram-бот (через @BotFather) и свой <code>chat_id</code>.</li>
+</ul>
+
+<h2>Архитектура</h2>
+<pre><code>cron (8:00 утра)
+    ↓
+fetch_inbox.py
+    ├─→ IMAP: достать письма за последние 24 часа (тема + первые 1500 символов тела)
+    ├─→ Claude: классифицировать каждое (urgent / fyi / noise / template)
+    ├─→ для template: сгенерить draft ответа → положить в IMAP Drafts
+    └─→ Telegram: отправить дневной чек-ин</code></pre>
+
+<h2>Шаг 1: app-password и переменные окружения</h2>
+
+<p>Никогда не вбивай основной пароль от почты в скрипт. Все нормальные провайдеры дают «application-specific password» — отдельный пароль для скриптов, который можно отозвать в любой момент.</p>
+
+<p><strong>Gmail:</strong> myaccount.google.com → Безопасность → 2-Step Verification → App passwords → создать. Получишь 16-символьную строку.</p>
+<p><strong>Yandex:</strong> id.yandex.ru → Безопасность → Пароли приложений → «Почта». Дальше IMAP-настройки.</p>
+
+<p>Создай проект:</p>
+<pre><code class="language-bash">mkdir ai-secretary && cd ai-secretary
+python3 -m venv venv && source venv/bin/activate
+pip install imap-tools anthropic python-telegram-bot python-dotenv</code></pre>
+
+<p>Файл <code>.env</code> (добавь в <code>.gitignore</code> сразу):</p>
+<pre><code class="language-bash">IMAP_HOST=imap.gmail.com
+IMAP_USER=you@gmail.com
+IMAP_PASS=xxxx xxxx xxxx xxxx
+ANTHROPIC_API_KEY=sk-ant-...
+TG_BOT_TOKEN=1234:AABB...
+TG_CHAT_ID=123456789</code></pre>
+
+<p>Чтобы узнать свой <code>chat_id</code>: напиши боту @userinfobot — он ответит твоим id.</p>
+
+<h2>Шаг 2: достаём свежие письма</h2>
+
+<p>Библиотека <code>imap-tools</code> сильно приятнее стандартного <code>imaplib</code> — нормальный API без боли с байтами.</p>
+
+<p>Файл <code>fetch_inbox.py</code>:</p>
+
+<pre><code class="language-python">import os
+from datetime import datetime, timedelta
+from dotenv import load_dotenv
+from imap_tools import MailBox, AND
+
+load_dotenv()
+
+def fetch_recent_emails(hours=24):
+    """Достаём письма за последние N часов из INBOX."""
+    since = (datetime.now() - timedelta(hours=hours)).date()
+    emails = []
+
+    with MailBox(os.getenv("IMAP_HOST")).login(
+        os.getenv("IMAP_USER"),
+        os.getenv("IMAP_PASS"),
+        initial_folder="INBOX"
+    ) as mailbox:
+        for msg in mailbox.fetch(AND(date_gte=since), mark_seen=False):
+            emails.append({
+                "uid": msg.uid,
+                "from": msg.from_,
+                "subject": msg.subject or "(без темы)",
+                "date": msg.date.isoformat() if msg.date else "",
+                # обрезаем тело, чтобы не сжечь токены на длинных рассылках
+                "body": (msg.text or msg.html or "")[:1500],
+            })
+    return emails
+
+
+if __name__ == "__main__":
+    mails = fetch_recent_emails(24)
+    print(f"Получено {len(mails)} писем за 24 часа")
+    for m in mails[:3]:
+        print(f"  {m['from']} | {m['subject']}")
+</code></pre>
+
+<p>Запусти — должно вывести количество и первые 3 темы. Если падает на логине — проверь, что IMAP включён и используешь app-password.</p>
+
+<h2>Шаг 3: классифицируем через Claude</h2>
+
+<p>Главный трюк: классифицируем не по одному, а пачкой в одном запросе. Дешевле и быстрее.</p>
+
+<p>Файл <code>classify.py</code>:</p>
+
+<pre><code class="language-python">import json
+import os
+from anthropic import Anthropic
+
+client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+
+CLASSIFY_PROMPT = """Ты — личный секретарь. Классифицируй каждое письмо в одну из категорий:
+
+- "urgent" — требует ответа сегодня. Прямой вопрос лично мне, дедлайн, проблема в проде, срочная просьба от руководства/клиента.
+- "fyi" — нужно прочитать, но не отвечать. Уведомления о решениях, рассылки из подписок, которые я реально читаю, отчёты.
+- "noise" — можно не открывать. Маркетинг, спам, авто-уведомления систем (PR-апдейты, билд-уведомления, дайджесты).
+- "template" — типовой запрос, на который есть стандартный ответ. Подтверждение слота встречи, запрос счёта/документов, «можете созвониться в среду в 15:00?», «пришлите КП».
+
+Для "template" дополнительно поле "draft" — текст черновика ответа на русском, в моём стиле:
+короткий, без воды, без формальностей вроде «Добрый день, уважаемый...». Просто по делу.
+
+Верни строго JSON-массив, по одному объекту на письмо, в том же порядке:
+[
+  {"uid": "123", "category": "urgent", "reason": "клиент спрашивает про дедлайн"},
+  {"uid": "124", "category": "template", "reason": "запрос слота",
+   "draft": "Привет! Среда 15:00 подходит. Скину ссылку на звонок утром."},
+  ...
+]
+Никакого markdown, только JSON."""
+
+
+def classify_batch(emails):
+    """Классифицируем пачку писем за один вызов."""
+    if not emails:
+        return []
+
+    # формируем компактное описание для модели
+    payload = [
+        {
+            "uid": e["uid"],
+            "from": e["from"],
+            "subject": e["subject"],
+            "body_preview": e["body"][:800],
+        }
+        for e in emails
+    ]
+
+    resp = client.messages.create(
+        model="claude-sonnet-4-5",
+        max_tokens=4000,
+        system=CLASSIFY_PROMPT,
+        messages=[{"role": "user", "content": json.dumps(payload, ensure_ascii=False)}],
+    )
+
+    text = resp.content[0].text.strip()
+    # на всякий случай отрезаем возможные обёртки
+    if text.startswith("```"):
+        text = text.split("```")[1]
+        if text.startswith("json"):
+            text = text[4:]
+    return json.loads(text)
+</code></pre>
+
+<p>Я выбрал <code>claude-sonnet-4-5</code> — она достаточно умная для нюансов («это срочно от босса» vs «это рассылка от Jira»). Haiku тоже подойдёт, но иногда промахивается с «template».</p>
+
+<h2>Шаг 4: сохраняем черновики в папку Drafts</h2>
+
+<p>Это самая магическая часть. Скрипт кладёт сгенерированный черновик прямо в почтовый клиент — открываешь утром почту, видишь готовые драфты, проверяешь, кликаешь «Отправить».</p>
+
+<pre><code class="language-python">from email.message import EmailMessage
+from imap_tools import MailBox
+
+def save_draft(to_addr, subject, body):
+    """Сохраняет письмо в папку черновиков IMAP."""
+    msg = EmailMessage()
+    msg["From"] = os.getenv("IMAP_USER")
+    msg["To"] = to_addr
+    msg["Subject"] = f"Re: {subject}" if not subject.lower().startswith("re:") else subject
+    msg.set_content(body)
+
+    # имя папки черновиков зависит от провайдера
+    drafts_folder = guess_drafts_folder()
+
+    with MailBox(os.getenv("IMAP_HOST")).login(
+        os.getenv("IMAP_USER"), os.getenv("IMAP_PASS")
+    ) as mailbox:
+        mailbox.append(msg.as_bytes(), drafts_folder)
+
+
+def guess_drafts_folder():
+    """У разных провайдеров папка называется по-разному."""
+    host = os.getenv("IMAP_HOST", "")
+    if "gmail" in host:
+        return "[Gmail]/Drafts"
+    if "yandex" in host:
+        return "Drafts"
+    if "mail.ru" in host:
+        return "Черновики"
+    return "Drafts"  # дефолт по стандарту
+</code></pre>
+
+<p>Если не знаешь, как называется папка — выведи список:</p>
+<pre><code class="language-python">with MailBox(host).login(user, password) as mailbox:
+    for folder in mailbox.folder.list():
+        print(folder.name)
+</code></pre>
+
+<h2>Шаг 5: дневной чек-ин в Telegram</h2>
+
+<pre><code class="language-python">import asyncio
+from telegram import Bot
+
+async def send_brief(stats, urgent_items, template_count):
+    bot = Bot(token=os.getenv("TG_BOT_TOKEN"))
+
+    lines = [
+        f"📬 *Утренний бриф*",
+        f"",
+        f"🔴 Срочное: {stats['urgent']}",
+        f"🟡 FYI: {stats['fyi']}",
+        f"⚪️ Шум: {stats['noise']}",
+        f"✉️ Черновиков подготовлено: {template_count}",
+    ]
+
+    if urgent_items:
+        lines.append("\n*Что важно сегодня:*")
+        for item in urgent_items[:5]:
+            lines.append(f"• _{item['from']}_: {item['subject']}")
+            lines.append(f"  └ {item['reason']}")
+
+    await bot.send_message(
+        chat_id=os.getenv("TG_CHAT_ID"),
+        text="\n".join(lines),
+        parse_mode="Markdown",
+    )
+</code></pre>
+
+<h2>Шаг 6: собираем main.py</h2>
+
+<pre><code class="language-python">import asyncio
+from collections import Counter
+from dotenv import load_dotenv
+
+from fetch_inbox import fetch_recent_emails
+from classify import classify_batch
+from drafts import save_draft
+from telegram_brief import send_brief
+
+load_dotenv()
+
+def main():
+    emails = fetch_recent_emails(hours=24)
+    print(f"Достал {len(emails)} писем")
+
+    if not emails:
+        asyncio.run(send_brief({"urgent": 0, "fyi": 0, "noise": 0}, [], 0))
+        return
+
+    results = classify_batch(emails)
+
+    # индекс uid → email для быстрого матчинга
+    email_by_uid = {e["uid"]: e for e in emails}
+
+    stats = Counter()
+    urgent_items = []
+    draft_count = 0
+
+    for r in results:
+        stats[r["category"]] += 1
+
+        if r["category"] == "urgent":
+            e = email_by_uid.get(r["uid"], {})
+            urgent_items.append({
+                "from": e.get("from", "?"),
+                "subject": e.get("subject", "?"),
+                "reason": r.get("reason", ""),
+            })
+
+        if r["category"] == "template" and r.get("draft"):
+            e = email_by_uid.get(r["uid"])
+            if e:
+                save_draft(e["from"], e["subject"], r["draft"])
+                draft_count += 1
+                print(f"Draft → {e['from']}")
+
+    asyncio.run(send_brief(dict(stats), urgent_items, draft_count))
+    print("Готово.")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+
+<h2>Запуск и проверка</h2>
+
+<p>Первый запуск — вручную, в боевом режиме на свежей почте:</p>
+<pre><code class="language-bash">python main.py</code></pre>
+
+<p>Что проверить:</p>
+<ul>
+<li>В Telegram пришёл бриф с цифрами.</li>
+<li>В папке «Черновики» твоего почтового клиента появились новые драфты (открой почту с телефона — обычно там черновики видны сразу).</li>
+<li>Тексты драфтов адекватные — не приторно-вежливые, по делу, в твоём стиле.</li>
+</ul>
+
+<p>Когда убедился, что работает — ставь на cron. На Mac/Linux:</p>
+<pre><code class="language-bash">crontab -e
+# добавь строку (каждый будний день в 8:00):
+0 8 * * 1-5 cd /path/to/ai-secretary && /path/to/venv/bin/python main.py >> log.txt 2>&1</code></pre>
+
+<h2>Расширения</h2>
+
+<ul>
+<li><strong>Автотегирование в почте.</strong> Вместо просто чтения — добавляй IMAP-флаги/метки: «\Flagged» на срочное, «AI-noise» на шум. В Gmail/Yandex поддерживается. Потом фильтром в почте → шум сразу в архив.</li>
+<li><strong>Экспорт TODO.</strong> Если в письме просьба «сделай X к четвергу» — отдельный класс «task», и draft = добавить в Things 3 / Notion / Todoist через их API. Я делал в Things через URL-схему — три строчки.</li>
+<li><strong>Пятничный стендап.</strong> По пятницам в 17:00 второй cron-джоб: пробегает по отправленным письмам за неделю, выдаёт «вот что ты сделал» — удобно для отчёта руководителю или для себя в журнал.</li>
+<li><strong>Few-shot стиль.</strong> Подсунь Claude 5–10 примеров своих реальных ответов — драфты станут заметно «твоими» по интонации. Я храню примеры в отдельном <code>.txt</code> и подгружаю в system-промпт.</li>
+<li><strong>Свой ICP для важности.</strong> Список «эти 10 email — всегда urgent» хардкодом в промпт. Письмо от босса/жены/нотариуса не должно случайно улететь в FYI.</li>
+</ul>
+
+<h2>Подводные камни</h2>
+
+<ul>
+<li><strong>Rate-limit IMAP.</strong> Gmail позволяет до 15 одновременных IMAP-сессий с аккаунта. Если случайно запустил скрипт в цикле — забанят на час. Всегда выходи из <code>with MailBox()</code>, не держи коннект.</li>
+<li><strong>Приватность.</strong> Ты отправляешь содержимое писем в Anthropic. Если в почте врачебная тайна, NDA, банковские данные — подумай, готов ли ты к этому. Anthropic не тренирует на API-данных, но это всё равно твой выбор. На корпоративную почту я бы такое не ставил без согласования с безопасностью.</li>
+<li><strong>AI промахнётся.</strong> Иногда «важное от клиента» уйдёт в FYI. Поэтому скрипт никогда не удаляет, не архивирует и не отправляет письма сам — только классифицирует и готовит драфты. Все деструктивные действия — за тобой.</li>
+<li><strong>Длинные треды.</strong> Если в одном письме висит переписка на 50 круток — обрезка до 1500 символов отрежет историю. Можешь брать <code>msg.text[:5000]</code>, но следи за стоимостью токенов. Для сотни писем в день — копейки, для тысячи — уже заметно.</li>
+<li><strong>Папка «Черновики» в Gmail.</strong> Называется <code>[Gmail]/Drafts</code>, в кавычках с пробелом перед /. Если опечатаешься — IMAP молча создаст одноимённую папку, и в почтовом клиенте драфты не появятся. Проверяй через <code>mailbox.folder.list()</code>.</li>
+<li><strong>HTML-письма.</strong> <code>msg.text</code> у некоторых рассылок пустой, всё в <code>msg.html</code>. В коде выше — фолбэк <code>msg.text or msg.html</code>, но HTML с тегами засоряет модели контекст. Можно подключить <code>html2text</code> для очистки.</li>
+</ul>
+
+<h2>Что в итоге</h2>
+
+<p>У меня скрипт живёт 4 месяца. По метрикам: время на разбор inbox упало с ~40 до ~10 минут утром. Из 5–8 драфтов в день я отправляю «как есть» 3–4, остальное правлю на 1–2 строки. Раз в две недели бывает промах классификации — но за всё время ни одно реально критичное письмо не оказалось замолчано: они почти всегда уходят в «urgent».</p>
+
+<p>Главный нелинейный эффект — психологический. Открываешь почту не с тошнотой «опять 60 непрочитанных», а с пониманием «у меня 3 важных, я знаю какие». Это меняет утро.</p>
+
+<div class="callout callout-info" style="margin-top: 1.5rem;">
+<strong>Без VPN и подписок:</strong> полностью локальная версия — без западных API, без подписок, ничего не уходит в облако — <a href="#lesson-p21" onclick="openLesson('p21'); return false;">урок p21</a> (AI-секретарь на Ollama).
+</div>
+
+
+    <div class="pp-open"><a href="/#lesson-p15">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

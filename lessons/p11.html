@@ -19,21 +19,419 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/p11.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p11.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p11');
-</script>
 </head>
 <body>
-<h1>Голосовой AI-ассистент: Whisper + Claude + TTS на твоём железе</h1>
-<p>P11 из курса AI на русском. Голосовой AI-ассистент: Whisper + Claude + TTS на твоём железе. ~90 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p11">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P11</span></div>
+
+<h1>Проект «За 1 час»: Голосовой AI-ассистент — Whisper + Claude + TTS на твоём железе</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> микрофон → распознавание → Claude → озвучка ответа</span>
+  <span><strong>Время:</strong> ~90 минут</span>
+  <span><strong>Уровень:</strong> Python средний + уроки 6, 7 курса</span>
+</div>
+
+<h2>Что в итоге будет</h2>
+<p>Запускаешь скрипт. Нажимаешь Enter — говоришь в микрофон. Отпускаешь Enter — Whisper переводит речь в текст. Текст летит в Claude. Ответ Claude озвучивается через edge-tts и проигрывается. Получается полноценный голосовой ассистент, который работает локально (кроме самого Claude API и edge-tts) — без подписок на Alexa, Siri и прочего.</p>
+<p>На выходе — около 250 строк Python-кода и реальный voice agent, к которому можно прикрутить любую логику: таймеры, списки покупок, погоду, управление умным домом, что угодно.</p>
+
+<h2>Архитектура</h2>
+<pre><code>[микрофон / sounddevice]
+        ↓ (PCM 16kHz mono)
+[faster-whisper]
+        ↓ (текст реплики)
+[Anthropic Claude API]
+        ↓ (текст ответа)
+[edge-tts → MP3]
+        ↓
+[simpleaudio / afplay → колонки]</code></pre>
+<p>Между шагами — простой синхронный pipeline. Сначала делаем работающую версию, потом обсудим, где можно распараллелить.</p>
+
+<h2>Требования</h2>
+<ul>
+<li>Python 3.10+ (у меня 3.11.7 на macOS, проверял также на Ubuntu 22.04).</li>
+<li>Микрофон (встроенный в ноут подойдёт).</li>
+<li>API-ключ Anthropic (<code>sk-ant-...</code>) — см. урок 6.</li>
+<li>Интернет (для Claude и edge-tts, Whisper работает офлайн).</li>
+<li>~2 GB места на диске под модель Whisper (small/medium).</li>
+</ul>
+
+<h2>Шаг 1. Окружение и зависимости</h2>
+<pre><code class="language-bash">mkdir voice-agent && cd voice-agent
+python3 -m venv venv
+source venv/bin/activate   # на Windows: venv\Scripts\activate
+
+pip install faster-whisper==1.0.3 \
+            sounddevice==0.4.7 \
+            numpy==1.26.4 \
+            anthropic==0.39.0 \
+            edge-tts==6.1.12 \
+            soundfile==0.12.1</code></pre>
+
+<p>На macOS дополнительно может понадобиться <code>brew install portaudio ffmpeg</code> (для sounddevice и для edge-tts соответственно). На Ubuntu — <code>sudo apt install portaudio19-dev ffmpeg</code>. На Windows <code>ffmpeg</code> скачивается отдельно и кладётся в PATH.</p>
+
+<p>Создай <code>.env</code> и положи туда ключ:</p>
+<pre><code class="language-bash">ANTHROPIC_API_KEY=sk-ant-...</code></pre>
+
+<p>Я не тащу <code>python-dotenv</code> ради одной переменной — просто экспортирую перед запуском:</p>
+<pre><code class="language-bash">export $(cat .env | xargs)</code></pre>
+
+<h2>Шаг 2. Запись с микрофона по нажатию Enter</h2>
+<p>Простейший паттерн «push-to-talk без удержания»: нажал Enter — пошла запись, нажал Enter ещё раз — стоп. Так удобнее, чем VAD на старте.</p>
+
+<p>Файл <code>record.py</code>:</p>
+<pre><code class="language-python">import sounddevice as sd
+import numpy as np
+import threading
+import queue
+
+SAMPLE_RATE = 16000  # Whisper хочет 16kHz mono
+
+
+def record_until_enter() -&gt; np.ndarray:
+    """Пишет с микрофона, пока пользователь не нажмёт Enter второй раз."""
+    print("🎙  Говори (нажми Enter, чтобы остановить)...")
+
+    q: queue.Queue = queue.Queue()
+    stop_flag = threading.Event()
+
+    def callback(indata, frames, time, status):
+        if status:
+            print(status, flush=True)
+        q.put(indata.copy())
+
+    def wait_for_enter():
+        input()
+        stop_flag.set()
+
+    threading.Thread(target=wait_for_enter, daemon=True).start()
+
+    chunks = []
+    with sd.InputStream(samplerate=SAMPLE_RATE, channels=1,
+                        dtype="float32", callback=callback):
+        while not stop_flag.is_set():
+            try:
+                chunks.append(q.get(timeout=0.1))
+            except queue.Empty:
+                continue
+
+    audio = np.concatenate(chunks, axis=0).flatten()
+    print(f"   записано {len(audio)/SAMPLE_RATE:.1f} сек")
+    return audio
+
+
+if __name__ == "__main__":
+    input("Нажми Enter, чтобы начать запись...")
+    audio = record_until_enter()
+    import soundfile as sf
+    sf.write("test.wav", audio, SAMPLE_RATE)
+    print("сохранено в test.wav")
+</code></pre>
+
+<p>Запусти отдельно — убедись, что в <code>test.wav</code> слышно тебя. Если тишина — у меня было такое на macOS, пока не выдал Terminal'у разрешение «Микрофон» в System Settings → Privacy.</p>
+
+<h2>Шаг 3. Whisper для распознавания</h2>
+<p>Беру <code>faster-whisper</code> вместо оригинального <code>openai-whisper</code> — в 4 раза быстрее на CPU за счёт CTranslate2, при том же качестве. Модель <code>small</code> весит ~480 MB и нормально разбирает русский. Если есть GPU — бери <code>medium</code> или <code>large-v3</code>.</p>
+
+<p>Файл <code>asr.py</code>:</p>
+<pre><code class="language-python">from faster_whisper import WhisperModel
+import numpy as np
+
+# Загружаем модель один раз при старте. Не делай это в каждом вызове —
+# инициализация ~3 сек, после неё inference 0.5-2 сек на 10 сек речи.
+_model = WhisperModel(
+    "small",                  # tiny / base / small / medium / large-v3
+    device="cpu",             # на Mac M1+ можно "auto", оно подхватит Metal
+    compute_type="int8"       # для CPU самый быстрый, на GPU - "float16"
+)
+
+
+def transcribe(audio: np.ndarray, language: str = "ru") -&gt; str:
+    """Получает 16kHz mono float32 numpy array, возвращает текст."""
+    segments, info = _model.transcribe(
+        audio,
+        language=language,
+        beam_size=5,
+        vad_filter=True,                  # выкидывает молчание
+        vad_parameters={"min_silence_duration_ms": 500}
+    )
+    text = " ".join(seg.text.strip() for seg in segments)
+    return text.strip()
+
+
+if __name__ == "__main__":
+    import soundfile as sf
+    audio, sr = sf.read("test.wav", dtype="float32")
+    assert sr == 16000, f"ожидаю 16kHz, получил {sr}"
+    print("распознано:", transcribe(audio))
+</code></pre>
+
+<p>Прогони на <code>test.wav</code>. У меня на M2 Air медиана ~1.2 сек на 8 сек речи на модели <code>small</code> с CPU. На <code>tiny</code> ещё быстрее, но русский разбирает заметно хуже — путает похожие слова.</p>
+
+<h2>Шаг 4. Claude как «мозг»</h2>
+<p>Тут ничего нового по сравнению с уроком 6 — просто оборачиваем вызов в функцию и держим короткую историю диалога, чтобы агент не забывал контекст.</p>
+
+<p>Файл <code>llm.py</code>:</p>
+<pre><code class="language-python">import os
+from anthropic import Anthropic
+
+client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+
+SYSTEM = """Ты голосовой ассистент. Тебя слышат, не читают —
+поэтому отвечай коротко (2-4 предложения), без списков, заголовков,
+кода и markdown. Если просят сделать что-то конкретное (таймер,
+запись в список, погода) — выполни команду через инструменты.
+Если нужна уточняющая информация — задай один короткий вопрос."""
+
+
+class Brain:
+    def __init__(self):
+        self.history: list[dict] = []
+
+    def reply(self, user_text: str) -&gt; str:
+        self.history.append({"role": "user", "content": user_text})
+        # Держим только последние 10 реплик, чтобы не раздувать контекст
+        msgs = self.history[-10:]
+
+        resp = client.messages.create(
+            model="claude-3-5-sonnet-latest",
+            max_tokens=400,
+            system=SYSTEM,
+            messages=msgs,
+        )
+        answer = resp.content[0].text.strip()
+        self.history.append({"role": "assistant", "content": answer})
+        return answer
+</code></pre>
+
+<h2>Шаг 5. TTS через edge-tts</h2>
+<p>Edge-tts — это бесплатная обёртка над голосами Microsoft Edge Read Aloud. Качество — на уровне платных сервисов, голосов русских много (<code>ru-RU-DmitryNeural</code>, <code>ru-RU-SvetlanaNeural</code>), и не нужно никаких ключей. Юридически — серая зона, для личного использования нормально, в production я бы взял что-то официальное (ElevenLabs / Yandex SpeechKit).</p>
+
+<p>Файл <code>tts.py</code>:</p>
+<pre><code class="language-python">import asyncio
+import tempfile
+import subprocess
+import platform
+import edge_tts
+
+VOICE = "ru-RU-DmitryNeural"
+
+
+async def _synthesize(text: str, out_path: str):
+    communicate = edge_tts.Communicate(text, VOICE)
+    await communicate.save(out_path)
+
+
+def speak(text: str):
+    """Синтезирует и проигрывает речь синхронно."""
+    with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as f:
+        out_path = f.name
+
+    asyncio.run(_synthesize(text, out_path))
+
+    system = platform.system()
+    if system == "Darwin":
+        subprocess.run(["afplay", out_path], check=False)
+    elif system == "Linux":
+        subprocess.run(["mpg123", "-q", out_path], check=False)
+    elif system == "Windows":
+        # самое простое - через PowerShell
+        subprocess.run([
+            "powershell", "-c",
+            f"(New-Object Media.SoundPlayer '{out_path}').PlaySync();"
+        ], check=False)
+
+
+if __name__ == "__main__":
+    speak("Привет, я твой голосовой ассистент. Готов помочь.")
+</code></pre>
+
+<p>На Linux заранее поставь <code>sudo apt install mpg123</code>. На Mac <code>afplay</code> идёт в коробке. На Windows PowerShell играет WAV из коробки, но не MP3 — для надёжности можно поставить <code>pip install playsound==1.2.2</code> и проигрывать через него.</p>
+
+<h2>Шаг 6. Собираем всё вместе</h2>
+<p>Файл <code>main.py</code> — это весь pipeline:</p>
+
+<pre><code class="language-python">from record import record_until_enter
+from asr import transcribe
+from llm import Brain
+from tts import speak
+
+
+def main():
+    brain = Brain()
+    print("Голосовой ассистент готов. Скажи 'выход' чтобы завершить.\n")
+
+    while True:
+        input("⏎ Enter — говорить, Ctrl+C — выход.")
+
+        audio = record_until_enter()
+        if len(audio) &lt; 16000 * 0.3:   # меньше 0.3 секунды - игнор
+            print("слишком коротко, пропускаю\n")
+            continue
+
+        user_text = transcribe(audio)
+        if not user_text:
+            print("ничего не распознал\n")
+            continue
+        print(f"👤 ты: {user_text}")
+
+        if user_text.lower().strip(".,!? ") in {"выход", "стоп", "пока"}:
+            speak("Пока!")
+            break
+
+        answer = brain.reply(user_text)
+        print(f"🤖 Claude: {answer}\n")
+        speak(answer)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nвыход")
+</code></pre>
+
+<h2>Запуск и проверка</h2>
+<pre><code class="language-bash">export $(cat .env | xargs)
+python main.py</code></pre>
+
+<p>Сценарий: Enter → «Расскажи в двух предложениях, почему небо голубое» → Enter → ждёшь ~3 сек → слышишь ответ.</p>
+<p>У меня от Enter до начала озвучки получается 3.5–5 секунд: ~1.2 сек на Whisper + ~1.5 сек на Claude + ~0.5 сек на edge-tts + ~0.3 сек на старт проигрывания. Это терпимо, но не вау. Как разогнать — в «Подводных камнях».</p>
+
+<h2>Шаг 7. Tool use: реальные команды</h2>
+<p>Чтобы ассистент не только болтал, а ещё и делал что-то полезное, прикручиваем tool use. Минимальный пример — таймер и список покупок.</p>
+
+<pre><code class="language-python"># в llm.py добавь:
+
+TOOLS = [
+    {
+        "name": "set_timer",
+        "description": "Поставить таймер на N секунд с подписью.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "seconds": {"type": "integer"},
+                "label": {"type": "string"}
+            },
+            "required": ["seconds"]
+        }
+    },
+    {
+        "name": "add_to_shopping_list",
+        "description": "Добавить пункт в список покупок.",
+        "input_schema": {
+            "type": "object",
+            "properties": {"item": {"type": "string"}},
+            "required": ["item"]
+        }
+    }
+]
+
+
+def execute_tool(name: str, args: dict) -&gt; str:
+    if name == "set_timer":
+        sec = args["seconds"]
+        label = args.get("label", "")
+        # для простоты - просто пишем в файл, реальный таймер
+        # делается через threading.Timer + системную нотификацию
+        with open("timers.log", "a") as f:
+            f.write(f"{sec}s | {label}\n")
+        return f"Таймер на {sec} секунд поставлен."
+    if name == "add_to_shopping_list":
+        with open("shopping.txt", "a") as f:
+            f.write(args["item"] + "\n")
+        return f"Добавлено: {args['item']}"
+    return f"Неизвестная команда {name}"
+
+
+# и в Brain.reply замени вызов на:
+resp = client.messages.create(
+    model="claude-3-5-sonnet-latest",
+    max_tokens=400,
+    system=SYSTEM,
+    tools=TOOLS,
+    messages=msgs,
+)
+
+# обработка результата
+if resp.stop_reason == "tool_use":
+    tool_results = []
+    for block in resp.content:
+        if block.type == "tool_use":
+            result = execute_tool(block.name, block.input)
+            tool_results.append({
+                "type": "tool_result",
+                "tool_use_id": block.id,
+                "content": result
+            })
+    self.history.append({"role": "assistant", "content": resp.content})
+    self.history.append({"role": "user", "content": tool_results})
+
+    # второй вызов - чтобы получить финальную реплику для пользователя
+    final = client.messages.create(
+        model="claude-3-5-sonnet-latest",
+        max_tokens=400, system=SYSTEM, tools=TOOLS,
+        messages=self.history[-10:],
+    )
+    answer = final.content[0].text.strip()
+else:
+    answer = resp.content[0].text.strip()
+</code></pre>
+
+<p>Скажи «поставь таймер на пять минут на пасту» — увидишь, что Claude вызвал <code>set_timer(300, "паста")</code>, в <code>timers.log</code> появилась строка, а тебе озвучивается «Таймер на 300 секунд поставлен».</p>
+
+<h2>Расширения</h2>
+<ul>
+<li><strong>Streaming TTS:</strong> начинать проигрывать ответ Claude не дожидаясь конца генерации. У Anthropic SDK есть стрим, у edge-tts тоже — можно резать ответ по предложениям и говорить по мере поступления. Сократит latency до 1.5 сек.</li>
+<li><strong>Wake word:</strong> чтобы не жать Enter, используй <code>pvporcupine</code> от Picovoice (бесплатно для личного, английский «Alexa» / «Hey Siri» есть из коробки). Свой wake word — за бабки.</li>
+<li><strong>VAD вместо Enter:</strong> <code>webrtcvad</code> или <code>silero-vad</code> определяет конец фразы по тишине 0.8 сек — пишешь автоматически.</li>
+<li><strong>История между сессиями:</strong> сохраняй <code>brain.history</code> в SQLite — ассистент будет помнить, о чём вы говорили вчера.</li>
+<li><strong>Подключение MCP:</strong> через Claude SDK ассистент может ходить в твой календарь, файлы, GitHub — см. урок c8.</li>
+<li><strong>Локально всё:</strong> вместо Claude — Ollama (см. p14). Тогда работает офлайн полностью.</li>
+</ul>
+
+<h2>Подводные камни</h2>
+<ul>
+<li><strong>Latency на CPU.</strong> Модель <code>small</code> на старом ноуте (i5 2018) может транскрибировать 10 сек речи 4-5 сек. Бери <code>tiny</code> или ставь Ollama-backed Whisper на M-серии.</li>
+<li><strong>Whisper и русский.</strong> На <code>tiny</code> русский разваливается, путает падежи и имена. Минимум <code>small</code>, лучше <code>medium</code>. Названия брендов, имена коллег — почти всегда мимо, лечится словарём подсказок через <code>initial_prompt</code>.</li>
+<li><strong>Микрофон не пишет.</strong> macOS — выдай разрешение Terminal или твоему IDE в Privacy & Security → Microphone. Linux — проверь <code>arecord -l</code>, что устройство есть. Windows — иногда помогает выбрать конкретное устройство через <code>sd.default.device = (input_id, output_id)</code>.</li>
+<li><strong>Edge-tts отваливается.</strong> Иногда возвращает пустой MP3 (rate limit / блокировка по региону). Обернул <code>speak</code> в try/except — на ошибке использую <code>say</code> на маке и <code>espeak</code> на linux как fallback.</li>
+<li><strong>Контекстное окно.</strong> Я держу последние 10 реплик. Если разговор затянулся — режь старое, иначе на длинных сессиях счёт за токены прыгает.</li>
+<li><strong>Шумоподавление.</strong> Если пишешь через AirPods — Whisper хорошо разбирает. Через встроенный микрофон ноута в кафе — становится плохо. Помогает <code>noisereduce</code> поверх записи или <code>rnnoise</code>.</li>
+</ul>
+
+<h2>Что в итоге</h2>
+<p>Под капотом теперь у тебя:</p>
+<ol>
+<li>Реальный voice agent на ~300 строк Python, работающий на любой ОС.</li>
+<li>Понимание pipeline ASR → LLM → TTS — это база любого голосового продукта (от GPT Voice Mode до колл-центров).</li>
+<li>Tool use, через который агент управляет файлами и системой — отсюда один шаг до «Алисы, выключи свет».</li>
+<li>Опыт работы с локальной моделью (Whisper) рядом с облачной (Claude) — гибридный подход, который сейчас доминирует в продакшне.</li>
+</ol>
+
+<div class="callout callout-success">
+<strong>Лайфхак:</strong> положи запуск ассистента на горячую клавишу через Raycast / AutoHotkey / sxhkd. Получишь персональную «Сири», вызываемую за 0.2 секунды.
+</div>
+
+
+    <div class="pp-open"><a href="/#lesson-p11">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

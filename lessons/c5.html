@@ -19,21 +19,314 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/c5.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/c5.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-c5');
-</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Claude Deep Dive</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">C5</span></div>
 <h1>Claude Code — CLI для разработчиков</h1>
-<p>C5 из курса AI на русском. Claude Code — CLI для разработчиков. ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-c5">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> освоить Claude Code как ежедневный инструмент разработчика</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Источник:</strong> docs.claude.com/claude-code</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Anthropic выпустил <strong>Claude Code</strong> — агентский CLI для разработчиков. Это один из самых быстрорастущих инструментов в индустрии: в отличие от Cursor (IDE с AI) или Copilot (автокомплит), Claude Code — это <strong>агент в терминале</strong>, который сам читает проект, пишет и рефакторит код, запускает тесты, дебажит, коммитит и открывает PR.</p>
+<p>Если ты разработчик и ещё не пробовал — обязательно. Если ты не пишешь код — этот урок поможет понять, чем сейчас работают коллеги вокруг тебя.</p>
+<p>Важно: за последний год Claude Code сильно вырос. Кроме базового «напиши код» появились subagents, hooks, plan mode, MCP-интеграция, фоновые задачи. Этот урок — про актуальную версию.</p>
+
+<h2>1. Что такое Claude Code</h2>
+
+<p>Это <strong>агентский CLI</strong>, который:</p>
+<ul>
+<li>Запускается в твоём проекте одной командой: <code>claude</code></li>
+<li>Читает и пишет файлы, запускает команды в терминале, ищет по коду</li>
+<li>Держит контекст всего проекта (через <code>CLAUDE.md</code>)</li>
+<li>Использует Claude Sonnet / Opus / Haiku как «мозг»</li>
+<li>Работает <strong>по подписке Claude Pro/Max ИЛИ по API-ключу</strong> (об этом ниже)</li>
+</ul>
+
+<p>В отличие от Cursor или Copilot, Claude Code <strong>не привязан к редактору</strong>. Ты в любом терминале, в любом проекте, на любой машине. Есть и расширения для VS Code / JetBrains, но ядро — терминал.</p>
+
+<h2>2. Установка и старт за 5 минут</h2>
+
+<pre><code># 1. Установка (нужен Node.js 18+)
+npm install -g @anthropic-ai/claude-code
+
+# 2. Запуск в проекте
+cd ~/your-project
+claude</code></pre>
+
+<p>При первом запуске Claude предложит войти. Два варианта оплаты:</p>
+<ul>
+<li><strong>Подписка Claude Pro/Max</strong> — логинишься своим аккаунтом claude.ai. Удобно: фиксированная цена в месяц, не считаешь токены. Max-тариф даёт большой лимит для плотной работы.</li>
+<li><strong>API-ключ</strong> — <code>export ANTHROPIC_API_KEY=sk-ant-...</code>. Платишь по факту за токены. Удобно для CI/автоматизации.</li>
+</ul>
+
+<p>Открывается интерактивный режим. Пиши задачу обычным языком — Claude её делает.</p>
+
+<h2>3. Основные сценарии использования</h2>
+
+<h3>Генерация кода</h3>
+<pre><code>&gt; Напиши функцию, которая парсит CSV и возвращает массив объектов
+[Claude читает существующий код, понимает стиль, пишет функцию,
+ предлагает добавить тесты]</code></pre>
+
+<h3>Рефакторинг</h3>
+<pre><code>&gt; Раздели UserService на два класса: UserRepository (БД) и UserService
+(бизнес-логика). Сохрани публичный API.
+[Claude находит все файлы, делает изменения атомарно]</code></pre>
+
+<h3>Дебаг</h3>
+<pre><code>&gt; Тест UserService.test.ts падает с "expected 5 got 4". Найди причину.
+[Claude запускает тест, читает stacktrace, ищет в коде, предлагает фикс]</code></pre>
+
+<h3>Документация и ревью</h3>
+<pre><code>&gt; Прочитай весь src/api и напиши README с описанием эндпоинтов
+&gt; Сделай ревью изменений в текущей ветке — безопасность и стиль</code></pre>
+
+<h2>4. CLAUDE.md — контекстный файл</h2>
+
+<p>Главный секрет эффективного Claude Code — файл <code>CLAUDE.md</code> в корне проекта. В нём ты описываешь проект так, как объяснил бы новому коллеге:</p>
+
+<ul>
+<li>Что это за проект и стек</li>
+<li>Где что лежит (структура)</li>
+<li>Конвенции кода</li>
+<li>Что НЕЛЬЗЯ делать</li>
+<li>Команды для тестов, билда, линта</li>
+</ul>
+
+<pre><code># CLAUDE.md
+
+## Что это
+SaaS для управления подписками. B2B, средний бизнес.
+
+## Стек
+- Backend: Python 3.12, FastAPI, SQLAlchemy 2, Postgres 16
+- Frontend: React 19, TypeScript, Tanstack Query
+- Тесты: pytest, vitest
+
+## Структура
+- src/api — HTTP-эндпоинты
+- src/services — бизнес-логика
+- src/db — модели и миграции (Alembic)
+
+## Конвенции
+- Type hints везде, mypy в strict
+- async/await в API-слое
+- Тесты для всего в src/services
+
+## Не делай
+- Не добавляй новые ORM-зависимости
+- Не пиши в main без PR
+
+## Команды
+- Запуск: `make dev`  ·  Тесты: `make test`  ·  Линт: `make lint`</code></pre>
+
+<p>Команда <code>/init</code> сгенерирует первую версию <code>CLAUDE.md</code> автоматически — потом дополни руками. Чем подробнее файл — тем точнее работает агент. Можно держать <code>CLAUDE.md</code> и в подпапках (для монорепо), и глобально (<code>~/.claude/CLAUDE.md</code>).</p>
+
+<h2>5. Slash-команды</h2>
+
+<p>В интерактивном режиме — команды через <code>/</code>:</p>
+<ul>
+<li><code>/init</code> — сгенерировать <code>CLAUDE.md</code> из проекта</li>
+<li><code>/clear</code> — очистить контекст (новая задача с нуля)</li>
+<li><code>/compact</code> — сжать историю, сохранив суть (когда контекст разросся)</li>
+<li><code>/model</code> — переключить модель (Sonnet ↔ Opus ↔ Haiku)</li>
+<li><code>/agents</code> — управление субагентами (см. ниже)</li>
+<li><code>/mcp</code> — статус подключённых MCP-серверов</li>
+<li><code>/cost</code> — расход за сессию (если на API)</li>
+<li><code>/help</code> — полная справка</li>
+</ul>
+
+<h2>6. Кастомные команды и Skills</h2>
+
+<p><strong>Кастомные команды</strong> — шаблоны для повторяющихся задач, файлы в <code>.claude/commands/</code>. Файл <code>.claude/commands/review.md</code>:</p>
+
+<pre><code>---
+description: Code review текущей ветки с фокусом на безопасность
+---
+
+Сделай тщательное ревью:
+1. Прочитай git diff против main
+2. Проверь: SQL-инъекции, XSS, утечки секретов, missing auth
+3. Сверь стиль с конвенциями из CLAUDE.md
+4. Отчёт: Critical / Suggested / Style</code></pre>
+
+<p>Теперь набираешь <code>/review</code> — и шаблон запускается.</p>
+
+<p><strong>Skills</strong> — более мощный механизм: папка с <code>SKILL.md</code> и вспомогательными файлами/скриптами, которую Claude подхватывает <strong>сам</strong>, когда задача подходит под описание. В отличие от команды (её надо вызвать вручную через <code>/</code>), Skill активируется автоматически. Подробно — в <strong>уроке c9 «Claude Skills»</strong>. Claude Code читает Skills из <code>.claude/skills/</code>.</p>
+
+<h2>7. Субагенты — параллельная работа</h2>
+
+<p>Одна из самых сильных фич. <strong>Субагент</strong> — это отдельный «работник» со своим контекстом, которому Claude делегирует подзадачу. Зачем:</p>
+<ul>
+<li><strong>Параллелизм:</strong> запустить 3 агента одновременно — например, написать 3 независимых модуля сразу</li>
+<li><strong>Чистота контекста:</strong> агент исследует большой кусок кода и возвращает выжимку, не засоряя главный диалог</li>
+<li><strong>Специализация:</strong> агент-ревьюер, агент-тестировщик, агент-исследователь со своими инструкциями</li>
+</ul>
+
+<p>Свои субагенты описываются в <code>.claude/agents/</code> — markdown-файл с ролью, инструментами и системным промптом. Управление — через <code>/agents</code>. Пример: агент <code>code-reviewer</code>, который Claude вызывает после каждого крупного изменения.</p>
+
+<h2>8. Hooks — автоматизация по событиям</h2>
+
+<p><strong>Hooks</strong> — это твои команды, которые Claude Code запускает <strong>автоматически</strong> на определённых событиях. Настраиваются в <code>settings.json</code>. События:</p>
+<ul>
+<li><code>PreToolUse</code> — перед действием (например, заблокировать запись в защищённые файлы)</li>
+<li><code>PostToolUse</code> — после (например, прогнать <code>prettier</code> после каждого редактирования файла)</li>
+<li><code>Stop</code> — когда Claude закончил (например, запустить тесты)</li>
+</ul>
+
+<p>Пример: hook, который автоматически форматирует код после каждого изменения — тебе не надо просить «отформатируй», это происходит само. Hooks выполняет сам Claude Code (не модель), поэтому они детерминированы — то, что «всегда должно происходить», лучше делать хуком, а не просьбой в промпте.</p>
+
+<h2>9. Plan mode, checkpoints и память</h2>
+
+<h3>Plan mode</h3>
+<p>Режим, в котором Claude <strong>сначала исследует и составляет план</strong>, ничего не меняя, и показывает тебе на утверждение. Включается через <code>Shift+Tab</code>. Незаменимо для крупных задач: видишь стратегию до того, как агент начнёт писать код.</p>
+
+<h3>Checkpoints (откат)</h3>
+<p>Claude Code сохраняет состояние перед изменениями. Двойной <code>Esc</code> — откатиться назад по диалогу и по файлам, если агент пошёл не туда. Безопасная сеть: всегда можно вернуться.</p>
+
+<h3>Память</h3>
+<p>Быстрая команда <code>#</code> в начале сообщения — добавить факт в память (в <code>CLAUDE.md</code>). Например: <code># всегда używай pytest, не unittest</code> — и это запомнится для будущих сессий.</p>
+
+<h3>Возобновление сессий</h3>
+<p><code>claude --continue</code> продолжает последнюю сессию, <code>claude --resume</code> — выбрать из истории. Контекст и история сохраняются между запусками.</p>
+
+<h2>10. MCP — подключение внешних инструментов</h2>
+
+<p>Claude Code умеет подключать <strong>MCP-серверы</strong> (см. урок c3) — это даёт агенту доступ к внешним системам прямо из терминала: твоя база данных, Notion, Linear, GitHub, Sentry, браузер. Например, с MCP-сервером Postgres Claude может сам посмотреть схему БД; с MCP браузера — открыть и протестировать страницу.</p>
+<p>Подключение — через <code>claude mcp add</code> или в конфиге. Статус — <code>/mcp</code>. Это превращает Claude Code из «агента по коду» в «агента по всей твоей инфраструктуре».</p>
+
+<h2>11. Headless-режим — Claude Code в CI и скриптах</h2>
+
+<p>Claude Code можно запускать <strong>без интерактива</strong> — для автоматизации:</p>
+<pre><code># Одна задача, вывод в stdout, без диалога
+claude -p "Просуммируй изменения в этой ветке и проверь на security-проблемы"
+
+# В CI: автоматическое ревью каждого PR
+# В pre-commit хуке: проверка перед коммитом</code></pre>
+<p>Есть и официальная GitHub-интеграция: Claude Code как GitHub Action — отвечает на PR, делает ревью, реализует issue по упоминанию. Это уже не «помощник в терминале», а часть пайплайна.</p>
+
+<h2>12. Безопасность и разрешения — критично</h2>
+
+<p>Claude Code может удалить файлы, запушить в репо, потратить токены. Поэтому:</p>
+<ul>
+<li>Перед опасными действиями (<code>rm</code>, <code>git push</code>, запись файлов) Claude <strong>спрашивает подтверждение</strong></li>
+<li>Разрешения настраиваются в <code>settings.json</code>: что разрешено без спроса (<code>allow</code>), что запрещено (<code>deny</code>). Например, разрешить <code>npm test</code>, но запретить <code>git push</code></li>
+<li>Hooks (PreToolUse) могут жёстко блокировать действия — детерминированная защита, не зависящая от «настроения» модели</li>
+<li>Не давай доступ к продакшен-секретам. Запускай в проекте под git — всегда есть откат</li>
+</ul>
+
+<h2>13. Стоимость</h2>
+
+<p>Два пути оплаты:</p>
+<ul>
+<li><strong>Подписка Claude Pro/Max</strong> — фиксированная цена в месяц, не считаешь токены. Max-тариф рассчитан на плотную ежедневную работу. Для большинства разработчиков — самый предсказуемый вариант.</li>
+<li><strong>API (pay-per-token)</strong> — Sonnet ~$3/$15 за M входных/выходных токенов, Opus дороже, Haiku дешевле. Типичная сессия 30 минут — несколько долларов. Удобно для CI и эпизодического использования.</li>
+</ul>
+
+<p class="callout"><strong>Цены и тарифы меняются.</strong> Актуальное — на <a href="https://www.anthropic.com/pricing" target="_blank">anthropic.com/pricing</a>. Совет: на API включи <strong>prompt caching</strong> (урок c6) — на длинных контекстах экономит до 90%.</p>
+
+<h2>14. Claude Code vs Cursor vs Copilot</h2>
+
+<table>
+<tr><th>Тул</th><th>Сильно</th><th>Слабо</th></tr>
+<tr><td><strong>Claude Code</strong></td><td>Сложные многофайловые задачи, агентский подход, автоматизация (hooks, CI, субагенты)</td><td>Нет визуального UI «из коробки» (есть расширения IDE)</td></tr>
+<tr><td><strong>Cursor</strong></td><td>Отличный UX, быстрые правки и фичи прямо в редакторе</td><td>Слабее на очень крупных агентских задачах</td></tr>
+<tr><td><strong>Copilot</strong></td><td>Автокомплит на лету, дёшево</td><td>Не агент — не понимает большую задачу целиком</td></tr>
+</table>
+
+<p>Лучший вариант — <strong>сочетать</strong>. Copilot для автокомплита по ходу, Cursor/IDE для правок в редакторе, Claude Code — когда нужен агент: большие рефакторинги, дебаг сложных проблем, автоматизация в CI.</p>
+
+<h2>15. Глоссарий</h2>
+<ul>
+<li><strong>Claude Code</strong> — агентский CLI Anthropic для разработчиков</li>
+<li><strong>CLAUDE.md</strong> — контекстный файл проекта (стек, конвенции, команды)</li>
+<li><strong>Субагент</strong> — отдельный агент со своим контекстом для подзадачи (<code>.claude/agents/</code>)</li>
+<li><strong>Hook</strong> — команда, запускаемая автоматически на событии (<code>settings.json</code>)</li>
+<li><strong>Plan mode</strong> — режим планирования без изменений (<code>Shift+Tab</code>)</li>
+<li><strong>Кастомная команда</strong> — шаблон в <code>.claude/commands/</code>, вызов через <code>/</code></li>
+<li><strong>Skill</strong> — авто-подхватываемый навык (<code>.claude/skills/</code>, см. c9)</li>
+<li><strong>MCP-сервер</strong> — внешний инструмент для агента (см. c3)</li>
+<li><strong>Headless</strong> — запуск без интерактива (<code>claude -p</code>) для CI/скриптов</li>
+</ul>
+
+<h2>16. Практика (60 минут)</h2>
+
+<h3>Упражнение 1. Установка и /init (15 минут)</h3>
+<p>Установи Claude Code, запусти в своём проекте, выполни <code>/init</code>. Проверь сгенерированный <code>CLAUDE.md</code>, допиши конвенции и запреты.</p>
+
+<h3>Упражнение 2. Plan mode на реальной задаче (15 минут)</h3>
+<p>Возьми задачу из бэклога. Включи plan mode (<code>Shift+Tab</code>), дай задачу. Посмотри план до выполнения — оцени, насколько Claude понял задачу правильно.</p>
+
+<h3>Упражнение 3. Кастомная команда (15 минут)</h3>
+<p>Создай <code>.claude/commands/review.md</code> со своими правилами ревью. Протестируй <code>/review</code> на текущих изменениях.</p>
+
+<h3>Упражнение 4. Hook (15 минут)</h3>
+<p>Настрой PostToolUse-hook, который прогоняет форматтер (prettier / black) после каждого изменения файла. Сделай правку — убедись, что код форматируется автоматически.</p>
+
+<h2>17. Проверь себя</h2>
+
+<p><strong>1. Что такое Claude Code в одном предложении?</strong><br>
+Агентский CLI от Anthropic — читает/пишет код, запускает команды, дебажит, автоматизирует, работает по подписке или API.</p>
+
+<p><strong>2. Чем CLAUDE.md полезен?</strong><br>
+Контекстный файл проекта: стек, структура, конвенции, запреты, команды. Чем подробнее — тем точнее агент.</p>
+
+<p><strong>3. Что такое субагенты и зачем они?</strong><br>
+Отдельные агенты со своим контекстом для подзадач. Дают параллелизм, чистоту главного контекста и специализацию (ревьюер, тестировщик).</p>
+
+<p><strong>4. Что делают hooks?</strong><br>
+Запускают твои команды автоматически на событиях (до/после действия, по завершении). Например, авто-форматирование или блокировка записи в защищённые файлы. Детерминированы — выполняет сам Claude Code, не модель.</p>
+
+<p><strong>5. Что такое plan mode и когда он нужен?</strong><br>
+Режим планирования (<code>Shift+Tab</code>): Claude исследует и показывает план, ничего не меняя. Нужен для крупных задач — увидеть стратегию до выполнения.</p>
+
+<p><strong>6. Как Claude Code оплачивается?</strong><br>
+Подписка Claude Pro/Max (фиксированная цена) ИЛИ API-ключ (pay-per-token). Подписка предсказуемее для ежедневной работы.</p>
+
+<p><strong>7. Чем кастомная команда отличается от Skill?</strong><br>
+Команду вызываешь вручную через <code>/</code>. Skill Claude подхватывает сам, когда задача подходит под описание. Подробнее про Skills — урок c9.</p>
+
+<p><strong>8. Зачем подключать MCP к Claude Code?</strong><br>
+Чтобы агент работал не только с кодом, а со всей инфраструктурой: БД, Notion, Linear, браузер, Sentry. См. урок c3.</p>
+
+<p><strong>9. Можно ли запускать без интерактива?</strong><br>
+Да, headless-режим: <code>claude -p "задача"</code>. Используется в CI, pre-commit хуках, GitHub Actions для авто-ревью PR.</p>
+
+<p><strong>10. Главные риски и как защититься?</strong><br>
+Может удалить, запушить, потратить токены. Защита: подтверждение опасных действий, настройка allow/deny в settings.json, PreToolUse-хуки, проект под git (откат), не давать продакшен-секреты.</p>
+
+<h2>18. Что должно остаться в голове</h2>
+<ol>
+<li><strong>Claude Code = агент в терминале.</strong> Не IDE, не плагин — самостоятельный инструмент, который сам делает многошаговые задачи.</li>
+<li><strong>CLAUDE.md — фундамент.</strong> Без него агент действует наугад. Это онбординг проекта для AI.</li>
+<li><strong>Автоматизируй детерминированное хуками, делегируй параллельное субагентам.</strong> То, что «всегда должно происходить» — хук, а не просьба.</li>
+<li><strong>Plan mode для крупных задач.</strong> Сначала план и согласование, потом код — экономит часы переделок.</li>
+<li><strong>Подписка или API.</strong> Pro/Max — предсказуемая цена для ежедневной работы; API — для CI и эпизодов, с prompt caching (c6).</li>
+</ol>
+
+
+    <div class="pp-open"><a href="/#lesson-c5">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

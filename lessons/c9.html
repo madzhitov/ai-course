@@ -19,21 +19,215 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/c9.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/c9.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-c9');
-</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Claude Deep Dive</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">C9</span></div>
 <h1>Claude Skills — пре-настроенные навыки</h1>
-<p>C9 из курса AI на русском. Claude Skills — пре-настроенные навыки. ~40 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-c9">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> освоить Claude Skills — модульные «навыки», которые превращают Claude в специализированного помощника под конкретный домен</span>
+  <span><strong>Время:</strong> ~40 минут</span>
+  <span><strong>Источник:</strong> Anthropic «Introducing Skills» (октябрь 2025)</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Skills — самая большая фича Claude осени 2025. Если MCP — это «как подключить Claude к внешним инструментам», то Skills — это «как Claude вызывает узко-специализированные способности из встроенной библиотеки или твоей собственной».</p>
+<p>Зачем это нужно лично тебе:</p>
+<ul>
+<li>Работа с Excel/PowerPoint/PDF — без копи-пастов через скриншоты, Claude напрямую читает и редактирует файлы.</li>
+<li>Свои Skills под рутины — раз настроил, дальше Claude применяет автоматом.</li>
+<li>Claude становится универсальным «не-кодовым» инструментом — типа Cursor, но для работы с документами.</li>
+</ul>
+
+<h2>1. Что такое Skill в одном абзаце</h2>
+<p>Skill — это <strong>именованный модуль возможностей</strong> с описанием «когда меня использовать». Claude видит список доступных Skills и сам решает, когда вызвать. Каждый Skill — это упакованные:</p>
+<ul>
+<li>Инструкции (system-prompt'ы под задачу),</li>
+<li>Tools (часто Computer Use или Code Execution),</li>
+<li>Опционально — внешние ресурсы или файлы.</li>
+</ul>
+<p>Звучит как функция или плагин — да, по идее. Но в отличие от MCP-сервера, Skill <strong>не требует своего сервера</strong>. Он живёт внутри Claude как пресет.</p>
+
+<h2>2. Чем Skills отличаются от MCP, Tools, Functions</h2>
+<table>
+<tr><th>Подход</th><th>Что это</th><th>Когда использовать</th></tr>
+<tr><td><strong>Tool use / Function calling</strong></td><td>Низкоуровневое: ты описываешь функцию, Claude её вызывает</td><td>Свои бэкенд-API, узкие действия</td></tr>
+<tr><td><strong>MCP-server</strong></td><td>Стандартизированный сервер с tools и resources</td><td>Подключение Claude к внешним системам (Notion, Linear, БД)</td></tr>
+<tr><td><strong>Skill</strong></td><td>Готовый «навык» с инструкциями и набором tools, упакованный Anthropic или сообществом</td><td>Домен-специфичные задачи: Excel, PDF, презентации</td></tr>
+<tr><td><strong>Computer Use</strong></td><td>Базовая способность — управлять компьютером через скриншоты + клики</td><td>Универсальный fallback для любого GUI</td></tr>
+</table>
+<p>Можно думать так: Tools — это lego-кирпичики. MCP — сервер lego-кирпичиков. Skill — готовая lego-машинка под конкретную задачу.</p>
+
+<h2>3. Что Anthropic положил в первую партию Skills</h2>
+<p>На запуск (октябрь 2025) Anthropic выпустил несколько ключевых Skills:</p>
+
+<h3>📊 Excel skill</h3>
+<ul>
+<li>Открой .xlsx, проанализируй данные, сделай сводную таблицу — без выгрузки.</li>
+<li>Применяй формулы, форматирование.</li>
+<li>Создавай новые листы с диаграммами.</li>
+</ul>
+
+<h3>📑 PDF skill</h3>
+<ul>
+<li>Извлекай таблицы и текст из PDF (даже scanned, через OCR).</li>
+<li>Заполняй PDF-формы.</li>
+<li>Сливай или разбивай PDF.</li>
+</ul>
+
+<h3>🎨 PowerPoint skill</h3>
+<ul>
+<li>Создавай готовые .pptx из текстового описания.</li>
+<li>Редактируй слайды на лету.</li>
+<li>Применяй темы и шаблоны.</li>
+</ul>
+
+<h3>📄 Word skill</h3>
+<ul>
+<li>Создавай .docx с правильным форматированием.</li>
+<li>Применяй стили, шрифты, заголовки.</li>
+</ul>
+
+<h3>🖼 Image/Vision skills</h3>
+<ul>
+<li>Анализ изображений с extraction в структурированный JSON.</li>
+<li>Обрезка, ресайз, конвертация.</li>
+</ul>
+
+<h2>4. Как использовать Skill в Claude Desktop</h2>
+<p>Если у тебя Claude Pro/Team:</p>
+<ol>
+<li>Открой чат с Claude.</li>
+<li>Прикрепи файл (или вставь путь).</li>
+<li>Скажи задачу обычными словами: «Из этого Excel-файла сделай сводную таблицу по регионам и пришли назад .xlsx».</li>
+<li>Claude автоматически определит, что нужен Excel skill, вызовет его, выполнит — и пришлёт результирующий файл.</li>
+</ol>
+<p>Никаких <code>/команд</code> явно вызывать не нужно — Claude сам решает по contextу.</p>
+
+<h2>5. Skills в API</h2>
+<p>Для разработчиков Skills доступны через Claude API. Пример включения Excel skill:</p>
+<pre><code>response = client.messages.create(
+  model="claude-sonnet-4-5",
+  max_tokens=4000,
+  messages=[{"role": "user", "content": "Проанализируй прикреплённый Excel"}],
+  tools=[{
+    "type": "skill",
+    "name": "excel"
+  }],
+  attachments=[...]
+)</code></pre>
+<p>Можно подключать несколько Skills одновременно. Claude сам решит, какой использовать в каком моменте.</p>
+
+<h2>6. Свои собственные Skills</h2>
+<p>Anthropic дал возможность писать собственные Skills (пока beta). Skill = это:</p>
+<ul>
+<li><strong>SKILL.md</strong> — описание навыка для Claude (когда вызывать, что делать).</li>
+<li><strong>Инструменты</strong> — обычно Code Execution или MCP-серверы.</li>
+<li><strong>Опционально — примеры</strong> или базы знаний.</li>
+</ul>
+<p>Пример SKILL.md для собственного Skill «расчёт unit-экономики»:</p>
+<pre><code>name: unit-economics
+description: |
+  Использовать когда пользователь приносит данные по продукту/сервису
+  и хочет посчитать CAC, LTV, payback period.
+  НЕ использовать для генеральной финансовой аналитики.
+
+instructions: |
+  1. Запроси CAC, среднюю выручку с клиента, churn rate.
+  2. Если не хватает данных — спроси у пользователя.
+  3. Посчитай через Code Execution, выведи в таблице.
+  4. Дай интерпретацию: где red flag, где здорово.
+
+tools:
+  - code_execution</code></pre>
+<p>Положил в Anthropic Skills catalog (или загрузил локально) — Claude знает, как использовать.</p>
+
+<h2>7. Сценарии «купи Skill готовый» (Skills marketplace)</h2>
+<p>Anthropic запустил <strong>Skills catalog</strong> — там community-skills, готовые под конкретные домены:</p>
+<ul>
+<li>Legal — анализ договоров по типу контракта</li>
+<li>Medical — структурирование симптомов в SOAP-ноту</li>
+<li>Finance — построение финмодели стартапа</li>
+<li>Design — макеты в формате Figma JSON</li>
+<li>Education — генерация структурированных учебных планов</li>
+</ul>
+<p>Большинство бесплатны. Топовые могут стать платными в будущем.</p>
+
+<h2>8. Skills vs MCP — когда что</h2>
+<table>
+<tr><th>Сценарий</th><th>Решение</th></tr>
+<tr><td>Работа с типовым форматом (Excel, PDF)</td><td>Skill (готовый)</td></tr>
+<tr><td>Доступ к твоей корпоративной БД</td><td>MCP-сервер</td></tr>
+<tr><td>Узкая бизнес-логика твоего продукта</td><td>Свой Skill</td></tr>
+<tr><td>Интеграция с Notion / Linear / Slack</td><td>MCP-сервер (часто готовый)</td></tr>
+<tr><td>Расчёты на лету</td><td>Skill code_execution или встроенный Code Interpreter</td></tr>
+</table>
+<p><strong>Можно комбинировать:</strong> Skill для расчётов + MCP для доступа к данным.</p>
+
+<h2>9. Тонкости и подводные камни</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Skills не панацея.</strong> Если задача шире готового Skill — он не справится, потребует fallback на Computer Use.</li>
+<li><strong>Платформа важна.</strong> Excel/PowerPoint skills работают в Claude Desktop. В Claude.ai (веб) функционал ограниченнее.</li>
+<li><strong>Безопасность.</strong> Свои Skills могут содержать инструкции, которые модель будет применять «слепо». Принцип least privilege.</li>
+<li><strong>Версионирование.</strong> Skills эволюционируют — следи за обновлениями Anthropic.</li>
+<li><strong>Cost.</strong> Skill часто использует Code Execution или Computer Use под капотом — это дополнительные токены и время.</li>
+</ul>
+</div>
+
+<h2>10. Глоссарий</h2>
+<div class="glossary-term"><h3>Skill</h3><p>Модульный «навык» Claude — упакованный набор инструкций + tools под конкретный домен.</p></div>
+<div class="glossary-term"><h3>Skills catalog</h3><p>Каталог готовых Skills от Anthropic и сообщества.</p></div>
+<div class="glossary-term"><h3>SKILL.md</h3><p>Файл описания собственного Skill: когда использовать, что делать, какие tools нужны.</p></div>
+<div class="glossary-term"><h3>Code Execution</h3><p>Встроенная способность Claude запускать Python в изолированной среде. Часто используется внутри Skills.</p></div>
+
+<h2>11. Практика (40 минут)</h2>
+<ol>
+<li>Если у тебя Claude Pro/Team — открой Claude Desktop, прикрепи любой Excel-файл и спроси: «Сделай сводную таблицу по N столбцу».</li>
+<li>Попробуй сложить .pptx из текстового описания: «Создай презентацию на 5 слайдов про X».</li>
+<li>Открой <a href="https://docs.claude.com/en/docs/build-with-claude/skills" target="_blank">официальные доки Skills</a>.</li>
+<li>Идея на «следующий шаг»: напиши SKILL.md под одну рутину из своей работы.</li>
+<li>В <code>progress.md</code> запиши: какой Skill сэкономил бы тебе больше всего времени.</li>
+</ol>
+
+<h2>12. Проверь себя</h2>
+<p><strong>1. Чем Skill отличается от MCP-сервера?</strong><br>Skill — готовый «навык», упакованный с инструкциями. MCP — стандарт сервера для подключения внешних систем. Skill живёт внутри Claude; MCP — отдельный сервис.</p>
+<p><strong>2. Что в первой партии Skills от Anthropic?</strong><br>Excel, PDF, PowerPoint, Word, Image/Vision — работа с типовыми форматами офисных документов.</p>
+<p><strong>3. Когда писать свой Skill, а когда брать готовый?</strong><br>Готовый — если задача типовая (формат файла). Свой — если есть уникальная бизнес-логика.</p>
+<p><strong>4. Что такое Skills marketplace?</strong><br>Каталог готовых Skills от Anthropic и сообщества по доменам (legal, medical, finance...).</p>
+
+<h2>13. Что должно остаться в голове</h2>
+<ol>
+<li>Skill = упакованный «навык» Claude с инструкциями и tools. Готовый или свой.</li>
+<li>Skills ≠ MCP. Skill — готовая способность. MCP — протокол подключения.</li>
+<li>Первая партия: Excel, PDF, PowerPoint, Word, Image — типовые офисные форматы.</li>
+<li>Свой Skill = SKILL.md + tools (часто Code Execution).</li>
+<li>Skills catalog — каталог community-skills от Anthropic и сообщества.</li>
+<li>Можно комбинировать: Skill для логики + MCP для данных.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> Skills сильно меняют что значит «работать с Claude». Если ты ещё не пробовал — открой Claude Desktop и просто кинь Excel-файл с вопросом. Увидишь как меняется опыт.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-c9">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

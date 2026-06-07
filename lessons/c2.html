@@ -19,21 +19,287 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/c2.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/c2.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-c2');
-</script>
 </head>
 <body>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Claude Deep Dive</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">C2</span></div>
 <h1>Claude Projects — память и контекст для задач</h1>
-<p>C2 из курса AI на русском. Claude Projects — память и контекст для задач. ~35 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-c2">Открыть урок →</a></p>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> понять, когда Projects лучше обычного чата и как их грамотно использовать</span>
+  <span><strong>Время:</strong> ~35 минут</span>
+  <span><strong>Источник:</strong> docs.claude.com, claude.com/news</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>Если ты замечал, что объясняешь Claude одно и то же в каждом новом чате, делишься одним и тем же фоном — Projects решают эту боль. Это <strong>контейнеры</strong> для связанных диалогов с общим контекстом, инструкциями и файлами.</p>
+<p>Простой пример: у тебя есть pet-проект. Каждый раз когда обращаешься к Claude по нему — приходится напоминать про стек, бизнес-логику, текущий этап. С Project всё это лежит в общей «памяти», и любой новый чат начинается с уже актуальным контекстом.</p>
+
+<h2>1. Что такое Project</h2>
+
+<p>Project в Claude — это:</p>
+<ul>
+<li><strong>Папка для чатов</strong> по одной теме / задаче / клиенту.</li>
+<li><strong>Project knowledge</strong> — файлы и тексты, которые Claude видит во всех чатах внутри.</li>
+<li><strong>Custom instructions</strong> — постоянный system prompt для всех чатов.</li>
+<li><strong>Активность</strong> — все диалоги и артефакты в одном месте.</li>
+</ul>
+
+<p>Доступно на: Claude Pro ($20/мес), Team, Enterprise. На бесплатном тарифе — нет.</p>
+
+<h2>2. Когда стоит использовать Project</h2>
+
+<h3>✅ Хорошо</h3>
+<ul>
+<li><strong>Долгосрочные проекты</strong> — pet-project, рабочая инициатива, диссертация.</li>
+<li><strong>Работа с клиентом / компанией</strong> — где есть постоянная фоновая инфа.</li>
+<li><strong>Изучение темы</strong> — например, «Изучаю Rust» — складываешь туда заметки, ссылки.</li>
+<li><strong>Творческие проекты</strong> — роман, сериал, дизайн-система.</li>
+<li><strong>Регулярные операции</strong> — еженедельные отчёты, планирование, ретро.</li>
+</ul>
+
+<h3>❌ Не нужно</h3>
+<ul>
+<li>Разовые вопросы.</li>
+<li>«Объясни что такое X» — обычный чат справится.</li>
+<li>Кодинг-задачи без общего контекста.</li>
+</ul>
+
+<h2>3. Создание Project — пошагово</h2>
+
+<ol>
+<li>В claude.ai нажми <strong>Projects</strong> в левой панели.</li>
+<li><strong>Create Project.</strong></li>
+<li>Имя — конкретное и понятное: «Курс по ИИ — контент» лучше чем «Учёба».</li>
+<li>Description — необязательно, но помогает.</li>
+<li>Add knowledge — перетащи файлы (PDF, MD, txt, код).</li>
+<li>Custom instructions — главный момент, см. секцию 4.</li>
+</ol>
+
+<h2>4. Custom Instructions — главный инструмент</h2>
+
+<p>Это system prompt уровня всего проекта. Сюда кладём:</p>
+<ul>
+<li><strong>Контекст:</strong> кто я, чем занимаюсь, какова цель проекта.</li>
+<li><strong>Роль:</strong> кем должен быть Claude в этом проекте.</li>
+<li><strong>Стиль общения:</strong> формальный/прямой, длина ответов.</li>
+<li><strong>Знания и предпочтения:</strong> используем X, не используем Y.</li>
+<li><strong>Что в knowledge:</strong> явно опиши, какие файлы загружены и зачем.</li>
+</ul>
+
+<h3>Пример сильного Custom Instructions</h3>
+<pre><code>Контекст: Я Руслан, делаю курс по ИИ на русском, цель — стать
+"тем, к кому ходят за объяснением ИИ для русскоязычных".
+
+Роль: Ты мой соавтор и редактор курса. Думай как опытный
+методист и продакт-менеджер.
+
+Стиль:
+- Прямо, без воды.
+- Когда сомневаешься — задавай уточняющие вопросы.
+- Не льсти, не соглашайся ради согласия.
+- Если у меня плохая идея — скажи прямо и предложи лучше.
+
+В knowledge:
+- progress.md — мой журнал и планы по курсу.
+- structure.md — структура 95 уроков.
+- lesson-template.md — шаблон формата урока.
+- audience.md — описание целевой аудитории.
+
+Не используй: маркетинговые клише, "решение", "инновационный",
+"уникальный", эмодзи в формальных текстах.</code></pre>
+
+<h2>5. Project Knowledge — что и как загружать</h2>
+
+<h3>Форматы</h3>
+<ul>
+<li>PDF, DOCX, TXT, MD — естественно.</li>
+<li>CSV, JSON — данные.</li>
+<li>Код любых языков.</li>
+<li>Изображения с текстом (Claude умеет OCR).</li>
+</ul>
+
+<h3>Лимиты</h3>
+<ul>
+<li>До 200 KB на один файл текста (для PDF — больше).</li>
+<li>Общий объём всех файлов в проекте — порядка 200k токенов.</li>
+<li>Внутри одного чата — обычное контекстное окно (200k токенов).</li>
+</ul>
+
+<h3>Что класть, что не класть</h3>
+<p><strong>Класть:</strong></p>
+<ul>
+<li>Стабильные референсы — то что не меняется (структуры, спецификации, гайды стиля).</li>
+<li>Документы, на которые часто ссылаешься.</li>
+<li>Свои промпт-шаблоны.</li>
+<li>Примеры твоего стиля — Claude по ним подстроится.</li>
+</ul>
+<p><strong>Не класть:</strong></p>
+<ul>
+<li>Огромные папки кода — лучше точечно нужные файлы.</li>
+<li>Часто меняющиеся данные — устареют.</li>
+<li>Конфиденциальные данные, если Pro а не Enterprise (см. секцию 8).</li>
+</ul>
+
+<h2>6. Workflow: как работать в Project</h2>
+
+<p>Лучшая практика — <strong>один Project = один долгосрочный контекст</strong>. Внутри:</p>
+<ul>
+<li>Каждый отдельный thread — конкретная задача.</li>
+<li>Не пихай 50 разных задач в один thread — лучше создать новые.</li>
+<li>Пользуйся поиском по чатам внутри проекта (Cmd+K).</li>
+</ul>
+
+<h3>Пример моего Workflow</h3>
+<p>Я (Claude в роли соавтора курса) могу описать так:</p>
+<ol>
+<li>Project «Курс по ИИ» с custom instructions из секции 4 и файлами курса в knowledge.</li>
+<li>Thread «Урок 9: генерация картинок» — пишу его.</li>
+<li>Thread «Структура Фазы 2» — обсуждаю порядок.</li>
+<li>Thread «Идеи для Фазы 4» — складываю.</li>
+<li>Thread «Планирование на неделю» — каждый понедельник новый.</li>
+</ol>
+<p>Через месяц у меня история всех решений по курсу. Возвращаюсь — и не нужно объяснять контекст.</p>
+
+<h2>7. Cowork — совместная работа в Project</h2>
+
+<p><strong>Cowork</strong> — это режим, когда несколько людей работают с одним Project параллельно. Появился в Team-тарифе в конце 2025-го и закрывает старую боль: «у меня в Project всё настроено, как поделиться с командой, не пересылая по 20 ссылок».</p>
+
+<h3>Что даёт Cowork</h3>
+<ul>
+<li><strong>Один Project — много участников.</strong> Все видят одни и те же Knowledge и Custom Instructions. Никаких «у Маши версия v2, у Пети v3».</li>
+<li><strong>Общие threads.</strong> Коллега заходит и видит, что ты уже обсуждал с Клодом. Можно продолжить там же или форкнуть.</li>
+<li><strong>Личные threads внутри Project.</strong> Если нужно «мне для себя» — помечаешь thread как private, другие его не видят.</li>
+<li><strong>История изменений Knowledge.</strong> Кто и когда заменил файл стратегии — видно. Можно откатить.</li>
+</ul>
+
+<h3>Когда это меняет workflow</h3>
+<p>Типичный кейс — небольшая команда (3–8 человек) работает над одним продуктом / контентом / исследованием. Раньше каждый держал свой Project, копировал друг у друга промпты, рассинхронизировался. С Cowork: один Project «Маркетинг Q1», все туда заходят, видят те же материалы, обсуждают в общих threads.</p>
+
+<h3>Что не стоит делать</h3>
+<ul>
+<li><strong>Не делай Cowork-Project на 50 человек.</strong> Knowledge превратится в свалку, threads — в хаос. Лучше 3–4 Project под подкоманды.</li>
+<li><strong>Не складывай туда чувствительные данные «потому что удобно».</strong> Если в Project ходит подрядчик — он видит всё. Используй роли (admin / member / viewer) или отдельный Project.</li>
+<li><strong>Не путай Cowork с чатом.</strong> Это не Slack. Сюда — рабочие сессии с Клодом и их история, не оперативное общение.</li>
+</ul>
+
+<h3>Как начать</h3>
+<ol>
+<li>Тариф Team (или выше) — без него Cowork недоступен.</li>
+<li>В настройках Project → Share → добавляешь людей по email или приглашаешь всю Workspace.</li>
+<li>Задаёшь роль: admin (правит Knowledge и instructions), member (создаёт threads), viewer (только читает).</li>
+<li>Согласовываешь с командой простое правило: «общие threads — для рабочих обсуждений, private — для черновиков».</li>
+</ol>
+
+<p class="callout">Cowork — это не «фича для галочки», это сдвиг: Project перестаёт быть «личной папкой с промптами» и становится рабочим пространством. Если работаешь не один — попробуй.</p>
+
+<h2>8. Топ-3 неправильных применения</h2>
+
+<h3>❌ «Один Project на всё»</h3>
+<p>Создал «AI Helper» и пихаешь туда всё подряд. Knowledge превращается в свалку. Custom instructions расплывчатые. Не работает.</p>
+
+<h3>❌ Дамп всей кодовой базы в Knowledge</h3>
+<p>Зарузил 5 МБ кода → токены закончились на каждом запросе → ответы поверхностные. Лучше: точечно нужные файлы под текущую задачу через chat-attach.</p>
+
+<h3>❌ Custom instructions из 5 строк</h3>
+<p>«Будь полезным помощником» — это не custom instructions, это шум. Сильные instructions — 30+ строк со специфичной информацией.</p>
+
+<h2>9. Приватность — важно</h2>
+
+<h3>Pro</h3>
+<p>Knowledge файлы хранятся у Anthropic. По умолчанию <strong>НЕ используются для обучения модели</strong> (это политика Anthropic с 2024). Удалить файл — он удалится из их хранилища тоже (но логи могут жить ещё месяц).</p>
+
+<h3>Team / Enterprise</h3>
+<p>Дополнительно — DPA, BAA для медицины, SOC 2, контроль над регионом хранения.</p>
+
+<h3>Что не клади даже на Pro</h3>
+<ul>
+<li>Полные персональные данные клиентов с реальными именами.</li>
+<li>Закрытые контракты с реальными условиями.</li>
+<li>Финансовые данные до публикации.</li>
+<li>Не-анонсированные продуктовые планы.</li>
+</ul>
+<p>Решение: anonymize. Замени имена на роли, цифры на формулы.</p>
+
+<h2>10. Прокачка через примеры</h2>
+
+<h3>Пример A: Project для разработчика</h3>
+<ul>
+<li>Имя: «my-saas-backend».</li>
+<li>Knowledge: README, архитектурный документ, OpenAPI spec, ключевые модели данных.</li>
+<li>Custom instructions: технический стек, naming conventions, что не использовать (старые паттерны).</li>
+</ul>
+
+<h3>Пример B: Project для писателя</h3>
+<ul>
+<li>Имя: «Роман — Падение империи».</li>
+<li>Knowledge: персонажи (имена, бэкграунд), мир (география, история), стиль (примеры предыдущих глав).</li>
+<li>Custom instructions: жанр, тон, что не уместно.</li>
+</ul>
+
+<h3>Пример C: Project для маркетолога</h3>
+<ul>
+<li>Имя: «B2B SaaS — лидген».</li>
+<li>Knowledge: бренд-гайд, ICP, кейсы, прошлые рассылки.</li>
+<li>Custom instructions: тон бренда, запрещённые слова, формат.</li>
+</ul>
+
+<h2>11. Практика (30 минут)</h2>
+
+<h3>Упражнение 1. Создай Project</h3>
+<ol>
+<li>Реши: какой у тебя долгосрочный проект сейчас (работа над сайтом, обучение языку, ведение блога).</li>
+<li>Создай Project в claude.ai.</li>
+<li>Загрузи в Knowledge: 2–3 базовых файла (можно создать прямо в Markdown за 10 минут).</li>
+<li>Напиши Custom Instructions хотя бы на 20 строк по структуре из секции 4.</li>
+</ol>
+
+<h3>Упражнение 2. Сравни</h3>
+<p>Задай <strong>один и тот же</strong> сложный вопрос:</p>
+<ul>
+<li>В обычном чате (нужно объяснять контекст).</li>
+<li>В созданном Project.</li>
+</ul>
+<p>Сравни качество и время ответа.</p>
+
+<h2>12. Проверь себя</h2>
+
+<p><strong>1. Чем Project отличается от обычного чата?</strong><br>
+Project — контейнер для связанных чатов с общим Knowledge (файлы) и Custom Instructions (system prompt). Обычный чат — изолированная сессия.</p>
+
+<p><strong>2. На каком тарифе доступны Projects?</strong><br>
+Pro ($20/мес), Team, Enterprise. На бесплатном — нет.</p>
+
+<p><strong>3. Что класть в Custom Instructions?</strong><br>
+Контекст (кто я, цель), роль Claude, стиль общения, что в Knowledge, что не использовать. Минимум 20+ строк для эффекта.</p>
+
+<p><strong>4. Сколько занимают файлы Knowledge?</strong><br>
+До 200 КБ на файл текста, общий объём в районе 200к токенов.</p>
+
+<p><strong>5. Главный антипаттерн использования Projects?</strong><br>
+Один Project на всё — превращается в свалку. Лучше много специализированных.</p>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> Projects превращают Claude из «универсального ассистента» в «персонализированного коллегу» по конкретной задаче. Если ты используешь Claude больше 30 минут в день и платишь за Pro — обязательно осваивай.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-c2">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

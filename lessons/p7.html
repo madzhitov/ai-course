@@ -19,21 +19,140 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/p7.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p7.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p7');
-</script>
 </head>
 <body>
-<h1>AI-помощник для встреч: транскрипция + summary + задачи в Notion</h1>
-<p>P7 из курса AI на русском. AI-помощник для встреч: транскрипция + summary + задачи в Notion. ~90 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p7">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P7</span></div>
+<h1>Проект «За 1 час»: AI-помощник для встреч — транскрипция + summary + задачи в Notion</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> запись встречи → транскрипт → саммари → задачи в Notion</span>
+  <span><strong>Время:</strong> ~75 минут</span>
+  <span><strong>Уровень:</strong> Python + базовый API</span>
+</div>
+
+<h2>Зачем</h2>
+<p>Встречи без саммари — это потерянная информация. Кто за что отвечает, какие решения, что ждёт. Ассистент берёт аудио-файл и за минуту даёт: чёткий транскрипт, выжимку решений, список задач с ответственными.</p>
+
+<h2>Архитектура</h2>
+<pre><code>Audio (mp3/wav) → Whisper API (транскрипт) → Claude (summary + action items) → Notion</code></pre>
+
+<h2>Шаг 1. Зависимости</h2>
+<pre><code>pip install openai anthropic notion-client</code></pre>
+
+<h2>Шаг 2. Транскрипция через Whisper</h2>
+<pre><code>import openai
+client = openai.OpenAI()
+
+def transcribe(audio_path):
+    with open(audio_path, "rb") as f:
+        r = client.audio.transcriptions.create(
+          model="whisper-1", file=f, response_format="verbose_json", language="ru"
+        )
+    return r.text  # для длинных встреч лучше r.segments с таймкодами</code></pre>
+<p>Whisper API стоит $0.006/мин. Часовая встреча = $0.36.</p>
+
+<h2>Шаг 3. Саммари через Claude</h2>
+<pre><code>import anthropic, json
+llm = anthropic.Anthropic()
+
+def analyze(transcript):
+    msg = llm.messages.create(
+      model="claude-sonnet-4-5",
+      max_tokens=2000,
+      messages=[{"role": "user", "content": f'''Транскрипт встречи:
+&lt;transcript&gt;
+{transcript}
+&lt;/transcript&gt;
+
+Сделай JSON со структурой:
+{{
+  "topic": "тема встречи 1 фразой",
+  "participants": ["имена если упоминались"],
+  "key_decisions": ["решение 1", "решение 2"],
+  "discussions": ["о чём спорили, без вывода"],
+  "action_items": [
+    {{"task": "...", "owner": "имя", "deadline": "если упомянут"}}
+  ],
+  "open_questions": ["что осталось нерешённым"]
+}}
+
+Только факты из транскрипта. Если чего-то нет — пустой массив.
+Возвращай ТОЛЬКО JSON.'''}]
+    )
+    return json.loads(msg.content[0].text)</code></pre>
+
+<h2>Шаг 4. Сохранение в Notion</h2>
+<pre><code>from notion_client import Client
+notion = Client(auth=os.environ["NOTION_TOKEN"])
+DATABASE_ID = "..."  # ID базы со встречами
+
+def save_to_notion(data, audio_filename):
+    notion.pages.create(
+      parent={"database_id": DATABASE_ID},
+      properties={
+        "Name": {"title": [{"text": {"content": data["topic"]}}]},
+        "Date": {"date": {"start": "2026-05-12"}},
+      },
+      children=[
+        {"type": "heading_2", "heading_2": {"rich_text":[{"text":{"content":"Решения"}}]}},
+        *[{"type": "bulleted_list_item", "bulleted_list_item":
+           {"rich_text":[{"text":{"content": d}}]}} for d in data["key_decisions"]],
+        {"type": "heading_2", "heading_2": {"rich_text":[{"text":{"content":"Задачи"}}]}},
+        *[{"type": "to_do", "to_do":
+           {"rich_text":[{"text":{"content": f"[{a['owner']}] {a['task']}"}}], "checked": False}}
+          for a in data["action_items"]],
+      ]
+    )</code></pre>
+
+<h2>Шаг 5. Пайплайн</h2>
+<pre><code>def process_meeting(audio_path):
+    print("Транскрибирую...")
+    text = transcribe(audio_path)
+    print("Анализирую...")
+    data = analyze(text)
+    print("Сохраняю в Notion...")
+    save_to_notion(data, audio_path)
+    return data
+
+if __name__ == "__main__":
+    import sys
+    process_meeting(sys.argv[1])</code></pre>
+<p>Запуск: <code>python meeting.py recording.mp3</code>.</p>
+
+<h2>Расширения</h2>
+<ul>
+<li><strong>Запись прямо в Zoom/Meet</strong> через их API.</li>
+<li><strong>Speaker diarization</strong> — разделение голосов через AssemblyAI или Whisper-X.</li>
+<li><strong>Автоотправка</strong> ответственным в Slack.</li>
+<li><strong>Telegram-бот</strong>: пересылаешь голосовое — получаешь сводку.</li>
+</ul>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> освобождает 30 минут после каждой встречи — на масштабе недели это 5+ часов.
+</div>
+
+<div class="callout callout-info" style="margin-top: 1.5rem;">
+<strong>Без VPN и подписок:</strong> Whisper запускается локально через <code>faster-whisper</code> (см. <a href="#lesson-p11" onclick="openLesson('p11'); return false;">p11</a>). Для саммари — GigaChat (бесплатно 1М токенов/мес) или локальный Ollama. Обзор стека — <a href="#lesson-e11" onclick="openLesson('e11'); return false;">e11</a>.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-p7">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

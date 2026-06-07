@@ -19,21 +19,360 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/p2.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p2.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p2');
-</script>
 </head>
 <body>
-<h1>RAG над своими заметками (Obsidian / Notion)</h1>
-<p>P2 из курса AI на русском. RAG над своими заметками (Obsidian / Notion). ~60 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p2">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P2</span></div>
+<h1>Проект «За 1 час»: RAG над своими заметками (Obsidian / Notion)</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> ассистент, отвечающий на вопросы по твоим личным заметкам</span>
+  <span><strong>Время:</strong> ~60 минут</span>
+  <span><strong>Уровень:</strong> урок 6 + урок 8 курса</span>
+</div>
+
+<h2>Зачем этот проект</h2>
+<p>У большинства людей с Obsidian / Notion / Bear / Apple Notes одна и та же проблема: <strong>500+ заметок, и невозможно ничего найти</strong>. «Помню, я где-то писал про X» — но прокрутить вручную, или поиск по словам не находит, потому что точных совпадений нет.</p>
+<p>RAG (Retrieval-Augmented Generation) решает: индексируем все заметки, при вопросе достаём релевантные куски и просим LLM сгенерировать ответ <strong>на их основе</strong>. Получается твой личный «второй мозг», который реально помнит за тебя.</p>
+
+<h2>Что узнаешь</h2>
+<ul>
+<li>Как организовать pipeline: документы → chunks → embeddings → vector DB.</li>
+<li>Запросный пайплайн: query → relevant chunks → LLM → answer.</li>
+<li>Использование Chroma как локальной векторной БД.</li>
+<li>Как написать промпт, заставляющий модель отвечать <strong>только на основе документов</strong>.</li>
+</ul>
+
+<h2>Что понадобится</h2>
+<ul>
+<li>Папка с Markdown-файлами (Obsidian vault, экспорт из Notion, или просто .md в папке).</li>
+<li>Python 3.10+.</li>
+<li>API-ключ OpenAI.</li>
+<li>~60 минут.</li>
+</ul>
+
+<h2>Архитектура</h2>
+
+<pre><code>┌───────────────┐    ┌──────────┐    ┌───────────────┐    ┌──────────┐
+│  Папка        │ -> │ Chunking │ -> │  Embeddings   │ -> │  Chroma  │
+│  с .md        │    │ по парагр│    │  text-embed-3 │    │  vector  │
+└───────────────┘    └──────────┘    └───────────────┘    └────┬─────┘
+                                                                │
+                                                                │ (повторно)
+                                                                │
+                          вопрос пользователя                   │
+                                  │                             │
+                                  ▼                             │
+                          ┌───────────────┐                     │
+                          │ embed query   │                     │
+                          └───────────────┘                     │
+                                  │                             │
+                                  ▼                             │
+                          ┌─────────────────────────────────┐   │
+                          │ найти топ-5 ближайших chunks    │◄──┘
+                          └─────────────────────────────────┘
+                                  │
+                                  ▼
+                          ┌─────────────────────────────────┐
+                          │ LLM: ответь на вопрос на основе │
+                          │ только этих chunks              │
+                          └─────────────────────────────────┘
+                                  │
+                                  ▼
+                              ответ</code></pre>
+
+<h2>Шаг 1. Подготовка</h2>
+
+<pre><code>mkdir rag-notes && cd rag-notes
+python3 -m venv venv && source venv/bin/activate
+pip install openai chromadb python-dotenv</code></pre>
+
+<p><code>.env</code>:</p>
+<pre><code>OPENAI_API_KEY=sk-...</code></pre>
+
+<h2>Шаг 2. Скрипт индексации</h2>
+
+<p>Файл <code>indexer.py</code>:</p>
+
+<pre><code>import os
+import glob
+from pathlib import Path
+from dotenv import load_dotenv
+from openai import OpenAI
+import chromadb
+
+load_dotenv()
+client = OpenAI()
+
+# путь к твоим заметкам — поменяй
+NOTES_DIR = os.path.expanduser("~/Documents/Obsidian/MyVault")
+
+# инициализация Chroma (создаст папку chroma_db рядом)
+chroma = chromadb.PersistentClient(path="./chroma_db")
+
+# если коллекция была — пересоздаём
+try:
+    chroma.delete_collection("notes")
+except:
+    pass
+collection = chroma.create_collection("notes")
+
+
+def chunk_markdown(text: str, max_size: int = 800) -> list[str]:
+    """Режем по параграфам, склеивая мелкие."""
+    paragraphs = [p.strip() for p in text.split("\n\n") if p.strip()]
+    chunks = []
+    current = ""
+    for p in paragraphs:
+        if len(current) + len(p) <= max_size:
+            current += "\n\n" + p if current else p
+        else:
+            if current:
+                chunks.append(current)
+            current = p if len(p) <= max_size else p[:max_size]
+    if current:
+        chunks.append(current)
+    return chunks
+
+
+def embed(texts: list[str]) -> list[list[float]]:
+    """Эмбеддинг батчем — быстрее и дешевле."""
+    response = client.embeddings.create(
+        model="text-embedding-3-small",
+        input=texts
+    )
+    return [item.embedding for item in response.data]
+
+
+def index_notes():
+    files = glob.glob(f"{NOTES_DIR}/**/*.md", recursive=True)
+    print(f"Найдено {len(files)} файлов")
+
+    all_chunks = []
+    all_metadata = []
+    all_ids = []
+
+    for filepath in files:
+        with open(filepath, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        # простая очистка: убираем YAML frontmatter
+        if content.startswith("---"):
+            parts = content.split("---", 2)
+            if len(parts) >= 3:
+                content = parts[2].strip()
+
+        chunks = chunk_markdown(content)
+        rel_path = os.path.relpath(filepath, NOTES_DIR)
+
+        for i, chunk in enumerate(chunks):
+            all_chunks.append(chunk)
+            all_metadata.append({"file": rel_path, "chunk": i})
+            all_ids.append(f"{rel_path}:{i}")
+
+    print(f"Всего chunks: {len(all_chunks)}")
+
+    # эмбеддим батчами по 100
+    batch_size = 100
+    for i in range(0, len(all_chunks), batch_size):
+        batch = all_chunks[i:i+batch_size]
+        embs = embed(batch)
+        collection.add(
+            ids=all_ids[i:i+batch_size],
+            embeddings=embs,
+            documents=batch,
+            metadatas=all_metadata[i:i+batch_size]
+        )
+        print(f"Проиндексировано: {min(i+batch_size, len(all_chunks))}/{len(all_chunks)}")
+
+    print("✓ Индексация завершена")
+
+
+if __name__ == "__main__":
+    index_notes()</code></pre>
+
+<p>Запуск:</p>
+<pre><code>python indexer.py</code></pre>
+
+<p>На 200 заметках ~1 минута и стоит ~$0.02. Можно повторно запускать когда добавишь новые.</p>
+
+<h2>Шаг 3. Скрипт поиска и генерации ответа</h2>
+
+<p>Файл <code>ask.py</code>:</p>
+
+<pre><code>import os
+import sys
+from dotenv import load_dotenv
+from openai import OpenAI
+import chromadb
+
+load_dotenv()
+client = OpenAI()
+chroma = chromadb.PersistentClient(path="./chroma_db")
+collection = chroma.get_collection("notes")
+
+
+SYSTEM_PROMPT = """Ты ассистент по личным заметкам пользователя.
+
+ПРАВИЛА:
+- Отвечай ТОЛЬКО на основе предоставленных фрагментов заметок.
+- Если в заметках нет информации — честно скажи "В заметках это не нашёл".
+- НЕ придумывай. НЕ дополняй из общих знаний.
+- В ответе ссылайся на конкретные файлы: "[в заметке X]".
+- Если в заметках есть противоречие — укажи на него.
+- Будь краток. По делу."""
+
+
+def ask(question: str, k: int = 5) -> str:
+    # эмбеддим вопрос
+    q_emb = client.embeddings.create(
+        model="text-embedding-3-small",
+        input=question
+    ).data[0].embedding
+
+    # ищем
+    results = collection.query(
+        query_embeddings=[q_emb],
+        n_results=k
+    )
+
+    # форматируем найденные chunks
+    chunks_text = ""
+    for doc, meta in zip(results["documents"][0], results["metadatas"][0]):
+        chunks_text += f"\n\n--- из файла {meta['file']} ---\n{doc}"
+
+    # просим LLM ответить
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": f"ВОПРОС: {question}\n\nФРАГМЕНТЫ ЗАМЕТОК:{chunks_text}"}
+        ],
+        temperature=0.2,
+        max_tokens=600
+    )
+    return response.choices[0].message.content
+
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        question = " ".join(sys.argv[1:])
+    else:
+        question = input("Вопрос: ")
+    print("\n", ask(question))</code></pre>
+
+<p>Использование:</p>
+<pre><code>python ask.py "что я записывал про новые модели Anthropic?"
+python ask.py "какие у меня были идеи pet-проектов"
+python ask.py "что я читал про embeddings"</code></pre>
+
+<h2>Шаг 4. Streamlit-интерфейс (по желанию)</h2>
+
+<p>Чтобы было приятно:</p>
+
+<pre><code>pip install streamlit</code></pre>
+
+<p>Файл <code>app.py</code>:</p>
+
+<pre><code>import streamlit as st
+from ask import ask
+
+st.title("🧠 Мой второй мозг")
+
+if "history" not in st.session_state:
+    st.session_state.history = []
+
+for q, a in st.session_state.history:
+    with st.chat_message("user"):
+        st.write(q)
+    with st.chat_message("assistant"):
+        st.write(a)
+
+if question := st.chat_input("Спроси по своим заметкам..."):
+    with st.chat_message("user"):
+        st.write(question)
+    with st.spinner("Ищу..."):
+        answer = ask(question)
+    with st.chat_message("assistant"):
+        st.write(answer)
+    st.session_state.history.append((question, answer))</code></pre>
+
+<pre><code>streamlit run app.py</code></pre>
+
+<h2>Тонкости</h2>
+
+<h3>Качество чанкинга</h3>
+<p>Текущий простой по параграфам — неплохо, но может рвать смысл. Улучшения:</p>
+<ul>
+<li>Учитывать заголовки H1/H2/H3 — не разрывать раздел.</li>
+<li>Включать в каждый chunk имя файла и заголовок раздела (даёт контекст для embedding).</li>
+<li>Использовать <code>RecursiveCharacterTextSplitter</code> из LangChain.</li>
+</ul>
+
+<h3>Reranking</h3>
+<p>Embedding-поиск иногда возвращает не лучшее. Можно добавить второй шаг — cross-encoder reranking:</p>
+<pre><code>pip install sentence-transformers
+# rerank через cross-encoder ms-marco-MiniLM-L-12-v2</code></pre>
+<p>Резко поднимает качество ответов.</p>
+
+<h3>Фильтр по дате</h3>
+<p>Если в metadata добавишь дату создания заметки — можно фильтровать «только недавние».</p>
+
+<h3>Privacy</h3>
+<p>Эмбеддинги отправляются в OpenAI. Если заметки конфиденциальны — используй локальную модель (sentence-transformers BGE-M3) и Ollama для генерации.</p>
+
+<h2>Стоимость</h2>
+<ul>
+<li>Индексация 500 заметок (~5MB текста) — $0.05 один раз.</li>
+<li>Каждый вопрос — ~$0.0005. 100 вопросов в месяц = ~$0.05.</li>
+</ul>
+
+<p>Совершенно копеечно для такой пользы.</p>
+
+<h2>Что дальше — варианты развития</h2>
+
+<ul>
+<li>Автоиндексация по cron — каждый час подхватывать новые заметки.</li>
+<li>Watcher на изменения файлов (через <code>watchdog</code>).</li>
+<li>Telegram-интерфейс (как в проекте p1).</li>
+<li>Голосовой запрос через Whisper.</li>
+<li>Дополнительный фильтр по тегам Obsidian.</li>
+<li>Многоязычная поддержка через мультиязычные эмбеддинги.</li>
+</ul>
+
+<h2>Что узнал</h2>
+<ol>
+<li>Полный pipeline RAG: chunking → embedding → vector DB → retrieval → generation.</li>
+<li>Работа с Chroma как локальной vector DB.</li>
+<li>Промптинг для «отвечай только на основе данных» (борьба с галлюцинациями).</li>
+<li>Простая Streamlit-обёртка над Python-скриптом.</li>
+</ol>
+
+<div class="callout callout-success">
+<strong>🚀 Эволюция:</strong> через 2 месяца использования у тебя будет личный ИИ-ассистент, знающий все твои заметки лучше тебя. Это базовый паттерн для всех корпоративных «AI knowledge base» — что ты делаешь — то же самое, что Notion AI или Glean.
+</div>
+
+<div class="callout callout-info" style="margin-top: 1.5rem;">
+<strong>Без VPN и подписок:</strong> возьми локальные embeddings (sentence-transformers) и Ollama вместо Claude — всё работает на твоём ноутбуке без облака. Полный пример — <a href="#lesson-p22" onclick="openLesson('p22'); return false;">урок p22</a> (RAG для своих документов).
+</div>
+
+    <div class="pp-open"><a href="/#lesson-p2">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

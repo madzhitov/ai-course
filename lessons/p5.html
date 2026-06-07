@@ -19,21 +19,124 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/p5.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p5.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p5');
-</script>
 </head>
 <body>
-<h1>AI-ресёрчер конкурентов с ежедневным TG-дайджестом</h1>
-<p>P5 из курса AI на русском. AI-ресёрчер конкурентов с ежедневным TG-дайджестом. ~75 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p5">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P5</span></div>
+<h1>Проект «За 1 час»: AI-ресёрчер конкурентов с TG-дайджестом</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> скрипт, ежедневно сканирующий конкурентов и присылающий дайджест в Telegram</span>
+  <span><strong>Время:</strong> ~75 минут</span>
+  <span><strong>Уровень:</strong> Python + urok 14 (RAG)</span>
+</div>
+
+<h2>Зачем</h2>
+<p>«Что нового у конкурентов?» — занудный вопрос, на который нужно знать ответ еженедельно. Скрипт автоматизирует: парсит их сайты/блоги/changelog, выделяет изменения, отправляет краткий дайджест в твой Telegram.</p>
+
+<h2>Архитектура</h2>
+<pre><code>Cron (раз в сутки) →
+  for each competitor:
+    fetch sitemap/RSS →
+    diff vs yesterday →
+    Claude summarize new content →
+  collate → format → Telegram bot</code></pre>
+
+<h2>Шаг 1. Зависимости</h2>
+<pre><code>pip install anthropic httpx feedparser python-telegram-bot beautifulsoup4</code></pre>
+
+<h2>Шаг 2. Источники</h2>
+<pre><code>SOURCES = [
+  {"name": "Competitor A", "rss": "https://compA.com/feed.xml"},
+  {"name": "Competitor B", "rss": "https://compB.com/blog/rss"},
+  {"name": "Competitor C", "changelog": "https://compC.com/changelog"},
+]</code></pre>
+
+<h2>Шаг 3. Парсинг RSS + дифф</h2>
+<pre><code>import feedparser, json, os
+SEEN_FILE = "seen.json"
+seen = json.load(open(SEEN_FILE)) if os.path.exists(SEEN_FILE) else {}
+
+def fetch_new(source):
+    feed = feedparser.parse(source["rss"])
+    new = [e for e in feed.entries if e.id not in seen.get(source["name"], set())]
+    seen.setdefault(source["name"], []).extend(e.id for e in new)
+    return new</code></pre>
+
+<h2>Шаг 4. Суммаризация через Claude</h2>
+<pre><code>import anthropic
+client = anthropic.Anthropic()
+
+def summarize(entries, competitor):
+    text = "\n\n".join(f"## {e.title}\n{e.summary}" for e in entries)
+    msg = client.messages.create(
+      model="claude-sonnet-4-5",
+      max_tokens=600,
+      messages=[{"role": "user", "content": f'''Конкурент: {competitor}
+Новые публикации:
+{text}
+
+Сделай дайджест (3–5 буллетов):
+- Что нового (продукт / фича / партнёрство / маркетинговый ход)?
+- Что это значит для нас?
+- Опасно / нейтрально / возможность.
+
+Только важное. Прямо, без воды.'''}]
+    )
+    return msg.content[0].text</code></pre>
+
+<h2>Шаг 5. Telegram</h2>
+<pre><code>import httpx
+BOT_TOKEN = os.environ["TG_BOT_TOKEN"]
+CHAT_ID = os.environ["TG_CHAT_ID"]
+
+def send_telegram(text):
+    httpx.post(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
+               json={"chat_id": CHAT_ID, "text": text, "parse_mode": "Markdown"})</code></pre>
+
+<h2>Шаг 6. Основной цикл</h2>
+<pre><code>def main():
+    digest = "🔍 *Конкуренты — что нового:*\n\n"
+    for src in SOURCES:
+        new = fetch_new(src)
+        if not new: continue
+        digest += f"*{src['name']}*:\n{summarize(new, src['name'])}\n\n"
+    send_telegram(digest)
+    json.dump(seen, open(SEEN_FILE, "w"))</code></pre>
+
+<h2>Шаг 7. Cron (10 мин)</h2>
+<p>Запускай через GitHub Actions (бесплатно), Railway cron или просто <code>crontab -e</code>:</p>
+<pre><code>0 9 * * * cd /path/to/project && python main.py</code></pre>
+
+<h2>Расширения</h2>
+<ul>
+<li><strong>Web scraping</strong> сайтов без RSS (Playwright).</li>
+<li><strong>Job openings</strong> — отдельный поток: что нанимают (стратегические сигналы).</li>
+<li><strong>Анализ соцсетей</strong> — Twitter/LinkedIn API.</li>
+<li><strong>Еженедельный отчёт</strong> с трендами.</li>
+</ul>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> подписки на чужие блоги ты больше не читаешь — твой бот делает это за тебя и шлёт только важное.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-p5">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>

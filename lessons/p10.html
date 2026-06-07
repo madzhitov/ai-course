@@ -19,21 +19,168 @@
 <meta name="twitter:image" content="https://ai.madzhitov.ru/og/p10.svg">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/lessons/p10.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tropa-lesson.css">
 <style>
-  body { font-family: -apple-system, system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; color: #1a1a1a; }
-  h1 { font-size: 1.5rem; line-height: 1.2; }
-  a { color: #7c3aed; font-weight: 600; }
-  .loader { color: #888; font-size: 0.9rem; margin-top: 1rem; }
+  /* статическая страница без хедера/сайдбара — нейтрализуем каркасные правила */
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .lesson-view { max-width: 760px; }
+  .pp-home { display:inline-block; margin-bottom:16px; color:var(--accent); text-decoration:none; font-weight:600; font-size:13px; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .pp-open a:hover { background:#26543f; }
 </style>
-<script>
-  // Redirect human visitors to SPA. Scrapers don't run JS — они получат OG-теги выше.
-  window.location.replace('../#lesson-p10');
-</script>
 </head>
 <body>
-<h1>Авто-ревьюер pull request'ов на GitHub</h1>
-<p>P10 из курса AI на русском. Авто-ревьюер pull request'ов на GitHub. ~90 мин.</p>
-<p class="loader">Загружаем урок…</p>
-<p><a href="../#lesson-p10">Открыть урок →</a></p>
+<div class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <a class="pp-home" href="/">← AI Курс</a>
+    <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P10</span></div>
+<h1>Проект «За 1 час»: Авто-ревьюер pull request'ов на GitHub</h1>
+
+<div class="lesson-meta">
+  <span><strong>Что построим:</strong> GitHub Action, оставляющий AI-ревью на каждый PR</span>
+  <span><strong>Время:</strong> ~75 минут</span>
+  <span><strong>Уровень:</strong> Python + GitHub Actions</span>
+</div>
+
+<h2>Зачем</h2>
+<p>Качество кода + скорость ревью. AI-ревью не заменяет человека, но ловит 60–80% типичных проблем за минуты — и человек ревьюит уже отфильтрованный код.</p>
+
+<h2>Архитектура</h2>
+<pre><code>PR opened/updated → GitHub Action triggered →
+  fetch diff + context → Claude review →
+  post comment on PR → request changes if critical issues</code></pre>
+
+<h2>Шаг 1. Структура репозитория</h2>
+<pre><code>your-repo/
+├── .github/
+│   └── workflows/
+│       └── ai-review.yml
+└── scripts/
+    └── ai_review.py</code></pre>
+
+<h2>Шаг 2. Скрипт ревью</h2>
+<pre><code># scripts/ai_review.py
+import os, anthropic, requests, json
+
+PR_NUM = int(os.environ["PR_NUMBER"])
+REPO = os.environ["GITHUB_REPOSITORY"]
+GH_TOKEN = os.environ["GITHUB_TOKEN"]
+AN_KEY = os.environ["ANTHROPIC_API_KEY"]
+
+def gh(method, path, **kw):
+    return requests.request(method, f"https://api.github.com{path}",
+      headers={"Authorization": f"Bearer {GH_TOKEN}", "Accept": "application/vnd.github+json"}, **kw)
+
+# Получаем дифф PR
+diff = gh("GET", f"/repos/{REPO}/pulls/{PR_NUM}",
+          headers={"Accept": "application/vnd.github.v3.diff"}).text
+
+pr = gh("GET", f"/repos/{REPO}/pulls/{PR_NUM}").json()
+title = pr["title"]
+body = pr["body"] or ""
+
+# Промпт для ревью
+client = anthropic.Anthropic(api_key=AN_KEY)
+review = client.messages.create(
+  model="claude-sonnet-4-5",
+  max_tokens=2000,
+  messages=[{"role": "user", "content": f'''Ты — старший разработчик. Делаешь code review.
+
+Pull Request:
+Title: {title}
+Description: {body}
+
+Diff:
+{diff[:30000]}
+
+Сделай review в формате:
+
+## Сводка
+1–2 предложения о PR.
+
+## Критические проблемы (если есть)
+- Только реальные баги, безопасность, performance.
+
+## Замечания
+- Стиль, читаемость, тесты.
+
+## Положительное
+- Что хорошо сделано.
+
+## Verdict
+"approve" / "request_changes" / "comment"
+
+Только обоснованные замечания. Не придирайся к стилю если он соответствует окружению.'''}]
+).content[0].text
+
+# Постим комментарий
+gh("POST", f"/repos/{REPO}/issues/{PR_NUM}/comments",
+   json={"body": "🤖 **AI Review** (Claude Sonnet)\n\n" + review})
+
+# Если verdict == request_changes, оставим review с REQUEST_CHANGES
+if "request_changes" in review.lower():
+    gh("POST", f"/repos/{REPO}/pulls/{PR_NUM}/reviews",
+       json={"event": "REQUEST_CHANGES", "body": "См. AI-комментарий выше"})</code></pre>
+
+<h2>Шаг 3. GitHub Action</h2>
+<pre><code># .github/workflows/ai-review.yml
+name: AI Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install anthropic requests
+      - run: python scripts/ai_review.py
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}</code></pre>
+
+<h2>Шаг 4. Setup в репозитории</h2>
+<ol>
+<li>Settings → Secrets → New secret: <code>ANTHROPIC_API_KEY</code>.</li>
+<li>Закоммить файлы.</li>
+<li>Открой тестовый PR — Action запустится автоматически.</li>
+</ol>
+
+<h2>Шаг 5. Улучшения</h2>
+<ul>
+<li><strong>Inline-комменты на конкретных строках</strong> через <code>POST /repos/{repo}/pulls/{n}/comments</code> с line + path.</li>
+<li><strong>Контекст соседних файлов</strong> — добавь импорты, чтобы модель понимала зависимости.</li>
+<li><strong>Конфиг через .ai-review.yml</strong>: какие папки игнорировать, какие правила.</li>
+<li><strong>Двухмодельная стратегия:</strong> Haiku для быстрого первичного прохода, Sonnet — для критичных PR.</li>
+<li><strong>Promtbook</strong> — храните в репо подсказки под типы PR (security, refactor, feature).</li>
+</ul>
+
+<h2>Стоимость</h2>
+<p>Один PR со средним диффом 5k токенов = $0.02–0.04 на ревью. На 100 PR/мес = $2–4. Дешевле кофе.</p>
+
+<h2>Чего НЕ делать</h2>
+<div class="callout callout-warning">
+<ul>
+<li>Не доверяй финальный approve AI — должен быть человек.</li>
+<li>Не передавай в Claude приватные/чувствительные репо без enterprise-договора (или используй self-hosted Sonnet через AWS Bedrock).</li>
+<li>Не игнорируй усталость ревьюеров — если AI генерирует слишком много шума, выключай.</li>
+</ul>
+</div>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> AI-ревью — это «как иметь второго senior'a в команде, который доступен 24/7 за $5/мес». Не заменяет человека, но усиливает.
+</div>
+
+    <div class="pp-open"><a href="/#lesson-p10">Открыть интерактивную версию (с Алёшей) →</a></div>
+  </div>
+</div>
 </body>
 </html>
