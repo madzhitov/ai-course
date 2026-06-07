@@ -4049,6 +4049,8 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 #lesson-content .glossary-term.gt { background:none !important; border:none !important; border-bottom:1px solid var(--line) !important; border-radius:0 !important; padding:12px 0 !important; box-shadow:none !important; display:block !important; border-left:none !important; }
 .gt-name { font-weight:600; font-size:15px; color:var(--ink); margin-bottom:3px; }
 .gt-def { font-size:14px; color:var(--muted); line-height:1.55; }
+/* §M автор-callout: зелёная левая полоса (бьёт .callout{border-left:none!important}) */
+#lesson-content .callout.about-author { border-left:3px solid var(--accent) !important; background:var(--accent-soft) !important; }
 
 </style>
 </head>
@@ -4774,7 +4776,7 @@ registerLesson(1, `
 </figure>
 
 <div class="sandbox" data-sandbox="temperature">
-  <div class="sandbox-loading">⚡ Загружаю интерактивную песочницу…</div>
+  <div class="sandbox-loading">Загружаю интерактивную песочницу…</div>
 </div>
 
 <table>
@@ -29247,7 +29249,7 @@ const CHANGELOG = [
   },
   {
     date: "2026-05-17",
-    title: "⚡ Первая интерактивная песочница — в Уроке 1",
+    title: "Первая интерактивная песочница — в Уроке 1",
     tag: "new",
     items: [
       "В Уроке 1 (раздел «Температура») появилась интерактивная песочница — двигаешь ползунок T от 0 до 2, видишь как меняются вероятности токенов в реальном времени",
@@ -29642,7 +29644,7 @@ function renderAbout() {
 
     <p class="about-quiet">${totalMain} ${pluralUrok(totalMain)} в главном пути, ещё ~${totalTracks} в параллельных тропинках, 4 фазы. Курс активно дописывается — где готово, то и проходишь.</p>
 
-    <div class="callout callout-info" style="margin-bottom: 1rem; background: var(--accent-soft); border-left: 3px solid var(--accent);">
+    <div class="callout callout-info about-author" style="margin-bottom: 1rem;">
       Курс собирает и постоянно обновляет <strong>Руслан Маджитов</strong>. Делюсь практикой, которую сам прохожу — пишу про работу с Claude, агентов, ML-инжиниринг и интеграции в реальные продукты.
       Telegram для вопросов и предложений: <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a>.
     </div>
@@ -29851,7 +29853,7 @@ function renderAbout() {
       </div>
 
       <div class="roadmap-section">
-        <div class="roadmap-section-title">⚡ Интерактив</div>
+        <div class="roadmap-section-title">Интерактив</div>
         <ul>
           <li>Песочница температуры уже есть в Уроке 1 — следом будут токенизатор, контекстное окно, эмбеддинги</li>
           <li>Возможность запускать Python прямо в браузере для практических уроков</li>
