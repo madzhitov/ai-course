@@ -27346,6 +27346,12 @@ function aleshaHide() {
 function aleshaToggle() {
   const w = document.getElementById('alesha-widget');
   if (!w) return;
+  // На не-уроке (главная/статика) виджет скрыт (нет .is-lesson) —
+  // призываем Алёшу на ближайшем уроке, чтобы кнопка работала отовсюду.
+  if (!w.classList.contains('is-lesson')) {
+    const r = (typeof resumeLesson === 'function') ? resumeLesson() : null;
+    if (r && typeof initAlesha === 'function') initAlesha(r);
+  }
   w.classList.toggle('is-open');
 }
 
