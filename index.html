@@ -3968,6 +3968,14 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 .poly-ask{display:inline-block;margin-top:9px;color:var(--accent);font-weight:600;font-size:12.5px;cursor:pointer}
 .poly-ask:hover{text-decoration:underline}
 
+/* ===== ТРОПА F5/F6: «карта, не витрина» — гасим тени/градиенты карточек секций/тропинок/маршрутов ===== */
+.lesson-card-v2, .route-card { background:var(--card) !important; border:1px solid var(--line) !important; box-shadow:none !important; background-image:none !important; border-radius:13px !important; }
+.lesson-card-v2:hover, .route-card:hover { border-color:var(--accent-mid) !important; transform:none !important; box-shadow:none !important; }
+.lesson-card-thumb, .route-card-icon { background:var(--accent-soft) !important; color:var(--accent) !important; box-shadow:none !important; background-image:none !important; }
+.cat-tag, .route-card-cta { background:transparent !important; color:var(--accent) !important; padding:0 !important; box-shadow:none !important; }
+.quiz-cta { background:var(--accent-soft) !important; color:var(--accent) !important; border:1px solid var(--accent-mid) !important; box-shadow:none !important; }
+.routes-heading { font-family:"Cormorant Unicase",Georgia,serif; }
+
 </style>
 </head>
 <body>
@@ -25236,7 +25244,7 @@ registerLesson("v10", `
 
 
 registerLesson("v11", `
-<h1>📚 Справочник: основы веба</h1>
+<h1>Справочник: основы веба</h1>
 
 <div class="lesson-meta">
   <span><strong>Цель:</strong> Как работает интернет, frontend, backend, Node.js, фреймворки. Карта территории, без воды.</span>
@@ -25456,7 +25464,7 @@ export async function POST(request: Request) {
 
 
 registerLesson("v12", `
-<h1>📚 Справочник: данные и API</h1>
+<h1>Справочник: данные и API</h1>
 
 <div class="lesson-meta">
   <span><strong>Цель:</strong> Базы данных, API, авторизация. Как части системы общаются и где живут данные.</span>
@@ -25704,7 +25712,7 @@ CREATE POLICY &quot;Admins see all orders&quot;
 
 
 registerLesson("v13", `
-<h1>📚 Справочник: инструменты разработчика</h1>
+<h1>Справочник: инструменты разработчика</h1>
 
 <div class="lesson-meta">
   <span><strong>Цель:</strong> Git, npm, .env, спецификация. Без этого невозможна командная работа и деплой.</span>
@@ -25916,7 +25924,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
 
 registerLesson("v14", `
-<h1>📚 Справочник: от кода к продукту</h1>
+<h1>Справочник: от кода к продукту</h1>
 
 <div class="lesson-meta">
   <span><strong>Цель:</strong> Деплой, мобильная разработка, полная архитектура типовых проектов.</span>
@@ -26074,7 +26082,7 @@ Expo компилирует
 
 
 registerLesson("v15", `
-<h1>📚 Справочник: продвинутые темы</h1>
+<h1>Справочник: продвинутые темы</h1>
 
 <div class="lesson-meta">
   <span><strong>Цель:</strong> Отладка, тесты, кэш, мониторинг, SEO, безопасность. Что отличает прототип от продукта.</span>
@@ -27883,11 +27891,9 @@ function renderMainSection() {
       Последовательный маршрут от пользователя ChatGPT до уровня ML-инженера. 4 фазы, ${LESSONS.length} уроков.
     </p>
 
-    <div class="stats-grid-v2">
-      ${statCard({ icon: '📚', label: 'Уроков', value: total, theme: 'prompts' })}
-      ${statCard({ icon: '✓', label: 'Опубликовано', value: written, theme: 'projects' })}
-      ${statCard({ icon: '🎯', label: 'Пройдено', value: done, theme: 'claude' })}
-      ${statCard({ icon: '⏱', label: 'Часов', value: '~' + hours, theme: 'industry' })}
+    <div class="home-status" style="margin:0 0 26px;padding:0;max-width:none">
+      <span class="hs-dot"></span>
+      <span>${written} из ${total} уроков готовы${done ? ` · пройдено ${done}` : ''} · ~${hours} часов</span>
     </div>
 
     <h2>Фазы</h2>
@@ -27989,11 +27995,9 @@ function renderTrackSection(trackId) {
     <h1 style="display:flex; align-items:center; gap:14px;"><span style="display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:10px; background: var(--bg-soft); color: var(--text);">${phaseIcon(trackId)}</span>${meta.title}</h1>
     <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1.5rem;">${meta.hero}</p>
 
-    <div class="stats-grid-v2">
-      ${statCard({ icon: '📚', label: 'Уроков', value: lessons.length, theme: meta.theme })}
-      ${statCard({ icon: '✓', label: 'Опубликовано', value: written, theme: 'projects' })}
-      ${statCard({ icon: '🎯', label: 'Пройдено', value: done, theme: 'agents' })}
-      ${statCard({ icon: '⏱', label: 'Часов', value: '~' + hours, theme: 'industry' })}
+    <div class="home-status" style="margin:0 0 26px;padding:0;max-width:none">
+      <span class="hs-dot"></span>
+      <span>${written} из ${lessons.length} уроков готовы${done ? ` · пройдено ${done}` : ''} · ~${hours} часов</span>
     </div>
 
     <h2>Уроки в тропинке</h2>
@@ -28518,7 +28522,7 @@ function renderGlossary(highlightId = null) {
   const total = GLOSSARY.length;
 
   let html = `
-    <h1>📖 Глоссарий</h1>
+    <h1>Глоссарий</h1>
     <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
       ${total} терминов и аббревиатур из всех уроков. На каждый термин можно дать прямую ссылку — например, <code>${location.origin}${location.pathname}#glossary-cot</code>.
     </p>
@@ -28613,12 +28617,12 @@ function copyAnchor(termId) {
 
 function renderResources() {
   document.getElementById('lesson-content').innerHTML = `
-    <h1>📚 Источники и где учиться дальше</h1>
+    <h1>Источники и где учиться дальше</h1>
     <p style="color: var(--text-muted); margin-bottom: 2rem;">
       Курс — это не «то откуда я всё взял», это <strong>последовательный путь, собранный из лучших источников</strong>. Ниже — что читать дополнительно, по темам.
     </p>
 
-    <h2>🟣 Anthropic / Claude — официальные источники</h2>
+    <h2>Anthropic / Claude — официальные источники</h2>
     <p>Если работаешь с Claude — это must-read.</p>
     <ul>
       <li><a href="https://docs.claude.com" target="_blank"><strong>docs.claude.com</strong></a> — официальная документация. Лучшая в индустрии.</li>
@@ -28630,7 +28634,7 @@ function renderResources() {
       <li><a href="https://modelcontextprotocol.io" target="_blank"><strong>modelcontextprotocol.io</strong></a> — спецификация MCP.</li>
     </ul>
 
-    <h2>🎓 Образовательные ресурсы по AI/ML</h2>
+    <h2>Образовательные ресурсы по AI/ML</h2>
     <ul>
       <li><a href="https://www.youtube.com/@AndrejKarpathy" target="_blank"><strong>Andrej Karpathy</strong> на YouTube</a> — лучшие на свете лекции про LLM. Особенно «Let's build GPT from scratch» и «Intro to Large Language Models». Всё бесплатно.</li>
       <li><a href="https://simonwillison.net" target="_blank"><strong>Simon Willison's blog</strong></a> — лучший источник «что нового и что важно». Создатель Datasette, ведёт практически ежедневно.</li>
@@ -28640,7 +28644,7 @@ function renderResources() {
       <li><a href="https://www.fast.ai" target="_blank"><strong>fast.ai</strong></a> — практический курс от Jeremy Howard. «Top-down» подход — сразу делать, разбираться по ходу.</li>
     </ul>
 
-    <h2>🛠 Инструменты и фреймворки</h2>
+    <h2>Инструменты и фреймворки</h2>
     <ul>
       <li><a href="https://python.langchain.com" target="_blank"><strong>LangChain</strong></a> — стандарт-де-факто для LLM-приложений на Python.</li>
       <li><a href="https://docs.llamaindex.ai" target="_blank"><strong>LlamaIndex</strong></a> — фреймворк специально под RAG и работу с данными.</li>
@@ -28667,7 +28671,7 @@ function renderResources() {
       <li>Telegram-каналы: <strong>@addmeto</strong> (Григорий Бакунов про технологии), <strong>@gonzo_ML</strong> (научные статьи разбирают), <strong>@denissexy</strong> (Денис Ширяев — продуктовый AI).</li>
     </ul>
 
-    <h2>📰 Чтобы быть в курсе</h2>
+    <h2>Чтобы быть в курсе</h2>
     <ul>
       <li><a href="https://anthropic.com/news" target="_blank">Anthropic blog</a> — новости про Claude.</li>
       <li><a href="https://openai.com/blog" target="_blank">OpenAI blog</a> — новости про GPT.</li>
@@ -28827,7 +28831,7 @@ function renderQuiz(phaseId) {
   let answers = JSON.parse(localStorage.getItem(stateKey) || '{}');
 
   let html = `
-    <h1>🎓 ${quiz.title}</h1>
+    <h1>${quiz.title}</h1>
     <p style="color: var(--text-muted); margin-bottom: 2rem;">${quiz.description}</p>
     <div class="quiz-progress" id="quiz-progress">Отвечено: 0 из ${quiz.questions.length}</div>
   `;
@@ -29382,7 +29386,7 @@ function renderChangelog() {
   const totalAll = allLessons().length;
 
   let html = `
-    <h1>📰 Что нового</h1>
+    <h1>Что нового</h1>
     <p style="color: var(--text-muted); margin-bottom: 2rem;">
       Курс активно растёт. Последнее обновление: <strong>${fmtDate(CHANGELOG[0].date)}</strong>.
       Готово полных уроков: <strong>${written}</strong> из ${totalAll}.
@@ -29881,9 +29885,9 @@ function renderAbout() {
 
     <h2>И ещё несколько вещей</h2>
     <ul>
-      <li>🎯 <strong>Один путь</strong>, а не пять разных курсов с пересечениями.</li>
+      <li><strong>Один путь</strong>, а не пять разных курсов с пересечениями.</li>
       <li>🇷🇺 <strong>На русском</strong>, с примерами под русскоязычный контекст.</li>
-      <li>🔄 <strong>Прогресс сохраняется</strong> в браузере. Закрыл вкладку — продолжишь с того же места.</li>
+      <li><strong>Прогресс сохраняется</strong> в браузере. Закрыл вкладку — продолжишь с того же места.</li>
       <li>📱 <strong>Работает на любом устройстве.</strong></li>
       <li>👨‍💻 <strong>Открытый код</strong> — можешь делать pull request с правками.</li>
     </ul>
@@ -29891,8 +29895,8 @@ function renderAbout() {
     <h2>В чём принципиальное отличие</h2>
     <p>Обычные курсы про AI делают одно из двух:</p>
     <ul>
-      <li>📚 <strong>Учат одному инструменту</strong> — «как пользоваться ChatGPT», «5 промптов которые», и подобные программы-знакомства. Это полезно как первый шаг, но не даёт общей картины.</li>
-      <li>🎓 <strong>Учат теории глубоко и сухо</strong> — академические курсы (Coursera, Stanford) про математику нейросетей. Хорошо для научной карьеры, плохо для применения.</li>
+      <li><strong>Учат одному инструнту</strong> — «как пользоваться ChatGPT», «5 промптов которые», и подобные программы-знакомства. Это полезно как первый шаг, но не даёт общей картины.</li>
+      <li><strong>Учат теории глубоко и сухо</strong> — академические курсы (Coursera, Stanford) про математику нейросетей. Хорошо для научной карьеры, плохо для применения.</li>
     </ul>
 
     <p>Этот курс — <strong>между этими крайностями</strong>. Не «как нажать кнопку», но и не «градиентный спуск по матрицам». Это <strong>AI literacy для практиков</strong>:</p>
@@ -29910,7 +29914,7 @@ function renderAbout() {
 
     <div class="roadmap-block">
       <div class="roadmap-section">
-        <div class="roadmap-section-title">📚 Уроки</div>
+        <div class="roadmap-section-title">Уроки</div>
         <ul>
           <li>Доделать Фазу 2 (агенты) — уроки 23–30 про мульти-агентные системы, метакогницию, MCP, агентов в проде</li>
           <li>Развернуть Фазу 3 (Практик) — компьютерное зрение, NLP, трансформеры</li>
@@ -29938,7 +29942,7 @@ function renderAbout() {
       </div>
 
       <div class="roadmap-section">
-        <div class="roadmap-section-title">🎯 Качество и доступность</div>
+        <div class="roadmap-section-title">Качество и доступность</div>
         <ul>
           <li>Сертификаты по окончании фазы — PDF с QR на публичный профиль</li>
           <li>Алёша с памятью — будет помнить твои предыдущие диалоги между сессиями</li>
@@ -29977,7 +29981,7 @@ function renderAbout() {
 
 function renderHowTo() {
   document.getElementById('lesson-content').innerHTML = `
-    <h1>🎯 Как заниматься</h1>
+    <h1>Как заниматься</h1>
 
     <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2rem;">
       Просто читать недостаточно. Ниже — 7 принципов, которые отличают людей, прошедших курс, от тех кто бросил на 5-м уроке.
@@ -30068,7 +30072,7 @@ function renderHowTo() {
 
 function renderFAQ() {
   document.getElementById('lesson-content').innerHTML = `
-    <h1>❓ FAQ — Часто задаваемые вопросы</h1>
+    <h1>FAQ — Часто задаваемые вопросы</h1>
 
     <h2>Курс правда бесплатный?</h2>
     <p>Да. Полностью. Никаких подписок, регистраций, лид-магнитов, premium-уровней. Контент открыт по MIT-лицензии — можно даже использовать в своих проектах со ссылкой.</p>
