@@ -26686,7 +26686,7 @@ function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 function pluralUrok(n){ const a=n%10,b=n%100; return (a===1&&b!==11)?'урок':((a>=2&&a<=4)&&(b<10||b>=20)?'урока':'уроков'); }
 function shortLessonLabel(title){ if(!title) return ''; const s=String(title); const m=s.split(/\s*[:—]\s*/); if(m.length>1) return m[0].trim(); const w=s.split(/\s+/); return w.length>4 ? w.slice(0,4).join(' ') : s; }
 function fmtDateRu(iso){ if(!iso) return ''; const M=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря']; const p=String(iso).split('-'); if(p.length!==3) return iso; return `${parseInt(p[2],10)} ${M[parseInt(p[1],10)-1]} ${p[0]}`; }
-function stripEmoji(s){ return String(s).replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{26FF}\u{FE0F}\u{200D}]/gu,'').replace(/\s{2,}/g,' ').trim(); }
+function stripEmoji(s){ return String(s).replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu,'').replace(/\s{2,}/g,' ').trim(); }
 
 const TRAIL_ICONS = {
   claude: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>',
@@ -28756,7 +28756,7 @@ function renderResources() {
       <li><a href="https://www.trychroma.com" target="_blank"><strong>Chroma</strong></a> и <a href="https://qdrant.tech" target="_blank"><strong>Qdrant</strong></a> — векторные БД.</li>
     </ul>
 
-    <h2>👥 Сообщества и блоги практиков</h2>
+  <h2> Сообщества и блоги практиков</h2>
     <ul>
       <li><a href="https://eugeneyan.com" target="_blank"><strong>Eugene Yan</strong></a> — applied ML в проде, очень много про LLM-eval и архитектуру.</li>
       <li><a href="https://hamel.dev" target="_blank"><strong>Hamel Husain</strong></a> — fine-tuning, evals, ML-консалтинг.</li>
@@ -28765,7 +28765,7 @@ function renderResources() {
       <li>Twitter/X: <strong>@karpathy, @simonw, @swyx, @hwchase17 (LangChain), @jeremyphoward (fast.ai), @rasbt (Sebastian Raschka)</strong>.</li>
     </ul>
 
-    <h2>🇷🇺 На русском</h2>
+  <h2> На русском</h2>
     <ul>
       <li><a href="https://yandex.cloud/ru/docs/yandexgpt" target="_blank">Документация YandexGPT</a> — для тех кто работает с российскими моделями.</li>
       <li><a href="https://developers.sber.ru/docs/ru/gigachat/individuals-quickstart" target="_blank">GigaChat Quickstart</a> — старт со Сбером.</li>
@@ -28781,7 +28781,7 @@ function renderResources() {
       <li><a href="https://buttondown.email/ainews" target="_blank">AI News</a> — ежедневный дайджест.</li>
     </ul>
 
-    <h2>🎙 Подкасты</h2>
+  <h2> Подкасты</h2>
     <ul>
       <li><strong>Latent Space</strong> — практика AI-индустрии.</li>
       <li><strong>Lex Fridman Podcast</strong> — длинные интервью с топовыми исследователями.</li>
@@ -28789,7 +28789,7 @@ function renderResources() {
       <li><strong>No Priors</strong> — фокус на стартапах.</li>
     </ul>
 
-    <h2>💡 Как использовать всё это</h2>
+  <h2> Как использовать всё это</h2>
     <ol>
       <li><strong>Не читай всё.</strong> Из этого списка выбери 3–5 источников и подпишись.</li>
       <li><strong>Один длинный контент в неделю.</strong> Лекция Karpathy, статья Raschka, эпизод Latent Space.</li>
@@ -28798,7 +28798,7 @@ function renderResources() {
     </ol>
 
     <div class="callout callout-info">
-      <strong>📌 Совет:</strong> на каждый из этих источников я буду <strong>точечно</strong> ссылаться внутри уроков, когда тема того требует. Этот список — твоя shortlist для самостоятельного развития.
+   <strong> Совет:</strong> на каждый из этих источников я буду <strong>точечно</strong> ссылаться внутри уроков, когда тема того требует. Этот список — твоя shortlist для самостоятельного развития.
     </div>
 
     <p style="text-align: center; margin-top: 3rem; color: var(--text-muted); font-size: 0.9rem;">
@@ -29816,10 +29816,10 @@ function renderAbout() {
     <h2>И ещё несколько вещей</h2>
     <ul>
       <li><strong>Один путь</strong>, а не пять разных курсов с пересечениями.</li>
-      <li>🇷🇺 <strong>На русском</strong>, с примерами под русскоязычный контекст.</li>
+   <li> <strong>На русском</strong>, с примерами под русскоязычный контекст.</li>
       <li><strong>Прогресс сохраняется</strong> в браузере. Закрыл вкладку — продолжишь с того же места.</li>
-      <li>📱 <strong>Работает на любом устройстве.</strong></li>
-      <li>👨‍💻 <strong>Открытый код</strong> — можешь делать pull request с правками.</li>
+   <li> <strong>Работает на любом устройстве.</strong></li>
+   <li> <strong>Открытый код</strong> — можешь делать pull request с правками.</li>
     </ul>
 
     <h2>В чём принципиальное отличие</h2>
@@ -29862,7 +29862,7 @@ function renderAbout() {
       </div>
 
       <div class="roadmap-section">
-        <div class="roadmap-section-title">🤝 Сообщество</div>
+    <div class="roadmap-section-title"> Сообщество</div>
         <ul>
           <li>Запуск Telegram-канала — анонсы новых уроков, личный опыт автора, разборы</li>
           <li>Чат подписчиков — для вопросов и взаимопомощи</li>
@@ -29983,7 +29983,7 @@ function renderHowTo() {
     <p><strong>...я хочу пропустить теорию и сразу к коду?</strong> — Тогда тебе пригодятся сразу Уроки 6, 7, 8 (API, чат, semantic search). Но через 1–2 недели вернись и прочитай теоретические — пригодятся.</p>
 
     <div class="callout callout-info" style="margin-top: 3rem;">
-      <strong>📌 Закрепление:</strong> прежде чем идти к Уроку 1, реши:
+   <strong> Закрепление:</strong> прежде чем идти к Уроку 1, реши:
       <ul>
         <li>Какой у меня темп? (1/день, 2/день, по выходным?)</li>
         <li>Какая моя сквозная задача? (Какой проект я буду делать через все фазы?)</li>
