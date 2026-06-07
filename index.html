@@ -3976,6 +3976,19 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 .quiz-cta { background:var(--accent-soft) !important; color:var(--accent) !important; border:1px solid var(--accent-mid) !important; box-shadow:none !important; }
 .routes-heading { font-family:"Cormorant Unicase",Georgia,serif; }
 
+/* ===== ТРОПА F5: обзор тропинок (trailsView) + back-link страницы тропинки ===== */
+#lesson-content .sub-lead { font-size:16px; color:var(--muted); line-height:1.6; margin:0 0 8px; max-width:640px; }
+.track-cards { display:flex; flex-direction:column; gap:12px; margin:18px 0 8px; max-width:640px; }
+.track-card { display:flex; gap:14px; padding:16px 18px; background:var(--card); border:1px solid var(--line); border-radius:14px; cursor:pointer; transition:border-color .15s; }
+.track-card:hover { border-color:var(--accent-mid); }
+.track-card-icon { flex-shrink:0; color:var(--accent); }
+.track-card-icon svg { width:24px; height:24px; display:block; }
+.track-card-tag { font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); font-weight:700; margin-bottom:5px; }
+.track-card-body h3 { font-family:"Golos Text",sans-serif; font-size:16px; font-weight:600; margin:0 0 6px; color:var(--ink); }
+.track-card-body p { font-size:14px; margin:0; color:var(--muted); }
+.track-back { display:inline-block; margin-bottom:14px; color:var(--muted); cursor:pointer; font-size:14px; }
+.track-back:hover { color:var(--accent); }
+
 </style>
 </head>
 <body>
@@ -3998,7 +4011,7 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
   </div>
   <nav class="h-nav">
     <a onclick="openSection('main'); return false;">Основной путь</a>
-    <a onclick="openStaticPage('home'); return false;">5 тропинок</a>
+    <a onclick="openStaticPage('trails'); return false;">5 тропинок</a>
     <a onclick="openStaticPage('about'); return false;">О курсе</a>
   </nav>
   <!-- скрытые секц-ссылки для setActiveTopNav -->
@@ -27504,6 +27517,32 @@ function lessonCard(lesson) {
 // Маршруты — рендер блока и логика опросника
 // ============================================================
 
+function renderTrails() {
+  const tracks = [
+    { id: 'claude',   title: 'Claude Deep Dive',          sub: 'Всё что важно про Claude.' },
+    { id: 'projects', title: 'Мини-проекты «За 1 час»',   sub: 'Рабочие пет-проекты, каждый — за час.' },
+    { id: 'industry', title: 'Темы под индустрии',        sub: 'ИИ для конкретных профессий.' },
+    { id: 'everyday', title: 'AI каждый день',            sub: 'Применения для всех, без кода.' },
+    { id: 'vibe',     title: 'Вайб Код Вам Дам',          sub: 'Вайбкодинг как боевое искусство.' },
+  ];
+  const plural = n => { const a = n % 10, b = n % 100; return (a === 1 && b !== 11) ? 'урок' : ((a >= 2 && a <= 4) && (b < 10 || b >= 20) ? 'урока' : 'уроков'); };
+  const cards = tracks.map(t => {
+    const n = TRACK_LESSONS.filter(l => l.track === t.id).length;
+    return `<div class="track-card" onclick="openSection('${t.id}')">
+      <div class="track-card-icon">${TRAIL_ICONS[t.id] || ''}</div>
+      <div class="track-card-body"><div class="track-card-tag">${n} ${plural(n)}</div><h3>${t.title}</h3><p>${t.sub}</p></div>
+    </div>`;
+  }).join('');
+  document.getElementById('lesson-content').innerHTML = `
+    <div class="lesson-view"><div class="lc-wrap static-about">
+      <h1>Тропинки</h1>
+      <p class="sub-lead">Параллельные серии рядом с главным путём — в них можно нырять в любой момент, не дожидаясь конца фаз. Выбери тропинку.</p>
+      <div class="track-cards">${cards}</div>
+    </div></div>
+  `;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function renderRoutes() {
   document.getElementById('lesson-content').innerHTML = `
     <div class="home">
@@ -27992,6 +28031,7 @@ function renderTrackSection(trackId) {
   const meta = descriptions[trackId];
 
   let html = `
+    <a class="track-back" onclick="openStaticPage('trails')">← Все тропинки</a>
     <h1 style="display:flex; align-items:center; gap:14px;"><span style="display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:10px; background: var(--bg-soft); color: var(--text);">${phaseIcon(trackId)}</span>${meta.title}</h1>
     <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1.5rem;">${meta.hero}</p>
 
@@ -28213,6 +28253,7 @@ function openStaticPage(name) {
   else if (name === 'admin') renderAdmin();
   else if (name === 'my-progress') renderMyProgress();
   else if (name === 'routes') renderRoutes();
+  else if (name === 'trails') renderTrails();
 }
 
 // ============================================================
