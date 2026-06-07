@@ -1657,9 +1657,9 @@ main {
   .alesha-widget.is-lesson {
     position: fixed;
     right: 24px;
-    top: 90px;
+    top: calc(var(--header) + 12px);
     width: 360px;
-    max-height: calc(100vh - 130px);
+    max-height: calc(100vh - var(--header) - 48px);
   }
   .alesha-widget.is-collapsed-desktop {
     width: 56px;
@@ -3901,10 +3901,10 @@ code, pre, kbd, samp,
 .tropa-header .mh-word b { color:var(--accent); }
 .tropa-header .mh-tag { font-family:"Cormorant Unicase",Georgia,serif; font-weight:600; font-size:clamp(12.5px,1.25vw,15.5px); color:var(--muted); letter-spacing:.04em; }
 .tropa-header .h-right { display:flex; align-items:center; gap:8px; }
-.tropa-header .aly-hbtn { display:flex; align-items:center; gap:8px; padding:5px 14px 5px 6px; border:1px solid var(--line); border-radius:22px; background:var(--card); cursor:pointer; font-family:"Golos Text",sans-serif; font-size:14px; color:var(--muted); transition:.15s; }
+.tropa-header .aly-hbtn { display:flex; align-items:center; gap:8px; height:38px; box-sizing:border-box; padding:0 14px 0 6px; border:1px solid var(--line); border-radius:22px; background:var(--card); cursor:pointer; font-family:"Golos Text",sans-serif; font-size:14px; color:var(--muted); transition:.15s; }
 .tropa-header .aly-hbtn:hover { border-color:var(--accent-mid); color:var(--ink); }
 .tropa-header .aly-mk { width:28px; height:28px; border-radius:50%; background:var(--accent-soft); color:var(--accent); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.tropa-header .icon-btn { width:36px; height:36px; border:1px solid var(--line); border-radius:8px; background:var(--card); cursor:pointer; font-size:15px; color:var(--muted); display:flex; align-items:center; justify-content:center; }
+.tropa-header .icon-btn { width:38px; height:38px; box-sizing:border-box; border:1px solid var(--line); border-radius:8px; background:var(--card); cursor:pointer; font-size:16px; line-height:1; color:var(--muted); display:flex; align-items:center; justify-content:center; }
 .tropa-header .icon-btn:hover { color:var(--ink); border-color:var(--accent-mid); }
 .tropa-header .h-nav { display:flex !important; align-items:center !important; gap:18px; height:44px !important; padding:0 clamp(16px,3vw,28px) !important; border-top:1px solid var(--line); overflow-x:auto; scrollbar-width:none; }
 .tropa-header .h-nav::-webkit-scrollbar { display:none; }
@@ -3985,6 +3985,16 @@ code, pre, kbd, samp,
 .home .cont-ttl { font-size:15px; color:var(--ink); font-weight:600; }
 .home .opath-link { display:inline-block; margin-top:18px; color:var(--accent); font-weight:600; font-size:15px; cursor:pointer; text-decoration:none; border-bottom:1px solid var(--accent-mid); }
 
+/* ===== ТРОПА: футер эталона (вордмарк Cormorant + 8 ссылок в строку) ===== */
+footer.site-footer { background:transparent; border:none; padding:0; margin:56px 0 0; display:block; color:var(--ink); font-size:inherit; }
+.site-footer .footer-in { max-width:920px; margin:0; padding:32px clamp(20px,6vw,72px) 50px; border-top:1px solid var(--line); }
+.site-footer .f-inner { display:flex; flex-direction:column; gap:14px; }
+.site-footer .f-word { font-family:"Cormorant Unicase",Georgia,serif; font-weight:700; font-size:clamp(16px,1.7vw,21px); letter-spacing:.015em; color:var(--ink); }
+.site-footer .f-word .mh-dot { color:var(--accent); }
+.site-footer .f-links { display:flex; gap:14px; font-size:13px; color:var(--muted); flex-wrap:wrap; }
+.site-footer .f-links span { cursor:pointer; color:var(--muted); }
+.site-footer .f-links span:hover { color:var(--ink); }
+
 </style>
 </head>
 <body>
@@ -4027,7 +4037,6 @@ code, pre, kbd, samp,
   <!-- Тропа: статичный блок (тема/поиск/прогресс-бар/Введение-ссылки) убран —
        тема в хедере, поиск по ⌘K, ссылки в «Указателях». Скрытые элементы
        сохранены, т.к. на них завязаны toggleTheme/поиск. -->
-  <span id="theme-icon" style="display:none">🌙</span><span id="theme-label" style="display:none">Тёмная тема</span>
   <input type="text" id="search-box" style="display:none" oninput="onSearchInput(this.value)">
   <span id="global-progress-text" style="display:none"></span><span id="global-progress-bar" style="display:none"></span>
 
@@ -26741,51 +26750,20 @@ function renderFooter() {
   const footer = document.getElementById('site-footer');
   if (!footer) return;
   footer.innerHTML = `
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="alesha-logo">A</div>
-        <h4>AI Курс</h4>
-        <p>Бесплатный практический курс по ИИ на русском. От пользователя к создателю. 139 уроков с AI-наставником, 93 готовы.</p>
+    <div class="footer-in">
+      <div class="f-inner">
+        <span class="f-word">AI&nbsp;Курс <b class="mh-dot">•</b> От&nbsp;пользователя к&nbsp;создателю</span>
+        <div class="f-links">
+          <span onclick="openStaticPage('about')">О курсе</span>
+          <span onclick="openStaticPage('howto')">Как заниматься</span>
+          <span onclick="openStaticPage('faq')">FAQ</span>
+          <span onclick="openStaticPage('resources')">Источники</span>
+          <span onclick="openGlossary()">Глоссарий</span>
+          <span onclick="openStaticPage('changelog')">Что нового</span>
+          <span onclick="openStaticPage('my-progress')">Мой путь</span>
+          <span onclick="openStaticPage('routes')">Маршруты</span>
+        </div>
       </div>
-
-      <div class="footer-col">
-        <h5>Курс</h5>
-        <a onclick="openSection('main')">Главный путь</a>
-        <a onclick="openSection('everyday')">AI каждый день</a>
-        <a onclick="openSection('claude')">Claude Deep Dive</a>
-        <a onclick="openSection('projects')">Мини-проекты</a>
-        <a onclick="openSection('industry')">Индустрии</a>
-        <a onclick="openSection('vibe')">🥋 Вайб Код Вам Дам</a>
-        <a onclick="openGlossary()">Глоссарий</a>
-      </div>
-
-      <div class="footer-col">
-        <h5>Сообщество</h5>
-        <a href="https://t.me/artefakty_ai" target="_blank">Канал @artefakty_ai ↗</a>
-        <a onclick="openStaticPage('changelog')">Что нового</a>
-        <a onclick="openStaticPage('changelog')">Pet-проекты (скоро)</a>
-      </div>
-
-      <div class="footer-col">
-        <h5>Ресурсы</h5>
-        <a onclick="openStaticPage('about')">О курсе</a>
-        <a onclick="openStaticPage('howto')">Как заниматься</a>
-        <a onclick="openStaticPage('faq')">FAQ</a>
-        <a onclick="openStaticPage('resources')">Источники</a>
-      </div>
-
-      <div class="footer-col">
-        <h5>Open Source</h5>
-        <a href="https://github.com/madzhitov/ai-course" target="_blank">GitHub репо ↗</a>
-        <a href="https://ai.madzhitov.ru" target="_blank">ai.madzhitov.ru ↗</a>
-        <a>MIT-лицензия</a>
-        <a href="https://madzhitov.ru" target="_blank">madzhitov.ru ↗</a>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <div>© 2026 Руслан Маджитов · MIT-лицензия</div>
-      <div>Сделано с ❤️ и Claude · Канал: <a href="https://t.me/artefakty_ai" target="_blank" style="color: var(--text); font-weight: 500;">@artefakty_ai</a></div>
     </div>
   `;
 }
@@ -30259,7 +30237,6 @@ function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme');
   const next = current === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
-  document.getElementById('theme-icon').textContent = next === 'dark' ? '☀️' : '🌙';
   document.getElementById('theme-label').textContent = next === 'dark' ? 'Светлая тема' : 'Тёмная тема';
   localStorage.setItem(THEME_KEY, next);
 }
@@ -30268,7 +30245,6 @@ function toggleTheme() {
 const savedTheme = localStorage.getItem(THEME_KEY);
 if (savedTheme) {
   document.documentElement.setAttribute('data-theme', savedTheme);
-  document.getElementById('theme-icon').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
   document.getElementById('theme-label').textContent = savedTheme === 'dark' ? 'Светлая тема' : 'Тёмная тема';
 }
 
