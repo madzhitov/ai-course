@@ -1703,7 +1703,7 @@ main {
   border-radius: 4px;
 }
 .alesha-min-btn:hover { color: var(--accent); background: var(--bg-card); }
-@media (max-width: 1099px) { .alesha-min-btn { display: none; } }
+.alesha-min-btn { display: none; } /* закрытие даёт ✕ collapse-icon — второй крестик убран */
 .alesha-header {
   display: flex;
   align-items: center;
@@ -2864,10 +2864,10 @@ main {
 .alesha-logo { background: var(--text) !important; color: var(--bg) !important; }
 [data-theme="dark"] .alesha-logo { background: var(--text) !important; color: var(--bg) !important; }
 
-/* === Alesha widget (right rail) — editorial === */
-.alesha-widget { box-shadow: none !important; border: 1px solid var(--border) !important; background: var(--bg-card) !important; border-radius: 12px !important; }
-.alesha-widget.is-collapsed-desktop { background: var(--text) !important; }
-.alesha-widget.is-collapsed-desktop .alesha-collapse-icon::before { color: var(--bg); }
+/* === Alesha widget — editorial (пузырь внизу-справа на ВСЕХ экранах) === */
+.alesha-widget.is-lesson { background: var(--text) !important; border: none !important; border-radius: 50% !important; box-shadow: 0 6px 20px rgba(0,0,0,0.22) !important; }
+.alesha-widget.is-lesson .alesha-collapse-icon::before { color: var(--bg); }
+.alesha-widget.is-open { background: var(--bg-card) !important; border: 1px solid var(--border) !important; border-radius: 14px !important; box-shadow: 0 14px 44px rgba(0,0,0,0.18) !important; }
 .alesha-header { border-bottom: 1px solid var(--border) !important; padding: 14px 16px !important; }
 .alesha-header-title { font-size: 14px !important; font-weight: 700 !important; }
 .alesha-msg.user .alesha-msg-body { background: var(--text) !important; color: var(--bg) !important; }
@@ -2879,13 +2879,6 @@ main {
 .alesha-input button:hover { background: var(--accent-hover) !important; }
 .alesha-input textarea:focus { border-color: var(--text) !important; }
 .alesha-typing span { background: var(--text-muted); }
-
-/* Mobile Alesha button — editorial */
-@media (max-width: 1099px) {
-  .alesha-widget.is-lesson { background: var(--text) !important; box-shadow: 0 6px 20px rgba(0,0,0,0.2) !important; }
-  .alesha-widget.is-lesson .alesha-collapse-icon::before { color: var(--bg); }
-  .alesha-widget.is-open { background: var(--bg-card) !important; }
-}
 
 /* === Code block copy button === */
 .lesson-content pre .copy-btn { background: var(--bg) !important; border: 1px solid var(--border) !important; color: var(--text-muted) !important; }
