@@ -3947,6 +3947,12 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 #lesson-content .breadcrumbs .sep { color:var(--faint); }
 #lesson-content .breadcrumbs .current { color:var(--ink); font-weight:600; }
 #lesson-content .breadcrumbs .phase-tag { background:transparent; color:var(--accent); padding:0; font-weight:600; border:none; font-size:12.5px; }
+/* крошка урока как в эталоне (.lcrumb) — простой текст, без пилюль/чёрной плашки */
+#lesson-content .lcrumb { display:flex; align-items:center; flex-wrap:wrap; gap:8px; font-size:13px; margin:0 0 14px; }
+#lesson-content .lcrumb-ph { color:var(--accent); font-weight:600; cursor:pointer; }
+#lesson-content .lcrumb-ph:hover { text-decoration:underline; }
+#lesson-content .lcrumb-sep { color:var(--faint); }
+#lesson-content .lcrumb-step { color:var(--muted); }
 #lesson-content .lesson-time-meta { display:flex; flex-wrap:wrap; align-items:center; gap:6px 14px; font-size:12.5px; color:var(--muted); margin:8px 0 24px; }
 #lesson-content .lesson-time-meta strong { color:var(--ink); font-weight:600; }
 #lesson-content .lesson-time-meta .dot { width:3px; height:3px; background:var(--faint); border-radius:50%; opacity:1; }
@@ -26889,13 +26895,27 @@ function renderLesson(id) {
     return { tag: phaseNames[lesson.phase] || 'Курс', cls: 'p' + lesson.phase };
   })();
   const lessonNum = typeof lesson.id === 'number' ? `Урок ${lesson.id}` : String(lesson.id).toUpperCase();
+  // Крошка как в эталоне: «Фаза N · Имя · Урок M из K» — простой текст, без пилюль.
+  let crumbPh, crumbStep, crumbClick;
+  if (typeof lesson.id === 'number') {
+    const phaseLessons = LESSONS.filter(l => l.phase === lesson.phase);
+    const pos = phaseLessons.findIndex(l => l.id === lesson.id) + 1;
+    const phaseName = (PHASES.find(p => p.id === lesson.phase)?.title || '').replace(/^Фаза\s*\d+\.\s*/, '');
+    crumbPh = `Фаза ${lesson.phase} · ${phaseName}`;
+    crumbStep = `Урок ${pos} из ${phaseLessons.length}`;
+    crumbClick = "openSection('main')";
+  } else {
+    const trackList = TRACK_LESSONS.filter(l => l.track === lesson.track);
+    const pos = trackList.findIndex(l => l.id === lesson.id) + 1;
+    crumbPh = phaseInfo.tag;
+    crumbStep = `Урок ${pos} из ${trackList.length}`;
+    crumbClick = `openSection('${lesson.track}')`;
+  }
   const breadcrumbs = `
-    <div class="breadcrumbs">
-      <a href="#home" onclick="openStaticPage('home'); return false;">Главная</a>
-      <span class="sep">›</span>
-      <span class="phase-tag ${phaseInfo.cls}">${phaseInfo.tag}</span>
-      <span class="sep">›</span>
-      <span class="current">${lessonNum}</span>
+    <div class="lcrumb">
+      <span class="lcrumb-ph" onclick="${crumbClick}">${crumbPh}</span>
+      <span class="lcrumb-sep">·</span>
+      <span class="lcrumb-step">${crumbStep}</span>
     </div>
   `;
 
