@@ -39,6 +39,8 @@
 <!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js">
 </script>
+<!-- Umami Analytics. data-domains: события только с прод-домена (отсекает превью/зеркало) -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
 <style>
 :root {
   /* ===== Палитра ХВОЯ (Тропа), светлая. Дефолт. =====
@@ -26684,6 +26686,7 @@ function toggleCompleted(id) {
   } else {
     progress[id] = true;
     trackEvent(`lesson-complete-${id}`, `Lesson completed: ${id}`);
+    umTrack('lesson-complete', { lesson: id, phase: (findLesson(id) || {}).phase || null });
   }
   saveProgress();
   renderLesson(currentLessonId);
@@ -27375,6 +27378,7 @@ function aleshaToggle() {
     if (r && typeof initAlesha === 'function') initAlesha(r);
   }
   w.classList.toggle('is-open');
+  if (w.classList.contains('is-open')) umTrack('aly-ask', { from: currentLessonId || 'home' });
 }
 
 function initAlesha(lesson) {
@@ -27796,6 +27800,7 @@ function renderRouteQuiz() {
 
 function answerRouteQuiz(question, value) {
   routeQuizAnswers[question] = value;
+  umTrack('route-quiz', { question: question, answer: value });
   // Подсветить активный вариант
   const group = document.querySelector(`.quiz-form-options[data-q="${question}"]`);
   if (group) {
@@ -27980,6 +27985,11 @@ function closeSidebar() {
   document.body.classList.remove('sidebar-open');
 }
 
+// Umami: безопасный враппер кастомных событий (no-op если скрипт не загружен/домен не тот)
+function umTrack(name, data) {
+  try { if (window.umami && typeof window.umami.track === 'function') window.umami.track(name, data); } catch (e) { /* silent */ }
+}
+
 function trackEvent(eventName, eventTitle = null) {
   // GoatCounter custom event (если подключен)
   try {
@@ -28026,6 +28036,7 @@ function openSection(sectionId) {
   history.replaceState(null, '', `#section-${sectionId}`);
   window.scrollTo({ top: 0, behavior: 'smooth' });
   trackEvent(`section-${sectionId}`, `Section: ${sectionId}`);
+  if (sectionId !== 'main') umTrack('track-open', { track: sectionId });
   buildNav();
 
   if (sectionId === 'main') renderMainSection();
