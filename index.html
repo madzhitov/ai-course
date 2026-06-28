@@ -26881,6 +26881,9 @@ function renderLesson(id) {
     prevLesson = idx > 0 ? trackList[idx - 1] : null;
     nextLesson = idx < trackList.length - 1 ? trackList[idx + 1] : null;
   }
+  // id трека — строка (c3, i2, v5): в onclick нужны кавычки, иначе openLesson(c3) = ReferenceError
+  const prevIdStr = prevLesson ? (typeof prevLesson.id === 'string' ? `'${prevLesson.id}'` : prevLesson.id) : '';
+  const nextIdStr = nextLesson ? (typeof nextLesson.id === 'string' ? `'${nextLesson.id}'` : nextLesson.id) : '';
 
   const writtenIds = LESSONS.filter(l => l.content).map(l => l.id).filter(x => typeof x === 'number').sort((a,b) => a-b);
   const availableRange = writtenIds.length
@@ -26960,8 +26963,8 @@ function renderLesson(id) {
         <span>${completed ? 'Урок пройден' : 'Отметить как пройденный'}</span>
       </label>
       <div class="nav-buttons">
-        <button class="nav-btn" ${!prevLesson ? 'disabled' : ''} onclick="${prevLesson ? `openLesson(${prevLesson.id})` : ''}">← Предыдущий</button>
-        <button class="nav-btn" ${!nextLesson ? 'disabled' : ''} onclick="${nextLesson ? `openLesson(${nextLesson.id})` : ''}">Следующий →</button>
+        <button class="nav-btn" ${!prevLesson ? 'disabled' : ''} onclick="${prevLesson ? `openLesson(${prevIdStr})` : ''}">← Предыдущий</button>
+        <button class="nav-btn" ${!nextLesson ? 'disabled' : ''} onclick="${nextLesson ? `openLesson(${nextIdStr})` : ''}">Следующий →</button>
       </div>
     </div>
     ${completed ? `
@@ -29087,6 +29090,14 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-06-28",
+    title: "Навигация в тропинках",
+    tag: "fix",
+    items: [
+      "Кнопки «Предыдущий»/«Следующий» в уроках тропинок (Claude, Каждый день, Проекты, Индустрии, Вайб) снова работают — раньше клик не срабатывал"
+    ]
+  },
   {
     date: "2026-06-22",
     title: "Вычитка: латиница в кириллице",
