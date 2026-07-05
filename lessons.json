@@ -1,9 +1,9 @@
 {
   "course": "AI Курс",
   "site": "https://ai.madzhitov.ru",
-  "updated": "2026-06-28",
+  "updated": "2026-07-05",
   "total": 139,
-  "published": 93,
+  "published": 101,
   "note": "Даты по урокам не отслеживаются; updated — дата последнего релиза курса (из CHANGELOG).",
   "lessons": [
     {
@@ -232,7 +232,7 @@
       "phase": 2,
       "title": "Мульти-агентные системы",
       "duration": 70,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/23.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-23"
     },
@@ -242,7 +242,7 @@
       "phase": 2,
       "title": "Метакогниция и саморефлексия агентов",
       "duration": 50,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/24.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-24"
     },
@@ -252,7 +252,7 @@
       "phase": 2,
       "title": "Контекст-инжиниринг и память агентов",
       "duration": 60,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/25.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-25"
     },
@@ -262,7 +262,7 @@
       "phase": 2,
       "title": "Microsoft Agent Framework",
       "duration": 55,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/26.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-26"
     },
@@ -272,7 +272,7 @@
       "phase": 2,
       "title": "Browser-use агенты",
       "duration": 60,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/27.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-27"
     },
@@ -282,7 +282,7 @@
       "phase": 2,
       "title": "Агентские протоколы (MCP)",
       "duration": 50,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/28.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-28"
     },
@@ -292,7 +292,7 @@
       "phase": 2,
       "title": "Агенты в продакшене",
       "duration": 70,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/29.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-29"
     },
@@ -302,7 +302,7 @@
       "phase": 2,
       "title": "Повторение фазы 2: чек-лист агента",
       "duration": 30,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/30.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-30"
     },
