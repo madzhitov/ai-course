@@ -1,9 +1,9 @@
 {
   "course": "AI Курс",
   "site": "https://ai.madzhitov.ru",
-  "updated": "2026-07-05",
-  "total": 139,
-  "published": 101,
+  "updated": "2026-07-29",
+  "total": 141,
+  "published": 103,
   "note": "Даты по урокам не отслеживаются; updated — дата последнего релиза курса (из CHANGELOG).",
   "lessons": [
     {
@@ -1135,6 +1135,26 @@
       "published": true,
       "url": "https://ai.madzhitov.ru/lessons/i10.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-i10"
+    },
+    {
+      "id": "i11",
+      "track": "industry",
+      "phase": null,
+      "title": "ИИ для продакт-менеджеров: исследования, приоритизация, документация",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/i11.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-i11"
+    },
+    {
+      "id": "i12",
+      "track": "industry",
+      "phase": null,
+      "title": "ИИ для проджект-менеджеров: планирование, риски, коммуникация",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/i12.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-i12"
     },
     {
       "id": "e1",
