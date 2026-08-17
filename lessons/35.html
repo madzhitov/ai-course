@@ -38,7 +38,248 @@
 <div class="lesson-content" id="lesson-content">
   <div class="lesson-view">
     <a class="pp-home" href="/">← AI Курс</a>
-    <div class="lcrumb"><span class="lcrumb-ph">Фаза 3. Практик</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 35</span></div><h1>Урок 35. Знакомство с PyTorch / TensorFlow</h1><p class="lead">Урок 35 из курса AI на русском. Знакомство с PyTorch / TensorFlow. ~70 мин.</p><p>Этот урок ещё пишется — загляни позже.</p>
+    <div class="lcrumb"><span class="lcrumb-ph">Фаза 3. Практик</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 35</span></div>
+<h1>Урок 35. Знакомство с PyTorch / TensorFlow</h1>
+
+<div class="lesson-meta">
+  <span><strong>Цель:</strong> пересобрать сеть из Урока 34 на настоящем фреймворке и понять, что он делает за тебя</span>
+  <span><strong>Время:</strong> ~70 минут</span>
+  <span><strong>Источник:</strong> AI-For-Beginners + документация PyTorch</span>
+</div>
+
+<h2>Зачем тебе этот урок</h2>
+<p>В Уроке 34 ты руками написал Linear, ReLU, Sigmoid, MSE и backward к каждому слою. Теперь ты знаешь, что внутри фреймворка: PyTorch для тебя не магия, а автоматизация того, что ты уже делал вручную.</p>
+<p>Тот же XOR и та же архитектура — но на инструменте, на котором пишут настоящие модели.</p>
+
+<h2>1. Что framework даёт поверх твоего NumPy-кода</h2>
+<table>
+<tr><th>Ты писал сам в Уроке 34</th><th>Что даёт PyTorch</th></tr>
+<tr><td>backward() к каждому слою</td><td>Autograd — считает градиенты сам</td></tr>
+<tr><td>NumPy, только CPU</td><td>Тот же код на видеокарте (CUDA) или на чипе Apple (MPS)</td></tr>
+<tr><td>Linear, ReLU, Sigmoid</td><td>Сотни слоёв: Conv2d, LSTM, Attention, Dropout, BatchNorm</td></tr>
+<tr><td><code>w -= lr * grad</code></td><td>Оптимизаторы SGD, Adam, AdamW и планировщики learning rate</td></tr>
+<tr><td>Датасет одним куском в память</td><td>Dataset и DataLoader: батчи, перемешивание, параллельная подгрузка</td></tr>
+<tr><td>Ничего</td><td>Экосистема: torchvision, Hugging Face, предобученные модели</td></tr>
+</table>
+<p>Последняя строка весит больше остальных: в Уроке 38 ты дообучишь готовую сеть одной строкой именно потому, что веса лежат в общем формате.</p>
+
+<h2>2. Tensor — главный объект</h2>
+<p>Tensor — многомерный массив чисел: скаляр, вектор, матрица, картинка RGB. Внешне почти <code>np.ndarray</code>, API нарочно сделан похожим.</p>
+<pre><code>a = torch.tensor([[1., 2.], [3., 4.]])
+print(a.shape)    # torch.Size([2, 2])  — форма
+print(a.dtype)    # torch.float32       — тип чисел
+print(a.device)   # cpu                 — где лежат данные
+
+b = torch.from_numpy(arr)   # из NumPy, память общая;  a.numpy() — обратно</code></pre>
+<p>Три отличия от NumPy:</p>
+<ol>
+<li><strong>device.</strong> Знает, в какой памяти лежит: <code>cpu</code>, <code>cuda</code> (NVIDIA), <code>mps</code> (Apple Silicon).</li>
+<li><strong>Градиенты.</strong> Помнит, как получился, и умеет по этой истории считать производные.</li>
+<li><strong>dtype float32 по умолчанию</strong>, а не float64: видеокарты считают его быстрее, точности хватает.</li>
+</ol>
+<pre><code>device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+x = torch.randn(1000, 1000).to(device)   # перенесли на устройство
+y = (x @ x).to("cpu")                    # посчитали там, вернули обратно</code></pre>
+<p>Главное правило: <strong>модель и данные лежат на одном устройстве</strong>, иначе PyTorch скажет «expected all tensors to be on the same device».</p>
+
+<h2>3. Autograd — почему больше не надо писать backward</h2>
+<p>В Уроке 34 ты для каждого слоя выводил производную и писал <code>backward</code>. Autograd делает это сам: с флагом <code>requires_grad=True</code> tensor на лету пишет <strong>граф вычислений</strong> — какие операции над ним делали. Потом PyTorch идёт по нему назад и применяет chain rule.</p>
+<pre><code>x = torch.tensor(3.0, requires_grad=True)
+y = x ** 2 + 5 * x        # PyTorch запомнил все операции
+y.backward()              # проход назад по графу
+print(x.grad)             # tensor(11.)  —  dy/dx = 2x + 5 = 11 при x = 3</code></pre>
+<p>У параметров модели флаг стоит автоматически: вызвал <code>loss.backward()</code> — во всех весах появилось <code>.grad</code>.</p>
+<p><strong>Почему градиенты обнуляют.</strong> PyTorch не заменяет <code>.grad</code>, а <em>прибавляет</em> к нему — так можно накопить градиент по нескольким мелким батчам и шагнуть один раз. Забудешь <code>zero_grad()</code> — сложатся все прошлые итерации, шаг выйдет огромным, обучение развалится.</p>
+<p>Ещё режим <code>torch.no_grad()</code>: граф не строится и память не тратится — оборачивай в него инференс и валидацию.</p>
+
+<h2>4. Та же сеть, но через nn.Module</h2>
+<p>В Уроке 34 ты писал классы со своими <code>forward</code> и <code>backward</code> и собирал их в <code>Network</code> — ~80 строк. Стало одной строкой: <code>nn.Sequential(nn.Linear(2, 4), nn.ReLU(), nn.Linear(4, 1))</code>.</p>
+<p><code>nn.Sequential</code> годится, когда слои идут строго друг за другом. Появились ветвления — пишут свой класс, наследник <code>nn.Module</code>. Так выглядит почти весь код, который ты будешь читать:</p>
+<pre><code>class XORNet(nn.Module):
+    def __init__(self):
+        super().__init__()          # обязательно, иначе слои не зарегистрируются
+        self.fc1 = nn.Linear(2, 8)
+        self.fc2 = nn.Linear(8, 1)
+        self.relu = nn.ReLU()
+
+    def forward(self, x):           # только прямой проход
+        return self.fc2(self.relu(self.fc1(x)))</code></pre>
+<p>Ключевое отличие: <strong>метода backward здесь нет</strong>. Ты описываешь прямой проход, обратный autograd соберёт сам. Веса <code>nn.Linear</code> инициализируются разумно из коробки — про He и Xavier думать не нужно.</p>
+
+<h2>5. Цикл обучения построчно</h2>
+<p>Тот самый цикл из Урока 34. Выучи наизусть: он один и для картинок, и для текста, и для языковых моделей.</p>
+<pre><code>pred = model(xb)               # 1. forward  — прогон вперёд
+loss = loss_fn(pred, yb)       # 2. loss     — насколько ошиблись
+optimizer.zero_grad()          # 3. стереть градиенты прошлой итерации
+loss.backward()                # 4. backward — посчитать новые
+optimizer.step()               # 5. update   — сдвинуть веса</code></pre>
+<ul>
+<li><code>model(xb)</code> запускает <code>forward</code>; писать <code>model.forward(xb)</code> напрямую не принято — не сработают внутренние хуки.</li>
+<li><code>optimizer.step()</code> читает <code>.grad</code> и меняет веса — знает какие, потому что получил <code>model.parameters()</code>.</li>
+</ul>
+
+<h2>6. Оптимизаторы: SGD и Adam</h2>
+<p><strong>SGD</strong> — то, что ты писал сам: <code>w ← w − lr · grad</code>, один размер шага для всех параметров. Momentum добавляет разгон туда, куда градиент указывает стабильно: шарик катится по склону, а не пересчитывает маршрут каждый сантиметр.</p>
+<p><strong>Adam</strong> хранит для каждого параметра две скользящие средние — градиента и его квадрата — и по ним подбирает <em>индивидуальный</em> размер шага. Платишь памятью: две лишние величины на вес.</p>
+<pre><code>opt = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+opt = torch.optim.Adam(model.parameters(), lr=1e-3)
+opt = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=0.01)</code></pre>
+<p><strong>Что брать.</strong> По умолчанию Adam или AdamW с <code>lr=1e-3</code>: обучается почти всегда и без настройки. SGD с momentum — когда выжимают последние доли качества. AdamW — стандарт трансформеров.</p>
+
+<h2>7. Данные: Dataset, DataLoader, батчи</h2>
+<p><strong>Dataset</strong> отвечает на два вопроса: сколько элементов и как достать i-й. <strong>DataLoader</strong> оборачивает его и выдаёт батчи.</p>
+<pre><code>from torch.utils.data import Dataset, DataLoader, TensorDataset
+
+class MyDataset(Dataset):
+    def __len__(self):         return len(self.X)
+    def __getitem__(self, i):  return self.X[i], self.y[i]
+
+loader = DataLoader(TensorDataset(X, y), batch_size=32, shuffle=True)</code></pre>
+<p><strong>Зачем батчи.</strong> Память: датасет целиком в видеопамять не влезет, батч из 32 картинок влезет. Скорость: шаг раз в 32 примера, а не раз в 50000. Качество: шумный градиент по батчу помогает выбираться из плохих локальных минимумов — размер батча это гиперпараметр, а не только память.</p>
+<p><strong>Зачем shuffle.</strong> Если данные лежат по порядку (сначала нули, потом единицы), батчи выйдут однородными и модель будет мотать. Ставят на train, на валидации не нужен.</p>
+
+<h2>8. Режимы train() и eval()</h2>
+<p>Часть слоёв ведёт себя по-разному в обучении и в инференсе:</p>
+<ul>
+<li><strong>Dropout</strong> в обучении случайно отключает часть нейронов, чтобы сеть не полагалась на отдельные признаки. В инференсе выключен: иначе один вход даст разные ответы.</li>
+<li><strong>BatchNorm</strong> в обучении нормирует по статистике текущего батча, в инференсе берёт накопленное среднее — иначе ответ зависит от соседей по батчу.</li>
+</ul>
+<pre><code>model.train()     # dropout активен, batchnorm обновляет статистику
+model.eval()      # dropout выключен, batchnorm использует накопленное
+
+with torch.no_grad():
+    preds = model(X_test)</code></pre>
+<p>Это <em>разные</em> вещи: <code>eval()</code> переключает поведение слоёв, <code>no_grad()</code> отключает граф. На валидации нужны обе, и обе легко забыть — ничего не падает, метрики просто врут.</p>
+
+<h2>9. Сохранение и загрузка модели</h2>
+<p><code>state_dict</code> — словарь «имя параметра → tensor с весами». Именно его пишут на диск.</p>
+<pre><code>torch.save(model.state_dict(), "model.pt")
+
+model = XORNet()                                  # сначала та же архитектура
+model.load_state_dict(torch.load("model.pt"))     # потом залить веса
+model.eval()</code></pre>
+<p>Чтобы продолжить обучение с того же места, в файл кладут и <code>optimizer.state_dict()</code>. Модель целиком не сохраняют: такой файл привязан к структуре проекта, переименуешь класс — загрузка сломается. С чужими весами осторожно: формат допускает выполнение кода. В свежих версиях <code>weights_only=True</code> стоит по умолчанию, в старых — указывай явно.</p>
+
+<h2>10. Полный пример: XOR на PyTorch</h2>
+<p>Тот же XOR, но с шумом и в 400 точках, чтобы батчи имели смысл.</p>
+<pre><code>import torch
+import torch.nn as nn
+from torch.utils.data import TensorDataset, DataLoader
+
+# 1. Данные: четыре угла XOR с шумом
+corners = torch.tensor([[0., 0.], [0., 1.], [1., 0.], [1., 1.]])
+X = corners.repeat(100, 1) + torch.randn(400, 2) * 0.1
+y = torch.tensor([[0.], [1.], [1.], [0.]]).repeat(100, 1)
+loader = DataLoader(TensorDataset(X, y), batch_size=32, shuffle=True)
+
+# 2. Устройство: NVIDIA, чип Apple или CPU
+device = torch.device("cuda" if torch.cuda.is_available()
+                      else "mps" if torch.backends.mps.is_available() else "cpu")
+
+# 3. Модель — архитектура из Урока 34
+model = nn.Sequential(
+    nn.Linear(2, 8),
+    nn.ReLU(),
+    nn.Linear(8, 1),              # логиты, sigmoid сидит внутри loss
+).to(device)
+
+loss_fn = nn.BCEWithLogitsLoss()  # sigmoid + cross-entropy, так устойчивее
+optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+
+# 4. Цикл обучения
+model.train()
+for epoch in range(50):
+    for xb, yb in loader:
+        xb, yb = xb.to(device), yb.to(device)
+        loss = loss_fn(model(xb), yb)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+    if epoch % 10 == 0:
+        print(f"epoch {epoch:3d}   loss {loss.item():.4f}")
+
+# 5. Проверка и сохранение
+model.eval()
+with torch.no_grad():
+    probs = torch.sigmoid(model(corners.to(device)))
+    print(probs.round().flatten().tolist())   # ждём [0.0, 1.0, 1.0, 0.0]
+
+torch.save(model.state_dict(), "xor.pt")</code></pre>
+<p>Собственно обучение — пять строк внутри вложенного цикла, остальное данные, устройство и печать. У большой модели разрастутся данные и архитектура, а пять строк те же.</p>
+
+<h2>11. PyTorch vs TensorFlow / Keras</h2>
+<table>
+<tr><th></th><th>PyTorch</th><th>TensorFlow / Keras</th></tr>
+<tr><td>Стиль</td><td>Обычный код Python, граф строится по ходу</td><td>Раньше граф объявляли заранее, теперь тоже по ходу</td></tr>
+<tr><td>Уровень</td><td>Цикл обучения пишешь сам</td><td>Keras: <code>model.fit()</code> в одну строку</td></tr>
+<tr><td>Где силён</td><td>Исследования, Hugging Face</td><td>Продакшн: сервинг, мобильные, браузер</td></tr>
+</table>
+<p><strong>Почему в курсе PyTorch.</strong> Подавляющее большинство свежих статей, репозиториев и предобученных моделей выходит с кодом на PyTorch, а чужой код читаешь чаще, чем пишешь свой.</p>
+<p><strong>Где встретишь TensorFlow.</strong> В компаниях со стеком, собранным несколько лет назад; в мобильном и браузерном инференсе; вокруг инфраструктуры Google. Keras теперь работает поверх нескольких движков, так что «Keras» больше не равно «TensorFlow». Религиозной войны нет: понятия те же, выучив один — второй читаешь за вечер.</p>
+
+<h2>12. Где это запускать</h2>
+<ul>
+<li><strong>CPU.</strong> Для Уроков 33–35 хватает: пример обучается за секунды. Ставится через <code>pip install torch</code>.</li>
+<li><strong>Apple Silicon.</strong> Backend MPS, <code>device = "mps"</code>, заметно быстрее CPU. Редкие операции бывают не реализованы — тогда помогает переменная <code>PYTORCH_ENABLE_MPS_FALLBACK=1</code>: она шлёт их на CPU.</li>
+<li><strong>NVIDIA.</strong> CUDA, <code>device = "cuda"</code>. Нужна сборка под твой драйвер — на сайте PyTorch есть селектор с командой.</li>
+<li><strong>Google Colab.</strong> Бесплатный GPU в браузере: Runtime → Change runtime type → GPU. Сессия умирает от простоя — сохраняй веса.</li>
+</ul>
+<p><strong>Если GPU нет</strong> — не блокер: Урок 36 про компьютерное зрение пойдёт и на CPU, а с Урока 37 работают три приёма — уменьшить датасет, уменьшить модель, дообучить последний слой предобученной сети (Урок 38). Третий превращает сутки на видеокарте в пять минут на ноутбуке.</p>
+
+<h2>13. Тонкости и подводные камни</h2>
+<div class="callout callout-warning">
+<ul>
+<li><strong>Забыл zero_grad.</strong> Градиенты накапливаются, шаг растёт, loss уходит в разнос или в NaN. Частая ошибка.</li>
+<li><strong>Данные и модель на разных устройствах.</strong> «Expected all tensors to be on the same device» — забыл <code>.to(device)</code>, проверяй батчи внутри цикла.</li>
+<li><strong>Копишь loss как tensor.</strong> <code>total += loss</code> тащит весь граф и ест память — только <code>loss.item()</code>.</li>
+<li><strong>Формы не совпали, но broadcasting сработал.</strong> Предсказание (N, 1) и ответы (N,) молча дадут матрицу N на N и неверный loss. Проверяй <code>.shape</code>.</li>
+</ul>
+</div>
+
+<h2>14. Глоссарий</h2>
+<div class="glossary-term"><h3>Tensor</h3><p>Многомерный массив в PyTorch: знает форму, тип чисел и устройство.</p></div>
+<div class="glossary-term"><h3>Autograd</h3><p>Автоматическое дифференцирование: пишет граф операций и считает по нему градиенты при <code>.backward()</code>.</p></div>
+<div class="glossary-term"><h3>nn.Module</h3><p>Базовый класс модели и слоя. Пишешь <code>forward</code>, обратный проход собирается сам.</p></div>
+<div class="glossary-term"><h3>Optimizer</h3><p>Объект, обновляющий веса по градиентам. SGD, Adam, AdamW.</p></div>
+<div class="glossary-term"><h3>DataLoader</h3><p>Обёртка над Dataset: режет данные на батчи, перемешивает, грузит параллельно.</p></div>
+<div class="glossary-term"><h3>state_dict</h3><p>Словарь «имя параметра → веса». Его пишут на диск и заливают обратно в модель.</p></div>
+
+<h2>15. Практика (60 минут)</h2>
+<ol>
+<li>Поставь PyTorch, проверь <code>torch.cuda.is_available()</code> и <code>torch.backends.mps.is_available()</code>.</li>
+<li>Повтори autograd: <code>x = torch.tensor(2.0, requires_grad=True)</code>, <code>y = x ** 3</code>, <code>y.backward()</code> — <code>x.grad</code> даст 12.</li>
+<li>Запусти пример из секции 10 — предсказания должны сойтись к [0, 1, 1, 0].</li>
+<li>Сломай его: закомментируй <code>optimizer.zero_grad()</code>, посмотри, что станет с loss, верни обратно.</li>
+<li>Замени Adam на <code>SGD(lr=0.01)</code>, потом на <code>SGD(lr=0.01, momentum=0.9)</code>, потом поиграй с <code>batch_size</code> (4, 32, 400). Что меняется в скорости и гладкости падения loss?</li>
+<li>Открой код из Урока 34 рядом: найди, где твой <code>net.forward</code>, <code>net.backward</code>, <code>net.step</code>.</li>
+<li>Запиши в <code>progress.md</code>: какое устройство доступно, что было без <code>zero_grad</code>, какая пара «оптимизатор + batch_size» сошлась быстрее.</li>
+</ol>
+
+<h2>16. Проверь себя</h2>
+<p><strong>1. Чем tensor отличается от массива NumPy?</strong><br>Знает своё устройство (cpu, cuda, mps), копит граф вычислений для градиентов, по умолчанию float32.</p>
+<p><strong>2. Что делает <code>loss.backward()</code>?</strong><br>Идёт назад по графу и заполняет <code>.grad</code> у параметров. Веса не меняются — их меняет <code>optimizer.step()</code>.</p>
+<p><strong>3. Зачем нужен <code>zero_grad()</code>?</strong><br>PyTorch прибавляет новые градиенты к старым. Без обнуления складываются все прошлые итерации и обучение разваливается.</p>
+<p><strong>4. Чем <code>model.eval()</code> отличается от <code>torch.no_grad()</code>?</strong><br><code>eval()</code> переключает dropout и batchnorm в режим инференса, <code>no_grad()</code> отключает граф. На валидации нужны обе.</p>
+<p><strong>5. Что брать по умолчанию, SGD или Adam?</strong><br>Adam или AdamW с <code>lr=1e-3</code>: подбирает шаг для каждого параметра сам и обучается без настройки.</p>
+
+<h2>17. Что должно остаться в голове</h2>
+<ol>
+<li>Фреймворк не делает ничего нового относительно Урока 34: автоматизирует backward, даёт GPU, слои и экосистему.</li>
+<li>Tensor = массив + устройство + история вычислений; модель и данные — на одном устройстве.</li>
+<li>Autograd строит граф на лету, <code>.backward()</code> идёт назад и заполняет <code>.grad</code>.</li>
+<li>Цикл обучения один: forward → loss → zero_grad → backward → step.</li>
+<li>Наследуешь <code>nn.Module</code> и пишешь только <code>forward</code>: backward не нужен.</li>
+<li>Adam с <code>lr=1e-3</code> — разумный старт, SGD с momentum — для доводки.</li>
+<li>Батчи — ради памяти, скорости и шума в градиенте; <code>shuffle=True</code> только на train.</li>
+<li><code>train()</code> и <code>eval()</code> переключают dropout и batchnorm, <code>no_grad()</code> — про память.</li>
+<li>Сохраняй <code>state_dict</code>, а не объект модели.</li>
+</ol>
+
+<div class="callout callout-info">
+<strong>📌 Закрепление:</strong> ты не «перешёл на PyTorch» — ты просто перестал писать backward руками. Всё, что ты вывел в Уроке 34, спрятано за <code>loss.backward()</code>. Поэтому, когда сеть в Уроке 37 откажется учиться, ты будешь понимать, где искать.
+</div>
+
+
     <div class="pp-open"><a href="/#lesson-35">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>
 </div>

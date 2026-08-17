@@ -1,9 +1,9 @@
 {
   "course": "AI Курс",
   "site": "https://ai.madzhitov.ru",
-  "updated": "2026-07-29",
+  "updated": "2026-08-17",
   "total": 141,
-  "published": 103,
+  "published": 111,
   "note": "Даты по урокам не отслеживаются; updated — дата последнего релиза курса (из CHANGELOG).",
   "lessons": [
     {
@@ -352,7 +352,7 @@
       "phase": 3,
       "title": "Знакомство с PyTorch / TensorFlow",
       "duration": 70,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/35.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-35"
     },
@@ -362,7 +362,7 @@
       "phase": 3,
       "title": "Введение в компьютерное зрение",
       "duration": 50,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/36.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-36"
     },
@@ -372,7 +372,7 @@
       "phase": 3,
       "title": "Свёрточные нейросети (CNN)",
       "duration": 70,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/37.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-37"
     },
@@ -382,7 +382,7 @@
       "phase": 3,
       "title": "Transfer Learning",
       "duration": 60,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/38.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-38"
     },
@@ -392,7 +392,7 @@
       "phase": 3,
       "title": "Автоэнкодеры",
       "duration": 55,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/39.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-39"
     },
@@ -402,7 +402,7 @@
       "phase": 3,
       "title": "GAN — генеративно-состязательные сети",
       "duration": 70,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/40.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-40"
     },
@@ -412,7 +412,7 @@
       "phase": 3,
       "title": "Object Detection",
       "duration": 60,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/41.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-41"
     },
@@ -422,7 +422,7 @@
       "phase": 3,
       "title": "Сегментация изображений",
       "duration": 60,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/42.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-42"
     },
