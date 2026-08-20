@@ -1,9 +1,9 @@
 {
   "course": "AI Курс",
   "site": "https://ai.madzhitov.ru",
-  "updated": "2026-08-17",
-  "total": 141,
-  "published": 111,
+  "updated": "2026-08-20",
+  "total": 144,
+  "published": 114,
   "note": "Даты по урокам не отслеживаются; updated — дата последнего релиза курса (из CHANGELOG).",
   "lessons": [
     {
@@ -1155,6 +1155,36 @@
       "published": true,
       "url": "https://ai.madzhitov.ru/lessons/i12.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-i12"
+    },
+    {
+      "id": "i13",
+      "track": "industry",
+      "phase": null,
+      "title": "Основы маркетинга: воронка, каналы, позиционирование",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/i13.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-i13"
+    },
+    {
+      "id": "i14",
+      "track": "industry",
+      "phase": null,
+      "title": "Основы продукта: проблема, гипотеза, метрика",
+      "duration": 60,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/i14.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-i14"
+    },
+    {
+      "id": "i15",
+      "track": "industry",
+      "phase": null,
+      "title": "Основы процессов: как команда доводит до релиза",
+      "duration": 55,
+      "published": true,
+      "url": "https://ai.madzhitov.ru/lessons/i15.html",
+      "app_url": "https://ai.madzhitov.ru/#lesson-i15"
     },
     {
       "id": "e1",
