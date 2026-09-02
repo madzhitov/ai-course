@@ -1,9 +1,9 @@
 {
   "course": "AI Курс",
   "site": "https://ai.madzhitov.ru",
-  "updated": "2026-08-20",
+  "updated": "2026-09-02",
   "total": 144,
-  "published": 114,
+  "published": 122,
   "note": "Даты по урокам не отслеживаются; updated — дата последнего релиза курса (из CHANGELOG).",
   "lessons": [
     {
@@ -432,7 +432,7 @@
       "phase": 3,
       "title": "Представление текста (BoW, TF-IDF)",
       "duration": 50,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/43.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-43"
     },
@@ -442,7 +442,7 @@
       "phase": 3,
       "title": "Эмбеддинги слов (Word2Vec, GloVe)",
       "duration": 60,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/44.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-44"
     },
@@ -452,7 +452,7 @@
       "phase": 3,
       "title": "Языковое моделирование",
       "duration": 55,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/45.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-45"
     },
@@ -462,7 +462,7 @@
       "phase": 3,
       "title": "Рекуррентные сети (RNN, LSTM)",
       "duration": 70,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/46.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-46"
     },
@@ -472,7 +472,7 @@
       "phase": 3,
       "title": "Генеративные сети для текста (seq2seq, attention)",
       "duration": 70,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/47.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-47"
     },
@@ -482,7 +482,7 @@
       "phase": 3,
       "title": "Трансформеры",
       "duration": 90,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/48.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-48"
     },
@@ -492,7 +492,7 @@
       "phase": 3,
       "title": "Извлечение сущностей (NER)",
       "duration": 50,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/49.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-49"
     },
@@ -502,7 +502,7 @@
       "phase": 3,
       "title": "Большие языковые модели изнутри",
       "duration": 70,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/50.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-50"
     },
