@@ -2,7 +2,7 @@
   <rect width="1200" height="630" fill="#f4f1ea"/>
   <rect x="46" y="46" width="1108" height="538" rx="28" fill="#fffdf8" stroke="#e0d9c9" stroke-width="2"/>
   <circle cx="122" cy="118" r="11" fill="#2f6b50"/>
-  <text x="150" y="128" fill="#6f675b" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="600">AI Курс · Фаза 1. Пользователь</text>
+  <text x="150" y="128" fill="#6f675b" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="600">Артефакты · Фаза 1. Пользователь</text>
   <text x="118" y="206" fill="#aaa18f" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="2">УРОК 2</text>
   <text x="116" y="288" fill="#23201a" font-family="Georgia, Times, serif" font-weight="700" font-size="60" letter-spacing="-1">Семейства LLM: GPT,</text>
   <text x="116" y="358" fill="#23201a" font-family="Georgia, Times, serif" font-weight="700" font-size="60" letter-spacing="-1">Claude, Gemini, Llama,</text>
