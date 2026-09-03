@@ -3888,14 +3888,90 @@ code, pre, kbd, samp,
 .home .home-author { font-size:13px; color:var(--muted); margin-top:20px; line-height:1.5; }
 .home .home-author a { color:var(--accent); text-decoration:none; }
 .home .home-author b { color:var(--ink); }
-.home .home-invite { background:var(--card); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:13px; padding:15px 17px; font-size:13.5px; color:var(--muted); line-height:1.55; max-width:760px; margin:6px clamp(20px,6vw,72px) 0; }
-.home .home-invite b { color:var(--ink); display:block; margin-bottom:3px; font-size:14px; }
-.home .home-invite a { color:var(--accent); font-weight:600; cursor:pointer; white-space:nowrap; }
 .home .home-sec { max-width:760px; padding:0 clamp(20px,6vw,72px); }
 .home .cont-line { display:flex; flex-direction:column; gap:2px; background:var(--accent-soft); border:1px solid var(--accent-mid); border-radius:12px; padding:13px 16px; margin:18px 0 0; cursor:pointer; max-width:760px; }
 .home .cont-eye { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); font-weight:700; }
 .home .cont-ttl { font-size:15px; color:var(--ink); font-weight:600; }
 .home .opath-link { display:inline-block; margin-top:18px; color:var(--accent); font-weight:600; font-size:15px; cursor:pointer; text-decoration:none; border-bottom:1px solid var(--accent-mid); }
+
+/* ===== БЕНТО «Куда идти» (главная) ===== */
+.board { padding:22px clamp(20px,6vw,72px) 8px; max-width:760px; }
+.bento { display:grid; grid-template-columns:repeat(6,1fr); grid-auto-rows:minmax(112px,auto); gap:12px; }
+.tile { border-radius:18px; padding:18px; position:relative; cursor:pointer; display:flex; flex-direction:column; transition:transform .15s, opacity .2s, box-shadow .2s; color:var(--ink); background:var(--card); grid-column:span 2; }
+.tile:hover { transform:translateY(-2px); }
+.tile .lbl { font-family:"Cormorant Unicase",Georgia,serif; font-size:14px; letter-spacing:.12em; color:var(--muted); margin-bottom:10px; }
+.tile .ttl { font-family:"Cormorant Unicase",Georgia,serif; font-size:19px; font-weight:600; line-height:1.15; }
+.tile .sub { font-size:13px; margin-top:4px; line-height:1.35; color:var(--muted); }
+.tile .num { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; margin-bottom:10px; background:var(--panel); color:var(--accent); border:1px solid var(--line); }
+.tile .bignum { font-size:54px; font-weight:700; letter-spacing:-.04em; line-height:1; margin-top:auto; padding-top:14px; }
+.tile .bignum span { font-size:14px; font-weight:600; letter-spacing:0; color:var(--muted); }
+.tile .bignum.sm { font-size:32px; }
+.tile .here { display:flex; align-items:center; gap:7px; font-size:12px; font-weight:600; margin-top:10px; }
+.tile .here .alesha-logo { width:20px; height:20px; font-size:11px; flex-shrink:0; }
+.tile .em { line-height:1; margin-bottom:10px; color:var(--accent); }
+.tile .em svg { width:24px; height:24px; display:block; }
+.t-vibe .em { color:var(--bg); }
+html[data-theme="dark"] .t-vibe .em { color:var(--ink); }
+.tile .cnt { font-size:12px; font-weight:600; margin-top:auto; padding-top:12px; color:var(--muted); }
+.tile .subs { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+.tile .subs span { font-size:12.5px; padding:7px 10px; border-radius:9px; background:var(--panel); color:var(--accent); border:1px solid var(--line); transition:.12s; white-space:nowrap; }
+.tile .subs span:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
+.tile .subs .more { background:transparent; border-color:transparent; color:var(--faint); }
+.tile .aly { width:44px; height:44px; font-size:19px; margin-bottom:10px; }
+/* размеры */
+.t-presets, .t-route { grid-column:span 6; }
+.t-industry { grid-column:span 4; }
+.tile.is-cur { grid-row:span 2; }
+/* пресеты */
+.t-presets { background:var(--panel); border:1px solid var(--line); cursor:default; }
+.t-presets:hover { transform:none; }
+.presets { display:flex; flex-wrap:wrap; gap:8px; }
+.preset { padding:8px 13px; border-radius:22px; font-size:13.5px; background:var(--card); color:var(--ink); border:1px solid var(--line); cursor:pointer; transition:.12s; user-select:none; font-family:inherit; }
+.preset:hover { border-color:var(--accent-mid); }
+.preset.on { background:var(--accent); color:#fff; border-color:var(--accent); font-weight:600; }
+/* маршрут */
+.t-route { display:none; background:var(--accent-soft); border:1px solid var(--accent-mid); cursor:default; }
+.t-route:hover { transform:none; }
+.t-route.show { display:flex; }
+.t-route .rt { font-family:"Cormorant Unicase",Georgia,serif; font-size:15px; color:var(--accent); font-weight:600; margin-bottom:8px; }
+.t-route .rt em { font-family:"Golos Text",system-ui,sans-serif; font-style:normal; font-weight:400; color:var(--muted); font-size:13px; margin-left:8px; }
+.t-route ol { margin:0; padding-left:18px; display:flex; flex-direction:column; gap:5px; }
+.t-route li { font-size:14px; cursor:pointer; }
+.t-route li:hover { color:var(--accent); }
+.t-route li.more { list-style:none; margin-left:-18px; color:var(--faint); }
+/* иерархия светом: где ты — хвоя, дальше бледнее */
+.tile.tint-cur { background:var(--accent); color:#fff; }
+.tile.tint-cur .num { background:rgba(255,255,255,.2); color:#fff; border-color:transparent; }
+.tile.tint-cur .sub, .tile.tint-cur .bignum span { color:rgba(255,255,255,.82); }
+.tile.tint-cur .here { color:#fff; }
+.tile.tint-cur .here .alesha-logo { background:#fff !important; color:var(--accent) !important; }
+.tile.tint-next { background:var(--accent-mid); }
+.tile.tint-next .num { border-color:transparent; }
+.tile.tint-far { background:var(--accent-soft); }
+.tile.tint-quiet { background:var(--panel); border:1px solid var(--line); }
+.t-aly { background:var(--panel); border:1px solid var(--line); }
+.t-claude { background:var(--accent-soft); }
+.t-vibe { background:var(--ink); color:var(--bg); }
+.t-vibe .sub, .t-vibe .cnt { color:color-mix(in srgb, var(--bg) 80%, transparent); }
+html[data-theme="dark"] .tile.tint-cur { color:#0f1a14; }
+html[data-theme="dark"] .tile.tint-cur .num { background:rgba(0,0,0,.18); color:#0f1a14; }
+html[data-theme="dark"] .tile.tint-cur .sub,
+html[data-theme="dark"] .tile.tint-cur .bignum span,
+html[data-theme="dark"] .tile.tint-cur .here { color:rgba(15,26,20,.8); }
+html[data-theme="dark"] .tile.tint-cur .here .alesha-logo { background:#0f1a14 !important; color:var(--accent) !important; }
+html[data-theme="dark"] .t-vibe { background:#000; color:var(--ink); }
+html[data-theme="dark"] .t-vibe .sub,
+html[data-theme="dark"] .t-vibe .cnt { color:color-mix(in srgb, var(--ink) 65%, transparent); }
+/* режим маршрута */
+.board.routing .tile[data-r]:not(.on) { opacity:.28; }
+.board.routing .tile.on { opacity:1; box-shadow:0 0 0 2px var(--accent); }
+@media(max-width:760px){
+  .bento { grid-template-columns:repeat(2,1fr); }
+  .tile { grid-column:span 1; padding:15px; }
+  .t-presets, .t-route, .t-industry, .tile.is-cur { grid-column:span 2; }
+  .tile.is-cur { grid-row:auto; }
+  .tile .bignum { font-size:40px; }
+}
 
 /* ===== ТРОПА: футер эталона (вордмарк Cormorant + 8 ссылок в строку) ===== */
 footer.site-footer { background:transparent; border:none; padding:0; margin:56px 0 0; display:block; color:var(--ink); font-size:inherit; }
@@ -4004,7 +4080,6 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 .rc-prog { color:var(--accent); font-size:11px; margin-left:6px; font-weight:600; }
 .route-card.hl { border-color:var(--accent) !important; box-shadow:0 0 0 3px var(--accent-soft) !important; }
 /* §E приглашение-маршруты: на десктопе абсолютом в правом жёлобе рядом с hero */
-@media (min-width:1024px){ .home .home-invite { position:absolute; top:64px; right:0; width:250px; margin:0; } }
 /* §D Что нового: тихая лента */
 .cl-list { max-width:640px; }
 .cl-entry { padding:20px 0; border-bottom:1px solid var(--line); }
