@@ -35939,9 +35939,8 @@ function renderRoutesBoard() {
     const tint = dist === 0 ? 'tint-cur' : dist === 1 ? 'tint-next' : dist === 2 ? 'tint-far' : 'tint-quiet';
     const passed = list.length > 0 && list.every(l => isCompleted(l.id));
     const stepIdx = list.findIndex(l => !isCompleted(l.id));
-    const here = dist === 0
-      ? `<div class="here"><span class="alesha-logo">А</span> ты здесь · урок ${stepIdx >= 0 ? stepIdx + 1 : list.length}</div>`
-      : '';
+    const here = dist !== 0 ? ''
+      : `<div class="here"><span class="alesha-logo">А</span> ${stepIdx >= 0 ? `ты здесь · урок ${stepIdx + 1}` : 'пройдено целиком'}</div>`;
     return `<div class="tile ${tint}${dist === 0 ? ' is-cur' : ''}" data-r="${rFor('phase-' + p.id)}"
       onclick="openLesson(${boardPhaseTarget(p.id)})" title="${esc(p.title)}">
       <div class="num">${passed ? '✓' : p.id}</div>
@@ -35970,7 +35969,7 @@ function renderRoutesBoard() {
       const picks = BOARD_INDUSTRY_PICKS.map(pick => {
         const l = TRACK_LESSONS.find(x => x.id === pick.id);
         if (!l) return '';
-        return `<span onclick="event.stopPropagation();openLesson('${l.id}')" title="${esc(l.title)}">${pick.label}</span>`;
+        return `<span onclick="event.stopPropagation();openLesson('${l.id}')" title="${esc(l.title)}">${esc(pick.label)}</span>`;
       }).join('');
       const rest = list.length - BOARD_INDUSTRY_PICKS.filter(p => TRACK_LESSONS.some(x => x.id === p.id)).length;
       const more = rest > 0
@@ -36008,6 +36007,10 @@ function toggleRoutePreset(id) {
   const board = document.getElementById('routes-board');
   const box = document.getElementById('routes-board-route');
   if (!board || !box) return;
+  // Сценарий ищем до того, как трогать состояние: иначе на неизвестном id
+  // доска зависнет притушенной, без единого подсвеченного пресета.
+  const route = ROUTES.find(r => r.id === id);
+  if (!route) return;
 
   boardActiveRoute = (boardActiveRoute === id) ? null : id;
   board.querySelectorAll('.preset').forEach(c => c.classList.toggle('on', c.dataset.s === boardActiveRoute));
@@ -36019,8 +36022,6 @@ function toggleRoutePreset(id) {
 
   if (!boardActiveRoute) { box.classList.remove('show'); return; }
 
-  const route = ROUTES.find(r => r.id === boardActiveRoute);
-  if (!route) return;
   const steps = boardRouteSteps(route);
   const shown = steps.slice(0, 6);
   const rest = steps.length - shown.length;
