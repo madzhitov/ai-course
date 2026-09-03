@@ -3931,14 +3931,90 @@ code, pre, kbd, samp,
 .home .home-author { font-size:13px; color:var(--muted); margin-top:20px; line-height:1.5; }
 .home .home-author a { color:var(--accent); text-decoration:none; }
 .home .home-author b { color:var(--ink); }
-.home .home-invite { background:var(--card); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:13px; padding:15px 17px; font-size:13.5px; color:var(--muted); line-height:1.55; max-width:760px; margin:6px clamp(20px,6vw,72px) 0; }
-.home .home-invite b { color:var(--ink); display:block; margin-bottom:3px; font-size:14px; }
-.home .home-invite a { color:var(--accent); font-weight:600; cursor:pointer; white-space:nowrap; }
 .home .home-sec { max-width:760px; padding:0 clamp(20px,6vw,72px); }
 .home .cont-line { display:flex; flex-direction:column; gap:2px; background:var(--accent-soft); border:1px solid var(--accent-mid); border-radius:12px; padding:13px 16px; margin:18px 0 0; cursor:pointer; max-width:760px; }
 .home .cont-eye { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); font-weight:700; }
 .home .cont-ttl { font-size:15px; color:var(--ink); font-weight:600; }
 .home .opath-link { display:inline-block; margin-top:18px; color:var(--accent); font-weight:600; font-size:15px; cursor:pointer; text-decoration:none; border-bottom:1px solid var(--accent-mid); }
+
+/* ===== БЕНТО «Куда идти» (главная) ===== */
+.board { padding:22px clamp(20px,6vw,72px) 8px; max-width:760px; }
+.bento { display:grid; grid-template-columns:repeat(6,1fr); grid-auto-rows:minmax(112px,auto); gap:12px; }
+.tile { border-radius:18px; padding:18px; position:relative; cursor:pointer; display:flex; flex-direction:column; transition:transform .15s, opacity .2s, box-shadow .2s; color:var(--ink); background:var(--card); grid-column:span 2; }
+.tile:hover { transform:translateY(-2px); }
+.tile .lbl { font-family:"Cormorant Unicase",Georgia,serif; font-size:14px; letter-spacing:.12em; color:var(--muted); margin-bottom:10px; }
+.tile .ttl { font-family:"Cormorant Unicase",Georgia,serif; font-size:19px; font-weight:600; line-height:1.15; }
+.tile .sub { font-size:13px; margin-top:4px; line-height:1.35; color:var(--muted); }
+.tile .num { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; margin-bottom:10px; background:var(--panel); color:var(--accent); border:1px solid var(--line); }
+.tile .bignum { font-size:54px; font-weight:700; letter-spacing:-.04em; line-height:1; margin-top:auto; padding-top:14px; }
+.tile .bignum span { font-size:14px; font-weight:600; letter-spacing:0; color:var(--muted); }
+.tile .bignum.sm { font-size:32px; }
+.tile .here { display:flex; align-items:center; gap:7px; font-size:12px; font-weight:600; margin-top:10px; }
+.tile .here .alesha-logo { width:20px; height:20px; font-size:11px; flex-shrink:0; }
+.tile .em { line-height:1; margin-bottom:10px; color:var(--accent); }
+.tile .em svg { width:24px; height:24px; display:block; }
+.t-vibe .em { color:var(--bg); }
+html[data-theme="dark"] .t-vibe .em { color:var(--ink); }
+.tile .cnt { font-size:12px; font-weight:600; margin-top:auto; padding-top:12px; color:var(--muted); }
+.tile .subs { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+.tile .subs span { font-size:12.5px; padding:7px 10px; border-radius:9px; background:var(--panel); color:var(--accent); border:1px solid var(--line); transition:.12s; white-space:nowrap; }
+.tile .subs span:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
+.tile .subs .more { background:transparent; border-color:transparent; color:var(--faint); }
+.tile .aly { width:44px; height:44px; font-size:19px; margin-bottom:10px; }
+/* размеры */
+.t-presets, .t-route { grid-column:span 6; }
+.t-industry { grid-column:span 4; }
+.tile.is-cur { grid-row:span 2; }
+/* пресеты */
+.t-presets { background:var(--panel); border:1px solid var(--line); cursor:default; }
+.t-presets:hover { transform:none; }
+.presets { display:flex; flex-wrap:wrap; gap:8px; }
+.preset { padding:8px 13px; border-radius:22px; font-size:13.5px; background:var(--card); color:var(--ink); border:1px solid var(--line); cursor:pointer; transition:.12s; user-select:none; font-family:inherit; }
+.preset:hover { border-color:var(--accent-mid); }
+.preset.on { background:var(--accent); color:#fff; border-color:var(--accent); font-weight:600; }
+/* маршрут */
+.t-route { display:none; background:var(--accent-soft); border:1px solid var(--accent-mid); cursor:default; }
+.t-route:hover { transform:none; }
+.t-route.show { display:flex; }
+.t-route .rt { font-family:"Cormorant Unicase",Georgia,serif; font-size:15px; color:var(--accent); font-weight:600; margin-bottom:8px; }
+.t-route .rt em { font-family:"Golos Text",system-ui,sans-serif; font-style:normal; font-weight:400; color:var(--muted); font-size:13px; margin-left:8px; }
+.t-route ol { margin:0; padding-left:18px; display:flex; flex-direction:column; gap:5px; }
+.t-route li { font-size:14px; cursor:pointer; }
+.t-route li:hover { color:var(--accent); }
+.t-route li.more { list-style:none; margin-left:-18px; color:var(--faint); }
+/* иерархия светом: где ты — хвоя, дальше бледнее */
+.tile.tint-cur { background:var(--accent); color:#fff; }
+.tile.tint-cur .num { background:rgba(255,255,255,.2); color:#fff; border-color:transparent; }
+.tile.tint-cur .sub, .tile.tint-cur .bignum span { color:rgba(255,255,255,.82); }
+.tile.tint-cur .here { color:#fff; }
+.tile.tint-cur .here .alesha-logo { background:#fff !important; color:var(--accent) !important; }
+.tile.tint-next { background:var(--accent-mid); }
+.tile.tint-next .num { border-color:transparent; }
+.tile.tint-far { background:var(--accent-soft); }
+.tile.tint-quiet { background:var(--panel); border:1px solid var(--line); }
+.t-aly { background:var(--panel); border:1px solid var(--line); }
+.t-claude { background:var(--accent-soft); }
+.t-vibe { background:var(--ink); color:var(--bg); }
+.t-vibe .sub, .t-vibe .cnt { color:color-mix(in srgb, var(--bg) 80%, transparent); }
+html[data-theme="dark"] .tile.tint-cur { color:#0f1a14; }
+html[data-theme="dark"] .tile.tint-cur .num { background:rgba(0,0,0,.18); color:#0f1a14; }
+html[data-theme="dark"] .tile.tint-cur .sub,
+html[data-theme="dark"] .tile.tint-cur .bignum span,
+html[data-theme="dark"] .tile.tint-cur .here { color:rgba(15,26,20,.8); }
+html[data-theme="dark"] .tile.tint-cur .here .alesha-logo { background:#0f1a14 !important; color:var(--accent) !important; }
+html[data-theme="dark"] .t-vibe { background:#000; color:var(--ink); }
+html[data-theme="dark"] .t-vibe .sub,
+html[data-theme="dark"] .t-vibe .cnt { color:color-mix(in srgb, var(--ink) 65%, transparent); }
+/* режим маршрута */
+.board.routing .tile[data-r]:not(.on) { opacity:.28; }
+.board.routing .tile.on { opacity:1; box-shadow:0 0 0 2px var(--accent); }
+@media(max-width:760px){
+  .bento { grid-template-columns:repeat(2,1fr); }
+  .tile { grid-column:span 1; padding:15px; }
+  .t-presets, .t-route, .t-industry, .tile.is-cur { grid-column:span 2; }
+  .tile.is-cur { grid-row:auto; }
+  .tile .bignum { font-size:40px; }
+}
 
 /* ===== ТРОПА: футер эталона (вордмарк Cormorant + 8 ссылок в строку) ===== */
 footer.site-footer { background:transparent; border:none; padding:0; margin:56px 0 0; display:block; color:var(--ink); font-size:inherit; }
@@ -4047,7 +4123,6 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 .rc-prog { color:var(--accent); font-size:11px; margin-left:6px; font-weight:600; }
 .route-card.hl { border-color:var(--accent) !important; box-shadow:0 0 0 3px var(--accent-soft) !important; }
 /* §E приглашение-маршруты: на десктопе абсолютом в правом жёлобе рядом с hero */
-@media (min-width:1024px){ .home .home-invite { position:absolute; top:64px; right:0; width:250px; margin:0; } }
 /* §D Что нового: тихая лента */
 .cl-list { max-width:640px; }
 .cl-entry { padding:20px 0; border-bottom:1px solid var(--line); }
@@ -35195,6 +35270,14 @@ function fmtDate(isoDate) {
 
 const CHANGELOG = [
   {
+    date: "2026-09-03",
+    title: "🧭 Доска «Куда идти» на главной",
+    tag: "new",
+    items: [
+      "Строка-приглашение на мини-квиз с главной убрана — доска закрывает ту же задачу. Сам квиз остался на странице «Маршруты»"
+    ]
+  },
+  {
     date: "2026-09-02",
     title: "Новое имя: «Артефакты»",
     tag: "update",
@@ -35785,6 +35868,175 @@ function renderChangelog() {
 // HOME (новый лендинг)
 // ============================================================
 
+// ============================================================
+// БЕНТО «Куда идти» — доска маршрутов на главной.
+// Всё считается из PHASES / LESSONS / TRACKS / TRACK_LESSONS / ROUTES.
+// Ничего не хардкодим: добавил урок в массив — цифра на плитке уехала сама.
+// ============================================================
+
+// Три профессии, вынесенные на плитку «Индустрии». Выбор редакторский, не выводится.
+const BOARD_INDUSTRY_PICKS = [
+  { id: 'i2', label: 'для маркетолога' },
+  { id: 'i11', label: 'для продакта' },
+  { id: 'i12', label: 'для проджекта' },
+];
+
+// Текущая фаза: первая, где остался непройденный урок. Всё пройдено — последняя.
+function boardCurrentPhase() {
+  const p = PHASES.find(ph => LESSONS.some(l => l.phase === ph.id && !isCompleted(l.id)));
+  return p ? p.id : PHASES[PHASES.length - 1].id;
+}
+
+// Куда ведёт плитка фазы: первый непройденный с текстом, иначе первый непройденный, иначе первый.
+function boardPhaseTarget(phaseId) {
+  const list = LESSONS.filter(l => l.phase === phaseId);
+  const open = list.filter(l => !isCompleted(l.id));
+  const target = open.find(l => l.content) || open[0] || list[0];
+  return target ? target.id : 1;
+}
+
+// Какие плитки горят при выбранном сценарии.
+// Числовой id урока → его фаза, строковый → его трек. Фаза 1 — всегда вход.
+function boardRouteTargets(route) {
+  const keys = new Set(['phase-' + PHASES[0].id]);
+  if (route.section) keys.add('track-' + route.section);
+  (route.lessons || []).forEach(lid => {
+    const l = findLesson(lid);
+    if (!l) return;
+    keys.add(typeof lid === 'number' ? 'phase-' + l.phase : 'track-' + l.track);
+  });
+  // «Глубокая картина с нуля» обещает весь главный путь, а в lessons[] лежит только фаза 1.
+  // Подсвечиваем все фазы здесь, в доске: массив ROUTES по ТЗ не трогаем.
+  if (route.id === 'full-picture') PHASES.forEach(p => keys.add('phase-' + p.id));
+  return keys;
+}
+
+// Шаги маршрута: собственный список уроков или весь трек целиком.
+function boardRouteSteps(route) {
+  if (route.section) return TRACK_LESSONS.filter(l => l.track === route.section);
+  return (route.lessons || []).map(id => findLesson(id)).filter(Boolean);
+}
+
+let boardActiveRoute = null;
+
+function renderRoutesBoard() {
+  boardActiveRoute = null;
+  const curPhase = boardCurrentPhase();
+
+  const targets = {};
+  ROUTES.forEach(r => { targets[r.id] = boardRouteTargets(r); });
+  const rFor = key => ROUTES.filter(r => targets[r.id].has(key)).map(r => r.id).join(' ');
+
+  const presets = ROUTES.map(r =>
+    `<button type="button" class="preset" data-s="${r.id}" onclick="toggleRoutePreset('${r.id}')" title="${esc(r.meta)}">${esc(r.title)}</button>`
+  ).join('');
+
+  // Тинты идут от текущей фазы, а не от первой: где ты — хвоя, дальше бледнее, позади — тихо.
+  const phaseTiles = PHASES.map(p => {
+    const list = LESSONS.filter(l => l.phase === p.id);
+    const name = p.title.replace(/^Фаза\s*\d+\.\s*/, '');
+    const dist = p.id - curPhase;
+    const tint = dist === 0 ? 'tint-cur' : dist === 1 ? 'tint-next' : dist === 2 ? 'tint-far' : 'tint-quiet';
+    const passed = list.length > 0 && list.every(l => isCompleted(l.id));
+    const stepIdx = list.findIndex(l => !isCompleted(l.id));
+    const here = dist === 0
+      ? `<div class="here"><span class="alesha-logo">А</span> ты здесь · урок ${stepIdx >= 0 ? stepIdx + 1 : list.length}</div>`
+      : '';
+    return `<div class="tile ${tint}${dist === 0 ? ' is-cur' : ''}" data-r="${rFor('phase-' + p.id)}"
+      onclick="openLesson(${boardPhaseTarget(p.id)})" title="${esc(p.title)}">
+      <div class="num">${passed ? '✓' : p.id}</div>
+      <div class="ttl">${esc(name)}</div>
+      <div class="sub">${esc(p.subtitle)}</div>
+      <div class="bignum${dist === 0 ? '' : ' sm'}">${list.length}<span> ${pluralUrok(list.length)}</span></div>
+      ${here}
+    </div>`;
+  }).join('');
+
+  const alyTile = `<div class="tile t-aly" onclick="aleshaToggle()">
+    <span class="alesha-logo aly">А</span>
+    <div class="ttl">Алёша</div>
+    <div class="sub">Спроси про урок — отвечу за 10 сек</div>
+  </div>`;
+
+  // «Индустрии» — плитка на 4 колонки. Ставим её четвёртой, чтобы ряды сошлись без дыр.
+  const ordered = TRACKS.filter(t => t.id !== 'industry');
+  const wide = TRACKS.find(t => t.id === 'industry');
+  if (wide) ordered.splice(3, 0, wide);
+
+  const trackTiles = ordered.map(t => {
+    const list = TRACK_LESSONS.filter(l => l.track === t.id);
+    let subs = '';
+    if (t.id === 'industry') {
+      const picks = BOARD_INDUSTRY_PICKS.map(pick => {
+        const l = TRACK_LESSONS.find(x => x.id === pick.id);
+        if (!l) return '';
+        return `<span onclick="event.stopPropagation();openLesson('${l.id}')" title="${esc(l.title)}">${pick.label}</span>`;
+      }).join('');
+      const rest = list.length - BOARD_INDUSTRY_PICKS.filter(p => TRACK_LESSONS.some(x => x.id === p.id)).length;
+      const more = rest > 0
+        ? `<span class="more" onclick="event.stopPropagation();openSection('${t.id}')">… и ещё ${rest}</span>`
+        : '';
+      subs = `<div class="subs">${picks}${more}</div>`;
+    }
+    return `<div class="tile t-${t.id}" data-r="${rFor('track-' + t.id)}" onclick="openSection('${t.id}')">
+      <div class="em">${TRAIL_ICONS[t.id] || ''}</div>
+      <div class="ttl">${esc(t.title)}</div>
+      <div class="sub">${esc(t.subtitle)}</div>
+      ${subs}
+      <div class="cnt">${list.length} ${pluralUrok(list.length)}</div>
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="board" id="routes-board">
+      <div class="bento">
+        <div class="tile t-presets">
+          <div class="lbl">Куда идти</div>
+          <div class="presets">${presets}</div>
+        </div>
+        <div class="tile t-route" id="routes-board-route"><div class="rt"></div><ol></ol></div>
+        ${phaseTiles}
+        ${alyTile}
+        ${trackTiles}
+      </div>
+    </div>
+  `;
+}
+
+// Клик по пресету: включить/выключить режим маршрута. Без навигации — только подсветка и список.
+function toggleRoutePreset(id) {
+  const board = document.getElementById('routes-board');
+  const box = document.getElementById('routes-board-route');
+  if (!board || !box) return;
+
+  boardActiveRoute = (boardActiveRoute === id) ? null : id;
+  board.querySelectorAll('.preset').forEach(c => c.classList.toggle('on', c.dataset.s === boardActiveRoute));
+  board.querySelectorAll('.tile[data-r]').forEach(el => {
+    const rs = (el.dataset.r || '').split(' ');
+    el.classList.toggle('on', !!boardActiveRoute && rs.includes(boardActiveRoute));
+  });
+  board.classList.toggle('routing', !!boardActiveRoute);
+
+  if (!boardActiveRoute) { box.classList.remove('show'); return; }
+
+  const route = ROUTES.find(r => r.id === boardActiveRoute);
+  if (!route) return;
+  const steps = boardRouteSteps(route);
+  const shown = steps.slice(0, 6);
+  const rest = steps.length - shown.length;
+  const items = shown.map(l => {
+    const oid = typeof l.id === 'number' ? l.id : `'${l.id}'`;
+    return `<li onclick="openLesson(${oid})">${esc(l.title)}</li>`;
+  }).join('');
+  const more = rest <= 0 ? ''
+    : route.section
+      ? `<li class="more" onclick="openSection('${route.section}')">… и ещё ${rest} →</li>`
+      : `<li class="more">… и ещё ${rest}</li>`;
+  box.querySelector('.rt').innerHTML = `Маршрут: ${esc(route.title)}<em>${esc(route.meta)}</em>`;
+  box.querySelector('ol').innerHTML = items + more;
+  box.classList.add('show');
+}
+
 function renderHome() {
   const total = allLessons().length;
   const written = allLessons().filter(l => l.content).length;
@@ -35821,7 +36073,7 @@ function renderHome() {
         </div>
         <p class="home-author">«Артефакты» собирает и обновляет <a href="https://madzhitov.ru" target="_blank"><b>Руслан Маджитов</b></a> · канал <a href="https://t.me/artefakty_ai" target="_blank">@artefakty_ai</a> · связь <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a></p>
       </div>
-      <div class="home-invite"><b>Есть конкретная задача?</b> Подберём короткий маршрут под неё — <a onclick="openStaticPage('routes')">пройди мини-квиз →</a></div>
+      ${renderRoutesBoard()}
       ${contLine}
       <div class="home-sec"><a class="opath-link" onclick="openStaticPage('about')">Как устроен путь и чем он отличается — Что&nbsp;это →</a></div>
     </div>
