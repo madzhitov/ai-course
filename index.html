@@ -3775,9 +3775,6 @@ main {
 }
 
 /* === Маршруты — блок «С чего начать?» на главной === */
-.routes-section { margin: 2rem 0 3rem; }
-.routes-heading { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 0.4rem; }
-.routes-subtitle { font-size: 15px; color: var(--text-muted); margin: 0 0 1.5rem; }
 .routes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 1rem; }
 @media (max-width: 1024px) { .routes-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px) { .routes-grid { grid-template-columns: 1fr; } }
@@ -3793,9 +3790,6 @@ main {
 .route-card-title { font-size: 16px; font-weight: 700; line-height: 1.3; margin: 0 0 6px; color: var(--text); }
 .route-card-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-variant-numeric: tabular-nums; }
 .route-card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.4; margin: 0 0 auto; }
-.route-card-cta { margin-top: 12px; font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 4px; }
-.route-card-cta::after { content: "→"; transition: transform 0.15s; }
-.route-card:hover .route-card-cta::after { transform: translateX(3px); }
 
 /* Опросник */
 .quiz-cta {
@@ -4067,9 +4061,8 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 .lesson-card-v2, .route-card { background:var(--card) !important; border:1px solid var(--line) !important; box-shadow:none !important; background-image:none !important; border-radius:13px !important; }
 .lesson-card-v2:hover, .route-card:hover { border-color:var(--accent-mid) !important; transform:none !important; box-shadow:none !important; }
 .lesson-card-thumb, .route-card-icon { background:var(--accent-soft) !important; color:var(--accent) !important; box-shadow:none !important; background-image:none !important; }
-.cat-tag, .route-card-cta { background:transparent !important; color:var(--accent) !important; padding:0 !important; box-shadow:none !important; }
+.cat-tag { background:transparent !important; color:var(--accent) !important; padding:0 !important; box-shadow:none !important; }
 .quiz-cta { background:var(--accent-soft) !important; color:var(--accent) !important; border:1px solid var(--accent-mid) !important; box-shadow:none !important; }
-.routes-heading { font-family:"Cormorant Unicase",Georgia,serif; }
 
 /* ===== ТРОПА F5: обзор тропинок (trailsView) + back-link страницы тропинки ===== */
 #lesson-content .sub-lead { font-size:16px; color:var(--muted); line-height:1.6; margin:0 0 8px; max-width:640px; }
@@ -33869,59 +33862,6 @@ function renderRoutes() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function renderRoutesBlock() {
-  const totalPassed = allLessons().filter(l => isCompleted(l.id)).length;
-
-  // Динамический заголовок в зависимости от прогресса
-  let heading, subtitle;
-  if (totalPassed >= 30) {
-    // Опытный — схлопнутый режим
-    return `
-      <details class="routes-section">
-        <summary style="cursor:pointer; color: var(--text-muted); font-size: 14px; padding: 12px 0; border-bottom: 1px solid var(--border);">
-          С чего начать? (6 маршрутов + опросник) — развернуть ▼
-        </summary>
-        ${renderRoutesContent('Попробуй другой угол', 'Возможно, тебе подойдёт сценарий, который ты ещё не пробовал.')}
-      </details>
-    `;
-  } else if (totalPassed >= 3) {
-    heading = 'Попробуй другой угол';
-    subtitle = 'Ты уже прошёл несколько уроков — возможно, тебе подойдёт другой маршрут.';
-  } else {
-    heading = 'С чего начать?';
-    subtitle = 'Выбери ближайший сценарий — это маршрут из 3–7 уроков.';
-  }
-
-  return `<section class="routes-section">${renderRoutesContent(heading, subtitle)}</section>`;
-}
-
-function renderRoutesContent(heading, subtitle) {
-  const cards = ROUTES.map(r => {
-    const lessons = r.lessons || [];
-    const completedInRoute = lessons.filter(lid => isCompleted(lid)).length;
-    const progress = (lessons.length && completedInRoute > 0) ? `<span style="color: var(--text-muted); font-size: 11px; margin-left: 6px;">✓ ${completedInRoute}/${lessons.length}</span>` : '';
-    return `
-      <button class="route-card" onclick="openRoute('${r.id}')" type="button">
-        <div class="route-card-icon">${r.icon}</div>
-        <div class="route-card-title">${r.title}${progress}</div>
-        <div class="route-card-meta">${r.meta}</div>
-        <div class="route-card-desc">${r.description}</div>
-        <div class="route-card-cta">Начать</div>
-      </button>
-    `;
-  }).join('');
-
-  return `
-    <h2 class="routes-heading">${heading}</h2>
-    <p class="routes-subtitle">${subtitle}</p>
-    <div class="routes-grid">${cards}</div>
-    <div id="routes-quiz-container">
-      <button class="quiz-cta" onclick="openRouteQuiz()" type="button">
-        ❓ Не уверен, что подходит? Ответь на 3 вопроса (30 секунд) →
-      </button>
-    </div>
-  `;
-}
 
 // Открыть маршрут — секцию (тропинку) или первый незавершённый урок
 function openRoute(routeId) {
