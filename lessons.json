@@ -1,9 +1,9 @@
 {
   "course": "Артефакты",
   "site": "https://ai.madzhitov.ru",
-  "updated": "2026-09-03",
+  "updated": "2026-09-27",
   "total": 144,
-  "published": 122,
+  "published": 128,
   "note": "Даты по урокам не отслеживаются; updated — дата последнего релиза курса (из CHANGELOG).",
   "lessons": [
     {
@@ -512,7 +512,7 @@
       "phase": 4,
       "title": "Что такое машинное обучение",
       "duration": 45,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/51.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-51"
     },
@@ -522,7 +522,7 @@
       "phase": 4,
       "title": "История ML",
       "duration": 40,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/52.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-52"
     },
@@ -532,7 +532,7 @@
       "phase": 4,
       "title": "Этика и справедливость в ML",
       "duration": 50,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/53.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-53"
     },
@@ -542,7 +542,7 @@
       "phase": 4,
       "title": "Техники ML: train/test/val, метрики, кросс-валидация",
       "duration": 60,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/54.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-54"
     },
@@ -552,7 +552,7 @@
       "phase": 4,
       "title": "Инструменты регрессии (scikit-learn, pandas)",
       "duration": 55,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/55.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-55"
     },
@@ -562,7 +562,7 @@
       "phase": 4,
       "title": "Подготовка и очистка данных",
       "duration": 60,
-      "published": false,
+      "published": true,
       "url": "https://ai.madzhitov.ru/lessons/56.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-56"
     },
