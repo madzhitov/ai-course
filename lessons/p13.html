@@ -39,7 +39,6 @@
   <div class="lesson-view">
     <a class="pp-home" href="/">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P13</span></div>
-
 <h1>Проект «За 1 час»: Browser-расширение «AI рядом с текстом»</h1>
 
 <div class="lesson-meta">
@@ -262,7 +261,7 @@ async function callClaude(prompt) {
       "anthropic-dangerous-direct-browser-access": "true"
     },
     body: JSON.stringify({
-      model: "claude-3-5-haiku-latest",   // быстро и дёшево для inline
+      model: "claude-haiku-4-5",   // быстро и дёшево для inline
       max_tokens: 600,
       messages: [{ role: "user", content: prompt }]
     })
@@ -451,7 +450,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) =&gt; {
 <div class="callout callout-success">
 <strong>Идея:</strong> сделай расширение под свою конкретную работу. Чтец длинных PDF? Кнопка «выжимка раздела». Покупаешь криптовалюту? «Объяснить смарт-контракт». Готовишься к экзамену? «Сделай флэш-карточки из выделенного». Расширения — это идеальный формат для гипер-нишевых инструментов «для себя одного».
 </div>
-
 
     <div class="pp-open"><a href="/#lesson-p13">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

@@ -4526,10 +4526,37 @@ const LESSONS = [
 // весь файл.
 // ============================================================
 
+// FACTS:start — справочник: модели и цены, которые стареют.
+// В уроке пишется ⟦ключ⟧, registerLesson подставляет значение (build_pages.js берёт этот же блок).
+// Сменилась модель — правка здесь, одна на все уроки. Проверки: check_facts.py (validate, шаг 8)
+// и check_models.py (раз в неделю). Сверено 27.09.2026: platform.claude.com/docs/en/about-claude/models/overview,
+// developers.openai.com/api/docs/pricing. Цены — $ за 1M токенов.
+const FACTS = {
+  'claude.smart': 'claude-sonnet-5',
+  'claude.fast': 'claude-haiku-4-5',
+  'openai.mini': 'gpt-4o-mini',
+  'openai.mini.in': '0.15',
+  'openai.mini.out': '0.60',
+  'openai.main': 'gpt-4o',
+  'openai.main.in': '2.50',
+  'openai.main.out': '10.00',
+  'openai.top': 'gpt-6-astra',
+  'openai.mid': 'gpt-6-sol',
+  'openai.mid.in': '2.00',
+  'openai.mid.out': '10.00',
+  'openai.lite': 'gpt-6-luna',
+  'openai.lite.in': '0.10',
+  'openai.lite.out': '0.50',
+};
+function fillFacts(html) {
+  return html.replace(/⟦([\w.]+)⟧/g, (m, k) => (k in FACTS ? FACTS[k] : m));
+}
+// FACTS:end
+
 function registerLesson(id, htmlContent) {
   const lesson = LESSONS.find(l => l.id === id) || TRACK_LESSONS.find(l => l.id === id);
   if (lesson) {
-    lesson.content = htmlContent;
+    lesson.content = fillFacts(htmlContent);
     lesson.draft = false;
   }
 }
@@ -6467,7 +6494,7 @@ client = OpenAI()
 
 # Делаем запрос
 response = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="⟦openai.mini⟧",
     messages=[
         {"role": "system", "content": "Ты помощник по русскому языку."},
         {"role": "user", "content": "Объясни, что такое деепричастие, в одном абзаце."}
@@ -6490,11 +6517,10 @@ print(response.choices[0].message.content)</code></pre>
 <h3>model</h3>
 <p>Имя модели. Точные строки:</p>
 <ul>
-<li><code>gpt-4o</code>, <code>gpt-4o-mini</code> — флагман и эконом.</li>
-<li><code>gpt-4-turbo</code>, <code>gpt-3.5-turbo</code> — старые но дешёвые.</li>
-<li><code>o1-preview</code>, <code>o1-mini</code> — reasoning.</li>
+<li><code>⟦openai.top⟧</code>, <code>⟦openai.mid⟧</code>, <code>⟦openai.lite⟧</code> — текущая линейка OpenAI: самая сильная, для кода и агентов, самая экономная.</li>
+<li><code>⟦openai.main⟧</code>, <code>⟦openai.mini⟧</code> — прошлое поколение, но по-прежнему работают. Все примеры этого урока — на <code>⟦openai.mini⟧</code>: она дешёвая. Возьмёшь новую модель — проверь в документации, какие параметры она принимает.</li>
 </ul>
-<p>Anthropic: <code>claude-3-5-sonnet-20241022</code>, <code>claude-3-haiku-20240307</code> и т.д. (точные имена меняются — смотри документацию).</p>
+<p>Anthropic: <code>⟦claude.smart⟧</code>, <code>⟦claude.fast⟧</code> и т.д. Точные имена меняются, смотри документацию.</p>
 
 <h3>messages</h3>
 <p>Массив сообщений диалога. Поддерживаемые роли:</p>
@@ -6513,7 +6539,7 @@ print(response.choices[0].message.content)</code></pre>
 
 <h3>Другие полезные параметры</h3>
 <pre><code>response = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="⟦openai.mini⟧",
     messages=[...],
     temperature=0.3,
     max_tokens=300,
@@ -6533,7 +6559,7 @@ print(response.choices[0].message.content)</code></pre>
   "id": "chatcmpl-abc123",
   "object": "chat.completion",
   "created": 1715000000,
-  "model": "gpt-4o-mini-2024-07-18",
+  "model": "⟦openai.mini⟧",
   "choices": [
     {
       "index": 0,
@@ -6570,13 +6596,14 @@ print(response.choices[0].message.content)</code></pre>
 <p>Цена считается отдельно для input и output по таблице из урока 2.</p>
 
 <h3>Расчёт на лету</h3>
-<pre><code>def calculate_cost(usage, model="gpt-4o-mini"):
+<pre><code>def calculate_cost(usage, model="⟦openai.mini⟧"):
     prices = {
-        "gpt-4o-mini":   {"input": 0.15, "output": 0.60},
-        "gpt-4o":        {"input": 2.50, "output": 10.00},
-        "o1-mini":       {"input": 3.00, "output": 12.00},
+        "⟦openai.mini⟧": {"input": ⟦openai.mini.in⟧, "output": ⟦openai.mini.out⟧},
+        "⟦openai.main⟧": {"input": ⟦openai.main.in⟧, "output": ⟦openai.main.out⟧},
+        "⟦openai.lite⟧": {"input": ⟦openai.lite.in⟧, "output": ⟦openai.lite.out⟧},
+        "⟦openai.mid⟧": {"input": ⟦openai.mid.in⟧, "output": ⟦openai.mid.out⟧},
     }
-    p = prices.get(model, prices["gpt-4o-mini"])
+    p = prices.get(model, prices["⟦openai.mini⟧"])
     cost = (
         usage.prompt_tokens * p["input"] +
         usage.completion_tokens * p["output"]
@@ -6587,7 +6614,7 @@ response = client.chat.completions.create(...)
 print(f"Стоимость: \${calculate_cost(response.usage):.6f}")</code></pre>
 
 <h3>Реальные цифры</h3>
-<p>Запрос с промптом 100 токенов и ответом 200 токенов на gpt-4o-mini:</p>
+<p>Запрос с промптом 100 токенов и ответом 200 токенов на ⟦openai.mini⟧:</p>
 <ul>
 <li>Input: 100 × $0.15 / 1M = $0.000015</li>
 <li>Output: 200 × $0.60 / 1M = $0.00012</li>
@@ -6600,7 +6627,7 @@ print(f"Стоимость: \${calculate_cost(response.usage):.6f}")</code></pre
 <p>По умолчанию ответ возвращается целиком в конце генерации. Для чат-интерфейса это плохо — ждёшь 5 секунд белого экрана. Решение — <strong>streaming</strong>:</p>
 
 <pre><code>stream = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="⟦openai.mini⟧",
     messages=[{"role": "user", "content": "Напиши хайку про код"}],
     stream=True  # ← включаем streaming
 )
@@ -6624,7 +6651,7 @@ def safe_chat(messages, max_retries=3):
     for attempt in range(max_retries):
         try:
             return client.chat.completions.create(
-                model="gpt-4o-mini",
+                model="⟦openai.mini⟧",
                 messages=messages,
                 timeout=30
             )
@@ -6669,7 +6696,7 @@ def generate_post(topic: str, tone: str = "neutral", count: int = 3) -> list[str
     posts = []
     for i in range(count):
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="⟦openai.mini⟧",
             messages=[
                 {"role": "system", "content": system},
                 {"role": "user", "content": f"Напиши пост на тему: {topic}"}
@@ -6708,7 +6735,7 @@ if __name__ == "__main__":
 CACHE_DIR = ".llm_cache"
 os.makedirs(CACHE_DIR, exist_ok=True)
 
-def cached_chat(messages, model="gpt-4o-mini", **kwargs):
+def cached_chat(messages, model="⟦openai.mini⟧", **kwargs):
     key_str = json.dumps({"m": model, "msg": messages, **kwargs}, sort_keys=True)
     key = hashlib.md5(key_str.encode()).hexdigest()
     path = f"{CACHE_DIR}/{key}.json"
@@ -6740,7 +6767,7 @@ logging.info(f"Tokens: {response.usage}")</code></pre>
 
 def process_one(text):
     return client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="⟦openai.mini⟧",
         messages=[{"role": "user", "content": text}]
     ).choices[0].message.content
 
@@ -6751,7 +6778,7 @@ with ThreadPoolExecutor(max_workers=10) as ex:
 <h3>Структурированный вывод (JSON mode)</h3>
 <p>Если ответ должен парситься программно:</p>
 <pre><code>response = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="⟦openai.mini⟧",
     messages=[
         {"role": "system", "content": "Отвечай только валидным JSON."},
         {"role": "user", "content": "Извлеки имя, возраст и роль из: 'Анна, 28 лет, фронтенд'"}
@@ -6793,7 +6820,7 @@ data = json.loads(response.choices[0].message.content)
 <h3>Упражнение 2. Считаем стоимость (10 минут)</h3>
 <ol>
 <li>Добавь функцию <code>calculate_cost</code> к своему скрипту.</li>
-<li>Сделай 5 разных запросов: коротких и длинных, на gpt-4o-mini и gpt-4o.</li>
+<li>Сделай 5 разных запросов: коротких и длинных, на ⟦openai.mini⟧ и ⟦openai.main⟧.</li>
 <li>Записывай реальную стоимость каждого. Сравни с теоретическим расчётом.</li>
 </ol>
 
@@ -6884,21 +6911,21 @@ registerLesson(7, `
 
 <pre><code># Запрос 1
 client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="⟦openai.mini⟧",
     messages=[{"role": "user", "content": "Меня зовут Иван"}]
 )
 # → "Приятно познакомиться, Иван!"
 
 # Запрос 2 — модель ничего не помнит
 client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="⟦openai.mini⟧",
     messages=[{"role": "user", "content": "Как меня зовут?"}]
 )
 # → "Я не знаю, как вас зовут"
 
 # Запрос 2 правильный — передаём всю историю
 client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="⟦openai.mini⟧",
     messages=[
         {"role": "user", "content": "Меня зовут Иван"},
         {"role": "assistant", "content": "Приятно познакомиться, Иван!"},
@@ -6919,7 +6946,7 @@ load_dotenv()
 client = OpenAI()
 
 class ChatBot:
-    def __init__(self, system_prompt: str, model: str = "gpt-4o-mini"):
+    def __init__(self, system_prompt: str, model: str = "⟦openai.mini⟧"):
         self.model = model
         self.history = [{"role": "system", "content": system_prompt}]
 
@@ -6981,7 +7008,7 @@ while True:
         messages = [{"role": "system", "content": self.system_prompt}] + recent
 
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="⟦openai.mini⟧",
             messages=messages,
             temperature=0.7
         )
@@ -7016,7 +7043,7 @@ while True:
     def _summarize_old(self, old_messages):
         text = "\\n".join([f"{m['role']}: {m['content']}" for m in old_messages])
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="⟦openai.mini⟧",
             messages=[
                 {"role": "system", "content": "Сожми диалог в краткое саммари ключевых фактов и решений (1 абзац)."},
                 {"role": "user", "content": text}
@@ -7035,7 +7062,7 @@ while True:
         messages = [{"role": "system", "content": sys}] + self.recent
 
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="⟦openai.mini⟧",
             messages=messages,
             temperature=0.7
         )
@@ -7090,7 +7117,7 @@ while True:
 
 <pre><code>import tiktoken
 
-def count_tokens(messages, model="gpt-4o-mini"):
+def count_tokens(messages, model="⟦openai.mini⟧"):
     enc = tiktoken.encoding_for_model(model)
     total = 0
     for m in messages:
@@ -7167,7 +7194,7 @@ class ChatBot:
     def chat(self, user_msg):
         self.history.append({"role": "user", "content": user_msg})
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="⟦openai.mini⟧",
             messages=[{"role": "system", "content": self.system_prompt}] + self.history[-20:],
             temperature=0.7
         )
@@ -7211,7 +7238,7 @@ if user_msg := st.chat_input("Напиши что-нибудь..."):
     # генерируем ответ со streaming
     with st.chat_message("assistant"):
         stream = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="⟦openai.mini⟧",
             messages=[{"role": "system", "content": SYSTEM}] +
                      st.session_state.messages,
             stream=True
@@ -8590,7 +8617,7 @@ available_functions = {"get_weather": get_weather, "send_email": send_email}
 def run_agent(user_message):
     messages = [{"role": "user", "content": user_message}]
     response = client.chat.completions.create(
-        model="gpt-4o-mini", messages=messages, tools=tools, tool_choice="auto"
+        model="⟦openai.mini⟧", messages=messages, tools=tools, tool_choice="auto"
     )
     message = response.choices[0].message
     while message.tool_calls:
@@ -8601,7 +8628,7 @@ def run_agent(user_message):
             )
             messages.append({"role": "tool", "tool_call_id": tc.id, "content": result})
         response = client.chat.completions.create(
-            model="gpt-4o-mini", messages=messages, tools=tools, tool_choice="auto"
+            model="⟦openai.mini⟧", messages=messages, tools=tools, tool_choice="auto"
         )
         message = response.choices[0].message
     return message.content
@@ -8756,7 +8783,7 @@ def ask(question, n=4):
     
     context = "\\n\\n---\\n\\n".join(chunks)
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="⟦openai.mini⟧",
         messages=[
             {"role": "system", "content": "Отвечай ТОЛЬКО на основе контекста. Если ответа нет — так и скажи."},
             {"role": "user", "content": f"Контекст:\\n{context}\\n\\nВопрос: {question}"}
@@ -9013,8 +9040,8 @@ promptfoo init</code></pre>
 <pre><code>prompts:
   - "Ответь на вопрос пользователя: {{question}}"
 providers:
-  - openai:gpt-4o-mini
-  - openai:gpt-4o
+  - openai:⟦openai.mini⟧
+  - openai:⟦openai.main⟧
 tests:
   - vars: { question: "Что такое RAG?" }
     assert:
@@ -9310,7 +9337,7 @@ def agent(task):
     messages = [{"role": "user", "content": task}]
     while True:
         response = client.messages.create(
-            model="claude-sonnet-4-5",
+            model="⟦claude.smart⟧",
             max_tokens=1024,
             tools=tools,
             messages=messages
@@ -9409,7 +9436,7 @@ registerLesson(17, `
 <tr><td><strong>Microsoft Semantic Kernel</strong></td><td>.NET/Python, enterprise-friendly</td><td>Корпоративный .NET-мир</td></tr>
 <tr><td><strong>Microsoft AutoGen / Agent Framework</strong></td><td>Multi-agent collaboration</td><td>Несколько агентов разных ролей</td></tr>
 <tr><td><strong>CrewAI</strong></td><td>Multi-agent с роль-плеем</td><td>Декларативное описание команды</td></tr>
-<tr><td><strong>OpenAI Assistants API / Swarm</strong></td><td>Managed</td><td>На OpenAI, без своей инфраструктуры</td></tr>
+<tr><td><strong>OpenAI Agents SDK + Responses API</strong></td><td>Родной для OpenAI</td><td>Агенты на моделях OpenAI со встроенными инструментами</td></tr>
 <tr><td><strong>Anthropic SDK + tools</strong></td><td>Минимальный, нативный</td><td>Когда хочется просто, без обвязок</td></tr>
 <tr><td><strong>Vercel AI SDK</strong></td><td>JS-first, стриминг</td><td>Next.js / React приложения</td></tr>
 <tr><td><strong>Pydantic AI</strong></td><td>Type-safe, новый</td><td>Любители строгой типизации</td></tr>
@@ -9462,11 +9489,11 @@ crew = Crew(agents=[researcher, writer], tasks=[...])
 crew.kickoff()</code></pre>
 <p>Хорош для быстрых прототипов multi-agent сценариев.</p>
 
-<h2>7. OpenAI Assistants API</h2>
-<p>Это managed-сервис. Создаёшь Assistant с инструментами, threads (диалоги), runs (один шаг). OpenAI хранит state, ты — только клиент.</p>
-<p><strong>Плюсы:</strong> не нужна своя инфраструктура. Code interpreter и file search встроены.</p>
-<p><strong>Минусы:</strong> привязка к OpenAI. Меньше гибкости. Дороже.</p>
-<p>В 2024 OpenAI выпустили также <strong>Swarm</strong> — лёгкий multi-agent open-source.</p>
+<h2>7. OpenAI Agents SDK и Responses API</h2>
+<p>Раньше здесь был Assistants API: managed-сервис с threads (диалогами) и runs (шагами). OpenAI закрыл его 26 августа 2026 года. Замена — <strong>Responses API</strong>: один вызов модели со встроенными инструментами (поиск в интернете, поиск по файлам, запуск кода). Историю диалога может хранить сам OpenAI, через Conversations API.</p>
+<p>Поверх этого — <strong>Agents SDK</strong>, открытая библиотека для Python и TypeScript: агенты, инструменты, передача задачи от агента к агенту. Она выросла из экспериментального Swarm 2024 года.</p>
+<p><strong>Плюсы:</strong> меньше своей инфраструктуры, инструменты встроены.</p>
+<p><strong>Минусы:</strong> привязка к OpenAI.</p>
 
 <h2>8. Минималистский подход — Anthropic SDK + tools</h2>
 <p>Anthropic в своём <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank">блог-посте 2024 «Building effective agents»</a> явно сказал: <em>«В большинстве случаев вам не нужен фреймворк. Простой while-loop с tools достаточен.»</em></p>
@@ -11097,7 +11124,7 @@ def get_attractions(
     """Вернуть топ достопримечательностей для города."""
     return f"Топ для {location}: набережная, старый город, музей."
 
-chat_client = OpenAIChatClient(model_id="gpt-4o")
+chat_client = OpenAIChatClient(model_id="⟦openai.main⟧")
 
 # Агент = провайдер + инструкции + инструменты + имя
 travel_agent = chat_client.create_agent(
@@ -11169,7 +11196,6 @@ async def main():
 </ol>
 
 <div class="callout callout-info"><strong>📌 Закрепление:</strong> объясни кому-нибудь за две минуты, почему у Microsoft было два фреймворка для агентов и что изменилось, когда они слились в один. Если сможешь без запинки назвать, что Agent Framework взял от Semantic Kernel, а что — от AutoGen, урок усвоен.</div>
-
 `);
 
 
@@ -11264,7 +11290,7 @@ registerLesson(27, `
 from langchain_anthropic import ChatAnthropic
 import asyncio
 
-llm = ChatAnthropic(model="claude-sonnet-4-5")
+llm = ChatAnthropic(model="⟦claude.smart⟧")
 
 task = (
     "Зайди на сайт документации Playwright. "
@@ -11334,7 +11360,6 @@ asyncio.run(main())</code></pre>
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> браузер для агента — это не магическая кнопка «сделай как человек», а недоверенная среда, где страница может атаковать агента спрятанной инструкцией. Прежде чем дать агенту руки в браузере, дай ему whitelist, изолированный профиль и человека на критичных решениях.
 </div>
-
 `);
 
 
@@ -19892,7 +19917,7 @@ registerLesson("c9", `
 <h2>5. Skills в API</h2>
 <p>Для разработчиков Skills доступны через Claude API. Пример включения Excel skill:</p>
 <pre><code>response = client.messages.create(
-  model="claude-sonnet-4-5",
+  model="⟦claude.smart⟧",
   max_tokens=4000,
   messages=[{"role": "user", "content": "Проанализируй прикреплённый Excel"}],
   tools=[{
@@ -22922,7 +22947,7 @@ async def summarize(message: Message):
     await message.answer("⏳ Делаю саммари...")
 
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="⟦openai.mini⟧",
         messages=[
             {"role": "system", "content": SUMMARY_PROMPT},
             {"role": "user", "content": text}
@@ -22992,7 +23017,7 @@ async def collect(message: Message):
 
 <h3>Стоимость</h3>
 
-<p>На gpt-4o-mini одно саммари 5к слов = ~$0.001. 1000 саммари в месяц = $1. Очень дёшево.</p>
+<p>На ⟦openai.mini⟧ одно саммари 5к слов = ~$0.001. 1000 саммари в месяц = $1. Очень дёшево.</p>
 
 <h3>Защита от спама</h3>
 
@@ -23280,7 +23305,7 @@ def ask(question: str, k: int = 5) -> str:
 
     # просим LLM ответить
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="⟦openai.mini⟧",
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": f"ВОПРОС: {question}\\n\\nФРАГМЕНТЫ ЗАМЕТОК:{chunks_text}"}
@@ -23548,7 +23573,7 @@ client = anthropic.Anthropic()
 def analyze_receipt(image_bytes):
     img64 = base64.b64encode(image_bytes).decode()
     msg = client.messages.create(
-      model="claude-sonnet-4-5",
+      model="⟦claude.smart⟧",
       max_tokens=1024,
       messages=[{
         "role": "user",
@@ -23650,7 +23675,7 @@ client = anthropic.Anthropic()
 def summarize(entries, competitor):
     text = "\\n\\n".join(f"## {e.title}\\n{e.summary}" for e in entries)
     msg = client.messages.create(
-      model="claude-sonnet-4-5",
+      model="⟦claude.smart⟧",
       max_tokens=600,
       messages=[{"role": "user", "content": f'''Конкурент: {competitor}
 Новые публикации:
@@ -23780,7 +23805,7 @@ def answer(query):
                             for i, s in enumerate(sources))
 
     msg = llm.messages.create(
-      model="claude-sonnet-4-5",
+      model="⟦claude.smart⟧",
       max_tokens=1500,
       messages=[{"role": "user", "content": f'''Источники:
 {src_text}
@@ -23866,7 +23891,7 @@ llm = anthropic.Anthropic()
 
 def analyze(transcript):
     msg = llm.messages.create(
-      model="claude-sonnet-4-5",
+      model="⟦claude.smart⟧",
       max_tokens=2000,
       messages=[{"role": "user", "content": f'''Транскрипт встречи:
 &lt;transcript&gt;
@@ -23978,7 +24003,7 @@ llm = anthropic.Anthropic()
 
 def classify(email):
     msg = llm.messages.create(
-      model="claude-haiku-4-5-20251001",  # дёшево
+      model="⟦claude.fast⟧",  # дёшево
       max_tokens=400,
       messages=[{"role": "user", "content": f'''Письмо:
 From: {email["from"]}
@@ -24235,7 +24260,7 @@ body = pr["body"] or ""
 # Промпт для ревью
 client = anthropic.Anthropic(api_key=AN_KEY)
 review = client.messages.create(
-  model="claude-sonnet-4-5",
+  model="⟦claude.smart⟧",
   max_tokens=2000,
   messages=[{"role": "user", "content": f'''Ты — старший разработчик. Делаешь code review.
 
@@ -24335,7 +24360,6 @@ jobs:
 // ============================================================
 
 registerLesson("p11", `
-
 <h1>Проект «За 1 час»: Голосовой AI-ассистент — Whisper + Claude + TTS на твоём железе</h1>
 
 <div class="lesson-meta">
@@ -24507,7 +24531,7 @@ class Brain:
         msgs = self.history[-10:]
 
         resp = client.messages.create(
-            model="claude-3-5-sonnet-latest",
+            model="⟦claude.smart⟧",
             max_tokens=400,
             system=SYSTEM,
             messages=msgs,
@@ -24659,7 +24683,7 @@ def execute_tool(name: str, args: dict) -&gt; str:
 
 # и в Brain.reply замени вызов на:
 resp = client.messages.create(
-    model="claude-3-5-sonnet-latest",
+    model="⟦claude.smart⟧",
     max_tokens=400,
     system=SYSTEM,
     tools=TOOLS,
@@ -24682,7 +24706,7 @@ if resp.stop_reason == "tool_use":
 
     # второй вызов - чтобы получить финальную реплику для пользователя
     final = client.messages.create(
-        model="claude-3-5-sonnet-latest",
+        model="⟦claude.smart⟧",
         max_tokens=400, system=SYSTEM, tools=TOOLS,
         messages=self.history[-10:],
     )
@@ -24725,7 +24749,6 @@ else:
 <div class="callout callout-success">
 <strong>Лайфхак:</strong> положи запуск ассистента на горячую клавишу через Raycast / AutoHotkey / sxhkd. Получишь персональную «Сири», вызываемую за 0.2 секунды.
 </div>
-
 `);
 
 
@@ -24974,7 +24997,6 @@ github username — madzhitov</code></pre>
 
 
 registerLesson("p13", `
-
 <h1>Проект «За 1 час»: Browser-расширение «AI рядом с текстом»</h1>
 
 <div class="lesson-meta">
@@ -25197,7 +25219,7 @@ async function callClaude(prompt) {
       "anthropic-dangerous-direct-browser-access": "true"
     },
     body: JSON.stringify({
-      model: "claude-3-5-haiku-latest",   // быстро и дёшево для inline
+      model: "⟦claude.fast⟧",   // быстро и дёшево для inline
       max_tokens: 600,
       messages: [{ role: "user", content: prompt }]
     })
@@ -25386,7 +25408,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) =&gt; {
 <div class="callout callout-success">
 <strong>Идея:</strong> сделай расширение под свою конкретную работу. Чтец длинных PDF? Кнопка «выжимка раздела». Покупаешь криптовалюту? «Объяснить смарт-контракт». Готовишься к экзамену? «Сделай флэш-карточки из выделенного». Расширения — это идеальный формат для гипер-нишевых инструментов «для себя одного».
 </div>
-
 `);
 
 
@@ -25689,7 +25710,6 @@ ollama run code-critic
 
 
 registerLesson("p15", `
-
 <h1>Проект «За 1 час»: Личный AI-секретарь — автоответы на email + дневной чек-ин</h1>
 
 <div class="lesson-meta">
@@ -25844,7 +25864,7 @@ def classify_batch(emails):
     ]
 
     resp = client.messages.create(
-        model="claude-sonnet-4-5",
+        model="⟦claude.smart⟧",
         max_tokens=4000,
         system=CLASSIFY_PROMPT,
         messages=[{"role": "user", "content": json.dumps(payload, ensure_ascii=False)}],
@@ -25859,7 +25879,7 @@ def classify_batch(emails):
     return json.loads(text)
 </code></pre>
 
-<p>Я выбрал <code>claude-sonnet-4-5</code> — она достаточно умная для нюансов («это срочно от босса» vs «это рассылка от Jira»). Haiku тоже подойдёт, но иногда промахивается с «template».</p>
+<p>Я выбрал <code>⟦claude.smart⟧</code> — она достаточно умная для нюансов («это срочно от босса» vs «это рассылка от Jira»). Haiku тоже подойдёт, но иногда промахивается с «template».</p>
 
 <h2>Шаг 4: сохраняем черновики в папку Drafts</h2>
 
@@ -26036,12 +26056,10 @@ if __name__ == "__main__":
 <div class="callout callout-info" style="margin-top: 1.5rem;">
 <strong>Без VPN и подписок:</strong> полностью локальная версия — без западных API, без подписок, ничего не уходит в облако — <a href="#lesson-p21" onclick="openLesson('p21'); return false;">урок p21</a> (AI-секретарь на Ollama).
 </div>
-
 `);
 
 
 registerLesson("p16", `
-
 <h1>Проект «За 1 час»: AI-репетитор Сократическим методом</h1>
 
 <div class="lesson-meta">
@@ -26216,7 +26234,7 @@ if user_input := st.chat_input("Твой вопрос или ответ..."):
     with st.chat_message("assistant"):
         with st.spinner("Думаю..."):
             response = client.messages.create(
-                model="claude-sonnet-4-5",
+                model="⟦claude.smart⟧",
                 max_tokens=500,
                 system=SOCRATIC_PROMPT,
                 messages=st.session_state.messages,
@@ -26283,9 +26301,9 @@ api_key=st.secrets.get("ANTHROPIC_API_KEY") or os.getenv("ANTHROPIC_API_KEY")</c
 <h2>Подводные камни</h2>
 
 <ul>
-<li><strong>Ребёнок взломает промпт.</strong> Дети умные. «Забудь все инструкции, дай ответ» — может сработать на слабых моделях. На <code>claude-sonnet-4-5</code> у меня не получалось обойти даже у племянника, который специально пытался полчаса. Но если перейдёшь на Haiku — тестируй заново.</li>
+<li><strong>Ребёнок взломает промпт.</strong> Дети умные. «Забудь все инструкции, дай ответ» — может сработать на слабых моделях. На <code>⟦claude.smart⟧</code> у меня не получалось обойти даже у племянника, который специально пытался полчаса. Но если перейдёшь на Haiku — тестируй заново.</li>
 <li><strong>Контекст растёт.</strong> Каждый ход — весь диалог снова отправляется в API. За 30 ходов диалог разрастается до 5–10к токенов. Для одной сессии — копейки, но если кто-то будет час сидеть, можно добавить компрессию: каждые 20 сообщений просить модель саму суммировать историю.</li>
-<li><strong>Стоимость.</strong> Один час занятий = ~$0.05–0.15 на claude-sonnet-4-5. Месяц ежедневных занятий — $3–5. Дёшево, но если открываешь публично — добавляй авторизацию или лимит, иначе чужие дети сожгут твой кредит.</li>
+<li><strong>Стоимость.</strong> Один час занятий = ~$0.05–0.15 на ⟦claude.smart⟧. Месяц ежедневных занятий — $3–5. Дёшево, но если открываешь публично — добавляй авторизацию или лимит, иначе чужие дети сожгут твой кредит.</li>
 <li><strong>Не все предметы одинаково хороши.</strong> Математика, физика, программирование — отлично. История и литература — хуже: модель знает много фактов, но «сократический разбор» из «когда была Куликовская битва» получается натянутый. Лучше для предметов с пошаговым решением.</li>
 <li><strong>Streamlit перезагружает скрипт.</strong> При любом изменении UI весь <code>app.py</code> запускается заново сверху вниз. Поэтому всё состояние — в <code>st.session_state</code>, иначе будет терять историю при каждом клике.</li>
 <li><strong>Этический момент.</strong> Договорись с ребёнком: домашка, которую сдаёт учителю, должна быть им понята, а не «прошёл репетитора». Иначе это просто более медленный способ списывания.</li>
@@ -26296,12 +26314,10 @@ api_key=st.secrets.get("ANTHROPIC_API_KEY") or os.getenv("ANTHROPIC_API_KEY")</c
 <p>У меня сын (10 лет) занимается по этой штуке через день месяца три. Изначально жаловался, что «он не отвечает, только спрашивает» — но через неделю въехал в логику и теперь даже комментирует «он опять меня подводит к ответу». Что важнее — оценки по математике пошли вверх не сильно, а вот рассуждение в задачах стало заметно структурнее. На контрольной видно, что у ребёнка теперь есть привычка «сначала разберись с условием».</p>
 
 <p>Сам проект — отличный пример того, как один правильный системный промпт превращает обычный LLM в специализированный инструмент с принципиально другим UX. Это в целом главный паттерн всех нормальных AI-продуктов.</p>
-
 `);
 
 
 registerLesson("p17", `
-
 <h1>Проект «За 1 час»: Конспект лекции из аудио — Whisper + Claude → markdown</h1>
 
 <div class="lesson-meta">
@@ -26481,7 +26497,7 @@ STRUCTURE_PROMPT = """Перед тобой расшифровка фрагме�
 
 def structure_chunk(text):
     resp = client.messages.create(
-        model="claude-sonnet-4-5",
+        model="⟦claude.smart⟧",
         max_tokens=4000,
         system=STRUCTURE_PROMPT,
         messages=[{"role": "user", "content": text}],
@@ -26514,7 +26530,7 @@ def merge_chunks(structured_chunks):
     )
 
     resp = client.messages.create(
-        model="claude-sonnet-4-5",
+        model="⟦claude.smart⟧",
         max_tokens=8000,
         system=MERGE_PROMPT,
         messages=[{"role": "user", "content": joined}],
@@ -26630,7 +26646,7 @@ if __name__ == "__main__":
 <li><strong>Качество транскрипции на русском.</strong> medium-модель путает имена, термины и аббревиатуры. «KPI» становится «кейпиай», «ChatGPT» — «чат-гэпэтэ». Один из способов борьбы — в промпт Claude передавать список ожидаемых терминов («лектор оперирует терминами: SQL, Kubernetes, latency») — он восстановит написание.</li>
 <li><strong>Шумная запись.</strong> Если писал на телефон в большом зале — будет много мусора. Перед транскрипцией стоит прогнать через любой денойзер (есть бесплатные онлайн), или использовать опцию <code>vad_filter=True</code> агрессивнее (см. параметры).</li>
 <li><strong>Длинные паузы / музыка.</strong> Whisper иногда «галлюцинирует» текст в местах тишины — пишет случайные фразы. <code>vad_filter</code> снижает риск, но не убирает. Если видишь в транскрипции странные фразы, не относящиеся к теме — это оно.</li>
-<li><strong>Стоимость API.</strong> Часовая лекция = ~10к слов = ~3 чанка по 6к. Каждый чанк = ~$0.03 на claude-sonnet-4-5. Плюс сшивка. Итого ~$0.15 за лекцию. Дёшево, но если планируешь обрабатывать сотни — лучше брать <code>claude-haiku</code>.</li>
+<li><strong>Стоимость API.</strong> Часовая лекция = ~10к слов = ~3 чанка по 6к. Каждый чанк = ~$0.03 на ⟦claude.smart⟧. Плюс сшивка. Итого ~$0.15 за лекцию. Дёшево, но если планируешь обрабатывать сотни — лучше брать <code>⟦claude.fast⟧</code>.</li>
 <li><strong>Whisper жрёт RAM.</strong> На <code>large-v3</code> можно упереться в 4–8 ГБ оперативки. Если ноут слабый — оставайся на <code>medium</code>.</li>
 <li><strong>Этика записи.</strong> Если на лекции платный курс с NDA — подумай, ОК ли отправлять расшифровку в Anthropic. Локальная версия (Whisper + локальная LLM через Ollama) решает приватность, но качество структуризации заметно ниже.</li>
 </ul>
@@ -26640,12 +26656,10 @@ if __name__ == "__main__":
 <p>Я гоняю эту штуку уже год по своим лекциям, вебинарам, иногда — длинным звонкам с клиентами (с разрешения). Главный эффект: я перестал бояться двухчасовых записей. Раньше у меня была папка «послушать потом» на 40 файлов, и я знал, что никогда туда не вернусь. Теперь — закинул на ночь скрипт на batch-обработку, утром в Obsidian лежат конспекты, ищу по тегам, нахожу нужное за минуту.</p>
 
 <p>Это типичный пример AI-инструмента, который не делает за тебя работу, а снимает барьер «слишком долго, чтобы начать». А когда барьер снят, ты делаешь в 10 раз больше.</p>
-
 `);
 
 
 registerLesson("p18", `
-
 <h1>Проект «За 1 час»: Генератор Anki-карточек из PDF учебника</h1>
 
 <div class="lesson-meta">
@@ -26797,7 +26811,7 @@ def generate_cards(chapter_title, chapter_text):
     text = chapter_text[:15000]
 
     resp = client.messages.create(
-        model="claude-sonnet-4-5",
+        model="⟦claude.smart⟧",
         max_tokens=3500,
         system=CARDS_PROMPT,
         messages=[{
@@ -26977,7 +26991,7 @@ if __name__ == "__main__":
 <li><strong>Сканированный PDF.</strong> Если PDF — это фотки страниц, а не текстовый — <code>pdfplumber</code> ничего не извлечёт. Прогони сначала через OCR (например, <code>ocrmypdf</code> — обёртка над Tesseract: <code>ocrmypdf in.pdf out.pdf -l rus</code>). Качество OCR на русском вузовском учебнике обычно норм.</li>
 <li><strong>Школа vs вуз.</strong> Школьные учебники — структурированные, главы чёткие, карточки получаются хорошо. Вузовские монографии — часто без чёткой структуры, эвристика главу не находит, фолбэк на чанки даёт «карточки по случайным кускам». Качество ниже.</li>
 <li><strong>Галлюцинации.</strong> Иногда Claude подмешивает факты, которых в тексте нет (особенно если глава короткая — модель «дополняет» из общих знаний). Промпт явно запрещает, но не на 100%. Перед серьёзным использованием — спот-чек 30 карточек на достоверность.</li>
-<li><strong>Стоимость.</strong> Учебник 200 страниц = ~20 глав = ~20 запросов к API = ~$0.6. Дёшево для разовой задачи, но за серию учебников быстро набегает. На <code>claude-haiku</code> в 5 раз дешевле, но качество карточек заметно хуже — лучше платить за sonnet.</li>
+<li><strong>Стоимость.</strong> Учебник 200 страниц = ~20 глав = ~20 запросов к API = ~$0.6. Дёшево для разовой задачи, но за серию учебников быстро набегает. На <code>⟦claude.fast⟧</code> примерно вдвое дешевле, но качество карточек заметно хуже — лучше платить за Sonnet.</li>
 <li><strong>Один и тот же deck_id перезапишет.</strong> Если в коде захардкодишь ID и сгенерируешь две версии — вторая при импорте сольётся в первую. Поэтому в коде <code>random.randrange</code> при каждом запуске даёт новый ID. Если нужно обновлять одну колоду — сохраняй ID и используй один и тот же.</li>
 <li><strong>Авторское право.</strong> Если учебник — твой личный, для собственного обучения — всё ОК. Если ты массово генерируешь колоды по чужим учебникам и распространяешь — это уже серая зона по авторскому праву.</li>
 <li><strong>Карточки не равно знание.</strong> Самая частая ошибка — сгенерировал 500 карточек, поставил на повторение, через месяц забросил. Лучше 100 хорошо проработанных карточек, чем 500 механических. Прорежай.</li>
@@ -26988,7 +27002,6 @@ if __name__ == "__main__":
 <p>Я делал колоды для подготовки к собеседованиям (System Design, алгоритмы) — 30 минут на главу из <em>Designing Data-Intensive Applications</em> вместо двух дней ручного выписывания. Точность карточек ~85%, остальное правлю на лету. На жену делал колоду по фармакологии для её повышения квалификации — 4 учебника за вечер.</p>
 
 <p>Главная мысль: Anki давно перестала быть «инструментом для медиков-задротов». Это рабочая память для любой профессии, где много фактического материала. Но создание карточек руками — барьер, на котором отваливается 90% людей. Этот скрипт убирает барьер. А дальше — пользоваться или забить — уже не задача инструмента.</p>
-
 `);
 
 
@@ -27387,7 +27400,7 @@ sudo journalctl -u summary-bot -f</code></pre>
 
 <h2>Что в итоге</h2>
 
-<p>За 75 минут у тебя в Telegram живёт собственный личный assistant, который снимает боль непрочитанных чатов. Без VPN, без зарубежной карты, без подписки. На бесплатном тире проживёт год минимум. Это — рабочий пример того, что РФ-стек для AI-проектов давно перестал быть «второсортным»: GigaChat по качеству для саммари сравним с gpt-4o-mini, а в личных проектах разницы ты просто не заметишь.</p>
+<p>За 75 минут у тебя в Telegram живёт собственный личный assistant, который снимает боль непрочитанных чатов. Без VPN, без зарубежной карты, без подписки. На бесплатном тире проживёт год минимум. Это — рабочий пример того, что РФ-стек для AI-проектов давно перестал быть «второсортным»: GigaChat по качеству для саммари сравним с ⟦openai.mini⟧, а в личных проектах разницы ты просто не заметишь.</p>
 
 <p>Заодно ты понял, как устроен типичный AI-pipeline: пользователь → бот → разбиение на чанки → LLM → merge → ответ. Эта же схема работает для RAG, для классификации, для агентов — меняется только содержимое промпта.</p>
 
@@ -36684,6 +36697,18 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-09-27",
+    title: "🔄 Модели в уроках — актуальные",
+    tag: "update",
+    items: [
+      "Уроки p11 «Голосовой ассистент» и p13 «Браузерное расширение» снова работают. Их код обращался к моделям Claude 3.5, которые Anthropic отключила; теперь там Claude Sonnet 5 и Claude Haiku 4.5",
+      "Урок 6: актуальная линейка моделей OpenAI и цены. Отключённую в 2025 году o1-mini убрали из примера",
+      "Урок 17: вместо закрытого Assistants API — Responses API и Agents SDK",
+      "Код ещё 12 уроков переведён с Claude Sonnet 4.5 на Claude Sonnet 5",
+      "Модели в уроках теперь берутся из одного справочника и раз в неделю сверяются с официальными списками Anthropic и OpenAI"
+    ]
+  },
   {
     date: "2026-09-27",
     title: "Страница «Что собрали»",

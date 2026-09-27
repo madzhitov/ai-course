@@ -60,7 +60,7 @@
 <tr><td><strong>Microsoft Semantic Kernel</strong></td><td>.NET/Python, enterprise-friendly</td><td>Корпоративный .NET-мир</td></tr>
 <tr><td><strong>Microsoft AutoGen / Agent Framework</strong></td><td>Multi-agent collaboration</td><td>Несколько агентов разных ролей</td></tr>
 <tr><td><strong>CrewAI</strong></td><td>Multi-agent с роль-плеем</td><td>Декларативное описание команды</td></tr>
-<tr><td><strong>OpenAI Assistants API / Swarm</strong></td><td>Managed</td><td>На OpenAI, без своей инфраструктуры</td></tr>
+<tr><td><strong>OpenAI Agents SDK + Responses API</strong></td><td>Родной для OpenAI</td><td>Агенты на моделях OpenAI со встроенными инструментами</td></tr>
 <tr><td><strong>Anthropic SDK + tools</strong></td><td>Минимальный, нативный</td><td>Когда хочется просто, без обвязок</td></tr>
 <tr><td><strong>Vercel AI SDK</strong></td><td>JS-first, стриминг</td><td>Next.js / React приложения</td></tr>
 <tr><td><strong>Pydantic AI</strong></td><td>Type-safe, новый</td><td>Любители строгой типизации</td></tr>
@@ -113,11 +113,11 @@ crew = Crew(agents=[researcher, writer], tasks=[...])
 crew.kickoff()</code></pre>
 <p>Хорош для быстрых прототипов multi-agent сценариев.</p>
 
-<h2>7. OpenAI Assistants API</h2>
-<p>Это managed-сервис. Создаёшь Assistant с инструментами, threads (диалоги), runs (один шаг). OpenAI хранит state, ты — только клиент.</p>
-<p><strong>Плюсы:</strong> не нужна своя инфраструктура. Code interpreter и file search встроены.</p>
-<p><strong>Минусы:</strong> привязка к OpenAI. Меньше гибкости. Дороже.</p>
-<p>В 2024 OpenAI выпустили также <strong>Swarm</strong> — лёгкий multi-agent open-source.</p>
+<h2>7. OpenAI Agents SDK и Responses API</h2>
+<p>Раньше здесь был Assistants API: managed-сервис с threads (диалогами) и runs (шагами). OpenAI закрыл его 26 августа 2026 года. Замена — <strong>Responses API</strong>: один вызов модели со встроенными инструментами (поиск в интернете, поиск по файлам, запуск кода). Историю диалога может хранить сам OpenAI, через Conversations API.</p>
+<p>Поверх этого — <strong>Agents SDK</strong>, открытая библиотека для Python и TypeScript: агенты, инструменты, передача задачи от агента к агенту. Она выросла из экспериментального Swarm 2024 года.</p>
+<p><strong>Плюсы:</strong> меньше своей инфраструктуры, инструменты встроены.</p>
+<p><strong>Минусы:</strong> привязка к OpenAI.</p>
 
 <h2>8. Минималистский подход — Anthropic SDK + tools</h2>
 <p>Anthropic в своём <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank">блог-посте 2024 «Building effective agents»</a> явно сказал: <em>«В большинстве случаев вам не нужен фреймворк. Простой while-loop с tools достаточен.»</em></p>

@@ -39,7 +39,6 @@
   <div class="lesson-view">
     <a class="pp-home" href="/">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P15</span></div>
-
 <h1>Проект «За 1 час»: Личный AI-секретарь — автоответы на email + дневной чек-ин</h1>
 
 <div class="lesson-meta">
@@ -194,7 +193,7 @@ def classify_batch(emails):
     ]
 
     resp = client.messages.create(
-        model="claude-sonnet-4-5",
+        model="claude-sonnet-5",
         max_tokens=4000,
         system=CLASSIFY_PROMPT,
         messages=[{"role": "user", "content": json.dumps(payload, ensure_ascii=False)}],
@@ -209,7 +208,7 @@ def classify_batch(emails):
     return json.loads(text)
 </code></pre>
 
-<p>Я выбрал <code>claude-sonnet-4-5</code> — она достаточно умная для нюансов («это срочно от босса» vs «это рассылка от Jira»). Haiku тоже подойдёт, но иногда промахивается с «template».</p>
+<p>Я выбрал <code>claude-sonnet-5</code> — она достаточно умная для нюансов («это срочно от босса» vs «это рассылка от Jira»). Haiku тоже подойдёт, но иногда промахивается с «template».</p>
 
 <h2>Шаг 4: сохраняем черновики в папку Drafts</h2>
 
@@ -386,7 +385,6 @@ if __name__ == "__main__":
 <div class="callout callout-info" style="margin-top: 1.5rem;">
 <strong>Без VPN и подписок:</strong> полностью локальная версия — без западных API, без подписок, ничего не уходит в облако — <a href="#lesson-p21" onclick="openLesson('p21'); return false;">урок p21</a> (AI-секретарь на Ollama).
 </div>
-
 
     <div class="pp-open"><a href="/#lesson-p15">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

@@ -86,7 +86,7 @@ client = anthropic.Anthropic()
 def analyze_receipt(image_bytes):
     img64 = base64.b64encode(image_bytes).decode()
     msg = client.messages.create(
-      model="claude-sonnet-4-5",
+      model="claude-sonnet-5",
       max_tokens=1024,
       messages=[{
         "role": "user",

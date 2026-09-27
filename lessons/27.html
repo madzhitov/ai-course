@@ -129,7 +129,7 @@
 from langchain_anthropic import ChatAnthropic
 import asyncio
 
-llm = ChatAnthropic(model="claude-sonnet-4-5")
+llm = ChatAnthropic(model="claude-sonnet-5")
 
 task = (
     "Зайди на сайт документации Playwright. "
@@ -199,7 +199,6 @@ asyncio.run(main())</code></pre>
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> браузер для агента — это не магическая кнопка «сделай как человек», а недоверенная среда, где страница может атаковать агента спрятанной инструкцией. Прежде чем дать агенту руки в браузере, дай ему whitelist, изолированный профиль и человека на критичных решениях.
 </div>
-
 
     <div class="pp-open"><a href="/#lesson-27">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>
