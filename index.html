@@ -34377,7 +34377,7 @@ function buildNav() {
   const pointers = [
     ['about','Что это'], ['howto','Как заниматься'], ['faq','FAQ'],
     ['resources','Источники'], ['glossary','Глоссарий'], ['changelog','Что нового'],
-    ['my-progress','Мой путь'], ['routes','Маршруты'], ['artifacts','Что собрали'],
+    ['my-progress','Мой путь'], ['routes','Маршруты'],
   ];
   pointers.forEach(([id,label]) => {
     const handler = id === 'glossary' ? 'openGlossary()' : `openStaticPage('${id}')`;
@@ -34436,7 +34436,6 @@ function renderFooter() {
           <span onclick="openStaticPage('changelog')">Что нового</span>
           <span onclick="openStaticPage('my-progress')">Мой путь</span>
           <span onclick="openStaticPage('routes')">Маршруты</span>
-          <span onclick="openStaticPage('artifacts')">Что собрали</span>
         </div>
       </div>
     </div>
