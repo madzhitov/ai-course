@@ -34596,7 +34596,7 @@ function renderLesson(id) {
   const showNudge = lesson.track === 'projects' ? `
     <div class="art-nudge">
       <span class="alesha-logo sm">А</span>
-      <span>Собрал? Покажи, что получилось: <a onclick="openStaticPage('artifacts')">что уже собрали</a> · <a href="https://t.me/madzhitov" target="_blank" rel="noopener" onclick="umTrack('artifact-submit-click', { from: 'lesson', lesson: currentLessonId })">написать @madzhitov</a></span>
+      <span>Собрал? Покажи, что получилось: <a href="https://t.me/madzhitov" target="_blank" rel="noopener" onclick="umTrack('artifact-submit-click', { from: 'lesson', lesson: currentLessonId })">написать @madzhitov</a></span>
     </div>` : '';
 
   container.innerHTML = '<div class="lesson-view">' + body + showNudge + shareSection + actions + '</div>';
