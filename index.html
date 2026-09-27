@@ -34272,7 +34272,7 @@ function toggleCompleted(id) {
   } else {
     progress[id] = true;
     trackEvent(`lesson-complete-${id}`, `Lesson completed: ${id}`);
-    umTrack('lesson-complete', { lesson: id, phase: (findLesson(id) || {}).phase || null });
+    umTrack('lesson-complete', { lesson: id, phase: (findLesson(id) || {}).phase || null, track: (findLesson(id) || {}).track || 'main' });
   }
   saveProgress();
   renderLesson(currentLessonId);
@@ -34470,6 +34470,7 @@ function renderLesson(id) {
   // id трека — строка (c3, i2, v5): в onclick нужны кавычки, иначе openLesson(c3) = ReferenceError
   const prevIdStr = prevLesson ? (typeof prevLesson.id === 'string' ? `'${prevLesson.id}'` : prevLesson.id) : '';
   const nextIdStr = nextLesson ? (typeof nextLesson.id === 'string' ? `'${nextLesson.id}'` : nextLesson.id) : '';
+  const idStr = typeof id === 'string' ? `'${id}'` : id;
 
   const writtenIds = LESSONS.filter(l => l.content).map(l => l.id).filter(x => typeof x === 'number').sort((a,b) => a-b);
   const availableRange = writtenIds.length
@@ -34545,7 +34546,7 @@ function renderLesson(id) {
   const actions = `
     <div class="lesson-actions">
       <label class="complete-checkbox">
-        <input type="checkbox" ${completed ? 'checked' : ''} onchange="toggleCompleted(${id})">
+        <input type="checkbox" ${completed ? 'checked' : ''} onchange="toggleCompleted(${idStr})">
         <span>${completed ? 'Урок пройден' : 'Отметить как пройденный'}</span>
       </label>
       <div class="nav-buttons">
@@ -34554,7 +34555,7 @@ function renderLesson(id) {
       </div>
     </div>
     ${completed ? `
-    <a href="https://t.me/artefakty_ai" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 0.75rem; margin-top: 1.5rem; padding: 0.875rem 1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; text-decoration: none; color: inherit;">
+    <a href="https://t.me/artefakty_ai" target="_blank" rel="noopener" onclick="umTrack('tg-click', { from: 'lesson', lesson: currentLessonId })" style="display: flex; align-items: center; gap: 0.75rem; margin-top: 1.5rem; padding: 0.875rem 1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; text-decoration: none; color: inherit;">
       <div style="width: 32px; height: 32px; background: #0a0a0a; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #fff;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
       </div>
@@ -36625,6 +36626,15 @@ function fmtDate(isoDate) {
 const CHANGELOG = [
   {
     date: "2026-09-27",
+    title: "Отметка «пройден» заработала во всех тропинках",
+    tag: "fix",
+    items: [
+      "В уроках всех пяти тропинок — Claude Deep Dive, мини-проекты, индустрии, AI каждый день и «Вайб Код Вам Дам» — галочка «Отметить как пройденный» не срабатывала, и прогресс по тропинкам не сохранялся. Исправлено",
+      "Прогресс главного пути это не затронуло — всё, что ты отмечал раньше, на месте"
+    ]
+  },
+  {
+    date: "2026-09-27",
     title: "Исправлен показ кода в 10 уроках",
     tag: "fix",
     items: [
@@ -37460,7 +37470,7 @@ function renderHome() {
           <button class="start-btn" onclick="openLesson(1)">Начать с Урока 1 →</button>
           <button class="start-btn-sec" onclick="openStaticPage('about')">Чем отличается</button>
         </div>
-        <p class="home-author">«Артефакты» собирает и обновляет <a href="https://madzhitov.ru" target="_blank"><b>Руслан Маджитов</b></a> · канал <a href="https://t.me/artefakty_ai" target="_blank">@artefakty_ai</a> · связь <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a></p>
+        <p class="home-author">«Артефакты» собирает и обновляет <a href="https://madzhitov.ru" target="_blank"><b>Руслан Маджитов</b></a> · канал <a href="https://t.me/artefakty_ai" target="_blank" onclick="umTrack('tg-click', { from: 'home' })">@artefakty_ai</a> · связь <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a></p>
       </div>
       ${renderRoutesBoard()}
       ${contLine}
@@ -37548,7 +37558,7 @@ function renderAbout() {
       Telegram для вопросов и предложений: <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a>.
     </div>
 
-    <a href="https://t.me/artefakty_ai" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: inherit; margin-bottom: 2rem; transition: transform 0.15s, box-shadow 0.15s;">
+    <a href="https://t.me/artefakty_ai" target="_blank" rel="noopener" onclick="umTrack('tg-click', { from: 'about' })" style="display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: inherit; margin-bottom: 2rem; transition: transform 0.15s, box-shadow 0.15s;">
       <div style="width: 44px; height: 44px; background: #0a0a0a; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #fff;">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
       </div>
