@@ -3886,6 +3886,20 @@ code, pre, kbd, samp,
 .home .cont-line { display:flex; flex-direction:column; gap:2px; background:var(--accent-soft); border:1px solid var(--accent-mid); border-radius:12px; padding:13px 16px; margin:18px 0 0; cursor:pointer; max-width:760px; }
 .home .cont-eye { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); font-weight:700; }
 .home .cont-ttl { font-size:15px; color:var(--ink); font-weight:600; }
+/* ===== Что собрали (#artifacts) и реплика Алёши в конце мини-проекта ===== */
+#lesson-content .art-list { display:flex; flex-direction:column; gap:22px; margin:26px 0 8px; max-width:640px; }
+#lesson-content .art-title { font-size:17px; font-weight:600; line-height:1.35; }
+#lesson-content .art-title a { color:var(--accent); text-decoration:none; }
+#lesson-content .art-title a:hover { text-decoration:underline; }
+#lesson-content .art-what { font-size:15px; color:var(--ink); line-height:1.55; margin-top:3px; }
+#lesson-content .art-meta { font-size:13px; color:var(--muted); margin-top:4px; }
+#lesson-content .art-meta a { color:var(--muted); cursor:pointer; text-decoration:underline; text-decoration-color:var(--line); }
+#lesson-content .art-empty { font-size:15px; color:var(--muted); margin:26px 0 8px; }
+#lesson-content .art-submit { display:inline-block; margin-top:6px; padding:10px 16px; border-radius:10px; background:var(--accent); color:#fff; font-weight:600; font-size:14px; text-decoration:none; }
+html[data-theme="dark"] #lesson-content .art-submit { color:#0f1a14; }
+.art-nudge { display:flex; align-items:center; gap:10px; margin:28px 0 0; font-size:14px; color:var(--muted); line-height:1.5; }
+.art-nudge a { color:var(--accent); cursor:pointer; text-decoration:none; font-weight:600; }
+.art-nudge a:hover { text-decoration:underline; }
 .home .opath-link { display:inline-block; margin-top:18px; color:var(--accent); font-weight:600; font-size:15px; cursor:pointer; text-decoration:none; border-bottom:1px solid var(--accent-mid); }
 
 /* ===== БЕНТО «Куда идти» (главная) ===== */
