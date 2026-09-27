@@ -3929,6 +3929,20 @@ code, pre, kbd, samp,
 .home .cont-line { display:flex; flex-direction:column; gap:2px; background:var(--accent-soft); border:1px solid var(--accent-mid); border-radius:12px; padding:13px 16px; margin:18px 0 0; cursor:pointer; max-width:760px; }
 .home .cont-eye { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); font-weight:700; }
 .home .cont-ttl { font-size:15px; color:var(--ink); font-weight:600; }
+/* ===== Что собрали (#artifacts) и реплика Алёши в конце мини-проекта ===== */
+#lesson-content .art-list { display:flex; flex-direction:column; gap:22px; margin:26px 0 8px; max-width:640px; }
+#lesson-content .art-title { font-size:17px; font-weight:600; line-height:1.35; }
+#lesson-content .art-title a { color:var(--accent); text-decoration:none; }
+#lesson-content .art-title a:hover { text-decoration:underline; }
+#lesson-content .art-what { font-size:15px; color:var(--ink); line-height:1.55; margin-top:3px; }
+#lesson-content .art-meta { font-size:13px; color:var(--muted); margin-top:4px; }
+#lesson-content .art-meta a { color:var(--muted); cursor:pointer; text-decoration:underline; text-decoration-color:var(--line); }
+#lesson-content .art-empty { font-size:15px; color:var(--muted); margin:26px 0 8px; }
+#lesson-content .art-submit { display:inline-block; margin-top:6px; padding:10px 16px; border-radius:10px; background:var(--accent); color:#fff; font-weight:600; font-size:14px; text-decoration:none; }
+html[data-theme="dark"] #lesson-content .art-submit { color:#0f1a14; }
+.art-nudge { display:flex; align-items:center; gap:10px; margin:28px 0 0; font-size:14px; color:var(--muted); line-height:1.5; }
+.art-nudge a { color:var(--accent); cursor:pointer; text-decoration:none; font-weight:600; }
+.art-nudge a:hover { text-decoration:underline; }
 .home .opath-link { display:inline-block; margin-top:18px; color:var(--accent); font-weight:600; font-size:15px; cursor:pointer; text-decoration:none; border-bottom:1px solid var(--accent-mid); }
 
 /* ===== БЕНТО «Куда идти» (главная) ===== */
@@ -4417,6 +4431,11 @@ const ROUTES = [
       51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72,
     ],
   },
+];
+
+// Что собрали — вещи, которые люди собрали по урокам (страница #artifacts).
+// Пополняется только через ./add_artifact.py — руками не вписывать.
+const ARTIFACTS = [
 ];
 
 const LESSONS = [
@@ -23032,10 +23051,6 @@ async def summarize(message: Message):
 <li>Простой rate limiting от спама.</li>
 </ol>
 
-<div class="callout callout-success">
-<strong>🚀 Поделись:</strong> если бот работает — расскажи о нём в чате курса в Telegram. Самые удачные проекты учеников будут в показательной галерее.
-</div>
-
 <div class="callout callout-info" style="margin-top: 1.5rem;">
 <strong>Без VPN и подписок:</strong> тот же бот, но на GigaChat — бесплатно до 1М токенов в месяц, оплата с российской карты, без VPN. Полный код — <a href="#lesson-p19" onclick="openLesson('p19'); return false;">урок p19</a>.
 </div>
@@ -34362,7 +34377,7 @@ function buildNav() {
   const pointers = [
     ['about','Что это'], ['howto','Как заниматься'], ['faq','FAQ'],
     ['resources','Источники'], ['glossary','Глоссарий'], ['changelog','Что нового'],
-    ['my-progress','Мой путь'], ['routes','Маршруты'],
+    ['my-progress','Мой путь'], ['routes','Маршруты'], ['artifacts','Что собрали'],
   ];
   pointers.forEach(([id,label]) => {
     const handler = id === 'glossary' ? 'openGlossary()' : `openStaticPage('${id}')`;
@@ -34421,6 +34436,7 @@ function renderFooter() {
           <span onclick="openStaticPage('changelog')">Что нового</span>
           <span onclick="openStaticPage('my-progress')">Мой путь</span>
           <span onclick="openStaticPage('routes')">Маршруты</span>
+          <span onclick="openStaticPage('artifacts')">Что собрали</span>
         </div>
       </div>
     </div>
@@ -34577,7 +34593,14 @@ function renderLesson(id) {
     </div>
   `;
 
-  container.innerHTML = '<div class="lesson-view">' + body + shareSection + actions + '</div>';
+  // Мини-проект — это собранная вещь. В конце — реплика Алёши: собрал? покажи.
+  const showNudge = lesson.track === 'projects' ? `
+    <div class="art-nudge">
+      <span class="alesha-logo sm">А</span>
+      <span>Собрал? Покажи, что получилось: <a onclick="openStaticPage('artifacts')">что уже собрали</a> · <a href="https://t.me/madzhitov" target="_blank" rel="noopener" onclick="umTrack('artifact-submit-click', { from: 'lesson', lesson: currentLessonId })">написать @madzhitov</a></span>
+    </div>` : '';
+
+  container.innerHTML = '<div class="lesson-view">' + body + showNudge + shareSection + actions + '</div>';
 
   // Post-render enhancements
   enhanceCodeBlocks(container);
@@ -35272,6 +35295,43 @@ function renderRoutes() {
 }
 
 
+// Что собрали — вещи, которые люди собрали по урокам. Данные: ARTIFACTS (через ./add_artifact.py).
+function renderArtifacts() {
+  // только http(s): ссылка из данных не должна стать javascript:-ссылкой
+  const safeUrl = u => /^https?:\/\//.test(u || '') ? u : null;
+  const items = ARTIFACTS.slice().sort((a, b) => (b.date || '').localeCompare(a.date || '')).map(a => {
+    const url = safeUrl(a.url);
+    const title = url
+      ? `<a href="${esc(url)}" target="_blank" rel="noopener" onclick="umTrack('artifact-open', { url: this.href })">${esc(a.title)}</a>`
+      : esc(a.title);
+    const authorUrl = safeUrl(a.authorUrl);
+    const by = a.author ? (authorUrl ? `<a href="${esc(authorUrl)}" target="_blank" rel="noopener">${esc(a.author)}</a>` : esc(a.author)) : '';
+    const l = a.lesson != null ? findLesson(a.lesson) : null;
+    const oid = l ? (typeof l.id === 'number' ? l.id : `'${l.id}'`) : null;
+    const from = l ? `по уроку <a onclick="openLesson(${oid})">${esc(l.title)}</a>` : '';
+    const meta = [by, from].filter(Boolean).join(' · ');
+    return `<div class="art-item">
+      <div class="art-title">${title}</div>
+      <div class="art-what">${esc(a.what || '')}</div>
+      ${meta ? `<div class="art-meta">${meta}</div>` : ''}
+    </div>`;
+  }).join('');
+  const list = items
+    ? `<div class="art-list">${items}</div>`
+    : `<p class="art-empty">Пока здесь пусто. Первые ещё собирают.</p>`;
+  document.getElementById('lesson-content').innerHTML = `
+    <div class="lesson-view">
+      <h1>Что собрали</h1>
+      <p class="sub-lead">Вещи, которые люди собрали по урокам: боты, помощники, скрипты, таблицы. Не сертификаты, а артефакты. Они работают.</p>
+      ${list}
+      <h2 class="mp-h2">Как сюда попасть</h2>
+      <p class="sec-lead">Собрал что-то по уроку? Покажи. Напиши в Telegram: ссылку, которая открывается без входа, одну строку о том, что оно делает, и по какому уроку сделано. Подпишем так, как скажешь: именем, ником или без имени. Новое появляется здесь раз в неделю.</p>
+      <a class="art-submit" href="https://t.me/madzhitov" target="_blank" rel="noopener" onclick="umTrack('artifact-submit-click', { from: 'page' })">Написать @madzhitov</a>
+    </div>
+  `;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 // Открыть маршрут — секцию (тропинку) или первый незавершённый урок
 function openRoute(routeId) {
   const route = ROUTES.find(r => r.id === routeId);
@@ -35916,6 +35976,7 @@ function openStaticPage(name) {
   else if (name === 'admin') renderAdmin();
   else if (name === 'my-progress') renderMyProgress();
   else if (name === 'routes') renderRoutes();
+  else if (name === 'artifacts') renderArtifacts();
   else if (name === 'trails') renderTrails();
 }
 
@@ -36624,6 +36685,17 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-09-27",
+    title: "Страница «Что собрали»",
+    tag: "new",
+    items: [
+      "Новая страница «Что собрали» — вещи, которые люди собрали по урокам: боты, помощники, скрипты, таблицы. Не сертификаты, а артефакты",
+      "Собрал что-то по уроку — пришли ссылку @madzhitov в Telegram, раз в неделю новое появляется на странице. Подпишем так, как скажешь: именем, ником или без имени",
+      "В конце каждого мини-проекта — короткая подсказка, как показать, что получилось",
+      "Прямые ссылки на «Маршруты» и обзор тропинок открывали главную страницу — исправлено"
+    ]
+  },
   {
     date: "2026-09-27",
     title: "Отметка «пройден» заработала во всех тропинках",
@@ -38081,7 +38153,7 @@ if (hashMatch) {
   openGlossary(glossaryTermHash[1]);
 } else if (staticHash === 'glossary') {
   openGlossary();
-} else if (['home', 'about', 'howto', 'faq', 'changelog', 'resources', 'admin', 'my-progress'].includes(staticHash)) {
+} else if (['home', 'about', 'howto', 'faq', 'changelog', 'resources', 'admin', 'my-progress', 'routes', 'trails', 'artifacts'].includes(staticHash)) {
   openStaticPage(staticHash);
 } else {
   // По умолчанию — Home
