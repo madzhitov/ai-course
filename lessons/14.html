@@ -159,27 +159,19 @@ def ask(question, n=4):
     results = collection.query(query_embeddings=[embed(question)], n_results=n,
                                include=["documents", "metadatas", "distances"])
     chunks = [
-        f"[{results['metadatas'][0][i]['source']}]
-{results['documents'][0][i]}"
+        f"[{results['metadatas'][0][i]['source']}]\n{results['documents'][0][i]}"
         for i in range(len(results["documents"][0]))
         if 1 - results["distances"][0][i] > 0.5
     ]
     if not chunks:
         return "❌ В документах нет информации по этому вопросу."
     
-    context = "
-
----
-
-".join(chunks)
+    context = "\n\n---\n\n".join(chunks)
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": "Отвечай ТОЛЬКО на основе контекста. Если ответа нет — так и скажи."},
-            {"role": "user", "content": f"Контекст:
-{context}
-
-Вопрос: {question}"}
+            {"role": "user", "content": f"Контекст:\n{context}\n\nВопрос: {question}"}
         ],
         temperature=0.2
     )
@@ -192,8 +184,7 @@ for f in ["notes.txt", "manual.txt"]:
 
 # Интерактивный режим
 while True:
-    q = input("
-Вопрос: ").strip()
+    q = input("\nВопрос: ").strip()
     if q.lower() in ["выход", "exit"]: break
     print(ask(q))</code></pre>
 

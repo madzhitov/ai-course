@@ -193,11 +193,7 @@ def merge_summaries(parts: list[str]) -> str:
     if len(parts) == 1:
         return parts[0]
 
-    joined = "
-
----
-
-".join(parts)
+    joined = "\n\n---\n\n".join(parts)
     merge_prompt = (
         "Тебе даны несколько фрагментов саммари длинной переписки. "
         "Сшей их в одно итоговое саммари по тому же формату "
@@ -239,13 +235,9 @@ def split_text(text: str) -> list[str]:
     start = 0
     while start < len(text):
         end = min(start + CHUNK_SIZE, len(text))
-        # стараемся резать по 
-
-, чтобы не рвать сообщение пополам
+        # стараемся резать по \n\n, чтобы не рвать сообщение пополам
         if end < len(text):
-            nl = text.rfind("
-
-", start, end)
+            nl = text.rfind("\n\n", start, end)
             if nl > start + CHUNK_SIZE // 2:
                 end = nl
         chunks.append(text[start:end])
@@ -290,17 +282,11 @@ BUFFER_WAIT_SEC = 2.0  # сколько ждём после последнего
 
 async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "Привет! Я суммаризирую длинные чаты через GigaChat.
-
-"
+        "Привет! Я суммаризирую длинные чаты через GigaChat.\n\n"
         "Перешли мне одно или несколько сообщений из любого чата — "
-        "через пару секунд получишь TL;DR.
-
-"
-        "Команды:
-"
-        "/summary — принудительно собрать саммари по тому, что в буфере
-"
+        "через пару секунд получишь TL;DR.\n\n"
+        "Команды:\n"
+        "/summary — принудительно собрать саммари по тому, что в буфере\n"
         "/stats — сколько раз ты пользовался ботом"
     )
 
@@ -337,9 +323,7 @@ async def on_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
 
 async def process_buffer(update: Update, uid: int):
-    full_text = "
-
-".join(t for _, t in buffer[uid])
+    full_text = "\n\n".join(t for _, t in buffer[uid])
     buffer[uid] = []
 
     if len(full_text) < 200:
@@ -456,7 +440,6 @@ sudo journalctl -u summary-bot -f</code></pre>
 <div class="callout callout-success">
 <strong>Готово!</strong> Дальше — добавь к боту команду <code>/tldr</code> с укороченным форматом и запусти на Yandex Cloud. Через неделю использования сам поймёшь, какие ещё команды тебе нужны лично. Это самый честный способ развивать пет-проект — собственным трением.
 </div>
-
 
     <div class="pp-open"><a href="/#lesson-p19">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

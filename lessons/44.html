@@ -180,8 +180,7 @@ from gensim.models import Word2Vec, KeyedVectors
 
 # --- 1. Корпус: список предложений, каждое предложение — список слов -------
 raw = open("corpus.txt", encoding="utf-8").read().lower()
-sentences = [re.findall(r"[а-яё]+", s) for s in re.split(r"[.!?
-]", raw)]
+sentences = [re.findall(r"[а-яё]+", s) for s in re.split(r"[.!?\n]", raw)]
 sentences = [s for s in sentences if len(s) &gt;= 3]
 print("предложений:", len(sentences), "| словоупотреблений:", sum(map(len, sentences)))
 
@@ -293,7 +292,6 @@ print(pre.most_similar("ключ", topn=10))   # смыслы перемешан
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> посмотри соседей слова «ключ» в готовых векторах для русского. В одном списке окажутся и «замок», и «родник» — модель не выбирает смысл, она их усредняет. Держи эту картинку в голове: она объясняет, зачем дальше понадобились трансформеры.
 </div>
-
 
     <div class="pp-open"><a href="/#lesson-44">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

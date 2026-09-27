@@ -139,16 +139,11 @@ def load_memory():
 def save_note(note):
     today = datetime.date.today().isoformat()
     with MEMORY.open("a", encoding="utf-8") as f:
-        f.write(f"
-## {today}
-{note}
-")
+        f.write(f"\n## {today}\n{note}\n")
 
 def run_session(task):
-    system = ("Ты — ассистент с долговременной памятью.
-"
-              "Твои заметки о пользователе и проектах:
-"
+    system = ("Ты — ассистент с долговременной памятью.\n"
+              "Твои заметки о пользователе и проектах:\n"
               + load_memory())
     messages = [{"role": "user", "content": task}]
     answer = ask_model(system, messages)
@@ -203,7 +198,6 @@ def run_session(task):
 </ol>
 
 <div class="callout callout-info"><strong>📌 Закрепление:</strong> открой свой самый длинный чат с любой моделью и найди сообщение, после которого ответы перестали держать нить, — вот твой личный context rot. Потом объясни кому-нибудь за две минуты, почему «скормим модели вообще всё» — плохой план и что такое компакция. Получилось без подглядывания — урок усвоен.</div>
-
 
     <div class="pp-open"><a href="/#lesson-25">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

@@ -156,9 +156,7 @@ WB_TOKEN=eyJhbGciOiJFUzI1NiIsImtpZCI6...</code></pre>
 
 Жёсткие ограничения:
 - "title": до 60 символов, начинается с типа товара (Джинсы, Платье, Футболка), без CAPS и без эмодзи
-- "description": до 1000 символов, абзацами через 
-
-. Структура: общее описание → состав и качество → для каких случаев → советы по уходу. Без слов "купить", "лучший", "идеальный" — WB не любит маркетинговую воду.
+- "description": до 1000 символов, абзацами через \n\n. Структура: общее описание → состав и качество → для каких случаев → советы по уходу. Без слов "купить", "лучший", "идеальный" — WB не любит маркетинговую воду.
 - "characteristics": массив объектов {"name": "...", "value": "..."}. Обязательные: "Состав", "Сезон", "Страна производства" (если не известна — пиши "Россия"). НЕ ВЫДУМЫВАЙ цифр. Если данных нет — оставь поле пустым.
 - "keywords": массив из 10-15 слов для поиска, через которые товар найдут (без знаков препинания, lowercase).
 
@@ -213,10 +211,7 @@ def generate_card(item_dir: Path, category: str = "clothes") -> dict:
     system_prompt = prompt_file.read_text(encoding="utf-8")
 
     user_text = (
-        f"Описание от продавца:
-{brief}
-
-"
+        f"Описание от продавца:\n{brief}\n\n"
         f"Имена файлов фото (как доп. подсказка): {', '.join(photo_names)}"
     )
 
@@ -397,7 +392,8 @@ if __name__ == "__main__":
 
 <p>Скрипт пройдётся по всем подпапкам, для каждой создаст <code>card.json</code> рядом с фото. Открываешь, читаешь глазами. Если ок — заливаешь:</p>
 
-<pre><code>python main.py --goods-dir goods --category clothes   --upload --brand "MyBrand" --price 2490 --subject-id 192</code></pre>
+<pre><code>python main.py --goods-dir goods --category clothes \
+  --upload --brand "MyBrand" --price 2490 --subject-id 192</code></pre>
 
 <p><code>subject-id</code> ищется через отдельный GET-запрос на <code>/content/v2/object/all</code> с параметром <code>name=джинсы</code>. Сделай это один раз вручную через <code>curl</code> и запиши ID нужных категорий в табличку.</p>
 
@@ -435,7 +431,6 @@ if __name__ == "__main__":
 <div class="callout callout-success">
 <strong>Готово!</strong> Дальше — добавь интеграцию с фото-генерацией (<code>yandexgpt-vision</code> для анализа фото и формирования описаний) и сделай Telegram-бот поверх скрипта: селлер шлёт фото — получает готовую карточку прямо в Telegram. На базе p19 и p20 это уже почти готовый micro-SaaS.
 </div>
-
 
     <div class="pp-open"><a href="/#lesson-p20">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

@@ -162,7 +162,8 @@ for epoch in range(30):
 
         # --- шаг 1: дискриминатор ---
         fake = G(torch.randn(BATCH, LATENT, device=device))
-        loss_D = loss_fn(D(real), real_label)                + loss_fn(D(fake.detach()), fake_label)   # detach: G не трогаем
+        loss_D = loss_fn(D(real), real_label) \
+               + loss_fn(D(fake.detach()), fake_label)   # detach: G не трогаем
         opt_D.zero_grad()
         loss_D.backward()
         opt_D.step()
@@ -261,7 +262,6 @@ for epoch in range(30):
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> обучение GAN — это не «минимизируй одно число», а поиск равновесия двух противников. Пока обе loss болтаются рядом и картинки медленно улучшаются — всё идёт правильно, даже если график выглядит некрасиво.
 </div>
-
 
     <div class="pp-open"><a href="/#lesson-40">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

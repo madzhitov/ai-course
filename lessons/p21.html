@@ -222,10 +222,10 @@ def _extract_json(text):
     Достаём первый валидный JSON-объект."""
     text = text.strip()
     if text.startswith("```"):
-        text = re.sub(r"^```(?:json)?s*", "", text)
-        text = re.sub(r"s*```$", "", text)
+        text = re.sub(r"^```(?:json)?\s*", "", text)
+        text = re.sub(r"\s*```$", "", text)
     # на всякий случай ищем первую {...}-структуру
-    match = re.search(r"{.*}", text, re.DOTALL)
+    match = re.search(r"\{.*\}", text, re.DOTALL)
     if match:
         text = match.group(0)
     return json.loads(text)
@@ -346,8 +346,7 @@ async def send_brief(stats, urgent_items, draft_count):
 
     await bot.send_message(
         chat_id=os.getenv("TG_CHAT_ID"),
-        text="
-".join(lines),
+        text="\n".join(lines),
         parse_mode="Markdown",
     )
 </code></pre>
@@ -441,7 +440,7 @@ if __name__ == "__main__":
 
 <h2>Расширения</h2>
 <ul>
-<li><strong>Автотегирование в почте.</strong> Добавляй IMAP-флаги — «Flagged» на urgent, метку «AI-noise» на noise. Потом фильтром в клиенте → шум сразу в архив.</li>
+<li><strong>Автотегирование в почте.</strong> Добавляй IMAP-флаги — «\Flagged» на urgent, метку «AI-noise» на noise. Потом фильтром в клиенте → шум сразу в архив.</li>
 <li><strong>Экспорт TODO.</strong> Если в письме «сделай X к четвергу» — отдельный класс <code>task</code>, и draft = добавить в Things 3 (URL-схема), Todoist или Obsidian-файл.</li>
 <li><strong>Пятничный недельный отчёт.</strong> Второй cron-джоб в пятницу в 17:00 — пробегает по отправленным письмам за неделю и через Ollama же выдаёт «вот что ты на этой неделе сделал». Удобно для журнала или для отчёта руководителю.</li>
 <li><strong>Few-shot стиль.</strong> Подсунь модели 5–10 своих реальных ответов прямо в SYSTEM_PROMPT — драфты становятся заметно «твоими».</li>
@@ -466,7 +465,6 @@ if __name__ == "__main__":
 <div class="callout callout-success">
 <strong>Готово.</strong> Утренний разбор inbox теперь делается локально и бесплатно. Дальше — недельный отчёт по отправленным письмам, экспорт TODO в Things/Todoist, или замена Telegram на native-нотификацию macOS. Всё это докручивается на той же Ollama без единого запроса в облако.
 </div>
-
 
     <div class="pp-open"><a href="/#lesson-p21">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

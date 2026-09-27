@@ -121,13 +121,8 @@ def extract_pdf_pages(path):
             text = page.extract_text() or ""
             # таблицы — отдельно, склеиваем построчно
             for table in page.extract_tables() or []:
-                rows = ["	".join(c or "" for c in row) for row in table]
-                text += "
-
-[TABLE]
-" + "
-".join(rows) + "
-[/TABLE]"
+                rows = ["\t".join(c or "" for c in row) for row in table]
+                text += "\n\n[TABLE]\n" + "\n".join(rows) + "\n[/TABLE]"
             if text.strip():
                 pages.append((i, text))
     return pages
@@ -327,21 +322,12 @@ def ask(question, top_k=5):
     if not hits:
         return "В индексе нет документов. Сначала запусти `index`.", []
 
-    context = "
-
----
-
-".join(
-        f"[Источник: {h['file']}, стр. {h['page']}]
-{h['text']}"
+    context = "\n\n---\n\n".join(
+        f"[Источник: {h['file']}, стр. {h['page']}]\n{h['text']}"
         for h in hits
     )
 
-    user_msg = f"Вопрос: {question}
-
-Фрагменты документов:
-
-{context}"
+    user_msg = f"Вопрос: {question}\n\nФрагменты документов:\n\n{context}"
 
     resp = ollama.chat(
         model=MODEL,
@@ -367,7 +353,7 @@ def main():
     if len(sys.argv) &lt; 2:
         print("Использование:")
         print("  python rag.py index &lt;папка&gt;")
-        print("  python rag.py ask "&lt;вопрос&gt;"")
+        print("  python rag.py ask \"&lt;вопрос&gt;\"")
         sys.exit(1)
 
     cmd = sys.argv[1]
@@ -380,16 +366,13 @@ def main():
 
     elif cmd == "ask":
         if len(sys.argv) &lt; 3:
-            print("Укажи вопрос: python rag.py ask "..."")
+            print("Укажи вопрос: python rag.py ask \"...\"")
             sys.exit(1)
         question = " ".join(sys.argv[2:])
         answer, hits = ask(question)
-        print("
-=== ОТВЕТ ===
-")
+        print("\n=== ОТВЕТ ===\n")
         print(answer)
-        print("
-=== ИСТОЧНИКИ ===")
+        print("\n=== ИСТОЧНИКИ ===")
         for h in hits:
             print(f"  • {h['file']} стр. {h['page']}  (similarity {h['score']:.2f})")
 
@@ -492,7 +475,6 @@ if question:
 <div class="callout callout-success">
 <strong>Готово.</strong> У тебя локальный поиск по личным документам, который ничем не делится с миром. Дальше — индексируй медкарту, договоры, рабочие методички и забудь про «где-то у меня это было». Если захочется поднять качество — поменяй модель эмбеддингов на mpnet или добавь BM25-гибрид в один день работы.
 </div>
-
 
     <div class="pp-open"><a href="/#lesson-p22">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

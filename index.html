@@ -8728,19 +8728,19 @@ def ask(question, n=4):
     results = collection.query(query_embeddings=[embed(question)], n_results=n,
                                include=["documents", "metadatas", "distances"])
     chunks = [
-        f"[{results['metadatas'][0][i]['source']}]\n{results['documents'][0][i]}"
+        f"[{results['metadatas'][0][i]['source']}]\\n{results['documents'][0][i]}"
         for i in range(len(results["documents"][0]))
         if 1 - results["distances"][0][i] > 0.5
     ]
     if not chunks:
         return "❌ В документах нет информации по этому вопросу."
     
-    context = "\n\n---\n\n".join(chunks)
+    context = "\\n\\n---\\n\\n".join(chunks)
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": "Отвечай ТОЛЬКО на основе контекста. Если ответа нет — так и скажи."},
-            {"role": "user", "content": f"Контекст:\n{context}\n\nВопрос: {question}"}
+            {"role": "user", "content": f"Контекст:\\n{context}\\n\\nВопрос: {question}"}
         ],
         temperature=0.2
     )
@@ -8753,7 +8753,7 @@ for f in ["notes.txt", "manual.txt"]:
 
 # Интерактивный режим
 while True:
-    q = input("\nВопрос: ").strip()
+    q = input("\\nВопрос: ").strip()
     if q.lower() in ["выход", "exit"]: break
     print(ask(q))</code></pre>
 
@@ -10971,11 +10971,11 @@ def load_memory():
 def save_note(note):
     today = datetime.date.today().isoformat()
     with MEMORY.open("a", encoding="utf-8") as f:
-        f.write(f"\n## {today}\n{note}\n")
+        f.write(f"\\n## {today}\\n{note}\\n")
 
 def run_session(task):
-    system = ("Ты — ассистент с долговременной памятью.\n"
-              "Твои заметки о пользователе и проектах:\n"
+    system = ("Ты — ассистент с долговременной памятью.\\n"
+              "Твои заметки о пользователе и проектах:\\n"
               + load_memory())
     messages = [{"role": "user", "content": task}]
     answer = ask_model(system, messages)
@@ -11030,7 +11030,6 @@ def run_session(task):
 </ol>
 
 <div class="callout callout-info"><strong>📌 Закрепление:</strong> открой свой самый длинный чат с любой моделью и найди сообщение, после которого ответы перестали держать нить, — вот твой личный context rot. Потом объясни кому-нибудь за две минуты, почему «скормим модели вообще всё» — плохой план и что такое компакция. Получилось без подглядывания — урок усвоен.</div>
-
 `);
 
 
@@ -13662,7 +13661,7 @@ for epoch in range(30):
 
         # --- шаг 1: дискриминатор ---
         fake = G(torch.randn(BATCH, LATENT, device=device))
-        loss_D = loss_fn(D(real), real_label) \
+        loss_D = loss_fn(D(real), real_label) \\
                + loss_fn(D(fake.detach()), fake_label)   # detach: G не трогаем
         opt_D.zero_grad()
         loss_D.backward()
@@ -13762,7 +13761,6 @@ for epoch in range(30):
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> обучение GAN — это не «минимизируй одно число», а поиск равновесия двух противников. Пока обе loss болтаются рядом и картинки медленно улучшаются — всё идёт правильно, даже если график выглядит некрасиво.
 </div>
-
 `);
 
 
@@ -14577,7 +14575,7 @@ from gensim.models import Word2Vec, KeyedVectors
 
 # --- 1. Корпус: список предложений, каждое предложение — список слов -------
 raw = open("corpus.txt", encoding="utf-8").read().lower()
-sentences = [re.findall(r"[а-яё]+", s) for s in re.split(r"[.!?\n]", raw)]
+sentences = [re.findall(r"[а-яё]+", s) for s in re.split(r"[.!?\\n]", raw)]
 sentences = [s for s in sentences if len(s) &gt;= 3]
 print("предложений:", len(sentences), "| словоупотреблений:", sum(map(len, sentences)))
 
@@ -14689,7 +14687,6 @@ print(pre.most_similar("ключ", topn=10))   # смыслы перемешан
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> посмотри соседей слова «ключ» в готовых векторах для русского. В одном списке окажутся и «замок», и «родник» — модель не выбирает смысл, она их усредняет. Держи эту картинку в голове: она объясняет, зачем дальше понадобились трансформеры.
 </div>
-
 `);
 
 
@@ -15984,7 +15981,7 @@ for e in ner(TEXT):
     print(f"{e['entity_group']:6s} {e['score']:.2f} [{e['start']}:{e['end']}] {frag}")
 
 # Номер договора сети не отдаём — формат жёсткий, регулярка точнее и дешевле
-DOC = re.compile(r"№\s?\d+/\d{4}")
+DOC = re.compile(r"№\\s?\\d+/\\d{4}")
 for m in DOC.finditer(TEXT):
     print(f"DOC    1.00 [{m.start()}:{m.end()}] {m.group()}")
 
@@ -16079,7 +16076,6 @@ print(f"мягких попаданий: {soft} из {len(gold)}")
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> прогони один свой настоящий текст тремя способами — готовой моделью, регуляркой и LLM — и посчитай F1 каждого одним и тем же кодом. Когда увидишь на своих данных, что регулярка выигрывает у сети на номерах, а сеть у LLM на границах, ты перестанешь выбирать инструмент по моде и начнёшь выбирать по задаче.
 </div>
-
 `);
 
 
@@ -23412,7 +23408,7 @@ if __name__ == "__main__":
     mcp.run()</code></pre>
 
 <h2>Шаг 3. Подключаем к Claude Desktop (10 мин)</h2>
-<p>Открой <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> (Mac) или <code>%APPDATA%\Claude\claude_desktop_config.json</code> (Win):</p>
+<p>Открой <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> (Mac) или <code>%APPDATA%\\Claude\\claude_desktop_config.json</code> (Win):</p>
 <pre><code>{
   "mcpServers": {
     "my-tools": {
@@ -27112,7 +27108,7 @@ def merge_summaries(parts: list[str]) -> str:
     if len(parts) == 1:
         return parts[0]
 
-    joined = "\n\n---\n\n".join(parts)
+    joined = "\\n\\n---\\n\\n".join(parts)
     merge_prompt = (
         "Тебе даны несколько фрагментов саммари длинной переписки. "
         "Сшей их в одно итоговое саммари по тому же формату "
@@ -27154,9 +27150,9 @@ def split_text(text: str) -> list[str]:
     start = 0
     while start < len(text):
         end = min(start + CHUNK_SIZE, len(text))
-        # стараемся резать по \n\n, чтобы не рвать сообщение пополам
+        # стараемся резать по \\n\\n, чтобы не рвать сообщение пополам
         if end < len(text):
-            nl = text.rfind("\n\n", start, end)
+            nl = text.rfind("\\n\\n", start, end)
             if nl > start + CHUNK_SIZE // 2:
                 end = nl
         chunks.append(text[start:end])
@@ -27201,11 +27197,11 @@ BUFFER_WAIT_SEC = 2.0  # сколько ждём после последнего
 
 async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "Привет! Я суммаризирую длинные чаты через GigaChat.\n\n"
+        "Привет! Я суммаризирую длинные чаты через GigaChat.\\n\\n"
         "Перешли мне одно или несколько сообщений из любого чата — "
-        "через пару секунд получишь TL;DR.\n\n"
-        "Команды:\n"
-        "/summary — принудительно собрать саммари по тому, что в буфере\n"
+        "через пару секунд получишь TL;DR.\\n\\n"
+        "Команды:\\n"
+        "/summary — принудительно собрать саммари по тому, что в буфере\\n"
         "/stats — сколько раз ты пользовался ботом"
     )
 
@@ -27242,7 +27238,7 @@ async def on_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
 
 async def process_buffer(update: Update, uid: int):
-    full_text = "\n\n".join(t for _, t in buffer[uid])
+    full_text = "\\n\\n".join(t for _, t in buffer[uid])
     buffer[uid] = []
 
     if len(full_text) < 200:
@@ -27359,7 +27355,6 @@ sudo journalctl -u summary-bot -f</code></pre>
 <div class="callout callout-success">
 <strong>Готово!</strong> Дальше — добавь к боту команду <code>/tldr</code> с укороченным форматом и запусти на Yandex Cloud. Через неделю использования сам поймёшь, какие ещё команды тебе нужны лично. Это самый честный способ развивать пет-проект — собственным трением.
 </div>
-
 `);
 
 
@@ -27481,7 +27476,7 @@ WB_TOKEN=eyJhbGciOiJFUzI1NiIsImtpZCI6...</code></pre>
 
 Жёсткие ограничения:
 - "title": до 60 символов, начинается с типа товара (Джинсы, Платье, Футболка), без CAPS и без эмодзи
-- "description": до 1000 символов, абзацами через \n\n. Структура: общее описание → состав и качество → для каких случаев → советы по уходу. Без слов "купить", "лучший", "идеальный" — WB не любит маркетинговую воду.
+- "description": до 1000 символов, абзацами через \\n\\n. Структура: общее описание → состав и качество → для каких случаев → советы по уходу. Без слов "купить", "лучший", "идеальный" — WB не любит маркетинговую воду.
 - "characteristics": массив объектов {"name": "...", "value": "..."}. Обязательные: "Состав", "Сезон", "Страна производства" (если не известна — пиши "Россия"). НЕ ВЫДУМЫВАЙ цифр. Если данных нет — оставь поле пустым.
 - "keywords": массив из 10-15 слов для поиска, через которые товар найдут (без знаков препинания, lowercase).
 
@@ -27536,7 +27531,7 @@ def generate_card(item_dir: Path, category: str = "clothes") -> dict:
     system_prompt = prompt_file.read_text(encoding="utf-8")
 
     user_text = (
-        f"Описание от продавца:\n{brief}\n\n"
+        f"Описание от продавца:\\n{brief}\\n\\n"
         f"Имена файлов фото (как доп. подсказка): {', '.join(photo_names)}"
     )
 
@@ -27717,7 +27712,7 @@ if __name__ == "__main__":
 
 <p>Скрипт пройдётся по всем подпапкам, для каждой создаст <code>card.json</code> рядом с фото. Открываешь, читаешь глазами. Если ок — заливаешь:</p>
 
-<pre><code>python main.py --goods-dir goods --category clothes \
+<pre><code>python main.py --goods-dir goods --category clothes \\
   --upload --brand "MyBrand" --price 2490 --subject-id 192</code></pre>
 
 <p><code>subject-id</code> ищется через отдельный GET-запрос на <code>/content/v2/object/all</code> с параметром <code>name=джинсы</code>. Сделай это один раз вручную через <code>curl</code> и запиши ID нужных категорий в табличку.</p>
@@ -27756,7 +27751,6 @@ if __name__ == "__main__":
 <div class="callout callout-success">
 <strong>Готово!</strong> Дальше — добавь интеграцию с фото-генерацией (<code>yandexgpt-vision</code> для анализа фото и формирования описаний) и сделай Telegram-бот поверх скрипта: селлер шлёт фото — получает готовую карточку прямо в Telegram. На базе p19 и p20 это уже почти готовый micro-SaaS.
 </div>
-
 `);
 
 
@@ -27944,10 +27938,10 @@ def _extract_json(text):
     Достаём первый валидный JSON-объект."""
     text = text.strip()
     if text.startswith("\`\`\`"):
-        text = re.sub(r"^\`\`\`(?:json)?\s*", "", text)
-        text = re.sub(r"\s*\`\`\`$", "", text)
+        text = re.sub(r"^\`\`\`(?:json)?\\s*", "", text)
+        text = re.sub(r"\\s*\`\`\`$", "", text)
     # на всякий случай ищем первую {...}-структуру
-    match = re.search(r"\{.*\}", text, re.DOTALL)
+    match = re.search(r"\\{.*\\}", text, re.DOTALL)
     if match:
         text = match.group(0)
     return json.loads(text)
@@ -28068,7 +28062,7 @@ async def send_brief(stats, urgent_items, draft_count):
 
     await bot.send_message(
         chat_id=os.getenv("TG_CHAT_ID"),
-        text="\n".join(lines),
+        text="\\n".join(lines),
         parse_mode="Markdown",
     )
 </code></pre>
@@ -28162,7 +28156,7 @@ if __name__ == "__main__":
 
 <h2>Расширения</h2>
 <ul>
-<li><strong>Автотегирование в почте.</strong> Добавляй IMAP-флаги — «\Flagged» на urgent, метку «AI-noise» на noise. Потом фильтром в клиенте → шум сразу в архив.</li>
+<li><strong>Автотегирование в почте.</strong> Добавляй IMAP-флаги — «\\Flagged» на urgent, метку «AI-noise» на noise. Потом фильтром в клиенте → шум сразу в архив.</li>
 <li><strong>Экспорт TODO.</strong> Если в письме «сделай X к четвергу» — отдельный класс <code>task</code>, и draft = добавить в Things 3 (URL-схема), Todoist или Obsidian-файл.</li>
 <li><strong>Пятничный недельный отчёт.</strong> Второй cron-джоб в пятницу в 17:00 — пробегает по отправленным письмам за неделю и через Ollama же выдаёт «вот что ты на этой неделе сделал». Удобно для журнала или для отчёта руководителю.</li>
 <li><strong>Few-shot стиль.</strong> Подсунь модели 5–10 своих реальных ответов прямо в SYSTEM_PROMPT — драфты становятся заметно «твоими».</li>
@@ -28187,7 +28181,6 @@ if __name__ == "__main__":
 <div class="callout callout-success">
 <strong>Готово.</strong> Утренний разбор inbox теперь делается локально и бесплатно. Дальше — недельный отчёт по отправленным письмам, экспорт TODO в Things/Todoist, или замена Telegram на native-нотификацию macOS. Всё это докручивается на той же Ollama без единого запроса в облако.
 </div>
-
 `);
 
 
@@ -28274,8 +28267,8 @@ def extract_pdf_pages(path):
             text = page.extract_text() or ""
             # таблицы — отдельно, склеиваем построчно
             for table in page.extract_tables() or []:
-                rows = ["\t".join(c or "" for c in row) for row in table]
-                text += "\n\n[TABLE]\n" + "\n".join(rows) + "\n[/TABLE]"
+                rows = ["\\t".join(c or "" for c in row) for row in table]
+                text += "\\n\\n[TABLE]\\n" + "\\n".join(rows) + "\\n[/TABLE]"
             if text.strip():
                 pages.append((i, text))
     return pages
@@ -28475,12 +28468,12 @@ def ask(question, top_k=5):
     if not hits:
         return "В индексе нет документов. Сначала запусти \`index\`.", []
 
-    context = "\n\n---\n\n".join(
-        f"[Источник: {h['file']}, стр. {h['page']}]\n{h['text']}"
+    context = "\\n\\n---\\n\\n".join(
+        f"[Источник: {h['file']}, стр. {h['page']}]\\n{h['text']}"
         for h in hits
     )
 
-    user_msg = f"Вопрос: {question}\n\nФрагменты документов:\n\n{context}"
+    user_msg = f"Вопрос: {question}\\n\\nФрагменты документов:\\n\\n{context}"
 
     resp = ollama.chat(
         model=MODEL,
@@ -28506,7 +28499,7 @@ def main():
     if len(sys.argv) &lt; 2:
         print("Использование:")
         print("  python rag.py index &lt;папка&gt;")
-        print("  python rag.py ask \"&lt;вопрос&gt;\"")
+        print("  python rag.py ask \\"&lt;вопрос&gt;\\"")
         sys.exit(1)
 
     cmd = sys.argv[1]
@@ -28519,13 +28512,13 @@ def main():
 
     elif cmd == "ask":
         if len(sys.argv) &lt; 3:
-            print("Укажи вопрос: python rag.py ask \"...\"")
+            print("Укажи вопрос: python rag.py ask \\"...\\"")
             sys.exit(1)
         question = " ".join(sys.argv[2:])
         answer, hits = ask(question)
-        print("\n=== ОТВЕТ ===\n")
+        print("\\n=== ОТВЕТ ===\\n")
         print(answer)
-        print("\n=== ИСТОЧНИКИ ===")
+        print("\\n=== ИСТОЧНИКИ ===")
         for h in hits:
             print(f"  • {h['file']} стр. {h['page']}  (similarity {h['score']:.2f})")
 
@@ -28628,7 +28621,6 @@ if question:
 <div class="callout callout-success">
 <strong>Готово.</strong> У тебя локальный поиск по личным документам, который ничем не делится с миром. Дальше — индексируй медкарту, договоры, рабочие методички и забудь про «где-то у меня это было». Если захочется поднять качество — поменяй модель эмбеддингов на mpnet или добавь BM25-гибрид в один день работы.
 </div>
-
 `);
 
 
@@ -36607,6 +36599,16 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-09-27",
+    title: "Исправлен показ кода в 10 уроках",
+    tag: "fix",
+    items: [
+      "Примеры кода в уроках 14, 25, 40, 44, 49 и в мини-проектах p3, p19–p22 показывались с ошибками: из регулярных выражений пропадали обратные слэши, а переводы строк рвали код прямо внутри кавычек. Теперь код на странице совпадает с тем, что написал автор, — его можно копировать и запускать",
+      "В мини-проекте про свой MCP-сервер снова правильный путь к конфигу Claude Desktop на Windows",
+      "Добавлена автоматическая проверка, чтобы такое больше не повторилось"
+    ]
+  },
   {
     date: "2026-09-27",
     title: "Фаза 4 открыта: 6 уроков про основу классического ML",
