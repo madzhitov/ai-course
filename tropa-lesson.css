@@ -3988,8 +3988,8 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 .site-footer .f-word { font-family:"Cormorant Unicase",Georgia,serif; font-weight:700; font-size:clamp(16px,1.7vw,21px); letter-spacing:.015em; color:var(--ink); }
 .site-footer .f-word .mh-dot { color:var(--accent); }
 .site-footer .f-links { display:flex; gap:14px; font-size:13px; color:var(--muted); flex-wrap:wrap; }
-.site-footer .f-links span { cursor:pointer; color:var(--muted); }
-.site-footer .f-links span:hover { color:var(--ink); }
+.site-footer .f-links span, .site-footer .f-links a { cursor:pointer; color:var(--muted); text-decoration:none; }
+.site-footer .f-links span:hover, .site-footer .f-links a:hover { color:var(--ink); }
 
 /* ===== ТРОПА F5: урок (оболочка) ===== */
 .lesson-view { max-width: 760px; }
