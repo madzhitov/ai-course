@@ -34,7 +34,7 @@
 <!-- Inter font for editorial style -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Unbounded:wght@500;600&family=Martian+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js">
@@ -4154,6 +4154,178 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 #lesson-content .callout.about-author { border-left:3px solid var(--accent) !important; background:var(--accent-soft) !important; }
 
 </style>
+<style id="v1-style">
+/* ============================================================
+   «Артефакты v1» — конверт. Токены — v1-brief/tokens.css.
+   Работают только на страницах v1 (body.theme-v1: главная, каталог,
+   пластинка). Отдельный <style>: build_pages.js берёт в tropa-lesson.css
+   только первый блок, статические страницы уроков это не трогает.
+   ============================================================ */
+.theme-v1 {
+  --bg:#111110; --surface:#1A1A18; --surface-2:#1C1C1A; --vinyl:#0A0A09; --groove:#1F1E1C;
+  --line-faint:#242320; --line:#2A2926; --line-strong:#33322E; --line-dash:#3A3935;
+  --ink:#EDEBE4; --ink-read:#D9D6CE; --ink-2:#BEBBB3; --muted:#9A978E; --dim:#8C8980; --locked:#5E5C56; --ghost:#2C2B28;
+  --accent:#FF5A1F; --on-accent:#111110;
+  --font-display:'Unbounded','Arial Black',sans-serif; --font-mono:'Martian Mono',ui-monospace,monospace; --font-body:'Golos Text','PT Sans',system-ui,sans-serif;
+  --fs-hero:96px; --fs-h1:44px; --fs-h2:40px; --fs-h3:24px; --fs-track:36px; --fs-read:19px; --fs-body:17px; --fs-small:15px; --fs-mono:12px; --fs-ghost:112px;
+  --lh-read:1.7; --lh-body:1.5; --tracking-display:-0.03em;
+  --page-pad:72px; --section-gap:96px; --radius-card:6px; --radius-btn:8px; --radius-pill:999px; --tap:44px; --read-width:720px;
+}
+/* светлая тема остаётся рабочей: те же роли, бумажные значения */
+[data-theme="light"] .theme-v1 {
+  --bg:#F4F1EA; --surface:#FFFDF8; --surface-2:#FBF8F1; --vinyl:#1A1917; --groove:#2A2926;
+  --line-faint:#E6E0D3; --line:#E0D9C9; --line-strong:#CFC7B6; --line-dash:#BDB4A2;
+  --ink:#23201A; --ink-read:#2E2A23; --ink-2:#4A453C; --muted:#6F675B; --dim:#7A7266; --locked:#8E8676; --ghost:#E6E0D3;
+  --accent:#C2410C; --on-accent:#FFFFFF;
+}
+@media (max-width:720px) {
+  .theme-v1 { --fs-hero:36px; --fs-h1:30px; --fs-h2:24px; --fs-track:20px; --fs-read:18px; --fs-ghost:64px; --page-pad:20px; --section-gap:56px; }
+}
+
+body.theme-v1 { background:var(--bg) !important; color:var(--ink); font-family:var(--font-body); }
+body.theme-v1 main, body.theme-v1 #lesson-content { background:transparent !important; }
+body.theme-v1 #lesson-content { max-width:1296px !important; margin:0 auto !important; padding:0 var(--page-pad) !important; }
+body.theme-v1 .tropa-header { background:var(--bg) !important; border-bottom:1px solid var(--line) !important; }
+body.theme-v1 .mh-word { font-family:var(--font-display) !important; text-transform:uppercase; letter-spacing:.02em; font-weight:600; color:var(--ink) !important; }
+body.theme-v1 .mh-word b { display:none; }
+body.theme-v1 .mh-tag { font-family:var(--font-mono) !important; text-transform:lowercase; font-size:11px !important; color:var(--muted) !important; }
+body.theme-v1 .h-nav a { color:var(--ink-2) !important; font-family:var(--font-body); }
+body.theme-v1 .h-nav a:hover { color:var(--ink) !important; }
+body.theme-v1 .aly-hbtn { border:1px solid var(--line-strong) !important; border-radius:var(--radius-pill) !important; background:transparent !important; color:var(--ink) !important; min-height:var(--tap); padding:0 16px 0 6px !important; }
+body.theme-v1 .aly-hbtn .aly-ava { background:var(--ink) !important; color:var(--bg) !important; font-family:var(--font-mono) !important; }
+body.theme-v1 .theme-toggle, body.theme-v1 .burger { color:var(--ink) !important; }
+body.theme-v1 .burger span { background:var(--ink) !important; }
+body.theme-v1 .site-footer { background:var(--bg) !important; border-top:1px solid var(--line) !important; color:var(--muted) !important; }
+/* на страницах v1 боковое меню не занимает колонку: навигация — в шапке */
+@media (min-width:769px) {
+  body.theme-v1 main { margin-left:0 !important; max-width:none !important; padding:0 0 4rem !important; }
+  body.theme-v1:not(.sidebar-open) .sidebar { display:none !important; }
+}
+/* старые правила заголовков урока (.lesson-content h1/h2 !important) — не для v1 */
+body.theme-v1 .lesson-content .v1 h1, body.theme-v1 .lesson-content .v1 h2, body.theme-v1 .lesson-content .v1 h3 {
+  font-family:var(--font-display) !important; color:var(--ink) !important; border:0 !important; padding:0 !important; text-transform:none !important; font-variant:normal !important;
+}
+body.theme-v1 .lesson-content .v1-hero h1 { font-size:min(var(--fs-hero), 8.9vw) !important; font-weight:600 !important; line-height:1 !important; letter-spacing:var(--tracking-display) !important; margin:18px 0 28px !important; }
+body.theme-v1 .lesson-content .v1-rec h1 { font-size:var(--fs-h1) !important; font-weight:600 !important; line-height:1.1 !important; letter-spacing:var(--tracking-display) !important; margin:0 0 14px !important; }
+body.theme-v1 .lesson-content .v1 h2.v1-h2 { font-size:var(--fs-h2) !important; font-weight:600 !important; letter-spacing:var(--tracking-display) !important; line-height:1.1 !important; margin:0 0 10px !important; }
+body.theme-v1 .lesson-content .v1 .v1-series h3 { font-size:var(--fs-h3) !important; font-weight:500 !important; margin:0 0 18px !important; }
+
+.v1 { color:var(--ink); font-family:var(--font-body); font-size:var(--fs-body); line-height:var(--lh-body); padding-bottom:var(--section-gap); }
+.v1 :focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.v1 a { color:inherit; }
+.v1-mono { font-family:var(--font-mono); font-size:var(--fs-mono); color:var(--muted); letter-spacing:.02em; }
+.v1-sec { margin-top:var(--section-gap); }
+.v1-h2 { font-family:var(--font-display); font-weight:600; font-size:var(--fs-h2); letter-spacing:var(--tracking-display); line-height:1.1; margin:0 0 10px; color:var(--ink); }
+.v1-sub { color:var(--ink-2); font-size:var(--fs-small); margin:0 0 24px; }
+
+/* hero */
+.v1-hero { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:0 48px; align-items:start; padding-top:56px; }
+.v1-hero-top { grid-column:1 / -1; }
+.v1-hero h1 { font-family:var(--font-display); font-weight:600; font-size:var(--fs-hero); line-height:1; letter-spacing:var(--tracking-display); margin:18px 0 28px; color:var(--ink); }
+.v1-hero .v1-lead { font-size:19px; color:var(--ink-2); max-width:520px; margin:0 0 28px; line-height:1.55; }
+.v1-btns { display:flex; gap:12px; flex-wrap:wrap; }
+.v1-btn { font:inherit; font-size:16px; font-weight:500; min-height:var(--tap); padding:0 22px; border-radius:var(--radius-btn); border:1px solid var(--line-strong); background:transparent; color:var(--ink); cursor:pointer; }
+.v1-btn:hover { border-color:var(--ink-2); }
+.v1-btn.is-accent { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+.v1-author { margin-top:24px; }
+.v1-author a { color:var(--ink-2); text-decoration:underline; text-underline-offset:3px; }
+.v1-art { position:relative; min-height:420px; margin-top:-40px; }
+.v1-art .v1-record { position:absolute; right:-40px; top:10px; width:380px; height:380px; }
+.v1-art .v1-sleeve { position:relative; width:340px; margin-left:auto; margin-right:90px; background:var(--surface-2); }
+
+/* трек-лист */
+.v1-tracks { border-top:1px solid var(--line); }
+.v1-track { display:grid; grid-template-columns:80px minmax(0,1fr) minmax(0,1.2fr) 40px; align-items:center; gap:20px; width:100%; min-height:88px; padding:14px 0; background:none; border:0; border-bottom:1px solid var(--line); color:var(--ink); font:inherit; text-align:left; cursor:pointer; }
+.v1-track .tc { font-family:var(--font-mono); font-size:22px; color:var(--muted); }
+.v1-track .tw { font-family:var(--font-display); font-weight:500; font-size:var(--fs-track); letter-spacing:var(--tracking-display); }
+.v1-track .tl { color:var(--ink-2); font-size:var(--fs-small); }
+.v1-track .ta { font-family:var(--font-mono); color:var(--muted); text-align:right; }
+.v1-track:hover .tw { color:var(--ink); }
+.v1-track[aria-pressed="true"] .tc, .v1-track[aria-pressed="true"] .tw, .v1-track[aria-pressed="true"] .ta { color:var(--accent); }
+.v1-tracks.is-compact .v1-track { min-height:56px; grid-template-columns:48px minmax(0,1fr) minmax(0,1.6fr) 32px; }
+.v1-tracks.is-compact .tw { font-size:22px; }
+.v1-tracks.is-compact .tc { font-size:14px; }
+
+/* каталог */
+.v1-cat-head { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; flex-wrap:wrap; margin-bottom:28px; }
+.v1-legend { display:flex; gap:18px; flex-wrap:wrap; }
+.v1-status { display:inline-flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:11px; color:var(--ink-2); white-space:nowrap; }
+.v1-status i { width:12px; height:12px; border-radius:50%; display:inline-block; box-sizing:border-box; }
+.v1-status.s-rotation i { background:var(--ink); }
+.v1-status.s-test i { border:1.5px solid var(--ink); }
+.v1-status.s-demo i { border:1.5px dashed var(--ink); }
+.v1-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(290px, 1fr)); gap:20px; }
+.v1-sleeve { display:flex; flex-direction:column; min-height:440px; padding:20px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-card); color:var(--ink); text-decoration:none; cursor:pointer; transition:opacity .2s, border-color .2s; overflow:hidden; font:inherit; text-align:left; width:100%; }
+.v1-sleeve:hover { border-color:var(--line-strong); }
+.v1-sleeve.is-featured { border-color:var(--accent); }
+.v1-sleeve.is-dim { opacity:.25; }
+.v1-sleeve .sl-top { display:flex; justify-content:space-between; gap:10px; }
+.v1-sleeve .sl-ghost { font-family:var(--font-mono); font-size:var(--fs-ghost); line-height:1; color:var(--ghost); margin:28px 0 auto; letter-spacing:-.04em; }
+.v1-sleeve .sl-feat { font-family:var(--font-mono); font-size:11px; color:var(--accent); margin-top:14px; }
+.v1-sleeve .sl-type { margin-top:24px; }
+.v1-sleeve .sl-title { font-family:var(--font-display); font-weight:500; font-size:23px; line-height:1.2; letter-spacing:-.02em; margin:8px 0 8px; }
+.v1-sleeve .sl-line { color:var(--ink-2); font-size:var(--fs-small); line-height:1.45; }
+.v1-sleeve .sl-press { margin-top:12px; }
+.sl-ghost::before, .rec-ghost::before { content:attr(data-n); }
+.v1-door { display:inline-flex; align-items:center; min-height:var(--tap); margin-top:4px; color:var(--ink-2); text-decoration:underline; text-underline-offset:3px; font-size:var(--fs-small); }
+.v1-more { display:inline-flex; align-items:center; min-height:var(--tap); margin-top:20px; font-family:var(--font-mono); font-size:13px; color:var(--ink); text-decoration:underline; text-underline-offset:4px; cursor:pointer; background:none; border:0; padding:0; }
+.v1-understand { margin:0 0 28px; padding:20px; border:1px solid var(--line-strong); border-radius:var(--radius-card); background:var(--surface); }
+.v1-understand[hidden] { display:none; }
+.v1-understand ul { list-style:none; margin:12px 0 0; padding:0; display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:4px 24px; }
+.v1-understand a { display:flex; gap:12px; align-items:baseline; min-height:var(--tap); padding:10px 0; color:var(--ink); text-decoration:none; border-bottom:1px solid var(--line); cursor:pointer; }
+.v1-understand a:hover { color:var(--accent); }
+.v1-series { margin-top:56px; }
+.v1-series h3 { font-family:var(--font-display); font-weight:500; font-size:var(--fs-h3); margin:0 0 18px; color:var(--ink); }
+
+/* Путь */
+.v1-path { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)) minmax(0,1.1fr); gap:12px; }
+.v1-level { padding:20px; min-height:170px; border:1px solid var(--line); border-radius:var(--radius-card); background:none; color:var(--dim); font:inherit; text-align:left; cursor:pointer; display:flex; flex-direction:column; gap:6px; }
+.v1-level .lv-name { font-family:var(--font-display); font-weight:500; font-size:20px; color:inherit; }
+.v1-level .lv-line { font-size:14px; line-height:1.4; }
+.v1-level.is-here { border-color:var(--accent); color:var(--ink); }
+.v1-level.is-here .lv-eye { color:var(--accent); }
+.v1-level .lv-veha { margin-top:auto; }
+.v1-gates { padding:20px; min-height:170px; border-radius:var(--radius-card); background:var(--ink); color:var(--bg); border:0; font:inherit; text-align:left; cursor:pointer; display:flex; flex-direction:column; gap:6px; }
+.v1-gates .v1-mono { color:var(--bg); opacity:.7; }
+.v1-gates .lv-name { font-family:var(--font-display); font-weight:600; font-size:20px; }
+
+/* Алёша на полях */
+.v1-note { display:flex; align-items:center; gap:14px; margin-top:56px; min-height:var(--tap); background:none; border:0; color:var(--ink-2); font:inherit; font-size:var(--fs-small); cursor:pointer; padding:0; text-align:left; }
+.v1-note .ava { width:30px; height:30px; border-radius:50%; border:1px solid var(--line-strong); display:inline-flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:13px; color:var(--ink); flex-shrink:0; }
+.v1-note:hover { color:var(--ink); }
+
+/* страница пластинки (минимум сессии 1) */
+.v1-rec { padding-top:40px; max-width:900px; }
+.v1-back { display:inline-flex; align-items:center; min-height:var(--tap); font-family:var(--font-mono); font-size:12px; color:var(--muted); cursor:pointer; background:none; border:0; padding:0; }
+.v1-rec .rec-ghost { font-family:var(--font-mono); font-size:150px; line-height:1; color:var(--ghost); letter-spacing:-.04em; margin:12px 0 -20px; }
+.v1-rec h1 { font-family:var(--font-display); font-weight:600; font-size:var(--fs-h1); letter-spacing:var(--tracking-display); line-height:1.1; margin:0 0 14px; color:var(--ink); }
+.v1-rec .rec-line { color:var(--ink-2); font-size:19px; max-width:640px; }
+.v1-rec .rec-meta { display:flex; gap:18px; flex-wrap:wrap; align-items:center; margin:18px 0 8px; }
+.v1-rec ol { list-style:none; margin:16px 0 0; padding:0; border-top:1px solid var(--line); }
+.v1-rec li a { display:grid; grid-template-columns:64px minmax(0,1fr) auto; gap:16px; align-items:center; min-height:56px; border-bottom:1px solid var(--line); color:var(--ink); text-decoration:none; cursor:pointer; }
+.v1-rec li a:hover { color:var(--accent); }
+.v1-rec li a.is-locked { color:var(--dim); cursor:default; }
+.v1-remix { margin-top:28px; padding:16px 20px; border:1px dashed var(--line-dash); border-radius:var(--radius-card); color:var(--ink-2); }
+
+@media (max-width:980px) {
+  .v1-hero { grid-template-columns:1fr; }
+  .v1-art { display:none; }
+  .v1-path { grid-template-columns:1fr 1fr; }
+}
+@media (max-width:720px) {
+  .v1-hero { padding-top:28px; }
+  .v1-hero .v1-lead { font-size:17px; }
+  .v1-track { grid-template-columns:40px minmax(0,1fr) 24px; gap:12px; min-height:64px; }
+  .v1-track .tl { grid-column:2 / 3; grid-row:2; }
+  .v1-track .tc { font-size:14px; }
+  .v1-grid { grid-template-columns:1fr; }
+  .v1-sleeve { min-height:0; }
+  .v1-path { grid-template-columns:1fr; }
+  .v1-level, .v1-gates { min-height:0; }
+  .v1-rec .rec-ghost { font-size:88px; }
+}
+@media (prefers-reduced-motion: reduce) { .v1-sleeve { transition:none; } }
+</style>
 </head>
 <body>
 
@@ -4174,6 +4346,7 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
     </div>
   </div>
   <nav class="h-nav">
+    <a onclick="openStaticPage('catalog'); return false;">Каталог</a>
     <a onclick="openSection('main'); return false;">Основной путь</a>
     <a onclick="openStaticPage('trails'); return false;">5 тропинок</a>
     <a onclick="openStaticPage('about'); return false;">Что это</a>
@@ -34448,6 +34621,8 @@ function renderFooter() {
           <span onclick="openStaticPage('changelog')">Что нового</span>
           <span onclick="openStaticPage('my-progress')">Мой путь</span>
           <span onclick="openStaticPage('routes')">Маршруты</span>
+          <span onclick="openStaticPage('trails')">5 тропинок</span>
+          <span onclick="openStaticPage('catalog')">Каталог</span>
           <a href="/tools/neyroseti-bez-vpn/">Нейросети без VPN</a>
         </div>
       </div>
@@ -34456,6 +34631,7 @@ function renderFooter() {
 }
 
 function openLesson(id) {
+  document.body.classList.remove('theme-v1');
   currentLessonId = id;
   setActiveStaticLink(null);
   closeSidebar();
@@ -35637,6 +35813,7 @@ function setActiveTopNav(section) {
 // ============================================================
 
 function openSection(sectionId) {
+  document.body.classList.remove('theme-v1');
   currentLessonId = null;
   aleshaHide();
   setActiveStaticLink(null);
@@ -35978,8 +36155,10 @@ function openStaticPage(name) {
   history.replaceState(null, '', `#${name}`);
   window.scrollTo({ top: 0, behavior: 'smooth' });
   trackEvent(`page-${name}`, `Static page: ${name}`);
+  document.body.classList.toggle('theme-v1', name === 'home' || name === 'catalog');
 
   if (name === 'home') renderHome();
+  else if (name === 'catalog') renderCatalog();
   else if (name === 'about') renderAbout();
   else if (name === 'howto') renderHowTo();
   else if (name === 'faq') renderFAQ();
@@ -36346,6 +36525,7 @@ function filterGlossary(query) {
 }
 
 function openGlossary(termId = null) {
+  document.body.classList.remove('theme-v1');
   currentLessonId = null;
   aleshaHide();
   setActiveStaticLink('glossary');
@@ -36559,6 +36739,7 @@ const QUIZZES = {
 };
 
 function openQuiz(phaseId) {
+  document.body.classList.remove('theme-v1');
   currentLessonId = null;
   aleshaHide();
   setActiveStaticLink(null);
@@ -37542,47 +37723,245 @@ function toggleRoutePreset(id) {
   box.classList.add('show');
 }
 
-function renderHome() {
-  const total = allLessons().length;
-  const written = allLessons().filter(l => l.content).length;
-  const lastUpdate = fmtDate(CHANGELOG[0].date);
+// ============================================================
+// «Артефакты v1» — главная как каталог пластинок (v1-brief/BRIEF.md, сессия 1).
+// Каталог — site/catalog.json: главная и #catalog собираются только из него.
+// ============================================================
+let CATALOG = null, catalogLoading = null, v1Intent = null;
 
-  // «Продолжить с того места» — реальный текущий/ближайший непройденный урок
-  const anyCompleted = allLessons().some(l => isCompleted(l.id));
+function loadCatalog() {
+  if (CATALOG) return Promise.resolve(CATALOG);
+  if (typeof fetch !== 'function') return Promise.reject(new Error('no fetch'));
+  if (!catalogLoading) {
+    catalogLoading = fetch('catalog.json')
+      .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+      .then(d => (CATALOG = d))
+      .catch(e => { catalogLoading = null; throw e; });
+  }
+  return catalogLoading;
+}
+
+const V1_LOCK = '<svg width="11" height="12" viewBox="0 0 11 12" aria-hidden="true" style="vertical-align:-1px"><rect x="1" y="5" width="9" height="7" rx="1" fill="currentColor"/><path d="M3 5V3.5a2.5 2.5 0 0 1 5 0V5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>';
+const v1LessonArg = id => /^\d+$/.test(String(id)) ? String(id) : `'${id}'`;
+const v1Lesson = id => findLesson(/^\d+$/.test(String(id)) ? Number(id) : String(id));
+
+function v1Status(st) {
+  const label = (CATALOG && CATALOG.statuses[st]) || st;
+  return `<span class="v1-status s-${esc(st)}"><i aria-hidden="true"></i>${esc(label)}</span>`;
+}
+
+function v1Legend() {
+  return `<div class="v1-legend" aria-label="Статусы">${['rotation', 'test', 'demo'].map(v1Status).join('')}</div>`;
+}
+
+// Пластинка SVG: только декор, смысл продублирован текстом рядом
+function v1RecordSVG(item) {
+  const rings = [150, 138, 126, 114, 102, 90, 78].map(r => `<circle cx="180" cy="180" r="${r}" fill="none" stroke="var(--groove)" stroke-width="1.5"/>`).join('');
+  const series = (CATALOG && CATALOG.series[item.series]) || '';
+  const arc = `СЕРИЯ ${item.series} · ${series.toUpperCase()} · СТОРОНА A · КАТАЛОГ ·`;
+  return `<svg class="v1-record" viewBox="0 0 360 360" aria-hidden="true">
+    <defs><path id="v1arc" d="M180,180 m-52,0 a52,52 0 1,1 104,0 a52,52 0 1,1 -104,0"/></defs>
+    <circle cx="180" cy="180" r="178" fill="var(--vinyl)"/>${rings}
+    <circle cx="180" cy="180" r="66" fill="var(--accent)"/>
+    <text font-family="Martian Mono, monospace" font-size="8" fill="var(--on-accent)" letter-spacing="1"><textPath href="#v1arc">${esc(arc)}</textPath></text>
+    <text x="180" y="186" text-anchor="middle" font-family="Unbounded, sans-serif" font-size="16" font-weight="600" fill="var(--on-accent)">${esc(item.id)}</text>
+    <circle cx="180" cy="180" r="4" fill="var(--vinyl)"/>
+  </svg>`;
+}
+
+function v1Sleeve(item, from) {
+  const featured = CATALOG.featured === item.id;
+  const press = item.press ? `<div class="v1-mono sl-press">тираж ${esc(item.press)}</div>` : '';
+  const door = item.door ? `<a class="v1-door" href="https://madzhitov.ru" target="_blank" rel="noopener" onclick="event.stopPropagation(); umTrack('studio-door', { art: '${esc(item.id)}' })">${esc(item.door)}</a>` : '';
+  return `<div class="v1-sleeve${featured ? ' is-featured' : ''}" data-tracks="${esc(item.tracks.join(' '))}" tabindex="0" role="link"
+      aria-label="${esc(item.id)}. ${esc(item.title)}" onclick="openRecord('${esc(item.num)}', '${from}')" onkeydown="if(event.key==='Enter'){openRecord('${esc(item.num)}', '${from}')}">
+    <div class="sl-top"><span class="v1-mono">${esc(item.id)}</span>${v1Status(item.status)}</div>
+    ${featured ? '<div class="sl-feat">начни с этого</div>' : ''}
+    <div class="sl-ghost" data-n="${esc(item.num)}" aria-hidden="true"></div>
+    <div class="v1-mono sl-type">${esc(item.type)}</div>
+    <div class="sl-title">${esc(item.title)}</div>
+    <div class="sl-line">${esc(item.line)}</div>
+    ${press}${door}
+  </div>`;
+}
+
+function v1TrackList(compact) {
+  const t = CATALOG.tracks;
+  return `<div class="v1-tracks${compact ? ' is-compact' : ''}" role="group" aria-label="Что вам сейчас нужно">
+    ${Object.keys(t).map(k => `<button type="button" class="v1-track" data-intent="${k}" aria-pressed="${v1Intent === k}" onclick="selectIntent('${k}')">
+      <span class="tc">${esc(t[k].code)}</span><span class="tw">${esc(t[k].word)}</span><span class="tl">${esc(t[k].line)}</span><span class="ta" aria-hidden="true">${v1Intent === k ? '●' : '→'}</span>
+    </button>`).join('')}
+  </div>`;
+}
+
+function v1Understand() {
+  const p = CATALOG.tracks.ponyat;
+  const items = (p.lessons || []).map(id => v1Lesson(id)).filter(Boolean);
+  return `<div class="v1-understand" id="v1-understand"${v1Intent === 'ponyat' ? '' : ' hidden'}>
+    <div class="v1-mono">понять · с этих уроков</div>
+    <ul>${items.map(l => `<li><a onclick="openLesson(${v1LessonArg(l.id)})"><span class="v1-mono">урок ${esc(l.id)}</span><span>${esc(l.title)}</span></a></li>`).join('')}</ul>
+  </div>`;
+}
+
+function catalogCaption() {
+  if (!v1Intent) return 'Вещи, которые собираешь по урокам. Выбери дорожку выше, и лишнее отойдёт в тень.';
+  const t = CATALOG.tracks[v1Intent];
+  return `${t.code} · ${t.word}. ${t.line}`;
+}
+
+function selectIntent(k) {
+  v1Intent = v1Intent === k ? null : k;
+  umTrack('intent-select', { intent: k, on: v1Intent === k });
+  applyIntent();
+}
+
+// Перерисовать фильтр по текущей дорожке — без события аналитики
+function applyIntent() {
+  document.querySelectorAll('.v1-track').forEach(b => {
+    const on = b.dataset.intent === v1Intent;
+    b.setAttribute('aria-pressed', on);
+    b.querySelector('.ta').textContent = on ? '●' : '→';
+  });
+  document.querySelectorAll('.v1-sleeve').forEach(el => {
+    el.classList.toggle('is-dim', !!v1Intent && !el.dataset.tracks.split(' ').includes(v1Intent));
+  });
+  const cap = document.getElementById('v1-cat-caption');
+  if (cap) cap.textContent = catalogCaption();
+  const u = document.getElementById('v1-understand');
+  if (u) u.hidden = v1Intent !== 'ponyat';
+}
+
+function v1PathStrip() {
   const r = resumeLesson();
-  const rLabel = (r && typeof r.id === 'number') ? `Урок ${r.id} · ${r.title}` : (r ? r.title : '');
-  const rArg = r ? (typeof r.id === 'number' ? r.id : `'${r.id}'`) : '1';
-  const contLine = (anyCompleted && r) ? `
-      <div class="home-sec">
-        <div class="cont-line" onclick="openLesson(${rArg})">
-          <span class="cont-eye">Продолжить с того места</span>
-          <span class="cont-ttl">${rLabel} →</span>
-        </div>
-      </div>` : '';
+  const main = r && typeof r.id === 'number' ? LESSONS.find(l => l.id === r.id) : null;
+  const cur = main ? main.phase : 1;
+  const lines = { 1: 'Стать продвинутым пользователем ИИ.', 2: 'Приложения и агенты.', 3: 'Что под капотом ИИ.', 4: 'ML, fine-tuning, продакшен.' };
+  const here = r ? (typeof r.id === 'number' ? `ты здесь · урок ${r.id}` : `ты здесь · ${esc(r.title)}`) : 'ты здесь · урок 1';
+  const rArg = r ? v1LessonArg(r.id) : '1';
+  const levels = PHASES.map(ph => {
+    const name = ph.title.replace(/^Фаза\s*\d+\.\s*/, '');
+    const isHere = ph.id === cur;
+    return `<button type="button" class="v1-level${isHere ? ' is-here' : ''}" onclick="${isHere ? `openLesson(${rArg})` : "openSection('main')"}">
+      <span class="v1-mono lv-eye">${isHere ? here : 'уровень ' + ph.id}</span>
+      <span class="lv-name">${esc(name)}</span>
+      <span class="lv-line">${lines[ph.id]}</span>
+      ${isHere ? `<span class="v1-mono lv-veha">веха · АРТ-10${ph.id}</span>` : ''}
+    </button>`;
+  }).join('');
+  return `<div class="v1-path">${levels}
+    <button type="button" class="v1-gates" onclick="openSection('vibe')"><span class="v1-mono">ворота ${V1_LOCK}</span><span class="lv-name">Вайб Код Вам Дам</span><span>а что там?</span></button>
+  </div>`;
+}
 
-  document.getElementById('lesson-content').innerHTML = `
-    <div class="home">
-      <div class="home-status">
-        <span class="hs-dot"></span>
-        <span><b>Артефакты обновляются.</b> Готово ${written} из ${total} уроков · обновлено ${lastUpdate}</span>
-        <a onclick="openStaticPage('changelog')">Что нового →</a>
-      </div>
-      <div class="intro">
-        <div class="badge"><span class="bdot"></span>Бесплатная база умений по AI</div>
-        <h1>От первых промптов<br>до своих AI-приложений</h1>
-        <p class="lead">${total} уроков на русском, AI-наставник в каждом, готовые pet-проекты с кодом. Полный путь — не «5 минут попробовать», а до уровня, где сможешь делать сам.</p>
-        <p class="lead" style="font-weight:600;color:var(--ink);margin-top:-6px">Артефакты, а не сертификаты.</p>
-        <div style="display:flex;gap:12px;flex-wrap:wrap">
-          <button class="start-btn" onclick="openLesson(1)">Начать с Урока 1 →</button>
-          <button class="start-btn-sec" onclick="openStaticPage('about')">Чем отличается</button>
+function renderHome() {
+  const upd = CHANGELOG[0] ? fmtDate(CHANGELOG[0].date) : '';
+  const el = document.getElementById('lesson-content');
+  el.innerHTML = `
+    <div class="v1">
+      <section class="v1-hero">
+        <div class="v1-hero-top">
+          <div class="v1-mono">сторона A · бесплатно · на русском${upd ? ' · ремастер ' + esc(upd) : ''}</div>
+          <h1>Артефакты,<br>а не сертификаты.</h1>
         </div>
-        <p class="home-author">«Артефакты» собирает и обновляет <a href="https://madzhitov.ru" target="_blank"><b>Руслан Маджитов</b></a> · канал <a href="https://t.me/artefakty_ai" target="_blank" onclick="umTrack('tg-click', { from: 'home' })">@artefakty_ai</a> · связь <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a></p>
-      </div>
-      ${renderRoutesBoard()}
-      ${contLine}
-      <div class="home-sec"><a class="opath-link" onclick="openStaticPage('about')">Как устроен путь и чем он отличается — Что&nbsp;это →</a></div>
-    </div>
-  `;
+        <div>
+          <p class="v1-lead">Платформа, где из уроков получаются вещи: ассистенты, боты, приложения. Собираешь сам и уносишь с собой.</p>
+          <div class="v1-btns">
+            <button class="v1-btn is-accent" onclick="umTrack('hero-start'); openLesson(1)">Начать с урока 1</button>
+            <button class="v1-btn" onclick="openStaticPage('about')">Что это</button>
+          </div>
+          <p class="v1-mono v1-author">собирает и обновляет <a href="https://madzhitov.ru" target="_blank" rel="noopener">Руслан Маджитов</a> · канал <a href="https://t.me/artefakty_ai" target="_blank" rel="noopener" onclick="umTrack('tg-click', { from: 'home' })">@artefakty_ai</a></p>
+        </div>
+        <div class="v1-art" id="v1-hero-art" aria-hidden="true"></div>
+      </section>
+      <section class="v1-sec">
+        <h2 class="v1-h2">Что вам сейчас нужно?</h2>
+        <p class="v1-sub v1-mono">трек-лист · выберите дорожку</p>
+        <div id="v1-tracks-slot"></div>
+      </section>
+      <section class="v1-sec">
+        <div class="v1-cat-head">
+          <div><h2 class="v1-h2">Каталог</h2><p class="v1-sub" id="v1-cat-caption" aria-live="polite"></p></div>
+          <div id="v1-legend-slot"></div>
+        </div>
+        <div id="v1-cat-slot"><p class="v1-mono">каталог загружается…</p></div>
+      </section>
+      <section class="v1-sec">
+        <h2 class="v1-h2">Путь</h2>
+        <p class="v1-sub">Четыре уровня. Каждый замыкается вещью, а не тестом.</p>
+        ${v1PathStrip()}
+        <button class="v1-note" onclick="umTrack('alyosha-open', { from: 'note' }); aleshaToggle()"><span class="ava">А</span>Не знаешь, с чего начать? Спроси, подскажу.</button>
+      </section>
+    </div>`;
+  loadCatalog().then(() => {
+    if (!document.getElementById('v1-cat-slot')) return;
+    const byId = Object.fromEntries(CATALOG.items.map(i => [i.id, i]));
+    const pick = (CATALOG.home || []).map(id => byId[id]).filter(Boolean);
+    const feat = byId[CATALOG.featured];
+    if (feat) document.getElementById('v1-hero-art').innerHTML = v1RecordSVG(feat) + v1Sleeve(feat, 'hero');
+    document.getElementById('v1-tracks-slot').innerHTML = v1TrackList(false);
+    document.getElementById('v1-legend-slot').innerHTML = v1Legend();
+    document.getElementById('v1-cat-caption').textContent = catalogCaption();
+    document.getElementById('v1-cat-slot').innerHTML = v1Understand() +
+      `<div class="v1-grid">${pick.map(i => v1Sleeve(i, 'catalog')).join('')}</div>
+       <button class="v1-more" onclick="openStaticPage('catalog')">весь каталог →</button>`;
+    applyIntent();
+  }).catch(() => {
+    const slot = document.getElementById('v1-cat-slot');
+    if (slot) slot.innerHTML = '<p class="v1-sub">Каталог не загрузился. Обнови страницу.</p>';
+  });
+}
+
+function renderCatalog() {
+  const el = document.getElementById('lesson-content');
+  el.innerHTML = `<div class="v1"><section class="v1-rec" style="max-width:none">
+      <button class="v1-back" onclick="openStaticPage('home')">← главная</button>
+      <h1 class="v1-h2" style="margin-top:12px">Весь каталог</h1>
+      <div id="v1-cat-slot"><p class="v1-mono">каталог загружается…</p></div>
+    </section></div>`;
+  loadCatalog().then(() => {
+    const groups = Object.keys(CATALOG.series).map(sid => ({ sid, name: CATALOG.series[sid], items: CATALOG.items.filter(i => String(i.series) === sid) })).filter(g => g.items.length);
+    document.getElementById('v1-cat-slot').innerHTML = `
+      <div class="v1-cat-head" style="margin-top:20px"><p class="v1-sub" id="v1-cat-caption" aria-live="polite" style="margin:0">${esc(catalogCaption())}</p>${v1Legend()}</div>
+      ${v1TrackList(true)}
+      <div style="margin-top:28px">${v1Understand()}</div>
+      ${groups.map(g => `<section class="v1-series"><h3>Серия ${esc(g.sid)} · ${esc(g.name)}</h3><div class="v1-grid">${g.items.map(i => v1Sleeve(i, 'catalog')).join('')}</div></section>`).join('')}`;
+    applyIntent();
+  }).catch(() => { document.getElementById('v1-cat-slot').innerHTML = '<p class="v1-sub">Каталог не загрузился. Обнови страницу.</p>'; });
+}
+
+// Пластинка — минимум для сессии 1: сторона A + «уроки, которые ведут сюда».
+// Полная страница (наклейка, этикетка, сторона B, «рядом в каталоге») — сессия 2.
+function openRecord(num, from) {
+  currentLessonId = null;
+  aleshaHide();
+  closeSidebar();
+  document.body.classList.add('theme-v1');
+  history.replaceState(null, '', `#art-${num}`);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const el = document.getElementById('lesson-content');
+  el.innerHTML = '<div class="v1"><section class="v1-rec"><p class="v1-mono">загружается…</p></section></div>';
+  loadCatalog().then(() => {
+    const item = CATALOG.items.find(i => i.num === String(num));
+    if (!item) { el.innerHTML = '<div class="v1"><section class="v1-rec"><h1>Такой пластинки нет</h1><button class="v1-back" onclick="openStaticPage(\'catalog\')">← весь каталог</button></section></div>'; return; }
+    umTrack('record-open', { art: item.id, series: item.series, status: item.status, from: from || 'link' });
+    const lessons = item.lessons.map(id => ({ id, l: v1Lesson(id) })).filter(x => x.l);
+    const list = lessons.map(({ id, l }) => l.draft
+      ? `<li><a class="is-locked" aria-disabled="true"><span class="v1-mono">${esc(String(id))}</span><span>${esc(l.title)}</span><span class="v1-mono">${V1_LOCK} скоро</span></a></li>`
+      : `<li><a onclick="openLesson(${v1LessonArg(id)})"><span class="v1-mono">${esc(String(id))}</span><span>${esc(l.title)}</span><span class="v1-mono">→</span></a></li>`).join('');
+    const remix = item.remix ? `<div class="v1-remix"><div class="v1-mono">ремикс · ${esc(item.remix.title)}</div><a onclick="umTrack('remix-open', { art: '${esc(item.id)}' }); openLesson(${v1LessonArg(item.remix.lesson)})" style="cursor:pointer;text-decoration:underline;text-underline-offset:3px">Та же вещь ${esc(item.remix.title)}. ${esc(item.remix.note.charAt(0).toUpperCase() + item.remix.note.slice(1))}.</a></div>` : '';
+    const door = item.door ? `<a class="v1-door" href="https://madzhitov.ru" target="_blank" rel="noopener" onclick="umTrack('studio-door', { art: '${esc(item.id)}' })">${esc(item.door)}</a>` : '';
+    el.innerHTML = `<div class="v1"><section class="v1-rec">
+      <button class="v1-back" onclick="openStaticPage('catalog')">← весь каталог</button>
+      <div class="rec-ghost" data-n="${esc(item.num)}" aria-hidden="true"></div>
+      <div class="rec-meta"><span class="v1-mono">${esc(item.id)} · сторона A</span>${v1Status(item.status)}<span class="v1-mono">${esc(item.type)}</span></div>
+      <h1>${esc(item.title)}</h1>
+      <p class="rec-line">${esc(item.line)}</p>
+      ${item.press ? `<p class="v1-mono">тираж ${esc(item.press)}</p>` : ''}
+      ${door}
+      ${list ? `<h2 class="v1-h2" style="font-size:var(--fs-h3);margin-top:48px">Уроки, которые ведут сюда</h2><ol>${list}</ol>` : ''}
+      ${remix}
+    </section></div>`;
+  }).catch(() => { el.innerHTML = '<div class="v1"><section class="v1-rec"><p class="v1-sub">Каталог не загрузился. Обнови страницу.</p></section></div>'; });
 }
 
 function subscribeEmail(event) {
@@ -38159,7 +38538,7 @@ function toggleTheme() {
 }
 
 // Init
-const savedTheme = localStorage.getItem(THEME_KEY);
+const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
 if (savedTheme) {
   document.documentElement.setAttribute('data-theme', savedTheme);
   document.getElementById('theme-label').textContent = savedTheme === 'dark' ? 'Светлая тема' : 'Тёмная тема';
@@ -38187,7 +38566,9 @@ if (hashMatch) {
   openGlossary(glossaryTermHash[1]);
 } else if (staticHash === 'glossary') {
   openGlossary();
-} else if (['home', 'about', 'howto', 'faq', 'changelog', 'resources', 'admin', 'my-progress', 'routes', 'trails', 'artifacts'].includes(staticHash)) {
+} else if (/^art-\d+$/.test(staticHash)) {
+  openRecord(staticHash.slice(4), 'link');
+} else if (['home', 'about', 'howto', 'faq', 'changelog', 'resources', 'admin', 'my-progress', 'routes', 'trails', 'artifacts', 'catalog'].includes(staticHash)) {
   openStaticPage(staticHash);
 } else {
   // По умолчанию — Home
