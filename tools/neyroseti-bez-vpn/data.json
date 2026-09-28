@@ -1,0 +1,340 @@
+{
+  "title": "Какие нейросети работают в России без VPN",
+  "checked": "2026-09-27",
+  "description": "Живой список нейросетей, которые открываются из России без VPN: для текста, картинок, видео, музыки, презентаций и кода. Что бесплатно и что можно оплатить российской картой. Сверяем раз в месяц.",
+  "lead": "Сервисы уходят и приходят, поэтому сверяем список раз в месяц: по официальным страницам и свежим новостям, у каждого сервиса есть источники. Зарубежные сайты у отдельных провайдеров могут грузиться нестабильно. А российские сервисы с апреля 2026 могут не пускать с включённым VPN — для них его лучше выключить.",
+  "blocked_lead": "Эти сервисы Россию не обслуживают: закрыли её сами компании, а у ChatGPT с сентября 2026 соединение к тому же обрывается внутри российских сетей.",
+  "resellers": "В поиске много сервисов, которые продают доступ к ChatGPT, Claude и Gemini за рубли. Это нарушает правила самих компаний, а твоя переписка, аккаунт и деньги остаются у посредника. Многие статьи «нейросети без VPN» написаны такими посредниками. Здесь их нет.",
+  "faq_blocked": "Компании, которые их делают, не обслуживают Россию: её нет в их списках поддерживаемых стран. У ChatGPT с 6 сентября 2026 соединение к тому же обрывается внутри российских сетей.",
+  "task_order": ["текст", "поиск", "документы", "код", "картинки", "видео", "музыка", "озвучка", "презентации"],
+  "services": [
+    {
+      "name": "Алиса AI", "url": "https://alice.yandex.ru/", "company": "Яндекс", "country": "Россия",
+      "tasks": ["текст", "поиск", "документы", "код", "картинки", "видео"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "Чат и картинки бесплатно, в часы пик приоритет у подписчиков. Видео — оживление фото до 4 секунд. «Алиса Плюс» — 199 ₽/мес поверх Яндекс Плюс.",
+      "free_yes": true, "pay": "yes",
+      "russian": "Полностью на русском.",
+      "sources": [
+        {"url": "https://alice.yandex.ru/support/ru/assistant/alice-plus", "date": "2026-09", "what": "официальная справка: «Алиса Плюс» за 199 ₽/мес, работает в России"},
+        {"url": "https://vc.ru/ai/3053042-alisa-yandeksa-besplatnyj-ii-i-platnyj-roditelskij-kontrol", "date": "2026-08-02", "what": "базовая Алиса AI бесплатна"},
+        {"url": "https://alice.yandex.ru/support/ru/assistant/chat/picture-animate", "date": "2026-09", "what": "официальная справка: оживление фото до 4 секунд"}
+      ]
+    },
+    {
+      "name": "ГигаЧат", "url": "https://giga.chat/", "company": "Сбер", "country": "Россия",
+      "tasks": ["текст", "поиск", "документы", "код", "картинки", "видео", "презентации"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "Бесплатно, с дневными лимитами. Картинки Kandinsky 6.0 — без лимита, видео — с дневным лимитом. Презентации до 10 слайдов со скачиванием в PPTX.",
+      "free_yes": true, "pay": "n/a",
+      "russian": "Полностью на русском, модель заточена под русский.",
+      "sources": [
+        {"url": "https://vc.ru/aihub/2844298-gigachat-besplatno-kak-poluchit-dostup", "date": "2026-04-01", "what": "для физлиц чат бесплатный, вход по Сбер ID"},
+        {"url": "https://www.rbc.ru/rbcfreenews/69f05af09a7947e6b38ed5ef", "date": "2026-04-28", "what": "Kandinsky 6.0 в ГигаЧате бесплатно и без лимита генераций"},
+        {"url": "https://sber.pro/publication/5-neirosetei-dlya-sozdaniya-prezentatsii-ot-teksta-k-gotovim-slaidam/", "date": "2026-02-24", "what": "презентации до 10 слайдов, экспорт PPTX и PDF"}
+      ]
+    },
+    {
+      "name": "Шедеврум", "url": "https://shedevrum.ai/", "company": "Яндекс", "country": "Россия",
+      "tasks": ["картинки", "видео"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "Около 60 картинок и 10 видео по 4 секунды в день, с водяным знаком. Про — 100 ₽/мес при Яндекс Плюс.",
+      "free_yes": true, "pay": "yes",
+      "russian": "Полностью на русском.",
+      "sources": [
+        {"url": "https://yandex.ru/support/shedevrum/ru/video/create", "date": "2026-09", "what": "официальная справка: видео 4 секунды, Про за 100 ₽/мес"},
+        {"url": "https://www.jivo.ru/blog/ai/nejroseti-dostupnye-v-rossii.html", "date": "2026-09-18", "what": "бесплатно 60 картинок и 10 видео в день"}
+      ]
+    },
+    {
+      "name": "DeepSeek", "url": "https://chat.deepseek.com/", "company": "DeepSeek", "country": "Китай",
+      "tasks": ["текст", "поиск", "документы", "код"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "Чат полностью бесплатный, платного тарифа нет. В часы пик бывает «сервер занят».",
+      "free_yes": true, "pay": "n/a",
+      "russian": "Хорошо отвечает по-русски, приложение на русском.",
+      "sources": [
+        {"url": "https://vc.ru/services/2990079-deepseek-v-rossii-besplatnyj-chat-v4-api-i-ogranicheniya", "date": "2026-06-22", "what": "чат бесплатный, вход по email"},
+        {"url": "https://www.interfax.ru/russia/1091532", "date": "2026-05-24", "what": "РКН: ограничений для DeepSeek не вводили"},
+        {"url": "https://habr.com/ru/news/1038734/", "date": "2026-05-24", "what": "24 мая сайт почти сутки не открывался из России, потом доступ вернулся"}
+      ]
+    },
+    {
+      "name": "Qwen Chat", "url": "https://chat.qwen.ai/", "company": "Alibaba", "country": "Китай",
+      "tasks": ["текст", "поиск", "документы", "код", "картинки", "видео", "презентации"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "Бесплатно. Картинки, видео до 5 секунд и слайды — с суточными лимитами.",
+      "free_yes": true, "pay": "n/a",
+      "russian": "Интерфейс и ответы на русском. Русский текст на картинках и слайдах выходит с ошибками.",
+      "sources": [
+        {"url": "https://edu.sravni.ru/kursy/info/qwen-chat/", "date": "2026-09-26", "what": "открывается из России напрямую, чат бесплатный"},
+        {"url": "https://www.jivo.ru/blog/ai/nejroseti-dostupnye-v-rossii.html", "date": "2026-09-18", "what": "картинки, видео и презентации бесплатно"},
+        {"url": "https://chat.qwen.ai/auth?action=signup", "date": "2026-09-27", "what": "регистрация по email, Google, GitHub или Apple"}
+      ]
+    },
+    {
+      "name": "Z.ai (GLM)", "url": "https://chat.z.ai/", "company": "Zhipu AI", "country": "Китай",
+      "tasks": ["текст", "поиск", "документы", "код", "картинки", "озвучка", "презентации"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "Чат, презентации (PPT Agent), картинки и озвучка — бесплатно, с лимитами на число запросов. Есть гостевой режим без регистрации.",
+      "free_yes": true, "pay": "no",
+      "russian": "Отвечает по-русски, интерфейс по умолчанию английский.",
+      "sources": [
+        {"url": "https://chat.z.ai/auth", "date": "2026-09-27", "what": "вход через Google, email или GitHub, есть гостевой режим"},
+        {"url": "https://www.jivo.ru/blog/ai/nejroseti-dostupnye-v-rossii.html", "date": "2026-09-18", "what": "PPT Agent, картинки и озвучка доступны в России бесплатно"}
+      ]
+    },
+    {
+      "name": "Kimi", "url": "https://www.kimi.ai/", "company": "Moonshot AI", "country": "Китай",
+      "tasks": ["текст", "поиск", "документы", "код", "презентации"],
+      "vpn": "partial", "vpn_note": "Сайт открывается, но российских номеров нет среди способов входа — зарегистрироваться можно только через Google. У части провайдеров грузится нестабильно.",
+      "free": "Чат бесплатный, слайды и другие агентные задачи — с небольшим лимитом кредитов. Платно от $19/мес.",
+      "free_yes": true, "pay": "no",
+      "russian": "Хорошо отвечает по-русски, приложение на русском.",
+      "sources": [
+        {"url": "https://www.kimi.ai/", "date": "2026-09-27", "what": "вход по телефону (без +7) или через Google"},
+        {"url": "https://www.jivo.ru/blog/ai/kimi-slides.html", "date": "2026-05-22", "what": "слайды с экспортом в PPTX доступны из России"}
+      ]
+    },
+    {
+      "name": "Perplexity", "url": "https://www.perplexity.ai/", "company": "Perplexity AI", "country": "США",
+      "tasks": ["поиск", "текст", "документы"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "Базовый ИИ-поиск бесплатный, плюс 3 Pro-поиска в день. Pro — $20/мес.",
+      "free_yes": true, "pay": "no",
+      "russian": "Интерфейс и ответы на русском.",
+      "sources": [
+        {"url": "https://apps.apple.com/ru/app/id1668000334", "date": "2026-09-27", "what": "приложение есть в российском App Store"},
+        {"url": "https://vc.ru/services/2988747-perplexity-v-rossii-kak-ispolzovat-vozmozhnosti-i-tarify", "date": "2026-06-21", "what": "пользоваться из России можно, российские карты не проходят"},
+        {"url": "https://www.perplexity.ai/hub/legal/terms-of-service", "date": "2026-01-23", "what": "в условиях нет отдельного запрета для России"}
+      ]
+    },
+    {
+      "name": "Mistral Vibe (бывший Le Chat)", "url": "https://chat.mistral.ai/", "company": "Mistral AI", "country": "Франция",
+      "tasks": ["текст", "поиск", "документы", "код", "картинки"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "Бесплатно, с лимитами на сообщения, поиск и картинки. Pro — $14.99/мес.",
+      "free_yes": true, "pay": "no",
+      "russian": "Отвечает по-русски, но слабее моделей, заточенных под русский. Интерфейс без русского.",
+      "sources": [
+        {"url": "https://legal.mistral.ai/terms/row-consumer-terms", "date": "2026-09-25", "what": "России нет среди запрещённых стран"},
+        {"url": "https://apps.apple.com/ru/app/id6740410176", "date": "2026-09-27", "what": "приложение есть в российском App Store"}
+      ]
+    },
+    {
+      "name": "Grok", "url": "https://grok.com/", "company": "SpaceXAI (бывшая xAI)", "country": "США",
+      "tasks": ["текст", "поиск", "код", "картинки"],
+      "vpn": "partial", "vpn_note": "Отчёты расходятся: у части провайдеров сайт открывается, у части нет. Приложения нет в российских App Store и Google Play.",
+      "free": "Бесплатный тариф с жёсткими лимитами.",
+      "free_yes": true, "pay": "no",
+      "russian": "Интерфейс и ответы на русском.",
+      "sources": [
+        {"url": "https://itunes.apple.com/lookup?id=6670324846&country=ru", "date": "2026-09-27", "what": "приложения нет в российском App Store"},
+        {"url": "https://www.iguides.ru/main/other/kak_skachat_i_polzovatsya_grok_v_rossii_na_ios_i_android_v_2026_godu/", "date": "2026-08-06", "what": "запросы с российских IP блокируются"}
+      ]
+    },
+    {
+      "name": "Ideogram", "url": "https://ideogram.ai/", "company": "Ideogram AI", "country": "Канада",
+      "tasks": ["картинки"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "Немного медленных генераций бесплатно, картинки публичные. Plus — от $15/мес.",
+      "free_yes": true, "pay": "no",
+      "russian": "Интерфейс английский. Короткие русские надписи на картинках выходят лучше длинных.",
+      "sources": [
+        {"url": "https://www.jivo.ru/blog/ai/nejroset-ideogram-ai.html", "date": "2026-07-31", "what": "открывается из России напрямую"},
+        {"url": "https://runet.news/news/74067", "date": "2026-07-23", "what": "работает без VPN, российские карты не принимаются"}
+      ]
+    },
+    {
+      "name": "Recraft", "url": "https://www.recraft.ai/", "company": "Recraft", "country": "Великобритания",
+      "tasks": ["картинки"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "Бесплатные кредиты каждый день. На бесплатном тарифе картинки публичные и без коммерческих прав. Платно от $10/мес.",
+      "free_yes": true, "pay": "no",
+      "russian": "Интерфейс на английском.",
+      "sources": [
+        {"url": "https://pc86.ru/neyroseti/neyroset-dlya-generacii-kartinok-besplatno", "date": "2026-09-14", "what": "проверка с российского сервера: сайт открылся"},
+        {"url": "https://www.recraft.ai/docs/plans-and-billing/free-plan", "date": "2026-09", "what": "официально: на бесплатном тарифе картинки публичные"}
+      ]
+    },
+    {
+      "name": "Leonardo.ai", "url": "https://leonardo.ai/", "company": "Leonardo (Canva)", "country": "Австралия",
+      "tasks": ["картинки", "видео"],
+      "vpn": "partial", "vpn_note": "Летом 2026 работал из России без VPN, но весной встречались сообщения о блокировке — источники расходятся.",
+      "free": "150 токенов в день — это 3–5 картинок или 1–2 ролика. Платно от $12/мес.",
+      "free_yes": true, "pay": "no",
+      "russian": "Интерфейс английский, русские запросы понимает хуже английских.",
+      "sources": [
+        {"url": "https://vc.ru/provod/3018593-leonardo-ai-neyroset-dlya-generacii-izobrazheniy", "date": "2026-07-08", "what": "генерация работает из России без VPN"},
+        {"url": "https://dtf.ru/howto/5089047-gaid-po-leonardo-ai-kak-polzovatsya-besplatno", "date": "2026-05-29", "what": "противоположное: сайт может блокировать доступ из России"}
+      ]
+    },
+    {
+      "name": "Kling AI", "url": "https://kling.ai/", "company": "Kuaishou", "country": "Китай",
+      "tasks": ["видео", "картинки"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "66 кредитов в день — примерно 2 ролика по 5 секунд в 720p, с водяным знаком.",
+      "free_yes": true, "pay": "no",
+      "russian": "Есть русская версия сайта. Русские запросы понимает, на английском точнее.",
+      "sources": [
+        {"url": "https://habr.com/ru/companies/tsnis/articles/1056388/", "date": "2026-07-07", "what": "российские IP не блокируются, 66 кредитов в день"},
+        {"url": "https://practicum.yandex.ru/blog/neyroset-kling-ai-dlya-sozdaniya-video/", "date": "2026-04-06", "what": "бесплатный тариф с водяным знаком, сложно только оплатить"}
+      ]
+    },
+    {
+      "name": "Hailuo AI", "url": "https://hailuoai.video/", "company": "MiniMax", "country": "Китай",
+      "tasks": ["видео", "картинки"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "Бонусные и ежедневные кредиты — примерно 2–5 роликов в день, с водяным знаком.",
+      "free_yes": true, "pay": "no",
+      "russian": "Интерфейс в основном английский. Русские запросы понимает, на английском точнее.",
+      "sources": [
+        {"url": "https://habr.com/ru/companies/tsnis/articles/1061748/", "date": "2026-07-22", "what": "открывается из России без VPN, 2–5 видео в день бесплатно"},
+        {"url": "https://www.jivo.ru/blog/ai/nejroset-hailuo-ai.html", "date": "2026-05-18", "what": "доступен в России без ограничений"}
+      ]
+    },
+    {
+      "name": "PixVerse", "url": "https://pixverse.ai/", "company": "AIsphere", "country": "Китай",
+      "tasks": ["видео"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "60 кредитов в день — примерно 2 коротких ролика.",
+      "free_yes": true, "pay": "no",
+      "russian": "Есть русская версия сайта, простые русские запросы понимает.",
+      "sources": [
+        {"url": "https://practicum.yandex.ru/blog/neyroset-pixverse-kak-polzovatsya/", "date": "2026-03-27", "what": "VPN не требуется, 60 кредитов в день"}
+      ]
+    },
+    {
+      "name": "Suno", "url": "https://suno.com/", "company": "Suno", "country": "США",
+      "tasks": ["музыка"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "50 кредитов в день — около 10 песен. С сентября 2026 бесплатно можно скачать не больше 7 треков за всё время. Только для личного использования.",
+      "free_yes": true, "pay": "no",
+      "russian": "Поёт на русском, бывают ошибки в ударениях.",
+      "sources": [
+        {"url": "https://itzine.ru/news/ai/suno-v-rossii-v-2026-godu-rabotaet-i-bez-vpn.html", "date": "2026-07-06", "what": "работает без VPN, но не у всех одинаково"},
+        {"url": "https://www.musicbusinessworldwide.com/suno-limits-subscribers-downloads-per-month/", "date": "2026-08-11", "what": "лимиты скачиваний с 3 сентября 2026"}
+      ]
+    },
+    {
+      "name": "Gamma", "url": "https://gamma.app/", "company": "Gamma", "country": "США",
+      "tasks": ["презентации"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "400 кредитов при регистрации — примерно 10 презентаций, с водяным знаком. Подписка от 8 €/мес.",
+      "free_yes": true, "pay": "no",
+      "russian": "Интерфейс на русском, запросы по-русски. Экспорт в PPTX, PDF и Google Slides.",
+      "sources": [
+        {"url": "https://secrets.tbank.ru/tehnologii/gamma-ai/", "date": "2026-08-13", "what": "работает в России без VPN, русский интерфейс, 400 кредитов"}
+      ]
+    },
+    {
+      "name": "Yandex SpeechKit", "url": "https://yandex.cloud/ru/services/speechkit", "company": "Яндекс", "country": "Россия",
+      "tasks": ["озвучка"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "Бесплатного тарифа нет: при подключении — грант от 4000 ₽ на 60 дней, дальше оплата за символы. Работает через консоль Yandex Cloud, новичку неудобно.",
+      "free_yes": false, "pay": "yes",
+      "russian": "Много русских голосов.",
+      "sources": [
+        {"url": "https://yandex.cloud/ru/docs/getting-started/usage-grant", "date": "2026-09", "what": "официально: стартовый грант от 4000 ₽ на 60 дней"}
+      ]
+    },
+    {
+      "name": "GigaCode", "url": "https://gitverse.ru/features/gigacode/", "company": "Сбер", "country": "Россия",
+      "tasks": ["код"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "Тариф «Персональный» бесплатный, для личного использования. Плагины для VS Code, JetBrains и GigaIDE.",
+      "free_yes": true, "pay": "yes",
+      "russian": "Интерфейс и документация на русском.",
+      "sources": [
+        {"url": "https://gitverse.ru/features/gigacode/", "date": "2026-09-27", "what": "официально: «Персональный» бесплатно, «Бизнес» от 1699 ₽"}
+      ]
+    },
+    {
+      "name": "SourceCraft Code Assistant", "url": "https://sourcecraft.dev/portal/code-assistant/", "company": "Яндекс", "country": "Россия",
+      "tasks": ["код"],
+      "vpn": "yes", "vpn_note": "",
+      "free": "Free: 500 нейрокредитов в месяц и отдельная квота автодополнения. Платно от 1190 ₽/мес (тарифы с 1 октября 2026).",
+      "free_yes": true, "pay": "yes",
+      "russian": "Интерфейс и документация на русском.",
+      "sources": [
+        {"url": "https://sourcecraft.dev/portal/docs/ru/sourcecraft/pricing", "date": "2026-09-27", "what": "официально: тарифы с 1 октября 2026, Free — 500 нейрокредитов"}
+      ]
+    },
+    {
+      "name": "ChatGPT и Codex", "url": "https://chatgpt.com/", "company": "OpenAI", "country": "США",
+      "tasks": ["текст"], "vpn": "no",
+      "vpn_note": "OpenAI не обслуживает Россию; с 6 сентября 2026 соединение с chatgpt.com к тому же обрывается внутри российских сетей.",
+      "free": "", "free_yes": false, "pay": "no", "russian": "",
+      "sources": [
+        {"url": "https://developers.openai.com/api/docs/supported-countries", "date": "2026-09", "what": "России нет в списке стран OpenAI"},
+        {"url": "https://hi-tech.mail.ru/news/154888-smi-govoryat-o-blokirovke-chatgpt-v-rossii-chto-nuzhno-znat/", "date": "2026-09-07", "what": "соединение с chatgpt.com рвётся с 6–7 сентября"}
+      ]
+    },
+    {
+      "name": "Claude и Claude Code", "url": "https://claude.ai/", "company": "Anthropic", "country": "США",
+      "tasks": ["текст"], "vpn": "no",
+      "vpn_note": "России нет в списке поддерживаемых стран Anthropic.",
+      "free": "", "free_yes": false, "pay": "no", "russian": "",
+      "sources": [{"url": "https://www.anthropic.com/supported-countries", "date": "2026-09", "what": "России нет в списке стран"}]
+    },
+    {
+      "name": "Google Gemini, Flow и Veo", "url": "https://gemini.google.com/", "company": "Google", "country": "США",
+      "tasks": ["текст"], "vpn": "no",
+      "vpn_note": "России нет в официальных списках стран Gemini и Flow; в августе 2026 у части россиян Gemini перестал работать даже с VPN.",
+      "free": "", "free_yes": false, "pay": "no", "russian": "",
+      "sources": [
+        {"url": "https://support.google.com/gemini/answer/13575153", "date": "2026-09", "what": "России нет в списке стран Gemini"},
+        {"url": "https://support.google.com/labs/answer/16353544", "date": "2026-09", "what": "России нет в списке стран Flow"}
+      ]
+    },
+    {
+      "name": "Microsoft Copilot", "url": "https://copilot.microsoft.com/", "company": "Microsoft", "country": "США",
+      "tasks": ["текст"], "vpn": "no",
+      "vpn_note": "Microsoft закрыла Россию и по IP, и по региону аккаунта.",
+      "free": "", "free_yes": false, "pay": "no", "russian": "",
+      "sources": [{"url": "https://learn.microsoft.com/ru-ru/answers/questions/2353481/copilot", "date": "2025-01-16", "what": "поддержка Microsoft: Copilot в России недоступен"}]
+    },
+    {
+      "name": "GitHub Copilot", "url": "https://github.com/features/copilot", "company": "GitHub", "country": "США",
+      "tasks": ["код"], "vpn": "no",
+      "vpn_note": "Сам GitHub работает, но Copilot закрыт для России по правилам экспортного контроля США.",
+      "free": "", "free_yes": false, "pay": "no", "russian": "",
+      "sources": [{"url": "https://docs.github.com/en/site-policy/other-site-policies/github-and-trade-controls", "date": "2026-03", "what": "Copilot запрещено поставлять в Россию"}]
+    },
+    {
+      "name": "Cursor", "url": "https://cursor.com/", "company": "Anysphere", "country": "США",
+      "tasks": ["код"], "vpn": "no",
+      "vpn_note": "С 4 сентября 2026 не работает для пользователей из России, включая бесплатный тариф.",
+      "free": "", "free_yes": false, "pay": "no", "russian": "",
+      "sources": [{"url": "https://www.cnews.ru/news/top/2026-09-11_odin_iz_krupnejshih_ii-instrumentov", "date": "2026-09-11", "what": "Cursor закрыт для россиян с 4 сентября"}]
+    },
+    {
+      "name": "Meta AI", "url": "https://www.meta.ai/", "company": "Meta", "country": "США",
+      "tasks": ["текст"], "vpn": "no",
+      "vpn_note": "Meta признана в России экстремистской, её сервисы заблокированы.",
+      "free": "", "free_yes": false, "pay": "no", "russian": "",
+      "sources": [{"url": "https://www.cnews.ru/news/top/2026-02-11_po_primeru_youtubevlasti_okonchatelno", "date": "2026-02-11", "what": "сервисы Meta в России заблокированы"}]
+    },
+    {
+      "name": "Midjourney", "url": "https://www.midjourney.com/", "company": "Midjourney", "country": "США",
+      "tasks": ["картинки"], "vpn": "no",
+      "vpn_note": "Без зарубежного IP сайт не пускает к входу; бесплатного тарифа нет, а оплатить из России нельзя.",
+      "free": "", "free_yes": false, "pay": "no", "russian": "",
+      "sources": [{"url": "https://practicum.yandex.ru/blog/kak-polzovatsya-neyrosetyu-midjourey/", "date": "2026-07-15", "what": "бесплатного тарифа нет, из России не оплатить"}]
+    },
+    {
+      "name": "Runway", "url": "https://runway.com/", "company": "Runway", "country": "США",
+      "tasks": ["видео"], "vpn": "no",
+      "vpn_note": "Официально Россию не поддерживает, сайт из России может не открыться.",
+      "free": "", "free_yes": false, "pay": "no", "russian": "",
+      "sources": [{"url": "https://practicum.yandex.ru/blog/neyroset-runway/", "date": "2026-09-24", "what": "сайт из России может не открыться без VPN"}]
+    },
+    {
+      "name": "ElevenLabs", "url": "https://elevenlabs.io/", "company": "ElevenLabs", "country": "США",
+      "tasks": ["озвучка"], "vpn": "no",
+      "vpn_note": "Компания официально блокирует доступ из России.",
+      "free": "", "free_yes": false, "pay": "no", "russian": "",
+      "sources": [{"url": "https://elevenlabs.io/docs/help-center/legal/do-you-restrict-access-to-the-service-and-platform-for-any-specific-countries", "date": "2026-09", "what": "официально: доступ из России блокируется"}]
+    }
+  ]
+}
