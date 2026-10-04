@@ -879,8 +879,38 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     const yes = Object.values(jget(KEY.units)).filter((x) => x.result === 'yes').length;
     const dec = ls.get(KEY.tgOffer);
     if (yes < 2 || (dec && Date.now() - new Date(dec).getTime() < 21 * 864e5)) return '';
-    return `<div class="v6-tgoffer"><b>Уже ${yes} ${plural(yes, 'задача сделана', 'задачи сделаны', 'задач сделано')}.</b> Тетрадь живёт только в этом браузере. Сохранение через Telegram появится скоро, а пока можно скачать тетрадь файлом.
+    return `<div class="v6-tgoffer"><b>Уже ${yes} ${plural(yes, 'задача сделана', 'задачи сделаны', 'задач сделано')}.</b> Тетрадь живёт только в этом браузере. Скачайте её файлом, чтобы не потерять.
       <span><button class="v6b is-sm" onclick="V6.open('notebook')">Открыть тетрадь</button> <button class="v6-quiet" onclick="V6.tgLater(this)">Не сейчас</button></span></div>`;
+  }
+  // «Показать результат»: форма → alesha-vercel/api/show → почта автора (и Telegram, если настроен)
+  const SHOW_API = (typeof ALESHA_API === 'string' ? ALESHA_API : 'https://alesha-vercel.vercel.app/api/alesha').replace(/\/alesha$/, '/show');
+  function showForm(id, btn) {
+    const box = document.getElementById('v6-show'); if (!box) return;
+    if (box.innerHTML) { box.innerHTML = ''; return; }
+    track('artifact-submit-click', { from: 'unit', unit: id });
+    const st = unitState(id);
+    box.innerHTML = `<form class="v6-showf" onsubmit="V6.showSend('${e(id)}', this); return false;">
+        <label><span class="v6-meta">Что получилось</span><textarea name="text" rows="4" maxlength="4000" placeholder="Коротко: что сделали и что вышло">${e(st.note || '')}</textarea></label>
+        <label><span class="v6-meta">Ссылка на результат, если есть</span><input type="url" name="link" maxlength="500" placeholder="https://"></label>
+        <label><span class="v6-meta">Почта или Telegram, чтобы автор мог ответить</span><input type="text" name="contact" maxlength="200" required autocomplete="email" placeholder="name@mail.ru или @name"></label>
+        <label class="v6-showf-hp" aria-hidden="true">Не заполняйте<input type="text" name="hp" tabindex="-1" autocomplete="off"></label>
+        <label class="v6-showf-ok"><input type="checkbox" name="publish"><span>Можно показать в «Сделали другие»</span></label>
+        <span class="v6-btns"><button class="v6b" type="submit">Отправить</button><a class="v6-quiet" href="https://t.me/madzhitov" target="_blank" rel="noopener">или написать в Telegram</a></span>
+        <p class="v6-meta v6-showf-msg" role="status">Контакт нужен только для ответа.</p></form>`;
+    const ta = box.querySelector('textarea'); if (ta) ta.focus();
+  }
+  function showSend(id, f) {
+    const u = unitById(id), msg = f.querySelector('.v6-showf-msg'), b = f.querySelector('button[type=submit]');
+    const body = { unit: id, unitTitle: u ? u.title : '', text: f.text.value, link: f.link.value, contact: f.contact.value, publish: f.publish.checked, hp: f.hp.value };
+    b.disabled = true; msg.textContent = 'Отправляю…';
+    fetch(SHOW_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then((r) => r.json().catch(() => ({})).then((j) => ({ ok: r.ok, j })))
+      .then(({ ok, j }) => {
+        if (ok) { track('artifact-submit', { from: 'unit', unit: id }); f.outerHTML = '<p class="v6-tgoffer"><b>Отправлено.</b> Автор ответит на ваш контакт.</p>'; return; }
+        b.disabled = false;
+        msg.textContent = j.error && !/^[a-z-]+$/.test(j.error) ? j.error : 'Не получилось отправить. Напишите в Telegram @madzhitov или попробуйте позже.';
+      })
+      .catch(() => { b.disabled = false; msg.textContent = 'Нет связи. Попробуйте позже или напишите в Telegram @madzhitov.'; });
   }
   function tgLater(btn) { ls.set(KEY.tgOffer, new Date().toISOString()); const b = btn.closest('.v6-tgoffer'); if (b) b.remove(); }
   function renderUnit(id) {
@@ -897,8 +927,8 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     const card = fin ? (() => {
       if (st.result === 'yes') return `<div class="v6-ucard"><span class="v6-pcard-label">Готово</span><h2 class="v6-ucard-t">Получилось. Записано в тетрадь</h2><p>${e(u.result || '')}</p>
           <label class="v6-lnote"><span class="v6-lnote-h"><b>Что вышло</b><span class="v6-meta">в тетрадь</span></span><textarea placeholder="Что получилось, что поправили, что пригодится в следующий раз" oninput="V6.unitNote('${e(id)}', this)">${e(st.note || '')}</textarea></label>
-          <span class="v6-btns"><a class="v6b v6-btn-lg" href="https://t.me/madzhitov" target="_blank" rel="noopener" onclick="umTrack('artifact-submit-click', { from: 'unit', unit: '${e(id)}' })">Показать результат</a><button class="v6b is-soft v6-btn-lg" onclick="V6.open('notebook')">Тетрадь</button><button class="v6b is-soft v6-btn-lg" onclick="V6.openRole('${e(t.group)}','unit')">Другие задачи</button></span>
-          <p class="v6-meta">«Показать результат» — пришлите автору; с вашего согласия работа попадёт в «Сделали другие».</p>${tgOfferBox()}</div>`;
+          <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="V6.showForm('${e(id)}', this)">Показать результат</button><button class="v6b is-soft v6-btn-lg" onclick="V6.open('notebook')">Тетрадь</button><button class="v6b is-soft v6-btn-lg" onclick="V6.openRole('${e(t.group)}','unit')">Другие задачи</button></span>
+          <div id="v6-show"></div><p class="v6-meta">Пришлите работу автору. С вашего согласия она попадёт в «Сделали другие».</p>${tgOfferBox()}</div>`;
       if (st.result === 'almost') return `<div class="v6-ucard"><span class="v6-pcard-label">Почти</span><h2 class="v6-ucard-t">Частые причины</h2><ul class="v6-ualmost">${(u.almost || []).map((a) => `<li>${e(a)}</li>`).join('')}</ul>
           <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="V6.unitGo('${e(id)}', 0)">Ещё раз</button><button class="v6b is-soft v6-btn-lg" onclick="V6.unitHelp('${e(id)}')">Спросить Алёшу</button><button class="v6b is-soft v6-btn-lg" onclick="V6.unitResult('${e(id)}','yes')">Теперь получилось</button></span></div>`;
       return `<div class="v6-ucard"><span class="v6-pcard-label">Шаг ${n} из ${n} пройден</span><h2 class="v6-ucard-t">Получилось?</h2><p>${e(u.result || '')}</p>
@@ -1216,5 +1246,5 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     });
   }
 
-  window.V6 = { install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, openKnowledge, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
+  window.V6 = { install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, openKnowledge, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
 })();

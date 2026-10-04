@@ -714,6 +714,12 @@ body.v6 .lesson-content .v6-page .v6-ucard p { margin:0; font-size:19px; line-he
 .v6-ualmost { margin:0; padding-left:20px; display:flex; flex-direction:column; gap:10px; font-size:18px; line-height:1.5; }
 .v6-tgoffer { background:var(--accent-tint); border-radius:24px; padding:20px 22px; display:flex; flex-direction:column; gap:12px; font-size:16px; line-height:1.5; }
 .v6-tgoffer span { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.v6-showf { display:flex; flex-direction:column; gap:14px; background:var(--accent-tint); border-radius:24px; padding:20px 22px; }
+.v6-showf label { display:flex; flex-direction:column; gap:6px; }
+.v6-showf input[type=text], .v6-showf input[type=url], .v6-showf textarea { font:inherit; font-size:16px; padding:10px 12px; border:1px solid var(--line, #d9dbe1); border-radius:12px; background:#fff; width:100%; box-sizing:border-box; }
+.v6-showf .v6-showf-ok { flex-direction:row; align-items:center; gap:10px; }
+.v6-showf-hp { position:absolute !important; left:-9999px; width:1px; height:1px; overflow:hidden; }
+body.v6 .v6-showf .v6-showf-msg { margin:0 !important; font-size:14px !important; color:var(--text-3) !important; }
 @media (max-width:900px) { .v6-ugrid { grid-template-columns:1fr; } .v6-ugrid .v6-lside { position:static; } .v6-ucard { padding:28px 22px; border-radius:28px; } }
 
 /* ===== тетрадь (Notebook.dc.html) ===== */
