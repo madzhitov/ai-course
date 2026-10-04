@@ -1,6 +1,11 @@
 {
- "note": "Собрано из v6-brief/frameworks (catalog.json + cards/*.json). Полные карточки помечены full: true.",
+ "note": "Собрано build.py из v6-brief/frameworks: catalog.json + cards/ + curation.json. Не править руками.",
  "version": "2026-10-04",
+ "merged": {
+  "rfm-ecom": "rfm",
+  "fear-4-layers": "pre-mortem",
+  "first-draft-vs-slop": "own-draft"
+ },
  "cards": [
   {
    "id": "aarrr",
@@ -51,7 +56,7 @@
    "id": "stp",
    "title": "STP (сегментация, таргетинг, позиционирование)",
    "source": {
-    "author": "классика маркетинга (Котлер)",
+    "author": "Филип Котлер",
     "book": null,
     "verified": false
    },
@@ -95,7 +100,7 @@
    "id": "cjm",
    "title": "Customer Journey Map",
    "source": {
-    "author": "практика UX и сервис-дизайна",
+    "author": null,
     "book": null,
     "verified": false
    },
@@ -140,7 +145,7 @@
    "id": "rfm",
    "title": "RFM",
    "source": {
-    "author": "директ-маркетинг",
+    "author": null,
     "book": null,
     "verified": false
    },
@@ -162,7 +167,7 @@
    "id": "ltv-cac",
    "title": "LTV / CAC",
    "source": {
-    "author": "юнит-экономика роста",
+    "author": null,
     "book": null,
     "verified": false
    },
@@ -249,7 +254,7 @@
    "id": "messaging-house",
    "title": "Messaging house",
    "source": {
-    "author": "практика B2B-маркетинга",
+    "author": null,
     "book": null,
     "verified": false
    },
@@ -446,7 +451,7 @@
    "id": "incrementality",
    "title": "Инкрементальность и holdout-тесты",
    "source": {
-    "author": "практика performance-маркетинга",
+    "author": null,
     "book": null,
     "verified": false
    },
@@ -468,7 +473,7 @@
    "id": "mmm",
    "title": "MMM (маркетинг-микс моделирование)",
    "source": {
-    "author": "эконометрика; открытые Robyn (Meta) и Meridian (Google)",
+    "author": "открытые модели Robyn (Meta) и Meridian (Google)",
     "book": null,
     "verified": false
    },
@@ -774,7 +779,7 @@
    "id": "cohorts",
    "title": "Когортный анализ",
    "source": {
-    "author": "продуктовая аналитика",
+    "author": null,
     "book": null,
     "verified": false
    },
@@ -807,7 +812,7 @@
    "roles": [
     "product"
    ],
-   "task": "product.metrics",
+   "task": null,
    "executorHint": "промпт",
    "placement": null,
    "firstWave": false,
@@ -818,7 +823,7 @@
    "id": "evals",
    "title": "Evals для ИИ-фич",
    "source": {
-    "author": "практика ИИ-продуктов",
+    "author": null,
     "book": null,
     "verified": false
    },
@@ -862,7 +867,7 @@
    "id": "raci-daci",
    "title": "RACI / DACI",
    "source": {
-    "author": "управление проектами; DACI — Intuit, Atlassian",
+    "author": "DACI — Intuit",
     "book": null,
     "verified": false
    },
@@ -949,7 +954,7 @@
    "id": "unit-economics-sku",
    "title": "Юнит-экономика SKU",
    "source": {
-    "author": "практика e-commerce",
+    "author": null,
     "year": null,
     "book": null,
     "verified": false
@@ -1128,7 +1133,7 @@
    "id": "contribution-margin-channels",
    "title": "Маржинальный доход по каналам",
    "source": {
-    "author": "практика e-commerce",
+    "author": null,
     "book": null,
     "verified": false
    },
@@ -1144,13 +1149,16 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "alsoIn": [
+    "marketing.measure"
+   ]
   },
   {
    "id": "drr-romi",
    "title": "ДРР и ROMI",
    "source": {
-    "author": "практика e-commerce",
+    "author": null,
     "book": null,
     "verified": false
    },
@@ -1166,13 +1174,16 @@
    "placement": null,
    "firstWave": true,
    "firstWaveOrder": 4,
-   "status": "planned"
+   "status": "planned",
+   "alsoIn": [
+    "marketing.measure"
+   ]
   },
   {
    "id": "listing-funnel",
    "title": "Воронка карточки маркетплейса",
    "source": {
-    "author": "практика маркетплейсов",
+    "author": null,
     "book": null,
     "verified": false
    },
@@ -1193,7 +1204,7 @@
    "id": "abc-xyz",
    "title": "ABC / XYZ-анализ",
    "source": {
-    "author": "классика управления запасами",
+    "author": null,
     "book": null,
     "verified": false
    },
@@ -1215,7 +1226,7 @@
    "id": "assortment-matrix",
    "title": "Ассортиментная матрица и ценовая лестница",
    "source": {
-    "author": "практика ритейла",
+    "author": null,
     "book": null,
     "verified": false
    },
@@ -1231,13 +1242,16 @@
    "placement": null,
    "firstWave": true,
    "firstWaveOrder": 7,
-   "status": "planned"
+   "status": "planned",
+   "alsoIn": [
+    "marketing.audience"
+   ]
   },
   {
    "id": "stock-turnover",
    "title": "Оборачиваемость и запасы",
    "source": {
-    "author": "практика ритейла",
+    "author": null,
     "book": null,
     "verified": false
    },
@@ -1252,28 +1266,6 @@
    "placement": null,
    "firstWave": true,
    "firstWaveOrder": 8,
-   "status": "planned"
-  },
-  {
-   "id": "rfm-ecom",
-   "title": "RFM и когорты для e-commerce",
-   "source": {
-    "author": "директ-маркетинг",
-    "book": null,
-    "verified": false
-   },
-   "label": "база",
-   "group": "E-commerce и селлер (авторский блок)",
-   "solves": "Вернуть клиента повторно и посчитать удержание",
-   "roles": [
-    "marketing",
-    "seller"
-   ],
-   "task": "seller.customers.repeat",
-   "executorHint": "ссылки на rfm и cohorts",
-   "placement": null,
-   "firstWave": false,
-   "firstWaveOrder": null,
    "status": "planned"
   },
   {
@@ -1317,19 +1309,22 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "alsoIn": [
+    "marketing.message"
+   ]
   },
   {
    "id": "four-part-request",
    "title": "Запрос из четырёх частей",
    "source": {
-    "author": "Козырькова",
+    "author": "по руководствам Anthropic и OpenAI по составлению запросов",
     "year": null,
-    "book": "[название книги]",
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
+   "group": "ИИ-практика",
    "solves": "Ставить ИИ задачу так, чтобы первый ответ был рабочим, а не общим",
    "roles": [
     "all"
@@ -1444,15 +1439,15 @@
   },
   {
    "id": "goal-acceptance-criteria",
-   "title": "/goal с критериями приёмки и правом задать 3 вопроса",
+   "title": "Задача с критериями приёмки",
    "source": {
-    "author": "Миллер",
-    "book": "Миллер",
+    "author": null,
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Сказать ИИ, по каким признакам результат принят, и разрешить сначала уточнить",
    "roles": [
     "all"
    ],
@@ -1467,13 +1462,13 @@
    "id": "reverse-interview",
    "title": "Обратное интервью",
    "source": {
-    "author": "Миллер, Свадия",
-    "book": "Миллер, Свадия",
+    "author": null,
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Попросить ИИ сначала задать вам вопросы, а потом делать работу",
    "roles": [
     "all"
    ],
@@ -1486,15 +1481,15 @@
   },
   {
    "id": "dear",
-   "title": "DEAR: декомпозиция, аудит допущений, рекомбинация, эксперимент",
+   "title": "Разбор задачи и карта допущений",
    "source": {
-    "author": "Свадия",
-    "book": "Свадия",
+    "author": "карта допущений — Дэвид Бланд, «Testing Business Ideas»",
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Разложить задачу на части, выписать допущения и первым проверить самое рискованное",
    "roles": [
     "owner",
     "product"
@@ -1508,15 +1503,15 @@
   },
   {
    "id": "ai-decision-5-steps",
-   "title": "Решение с ИИ в 5 шагов",
+   "title": "Решение с ИИ: варианты, критерии, выбор",
    "source": {
-    "author": "Козырькова",
-    "book": "Козырькова",
+    "author": null,
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Собрать варианты, взвесить их по критериям и проверить худший исход до выбора",
    "roles": [
     "owner"
    ],
@@ -1528,38 +1523,16 @@
    "status": "planned"
   },
   {
-   "id": "fear-4-layers",
-   "title": "Деконструкция страха в 4 слоя",
-   "source": {
-    "author": "Миллер",
-    "book": "Миллер",
-    "verified": false
-   },
-   "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
-   "roles": [
-    "owner",
-    "seller"
-   ],
-   "task": "ai.think",
-   "executorHint": null,
-   "placement": "рядом с Pre-mortem",
-   "firstWave": false,
-   "firstWaveOrder": null,
-   "status": "planned"
-  },
-  {
    "id": "edge",
-   "title": "EDGE и три проверочных вопроса против шаблона",
+   "title": "Как выбить ИИ из шаблонного ответа",
    "source": {
-    "author": "Свадия",
-    "book": "Свадия",
+    "author": null,
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Три вопроса, после которых ответ перестаёт быть общим",
    "roles": [
     "all"
    ],
@@ -1574,13 +1547,13 @@
    "id": "how-make-better",
    "title": "«Как мне сделать это лучше?»",
    "source": {
-    "author": "Козырькова",
-    "book": "Козырькова",
+    "author": "самопроверка модели — Self-Refine, Мадаан и соавторы, 2023",
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Попросить ИИ раскритиковать и улучшить собственный ответ",
    "roles": [
     "all"
    ],
@@ -1593,15 +1566,15 @@
   },
   {
    "id": "voice",
-   "title": "VOICE: проверено, присвоено, оригинально, ясно, вовлекает",
+   "title": "Проверка текста перед публикацией",
    "source": {
-    "author": "Свадия",
-    "book": "Свадия",
+    "author": null,
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Короткий чек-лист: факты проверены, мысль ваша, ясно и интересно читать",
    "roles": [
     "marketing",
     "seller"
@@ -1615,15 +1588,15 @@
   },
   {
    "id": "own-draft",
-   "title": "Свой черновик и свой голос",
+   "title": "Сначала свой черновик",
    "source": {
-    "author": "Моллик",
-    "book": "Моллик",
+    "author": null,
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Начинать с собственной мысли, чтобы текст с ИИ не стал безликим",
    "roles": [
     "all"
    ],
@@ -1635,37 +1608,16 @@
    "status": "planned"
   },
   {
-   "id": "first-draft-vs-slop",
-   "title": "First Draft против AI slop",
-   "source": {
-    "author": "Миллер",
-    "book": "Миллер",
-    "verified": false
-   },
-   "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
-   "roles": [
-    "marketing"
-   ],
-   "task": "ai.write",
-   "executorHint": null,
-   "placement": "объединить с «Свой черновик и свой голос»",
-   "firstWave": false,
-   "firstWaveOrder": null,
-   "status": "planned"
-  },
-  {
    "id": "idea-batches",
-   "title": "Идеи пачками: 30 и 100 вариантов",
+   "title": "Идеи пачками",
    "source": {
-    "author": "Моллик",
-    "book": "Моллик",
+    "author": "принцип количества в мозговом штурме — Алекс Осборн",
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Попросить 30–100 вариантов и выбирать из них, а не брать первый",
    "roles": [
     "marketing",
     "product"
@@ -1679,15 +1631,15 @@
   },
   {
    "id": "content-pipeline",
-   "title": "Конвейер контента: одна запись → 9 форматов",
+   "title": "Одна запись — много форматов",
    "source": {
-    "author": "Миллер",
-    "book": "Миллер",
+    "author": "COPE: «создай один раз, публикуй везде» — NPR",
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Разложить один материал на пост, сторис, рассылку и карточку",
    "roles": [
     "marketing",
     "seller"
@@ -1701,15 +1653,15 @@
   },
   {
    "id": "verb-or-profession",
-   "title": "Глагол или профессия: что делегировать",
+   "title": "Делегировать задачи, а не профессии",
    "source": {
-    "author": "Козырькова",
-    "book": "Козырькова",
+    "author": "задачный подход к автоматизации — Дэвид Отор",
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Понять, какие операции работы отдать ИИ, а какие оставить себе",
    "roles": [
     "owner",
     "project"
@@ -1723,15 +1675,15 @@
   },
   {
    "id": "assign-check-repeat",
-   "title": "Поручил, проверил, повторил; ТЗ как PRD и SOP",
+   "title": "Поручить, проверить, закрепить",
    "source": {
-    "author": "Моллик",
-    "book": "Моллик",
+    "author": null,
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Оформить поручение ИИ как ТЗ, а удачный результат превратить в инструкцию",
    "roles": [
     "owner",
     "project"
@@ -1745,15 +1697,15 @@
   },
   {
    "id": "progressive-trust",
-   "title": "Прогрессивное доверие: читать → черновик → действие",
+   "title": "Уровни доверия ИИ",
    "source": {
-    "author": "Миллер",
-    "book": "Миллер",
+    "author": null,
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Давать ИИ свободу по шагам: читать, предлагать, действовать",
    "roles": [
     "owner"
    ],
@@ -1766,15 +1718,15 @@
   },
   {
    "id": "rule-1995",
-   "title": "Правило 1995 года: когда ИИ не нужен",
+   "title": "Когда ИИ не нужен",
    "source": {
-    "author": "Козырькова",
-    "book": "Козырькова",
+    "author": null,
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Отличить задачи, которые быстрее и надёжнее сделать без ИИ",
    "roles": [
     "all"
    ],
@@ -1787,15 +1739,15 @@
   },
   {
    "id": "answer-check",
-   "title": "Памятка проверки ответов ИИ",
+   "title": "Проверка ответа ИИ",
    "source": {
-    "author": "Козырькова",
-    "book": "Козырькова",
+    "author": null,
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Чек-лист перед тем, как доверять ответу: факты, цифры, ссылки, логика",
    "roles": [
     "all"
    ],
@@ -1808,15 +1760,15 @@
   },
   {
    "id": "five-roles",
-   "title": "Пять ролей против слепых зон",
+   "title": "Шесть шляп с ИИ",
    "source": {
-    "author": "Свадия",
-    "book": "Свадия",
+    "author": "Эдвард де Боно, «Шесть шляп мышления», 1985",
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Прогнать идею через шесть точек зрения: факты, чувства, риски, выгоды, новые идеи, процесс",
    "roles": [
     "owner",
     "marketing"
@@ -1830,15 +1782,15 @@
   },
   {
    "id": "review-board",
-   "title": "Совет рецензентов и виртуальный совет директоров",
+   "title": "Совет рецензентов",
    "source": {
-    "author": "Миллер",
-    "book": "Миллер",
+    "author": null,
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Попросить ИИ сыграть нескольких критиков и собрать их замечания",
    "roles": [
     "owner",
     "product"
@@ -1852,15 +1804,15 @@
   },
   {
    "id": "adversarial-validation",
-   "title": "Стравливание моделей",
+   "title": "Перекрёстная проверка моделями",
    "source": {
-    "author": "Миллер",
-    "book": "Миллер",
+    "author": null,
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Сверить ответ одной модели с другой и разобрать расхождения",
    "roles": [
     "product",
     "owner"
@@ -1874,15 +1826,15 @@
   },
   {
    "id": "hard-reviewer",
-   "title": "Анти-угодливость: режим жёсткого рецензента",
+   "title": "Режим жёсткого рецензента",
    "source": {
-    "author": "Миллер, Моллик",
-    "book": "Миллер, Моллик",
+    "author": null,
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Попросить ИИ не соглашаться, а искать слабые места",
    "roles": [
     "all"
    ],
@@ -1895,15 +1847,15 @@
   },
   {
    "id": "bite",
-   "title": "BITE: прототип без кода",
+   "title": "Прототип без кода",
    "source": {
-    "author": "Свадия",
-    "book": "Свадия",
+    "author": null,
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Собрать с ИИ кликабельный прототип за вечер, без программиста",
    "roles": [
     "product",
     "seller"
@@ -1917,15 +1869,15 @@
   },
   {
    "id": "ephemeral-html",
-   "title": "Эфемерные HTML-инструменты",
+   "title": "Одноразовые HTML-инструменты",
    "source": {
-    "author": "Миллер",
-    "book": "Миллер",
+    "author": null,
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Попросить ИИ сделать маленький калькулятор или форму под одну задачу",
    "roles": [
     "all"
    ],
@@ -1938,15 +1890,15 @@
   },
   {
    "id": "alter",
-   "title": "ALTER: личный университет",
+   "title": "Учебный план с ИИ",
    "source": {
-    "author": "Свадия",
-    "book": "Свадия",
+    "author": "интервальные повторения — кривая забывания Эббингауза",
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Составить план изучения темы с повторениями и самопроверкой",
    "roles": [
     "all"
    ],
@@ -1959,15 +1911,15 @@
   },
   {
    "id": "socratic",
-   "title": "Сократовский режим",
+   "title": "Сократовский диалог",
    "source": {
-    "author": "Моллик",
-    "book": "Моллик",
+    "author": "сократический метод",
+    "book": null,
     "verified": false
    },
    "label": "база",
-   "group": "ИИ-практика: четыре книги",
-   "solves": null,
+   "group": "ИИ-практика",
+   "solves": "Попросить ИИ вести вопросами, а не выдавать готовый ответ",
    "roles": [
     "all"
    ],
