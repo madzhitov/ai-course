@@ -200,6 +200,77 @@
    "fromLesson": null,
    "status": "new",
    "agencyDoor": "Отчёт, который собирается сам — услуга агентства (пример: Бертольд)"
+  },
+  {
+   "id": "u-product-one-page",
+   "task": "product.discovery.one-page",
+   "title": "Идея на одной странице: проблема, гипотеза, порог провала",
+   "basedOn": [
+    "lean-canvas"
+   ],
+   "fromLesson": "i14",
+   "status": "from-lesson"
+  },
+  {
+   "id": "u-product-north-star",
+   "task": "product.metrics.north-star",
+   "title": "Главная метрика и контр-метрика с формулой",
+   "basedOn": [
+    "north-star"
+   ],
+   "fromLesson": "i14",
+   "status": "from-lesson"
+  },
+  {
+   "id": "u-project-raci",
+   "task": "product.manage.raci",
+   "title": "Кто решает, кто делает, кого информируют",
+   "basedOn": [
+    "raci-daci"
+   ],
+   "fromLesson": "i15",
+   "status": "from-lesson"
+  },
+  {
+   "id": "u-project-premortem",
+   "task": "product.manage.premortem",
+   "title": "Реестр рисков и premortem проекта",
+   "basedOn": [
+    "pre-mortem"
+   ],
+   "fromLesson": "i12",
+   "status": "from-lesson"
+  },
+  {
+   "id": "u-marketing-segment",
+   "task": "marketing.audience.segments",
+   "title": "Один сегмент вместо «всех»",
+   "basedOn": [
+    "stp",
+    "jtbd"
+   ],
+   "fromLesson": "i13",
+   "status": "from-lesson"
+  },
+  {
+   "id": "u-marketing-positioning",
+   "task": "marketing.audience.positioning",
+   "title": "Позиционирование одной строкой и проверка на трёх людях",
+   "basedOn": [
+    "positioning-dunford"
+   ],
+   "fromLesson": "i13",
+   "status": "from-lesson"
+  },
+  {
+   "id": "u-marketing-funnel",
+   "task": "marketing.growth.leaks",
+   "title": "Воронка по пяти шагам и самый узкий переход",
+   "basedOn": [
+    "aarrr"
+   ],
+   "fromLesson": "i13",
+   "status": "from-lesson"
   }
  ]
 }
