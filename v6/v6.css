@@ -792,3 +792,10 @@ body.v6 .lesson-content .v6-page a.v6-kit-i:hover .v6-kit-t { color:var(--accent
 
 /* плашки уроков (callout-info/-warning/-success…): один холодный тон вместо янтарного, красного, зелёного */
 #lesson-content .callout { background:var(--hvoya-accent-soft) !important; border-color:transparent !important; color:var(--hvoya-ink) !important; }
+
+/* старые страницы в каркасе v6 (legacyWrap): разделы, словарь, квизы, «Что это», «Что нового»… */
+.v6-legacy-in { padding-top:40px; padding-bottom:64px; }
+.v6-legacy .v6-lsheet .lesson-view { max-width:880px; }
+.v6-legacy-view :is(.track-cards, .cl-list, .glossary-terms, .gloss-chips, .gloss-search, .tv-list, .tv-sources) { max-width:none !important; }
+/* поиск по словарю прячет термины inline-стилем; старое правило «display:block !important» его перебивало (баг был и на проде) */
+#lesson-content .glossary-term.gt[style*="display: none"] { display:none !important; }

@@ -1199,6 +1199,20 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     try { sessionStorage.setItem('v6-first-seen', '1'); } catch (_) {}
   }
 
+  function legacyWrap(active, section, title) {
+    const box = document.getElementById('lesson-content');
+    if (!box || box.querySelector(':scope > .v6-legacy')) return;
+    setPage(true, active);
+    const to = { paths: "V6.open('paths')", knowledge: "V6.open('knowledge')" }[active] || "openStaticPage('home')";
+    const wrap = document.createElement('div');
+    wrap.className = 'v6-page v6-legacy';
+    wrap.innerHTML = `<div class="v6c v6-legacy-in"><nav class="v6-crumbs v6-lcrumbs" aria-label="Где вы"><a onclick="${to}">${e(section || 'Главная')}</a><span>/</span><span>${e(title)}</span></nav>
+      <article class="v6-lsheet"><div class="lesson-view v6-legacy-view"></div></article></div>`;
+    const view = wrap.querySelector('.v6-legacy-view');
+    while (box.firstChild) view.appendChild(box.firstChild);   // узлы переносим, а не HTML: обработчики старых страниц сохраняются
+    box.appendChild(wrap);
+  }
+
   function install() {
     entryHash = location.hash;
     if (!entryHash || entryHash === '#home') { const h = document.querySelector('.v6h'); if (h) h.classList.add('is-logo-anim'); }
@@ -1219,6 +1233,19 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       setPage(name === 'home', null);
       return osp.apply(this, arguments);
     };
+    // старые страницы (разделы, словарь, квизы, «Что это» и др.) — в каркас v6: без старой колонки меню, белый лист, крошки.
+    // Подменяем отрисовщики, а не openX: квиз перерисовывает себя при повторе.
+    const LEGACY = {
+      renderMainSection: ['paths', 'Пути', 'Главный путь'], renderTrackSection: ['paths', 'Пути', 'Тропинка'],
+      renderQuiz: ['paths', 'Пути', 'Квиз'], renderGlossary: ['knowledge', 'Знания', 'Словарь'],
+      renderAbout: [null, '', 'Что это'], renderHowTo: [null, '', 'Как заниматься'], renderFAQ: [null, '', 'Вопросы'],
+      renderChangelog: [null, '', 'Что нового'], renderResources: [null, '', 'Источники'], renderArtifacts: [null, '', 'Что собрали'],
+    };
+    Object.entries(LEGACY).forEach(([fn, meta]) => {
+      const orig = window[fn];
+      if (typeof orig !== 'function') return;
+      window[fn] = function () { const r = orig.apply(this, arguments); try { legacyWrap(...meta); } catch (_) {} return r; };
+    });
     const rl = window.renderLesson;
     if (typeof rl === 'function') window.renderLesson = function (id) { const r = rl.apply(this, arguments); try { lessonWrap(id); } catch (_) {} return r; };
     window.renderHome = home;
