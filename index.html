@@ -4207,9 +4207,9 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 <!-- Full-text search overlay -->
 <div class="search-overlay" id="search-overlay" onclick="if(event.target===this) closeSearchOverlay()">
   <div class="search-overlay-panel">
-    <input type="text" id="search-overlay-input" class="search-overlay-input" placeholder="Что ищешь? Введи слово или фразу..." oninput="runFullSearch(this.value)" onkeydown="if(event.key==='Escape')closeSearchOverlay()">
+    <input type="text" id="search-overlay-input" class="search-overlay-input" placeholder="Что ищете? Слово или фраза…" oninput="runFullSearch(this.value)" onkeydown="if(event.key==='Escape')closeSearchOverlay()">
     <div class="search-results" id="search-results"></div>
-    <div class="search-footer">↑↓ — выбрать, Enter — открыть, Esc — закрыть</div>
+    <div class="search-footer">↑↓ выбрать · Enter открыть · Esc закрыть</div>
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
@@ -31391,6 +31391,7 @@ registerLesson("i15", `
 <pre><code>Риск:            провайдер оплаты не выдаст тестовые доступы
 Вероятность:     средняя
 Влияние:         +2 недели к сроку
+Владелец:        менеджер проекта
 Ранний сигнал:   нет ответа на письмо 5 рабочих дней
 Снижаем:         заводим запасного провайдера параллельно
 Если сработает:  релиз без онлайн-оплаты</code></pre>
@@ -31474,7 +31475,6 @@ registerLesson("i15", `
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> процесс существует не ради порядка, а ради раннего знания: чтобы то, что иначе всплывёт в день релиза, всплыло за месяц, пока с этим можно что-то сделать. Доски, спринты и статусы — оснастка вокруг этой задачи.
 </div>
-
 `);
 
 
@@ -34702,18 +34702,18 @@ function makeSnippet(text, query) {
 function runFullSearch(query) {
   const results = document.getElementById('search-results');
   if (!query || query.length < 2) {
-    results.innerHTML = `<div class="search-empty">Введи минимум 2 символа</div>`;
+    results.innerHTML = `<div class="search-empty">Введите хотя бы 2 символа</div>`;
     return;
   }
   if (!searchIndex) searchIndex = buildSearchIndex();
   if (!searchIndex) {
-    results.innerHTML = `<div class="search-empty">Поиск загружается, подожди секунду...</div>`;
+    results.innerHTML = `<div class="search-empty">Поиск загружается, секунду…</div>`;
     setTimeout(() => runFullSearch(query), 500);
     return;
   }
   const hits = searchIndex.search(query, { combineWith: 'AND' }).slice(0, 12);
   if (hits.length === 0) {
-    results.innerHTML = `<div class="search-empty">Ничего не нашёл по запросу «${query}». Попробуй другое слово.</div>`;
+    results.innerHTML = `<div class="search-empty">Ничего не нашлось по запросу «${esc(query)}». Попробуйте другое слово.</div>`;
     return;
   }
   searchActiveIdx = 0;

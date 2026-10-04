@@ -57,7 +57,7 @@
       },
       {
        "id": "seller.listing.social",
-       "title": "Сделать контент под товар для соцсетей и Telegram"
+       "title": "Сделать контент под товар для соцсетей и мессенджеров"
       },
       {
        "id": "seller.listing.funnel",
@@ -302,6 +302,10 @@
        "title": "Сформулировать, чем мы лучше и для кого"
       },
       {
+       "id": "marketing.audience.offer",
+       "title": "Собрать оффер"
+      },
+      {
        "id": "marketing.audience.entry-points",
        "title": "Найти ситуации, в которых о бренде должны вспомнить"
       }
@@ -314,6 +318,10 @@
       {
        "id": "marketing.growth.leaks",
        "title": "Найти, где теряем людей"
+      },
+      {
+       "id": "marketing.growth.channel",
+       "title": "Выбрать канал привлечения"
       },
       {
        "id": "marketing.growth.intent",

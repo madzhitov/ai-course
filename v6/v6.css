@@ -16,6 +16,19 @@
 }
 @media (max-width:720px) { .v6 { --gutter:20px; } }
 
+/* Старая палитра «Хвоя» (тёплая бумага, хвойный зелёный) → холодная палитра v6 для всего сайта:
+   уроки, код, глоссарий, поиск, старые страницы. Старые имена в index.html ссылаются на --hvoya-*,
+   поэтому хватает переопределить их. html:root сильнее :root — inline-стили index.html идут после v6.css. */
+html:root {
+  --hvoya-bg:#F3F4F7; --hvoya-panel:#FFFFFF; --hvoya-card:#F3F4F7; --hvoya-line:#E6E7EC;
+  --hvoya-ink:#16161A; --hvoya-muted:#5A5B63; --hvoya-faint:#6E6F78;
+  --hvoya-accent:#1F2F5C; --hvoya-accent-soft:#E3E8F2; --hvoya-accent-mid:#B9C4DD;
+  --accent-hover:#16224A;
+}
+/* заголовки «Хвои» на Cormorant Unicase → шрифты v6 */
+.hvoya-title, #lesson-content h1, .home .intro h1, .tile .ttl, .site-footer .f-word { font-family:'Montserrat','Arial Black',sans-serif !important; letter-spacing:-.02em !important; }
+.tile .lbl, .t-route .rt, .tropa-header .mh-tag, .tropa-header .h-nav a { font-family:'Golos Text','PT Sans',system-ui,sans-serif !important; letter-spacing:0 !important; }
+
 /* страницы v6: свой фон, без старой колонки меню */
 body.v6 { background:var(--ground) !important; color:var(--ink); font-family:var(--font-body); }
 body.v6 main { margin-left:0 !important; max-width:none !important; padding:0 0 64px !important; background:transparent !important; }
@@ -776,3 +789,6 @@ body.v6 .lesson-content .v6-page a.v6-kit-i:hover .v6-kit-t { color:var(--accent
 .v6-funnel-in input:focus { outline:2px solid var(--accent); }
 .v6-restable tr.is-min td { color:var(--accent); font-weight:600; }
 @media (max-width:600px) { .v6-funnel-in { grid-template-columns:minmax(0,1fr) 90px 90px; } }
+
+/* плашки уроков (callout-info/-warning/-success…): один холодный тон вместо янтарного, красного, зелёного */
+#lesson-content .callout { background:var(--hvoya-accent-soft) !important; border-color:transparent !important; color:var(--hvoya-ink) !important; }
