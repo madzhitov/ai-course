@@ -5,7 +5,9 @@
    после основного скрипта и до разбора адреса. */
 (function () {
   'use strict';
-  const KEY = { role: 'v6-role', channels: 'v6-channels', last: 'v6-last-visit' };
+  const KEY = { role: 'v6-role', channels: 'v6-channels', last: 'v6-last-visit', units: 'v6-units', notes: 'v6-notes', dates: 'v6-done-dates', tgOffer: 'v6-tg-offer' };
+  const jget = (k) => { try { return JSON.parse(ls.get(k) || '{}') || {}; } catch (_) { return {}; } };
+  const jset = (k, v) => ls.set(k, JSON.stringify(v));
   const LONG_AWAY_DAYS = 21;
   const COMPANIES_URL = 'https://madzhitov.ru';
   const CHEV = '<svg class="v6-chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>';
@@ -66,15 +68,16 @@
   const role = (id) => D.roles.find((r) => r.id === id);
   const unitsOf = (taskId) => D.units.filter((u) => u.task === taskId);
   // задача «сделана» в 1а = пройден урок-основа хотя бы одного способа (юниты появятся на этапе 2)
-  const taskDone = (taskId) => unitsOf(taskId).some((u) => u.fromLesson && done(u.fromLesson));
+  const taskDone = (taskId) => unitsOf(taskId).some((u) => (jget(KEY.units)[u.id] || {}).result === 'yes' || (u.fromLesson && done(u.fromLesson)));
   const taskReady = (taskId) => unitsOf(taskId).some((u) => u.status === 'from-lesson' || u.status === 'ready');
   const taskMins = (taskId) => { const u = unitsOf(taskId).find((x) => x.minutes); return u ? `${u.minutes} мин` : ''; };
 
   const unitById = (id) => D.units.find((u) => u.id === id);
-  const stepDone = (st) => { const u = st.kind === 'unit' && unitById(st.ref); return !!(u && u.fromLesson && done(u.fromLesson)); };
+  const stepDone = (st) => { const u = st.kind === 'unit' && unitById(st.ref); return !!(u && ((jget(KEY.units)[u.id] || {}).result === 'yes' || (u.fromLesson && done(u.fromLesson)))); };
   const stepGo = (st) => {
     if (st.kind === 'page' && st.ref === 'neyroseti-bez-vpn') return "location.href='/tools/neyroseti-bez-vpn/'";
     const u = st.kind === 'unit' && unitById(st.ref);
+    if (hasSteps(u)) return `V6.openUnit('${u.id}','path')`;
     if (u && u.fromLesson && lessonOf(u.fromLesson) && lessonOf(u.fromLesson).content) return `V6.openTask('${u.task}','seller-path')`;
     if (st.kind === 'framework' && fwById(st.ref)) return `V6.openFw('${st.ref}','path')`;
     return null;
@@ -455,12 +458,12 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         const needs = [...new Set(us.flatMap((u) => u.needs || []))];
         const way = (u, i) => {
           const meta = [u.minutes ? `≈ ${u.minutes} мин` : '', u.level || '', ...(u.tools || []), u.noVpn ? 'без VPN' : ''].filter(Boolean);
-          const ready = u.fromLesson && lessonOf(u.fromLesson) && lessonOf(u.fromLesson).content;
+          const ready = hasSteps(u) || (u.fromLesson && lessonOf(u.fromLesson) && lessonOf(u.fromLesson).content);
           const label = us.length > 1 ? (u.level === 'уверенный' ? 'Продвинутый' : 'Простой') : 'Способ';
           return `<article class="v6-way2${ready ? '' : ' is-soon'}"><span class="v6-pcard-label">${label}${ready ? '' : ' · скоро'}</span><h3>${e(u.title)}</h3>
-            <p>${ready ? `По уроку ${e(u.fromLesson)}: ${e(lessonOf(u.fromLesson).title)}` : 'Этот способ готовится.'}</p>
+            <p>${hasSteps(u) ? `${u.steps.length} ${plural(u.steps.length, 'шаг', 'шага', 'шагов')}${u.fromLesson && lessonOf(u.fromLesson) ? ` · подробнее в уроке «${e(lessonOf(u.fromLesson).title.split(':')[0])}»` : ''}` : ready ? `По уроку ${e(u.fromLesson)}: ${e(lessonOf(u.fromLesson).title)}` : 'Этот способ готовится.'}</p>
             ${meta.length ? `<div class="v6-tags">${meta.map((m) => `<span class="v6t">${e(m)}</span>`).join('')}</div>` : ''}
-            ${ready ? `<span><button class="v6b v6-btn-lg ${i ? 'is-soft' : ''}" onclick="openLesson(${lessonArg(u.fromLesson)})">Начать</button></span>` : ''}</article>`;
+            ${ready ? `<span><button class="v6b v6-btn-lg ${i ? 'is-soft' : ''}" onclick="${hasSteps(u) ? `V6.openUnit('${e(u.id)}','task')` : `openLesson(${lessonArg(u.fromLesson)})`}">${(unitState(u.id).result === 'yes') ? 'Открыть ещё раз' : 'Начать'}</button></span>` : ''}</article>`;
         };
         box.innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.chooseRole('seller','task')">Продаю онлайн</a><span>/</span><a onclick="V6.chooseRole('seller','task')">${e(t.direction.title)}</a><span>/</span><span>Задача</span></nav>
           <section class="v6-phero v6-thero"><div class="v6-phero-text"><h1 class="v6-d">${e(t.title)}</h1>
@@ -785,10 +788,10 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     return { label: 'Тропинка', title: t ? t.title : 'Тропинка', ids: TRACK_LESSONS.filter((x) => x.track === L.track).map((x) => x.id), foot: '' };
   }
   function lessonDone(id, next) {
-    if (!done(id)) toggleCompleted(/^\d+$/.test(String(id)) ? Number(id) : id);
+    if (!done(id)) { const d = jget(KEY.dates); d[id] = new Date().toISOString(); jset(KEY.dates, d); toggleCompleted(/^\d+$/.test(String(id)) ? Number(id) : id); }
     if (next != null && next !== '') openLesson(/^\d+$/.test(String(next)) ? Number(next) : next);
   }
-  function lessonNote(el, id) { ls.set('v6-note-' + id, el.value); }
+  function lessonNote(el, id) { const n = jget(KEY.notes); if (el.value.trim()) n[id] = { text: el.value, date: new Date().toISOString() }; else delete n[id]; jset(KEY.notes, n); }
   function lessonWrap(id) {
     const box = document.getElementById('lesson-content');
     const view = box && box.querySelector('.lesson-view');
@@ -837,7 +840,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
           <span class="v6-lbar-r">${prev ? `<button class="v6b is-soft v6-btn-lg" onclick="openLesson(${lessonArgOf(prev)})">Назад</button>` : ''}${nextBtn}</span></div></div>`;
       wrap.querySelector('.v6-lsheet').appendChild(view);
       if (toc) { toc.open = true; toc.classList.add('v6-ltoc'); wrap.querySelector('.v6-ltoc-slot').appendChild(toc); }
-      wrap.querySelector('#v6-ln').value = ls.get('v6-note-' + L.id) || '';
+      wrap.querySelector('#v6-ln').value = (jget(KEY.notes)[L.id] || {}).text || ls.get('v6-note-' + L.id) || '';
       const first = box.querySelector('.v6-first');
       box.innerHTML = '';
       box.appendChild(wrap);
@@ -847,8 +850,160 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     }).catch(() => {});
   }
 
+  // ---------- юнит (Unit.dc.html; data/units.json → template) ----------
+  // состояние в браузере: v6-units = { id: { step, inputs: {i: текст}, checks: {i: [bool]}, result: yes|almost|no, date, note } }
+  const unitState = (id) => jget(KEY.units)[id] || { step: 0, inputs: {}, checks: {} };
+  const unitSave = (id, st) => { const all = jget(KEY.units); all[id] = st; jset(KEY.units, all); };
+  const hasSteps = (u) => u && Array.isArray(u.steps) && u.steps.length > 0;
+  function askAlesha(title, question) {
+    try { initAlesha({ id: 'v6', title }); } catch (_) {}
+    const w = document.getElementById('alesha-widget'); if (w && !w.classList.contains('is-open')) w.classList.add('is-open');
+    track('alyosha-open', { from: 'unit' });
+    if (question) { try { aleshaAsk(question); } catch (_) {} }
+  }
+  function unitInput(id, i, el) { const st = unitState(id); st.inputs[i] = el.value; unitSave(id, st); }
+  function unitCheck(id, i, j, el) { const st = unitState(id); (st.checks[i] = st.checks[i] || [])[j] = el.checked; unitSave(id, st); }
+  function unitGo(id, step) { const st = unitState(id); st.step = step; unitSave(id, st); renderUnit(id); window.scrollTo({ top: 0 }); }
+  function unitResult(id, r) {
+    const st = unitState(id); st.result = r; st.date = new Date().toISOString(); unitSave(id, st);
+    track('unit-result', { unit: id, result: r });
+    renderUnit(id);
+  }
+  function unitNote(id, el) { const st = unitState(id); st.note = el.value; unitSave(id, st); }
+  function unitHelp(id) {
+    const u = unitById(id), st = unitState(id); const s = u.steps[Math.min(st.step, u.steps.length - 1)];
+    askAlesha(u.title, `Делаю задачу «${u.title}», шаг «${s.title}». Не получается. Помоги разобраться: что проверить и как поправить?`);
+  }
+  function tgOfferBox() {
+    const yes = Object.values(jget(KEY.units)).filter((x) => x.result === 'yes').length;
+    const dec = ls.get(KEY.tgOffer);
+    if (yes < 2 || (dec && Date.now() - new Date(dec).getTime() < 21 * 864e5)) return '';
+    return `<div class="v6-tgoffer"><b>Уже ${yes} ${plural(yes, 'задача сделана', 'задачи сделаны', 'задач сделано')}.</b> Тетрадь живёт только в этом браузере. Сохранение через Telegram появится скоро, а пока можно скачать тетрадь файлом.
+      <span><button class="v6b is-sm" onclick="V6.open('notebook')">Открыть тетрадь</button> <button class="v6-quiet" onclick="V6.tgLater(this)">Не сейчас</button></span></div>`;
+  }
+  function tgLater(btn) { ls.set(KEY.tgOffer, new Date().toISOString()); const b = btn.closest('.v6-tgoffer'); if (b) b.remove(); }
+  function renderUnit(id) {
+    const box = document.getElementById('v6-unit'); if (!box) return;
+    const u = unitById(id), t = D.tasks[u.task];
+    const st = unitState(id), n = u.steps.length, i = Math.min(st.step || 0, n - 1), s = u.steps[i];
+    const fin = st.step >= n;
+    const fws = (u.basedOn || []).map(fwById).filter(Boolean);
+    const stepsNav = u.steps.map((x, k) => { const dn = fin || k < i, cur = !fin && k === i;
+      return `<a class="v6-lstep${cur ? ' is-now' : ''}" href="#" onclick="V6.unitGo('${e(id)}', ${k}); return false;"><span class="v6-dotc${dn ? ' is-done' : cur ? ' is-now' : ''}">${dn ? '✓' : ''}</span><span>${e(x.title)}</span></a>`; }).join('');
+    const prompt = s.prompt ? `<div class="v6-uprompt"><div class="v6-uprompt-h"><span class="v6-pcard-label">Промпт</span><button class="v6b is-sm is-soft" onclick="V6.copyText('v6-up-${i}', this)">Скопировать</button></div><pre id="v6-up-${i}">${e(s.prompt)}</pre></div>` : '';
+    const input = s.input != null ? `<label class="v6-uinput"><span class="v6-meta">Ваш вариант</span><input type="text" value="${e(st.inputs[i] || '')}" placeholder="${e(s.input)}" oninput="V6.unitInput('${e(id)}', ${i}, this)"></label>` : '';
+    const checks = s.checklist ? `<div class="v6-uchecks">${s.checklist.map((c, j) => `<label><input type="checkbox" ${(st.checks[i] || [])[j] ? 'checked' : ''} onchange="V6.unitCheck('${e(id)}', ${i}, ${j}, this)"><span>${e(c)}</span></label>`).join('')}</div>` : '';
+    const card = fin ? (() => {
+      if (st.result === 'yes') return `<div class="v6-ucard"><span class="v6-pcard-label">Готово</span><h2 class="v6-ucard-t">Получилось. Записано в тетрадь</h2><p>${e(u.result || '')}</p>
+          <label class="v6-lnote"><span class="v6-lnote-h"><b>Что вышло</b><span class="v6-meta">в тетрадь</span></span><textarea placeholder="Что получилось, что поправили, что пригодится в следующий раз" oninput="V6.unitNote('${e(id)}', this)">${e(st.note || '')}</textarea></label>
+          <span class="v6-btns"><a class="v6b v6-btn-lg" href="https://t.me/madzhitov" target="_blank" rel="noopener" onclick="umTrack('artifact-submit-click', { from: 'unit', unit: '${e(id)}' })">Показать результат</a><button class="v6b is-soft v6-btn-lg" onclick="V6.open('notebook')">Тетрадь</button><button class="v6b is-soft v6-btn-lg" onclick="V6.openRole('${e(t.group)}','unit')">Другие задачи</button></span>
+          <p class="v6-meta">«Показать результат» — пришлите автору; с вашего согласия работа попадёт в «Сделали другие».</p>${tgOfferBox()}</div>`;
+      if (st.result === 'almost') return `<div class="v6-ucard"><span class="v6-pcard-label">Почти</span><h2 class="v6-ucard-t">Частые причины</h2><ul class="v6-ualmost">${(u.almost || []).map((a) => `<li>${e(a)}</li>`).join('')}</ul>
+          <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="V6.unitGo('${e(id)}', 0)">Ещё раз</button><button class="v6b is-soft v6-btn-lg" onclick="V6.unitHelp('${e(id)}')">Спросить Алёшу</button><button class="v6b is-soft v6-btn-lg" onclick="V6.unitResult('${e(id)}','yes')">Теперь получилось</button></span></div>`;
+      return `<div class="v6-ucard"><span class="v6-pcard-label">Шаг ${n} из ${n} пройден</span><h2 class="v6-ucard-t">Получилось?</h2><p>${e(u.result || '')}</p>
+          <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="V6.unitResult('${e(id)}','yes')">Да</button><button class="v6b is-soft v6-btn-lg" onclick="V6.unitResult('${e(id)}','almost')">Почти</button><button class="v6b is-soft v6-btn-lg" onclick="V6.unitResult('${e(id)}','no'); V6.unitHelp('${e(id)}')">Нет, помогите</button></span></div>`;
+    })() : `<div class="v6-ucard"><span class="v6-pcard-label">Шаг ${i + 1} из ${n}</span><h2 class="v6-ucard-t">${e(s.title)}</h2><p>${e(s.text || '')}</p>${input}${prompt}${checks}
+        <button class="v6-note" onclick="V6.unitHelp('${e(id)}')"><span class="v6-ava">А</span><span>Застряли на этом шаге? Спросите Алёшу.</span></button></div>`;
+    box.innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.openRole('${e(t.group)}','unit')">${e((role(t.group) || {}).title || '')}</a><span>/</span><a onclick="V6.openTask('${e(t.id)}','unit')">${e(t.title)}</a><span>/</span><span>Юнит</span></nav>
+      <section class="v6-uhead"><h1 class="v6-d">${e(u.title)}</h1><p class="v6-phero-lead">${e(u.result || '')}</p>
+        <span class="v6-tags">${[u.minutes ? '≈ ' + u.minutes + ' мин' : '', u.level || '', ...(u.tools || []), u.noVpn ? 'без VPN' : ''].filter(Boolean).map((x) => `<span class="v6t is-grey">${e(x)}</span>`).join('')}${(u.needs || []).length ? `<span class="v6t">понадобится: ${e(u.needs.join(', '))}</span>` : ''}</span></section>
+      <div class="v6-ugrid"><aside class="v6-lside"><span class="v6-lside-t">Шаги</span><nav class="v6-lsteps">${stepsNav}</nav>
+          ${fws.length ? `<span class="v6-lside-l" style="padding-top:16px">Опирается на</span>${fws.map((c) => `<a class="v6-lstep" href="#fw-${e(c.id)}" onclick="V6.openFw('${e(c.id)}','unit'); return false;"><span>${e(c.title)}</span></a>`).join('')}` : ''}</aside>
+        <div>${card}</div></div>
+      ${fin ? '' : `<div class="v6-lbar"><div class="v6c v6-lbar-in"><span class="v6-lbar-l">Шаг ${i + 1} из ${n}</span><span class="v6-lbar-r">${i > 0 ? `<button class="v6b is-soft v6-btn-lg" onclick="V6.unitGo('${e(id)}', ${i - 1})">Назад</button>` : ''}<button class="v6b v6-btn-lg" onclick="V6.unitGo('${e(id)}', ${i + 1})">${i + 1 < n ? 'Готово, дальше' : 'Готово'}</button></span></div></div>`}`;
+  }
+  function openUnit(id, from) {
+    go('unit-' + id, () => {
+      shell('<div class="v6c" id="v6-unit"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
+      load().then(() => {
+        const u = unitById(id);
+        if (!hasSteps(u)) { const b = document.getElementById('v6-unit'); b.innerHTML = '<h1 class="v6-d" style="padding-top:56px">Юнит готовится</h1>'; return; }
+        track('unit-open', { unit: id, from: from || 'link' });
+        renderUnit(id);
+      }).catch(() => fail('v6-unit'));
+    }, 'tasks');
+  }
+  function copyText(elId, btn) {
+    const t = (document.getElementById(elId) || {}).innerText || '';
+    try { navigator.clipboard.writeText(t).then(() => { btn.textContent = 'Скопировано'; setTimeout(() => { btn.textContent = 'Скопировать'; }, 1600); }); } catch (_) {}
+  }
+
+  // ---------- тетрадь (Notebook.dc.html) — вместо «Моего пути», только в этом браузере ----------
+  const NB = { q: '', f: 'all' };
+  function notebookEntries() {
+    const out = [];
+    const dates = jget(KEY.dates), notes = jget(KEY.notes);
+    Object.keys(progress || {}).filter((k) => progress[k] === true).forEach((k) => { const l = lessonOf(k); if (!l) return;
+      const note = (notes[k] || {}).text || ls.get('v6-note-' + k) || '';
+      out.push({ type: 'lesson', id: k, title: l.title, label: /^\d+$/.test(k) ? 'Урок ' + k : 'Урок', date: dates[k] || (notes[k] || {}).date || null, text: note, open: `openLesson(${lessonArg(k)})` }); });
+    Object.keys(notes).filter((k) => !(progress || {})[k]).forEach((k) => { const l = lessonOf(k); if (!l) return;
+      out.push({ type: 'note', id: k, title: l.title, label: 'Заметка к уроку', date: notes[k].date, text: notes[k].text, open: `openLesson(${lessonArg(k)})` }); });
+    const units = jget(KEY.units);
+    Object.keys(units).filter((k) => units[k].result).forEach((k) => { const u = D && unitById(k); if (!u) return;
+      out.push({ type: 'unit', id: k, title: u.title, label: { yes: 'Юнит · получилось', almost: 'Юнит · почти', no: 'Юнит · нужна помощь' }[units[k].result], date: units[k].date, text: units[k].note || '', open: `V6.openUnit('${k}','notebook')` }); });
+    return out.sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
+  }
+  function nbList() {
+    const box = document.getElementById('v6-nblist'); if (!box) return;
+    const q = NB.q.trim().toLowerCase();
+    const all = notebookEntries();
+    const list = all.filter((x) => (NB.f === 'all' || (NB.f === 'lesson' ? x.type !== 'unit' : x.type === NB.f)) && (!q || (x.title + ' ' + x.text).toLowerCase().includes(q)));
+    const day = (d) => { if (!d) return 'Без даты'; const x = new Date(d), t = new Date(); const diff = Math.floor((new Date(t.toDateString()) - new Date(x.toDateString())) / 864e5); return diff === 0 ? 'Сегодня' : diff === 1 ? 'Вчера' : x.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }); };
+    if (!all.length) { box.innerHTML = `<div class="v6-nbempty"><h2 class="v6-ucard-t">Тетрадь пока пуста</h2><p>Сюда попадают пройденные уроки, сделанные задачи и ваши заметки к урокам.</p><button class="v6b v6-btn-lg" onclick="V6.open('roles')">Выбрать задачу</button></div>`; return; }
+    if (!list.length) { box.innerHTML = `<p class="v6-lead">Ничего не нашлось. <button class="v6-quiet" onclick="V6.askAlesha('Тетрадь', '${e(NB.q).replace(/'/g, '')}')">Спросить Алёшу</button></p>`; return; }
+    let last = '';
+    box.innerHTML = list.map((x) => { const d = day(x.date), head = d !== last ? `<span class="v6-nbday">${e(d)}</span>` : ''; last = d;
+      return `${head}<article class="v6-nbitem"><span class="v6-pcard-label">${e(x.label)}</span><a class="v6-nbitem-t" href="#" onclick="${x.open}; return false;">${e(x.title)}</a>${x.text ? `<p>${e(x.text)}</p>` : ''}
+        ${x.text ? `<button class="v6-quiet" onclick="V6.askAlesha(${JSON.stringify(x.title).replace(/"/g, '&quot;')}, ${JSON.stringify('Моя заметка к «' + x.title + '»: ' + x.text + '\nСверь, правильно ли я понял, и подскажи, что улучшить.').replace(/"/g, '&quot;')})">Показать Алёше</button>` : ''}</article>`; }).join('');
+  }
+  function nbFilter(f, el) { NB.f = f; document.querySelectorAll('[data-nbf]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.nbf === f))); nbList(); }
+  function nbSearch(el) { NB.q = el.value; nbList(); }
+  const NB_KEYS = () => [STORAGE_KEY, KEY.units, KEY.notes, KEY.dates, KEY.role, KEY.channels];
+  function nbExport() {
+    const data = { app: 'artefakty', version: 1, date: new Date().toISOString(), keys: {} };
+    NB_KEYS().forEach((k) => { const v = ls.get(k); if (v != null) data.keys[k] = v; });
+    Object.keys(localStorage).filter((k) => k.startsWith('v6-note-')).forEach((k) => { data.keys[k] = ls.get(k); });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }));
+    a.download = `artefakty-tetrad-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    track('notebook-export', {});
+  }
+  function nbImport(input) {
+    const f = input.files && input.files[0]; if (!f) return;
+    f.text().then((t) => {
+      const data = JSON.parse(t);
+      if (!data || data.app !== 'artefakty' || !data.keys) throw new Error('bad');
+      if (!confirm('Загрузить тетрадь из файла? Текущие записи в этом браузере заменятся записями из файла.')) return;
+      Object.entries(data.keys).forEach(([k, v]) => { if (NB_KEYS().includes(k) || k.startsWith('v6-note-')) ls.set(k, v); });
+      track('notebook-import', {});
+      location.reload();
+    }).catch(() => alert('Это не файл тетради «Артефактов».'));
+  }
+  function nbReset() {
+    if (!confirm('Очистить тетрадь в этом браузере? Сотрутся пройденные уроки, сделанные задачи и заметки. Отменить нельзя — сначала можно скачать файл.')) return;
+    NB_KEYS().forEach((k) => { try { localStorage.removeItem(k); } catch (_) {} });
+    Object.keys(localStorage).filter((k) => k.startsWith('v6-note-')).forEach((k) => { try { localStorage.removeItem(k); } catch (_) {} });
+    track('notebook-reset', {});
+    location.reload();
+  }
+  function notebookPage() {
+    shell('<div class="v6c" id="v6-nb"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
+    load().then(() => {
+      const r = resume();
+      const pill = (f, t) => `<button type="button" class="v6-pill" data-nbf="${f}" aria-pressed="${NB.f === f}" onclick="V6.nbFilter('${f}', this)">${t}</button>`;
+      document.getElementById('v6-nb').innerHTML = `<section class="v6-sechero"><div><h1 class="v6-d">Тетрадь</h1><p class="v6-lead">История вашего обучения: пройденные уроки, сделанные задачи и заметки.</p></div></section>
+        <div class="v6-nbgrid"><div><div class="v6-kfilters" style="margin:32px 0 24px"><label class="v6-nbsearch"><span class="v6-sr">Поиск по тетради</span><input type="search" placeholder="Поиск по заметкам" value="${e(NB.q)}" oninput="V6.nbSearch(this)"></label><div class="v6-pills">${pill('all', 'Всё')}${pill('lesson', 'Уроки')}${pill('unit', 'Задачи')}</div></div><div id="v6-nblist"></div></div>
+          <aside class="v6-side" style="padding-top:32px">${r && r.id != null ? `<div class="v6-neigh"><span class="v6-meta">Продолжить</span><a class="v6-neigh-i" href="#" onclick="openLesson(${lessonArg(r.id)}); return false;"><span>${e(r.title || '')}</span><span class="m">→</span></a></div>` : ''}
+            <div class="v6-tdoor"><b>Тетрадь только в этом браузере</b><span>Очистка браузера сотрёт записи. Скачайте файл, чтобы не потерять; сохранение через Telegram появится скоро.</span>
+              <span class="v6-btns"><button class="v6b is-white is-sm" onclick="V6.nbExport()">Скачать как файл</button><label class="v6b is-sm v6-nbload">Загрузить из файла<input type="file" accept="application/json,.json" onchange="V6.nbImport(this)" hidden></label></span>
+              <button class="v6-quiet v6-nbreset" onclick="V6.nbReset()">Очистить всё</button></div></aside></div>`;
+      nbList();
+    }).catch(() => fail('v6-nb'));
+  }
+
   // ---------- маршрутизация ----------
-  const PAGES = { roles: rolesPage, tasks: tasksPage, paths: pathsPage, knowledge: knowledgePage };
+  const PAGES = { roles: rolesPage, tasks: tasksPage, paths: pathsPage, knowledge: knowledgePage, notebook: notebookPage };
   function open(name) {
     if (name === 'home') { openStaticPage('home'); return; }
     go(name, PAGES[name], name);
@@ -862,6 +1017,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     if (hash === 'path-product') { openProductPath('link'); return true; }
     if (hash === 'path-marketing') { openMarketingPath('link'); return true; }
     m = hash.match(/^fw-([a-z0-9-]+)$/); if (m) { openFw(m[1], 'link'); return true; }
+    m = hash.match(/^unit-([a-z0-9-]+)$/); if (m) { openUnit(m[1], 'link'); return true; }
     return false;
   }
 
@@ -895,6 +1051,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     window.openStaticPage = function (name) {
       if (name === 'routes') return open('roles');   // ia/migration.md: Маршруты → внутри ролей
       if (name === 'trails') return open('paths');   // Тропинки → Пути
+      if (name === 'my-progress') return open('notebook');   // «Мой путь» → Тетрадь (этап 2)
       if (PAGES[name]) return open(name);
       setPage(name === 'home', null);
       return osp.apply(this, arguments);
@@ -921,5 +1078,5 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     });
   }
 
-  window.V6 = { install, route, open, lessonDone, lessonNote, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, openKnowledge, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
+  window.V6 = { install, route, open, lessonDone, lessonNote, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, openKnowledge, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
 })();
