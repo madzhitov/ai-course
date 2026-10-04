@@ -601,7 +601,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         const cur = all.find((x) => !x.optional && !stepDone(x) && stepGo(x));
         const curStage = sp.stages.find((st) => st.steps.includes(cur)) || sp.stages[0];
         const res = (id) => D.resources.find((r) => r.id === id);
-        const chip = (r) => resReady(r) ? `<a class="v6-rchip" href="#res-${e(r.id)}" onclick="V6.openRes('${e(r.id)}','path'); return false;"><span>${e(RES_KIND[r.kind] || r.kind)}</span>${e(r.title)}</a>` : `<span class="v6-rchip"><span>${e(RES_KIND[r.kind] || r.kind)}</span>${e(r.title)}</span>`;
+        const chip = (r) => resReady(r) || /^framework:/.test(r.link || '') ? `<a class="v6-rchip" href="#res-${e(r.id)}" onclick="V6.openRes('${e(r.id)}','path'); return false;"><span>${e(RES_KIND[r.kind] || r.kind)}</span>${e(r.title)}</a>` : `<span class="v6-rchip"><span>${e(RES_KIND[r.kind] || r.kind)}</span>${e(r.title)}</span>`;
         const step = (x) => {
           const go = stepGo(x), isDone = stepDone(x), isCur = x === cur;
           const title = go ? `<a class="v6-step-t" href="#" onclick="${go}; return false;">${e(x.title)}</a>` : `<span class="v6-step-t">${e(x.title)}</span>`;
@@ -1093,6 +1093,8 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       load().then(() => {
         const r = resById(id), box = document.getElementById('v6-res');
         if (!r) { box.innerHTML = '<h1 class="v6-d" style="padding-top:56px">Такой вещи нет</h1>'; return; }
+        const fwLink = !resReady(r) && /^framework:/.test(r.link || '') && fwById(r.link.slice(10));
+        if (fwLink) { openFw(fwLink.id, from || 'res'); return; }
         track('res-open', { res: id, from: from || 'link' });
         const c = r.content || {};
         const fws = (r.basedOn || []).map(fwById).filter(Boolean);
