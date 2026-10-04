@@ -614,3 +614,75 @@ body.v6 .lesson-content .v6-page .v6-links a:hover { text-decoration:underline !
 .v6-art img[src$=".webp"] { object-fit:cover; }
 .v6-pathc .v6-art { height:auto; aspect-ratio:3 / 2; }
 .v6-pcard .v6-art { height:auto; aspect-ratio:16 / 9; }
+
+/* ===== урок v6 (Lesson.dc.html) ===== */
+.v6-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+.v6-lprog { height:6px; background:var(--line); }
+.v6-lprog i { display:block; height:6px; background:var(--accent); }
+.v6-lgrid { display:grid; grid-template-columns:260px minmax(0,1fr) 280px; gap:24px; align-items:start; padding-top:40px; padding-bottom:40px; }
+.v6-lside { position:sticky; top:calc(var(--header) + 16px); max-height:calc(100vh - var(--header) - 140px); overflow:auto; background:var(--surface); border-radius:28px; padding:16px; display:flex; flex-direction:column; gap:2px; }
+.v6-lside-l { font-size:15px; color:var(--text-2); padding:8px 14px 4px; }
+.v6-lside-t { font-family:var(--font-display); font-size:20px; font-weight:800; letter-spacing:-0.02em; padding:0 14px 10px; }
+.v6-lsteps { display:flex; flex-direction:column; gap:2px; }
+body.v6 .lesson-content .v6-page .v6-lstep { display:flex; gap:12px; align-items:center; padding:10px 14px; border-radius:16px; font-size:15px; line-height:1.35; color:var(--ink); }
+body.v6 .lesson-content .v6-page a.v6-lstep:hover { background:var(--ground); }
+.v6-lstep.is-now { background:var(--accent-tint); font-weight:600; }
+.v6-lstep.is-off { color:var(--text-3); }
+.v6-lstep i { font-style:normal; color:var(--text-3); font-size:13px; }
+.v6-lstep .v6-dotc { width:24px; height:24px; font-size:12px; }
+.v6-lstep.is-now .v6-dotc.is-now { box-shadow:inset 0 0 0 6px var(--accent-tint), 0 0 0 2px var(--accent); }
+.v6-lside-f { font-size:14px; color:var(--text-3); padding:12px 14px 6px; }
+.v6-lsheet { background:var(--surface); border-radius:40px; padding:56px 64px; min-width:0; }
+.v6-lsheet .lesson-view { max-width:720px; margin:0 auto; }
+.v6-lcrumbs { padding-top:0; margin-bottom:20px; }
+body.v6 .lesson-content .v6-lsheet h1 { font-family:var(--font-display) !important; font-size:clamp(34px, 3.8vw, 54px) !important; line-height:1.04 !important; font-weight:800 !important; letter-spacing:-0.03em !important; margin:0 0 20px !important; color:var(--ink) !important; }
+body.v6 .lesson-content .v6-lsheet h2 { font-family:var(--font-display) !important; font-size:30px !important; font-weight:800 !important; letter-spacing:-0.02em !important; line-height:1.15 !important; border-top:0 !important; padding-top:0 !important; margin:48px 0 16px !important; color:var(--ink) !important; scroll-margin-top:calc(var(--header) + 20px); }
+body.v6 .lesson-content .v6-lsheet h3 { font-family:var(--font-display) !important; font-size:22px !important; font-weight:800 !important; margin:32px 0 12px !important; scroll-margin-top:calc(var(--header) + 20px); }
+body.v6 .lesson-content .v6-lsheet .lesson-view > p, body.v6 .lesson-content .v6-lsheet .lesson-view > ul li, body.v6 .lesson-content .v6-lsheet .lesson-view > ol li { font-family:var(--font-read); font-size:19px; line-height:1.72; color:#2A2B30; }
+body.v6 .lesson-content .v6-lsheet .lesson-view > p { margin:0 0 18px; }
+body.v6 .lesson-content .v6-page .v6-lsheet .lesson-view a:not(.v6b):not(.v6-crumbs a) { color:var(--accent); text-decoration:underline; text-underline-offset:3px; }
+.v6-ltags { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 28px; }
+.v6-ltags .v6t { min-height:36px; padding:0 14px; font-size:15px; }
+.v6-lright { position:sticky; top:calc(var(--header) + 16px); display:flex; flex-direction:column; gap:16px; }
+.v6-lnote { background:var(--surface); border-radius:24px; padding:20px; display:flex; flex-direction:column; gap:10px; }
+.v6-lnote-h { display:flex; justify-content:space-between; align-items:baseline; font-family:var(--font-display); font-size:18px; }
+.v6-lnote textarea { min-height:110px; border:0; border-radius:16px; background:var(--ground); padding:14px; font:inherit; font-size:16px; resize:vertical; color:var(--ink); }
+.v6-lnote textarea:focus { outline:2px solid var(--accent); }
+body.v6 .lesson-content .v6-ltoc { background:var(--surface) !important; border:0 !important; border-radius:24px !important; padding:20px !important; margin:0 !important; max-height:calc(100vh - var(--header) - 420px); overflow:auto; }
+body.v6 .lesson-content .v6-ltoc summary { font-size:14px !important; color:var(--text-3) !important; padding:0 0 6px !important; }
+body.v6 .lesson-content .v6-ltoc ol { padding:0 !important; margin:0 !important; list-style:none !important; }
+body.v6 .lesson-content .v6-ltoc a { display:block; font-size:15px !important; padding:6px 0 !important; color:var(--text-2) !important; text-decoration:none !important; }
+body.v6 .lesson-content .v6-ltoc a.active { color:var(--ink) !important; font-weight:600; }
+body.v6 .lesson-content .v6-ltoc li.h3 a { padding-left:12px !important; font-size:14px !important; }
+.v6-lbar { position:sticky; bottom:0; z-index:5; background:var(--surface); border-top:1px solid var(--line); }
+.v6-lbar-in { min-height:84px; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; padding-top:12px; padding-bottom:12px; }
+.v6-lbar-l { display:flex; align-items:center; gap:16px; font-size:17px; font-weight:600; }
+.v6-ldots { display:flex; gap:6px; }
+.v6-ldots i { width:10px; height:10px; border-radius:50%; background:var(--line); }
+.v6-ldots i.is-done { background:var(--ink); }
+.v6-ldots i.is-now { background:var(--accent); }
+.v6-lbar-r { display:flex; gap:10px; }
+@media (max-width:1100px) { .v6-lgrid { grid-template-columns:minmax(0,1fr) 260px; } .v6-lside { display:none; } }
+@media (max-width:820px) {
+  .v6-lgrid { grid-template-columns:1fr; padding-top:16px; }
+  .v6-lsheet { padding:28px 20px; border-radius:28px; }
+  .v6-lright { position:static; }
+  body.v6 .lesson-content .v6-ltoc { max-height:none; }
+  .v6-ldots { display:none; }
+  .v6-lbar-in { min-height:72px; }
+  .v6-lbar-r .v6b { height:48px; padding:0 18px; font-size:16px; }
+}
+/* overflow-x:hidden у body делает его контейнером прокрутки и ломает position:sticky (панель урока, колонки) — clip режет так же, но не мешает */
+body.v6 { overflow-x:clip !important; overflow-y:visible !important; }
+.v6-lesson .v6-first { margin:24px auto 0; max-width:calc(var(--container) - 2 * var(--gutter)); border-radius:24px; }
+body.v6 .lesson-content .v6-page .v6-first a { color:var(--accent); text-decoration:underline; text-underline-offset:3px; }
+/* плавающий Алёша — над нижней панелью урока */
+body:has(.v6-lbar) .alesha-widget:not(.is-open) { bottom:108px; }
+@media (max-width:820px) { body:has(.v6-lbar) .alesha-widget:not(.is-open) { bottom:92px; } }
+@media (max-width:820px) {
+  .v6-lbar-l { display:none; }
+  .v6-lbar-in { min-height:0; padding-top:10px; padding-bottom:10px; }
+  .v6-lbar-r { width:100%; }
+  .v6-lbar-r .v6b { flex:1; padding:0 12px; }
+  .v6-lbar-r .v6b.is-soft { flex:0 0 auto; }
+}

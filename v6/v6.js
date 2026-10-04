@@ -767,6 +767,83 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     }, 'knowledge');
   }
 
+  // ---------- обёртка урока (Lesson.dc.html, design/screens.md → Урок): текст урока не меняем ----------
+  // renderLesson из index.html собирает .lesson-view как раньше; здесь его узел (с обработчиками) переезжает в каркас v6
+  const lessonArgOf = (l) => (typeof l.id === 'number' ? String(l.id) : `'${l.id}'`);
+  function lessonGroup(L) {
+    if (typeof L.id === 'number') {
+      const m = D.paths.main;
+      if (m.commonStart.lessons.map(String).includes(String(L.id))) return { label: 'Главный путь', title: m.commonStart.title, ids: m.commonStart.lessons, foot: 'после урока 5 — развилка' };
+      const lv = m.levels.find((x) => x.lessons.map(String).includes(String(L.id)));
+      if (lv) return { label: `Главный путь · уровень ${lv.n}`, title: lv.title, ids: lv.lessons, foot: lv.milestone ? `Веха уровня: ${lv.milestone.title}` : '' };
+      return { label: 'Главный путь', title: 'Уроки', ids: LESSONS.filter((x) => x.phase === L.phase).map((x) => x.id), foot: '' };
+    }
+    const t = (D.paths.trails || []).find((x) => x.id === L.track);
+    return { label: 'Тропинка', title: t ? t.title : 'Тропинка', ids: TRACK_LESSONS.filter((x) => x.track === L.track).map((x) => x.id), foot: '' };
+  }
+  function lessonDone(id, next) {
+    if (!done(id)) toggleCompleted(/^\d+$/.test(String(id)) ? Number(id) : id);
+    if (next != null && next !== '') openLesson(/^\d+$/.test(String(next)) ? Number(next) : next);
+  }
+  function lessonNote(el, id) { ls.set('v6-note-' + id, el.value); }
+  function lessonWrap(id) {
+    const box = document.getElementById('lesson-content');
+    const view = box && box.querySelector('.lesson-view');
+    const L = findLesson(id);
+    if (!view || !L) return;
+    load().then(() => {
+      if (box.querySelector('.v6-lesson') || !box.contains(view)) return;
+      setPage(true, 'paths');
+      const g = lessonGroup(L);
+      const ids = g.ids.map((x) => (/^\d+$/.test(String(x)) ? Number(x) : x));
+      const pos = ids.findIndex((x) => String(x) === String(L.id));
+      const doneN = ids.filter(done).length;
+      // соседи — как в старой навигации урока
+      let prev, next;
+      if (typeof L.id === 'number') { prev = LESSONS.find((l) => l.id === L.id - 1); next = LESSONS.find((l) => l.id === L.id + 1); }
+      else { const tl = TRACK_LESSONS.filter((l) => l.track === L.track); const i = tl.findIndex((l) => l.id === L.id); prev = tl[i - 1]; next = tl[i + 1]; }
+      const isDone = done(L.id);
+      // из старой разметки: крошка, мета времени, действия, содержание
+      view.querySelectorAll('.lcrumb, .lesson-actions').forEach((x) => x.remove());
+      const meta = view.querySelector('.lesson-time-meta');
+      const tags = meta ? [...meta.querySelectorAll('span:not(.dot)')].map((x) => x.textContent.trim()).filter(Boolean) : [];
+      if (meta) meta.outerHTML = `<div class="v6-ltags">${tags.map((t, i) => `<span class="v6t${/обновлено/.test(t) ? '' : ' is-grey'}">${e(t)}</span>`).join('')}</div>`;
+      const toc = view.querySelector('details.lesson-toc');
+      const h1 = view.querySelector('h1');
+      const crumbs = `<nav class="v6-crumbs v6-lcrumbs" aria-label="Где вы"><a onclick="V6.open('paths')">Пути</a><span>/</span><a onclick="${typeof L.id === 'number' ? "V6.openMainPath('lesson')" : `openSection('${e(L.track)}')`}">${e(g.title)}</a><span>/</span><span>${typeof L.id === 'number' ? 'Урок ' + L.id : 'Урок ' + (pos + 1)}</span></nav>`;
+      if (h1) h1.insertAdjacentHTML('beforebegin', crumbs); else view.insertAdjacentHTML('afterbegin', crumbs);
+      const step = (x, i) => { const l = findLesson(x); if (!l) return ''; const cur = String(x) === String(L.id), dn = done(x);
+        const inner = `<span class="v6-dotc${dn ? ' is-done' : cur ? ' is-now' : ''}">${dn ? '✓' : ''}</span><span>${typeof x === 'number' ? x + '. ' : (i + 1) + '. '}${e(shortLessonLabel(l.title))}${l.content ? '' : ' <i>пишется</i>'}</span>`;
+        return l.content && !cur ? `<a class="v6-lstep" href="#lesson-${e(x)}" onclick="openLesson(${lessonArgOf(l)}); return false;">${inner}</a>` : `<span class="v6-lstep${cur ? ' is-now' : ' is-off'}"${cur ? ' aria-current="step"' : ''}>${inner}</span>`; };
+      const dots = ids.length <= 14 ? `<span class="v6-ldots" aria-hidden="true">${ids.map((x) => `<i class="${done(x) ? 'is-done' : String(x) === String(L.id) ? 'is-now' : ''}"></i>`).join('')}</span>` : '';
+      const nextBtn = next ? (isDone ? `<button class="v6b v6-btn-lg" onclick="openLesson(${lessonArgOf(next)})">Дальше</button>` : `<button class="v6b v6-btn-lg" onclick="V6.lessonDone(${lessonArgOf(L)}, ${lessonArgOf(next)})">Урок пройден, дальше</button>`)
+        : (isDone ? '<span class="v6t">Урок пройден ✓</span>' : `<button class="v6b v6-btn-lg" onclick="V6.lessonDone(${lessonArgOf(L)})">Урок пройден</button>`);
+      const wrap = document.createElement('div');
+      wrap.className = 'v6-page v6-lesson';
+      wrap.innerHTML = `<div class="v6-lprog" aria-hidden="true"><i style="width:${ids.length ? Math.round(doneN / ids.length * 100) : 0}%"></i></div>
+        <div class="v6c v6-lgrid">
+          <aside class="v6-lside" aria-label="${e(g.title)}"><span class="v6-lside-l">${e(g.label)}</span><span class="v6-lside-t">${e(g.title)}</span><nav class="v6-lsteps">${ids.map(step).join('')}</nav>${g.foot ? `<span class="v6-lside-f">${e(g.foot)}</span>` : ''}</aside>
+          <article class="v6-lsheet"></article>
+          <aside class="v6-lright">
+            <button class="v6-note" onclick="umTrack('alyosha-open', { from: 'lesson' }); aleshaToggle()"><span class="v6-ava">А</span><span>Застряли или хотите на своём примере? Спросите Алёшу.</span></button>
+            <div class="v6-lnote"><span class="v6-lnote-h"><b>Тетрадь</b><span class="v6-meta">в этом браузере</span></span><label class="v6-sr" for="v6-ln">Заметка к уроку</label><textarea id="v6-ln" placeholder="Мысль, пример из работы, вопрос" oninput="V6.lessonNote(this, '${e(L.id)}')"></textarea></div>
+            <div class="v6-ltoc-slot"></div>
+          </aside>
+        </div>
+        <div class="v6-lbar"><div class="v6c v6-lbar-in"><span class="v6-lbar-l">${pos >= 0 ? `Урок ${pos + 1} из ${ids.length}` : e(g.title)} ${dots}</span>
+          <span class="v6-lbar-r">${prev ? `<button class="v6b is-soft v6-btn-lg" onclick="openLesson(${lessonArgOf(prev)})">Назад</button>` : ''}${nextBtn}</span></div></div>`;
+      wrap.querySelector('.v6-lsheet').appendChild(view);
+      if (toc) { toc.open = true; toc.classList.add('v6-ltoc'); wrap.querySelector('.v6-ltoc-slot').appendChild(toc); }
+      wrap.querySelector('#v6-ln').value = ls.get('v6-note-' + L.id) || '';
+      const first = box.querySelector('.v6-first');
+      box.innerHTML = '';
+      box.appendChild(wrap);
+      if (first) wrap.insertBefore(first, wrap.querySelector('.v6-lgrid'));
+      const cur = wrap.querySelector('.v6-lstep.is-now');
+      if (cur) cur.scrollIntoView({ block: 'nearest' });
+    }).catch(() => {});
+  }
+
   // ---------- маршрутизация ----------
   const PAGES = { roles: rolesPage, tasks: tasksPage, paths: pathsPage, knowledge: knowledgePage };
   function open(name) {
@@ -819,6 +896,8 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       setPage(name === 'home', null);
       return osp.apply(this, arguments);
     };
+    const rl = window.renderLesson;
+    if (typeof rl === 'function') window.renderLesson = function (id) { const r = rl.apply(this, arguments); try { lessonWrap(id); } catch (_) {} return r; };
     window.renderHome = home;
     window.renderFooter = footer;
     footer();
@@ -832,5 +911,5 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     });
   }
 
-  window.V6 = { install, route, open, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, openKnowledge, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
+  window.V6 = { install, route, open, lessonDone, lessonNote, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, openKnowledge, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
 })();
