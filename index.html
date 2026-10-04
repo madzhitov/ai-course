@@ -4279,7 +4279,7 @@ const TRACK_LESSONS = [
   { id: "p2", track: "projects", title: "RAG над своими заметками (Obsidian / Notion)", duration: 60 },
   { id: "p3", track: "projects", title: "Свой MCP-сервер: подключаем Claude к Notion / Linear / своему API", duration: 60 },
   { id: "p4", track: "projects", title: "Анализ счетов и чеков через Claude Vision: фото → таблица расходов", duration: 60 },
-  { id: "p5", track: "projects", title: "AI-ресёрчер конкурентов с ежедневным TG-дайджестом", duration: 75 },
+  { id: "p5", track: "projects", title: "ИИ-ресёрчер конкурентов с дайджестом на почту", duration: 120 },
   { id: "p6", track: "projects", title: "Self-hosted Perplexity: Q&A с поиском по твоим данным", duration: 75 },
   { id: "p7", track: "projects", title: "AI-помощник для встреч: транскрипция + summary + задачи в Notion", duration: 90 },
   { id: "p8", track: "projects", title: "Анти-спам: AI классифицирует входящие письма и отвечает на простые", duration: 75 },
@@ -4294,7 +4294,7 @@ const TRACK_LESSONS = [
   { id: "p17", track: "projects", title: "Конспект лекции из аудио: Whisper + Claude → структурированный markdown", duration: 60 },
   { id: "p18", track: "projects", title: "Генератор Anki-карточек из PDF учебника для подготовки к экзамену", duration: 60 },
   { id: "p19", track: "projects", title: "TG-бот для саммари длинных чатов на GigaChat (без VPN)", duration: 75 },
-  { id: "p20", track: "projects", title: "AI-помощник продавца Wildberries на YandexGPT", duration: 90 },
+  { id: "p20", track: "projects", title: "AI-помощник продавца Wildberries на YandexGPT", duration: 120 },
   { id: "p21", track: "projects", title: "Локальный AI-секретарь на Ollama — без облака и подписок", duration: 75 },
   { id: "p22", track: "projects", title: "RAG для своих документов (госуслуги, медкарта, договоры) на локальных моделях", duration: 90 },
 
@@ -23637,101 +23637,384 @@ if uploaded:
 // МИНИ-ПРОЕКТ p5: AI-ресёрчер конкурентов
 // ============================================================
 registerLesson("p5", `
-<h1>Проект «За 1 час»: AI-ресёрчер конкурентов с TG-дайджестом</h1>
+<h1>Проект: ИИ-ресёрчер конкурентов с дайджестом на почту</h1>
 
 <div class="lesson-meta">
-  <span><strong>Что построим:</strong> скрипт, ежедневно сканирующий конкурентов и присылающий дайджест в Telegram</span>
-  <span><strong>Время:</strong> ~75 минут</span>
-  <span><strong>Уровень:</strong> Python + урок 14 (RAG)</span>
+  <span><strong>Что построим:</strong> скрипт, который раз в день проверяет блоги, сообщества ВКонтакте и страницы сайтов конкурентов и присылает на почту короткий дайджест: что нового и что это значит для тебя</span>
+  <span><strong>Время:</strong> ~2 часа работы. Пароль приложения для почты начинает действовать через 2–3 часа, поэтому создай его первым</span>
+  <span><strong>Уровень:</strong> уверенный: Python 3.10+, терминал, переменные окружения</span>
+  <span><strong>Стек:</strong> Python, YandexGPT (Yandex AI Studio), VK API, Яндекс Почта. Всё работает из России без VPN и оплачивается российской картой</span>
 </div>
 
 <h2>Зачем</h2>
-<p>«Что нового у конкурентов?» — занудный вопрос, на который нужно знать ответ еженедельно. Скрипт автоматизирует: парсит их сайты/блоги/changelog, выделяет изменения, отправляет краткий дайджест в твой Telegram.</p>
+<p>«Что нового у конкурентов?» Ответ нужен каждую неделю, а искать его скучно. Скрипт делает это сам: читает их блоги, посты в сообществах ВКонтакте и страницы сайта без RSS (цены, каталог, акции), находит новое и присылает тебе письмо из 3–5 пунктов по каждому конкуренту.</p>
 
-<h2>Архитектура</h2>
-<pre><code>Cron (раз в сутки) →
-  for each competitor:
-    fetch sitemap/RSS →
-    diff vs yesterday →
-    Claude summarize new content →
-  collate → format → Telegram bot</code></pre>
+<h2>Как это устроено</h2>
+<pre><code>Расписание (раз в сутки) →
+  для каждого конкурента:
+    RSS блога / стена сообщества VK / страница сайта →
+    что появилось с прошлой проверки (state.json) →
+    YandexGPT: 3–5 пунктов «что нового и что это значит» →
+  одно письмо на почту (Telegram по желанию)</code></pre>
 
-<h2>Шаг 1. Зависимости</h2>
-<pre><code>pip install anthropic httpx feedparser python-telegram-bot beautifulsoup4</code></pre>
+<div class="callout callout-info">
+<strong>Почему такой стек.</strong> API Anthropic в России недоступен и российской картой не оплачивается. Telegram с февраля 2026 года в России работает с перебоями, у многих только через VPN, а <code>api.telegram.org</code> с российских адресов может не открываться. Поэтому модель здесь YandexGPT, а дайджест приходит письмом. Telegram оставили как опцию.
+</div>
 
-<h2>Шаг 2. Источники</h2>
+<h2>Шаг 0. Пароль приложения для почты (5 мин, сделай первым)</h2>
+<p>Скрипт отправляет письмо через SMTP Яндекс Почты. Обычный пароль от Яндекс ID для этого не подходит, нужен пароль приложения.</p>
+<ol>
+<li>Открой <a href="https://id.yandex.ru/security" target="_blank">id.yandex.ru/security</a> → «Доступ к вашим данным» → «Пароли приложений».</li>
+<li>Выбери тип «Почта», задай имя, например <code>digest</code>, нажми «Далее». Пароль покажут один раз: сразу скопируй.</li>
+<li>В настройках Почты открой раздел «Почтовые программы». Включи «С сервера imap.yandex.ru по протоколу IMAP» и проверь, что включено «Пароли приложений и OAuth-токены». Сохрани.</li>
+</ol>
+<p>Пароль начнёт действовать через 2–3 часа. Пока ждёшь, делай остальные шаги.</p>
+
+<h2>Шаг 1. Ключ YandexGPT (15 мин)</h2>
+<ol>
+<li>Зайди в <a href="https://aistudio.yandex.ru" target="_blank">Yandex AI Studio</a> через Яндекс ID и создай организацию. Каталог <code>default</code> появится сам.</li>
+<li>Привяжи платёжный аккаунт. Физлицо привязывает карту; резиденты России платят в рублях картами российских банков (Мир, Visa, MasterCard).</li>
+<li>Нажми «Создать API-ключ» в правом верхнем углу. Сервисный аккаунт с нужными правами создастся вместе с ключом. Сохрани секрет ключа: он понадобится в шаге 4.</li>
+<li>Скопируй идентификатор каталога (folder_id): наведи курсор на имя каталога, он скопируется в буфер.</li>
+</ol>
+<p>Модель по умолчанию в скрипте: YandexGPT Pro 5.1 (<code>yandexgpt-5.1</code>), 0,8 ₽ за 1000 токенов на входе и столько же на выходе. YandexGPT Lite (<code>yandexgpt-5-lite</code>) в четыре раза дешевле, 0,2 ₽, но пишет проще. Запуск, в котором новое нашлось у 5–10 конкурентов, это примерно 5–20 тысяч токенов, то есть 4–16 ₽ на Pro 5.1. Если нового нет, модель не вызывается и денег не тратит.</p>
+
+<h2>Шаг 2. Сервисный ключ ВКонтакте (10 мин, если следишь за сообществами)</h2>
+<p>Посты сообществ читаем методом <code>wall.get</code> VK API. Ему хватает сервисного ключа приложения: вход пользователя не нужен.</p>
+<ol>
+<li>Создай приложение в кабинете <a href="https://id.vk.com/about/business/go" target="_blank">VK ID</a>. При создании VK ID выдаёт сервисный ключ доступа, он лежит в настройках приложения.</li>
+<li>Срок действия у ключа не ограничен. Храни его только у себя на компьютере или сервере. Если ключ утёк, обнови его в настройках приложения.</li>
+</ol>
+<p>Так читаются только открытые сообщества. Закрытые группы скрипт не увидит, и это правильно.</p>
+
+<h2>Шаг 3. Зависимости</h2>
+<pre><code>pip install openai httpx feedparser beautifulsoup4</code></pre>
+<p>Пакет <code>openai</code> нужен не ради OpenAI: у Yandex AI Studio есть OpenAI-совместимый API, и этот клиент с ним работает. Нужен Python 3.10 или новее.</p>
+
+<h2>Шаг 4. Ключи в переменных окружения</h2>
+<p>Ключи не пишем в код. Создай рядом со скриптом файл <code>secrets.sh</code>:</p>
+<pre><code>export YC_API_KEY="секрет API-ключа AI Studio"
+export YC_FOLDER_ID="идентификатор каталога"
+export VK_SERVICE_KEY="сервисный ключ VK"     # если следишь за VK
+export SMTP_USER="you@yandex.ru"
+export SMTP_PASSWORD="пароль приложения из шага 0"
+export MAIL_TO="you@yandex.ru"                 # можно несколько через запятую
+# export YC_MODEL="yandexgpt-5-lite"           # если нужна модель дешевле</code></pre>
+<p>Закрой файл от чужих глаз: <code>chmod 600 secrets.sh</code>. Если код лежит в git, допиши <code>secrets.sh</code> в <code>.gitignore</code>.</p>
+
+<h2>Шаг 5. Источники (20 мин)</h2>
+<p>Весь код дальше собирай в один файл <code>main.py</code>, блок за блоком, сверху вниз. Первый блок: список конкурентов.</p>
 <pre><code>SOURCES = [
-  {"name": "Competitor A", "rss": "https://compA.com/feed.xml"},
-  {"name": "Competitor B", "rss": "https://compB.com/blog/rss"},
-  {"name": "Competitor C", "changelog": "https://compC.com/changelog"},
+    {"name": "Конкурент А", "type": "rss", "url": "https://example.com/blog/feed"},
+    {"name": "Конкурент Б", "type": "vk", "domain": "example_shop"},
+    {"name": "Конкурент В", "type": "page", "url": "https://example.org/prices",
+     "selector": "main"},
 ]</code></pre>
+<p>Три типа источников:</p>
+<ul>
+<li><strong>rss</strong>: лента блога или новостей. Попробуй адреса <code>/feed</code>, <code>/rss</code>, <code>/blog/feed</code> или найди в коде страницы ссылку с <code>application/rss+xml</code>.</li>
+<li><strong>vk</strong>: открытое сообщество ВКонтакте. В <code>domain</code> пиши короткий адрес, то есть часть ссылки после <code>vk.com/</code>.</li>
+<li><strong>page</strong>: страница сайта без RSS, например цены или каталог. В <code>selector</code> укажи CSS-селектор блока с содержимым (посмотри через «Просмотреть код» в браузере), чтобы меню и баннеры не считались изменениями. Без селектора скрипт берёт всю страницу.</li>
+</ul>
+<div class="callout callout-warning">
+<strong>Только открытые источники.</strong> Скрипт читает то, что видит любой посетитель, раз в сутки, и перед чтением страницы проверяет <code>robots.txt</code>. Карточки на маркетплейсах им не собирай: у площадок свои правила доступа к данным. Разбор карточек конкурентов удобнее сделать вручную с чат-ИИ.
+</div>
 
-<h2>Шаг 3. Парсинг RSS + дифф</h2>
-<pre><code>import feedparser, json, os
-SEEN_FILE = "seen.json"
-seen = json.load(open(SEEN_FILE)) if os.path.exists(SEEN_FILE) else {}
+<h2>Шаг 6. Память: что уже видели</h2>
+<p>Скрипт помнит, какие записи уже разобрал, и хранит последний снимок каждой страницы. Всё лежит в <code>state.json</code>. В памяти номера записей держим во множестве (<code>set</code>): проверка «уже видели?» быстрая и без повторов. JSON множества не умеет, поэтому на диск пишем список.</p>
+<pre><code>import json, os
 
-def fetch_new(source):
-    feed = feedparser.parse(source["rss"])
-    new = [e for e in feed.entries if e.id not in seen.get(source["name"], set())]
-    seen.setdefault(source["name"], []).extend(e.id for e in new)
-    return new</code></pre>
+STATE_FILE = "state.json"
 
-<h2>Шаг 4. Суммаризация через Claude</h2>
-<pre><code>import anthropic
-client = anthropic.Anthropic()
+def load_state():
+    if not os.path.exists(STATE_FILE):
+        return {"seen": {}, "pages": {}}
+    with open(STATE_FILE, encoding="utf-8") as f:
+        data = json.load(f)
+    # на диске списки, в памяти множества: проверка "уже видели?" быстрая
+    data["seen"] = {name: set(ids) for name, ids in data["seen"].items()}
+    return data
 
-def summarize(entries, competitor):
-    text = "\\n\\n".join(f"## {e.title}\\n{e.summary}" for e in entries)
-    msg = client.messages.create(
-      model="⟦claude.smart⟧",
-      max_tokens=600,
-      messages=[{"role": "user", "content": f'''Конкурент: {competitor}
-Новые публикации:
+def save_state(state):
+    data = {"seen": {name: sorted(ids) for name, ids in state["seen"].items()},
+            "pages": state["pages"]}
+    with open(STATE_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=1)</code></pre>
+
+<h2>Шаг 7. Блоги: RSS</h2>
+<p>Все источники приводим к одному виду: <code>id</code>, <code>title</code>, <code>text</code>, <code>link</code>. Тогда остальной код не думает, откуда пришла запись.</p>
+<pre><code>import httpx, feedparser
+from bs4 import BeautifulSoup
+
+USER_AGENT = "competitor-digest/1.0"
+
+def clean(html):
+    return BeautifulSoup(html or "", "html.parser").get_text(" ", strip=True)
+
+def fetch_rss(src, state):
+    r = httpx.get(src["url"], headers={"User-Agent": USER_AGENT},
+                  timeout=30, follow_redirects=True)
+    r.raise_for_status()
+    feed = feedparser.parse(r.content)
+    items = []
+    for e in feed.entries:
+        items.append({
+            "id": e.get("id") or e.get("link") or e.get("title", ""),
+            "title": e.get("title", ""),
+            "text": clean(e.get("summary", "")),
+            "link": e.get("link", ""),
+        })
+    return items</code></pre>
+
+<h2>Шаг 8. Сообщества ВКонтакте</h2>
+<p>Запрос идёт на <code>api.vk.ru</code>, ключ передаём в заголовке <code>Authorization: Bearer</code>, версию API в параметре <code>v</code>. Берём 20 последних постов, метод отдаёт до 100.</p>
+<pre><code>VK_API = "https://api.vk.ru/method/wall.get"
+VK_VERSION = "5.199"
+
+def fetch_vk(src, state):
+    r = httpx.get(VK_API,
+                  params={"domain": src["domain"], "count": 20, "v": VK_VERSION},
+                  headers={"Authorization": f"Bearer {os.environ['VK_SERVICE_KEY']}"},
+                  timeout=30)
+    data = r.json()
+    if "error" in data:
+        raise RuntimeError(data["error"].get("error_msg", "ошибка VK API"))
+    items = []
+    for post in data["response"]["items"]:
+        items.append({
+            "id": str(post["id"]),
+            "title": "",
+            "text": post.get("text", ""),
+            "link": f"https://vk.com/wall{post['owner_id']}_{post['id']}",
+        })
+    return items</code></pre>
+
+<h2>Шаг 9. Страницы без RSS</h2>
+<p>Скачиваем страницу, оставляем текст нужного блока и сравниваем с прошлым снимком. В дайджест уходят только изменившиеся строки: <code>+</code> добавилось, <code>-</code> пропало. В первый раз скрипт просто запоминает страницу.</p>
+<pre><code>import difflib, hashlib
+from urllib.parse import urlsplit
+from urllib.robotparser import RobotFileParser
+
+def allowed_by_robots(url):
+    parts = urlsplit(url)
+    rp = RobotFileParser(f"{parts.scheme}://{parts.netloc}/robots.txt")
+    rp.read()
+    return rp.can_fetch(USER_AGENT, url)
+
+def fetch_page(src, state):
+    url = src["url"]
+    if not allowed_by_robots(url):
+        raise RuntimeError("robots.txt запрещает читать эту страницу")
+    r = httpx.get(url, headers={"User-Agent": USER_AGENT},
+                  timeout=30, follow_redirects=True)
+    r.raise_for_status()
+    soup = BeautifulSoup(r.text, "html.parser")
+    for tag in soup(["script", "style", "noscript"]):
+        tag.decompose()
+    part = soup.select_one(src["selector"]) if src.get("selector") else soup
+    if part is None:
+        raise RuntimeError(f"на странице нет блока {src['selector']}")
+    lines = [s.strip() for s in part.get_text("\\n").splitlines() if s.strip()]
+    text = "\\n".join(lines)
+
+    old = state["pages"].get(src["name"])
+    state["pages"][src["name"]] = text
+    if old is None or old == text:
+        return []  # первый снимок или ничего не поменялось
+    diff = [d for d in difflib.ndiff(old.splitlines(), lines)
+            if d.startswith(("+ ", "- "))]
+    diff_text = "\\n".join(diff[:60])
+    return [{
+        "id": hashlib.sha256(diff_text.encode("utf-8")).hexdigest()[:16],
+        "title": "Изменения на странице",
+        "text": diff_text,
+        "link": url,
+    }]</code></pre>
+
+<h2>Шаг 10. Дайджест через YandexGPT</h2>
+<p>Клиент OpenAI смотрит на Yandex AI Studio: адрес <code>https://ai.api.cloud.yandex.net/v1</code>, ключ AI Studio, folder_id в параметре <code>project</code>. Модель задаётся как <code>gpt://&lt;folder_id&gt;/yandexgpt-5.1</code>.</p>
+<pre><code>from openai import OpenAI
+
+FOLDER_ID = os.environ["YC_FOLDER_ID"]
+MODEL = os.environ.get("YC_MODEL", "yandexgpt-5.1")
+
+llm = OpenAI(api_key=os.environ["YC_API_KEY"], project=FOLDER_ID,
+             base_url="https://ai.api.cloud.yandex.net/v1")
+
+PROMPT = """Конкурент: {name}
+Что у него появилось с прошлой проверки (посты, статьи, изменения на сайте;
+строки с "+" добавились, с "-" пропали):
+
 {text}
 
-Сделай дайджест (3–5 буллетов):
-- Что нового (продукт / фича / партнёрство / маркетинговый ход)?
-- Что это значит для нас?
-- Опасно / нейтрально / возможность.
+Сделай дайджест из 3-5 пунктов:
+- что нового: товар, цена, акция, ассортимент, партнёрство, найм;
+- что это значит для нас;
+- пометка: угроза, нейтрально или возможность.
+Опирайся только на текст выше, не додумывай. Если важного нет,
+напиши одной строкой: «Ничего важного». Пиши простым текстом, без разметки."""
 
-Только важное. Прямо, без воды.'''}]
+def summarize(items, name):
+    text = "\\n\\n".join(f"{it['title']}\\n{it['text'][:1500]}\\n{it['link']}"
+                       for it in items)
+    resp = llm.chat.completions.create(
+        model=f"gpt://{FOLDER_ID}/{MODEL}",
+        messages=[{"role": "user", "content": PROMPT.format(name=name, text=text)}],
+        temperature=0.3,
+        max_tokens=800,
     )
-    return msg.content[0].text</code></pre>
+    return resp.choices[0].message.content.strip()</code></pre>
+<p><strong>Если у тебя есть доступ к API Anthropic</strong> (Россия не входит в список стран, где он доступен), можно взять Claude. Поставь <code>pip install anthropic</code>, положи ключ в <code>ANTHROPIC_API_KEY</code>, создай <code>client = anthropic.Anthropic()</code> и в <code>summarize</code> замени вызов на <code>client.messages.create(model="⟦claude.smart⟧", max_tokens=800, messages=[...])</code>. Текст ответа лежит в <code>msg.content[0].text</code>.</p>
+<p><strong>GigaChat API</strong> от Сбера тоже работает из России, но настраивать его дольше: по ключу авторизации нужно получать токен доступа, он живёт 30 минут. С 1 сентября 2026 года новые клиенты оплачивают его на платформе cloud.ru. С клиентом OpenAI он совместим частично.</p>
 
-<h2>Шаг 5. Telegram</h2>
-<pre><code>import httpx
-BOT_TOKEN = os.environ["TG_BOT_TOKEN"]
-CHAT_ID = os.environ["TG_CHAT_ID"]
+<h2>Шаг 11. Письмо на почту</h2>
+<p>Яндекс Почта принимает письма от программ на <code>smtp.yandex.ru</code>, порт 465, SSL. Логин: твой адрес, пароль: пароль приложения из шага 0.</p>
+<pre><code>import smtplib
+from email.message import EmailMessage
 
-def send_telegram(text):
-    httpx.post(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
-               json={"chat_id": CHAT_ID, "text": text, "parse_mode": "Markdown"})</code></pre>
+def send_email(subject, body):
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"] = os.environ["SMTP_USER"]
+    msg["To"] = os.environ["MAIL_TO"]
+    msg.set_content(body)
+    with smtplib.SMTP_SSL("smtp.yandex.ru", 465, timeout=30) as smtp:
+        smtp.login(os.environ["SMTP_USER"], os.environ["SMTP_PASSWORD"])
+        smtp.send_message(msg)</code></pre>
 
-<h2>Шаг 6. Основной цикл</h2>
-<pre><code>def main():
-    digest = "🔍 *Конкуренты — что нового:*\\n\\n"
+<h3>По желанию: копия в Telegram</h3>
+<p>Если Telegram работает и у тебя, и у тех, кто читает дайджест, добавь функцию ниже и две переменные: <code>TG_BOT_TOKEN</code> (бот создаётся у @BotFather) и <code>TG_CHAT_ID</code>. Telegram принимает до 4096 знаков в сообщении, поэтому длинный дайджест режем на части. Разметку не включаем: звёздочки и подчёркивания из ответа модели ломают Markdown.</p>
+<pre><code>def send_telegram(text):
+    token = os.environ["TG_BOT_TOKEN"]
+    for i in range(0, len(text), 4000):  # лимит Telegram 4096 знаков
+        r = httpx.post(f"https://api.telegram.org/bot{token}/sendMessage",
+                       json={"chat_id": os.environ["TG_CHAT_ID"],
+                             "text": text[i:i + 4000]},
+                       timeout=30)
+        r.raise_for_status()</code></pre>
+<p>Если Telegram не нужен, этот блок можно не добавлять: скрипт вызывает его, только когда задана переменная <code>TG_BOT_TOKEN</code>.</p>
+
+<h2>Шаг 12. Основной цикл</h2>
+<pre><code>from datetime import date
+
+FETCHERS = {"rss": fetch_rss, "vk": fetch_vk, "page": fetch_page}
+MAX_ITEMS = 10      # не больше 10 новых записей на конкурента за раз
+FIRST_RUN_ITEMS = 3 # в первый раз разбираем только 3 последние записи
+
+def main():
+    state = load_state()
+    pages_before = dict(state["pages"])
+    parts, errors = [], []
     for src in SOURCES:
-        new = fetch_new(src)
-        if not new: continue
-        digest += f"*{src['name']}*:\\n{summarize(new, src['name'])}\\n\\n"
-    send_telegram(digest)
-    json.dump(seen, open(SEEN_FILE, "w"))</code></pre>
+        name = src["name"]
+        try:
+            items = FETCHERS[src["type"]](src, state)
+            first_run = name not in state["seen"]
+            known = state["seen"].setdefault(name, set())
+            new = [it for it in items if it["id"] not in known]
+            if new:
+                limit = FIRST_RUN_ITEMS if first_run else MAX_ITEMS
+                parts.append(f"{name}\\n{summarize(new[:limit], name)}")
+            known.update(it["id"] for it in new)
+        except Exception as e:
+            errors.append(f"{name}: {e}")
+            # снимок страницы не обновляем, чтобы не потерять изменения
+            if name in pages_before:
+                state["pages"][name] = pages_before[name]
+            else:
+                state["pages"].pop(name, None)
 
-<h2>Шаг 7. Cron (10 мин)</h2>
-<p>Запускай через GitHub Actions (бесплатно), Railway cron или просто <code>crontab -e</code>:</p>
-<pre><code>0 9 * * * cd /path/to/project && python main.py</code></pre>
+    if not parts and not errors:
+        print("Нового нет, письмо не отправляю")
+        save_state(state)
+        return
+    body = "\\n\\n".join(parts) or "Нового нет."
+    if errors:
+        body += "\\n\\nНе удалось проверить:\\n" + "\\n".join(errors)
+    subject = f"Конкуренты: что нового, {date.today():%d.%m.%Y}"
+    send_email(subject, body)
+    if os.environ.get("TG_BOT_TOKEN"):
+        try:
+            send_telegram(f"{subject}\\n\\n{body}")
+        except Exception as e:
+            print("Telegram не ответил:", e)
+    save_state(state)  # сохраняем, только если письмо ушло
+
+if __name__ == "__main__":
+    main()</code></pre>
+<p>Что здесь важно:</p>
+<ul>
+<li>В первый раз по каждому источнику разбираются только 3 последние записи, остальные просто запоминаются. Иначе первое письмо будет огромным.</li>
+<li>Если источник упал (сайт не открылся, ключ VK неверный), остальные всё равно проверяются, а ошибка попадает в конец письма.</li>
+<li><code>state.json</code> сохраняется только после того, как письмо ушло. Не ушло: в следующий раз то же новое придёт снова, ничего не потеряется.</li>
+</ul>
+
+<h2>Шаг 13. Первый запуск (10 мин)</h2>
+<pre><code>. ./secrets.sh
+python3 main.py</code></pre>
+<p>Проверь письмо: у каждого пункта должна быть реальная запись или изменение на странице за ним. Запусти ещё раз: должно появиться «Нового нет, письмо не отправляю». Если первое письмо не пришло, а ошибка про логин, проверь, прошли ли 2–3 часа с создания пароля приложения.</p>
+
+<h2>Шаг 14. Расписание (15 мин)</h2>
+<p><strong>Свой компьютер или сервер.</strong> Самый простой путь: cron. Открой <code>crontab -e</code> и добавь строку (запуск каждый день в 9:00):</p>
+<pre><code>0 9 * * * cd /path/to/project && . ./secrets.sh && /usr/bin/python3 main.py >> digest.log 2>&1</code></pre>
+<p>Путь к Python узнай командой <code>which python3</code> и подставь свой. Компьютер в это время должен быть включён, поэтому надёжнее небольшой сервер. На Windows то же самое делает Планировщик заданий.</p>
+<p><strong>GitHub Actions</strong>, если GitHub у тебя открывается. Создай приватный репозиторий с <code>main.py</code>, ключи добавь в Settings → Secrets and variables → Actions, а этот файл положи в <code>.github/workflows/digest.yml</code>:</p>
+<pre><code>name: digest
+on:
+  schedule:
+    - cron: "0 9 * * *"
+      timezone: "Europe/Moscow"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install openai httpx feedparser beautifulsoup4
+      - run: python main.py
+        env:
+          YC_API_KEY: \${{ secrets.YC_API_KEY }}
+          YC_FOLDER_ID: \${{ secrets.YC_FOLDER_ID }}
+          VK_SERVICE_KEY: \${{ secrets.VK_SERVICE_KEY }}
+          SMTP_USER: \${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: \${{ secrets.SMTP_PASSWORD }}
+          MAIL_TO: \${{ secrets.MAIL_TO }}
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state.json
+          git commit -m "update state" || echo "nothing to commit"
+          git push</code></pre>
+<p>Последний шаг сохраняет <code>state.json</code> обратно в репозиторий, иначе каждый запуск начинался бы с нуля. Оговорки:</p>
+<ul>
+<li>Серверы GitHub стоят за рубежом. Запросы к YandexGPT, VK и smtp.yandex.ru пойдут оттуда. Проверь вручную кнопкой Run workflow (её даёт <code>workflow_dispatch</code>), прежде чем полагаться на расписание.</li>
+<li>Запуск по расписанию может опаздывать, когда GitHub загружен. Для приватных репозиториев на бесплатном тарифе есть 2000 минут в месяц, ежедневному скрипту хватит с запасом.</li>
+<li>В публичном репозитории расписание само отключается, если 60 дней в нём не было активности.</li>
+</ul>
+
+<h2>Если не работает</h2>
+<ul>
+<li><strong>Ошибка входа в SMTP</strong>: пароль приложения ещё не заработал (2–3 часа), не включён доступ для почтовых программ или вместо пароля приложения стоит обычный.</li>
+<li><strong>VK отвечает ошибкой</strong>: проверь ключ и короткий адрес сообщества. Закрытые сообщества сервисный ключ не читает.</li>
+<li><strong>«robots.txt запрещает»</strong>: сайт просит роботов эту страницу не читать. Убери её из списка или найди у конкурента RSS.</li>
+<li><strong>Страница «меняется» каждый день</strong>: в блок попадают дата, счётчики или случайные товары. Сузь <code>selector</code> до нужной части.</li>
+<li><strong>Модель отвечает 400</strong>: проверь имя модели. Устаревшие модели Yandex отключает, и старый адрес перестаёт работать. Актуальный список в документации AI Studio.</li>
+</ul>
 
 <h2>Расширения</h2>
 <ul>
-<li><strong>Web scraping</strong> сайтов без RSS (Playwright).</li>
-<li><strong>Job openings</strong> — отдельный поток: что нанимают (стратегические сигналы).</li>
-<li><strong>Анализ соцсетей</strong> — Twitter/LinkedIn API.</li>
-<li><strong>Еженедельный отчёт</strong> с трендами.</li>
+<li><strong>Вакансии конкурентов</strong>: страница «Карьера» как источник типа <code>page</code>. Кого нанимают, туда и растут.</li>
+<li><strong>Недельный отчёт</strong>: раз в неделю отдай модели все письма за 7 дней и попроси тренды.</li>
+<li><strong>Несколько читателей</strong>: перечисли адреса в <code>MAIL_TO</code> через запятую.</li>
 </ul>
 
 <div class="callout callout-info">
-<strong>📌 Закрепление:</strong> подписки на чужие блоги ты больше не читаешь — твой бот делает это за тебя и шлёт только важное.
+<strong>📌 Закрепление:</strong> блоги, сообщества и прайсы конкурентов ты больше не листаешь. Скрипт проверяет их каждое утро и присылает только новое, с пометкой, что это значит для тебя.
 </div>
 `);
 
