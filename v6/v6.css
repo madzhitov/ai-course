@@ -746,3 +746,21 @@ body.v6 .lesson-content .v6-page a.v6-mile-b { color:#16161A; }
 body.v6 .lesson-content .v6-page a.v6-kit-i { color:var(--ink); }
 body.v6 .lesson-content .v6-page a.v6-kit-i:hover .v6-kit-t { color:var(--accent); }
 .v6-kit-s.is-go { color:var(--accent); }
+
+/* ===== полезные вещи (ресурсы) ===== */
+.v6-restable { overflow-x:auto; }
+.v6-restable table { border-collapse:collapse; font-size:14px; min-width:100%; }
+.v6-restable th, .v6-restable td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+.v6-restable th { background:var(--ground); font-weight:600; }
+.v6-restable td i { color:var(--text-3); font-style:normal; }
+.v6-funnel-out { gap:4px !important; }
+.v6-funnel-row { display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-top:1px solid var(--line); font-size:17px; }
+.v6-funnel-row.is-min { color:var(--accent); font-weight:600; }
+.v6-funnel-row.is-min b::after { content:' · самый большой провал'; font-weight:400; font-size:14px; }
+.v6-funnel-row.is-total { border-top:2px solid var(--ink); }
+.v6-reslist h2 { margin-top:8px !important; }
+@media print {
+  .v6h, .v6f, .v6-noprint, .alesha-widget, .v6-crumbs, .v6-uhead .v6-tags { display:none !important; }
+  body.v6 { background:#fff !important; }
+  .v6-box { padding:0 !important; }
+}

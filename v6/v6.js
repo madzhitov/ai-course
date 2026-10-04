@@ -571,7 +571,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         const sp = D.paths.rolePaths.find((p) => p.role === 'seller');
         const lessons = [...new Set(pp.lessonRoles.flatMap((r) => role(r).lessons || []))].filter((id) => lessonOf(id));
         const stage = (st) => `<section class="v6-stage"><div class="v6-stage-head"><div><span class="v6-pcard-label">Этап ${st.n} · собирается${pp.both && pp.both.test(st.id) ? ' · и для проджекта' : ''}</span><h2 class="v6-pmain-h">${e(st.title)}</h2></div><span class="v6-pcard-label">${st.tasks.length} ${plural(st.tasks.length, 'задача', 'задачи', 'задач')}${st.tasks.filter((t) => taskReady(t.id)).length ? `, готово ${st.tasks.filter((t) => taskReady(t.id)).length}` : ''} · ${st.fws.length} ${plural(st.fws.length, 'метод', 'метода', 'методов')}</span></div>
-          <div class="v6-steps-list">${st.tasks.map((t) => `<div class="v6-step"><span class="v6-dotc${taskDone(t.id) ? ' is-done' : ''}">${taskDone(t.id) ? '✓' : ''}</span><div class="v6-step-b"><span class="v6-step-tags"><span class="v6t is-sm">задача</span><span class="v6-step-s">${taskReady(t.id) ? (() => { const l = lessonOf((unitsOf(t.id).find((u) => u.fromLesson) || {}).fromLesson); return l ? `по уроку «${e(l.title.split(':')[0])}»` : 'по уроку'; })() : 'способ решения скоро'}</span></span><a class="v6-step-t" href="#task-${e(t.id)}" onclick="V6.openTask('${e(t.id)}','${key}-path'); return false;">${e(t.title)}</a></div><span class="v6-step-m"></span></div>`).join('')}</div>
+          <div class="v6-steps-list">${st.tasks.map((t) => `<div class="v6-step"><span class="v6-dotc${taskDone(t.id) ? ' is-done' : ''}">${taskDone(t.id) ? '✓' : ''}</span><div class="v6-step-b"><span class="v6-step-tags"><span class="v6t is-sm">задача</span><span class="v6-step-s">${taskReady(t.id) ? (() => { const su = unitsOf(t.id).find(hasSteps); if (su) return `юнит · ${su.steps.length} ${plural(su.steps.length, 'шаг', 'шага', 'шагов')}${su.review ? ' · черновик' : ''}`; const l = lessonOf((unitsOf(t.id).find((u) => u.fromLesson) || {}).fromLesson); return l ? `по уроку «${e(l.title.split(':')[0])}»` : 'по уроку'; })() : 'способ решения скоро'}</span></span><a class="v6-step-t" href="#task-${e(t.id)}" onclick="V6.openTask('${e(t.id)}','${key}-path'); return false;">${e(t.title)}</a></div><span class="v6-step-m"></span></div>`).join('')}</div>
           ${st.fws.length ? `<div class="v6-stage-fw"><span class="v6-pcard-label">Методы этапа</span><span class="v6-rchips">${st.fws.map((c) => `<a class="v6-rchip" href="#fw-${e(c.id)}" onclick="V6.openFw('${e(c.id)}','${key}-path'); return false;">${e(c.title)}</a>`).join('')}</span></div>` : ''}</section>`;
         document.getElementById('v6-pp').innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.open('paths')">Пути</a><span>/</span><a onclick="V6.openRole('${pp.role}','${key}-path')">${e(role(pp.role).title)}</a><span>/</span><span>${e(pp.title)}</span></nav>
           <section class="v6-phero" style="padding-top:24px;padding-bottom:56px"><div class="v6-phero-text"><span class="v6-eyebrow">Путь роли · ${e(pp.label)}</span><h1 class="v6-d">${e(pp.title)}</h1>
@@ -601,7 +601,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         const cur = all.find((x) => !x.optional && !stepDone(x) && stepGo(x));
         const curStage = sp.stages.find((st) => st.steps.includes(cur)) || sp.stages[0];
         const res = (id) => D.resources.find((r) => r.id === id);
-        const chip = (r) => `<span class="v6-rchip"><span>${e(RES_KIND[r.kind] || r.kind)}</span>${e(r.title)}</span>`;
+        const chip = (r) => resReady(r) ? `<a class="v6-rchip" href="#res-${e(r.id)}" onclick="V6.openRes('${e(r.id)}','path'); return false;"><span>${e(RES_KIND[r.kind] || r.kind)}</span>${e(r.title)}</a>` : `<span class="v6-rchip"><span>${e(RES_KIND[r.kind] || r.kind)}</span>${e(r.title)}</span>`;
         const step = (x) => {
           const go = stepGo(x), isDone = stepDone(x), isCur = x === cur;
           const title = go ? `<a class="v6-step-t" href="#" onclick="${go}; return false;">${e(x.title)}</a>` : `<span class="v6-step-t">${e(x.title)}</span>`;
@@ -631,8 +631,8 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
               return go ? `<a class="v6-prep-i" href="#" onclick="${go}; return false;">${inner}</a>` : `<span class="v6-prep-i">${inner}</span>`; }).join('')}</div></section>
             ${sp.stages.map(stage).join('')}
             <section class="v6-kit"><div class="v6-sec-head"><h2 class="v6-psec-h">Набор продавца</h2><p>Пришли не учиться, а забрать таблицу? Всё полезное из пути — здесь, без порядка.</p></div>
-              <div class="v6-kit-g">${groups.map(([t, rs]) => `<div class="v6-kit-c"><span class="v6-kit-h"><span>${e(t)}</span><span class="v6-meta">${rs.length}</span></span><div class="v6-kit-l">${rs.map((r) => { const fw = r.status === 'ready' && /^framework:/.test(r.link || '') && fwById(r.link.slice(10)); const inner = `<span class="v6-kit-t">${e(r.title)}</span><span class="v6-kit-g2">${e(r.gives || '')}</span>${fw ? '<span class="v6-kit-s is-go">открыть →</span>' : r.status === 'ready' ? '' : '<span class="v6-kit-s">скоро</span>'}`;
-                return fw ? `<a class="v6-kit-i" href="#fw-${e(fw.id)}" onclick="V6.openFw('${e(fw.id)}','kit'); return false;">${inner}</a>` : `<span class="v6-kit-i">${inner}</span>`; }).join('')}</div></div>`).join('')}</div>
+              <div class="v6-kit-g">${groups.map(([t, rs]) => `<div class="v6-kit-c"><span class="v6-kit-h"><span>${e(t)}</span><span class="v6-meta">${rs.length}</span></span><div class="v6-kit-l">${rs.map((r) => { const fw = /^framework:/.test(r.link || '') && fwById(r.link.slice(10)); const ok = resReady(r) || fw; const inner = `<span class="v6-kit-t">${e(r.title)}</span><span class="v6-kit-g2">${e(r.gives || '')}</span>${ok ? '<span class="v6-kit-s is-go">открыть →</span>' : '<span class="v6-kit-s">скоро</span>'}`;
+                return resReady(r) ? `<a class="v6-kit-i" href="#res-${e(r.id)}" onclick="V6.openRes('${e(r.id)}','kit'); return false;">${inner}</a>` : fw ? `<a class="v6-kit-i" href="#fw-${e(fw.id)}" onclick="V6.openFw('${e(fw.id)}','kit'); return false;">${inner}</a>` : `<span class="v6-kit-i">${inner}</span>`; }).join('')}</div></div>`).join('')}</div>
               ${sp.note ? `<p class="v6-sp-note">${e(sp.note)}</p>` : ''}</section>
           </div>`;
       }).catch(() => fail('v6-sp'));
@@ -906,7 +906,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     })() : `<div class="v6-ucard"><span class="v6-pcard-label">Шаг ${i + 1} из ${n}</span><h2 class="v6-ucard-t">${e(s.title)}</h2><p>${e(s.text || '')}</p>${input}${prompt}${checks}
         <button class="v6-note" onclick="V6.unitHelp('${e(id)}')"><span class="v6-ava">А</span><span>Застряли на этом шаге? Спросите Алёшу.</span></button></div>`;
     box.innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.openRole('${e(t.group)}','unit')">${e((role(t.group) || {}).title || '')}</a><span>/</span><a onclick="V6.openTask('${e(t.id)}','unit')">${e(t.title)}</a><span>/</span><span>Юнит</span></nav>
-      <section class="v6-uhead"><h1 class="v6-d">${e(u.title)}</h1><p class="v6-phero-lead">${e(u.result || '')}</p>
+      <section class="v6-uhead">${u.review ? '<span class="v6-eyebrow">Черновик на согласовании</span>' : ''}<h1 class="v6-d">${e(u.title)}</h1><p class="v6-phero-lead">${e(u.result || '')}</p>
         <span class="v6-tags">${[u.minutes ? '≈ ' + u.minutes + ' мин' : '', u.level || '', ...(u.tools || []), u.noVpn ? 'без VPN' : ''].filter(Boolean).map((x) => `<span class="v6t is-grey">${e(x)}</span>`).join('')}${(u.needs || []).length ? `<span class="v6t">понадобится: ${e(u.needs.join(', '))}</span>` : ''}</span></section>
       <div class="v6-ugrid"><aside class="v6-lside"><span class="v6-lside-t">Шаги</span><nav class="v6-lsteps">${stepsNav}</nav>
           ${fws.length ? `<span class="v6-lside-l" style="padding-top:16px">Опирается на</span>${fws.map((c) => `<a class="v6-lstep" href="#fw-${e(c.id)}" onclick="V6.openFw('${e(c.id)}','unit'); return false;"><span>${e(c.title)}</span></a>`).join('')}` : ''}</aside>
@@ -1069,6 +1069,66 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     }, 'paths');
   }
 
+  // ---------- полезные вещи (resources.json + content): чек-лист, калькулятор, инструмент, промпты, шаблон-файл ----------
+  const resById = (id) => (D.resources || []).find((r) => r.id === id);
+  const resReady = (r) => !!(r && r.content);
+  function resCheck(id, key, el) { const st = jget('v6-res-' + id); st[key] = el.checked; jset('v6-res-' + id, st); }
+  function funnel() {
+    const box = document.getElementById('v6-funnel'); if (!box) return;
+    const v = [...box.querySelectorAll('[data-in]')].map((el) => parseFloat(String(el.value).replace(/\s/g, '').replace(',', '.')) || 0);
+    const labels = [...box.querySelectorAll('[data-in]')].map((el) => el.dataset.label);
+    const conv = v.slice(1).map((x, i) => (v[i] ? x / v[i] * 100 : 0));
+    const min = conv.length ? Math.min(...conv.filter((x, i) => v[i] > 0)) : 0;
+    box.querySelector('.v6-funnel-out').innerHTML = conv.map((c, i) => `<div class="v6-funnel-row${c === min && v[i] ? ' is-min' : ''}"><span>${e(labels[i])} → ${e(labels[i + 1])}</span><b>${v[i] ? c.toLocaleString('ru-RU', { maximumFractionDigits: 1 }) + '%' : '—'}</b></div>`).join('') +
+      (v[0] && v[v.length - 1] ? `<div class="v6-funnel-row is-total"><span>Из ${e(labels[0].toLowerCase())} до ${e(labels[labels.length - 1].toLowerCase())}</span><b>${(v[v.length - 1] / v[0] * 100).toLocaleString('ru-RU', { maximumFractionDigits: 2 })}%</b></div>` : '');
+  }
+  function openRes(id, from) {
+    go('res-' + id, () => {
+      shell('<div class="v6c" id="v6-res"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
+      load().then(() => {
+        const r = resById(id), box = document.getElementById('v6-res');
+        if (!r) { box.innerHTML = '<h1 class="v6-d" style="padding-top:56px">Такой вещи нет</h1>'; return; }
+        track('res-open', { res: id, from: from || 'link' });
+        const c = r.content || {};
+        const fws = (r.basedOn || []).map(fwById).filter(Boolean);
+        const head = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.openSellerPath('res')">От селлера к бренду</a><span>/</span><a onclick="V6.openSellerPath('res')">Набор продавца</a><span>/</span><span>${e(r.title)}</span></nav>
+          <section class="v6-uhead"><span class="v6-eyebrow">${e(RES_KIND[r.kind] || r.kind)}</span><h1 class="v6-d">${e(r.title)}</h1><p class="v6-phero-lead">${e(c.intro || r.gives || '')}</p>
+            ${fws.length ? `<span class="v6-tags">${fws.map((f) => `<a class="v6t is-grey" href="#fw-${e(f.id)}" onclick="V6.openFw('${e(f.id)}','res'); return false;">метод · ${e(f.title)}</a>`).join('')}</span>` : ''}</section>`;
+        if (!resReady(r)) { box.innerHTML = head + '<div class="v6-ucard"><h2 class="v6-ucard-t">Скоро</h2><p>Эта вещь готовится.</p></div>'; return; }
+        const howto = (c.howto || []).length ? `<div class="v6-box"><h2>Как пользоваться</h2><div class="v6-fwsteps">${c.howto.map((h, i) => `<div><span class="n">${i + 1}</span><span><span>${e(h)}</span></span></div>`).join('')}</div></div>` : '';
+        let main = '';
+        if (r.kind === 'checklist') {
+          const st = jget('v6-res-' + id);
+          main = `<div class="v6-box v6-reslist">${(c.groups || []).map((g, gi) => `<h2>${e(g.title)}</h2><div class="v6-uchecks">${g.items.map((it, ii) => `<label><input type="checkbox" ${st[gi + '-' + ii] ? 'checked' : ''} onchange="V6.resCheck('${e(id)}','${gi}-${ii}',this)"><span>${e(it)}</span></label>`).join('')}</div>`).join('')}
+            <span class="v6-btns v6-noprint"><button class="v6b is-soft v6-btn-lg" onclick="window.print()">Распечатать</button></span></div>`;
+        } else if (r.kind === 'calculator' && c.executor) {
+          const ex = c.executor;
+          main = `<section class="v6-exec"><div class="v6-exec-h"><h2>Посчитайте свой случай</h2><span class="v6t">калькулятор</span></div>
+            <div id="v6-calc"><div class="v6-calc-in">${ex.inputs.map((i) => `<label>${e(i.label)}<span><input type="text" inputmode="decimal" data-in="${e(i.id)}" value="" placeholder="0" oninput="V6.calc()"><i>${e(i.unit || '')}</i></span></label>`).join('')}</div>
+            <div class="v6-calc-out"><div class="v6-calc-top"><span>${e((ex.result || {}).label || 'Результат')}</span><span class="v6-calc-n"></span></div><p class="v6-meta" style="margin:0">${e(ex.formula || '')}</p></div></div></section>
+            ${c.example ? `<div class="v6-box"><h2>Пример</h2><p class="v6-fw-ex">${e(c.example)}</p></div>` : ''}`;
+        } else if (id === 'r-funnel-tool' && c.inputs) {
+          main = `<section class="v6-exec" id="v6-funnel"><div class="v6-exec-h"><h2>Вставьте числа за период</h2><span class="v6t">инструмент · в браузере</span></div>
+            <div class="v6-calc-in">${c.inputs.map((i) => `<label>${e(i.label)}<span><input type="text" inputmode="numeric" data-in="${e(i.id)}" data-label="${e(i.short || i.label)}" value="${e(i.default ?? '')}" oninput="V6.funnel()"></span></label>`).join('')}</div>
+            <div class="v6-calc-out v6-funnel-out"></div>${c.read ? `<p class="v6-meta" style="margin:0">${e(c.read)}</p>` : ''}</section>
+            ${c.example ? `<div class="v6-box"><h2>Пример</h2><p class="v6-fw-ex">${e(c.example)}</p></div>` : ''}`;
+        } else if ((r.kind === 'tool' || r.kind === 'prompt-set') && (c.prompt || c.prompts)) {
+          const ps = c.prompts || [{ title: 'Промпт', when: '', prompt: c.prompt }];
+          main = ps.map((pp, i) => `<section class="v6-exec"><div class="v6-exec-h"><h2>${e(pp.title)}</h2><button class="v6b is-sm is-soft" onclick="V6.copyText('v6-rp-${i}', this)">Скопировать</button></div>${pp.when ? `<p class="v6-meta" style="margin:0">${e(pp.when)}</p>` : ''}<pre class="v6-prompt" id="v6-rp-${i}">${e(pp.prompt)}</pre></section>`).join('') +
+            ((c.columns || []).length ? `<div class="v6-box"><h2>Что получится</h2><div class="v6-restable"><table><tr>${c.columns.map((x) => `<th>${e(x.title || x)}</th>`).join('')}</tr></table></div></div>` : '');
+        } else if (r.kind === 'template') {
+          const file = r.file;
+          main = (c.sheets || []).map((sh) => `<div class="v6-box"><h2>${e(sh.name)}</h2><div class="v6-restable"><table><tr>${sh.columns.map((x) => `<th>${e(x.title)}</th>`).join('')}</tr>${(sh.rows || []).slice(0, 3).map((row) => `<tr>${row.map((v, i) => `<td>${v == null ? `<i>${sh.columns[i].kind === 'formula' ? 'формула' : ''}</i>` : e(v)}</td>`).join('')}</tr>`).join('')}</table></div>${(sh.notes || []).map((n) => `<p class="v6-meta">${e(n)}</p>`).join('')}</div>`).join('') +
+            (c.doc ? `<div class="v6-box">${c.doc.sections.map((sec) => `<h2>${e(sec.title)}</h2><p>${e(sec.hint || '')}</p>${sec.example ? `<p class="v6-fw-ex">${e(sec.example)}</p>` : ''}`).join('')}</div>` : '') +
+            (file ? `<div class="v6-doorbox"><span>${file.endsWith('.docx') ? 'Документ Word: откроется в Word, Google Документах и «Мой Офис».' : 'Таблица Excel с готовыми формулами: откроется в Excel, Google Таблицах и «Мой Офис».'}</span><a class="v6b v6-btn-lg" href="v6/files/${e(file)}" download onclick="umTrack('res-download', { res: '${e(id)}' })">Скачать файл</a></div>` : '');
+        }
+        box.innerHTML = head + `<div class="v6-fwbody">${main}${howto}</div>`;
+        if (r.kind === 'calculator' && c.executor) { fwCur = { executor: c.executor, full: true }; document.querySelectorAll('#v6-calc [data-in]').forEach((el) => { const d = (c.executor.defaults || {})[el.dataset.in]; if (d != null) el.value = String(d).replace('.', ','); }); calc(); }
+        if (id === 'r-funnel-tool') funnel();
+      }).catch(() => fail('v6-res'));
+    }, 'paths');
+  }
+
   // ---------- маршрутизация ----------
   const PAGES = { roles: rolesPage, tasks: tasksPage, paths: pathsPage, knowledge: knowledgePage, notebook: notebookPage };
   function open(name) {
@@ -1086,6 +1146,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     m = hash.match(/^fw-([a-z0-9-]+)$/); if (m) { openFw(m[1], 'link'); return true; }
     m = hash.match(/^unit-([a-z0-9-]+)$/); if (m) { openUnit(m[1], 'link'); return true; }
     m = hash.match(/^veha-seller-(\d)$/); if (m) { openVeha(m[1], 'link'); return true; }
+    m = hash.match(/^res-([a-z0-9-]+)$/); if (m) { openRes(m[1], 'link'); return true; }
     return false;
   }
 
@@ -1146,5 +1207,5 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     });
   }
 
-  window.V6 = { install, route, open, lessonDone, lessonNote, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, openKnowledge, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
+  window.V6 = { install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, openKnowledge, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
 })();
