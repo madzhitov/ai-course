@@ -611,3 +611,18 @@ body.v6 .lesson-content .v6-page .v6-links a:hover { text-decoration:underline !
 @media (prefers-reduced-motion:reduce) { .v6h.is-logo-anim .v6h-logo .bar { animation:none; } }
 .v6f-mark { display:block; width:44px; height:auto; color:var(--accent); margin-bottom:20px; }
 @media (max-width:720px) { .v6h-logo { height:22px; } }
+
+/* ===== иллюстрации v2.1 (WebP, фон #F3F4F7): рамка того же цвета, картинка сливается со страницей ===== */
+.v6-art, .v6-art.v6-phero-art, .v6-rolepath-lg .v6-art, .v6-pathc .v6-art { background:#F3F4F7; }
+.v6-sechero { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:32px; align-items:center; padding-top:56px; }
+.v6-art.v6-icon-art { width:200px; height:200px; margin:0; border-radius:32px; }
+@media (max-width:720px) { .v6-sechero { grid-template-columns:1fr; } .v6-art.v6-icon-art { width:120px; height:120px; order:-1; } }
+.v6-role-row.has-thumb { display:grid; grid-template-columns:96px minmax(0,1fr) auto; gap:16px; align-items:center; }
+.v6-role-thumb { width:96px; height:64px; border-radius:14px; background:#F3F4F7; overflow:hidden; display:flex; }
+.v6-role-thumb img { width:100%; height:100%; object-fit:contain; }
+.v6-role-thumb.is-empty { background:var(--ground); }
+/* сюжет занимает ~55% кадра — в мелких местах приближаем, края фона невидимы */
+.v6-role-thumb img { transform:scale(1.7); }
+.v6-art.v6-icon-art img { transform:scale(1.35); }
+.v6-art img[src$=".webp"] { object-fit:cover; }
+.v6-pathc .v6-art { height:auto; aspect-ratio:3 / 2; }
