@@ -4168,14 +4168,13 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
     <div class="v6h-right">
       <a class="v6-link" href="https://madzhitov.ru" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'header' })">Для компаний</a>
       <button class="v6-icon" type="button" onclick="openSearchOverlay()" aria-label="Поиск"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
-      <button class="v6-icon theme-toggle" type="button" onclick="toggleTheme()" aria-label="Тема"><span id="theme-icon">◐</span><span id="theme-label" style="display:none"></span></button>
       <button class="v6b is-accent is-sm" type="button" onclick="umTrack('alyosha-open', { from: 'header' }); aleshaToggle()">Спросить Алёшу</button>
       <button class="v6-icon v6h-burger" type="button" id="v6-burger" aria-expanded="false" aria-controls="v6-menu" aria-label="Меню" onclick="V6.toggleMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </div>
   <div class="v6-menu" id="v6-menu">
     <nav aria-label="Меню"><a  data-nav="roles" href="#roles" onclick="V6.open('roles'); return false;">Роли</a><a  data-nav="tasks" href="#tasks" onclick="V6.open('tasks'); return false;">Задачи</a><a  data-nav="paths" href="#paths" onclick="V6.open('paths'); return false;">Пути</a><a  data-nav="knowledge" href="#knowledge" onclick="V6.open('knowledge'); return false;">Знания</a></nav>
-    <div class="v6-menu-sub"><a href="#my-progress" onclick="V6.closeMenu(); openStaticPage('my-progress'); return false;">Мой путь</a><a href="https://madzhitov.ru" target="_blank" rel="noopener">Для компаний</a><button type="button" class="v6-menu-item" onclick="toggleTheme()">Тема ◐</button><button type="button" class="v6-menu-item" onclick="V6.closeMenu(); umTrack('alyosha-open', { from: 'menu' }); aleshaToggle()">Спросить Алёшу</button></div>
+    <div class="v6-menu-sub"><a href="#my-progress" onclick="V6.closeMenu(); openStaticPage('my-progress'); return false;">Мой путь</a><a href="https://madzhitov.ru" target="_blank" rel="noopener">Для компаний</a><button type="button" class="v6-menu-item" onclick="V6.closeMenu(); umTrack('alyosha-open', { from: 'menu' }); aleshaToggle()">Спросить Алёшу</button></div>
   </div>
   <nav class="top-nav-links" aria-hidden="true" style="display:none">
     <a data-section="main" onclick="openSection('main'); return false;"></a>
@@ -4192,7 +4191,7 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 <aside class="sidebar">
   <!-- Тропа: статичный блок (тема/поиск/прогресс-бар/Введение-ссылки) убран —
        тема в хедере, поиск по ⌘K, ссылки в «Указателях». Скрытые элементы
-       сохранены, т.к. на них завязаны toggleTheme/поиск. -->
+       сохранены, т.к. на них завязан поиск. -->
   <input type="text" id="search-box" style="display:none" oninput="onSearchInput(this.value)">
   <span id="global-progress-text" style="display:none"></span><span id="global-progress-bar" style="display:none"></span>
 
@@ -34292,7 +34291,6 @@ CREATE POLICY &quot;users_own_orders&quot; ON orders
 // ============================================================
 
 const STORAGE_KEY = 'ai-course-progress';
-const THEME_KEY = 'ai-course-theme';
 
 let currentLessonId = null;
 let progress = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
@@ -38185,21 +38183,7 @@ function filterLessons(query) {
   });
 }
 
-function toggleTheme() {
-  const current = document.documentElement.getAttribute('data-theme');
-  const next = current === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  document.getElementById('theme-label').textContent = next === 'dark' ? 'Светлая тема' : 'Тёмная тема';
-  localStorage.setItem(THEME_KEY, next);
-}
-
-// Init
-const savedTheme = localStorage.getItem(THEME_KEY);
-if (savedTheme) {
-  document.documentElement.setAttribute('data-theme', savedTheme);
-  document.getElementById('theme-label').textContent = savedTheme === 'dark' ? 'Светлая тема' : 'Тёмная тема';
-}
-
+// Init (v6: тёмной темы нет — решение 05.10.2026, сайт всегда светлый)
 if (window.V6) V6.install();
 buildNav();
 updateProgressUI();

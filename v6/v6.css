@@ -14,11 +14,6 @@
   --r-xl:40px; --r-lg:32px; --r-md:24px; --r-sm:18px; --r-xs:12px; --r-pill:999px;
   --container:1240px; --gutter:40px; --h-btn:56px; --h-btn-sm:44px; --h-tag:36px;
 }
-[data-theme="dark"] .v6 { /* черновик из брифа */
-  --ink:#F1F1F4; --accent:#9FB0DC; --accent-tint:#23304F; --accent-on-tint:#DCE3F5;
-  --text-2:#B9BAC0; --text-3:#8E8F96; --line:#2A2B30; --ground:#0F0F12; --surface:#17171B;
-  --surface-dark:#000000; --surface-dark-2:#1F1F24; --placeholder:#1F1F24;
-}
 @media (max-width:720px) { .v6 { --gutter:20px; } }
 
 /* страницы v6: свой фон, без старой колонки меню */
@@ -47,7 +42,6 @@ body.v6 .lesson-content .v6-page h1, body.v6 .lesson-content .v6-page h2, body.v
 /* кнопки и теги */
 .v6b { display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:var(--h-btn); padding:0 28px; border-radius:var(--r-sm); border:0; font:inherit; font-size:18px; font-weight:600; cursor:pointer; text-decoration:none; background:var(--ink); color:var(--surface); white-space:nowrap; }
 .v6b.is-accent { background:var(--accent); color:#fff; }
-[data-theme="dark"] .v6b.is-accent { color:#0F0F12; }
 .v6b.is-soft { background:var(--ground); color:var(--ink); }
 .v6b.is-white { background:var(--surface); color:var(--ink); }
 .v6b.is-sm { min-height:var(--h-btn-sm); padding:0 18px; font-size:16px; border-radius:14px; }
@@ -70,8 +64,6 @@ html:root { --header:80px; } /* старый каркас отступает о�
 .v6h-nav a:hover, .v6h-nav a.is-active { color:var(--accent); }
 .v6h-right { display:flex; align-items:center; gap:8px; }
 .v6h-right .v6-link { color:var(--ink); font-weight:400; font-size:16px; margin-right:8px; white-space:nowrap; }
-.v6h .theme-toggle { border:0 !important; background:transparent !important; box-shadow:none !important; padding:0 !important; font-size:18px; color:var(--ink) !important; }
-.v6h .theme-toggle:hover { background:var(--ground) !important; }
 .v6-icon { width:44px; height:44px; border-radius:12px; border:0; background:transparent; color:var(--ink); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
 .v6-icon:hover { background:var(--ground); }
 .v6-icon svg { width:20px; height:20px; }
@@ -177,7 +169,6 @@ html:root { --header:80px; } /* старый каркас отступает о�
 .v6-side { display:flex; flex-direction:column; gap:16px; }
 .v6-note { display:flex; gap:14px; align-items:flex-start; background:var(--surface); border-radius:var(--r-md); padding:20px; border:0; font:inherit; color:var(--ink); text-align:left; cursor:pointer; font-size:17px; }
 .v6-ava { width:40px; height:40px; border-radius:50%; background:var(--accent); color:#fff; display:inline-flex; align-items:center; justify-content:center; font-weight:600; flex-shrink:0; }
-[data-theme="dark"] .v6-ava { color:#0F0F12; }
 .v6-door { color:var(--text-2); font-size:15px; }
 .v6-door a { color:var(--text-2); text-decoration:underline; text-underline-offset:3px; }
 .v6-steps { list-style:none; margin:0; padding:0; }
@@ -192,9 +183,6 @@ html:root { --header:80px; } /* старый каркас отступает о�
 .v6-first p { margin:0 0 8px; color:#16161A; }
 .v6-first a { color:#1F2F5C; font-weight:600; margin-right:16px; cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
 .v6-first button { background:none; border:0; font-size:22px; color:#5A5B63; cursor:pointer; min-width:44px; min-height:44px; }
-[data-theme="dark"] .v6-first { background:#23304F; color:#F1F1F4; }
-[data-theme="dark"] .v6-first p { color:#F1F1F4; }
-[data-theme="dark"] .v6-first a { color:#DCE3F5; }
 
 @media (max-width:980px) {
   .v6-hero, .v6-role-hero { grid-template-columns:1fr; gap:40px; }
@@ -231,7 +219,6 @@ html:root { --header:80px; } /* старый каркас отступает о�
 /* ссылки-кнопки и крошки: старые правила .lesson-content a (подчёркивание, зелёный) не действуют */
 .v6-page a.v6b, .v6f a.v6b, .v6h a.v6b { text-decoration:none !important; border-bottom:0 !important; color:var(--surface) !important; }
 .v6-page a.v6b.is-accent { color:#fff !important; }
-[data-theme="dark"] .v6-page a.v6b.is-accent { color:#0F0F12 !important; }
 .v6-page a.v6b.is-soft, .v6-page a.v6b.is-white { color:var(--ink) !important; }
 .v6-page a { border-bottom:0 !important; }
 .v6-crumbs { align-items:center; }
