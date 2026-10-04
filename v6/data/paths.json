@@ -1,0 +1,188 @@
+{
+ "version": "2026-10-04",
+ "main": {
+  "id": "main",
+  "title": "От пользователя к создателю",
+  "commonStart": {
+   "lessons": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+   ],
+   "note": "для всех ролей; после урока 5 — развилка"
+  },
+  "levels": [
+   {
+    "n": 1,
+    "title": "Пользователь",
+    "lessons": [
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12"
+    ],
+    "milestone": {
+     "lesson": "7",
+     "title": "чат-приложение с памятью"
+    }
+   },
+   {
+    "n": 2,
+    "title": "Строитель",
+    "lessons": [
+     "13",
+     "14",
+     "15",
+     "16",
+     "17",
+     "18",
+     "19",
+     "20",
+     "21",
+     "22",
+     "23",
+     "24",
+     "25",
+     "26",
+     "27",
+     "28",
+     "29",
+     "30"
+    ],
+    "milestone": {
+     "lesson": "30",
+     "title": "агент с инструментами по чек-листу"
+    }
+   },
+   {
+    "n": 3,
+    "title": "Практик",
+    "lessons": [
+     "31",
+     "32",
+     "33",
+     "34",
+     "35",
+     "36",
+     "37",
+     "38",
+     "39",
+     "40",
+     "41",
+     "42",
+     "43",
+     "44",
+     "45",
+     "46",
+     "47",
+     "48",
+     "49",
+     "50"
+    ],
+    "milestone": {
+     "lesson": "34",
+     "title": "своя нейросеть на NumPy"
+    }
+   },
+   {
+    "n": 4,
+    "title": "Инженер",
+    "lessons": [
+     "51",
+     "52",
+     "53",
+     "54",
+     "55",
+     "56",
+     "57",
+     "58",
+     "59",
+     "60",
+     "61",
+     "62",
+     "63",
+     "64",
+     "65",
+     "66",
+     "67",
+     "68",
+     "69",
+     "70",
+     "71",
+     "72"
+    ],
+    "milestone": null,
+    "note": "уроки 57–72 пишутся"
+   }
+  ],
+  "levelCheck": "бывшие квизы по фазам"
+ },
+ "rolePaths": [
+  {
+   "id": "seller",
+   "title": "От селлера к бренду",
+   "role": "seller",
+   "stages": [
+    {
+     "title": "Маркетплейс",
+     "tasks": [
+      "seller.listing.description",
+      "seller.customers.reviews",
+      "seller.channels.unit-economics",
+      "seller.assortment.competitors"
+     ]
+    },
+    {
+     "title": "Свой канал",
+     "tasks": [
+      "seller.customers.repeat",
+      "seller.listing.social",
+      "seller.listing.keywords"
+     ]
+    },
+    {
+     "title": "Единая система",
+     "tasks": [
+      "seller.money.weekly",
+      "seller.stock.plan",
+      "seller.money.pnl"
+     ]
+    }
+   ]
+  }
+ ],
+ "trails": [
+  {
+   "id": "projects",
+   "title": "Мини-проекты «За 1 час»",
+   "branchAfter": "level-1",
+   "hint": "нужны основы API из уроков 6–7"
+  },
+  {
+   "id": "everyday",
+   "title": "AI каждый день",
+   "branchAfter": "common-start"
+  },
+  {
+   "id": "industry",
+   "title": "Темы под индустрии",
+   "branchAfter": "common-start"
+  },
+  {
+   "id": "claude",
+   "title": "Claude Deep Dive",
+   "branchAfter": "level-2"
+  },
+  {
+   "id": "vibe",
+   "title": "Вайб Код Вам Дам",
+   "branchAfter": null,
+   "note": "отдельный мир, открыт всем"
+  }
+ ]
+}

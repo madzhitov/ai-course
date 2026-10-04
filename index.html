@@ -34,7 +34,8 @@
 <!-- Inter font for editorial style -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Montserrat:wght@700;800&family=Literata:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="v6/v6.css">
 
 <!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js">
@@ -4159,26 +4160,22 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 
 <!-- ТРОПА F2: двухстрочная мачта по эталону. Старые секц-ссылки скрыты
      (data-section нужны setActiveTopNav); видимая навигация — в .h-nav. -->
-<header class="tropa-header">
-  <div class="h-row1">
-    <div class="h-left">
-      <button class="burger menu-toggle" onclick="toggleSidebar()" aria-label="Меню"><span></span><span></span><span></span></button>
-      <a class="masthead" href="#home" onclick="openStaticPage('home'); return false;">
-        <span class="mh-word hvoya-title">Артефакты<b>.</b></span>
-        <span class="mh-tag">От пользователя к создателю</span>
-      </a>
-    </div>
-    <div class="h-right">
-      <button class="aly-hbtn" onclick="aleshaToggle()" aria-label="Алёша"><span class="alesha-logo aly-ava">А</span><span class="aly-name">Алёша</span></button>
-      <button class="icon-btn theme-toggle" onclick="toggleTheme()" aria-label="Тема"><span id="theme-icon">◐</span><span id="theme-label" style="display:none"></span></button>
+<header class="v6 v6h">
+  <div class="v6h-in">
+    <a class="v6h-brand" href="#home" onclick="openStaticPage('home'); return false;"><span class="v6-logo" aria-hidden="true">лого</span><span class="v6h-word">Артефакты</span></a>
+    <nav class="v6h-nav" aria-label="Разделы"><a  data-nav="roles" href="#roles" onclick="V6.open('roles'); return false;">Роли</a><a  data-nav="tasks" href="#tasks" onclick="V6.open('tasks'); return false;">Задачи</a><a  data-nav="paths" href="#paths" onclick="V6.open('paths'); return false;">Пути</a><a  data-nav="knowledge" href="#knowledge" onclick="V6.open('knowledge'); return false;">Знания</a></nav>
+    <div class="v6h-right">
+      <a class="v6-link" href="https://madzhitov.ru" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'header' })">Для компаний</a>
+      <button class="v6-icon" type="button" onclick="openSearchOverlay()" aria-label="Поиск"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      <button class="v6-icon theme-toggle" type="button" onclick="toggleTheme()" aria-label="Тема"><span id="theme-icon">◐</span><span id="theme-label" style="display:none"></span></button>
+      <button class="v6b is-accent is-sm" type="button" onclick="umTrack('alyosha-open', { from: 'header' }); aleshaToggle()">Спросить Алёшу</button>
+      <button class="v6-icon v6h-burger" type="button" id="v6-burger" aria-expanded="false" aria-controls="v6-menu" aria-label="Меню" onclick="V6.toggleMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </div>
-  <nav class="h-nav">
-    <a onclick="openSection('main'); return false;">Основной путь</a>
-    <a onclick="openStaticPage('trails'); return false;">5 тропинок</a>
-    <a onclick="openStaticPage('about'); return false;">Что это</a>
-  </nav>
-  <!-- скрытые секц-ссылки для setActiveTopNav -->
+  <div class="v6-menu" id="v6-menu">
+    <nav aria-label="Меню"><a  data-nav="roles" href="#roles" onclick="V6.open('roles'); return false;">Роли</a><a  data-nav="tasks" href="#tasks" onclick="V6.open('tasks'); return false;">Задачи</a><a  data-nav="paths" href="#paths" onclick="V6.open('paths'); return false;">Пути</a><a  data-nav="knowledge" href="#knowledge" onclick="V6.open('knowledge'); return false;">Знания</a></nav>
+    <div class="v6-menu-sub"><a href="#my-progress" onclick="V6.closeMenu(); openStaticPage('my-progress'); return false;">Мой путь</a><a href="https://madzhitov.ru" target="_blank" rel="noopener">Для компаний</a><button type="button" class="v6-menu-item" onclick="toggleTheme()">Тема ◐</button><button type="button" class="v6-menu-item" onclick="V6.closeMenu(); umTrack('alyosha-open', { from: 'menu' }); aleshaToggle()">Спросить Алёшу</button></div>
+  </div>
   <nav class="top-nav-links" aria-hidden="true" style="display:none">
     <a data-section="main" onclick="openSection('main'); return false;"></a>
     <a data-section="everyday" onclick="openSection('everyday'); return false;"></a>
@@ -4216,6 +4213,7 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
+<script src="v6/v6.js"></script>
 
 <!-- Alesha — persistent AI tutor widget -->
 <div class="alesha-widget" id="alesha-widget" data-lesson-title="" data-lesson-id="">
@@ -38165,6 +38163,7 @@ if (savedTheme) {
   document.getElementById('theme-label').textContent = savedTheme === 'dark' ? 'Светлая тема' : 'Тёмная тема';
 }
 
+if (window.V6) V6.install();
 buildNav();
 updateProgressUI();
 
@@ -38187,6 +38186,8 @@ if (hashMatch) {
   openGlossary(glossaryTermHash[1]);
 } else if (staticHash === 'glossary') {
   openGlossary();
+} else if (window.V6 && V6.route(staticHash)) {
+  // роли, задачи, Пути, Знания — v6/v6.js
 } else if (['home', 'about', 'howto', 'faq', 'changelog', 'resources', 'admin', 'my-progress', 'routes', 'trails', 'artifacts'].includes(staticHash)) {
   openStaticPage(staticHash);
 } else {

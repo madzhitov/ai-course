@@ -1,0 +1,371 @@
+{
+  "version": "0.2",
+  "note": "Задачи — то, с чем человек приходит. Карточка ссылается на задачи по id. Все группы утверждены.",
+  "groups": [
+    {
+      "id": "seller",
+      "title": "Продаю онлайн · P&L-карта",
+      "status": "approved",
+      "directions": [
+        {
+          "id": "seller.channels",
+          "title": "Каналы",
+          "tasks": [
+            {
+              "id": "seller.channels.unit-economics",
+              "title": "Посчитать юнит-экономику по каналам"
+            },
+            {
+              "id": "seller.channels.next-channel",
+              "title": "Решить, куда выходить следующим",
+              "status": "soon"
+            }
+          ]
+        },
+        {
+          "id": "seller.assortment",
+          "title": "Ассортимент",
+          "tasks": [
+            {
+              "id": "seller.assortment.competitors",
+              "title": "Разобрать десять конкурентов"
+            },
+            {
+              "id": "seller.assortment.pains",
+              "title": "Найти боли покупателей в отзывах конкурентов"
+            },
+            {
+              "id": "seller.assortment.matrix",
+              "title": "Собрать ассортиментную матрицу и ценовую лестницу",
+              "status": "new"
+            }
+          ]
+        },
+        {
+          "id": "seller.listing",
+          "title": "Карточка и контент",
+          "tasks": [
+            {
+              "id": "seller.listing.description",
+              "title": "Описать товар для всех каналов"
+            },
+            {
+              "id": "seller.listing.keywords",
+              "title": "Собрать ключевые запросы и характеристики"
+            },
+            {
+              "id": "seller.listing.social",
+              "title": "Сделать контент под товар для соцсетей и Telegram"
+            },
+            {
+              "id": "seller.listing.funnel",
+              "title": "Найти, где карточка теряет покупателей",
+              "status": "new"
+            }
+          ]
+        },
+        {
+          "id": "seller.promo",
+          "title": "Продвижение",
+          "tasks": [
+            {
+              "id": "seller.promo.ads-threshold",
+              "title": "Понять, сколько можно тратить на рекламу",
+              "status": "new"
+            },
+            {
+              "id": "seller.promo.marketplace-ads",
+              "title": "Внутренняя реклама маркетплейса",
+              "status": "soon"
+            },
+            {
+              "id": "seller.promo.site-traffic",
+              "title": "Трафик на свой сайт",
+              "status": "soon"
+            }
+          ]
+        },
+        {
+          "id": "seller.customers",
+          "title": "Покупатели",
+          "tasks": [
+            {
+              "id": "seller.customers.reviews",
+              "title": "Ответить на отзывы пачкой"
+            },
+            {
+              "id": "seller.customers.repeat",
+              "title": "Повторные продажи по своей базе"
+            },
+            {
+              "id": "seller.customers.questions",
+              "title": "Автоответы на вопросы покупателей",
+              "status": "soon"
+            }
+          ]
+        },
+        {
+          "id": "seller.stock",
+          "title": "Поставки",
+          "tasks": [
+            {
+              "id": "seller.stock.plan",
+              "title": "Спланировать остатки на все каналы"
+            }
+          ]
+        },
+        {
+          "id": "seller.money",
+          "title": "Деньги и отчёты",
+          "tasks": [
+            {
+              "id": "seller.money.weekly",
+              "title": "Собрать сводный недельный отчёт"
+            },
+            {
+              "id": "seller.money.pnl",
+              "title": "Собрать P&L магазина или кабинета",
+              "status": "new"
+            }
+          ]
+        },
+        {
+          "id": "seller.automation",
+          "title": "Автоматизация",
+          "tasks": [
+            {
+              "id": "seller.automation.assistant",
+              "title": "Собрать помощника продавца"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ai",
+      "title": "ИИ-практика · для всех ролей",
+      "status": "approved",
+      "directions": [
+        {
+          "id": "ai.think",
+          "title": "Думать и решать"
+        },
+        {
+          "id": "ai.write",
+          "title": "Писать"
+        },
+        {
+          "id": "ai.delegate",
+          "title": "Делегировать"
+        },
+        {
+          "id": "ai.verify",
+          "title": "Проверять"
+        },
+        {
+          "id": "ai.build",
+          "title": "Собирать"
+        },
+        {
+          "id": "ai.learn",
+          "title": "Учиться"
+        }
+      ]
+    },
+    {
+      "id": "product",
+      "title": "Продакт и проджект",
+      "status": "approved",
+      "directions": [
+        {
+          "id": "product.discovery",
+          "title": "Исследование",
+          "tasks": [
+            {
+              "id": "product.discovery.one-page",
+              "title": "Описать идею на одной странице"
+            },
+            {
+              "id": "product.discovery.value",
+              "title": "Сопоставить боли клиента и выгоды продукта"
+            },
+            {
+              "id": "product.discovery.pmf",
+              "title": "Проверить, нужен ли продукт рынку"
+            },
+            {
+              "id": "product.discovery.weekly",
+              "title": "Разговаривать с клиентами каждую неделю"
+            }
+          ]
+        },
+        {
+          "id": "product.prioritize",
+          "title": "Приоритизация",
+          "tasks": [
+            {
+              "id": "product.prioritize.compare",
+              "title": "Сравнить задачи бэклога"
+            },
+            {
+              "id": "product.prioritize.release",
+              "title": "Договориться, что войдёт в релиз"
+            },
+            {
+              "id": "product.prioritize.delight",
+              "title": "Найти фичи, которые восхищают"
+            },
+            {
+              "id": "product.prioritize.slice",
+              "title": "Нарезать продукт на релизы"
+            }
+          ]
+        },
+        {
+          "id": "product.metrics",
+          "title": "Метрики",
+          "tasks": [
+            {
+              "id": "product.metrics.north-star",
+              "title": "Выбрать одну метрику ценности"
+            },
+            {
+              "id": "product.metrics.experience",
+              "title": "Выбрать метрики опыта"
+            },
+            {
+              "id": "product.metrics.retention",
+              "title": "Увидеть удержание по когортам"
+            },
+            {
+              "id": "product.metrics.evals",
+              "title": "Проверять ИИ-функции тестами"
+            }
+          ]
+        },
+        {
+          "id": "product.manage",
+          "title": "Управление работой",
+          "tasks": [
+            {
+              "id": "product.manage.okr",
+              "title": "Поставить цели и измеримые результаты"
+            },
+            {
+              "id": "product.manage.raci",
+              "title": "Договориться, кто решает"
+            },
+            {
+              "id": "product.manage.cycles",
+              "title": "Работать циклами"
+            },
+            {
+              "id": "product.manage.memo",
+              "title": "Написать руководителю"
+            },
+            {
+              "id": "product.manage.premortem",
+              "title": "Представить провал заранее"
+            }
+          ]
+        }
+      ],
+      "note": "Проджект использует направления «Приоритизация» и «Управление работой»"
+    },
+    {
+      "id": "marketing",
+      "title": "Маркетолог",
+      "status": "approved",
+      "directions": [
+        {
+          "id": "marketing.audience",
+          "title": "Аудитория и позиционирование",
+          "tasks": [
+            {
+              "id": "marketing.audience.why-buy",
+              "title": "Понять, зачем на самом деле покупают"
+            },
+            {
+              "id": "marketing.audience.segments",
+              "title": "Выбрать, кому продавать"
+            },
+            {
+              "id": "marketing.audience.positioning",
+              "title": "Сформулировать, чем мы лучше и для кого"
+            },
+            {
+              "id": "marketing.audience.entry-points",
+              "title": "Найти ситуации, в которых о бренде должны вспомнить"
+            }
+          ]
+        },
+        {
+          "id": "marketing.growth",
+          "title": "Рост и воронка",
+          "tasks": [
+            {
+              "id": "marketing.growth.leaks",
+              "title": "Найти, где теряем людей"
+            },
+            {
+              "id": "marketing.growth.intent",
+              "title": "Разложить контент и рекламу по намерению"
+            },
+            {
+              "id": "marketing.growth.loops",
+              "title": "Найти, что разгоняет рост"
+            },
+            {
+              "id": "marketing.growth.hypotheses",
+              "title": "Отсортировать гипотезы роста"
+            }
+          ]
+        },
+        {
+          "id": "marketing.message",
+          "title": "Сообщения и контент",
+          "tasks": [
+            {
+              "id": "marketing.message.house",
+              "title": "Собрать главное сообщение и доказательства"
+            },
+            {
+              "id": "marketing.message.homepage",
+              "title": "Переписать главную страницу"
+            },
+            {
+              "id": "marketing.message.copy",
+              "title": "Написать продающий текст"
+            },
+            {
+              "id": "marketing.message.repurpose",
+              "title": "Сделать из одной записи девять форматов"
+            }
+          ]
+        },
+        {
+          "id": "marketing.measure",
+          "title": "Измерение эффекта",
+          "tasks": [
+            {
+              "id": "marketing.measure.ltv-cac",
+              "title": "Понять, сколько можно платить за клиента"
+            },
+            {
+              "id": "marketing.measure.incrementality",
+              "title": "Отличить настоящий эффект рекламы от совпадения"
+            },
+            {
+              "id": "marketing.measure.mmm",
+              "title": "Оценить вклад каналов"
+            },
+            {
+              "id": "marketing.measure.retention",
+              "title": "Разделить базу и вернуть клиентов"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

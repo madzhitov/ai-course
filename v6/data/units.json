@@ -1,0 +1,205 @@
+{
+ "version": "2026-10-04",
+ "note": "Юнит = одна задача, один результат, до часа. basedOn — 1–3 карточки фреймворков. fromLesson — урок, который переупаковывается. Тексты шагов для status=new пишет Руслан (черновик — Haiku, вычитка — Sonnet).",
+ "template": {
+  "id": "u-…",
+  "task": "id задачи",
+  "title": "",
+  "result": "что человек унесёт",
+  "minutes": 15,
+  "level": "с нуля|уверенный",
+  "tools": [
+   "GigaChat",
+   "любой чат-ИИ"
+  ],
+  "noVpn": true,
+  "needs": [],
+  "steps": [
+   {
+    "title": "",
+    "text": "",
+    "prompt": null,
+    "input": null,
+    "checklist": null
+   }
+  ],
+  "almost": [
+   "частая причина и как поправить"
+  ],
+  "basedOn": [],
+  "fromLesson": null,
+  "status": "ready|from-lesson|new"
+ },
+ "units": [
+  {
+   "id": "u-seller-reviews",
+   "task": "seller.customers.reviews",
+   "title": "Ответы на отзывы пачкой в голосе бренда",
+   "result": "20 готовых ответов в одном тоне, по сути каждого отзыва",
+   "minutes": 15,
+   "level": "с нуля",
+   "tools": [
+    "GigaChat",
+    "любой чат-ИИ"
+   ],
+   "noVpn": true,
+   "needs": [
+    "20 последних отзывов"
+   ],
+   "steps": [
+    {
+     "title": "Соберите отзывы",
+     "text": "Скопируйте 20 последних отзывов из кабинета в один текст. Можно вместе с оценками."
+    },
+    {
+     "title": "Опишите голос бренда",
+     "text": "Три слова о том, как вы говорите с покупателями.",
+     "input": "тепло, коротко, по делу"
+    },
+    {
+     "title": "Вставьте промпт",
+     "text": "Подставьте название и тон, вставьте отзывы и отправьте в чат.",
+     "prompt": "Ты менеджер бренда [название]. Наш тон: [три слова].\nНиже отзывы покупателей с маркетплейса.\nДля каждого напиши ответ до 300 знаков:\nпоблагодари, ответь по сути, не обещай того,\nчего мы не делаем, не начинай ответы одинаково.\nЕсли отзыв негативный, предложи решение.\n\nОтзывы:\n[вставьте отзывы]"
+    },
+    {
+     "title": "Проверьте ответы",
+     "text": "Пройдитесь по трём пунктам, прежде чем публиковать.",
+     "checklist": [
+      "Нет обещаний, которые вы не выполните",
+      "Ответ по сути жалобы, а не общий",
+      "Ответы не начинаются одинаково"
+     ]
+    }
+   ],
+   "almost": [
+    "Ответы звучат одинаково — добавьте: «каждый ответ начинай по-разному, опирайся на детали отзыва»",
+    "Модель обещает лишнее — перечислите, чего вы не делаете",
+    "Слишком длинно — «не больше двух предложений»"
+   ],
+   "basedOn": [
+    "four-part-request",
+    "answer-check"
+   ],
+   "fromLesson": "e7",
+   "status": "from-lesson"
+  },
+  {
+   "id": "u-seller-description",
+   "task": "seller.listing.description",
+   "title": "Описание товара сразу для маркетплейса, сайта и соцсетей",
+   "basedOn": [
+    "four-part-request",
+    "aida"
+   ],
+   "fromLesson": "e6",
+   "status": "from-lesson"
+  },
+  {
+   "id": "u-seller-assistant",
+   "task": "seller.automation.assistant",
+   "title": "Помощник продавца Wildberries",
+   "basedOn": [],
+   "fromLesson": "p20",
+   "status": "from-lesson",
+   "level": "уверенный"
+  },
+  {
+   "id": "u-seller-competitors-pro",
+   "task": "seller.assortment.competitors",
+   "title": "Ежедневный дайджест о конкурентах",
+   "basedOn": [],
+   "fromLesson": "p5",
+   "status": "from-lesson",
+   "level": "уверенный"
+  },
+  {
+   "id": "u-unit-economics-channels",
+   "task": "seller.channels.unit-economics",
+   "title": "Юнит-экономика по каналам: таблица и ИИ",
+   "basedOn": [
+    "unit-economics-sku",
+    "contribution-margin-channels"
+   ],
+   "fromLesson": null,
+   "status": "new"
+  },
+  {
+   "id": "u-unit-economics-exports",
+   "task": "seller.channels.unit-economics",
+   "title": "Юнит-экономика по выгрузкам из кабинетов",
+   "basedOn": [
+    "unit-economics-sku"
+   ],
+   "fromLesson": null,
+   "status": "new",
+   "level": "уверенный"
+  },
+  {
+   "id": "u-seller-competitors",
+   "task": "seller.assortment.competitors",
+   "title": "Разбор десяти конкурентов без кода",
+   "basedOn": [],
+   "fromLesson": null,
+   "status": "new"
+  },
+  {
+   "id": "u-seller-pains",
+   "task": "seller.assortment.pains",
+   "title": "Боли покупателей из отзывов конкурентов",
+   "basedOn": [
+    "jtbd"
+   ],
+   "fromLesson": null,
+   "status": "new"
+  },
+  {
+   "id": "u-seller-keywords",
+   "task": "seller.listing.keywords",
+   "title": "Ключевые запросы и характеристики",
+   "basedOn": [],
+   "fromLesson": null,
+   "status": "new"
+  },
+  {
+   "id": "u-seller-social",
+   "task": "seller.listing.social",
+   "title": "Контент под товар для соцсетей и Telegram",
+   "basedOn": [
+    "four-part-request"
+   ],
+   "fromLesson": "e7",
+   "status": "from-lesson"
+  },
+  {
+   "id": "u-seller-repeat",
+   "task": "seller.customers.repeat",
+   "title": "Повторные продажи по своей базе",
+   "basedOn": [
+    "rfm"
+   ],
+   "fromLesson": null,
+   "status": "new"
+  },
+  {
+   "id": "u-seller-stock",
+   "task": "seller.stock.plan",
+   "title": "План остатков на все каналы",
+   "basedOn": [
+    "stock-turnover"
+   ],
+   "fromLesson": null,
+   "status": "new"
+  },
+  {
+   "id": "u-seller-weekly",
+   "task": "seller.money.weekly",
+   "title": "Сводный недельный отчёт по всем каналам",
+   "basedOn": [
+    "ecom-pnl"
+   ],
+   "fromLesson": null,
+   "status": "new",
+   "agencyDoor": "Отчёт, который собирается сам — услуга агентства (пример: Бертольд)"
+  }
+ ]
+}
