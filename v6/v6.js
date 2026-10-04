@@ -907,6 +907,13 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       if (route(h)) return;
       const m = h.match(/^lesson-(\d+|[a-z]\d+)$/);
       if (m) { openLesson(/^\d+$/.test(m[1]) ? Number(m[1]) : m[1]); return; }
+      // старые адреса — как при загрузке страницы (index.html, разбор адреса в init)
+      let x;
+      if ((x = h.match(/^quiz-(\d+)$/))) { openQuiz(Number(x[1])); return; }
+      if ((x = h.match(/^section-(main|claude|projects|industry|everyday|vibe)$/))) { openSection(x[1]); return; }
+      if ((x = h.match(/^glossary-(.+)$/))) { openGlossary(x[1]); return; }
+      if (h === 'glossary') { openGlossary(); return; }
+      if (['about', 'howto', 'faq', 'changelog', 'resources', 'my-progress', 'routes', 'trails', 'artifacts'].includes(h)) { openStaticPage(h); return; }
       if (h === 'home' || h === '') openStaticPage('home');
     });
   }
