@@ -89,7 +89,7 @@ body = pr["body"] or ""
 # Промпт для ревью
 client = anthropic.Anthropic(api_key=AN_KEY)
 review = client.messages.create(
-  model="claude-sonnet-5",
+  model="claude-sonnet-5-5",
   max_tokens=2000,
   messages=[{"role": "user", "content": f'''Ты — старший разработчик. Делаешь code review.
 

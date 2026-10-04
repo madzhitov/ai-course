@@ -271,7 +271,7 @@ def agent(task):
     messages = [{"role": "user", "content": task}]
     while True:
         response = client.messages.create(
-            model="claude-sonnet-5",
+            model="claude-sonnet-5-5",
             max_tokens=1024,
             tools=tools,
             messages=messages

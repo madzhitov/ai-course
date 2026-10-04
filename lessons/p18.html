@@ -192,7 +192,7 @@ def generate_cards(chapter_title, chapter_text):
     text = chapter_text[:15000]
 
     resp = client.messages.create(
-        model="claude-sonnet-5",
+        model="claude-sonnet-5-5",
         max_tokens=3500,
         system=CARDS_PROMPT,
         messages=[{

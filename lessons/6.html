@@ -186,10 +186,10 @@ print(response.choices[0].message.content)</code></pre>
 <h3>model</h3>
 <p>Имя модели. Точные строки:</p>
 <ul>
-<li><code>gpt-6-astra</code>, <code>gpt-6-sol</code>, <code>gpt-6-luna</code> — текущая линейка OpenAI: самая сильная, для кода и агентов, самая экономная.</li>
+<li><code>gpt-6-astra</code>, <code>gpt-6.1-sol</code>, <code>gpt-6-luna</code> — текущая линейка OpenAI: самая сильная, для кода и агентов, самая экономная.</li>
 <li><code>gpt-4o</code>, <code>gpt-4o-mini</code> — прошлое поколение, но по-прежнему работают. Все примеры этого урока — на <code>gpt-4o-mini</code>: она дешёвая. Возьмёшь новую модель — проверь в документации, какие параметры она принимает.</li>
 </ul>
-<p>Anthropic: <code>claude-sonnet-5</code>, <code>claude-haiku-4-5</code> и т.д. Точные имена меняются, смотри документацию.</p>
+<p>Anthropic: <code>claude-sonnet-5-5</code>, <code>claude-haiku-4-5</code> и т.д. Точные имена меняются, смотри документацию.</p>
 
 <h3>messages</h3>
 <p>Массив сообщений диалога. Поддерживаемые роли:</p>
@@ -270,7 +270,7 @@ print(response.choices[0].message.content)</code></pre>
         "gpt-4o-mini": {"input": 0.15, "output": 0.60},
         "gpt-4o": {"input": 2.50, "output": 10.00},
         "gpt-6-luna": {"input": 0.10, "output": 0.50},
-        "gpt-6-sol": {"input": 2.00, "output": 10.00},
+        "gpt-6.1-sol": {"input": 2.00, "output": 10.00},
     }
     p = prices.get(model, prices["gpt-4o-mini"])
     cost = (

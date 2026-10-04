@@ -212,7 +212,7 @@ class Brain:
         msgs = self.history[-10:]
 
         resp = client.messages.create(
-            model="claude-sonnet-5",
+            model="claude-sonnet-5-5",
             max_tokens=400,
             system=SYSTEM,
             messages=msgs,
@@ -364,7 +364,7 @@ def execute_tool(name: str, args: dict) -&gt; str:
 
 # и в Brain.reply замени вызов на:
 resp = client.messages.create(
-    model="claude-sonnet-5",
+    model="claude-sonnet-5-5",
     max_tokens=400,
     system=SYSTEM,
     tools=TOOLS,
@@ -387,7 +387,7 @@ if resp.stop_reason == "tool_use":
 
     # второй вызов - чтобы получить финальную реплику для пользователя
     final = client.messages.create(
-        model="claude-sonnet-5",
+        model="claude-sonnet-5-5",
         max_tokens=400, system=SYSTEM, tools=TOOLS,
         messages=self.history[-10:],
     )

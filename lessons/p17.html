@@ -220,7 +220,7 @@ STRUCTURE_PROMPT = """Перед тобой расшифровка фрагме�
 
 def structure_chunk(text):
     resp = client.messages.create(
-        model="claude-sonnet-5",
+        model="claude-sonnet-5-5",
         max_tokens=4000,
         system=STRUCTURE_PROMPT,
         messages=[{"role": "user", "content": text}],
@@ -253,7 +253,7 @@ def merge_chunks(structured_chunks):
     )
 
     resp = client.messages.create(
-        model="claude-sonnet-5",
+        model="claude-sonnet-5-5",
         max_tokens=8000,
         system=MERGE_PROMPT,
         messages=[{"role": "user", "content": joined}],
@@ -369,7 +369,7 @@ if __name__ == "__main__":
 <li><strong>Качество транскрипции на русском.</strong> medium-модель путает имена, термины и аббревиатуры. «KPI» становится «кейпиай», «ChatGPT» — «чат-гэпэтэ». Один из способов борьбы — в промпт Claude передавать список ожидаемых терминов («лектор оперирует терминами: SQL, Kubernetes, latency») — он восстановит написание.</li>
 <li><strong>Шумная запись.</strong> Если писал на телефон в большом зале — будет много мусора. Перед транскрипцией стоит прогнать через любой денойзер (есть бесплатные онлайн), или использовать опцию <code>vad_filter=True</code> агрессивнее (см. параметры).</li>
 <li><strong>Длинные паузы / музыка.</strong> Whisper иногда «галлюцинирует» текст в местах тишины — пишет случайные фразы. <code>vad_filter</code> снижает риск, но не убирает. Если видишь в транскрипции странные фразы, не относящиеся к теме — это оно.</li>
-<li><strong>Стоимость API.</strong> Часовая лекция = ~10к слов = ~3 чанка по 6к. Каждый чанк = ~$0.03 на claude-sonnet-5. Плюс сшивка. Итого ~$0.15 за лекцию. Дёшево, но если планируешь обрабатывать сотни — лучше брать <code>claude-haiku-4-5</code>.</li>
+<li><strong>Стоимость API.</strong> Часовая лекция = ~10к слов = ~3 чанка по 6к. Каждый чанк = ~$0.03 на claude-sonnet-5-5. Плюс сшивка. Итого ~$0.15 за лекцию. Дёшево, но если планируешь обрабатывать сотни — лучше брать <code>claude-haiku-4-5</code>.</li>
 <li><strong>Whisper жрёт RAM.</strong> На <code>large-v3</code> можно упереться в 4–8 ГБ оперативки. Если ноут слабый — оставайся на <code>medium</code>.</li>
 <li><strong>Этика записи.</strong> Если на лекции платный курс с NDA — подумай, ОК ли отправлять расшифровку в Anthropic. Локальная версия (Whisper + локальная LLM через Ollama) решает приватность, но качество структуризации заметно ниже.</li>
 </ul>
