@@ -21211,7 +21211,6 @@ Voice mode в Claude/ChatGPT, в котором AI играет роль HR и �
 
 
 registerLesson("e6", `
-
 <h1>Урок e6. Карточки товаров для маркетплейсов по фото</h1>
 
 <h2>Зачем тебе этот урок</h2>
@@ -21234,7 +21233,7 @@ registerLesson("e6", `
 <li>Не измеряет реальные размеры (длина, ширина в см). Размеры даёшь ты.</li>
 <li>Не знает точный состав ткани, если этикетки не видно. Состав даёшь ты.</li>
 <li>Не назначает цену. Цена — твоё решение.</li>
-<li>Не гарантирует уникальность описания (в спорных случаях лучше проверить через сервисы антиплагиата маркетплейса).</li>
+<li>Не гарантирует уникальность описания (в спорных случаях проверь текст сервисом проверки уникальности).</li>
 </ul>
 
 <h2>2. Главный промпт: карточка одного товара</h2>
@@ -21255,11 +21254,11 @@ registerLesson("e6", `
 
 Сделай карточку товара:
 
-1. ЗАГОЛОВОК (до 100 символов для Wildberries / до 250 для Ozon):
+1. ЗАГОЛОВОК (до 60 символов для Wildberries / до 200 для Ozon):
    — Категория + название + ключевые характеристики
      (цвет, размер, материал)
    — Без эмодзи, без капс-лока
-   — Включи 2-3 главных поисковых запроса
+   — Без повторов и перечня синонимов
 
 2. ОПИСАНИЕ (300-600 знаков):
    — Первая фраза — что это и для кого.
@@ -21267,7 +21266,7 @@ registerLesson("e6", `
      (только по фото и тому, что я указал, без выдумок).
    — Где и когда удобно носить/использовать.
    — Без слов "лучший", "уникальный", "не имеет аналогов" —
-     это блокирует модерация Wildberries.
+     правила Wildberries и Ozon против оценочных слов.
    — Без обещаний "не линяет / не растягивается /
      прослужит годы" — нельзя.
 
@@ -21297,7 +21296,7 @@ registerLesson("e6", `
 
 <blockquote>
 <p><strong>Заголовок:</strong><br>
-Кроссовки детские для мальчика на липучке, белые с серым, 28 размер, лёгкая подошва</p>
+Кроссовки на липучке с лёгкой подошвой, белые с серым</p>
 
 <p><strong>Описание:</strong><br>
 Удобные кроссовки для активного ребёнка. Верх из мягкой искусственной кожи с текстильными вставками — нога дышит, не устаёт даже за длинный день. Лёгкая ЭВА-подошва — пружинит при ходьбе и беге, не утяжеляет. Застёжка-липучка — ребёнок наденет сам без помощи взрослого. Подходят для садика, прогулок, активных игр на улице. Сезон — весна-лето, межсезонье в сухую погоду.</p>
@@ -21363,7 +21362,7 @@ registerLesson("e6", `
 [10 КЛЮЧЕВЫХ СЛОВ через запятую]
 [ХАРАКТЕРИСТИКИ списком]
 
-Длины: заголовок до 100 знаков, описание 300-500 знаков.
+Длины: заголовок до 60 знаков, описание 300-500 знаков.
 Не выдумывай состав и размеры — я их укажу с этикетки.
 
 Готов? Отправляю первый товар.</code></pre>
@@ -21377,7 +21376,7 @@ registerLesson("e6", `
 
 <h2>6. SEO для маркетплейсов: как AI помогает с ключевыми словами</h2>
 
-<p>Поисковая выдача внутри Wildberries и Ozon работает на ключевых словах. Чем больше релевантных слов в заголовке, описании и поле «ключевые слова» — тем выше товар в выдаче.</p>
+<p>Поиск Wildberries и Ozon учитывает слова из названия, описания и характеристик товара. Важно не количество, а точность: Ozon понижает названия, набитые синонимами, а Wildberries просит не вставлять в описание списки поисковых запросов и индексирует текст сам.</p>
 
 <p>Отдельный промпт для глубокого подбора ключевых слов:</p>
 
@@ -21400,7 +21399,7 @@ registerLesson("e6", `
 
 Не используй названия брендов-конкурентов.</code></pre>
 
-<p>На выходе — 28 ключевых фраз. Лучшие 10-15 выбираешь сам, вставляешь в поле «ключевые слова» в админке. Остальные распределяешь по описанию (естественно, без переспама).</p>
+<p>На выходе — 28 ключевых фраз. Лучшие 10-15 выбираешь сам и вписываешь обычными фразами в описание и характеристики, без перечня через запятую. Отдельного поля для ключевых слов в карточке Wildberries нет. Если оно есть у твоей площадки или категории, используй его.</p>
 
 <h2>7. Что НЕЛЬЗЯ писать в карточке (и как AI этому учится)</h2>
 
@@ -21444,7 +21443,7 @@ registerLesson("e6", `
 <dd>Проверка карточки сотрудником или алгоритмом маркетплейса перед публикацией. Карточку могут вернуть на доработку или заблокировать за нарушения (запрещённые слова, недостоверные характеристики, плохое фото).</dd>
 
 <dt><strong>Мультимодальный AI</strong></dt>
-<dd>Модель, которая работает не только с текстом, но и с фото/документами. Claude, ChatGPT, Gemini — все умеют. Для карточек товаров это критично: одни тексты без фото — на 30% слабее.</dd>
+<dd>Модель, которая работает не только с текстом, но и с фото/документами. Claude, ChatGPT, Gemini — все умеют. Для карточек товаров это удобно: модель видит товар на фото и описывает то, что на нём есть.</dd>
 </dl>
 
 <h2>10. Практика (30 минут)</h2>
@@ -21485,7 +21484,6 @@ AI хорошо: распознаёт товар, цвет, стиль, мате
 <li><strong>Для массы — шаблон-чат.</strong> Один раз настроил формат, дальше каждый товар = 1-2 строки + фото.</li>
 <li><strong>Не «AI вместо тебя», а «AI рядом с тобой».</strong> Финальная карточка — твоя. Прочитай, поправь, добавь личное. Тогда работает.</li>
 </ol>
-
 `);
 
 
@@ -27422,13 +27420,13 @@ sudo journalctl -u summary-bot -f</code></pre>
 
 
 registerLesson("p20", `
-<h1>Проект «За 1 час»: AI-помощник продавца Wildberries на YandexGPT</h1>
+<h1>Проект: AI-помощник продавца Wildberries на YandexGPT</h1>
 
 <div class="lesson-meta">
-  <span><strong>Что построим:</strong> скрипт, который по фото товара генерирует готовую карточку для WB и загружает её через Seller API</span>
-  <span><strong>Время:</strong> ~90 минут</span>
+  <span><strong>Что построим:</strong> скрипт, который по фото товара генерирует готовую карточку для WB и загружает её через WB API</span>
+  <span><strong>Время:</strong> ~2 часа, из них до 30 минут WB сам создаёт карточку после загрузки</span>
   <span><strong>Уровень:</strong> Python + базовое понимание REST API</span>
-  <span><strong>Стек:</strong> Python 3.10+, requests, YandexGPT API, WB Content API</span>
+  <span><strong>Стек:</strong> Python 3.10+, requests, Pillow, Yandex AI Studio (Qwen3.6 35B и YandexGPT Lite 5), WB API (категория «Контент»)</span>
 </div>
 
 <h2>Что в итоге будет</h2>
@@ -27436,9 +27434,9 @@ registerLesson("p20", `
 <p>CLI-утилита, которая:</p>
 <ul>
 <li>Принимает на вход путь к папке с фото товара и краткое описание («синие женские джинсы, размер 42-50, состав хлопок 98%»);</li>
-<li>Отдаёт фото + описание в YandexGPT с правильным промптом;</li>
+<li>Показывает фото модели Qwen3.6 35B, а то, что она увидела, вместе с описанием отдаёт в YandexGPT с правильным промптом;</li>
 <li>Получает готовую карточку: <strong>заголовок до 60 символов</strong>, <strong>описание до 1000 символов</strong>, характеристики, ключевые слова;</li>
-<li>Формирует валидный JSON под WB Content API и (опционально) загружает карточку в личный кабинет продавца;</li>
+<li>Сопоставляет характеристики со справочником предмета WB и (опционально) загружает карточку в кабинет продавца через WB API;</li>
 <li>Поддерживает батч-режим: одна команда — папка из 20 товаров — 20 карточек.</li>
 </ul>
 
@@ -27447,65 +27445,69 @@ registerLesson("p20", `
 <h2>Требования</h2>
 
 <ul>
-<li>Аккаунт в <strong>Yandex Cloud</strong> с привязанной картой (любая РФ-карта). Оплата в рублях, по факту использования. Стартовый грант обычно ~4000 ₽;</li>
-<li>Аккаунт продавца на Wildberries с доступом в <strong>«Личный кабинет поставщика»</strong>;</li>
-<li>Python 3.10+, библиотеки <code>requests</code> и <code>python-dotenv</code>;</li>
-<li>Фотографии товаров — минимум 1, лучше 3–5 ракурсов.</li>
+<li>Аккаунт в <strong>Yandex Cloud</strong> с платёжным аккаунтом и привязанной банковской картой. Оплата в рублях, по факту использования. Новым пользователям дают стартовый грант от 4000 ₽ на 60 дней, если привязать карту сразу при создании платёжного аккаунта;</li>
+<li>Кабинет продавца Wildberries (портал WB Partners). Токен API может создать только владелец кабинета;</li>
+<li>Python 3.10+, библиотеки <code>requests</code>, <code>python-dotenv</code> и <code>Pillow</code>;</li>
+<li>Фотографии товаров: минимум 1, лучше 2-3 ракурса (скрипт отправляет модели первые три).</li>
 </ul>
 
 <h2>Архитектура</h2>
 
 <pre><code>┌──────────────────┐     ┌──────────────────────┐     ┌────────────────────┐
-│  Папка с фото    │────▶│  generator.py        │────▶│  YandexGPT API     │
-│  + brief.txt     │     │  (склейка контекста, │     │  (genai endpoint)  │
-│                  │◀────│   парсинг ответа)    │◀────│                    │
+│  Папка с фото    │────▶│  generator.py        │────▶│  Yandex AI Studio  │
+│  + brief.txt     │     │  (фото → факты,      │     │  Qwen3.6 35B,      │
+│                  │◀────│   факты → карточка)  │◀────│  YandexGPT Lite 5  │
 └──────────────────┘     └──────────────────────┘     └────────────────────┘
                                   │
                                   ▼
                          ┌──────────────────┐     ┌────────────────────┐
-                         │  card.json       │────▶│  WB Content API    │
-                         │  (готовая        │     │  (создание         │
-                         │   карточка)      │◀────│   карточки)        │
+                         │  card.json       │────▶│  WB API, Контент   │
+                         │  (проверяешь     │     │  (справочник,      │
+                         │   глазами)       │◀────│  создание, ошибки) │
                          └──────────────────┘     └────────────────────┘
 </code></pre>
 
-<h2>Шаг 1: Yandex Cloud — каталог, сервисный аккаунт, API-ключ</h2>
+<h2>Шаг 1: Yandex AI Studio, API-ключ и каталог</h2>
+
+<p>Модели работают в Yandex AI Studio, это часть Yandex Cloud. Нужны две вещи: API-ключ и идентификатор каталога <code>folder_id</code>.</p>
 
 <ol>
-<li>Идёшь в <a href="https://console.cloud.yandex.ru" target="_blank">console.cloud.yandex.ru</a>, логинишься через Яндекс ID.</li>
-<li>Если каталога нет — Yandex Cloud сам предложит создать. Привяжи карту. Включается биллинг.</li>
-<li>В меню слева — <strong>Identity and Access Management → Сервисные аккаунты → Создать</strong>. Имя <code>wb-bot</code>.</li>
-<li>Выдай этому сервисному аккаунту роль <code>ai.languageModels.user</code> на каталог. Без этой роли API будет отвечать 403.</li>
-<li>В карточке сервисного аккаунта — <strong>Создать новый ключ → API-ключ</strong>. Копируешь сразу, повторно не покажет.</li>
-<li>Запомни <code>folder_id</code> (он в URL консоли или в шапке каталога) — он нужен в каждом запросе.</li>
+<li>Идёшь в <a href="https://aistudio.yandex.ru" target="_blank">aistudio.yandex.ru</a>, логинишься через Яндекс ID. Если платёжного аккаунта ещё нет, создай его и сразу привяжи карту.</li>
+<li>В правом верхнем углу нажми <strong>Создать API-ключ</strong>, выбери срок действия ключа и нажми <strong>Создать</strong>. AI Studio сам заведёт сервисный аккаунт с нужными ролями и выдаст ключ с доступом к моделям.</li>
+<li>Скопируй секретный ключ сразу: после закрытия окна его не покажут.</li>
+<li>Запомни <code>folder_id</code> каталога, в котором создан ключ (он в URL консоли или в шапке каталога). Он нужен в каждом запросе.</li>
 </ol>
 
-<p>Стоимость <code>yandexgpt-lite</code>: примерно 0.20 ₽ за 1000 токенов на вход и столько же на выход. Одна карточка — ~3000 токенов, итого меньше рубля. На 100 карточек — около 60–80 ₽. Это сильно дешевле, чем нанять копирайтера на ту же сотню.</p>
+<p>Если создаёшь ключ вручную в консоли Yandex Cloud: сервисному аккаунту нужна роль <code>ai.languageModels.user</code> на каталог, а ключу область действия для генерации текста. В документации встречаются две: <code>yc.ai.languageModels.execute</code> и <code>yc.ai.foundationModels.execute</code>. Создать API-ключ может пользователь с ролью <code>resource-manager.admin</code> на каталог.</p>
 
-<h2>Шаг 2: Токен Wildberries Seller API</h2>
+<p>Цены синхронного режима, с НДС: YandexGPT Lite 0,20 ₽ за 1000 токенов на вход и столько же на выход, Qwen3.6 35B 0,20 ₽ за 1000 входящих и 0,30 ₽ за 1000 исходящих. Текстовая часть одной карточки около 3000 токенов, это меньше рубля. Фото тоже считаются во входящих токенах, поэтому с ними дороже: точную цену карточки посмотри в детализации расходов после первых 2-3 товаров. Это всё равно сильно дешевле, чем нанять копирайтера на ту же сотню.</p>
+
+<h2>Шаг 2: Токен WB API</h2>
 
 <ol>
-<li>Заходишь в <a href="https://seller.wildberries.ru" target="_blank">seller.wildberries.ru</a>.</li>
-<li>Профиль (правый верхний угол) → <strong>Настройки → Доступ к API</strong>.</li>
-<li>Нажимаешь <strong>«Создать новый токен»</strong>. Имя — например <code>ai-card-generator</code>.</li>
-<li>В правах выбираешь <strong>«Контент»</strong> (и опционально <strong>«Цены и скидки»</strong>, если будешь обновлять цены). НЕ давай токену больше прав, чем нужно — если утечёт, ущерб меньше.</li>
-<li>Опция «Только для чтения» — снимаем (иначе не сможем создавать карточки).</li>
-<li>Копируешь токен. Это JWT-строка длиной ~150 символов.</li>
+<li>Заходишь в <a href="https://seller.wildberries.ru" target="_blank">seller.wildberries.ru</a> под владельцем кабинета: создавать токены может только он.</li>
+<li>Открываешь раздел <strong>Интеграции по API</strong>, нажимаешь <strong>+ Создать токен</strong> и выбираешь вкладку <strong>Для интеграции вручную</strong>.</li>
+<li>Тип токена: <strong>Персональный</strong>. Он для собственных программ на твоём компьютере или сервере. Передавать его третьим лицам и использовать в облачных сервисах нельзя.</li>
+<li>Имя, например <code>ai-card-generator</code>. Категория: <strong>Контент</strong> (и <strong>Цены и скидки</strong>, если будешь обновлять цены). Не давай токену больше прав, чем нужно: если утечёт, ущерб меньше.</li>
+<li>Уровень доступа: <strong>Чтение и запись</strong>, иначе карточки не создать.</li>
+<li>Отметь, что не будешь передавать токен третьим лицам, нажми <strong>Создать</strong>, потом <strong>Скопировать и закрыть</strong>. Ещё раз посмотреть токен не получится. Он действует 180 дней, потом создай новый и обнови <code>.env</code>.</li>
 </ol>
 
-<p>Endpoint для создания карточек: <code>https://content-api.wildberries.ru/content/v2/cards/upload</code>. Документация — на <a href="https://dev.wildberries.ru" target="_blank">dev.wildberries.ru</a>, раздел «Контент».</p>
+<p>Проверить токен можно запросом <code>GET https://content-api.wildberries.ru/ping</code> с токеном в заголовке <code>Authorization</code>. Документация на <a href="https://dev.wildberries.ru" target="_blank">dev.wildberries.ru</a>, раздел «Работа с товарами».</p>
 
 <h2>Шаг 3: Структура проекта</h2>
 
 <pre><code>mkdir wb-ai-cards && cd wb-ai-cards
 python3 -m venv venv && source venv/bin/activate
-pip install requests==2.32.3 python-dotenv==1.0.1 Pillow==10.4.0</code></pre>
+pip install requests==2.34.2 python-dotenv==1.2.4 Pillow==12.3.0</code></pre>
 
 <p>Файл <code>.env</code>:</p>
 
 <pre><code>YC_API_KEY=AQVNxxxxxxxxxxxxxxxxxx
 YC_FOLDER_ID=b1g123456789abcdef
 WB_TOKEN=eyJhbGciOiJFUzI1NiIsImtpZCI6...</code></pre>
+
+<p>В <code>.env</code> два ключа доступа: добавь его в <code>.gitignore</code> и никому не пересылай.</p>
 
 <p>Структура папок:</p>
 
@@ -27533,15 +27535,15 @@ WB_TOKEN=eyJhbGciOiJFUzI1NiIsImtpZCI6...</code></pre>
 
 <p><code>prompts/clothes.txt</code>:</p>
 
-<pre><code>Ты — копирайтер маркетплейса. Сделай карточку товара для Wildberries по фото и описанию ниже.
+<pre><code>Ты копирайтер маркетплейса. Сделай карточку товара для Wildberries по описанию продавца и списку того, что видно на фото.
 
 Категория: ОДЕЖДА.
 
 Жёсткие ограничения:
-- "title": до 60 символов, начинается с типа товара (Джинсы, Платье, Футболка), без CAPS и без эмодзи
-- "description": до 1000 символов, абзацами через \\n\\n. Структура: общее описание → состав и качество → для каких случаев → советы по уходу. Без слов "купить", "лучший", "идеальный" — WB не любит маркетинговую воду.
-- "characteristics": массив объектов {"name": "...", "value": "..."}. Обязательные: "Состав", "Сезон", "Страна производства" (если не известна — пиши "Россия"). НЕ ВЫДУМЫВАЙ цифр. Если данных нет — оставь поле пустым.
-- "keywords": массив из 10-15 слов для поиска, через которые товар найдут (без знаков препинания, lowercase).
+- "title": до 60 символов. Тип товара и главное отличие, например "Джинсы прямые с высокой посадкой". Без бренда, пола, возраста, сезона и состава. Без повторов, синонимов, CAPS, эмодзи и спецсимволов.
+- "description": до 1000 символов, абзацами через \\n\\n. Структура: общее описание → материал и качество → для каких случаев. Уход пиши, только если он есть в описании продавца. Без слов "купить", "лучший", "идеальный" и без списков поисковых запросов.
+- "characteristics": массив объектов {"name": "...", "value": "..."}. Если ниже дан список характеристик Wildberries, бери названия только из него и заполни обязательные (*), если для них есть факты. НЕ ВЫДУМЫВАЙ: чего нет в описании продавца или на фото, в массив не включай.
+- "keywords": 10-15 слов и фраз, по которым товар ищут (lowercase, без знаков препинания). Главные из них должны естественно звучать в описании. Отдельного поля для них у Wildberries нет.
 
 Верни СТРОГО JSON по схеме. Никаких комментариев до или после.
 
@@ -27551,77 +27553,121 @@ WB_TOKEN=eyJhbGciOiJFUzI1NiIsImtpZCI6...</code></pre>
   "description": "string",
   "characteristics": [{"name": "string", "value": "string"}],
   "keywords": ["string"]
-}
-</code></pre>
+}</code></pre>
 
 <p>Аналогично <code>electronics.txt</code> (упор на ТТХ: мощность, напряжение, разъёмы) и <code>home.txt</code> (материал, размеры, вес, инструкция по сборке).</p>
 
 <p>Главное правило промпта — <strong>«не выдумывай характеристики»</strong>. Если модели не дать этого ограничения, она радостно напишет про джинсы «состав: хлопок 100%, плотность 320 г/м², пропитка водоотталкивающая» — даже если из фото видно только цвет.</p>
 
-<h2>Шаг 5: Вызов YandexGPT</h2>
+<p>Правила для названия взяты из справки WB: до 60 символов, только суть, без бренда, пола, возраста, сезона, оценок вроде «лучший» и спецсимволов. Отдельного поля для ключевых слов в карточке WB нет, а списки поисковых запросов в описании WB просит не писать. Поэтому <code>keywords</code> здесь подсказка: главные слова должны просто звучать в описании.</p>
+
+<h2>Шаг 5: Вызов моделей Yandex AI Studio</h2>
+
+<p>У AI Studio есть OpenAI-совместимый API: один адрес <code>https://ai.api.cloud.yandex.net/v1/chat/completions</code> для всех моделей, ключ в заголовке <code>Authorization: Api-Key ...</code>, каталог в заголовке <code>OpenAI-Project</code>. Фото понимает Qwen3.6 35B, картинки передаются в Base64. Поэтому работаем в два шага: Qwen перечисляет, что видно на фото, а YandexGPT Lite 5 по этим фактам и твоему brief.txt пишет карточку.</p>
 
 <p>Файл <code>generator.py</code>:</p>
 
-<pre><code>import os
+<pre><code>import io
+import os
 import json
 import base64
 import logging
 from pathlib import Path
+
 import requests
+from PIL import Image
 
 log = logging.getLogger("generator")
 
-YC_URL = "https://llm.api.cloud.yandex.net/foundationModels/v1/completion"
+# OpenAI-совместимый API Yandex AI Studio
+YC_URL = "https://ai.api.cloud.yandex.net/v1/chat/completions"
+VISION_MODEL = "qwen3.6-35b-a3b"  # Qwen3.6 35B: понимает фото в Base64
+TEXT_MODEL = "yandexgpt-5-lite"   # YandexGPT Lite 5: пишет карточку
+PHOTO_EXT = {".jpg", ".jpeg", ".png", ".webp"}
+
+PHOTO_PROMPT = (
+    "Перечисли списком, что видно на фото товара: тип товара, цвет, крой или форма, "
+    "заметные детали (застёжка, карманы, принт), текст с ярлыка, если он читается. "
+    "Пиши только то, что видно. Состав, размеры и страну производства не угадывай."
+)
 
 
-def _read_brief(item_dir: Path) -> str:
+def _chat(model: str, content, system: str = "", temperature: float = 0.3) -&gt; str:
+    folder = os.getenv("YC_FOLDER_ID")
+    messages = []
+    if system:
+        messages.append({"role": "system", "content": system})
+    messages.append({"role": "user", "content": content})
+
+    body = {
+        "model": f"gpt://{folder}/{model}",
+        "messages": messages,
+        "temperature": temperature,
+    }
+    headers = {
+        "Authorization": f"Api-Key {os.getenv('YC_API_KEY')}",
+        "OpenAI-Project": folder,
+        "Content-Type": "application/json",
+    }
+    r = requests.post(YC_URL, json=body, headers=headers, timeout=120)
+    if r.status_code &gt;= 400:
+        log.error(f"AI Studio {r.status_code}: {r.text[:500]}")
+    r.raise_for_status()
+    return r.json()["choices"][0]["message"]["content"]
+
+
+def _read_brief(item_dir: Path) -&gt; str:
     brief = item_dir / "brief.txt"
     return brief.read_text(encoding="utf-8").strip() if brief.exists() else ""
 
 
-def _encode_photos(item_dir: Path, max_n: int = 3) -> list[str]:
-    """YandexGPT (text-only) фото не понимает — для multimodal нужен другой endpoint.
-    Пока используем только описания фото (имена файлов как намёк)."""
-    photos = sorted(p for p in item_dir.iterdir() if p.suffix.lower() in {".jpg", ".jpeg", ".png"})
-    return [p.name for p in photos[:max_n]]
+def _photo_to_data_url(path: Path, max_side: int = 1024) -&gt; str:
+    """Уменьшаем фото до 1024 px: меньше токенов и быстрее запрос."""
+    img = Image.open(path)
+    img.thumbnail((max_side, max_side))
+    buf = io.BytesIO()
+    img.convert("RGB").save(buf, format="JPEG", quality=85)
+    return "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode("ascii")
 
 
-def generate_card(item_dir: Path, category: str = "clothes") -> dict:
+def describe_photos(item_dir: Path, max_n: int = 3) -&gt; str:
+    photos = sorted(p for p in item_dir.iterdir() if p.suffix.lower() in PHOTO_EXT)[:max_n]
+    if not photos:
+        return ""
+    content = [{"type": "text", "text": PHOTO_PROMPT}]
+    for p in photos:
+        content.append({"type": "image_url", "image_url": {"url": _photo_to_data_url(p)}})
+    log.info(f"Фото на распознавание: {item_dir.name}, {len(photos)} шт.")
+    return _chat(VISION_MODEL, content, temperature=0.1)
+
+
+def _charcs_hint(charcs: list) -&gt; str:
+    if not charcs:
+        return ""
+    names = [c["name"] + (" *" if c.get("required") else "") for c in charcs]
+    return (
+        "\\n\\nХарактеристики этого предмета на Wildberries "
+        "(названия бери только отсюда, * значит обязательная):\\n" + "\\n".join(names)
+    )
+
+
+def generate_card(item_dir: Path, category: str = "clothes", charcs: list = None) -&gt; dict:
     brief = _read_brief(item_dir)
-    photo_names = _encode_photos(item_dir)
+    photo_facts = describe_photos(item_dir)
 
     prompt_file = Path("prompts") / f"{category}.txt"
     system_prompt = prompt_file.read_text(encoding="utf-8")
 
     user_text = (
         f"Описание от продавца:\\n{brief}\\n\\n"
-        f"Имена файлов фото (как доп. подсказка): {', '.join(photo_names)}"
+        f"Что видно на фото:\\n{photo_facts or 'фото нет'}"
+        f"{_charcs_hint(charcs or [])}"
     )
 
-    body = {
-        "modelUri": f"gpt://{os.getenv('YC_FOLDER_ID')}/yandexgpt-lite/latest",
-        "completionOptions": {
-            "stream": False,
-            "temperature": 0.3,
-            "maxTokens": 2000,
-        },
-        "messages": [
-            {"role": "system", "text": system_prompt},
-            {"role": "user", "text": user_text},
-        ],
-    }
+    log.info(f"YandexGPT: {item_dir.name}, category={category}")
+    raw = _chat(TEXT_MODEL, user_text, system=system_prompt, temperature=0.3)
 
-    headers = {
-        "Authorization": f"Api-Key {os.getenv('YC_API_KEY')}",
-        "Content-Type": "application/json",
-    }
-
-    log.info(f"YandexGPT request for {item_dir.name}, category={category}")
-    r = requests.post(YC_URL, json=body, headers=headers, timeout=60)
-    r.raise_for_status()
-    raw = r.json()["result"]["alternatives"][0]["message"]["text"]
-
-    # YandexGPT иногда оборачивает JSON в \`\`\`json ... \`\`\`. Чистим.
+    # Модель иногда оборачивает JSON в \`\`\`json ... \`\`\`. Чистим.
     raw = raw.strip()
     if raw.startswith("\`\`\`"):
         raw = raw.split("\`\`\`")[1]
@@ -27631,164 +27677,314 @@ def generate_card(item_dir: Path, category: str = "clothes") -> dict:
 
     try:
         card = json.loads(raw)
-    except json.JSONDecodeError as e:
-        log.error(f"Не смог распарсить ответ как JSON: {raw[:500]}")
+    except json.JSONDecodeError:
+        log.error(f"Не смог разобрать ответ как JSON: {raw[:500]}")
         raise
 
-    # пост-валидация: title никогда не должен быть длиннее 60
-    if len(card.get("title", "")) > 60:
+    # Пост-проверка: название на WB до 60 символов, описание держим до 1000
+    if len(card.get("title", "")) &gt; 60:
         card["title"] = card["title"][:60].rsplit(" ", 1)[0]
-    if len(card.get("description", "")) > 1000:
-        card["description"] = card["description"][:1000].rsplit(" ", 1)[0] + "..."
+    if len(card.get("description", "")) &gt; 1000:
+        card["description"] = card["description"][:1000].rsplit(" ", 1)[0]
 
-    return card
-</code></pre>
+    card["photo_facts"] = photo_facts  # чтобы сверить глазами, что модель увидела на фото
+    return card</code></pre>
 
-<p>Заметка про мультимодальность. У YandexGPT есть отдельная мультимодальная модель (<code>yandexgpt-vision</code> в visionai endpoint), которая принимает base64-картинки. Если хочется реального анализа фото — переключайся на неё, формат запроса похожий. Для большинства задач карточек хватает описания от продавца + имени файла (которое селлеры часто называют осмысленно: <code>front.jpg</code>, <code>label.jpg</code>).</p>
+<p>Заметка про фото. Модель видит цвет, крой, детали и текст на ярлыке, но не состав и не размеры. Поэтому в запросе прямо сказано их не угадывать, а то, что модель увидела, сохраняется в <code>card.json</code> в поле <code>photo_facts</code>: сверь его с фото глазами. Если фото в папке нет, скрипт обойдётся одним brief.txt.</p>
+
+<p>Модели в AI Studio обновляются: старые версии отключают, и запрос по старому имени возвращает ошибку 400. Если так случилось, посмотри актуальные имена в <a href="https://aistudio.yandex.ru/docs/ru/ai-studio/concepts/generation/models" target="_blank">списке моделей</a> и поправь <code>VISION_MODEL</code> и <code>TEXT_MODEL</code>.</p>
 
 <h2>Шаг 6: Загрузка карточки в WB</h2>
+
+<p>Как WB принимает карточку, по документации метода <code>POST /content/v2/cards/upload</code>:</p>
+
+<ul>
+<li>характеристики только по числовым id: <code>{"id": 12, "value": ["синий"]}</code>. Тип значения задаёт справочник предмета <code>GET /content/v2/object/charcs/{subjectId}</code>: <code>charcType</code> 1 значит массив строк, 4 значит число;</li>
+<li>название и описание идут отдельными полями. Характеристики с <code>existNamedField: true</code> тоже передаются отдельно, в массив их не кладём;</li>
+<li>цвет, пол, страну производства, сезон, ставку НДС и ТН ВЭД WB берёт из своих справочников, значение должно с ними совпадать;</li>
+<li><code>dimensions</code>: габариты упаковки в сантиметрах и вес с упаковкой <code>weightBrutto</code> в килограммах. Если их не передать, WB поставит нули;</li>
+<li><code>skus</code> это баркоды. Если своих нет, поле не передаём: WB сгенерирует баркоды сам;</li>
+<li>лимит метода: 10 запросов в минуту, интервал 6 секунд;</li>
+<li>карточка создаётся асинхронно, до 30 минут. Ответ 200 ещё не значит, что она создана: ошибки смотрят методом <code>POST /content/v2/cards/error/list</code>.</li>
+</ul>
 
 <p>Файл <code>wb_uploader.py</code>:</p>
 
 <pre><code>import os
-import json
+import re
 import time
 import logging
 import requests
 
 log = logging.getLogger("wb")
 
-WB_UPLOAD = "https://content-api.wildberries.ru/content/v2/cards/upload"
+WB_API = "https://content-api.wildberries.ru"
+UPLOAD_PAUSE = 6  # создание карточек: 10 запросов в минуту, интервал 6 секунд
 
 
-def upload_card(card: dict, vendor_code: str, subject_id: int, brand: str, price_rub: int) -> dict:
+def _request(method: str, path: str, **kwargs) -&gt; dict:
+    headers = {"Authorization": os.getenv("WB_TOKEN"), "Content-Type": "application/json"}
+    for _ in range(3):
+        r = requests.request(method, WB_API + path, headers=headers, timeout=30, **kwargs)
+        if r.status_code == 429:
+            wait = int(r.headers.get("X-Ratelimit-Retry", "10"))
+            log.warning(f"WB 429: слишком часто, жду {wait} с")
+            time.sleep(wait)
+            continue
+        if r.status_code &gt;= 400:
+            log.error(f"WB {r.status_code}: {r.text[:500]}")
+        r.raise_for_status()
+        return r.json()
+    raise RuntimeError("WB всё ещё отвечает 429, попробуйте позже")
+
+
+def find_subjects(name: str) -&gt; list:
+    """ID предмета по названию: поиск по подстроке, например «джинсы»."""
+    return _request("GET", "/content/v2/object/all", params={"name": name, "limit": 50})["data"]
+
+
+def get_charcs(subject_id: int) -&gt; list:
+    """Характеристики предмета. Оставляем те, что передаются в массиве characteristics."""
+    data = _request("GET", f"/content/v2/object/charcs/{subject_id}", params={"locale": "ru"})["data"]
+    # existNamedField=true: поле передаётся отдельным параметром; charcType=0: не используется
+    return [c for c in data if not c.get("existNamedField") and c.get("charcType") in (1, 4)]
+
+
+def get_limits() -&gt; dict:
+    """Сколько карточек ещё можно создать: freeLimits + paidLimits минус уже созданные."""
+    return _request("GET", "/content/v2/cards/limits")["data"]
+
+
+def _to_number(value):
+    if isinstance(value, list):
+        value = value[0] if value else ""
+    m = re.search(r"\\d+(?:[.,]\\d+)?", str(value))
+    if not m:
+        return None
+    num = float(m.group().replace(",", "."))
+    return int(num) if num.is_integer() else num
+
+
+def map_characteristics(card_chars: list, charcs: list) -&gt; tuple:
+    """{"name", "value"} из card.json превращаем в {"id", "value"} для WB."""
+    by_name = {c["name"].strip().lower(): c for c in charcs}
+    result, problems = [], []
+    for ch in card_chars:
+        name = str(ch.get("name", "")).strip()
+        value = ch.get("value")
+        if value in (None, "", []):
+            continue
+        c = by_name.get(name.lower())
+        if not c:
+            problems.append(f"нет в справочнике предмета: {name}")
+            continue
+        if c["charcType"] == 4:  # число
+            num = _to_number(value)
+            if num is None:
+                problems.append(f"не число: {name} = {value}")
+                continue
+            result.append({"id": c["charcID"], "value": num})
+        else:  # массив строк
+            values = value if isinstance(value, list) else [value]
+            values = [str(v).strip() for v in values if str(v).strip()]
+            if c.get("maxCount"):
+                values = values[: c["maxCount"]]
+            result.append({"id": c["charcID"], "value": values})
+
+    filled = {r["id"] for r in result}
+    for c in charcs:
+        if c.get("required") and c["charcID"] not in filled:
+            problems.append(f"не заполнена обязательная: {c['name']}")
+    return result, problems
+
+
+def upload_card(card: dict, vendor_code: str, subject_id: int, brand: str, price_rub: int,
+                dimensions: dict, characteristics: list, sizes: list) -&gt; dict:
     """
-    vendor_code — твой внутренний артикул (любая строка).
-    subject_id — числовой ID предмета (категории) в WB. Получается отдельным
-                 запросом /content/v2/object/all (там список).
+    vendor_code: ваш артикул (любая строка до 72 символов).
+    dimensions: габариты упаковки в см и вес с упаковкой в кг.
+    sizes: размеры из размерной сетки, например ["42", "44"]; для товара без размеров пустой список.
+    Баркоды (skus) не передаём: WB сгенерирует их сам.
     """
-    payload = [{
-        "subjectID": subject_id,
-        "variants": [{
-            "vendorCode": vendor_code,
-            "title": card["title"],
-            "description": card["description"],
-            "brand": brand,
-            "dimensions": {"length": 30, "width": 20, "height": 5},  # см; ставь свои
-            "characteristics": card.get("characteristics", []),
-            "sizes": [{
-                "techSize": "0",
-                "wbSize": "",
-                "price": price_rub,
-                "skus": [vendor_code]
-            }]
-        }]
-    }]
+    if sizes:
+        size_list = [{"techSize": s, "wbSize": s, "price": price_rub} for s in sizes]
+    else:
+        size_list = [{"price": price_rub}]
 
-    headers = {
-        "Authorization": os.getenv("WB_TOKEN"),
-        "Content-Type": "application/json",
+    variant = {
+        "vendorCode": vendor_code,
+        "title": card["title"],
+        "description": card["description"],
+        "dimensions": dimensions,
+        "characteristics": characteristics,
+        "sizes": size_list,
     }
+    if brand:
+        variant["brand"] = brand
+
+    payload = [{"subjectID": subject_id, "variants": [variant]}]
 
     log.info(f"WB upload: vendorCode={vendor_code}, title={card['title']!r}")
-    r = requests.post(WB_UPLOAD, json=payload, headers=headers, timeout=30)
+    res = _request("POST", "/content/v2/cards/upload", json=payload)
+    time.sleep(UPLOAD_PAUSE)  # не упираемся в лимит 10 запросов в минуту
+    return res
 
-    if r.status_code == 429:
-        # rate limit — ждём и пробуем ещё раз
-        log.warning("WB rate limit, sleep 30s")
-        time.sleep(30)
-        r = requests.post(WB_UPLOAD, json=payload, headers=headers, timeout=30)
 
-    r.raise_for_status()
-    return r.json()
-</code></pre>
+def get_errors(vendor_codes: set) -&gt; dict:
+    """Ошибки создания карточек (черновики) по нашим артикулам из последних 100 пакетов."""
+    body = {"cursor": {"limit": 100}, "order": {"ascending": False}}
+    data = _request("POST", "/content/v2/cards/error/list", json=body)["data"]
+    found = {}
+    for batch in data.get("items", []):
+        for code, errs in batch.get("errors", {}).items():
+            if code in vendor_codes:
+                found.setdefault(code, []).extend(errs)
+    return found</code></pre>
 
-<p>Обрати внимание: токен WB кладётся в заголовок <code>Authorization</code> как есть, без префикса <code>Bearer</code>. Это нестандартно, но так у WB. Если поставишь <code>Bearer</code> — получишь 401 и долго будешь дебажить.</p>
+<p>Токен WB кладётся в заголовок <code>Authorization</code> как есть, так показано в документации WB API.</p>
+
+<p>Размеры из <code>--sizes</code> уходят в <code>techSize</code> и <code>wbSize</code> (российский размер). Если у размерного товара размеры не указать, WB создаст размер-заглушку, поэтому для одежды передавай их.</p>
 
 <h2>Шаг 7: Главный скрипт</h2>
 
 <p>Файл <code>main.py</code>:</p>
 
-<pre><code>import os
-import json
+<pre><code>import json
 import logging
 import argparse
 from pathlib import Path
 from dotenv import load_dotenv
 
 from generator import generate_card
-from wb_uploader import upload_card
+from wb_uploader import find_subjects, get_charcs, get_limits, map_characteristics, upload_card, get_errors
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 log = logging.getLogger("main")
 
 
-def process_one(item_dir: Path, category: str, upload: bool, brand: str, price: int, subject_id: int):
+def process_one(item_dir: Path, args, charcs: list):
     log.info(f"=== {item_dir.name} ===")
-
-    card = generate_card(item_dir, category=category)
     out = item_dir / "card.json"
-    out.write_text(json.dumps(card, ensure_ascii=False, indent=2), encoding="utf-8")
-    log.info(f"saved {out}")
 
-    if upload:
-        vendor_code = item_dir.name  # используем имя папки как артикул
-        try:
-            res = upload_card(card, vendor_code, subject_id, brand, price)
-            log.info(f"WB ответ: {res}")
-        except Exception as e:
-            log.exception(f"WB upload failed for {item_dir.name}: {e}")
+    if args.upload and out.exists():
+        # Заливаем то, что вы уже проверили и поправили руками, а не новую генерацию
+        card = json.loads(out.read_text(encoding="utf-8"))
+        log.info(f"беру проверенный {out}")
+    else:
+        card = generate_card(item_dir, category=args.category, charcs=charcs)
+        out.write_text(json.dumps(card, ensure_ascii=False, indent=2), encoding="utf-8")
+        log.info(f"saved {out}")
+
+    if not charcs:
+        return
+    wb_chars, problems = map_characteristics(card.get("characteristics", []), charcs)
+    for p in problems:
+        log.warning(f"{item_dir.name}: {p}")
+
+    if args.upload:
+        if any(p.startswith("не заполнена обязательная") for p in problems):
+            log.warning(f"{item_dir.name}: пропускаю загрузку, допишите обязательные характеристики в card.json")
+            return
+        dims = {"length": args.length, "width": args.width, "height": args.height, "weightBrutto": args.weight}
+        sizes = [s.strip() for s in args.sizes.split(",") if s.strip()]
+        res = upload_card(card, item_dir.name, args.subject_id, args.brand, args.price, dims, wb_chars, sizes)
+        log.info(f"WB ответ: {res}")
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--goods-dir", default="goods", help="папка с подпапками-товарами")
     ap.add_argument("--category", default="clothes", choices=["clothes", "electronics", "home"])
-    ap.add_argument("--brand", default="NoBrand")
-    ap.add_argument("--price", type=int, default=1990)
-    ap.add_argument("--subject-id", type=int, required=False, default=0,
-                    help="ID категории WB (обязателен, если --upload)")
+    ap.add_argument("--find-subject", help="найти ID предмета WB по названию, например джинсы")
+    ap.add_argument("--subject-id", type=int, default=0, help="ID предмета WB (обязателен для --upload)")
     ap.add_argument("--upload", action="store_true", help="реально загружать в WB")
+    ap.add_argument("--check-errors", action="store_true", help="показать ошибки создания карточек")
+    ap.add_argument("--brand", default="", help="бренд из справочника WB; пусто, если бренда нет")
+    ap.add_argument("--price", type=int, default=0, help="цена в рублях, целое число")
+    ap.add_argument("--sizes", default="", help="размеры через запятую, например 42,44,46")
+    ap.add_argument("--length", type=int, default=0, help="длина упаковки, см")
+    ap.add_argument("--width", type=int, default=0, help="ширина упаковки, см")
+    ap.add_argument("--height", type=int, default=0, help="высота упаковки, см")
+    ap.add_argument("--weight", type=float, default=0, help="вес с упаковкой, кг")
     args = ap.parse_args()
+
+    if args.find_subject:
+        for s in find_subjects(args.find_subject):
+            print(s["subjectID"], s["subjectName"], "/", s["parentName"])
+        return
 
     goods = Path(args.goods_dir)
     items = sorted(p for p in goods.iterdir() if p.is_dir())
     log.info(f"Найдено товаров: {len(items)}")
 
+    if args.check_errors:
+        errors = get_errors({p.name for p in items})
+        for code, errs in errors.items():
+            print(code, ":", "; ".join(errs))
+        if not errors:
+            print("Ошибок по этим артикулам нет")
+        return
+
+    if args.upload:
+        if not args.subject_id or args.price &lt; 50:
+            ap.error("для --upload нужны --subject-id и --price от 50 ₽")
+        if min(args.length, args.width, args.height) &lt;= 0 or args.weight &lt;= 0:
+            ap.error("для --upload укажите --length, --width, --height (см) и --weight (кг) упаковки")
+        log.info(f"Лимиты на создание карточек: {get_limits()}")
+
+    charcs = get_charcs(args.subject_id) if args.subject_id else []
+
     for item in items:
         try:
-            process_one(item, args.category, args.upload, args.brand, args.price, args.subject_id)
+            process_one(item, args, charcs)
         except Exception as e:
             log.exception(f"Ошибка по {item.name}: {e}")
 
+    if args.upload:
+        log.info("Карточки создаются до 30 минут. Потом проверьте: python main.py --check-errors")
+
 
 if __name__ == "__main__":
-    main()
-</code></pre>
+    main()</code></pre>
+
+<p>С <code>--upload</code> скрипт не генерирует карточку заново, а берёт уже проверенный тобой <code>card.json</code>. Товар без обязательных характеристик он не отправляет и пишет в лог, чего не хватает.</p>
 
 <h2>Запуск и проверка</h2>
 
-<p>Сначала генерим карточки без заливки (dry-run):</p>
+<p>Сначала найди ID предмета. Поиск идёт по подстроке:</p>
 
-<pre><code>python main.py --goods-dir goods --category clothes</code></pre>
+<pre><code>python main.py --find-subject джинсы</code></pre>
+
+<p>Скрипт напечатает ID, предмет и родительскую категорию. Выбери подходящий и запиши ID в табличку, чтобы не искать снова.</p>
+
+<p>Потом генерим карточки без заливки (dry-run). С <code>--subject-id</code> модель получает список характеристик этого предмета и пишет их названия так, как их ждёт WB:</p>
+
+<pre><code>python main.py --goods-dir goods --category clothes --subject-id ID_ПРЕДМЕТА</code></pre>
 
 <p>Скрипт пройдётся по всем подпапкам, для каждой создаст <code>card.json</code> рядом с фото. Открываешь, читаешь глазами. Если ок — заливаешь:</p>
 
-<pre><code>python main.py --goods-dir goods --category clothes \\
-  --upload --brand "MyBrand" --price 2490 --subject-id 192</code></pre>
+<pre><code>python main.py --goods-dir goods --category clothes --subject-id ID_ПРЕДМЕТА \\
+  --upload --brand "MyBrand" --price 2490 --sizes 42,44,46 \\
+  --length 30 --width 20 --height 5 --weight 0.6</code></pre>
 
-<p><code>subject-id</code> ищется через отдельный GET-запрос на <code>/content/v2/object/all</code> с параметром <code>name=джинсы</code>. Сделай это один раз вручную через <code>curl</code> и запиши ID нужных категорий в табличку.</p>
+<p>Начни с одного товара: положи в отдельную папку только его. Бренд должен быть в справочнике WB. Если бренда нет, не передавай <code>--brand</code>. Габариты и вес укажи свои, по упаковке. Перед загрузкой скрипт выводит лимиты на создание карточек: можно создать (freeLimits + paidLimits) минус уже созданные карточки, включая корзину.</p>
 
-<p>У меня на тесте: 12 товаров одежды → 12 карточек за 4 минуты. Загрузка в WB — ещё минута. Из 12 описаний 2 пришлось руками поправить (модель оба раза подзагнула состав ткани, потому что в brief.txt я этого не указал). Остальные 10 пошли как есть.</p>
+<p>Через 30 минут проверь, не застряли ли карточки в черновиках:</p>
+
+<pre><code>python main.py --goods-dir goods --check-errors</code></pre>
+
+<p>Если ошибки есть, поправь <code>card.json</code> и загрузи товар ещё раз: карточка уйдёт из списка ошибок, когда WB примет исправленный вариант.</p>
+
+<p>Рассчитывай, что часть карточек придётся править руками. Чаще всего модель додумывает то, чего нет в brief.txt, например состав ткани. Поэтому состав и размеры пиши в brief.txt сам.</p>
 
 <h2>Расширения</h2>
 
 <ul>
 <li><strong>Батч-обработка папки фото.</strong> Сейчас один товар = одна подпапка. Можно сделать обратный режим: одна большая папка с файлами вида <code>джинсы-синие-001.jpg</code>, скрипт сам группирует и парсит имя для brief.</li>
-<li><strong>Авто-обновление по тренду ключевиков.</strong> WB сам показывает в кабинете «популярные запросы по категории». Парсишь раз в неделю, скармливаешь YandexGPT и просишь переписать <code>keywords</code> и слегка <code>description</code>. Заметно бустит выдачу.</li>
+<li><strong>Обновление описаний под поисковые запросы.</strong> Если видишь в аналитике кабинета, по каким запросам ищут твой товар, раз в неделю отдавай их YandexGPT и проси поправить <code>description</code>, чтобы главные слова звучали в тексте. Списком запросы в описание не вставляй: WB просит так не делать.</li>
 <li><strong>A/B-тестирование заголовков.</strong> Генеришь 3 варианта <code>title</code>, через WB API меняешь раз в неделю, смотришь конверсию в кабинете. Через месяц у тебя статистически лучший заголовок.</li>
-<li><strong>Мультимодальность.</strong> Переключи endpoint на <code>yandexgpt-vision</code> и шли реальные base64-фото. Тогда модель сможет описать цвет, фактуру, угол — особенно полезно для категорий вроде декора.</li>
+<li><strong>Модель посильнее.</strong> Поменяй <code>TEXT_MODEL</code> на YandexGPT Pro 5.1 (<code>yandexgpt-5.1</code>, 0,80 ₽ за 1000 токенов) и сравни карточки на пяти товарах.</li>
 <li><strong>Чек на запрещёнку.</strong> Перед загрузкой прогоняешь карточку через второй промпт «есть ли тут запрещённые WB обещания: лечит, сертифицирован, гарантирует». Если да — флаг, ручная проверка.</li>
 </ul>
 
@@ -27797,22 +27993,24 @@ if __name__ == "__main__":
 <ul>
 <li><strong>WB банит за враньё в характеристиках.</strong> Если карточка обещает «хлопок 100%», а покупатель получает синтетику — будут возвраты, штрафы и в худшем случае блокировка. Лучше пустое поле, чем выдуманное. Промпт это явно требует, но проверяй глазами.</li>
 <li><strong>YandexGPT любит «эссе» вместо JSON.</strong> Иногда возвращает «Вот ваш JSON: \`\`\`json {...} \`\`\`». Чищу через split — но если будет упорно срываться, добавь в промпт «не пиши ничего кроме JSON» дважды и понизь temperature до 0.1.</li>
-<li><strong>Rate limit WB API.</strong> На <code>/cards/upload</code> — 100 запросов в минуту, на остальных ручках бывает 10. Если льёшь сотни карточек — добавь <code>time.sleep(0.7)</code> между запросами. У меня в коде есть базовый ретрай на 429, но превентивно лучше не упираться.</li>
-<li><strong>subjectID разный для разных подкатегорий.</strong> «Женские джинсы» и «мужские джинсы» — разные ID. Не угадывай: получи список через API и держи у себя справочник.</li>
-<li><strong>Сезонность характеристик.</strong> Для одежды поле «Сезон» обязательное. YandexGPT иногда забывает добавить, особенно если в brief не указано. Сделай пост-валидацию: если поле отсутствует — добавляй <code>"всесезонный"</code> по умолчанию или возвращай товар на ручную обработку.</li>
-<li><strong>Картинки грузятся отдельно.</strong> <code>/cards/upload</code> только создаёт текстовую часть карточки. Фото льются другим endpoint'ом — <code>/content/v3/media/save</code>. Если хочешь полный цикл — добавь и это, но обычно фото удобнее заливать через web-кабинет (drag-n-drop там лучше).</li>
+<li><strong>Лимиты WB API.</strong> На создание карточек 10 запросов в минуту с интервалом 6 секунд, на большинство других методов «Контента» 100 в минуту. В коде пауза 6 секунд после каждой загрузки и повтор после 429 по заголовку <code>X-Ratelimit-Retry</code>.</li>
+<li><strong>Лимит на число карточек.</strong> У продавца есть бесплатный и платный лимит на создание карточек, остаток показывает <code>GET /content/v2/cards/limits</code>. Проверяй его до большой загрузки. Код 402 в WB API к этому лимиту не относится: его получают сервисы из Каталога решений для бизнеса.</li>
+<li><strong>subjectID угадывать нельзя.</strong> Похожие товары могут относиться к разным предметам, и у каждого свой набор характеристик. Ищи ID через <code>--find-subject</code> и держи у себя справочник.</li>
+<li><strong>Обязательные характеристики.</strong> Они свои у каждого предмета, в справочнике это поле <code>required</code>. Скрипт пишет в лог, какие не заполнены. Не подставляй значения по умолчанию: лучше допиши факт в card.json сам или верни товар на ручную обработку.</li>
+<li><strong>Картинки грузятся отдельно.</strong> <code>/cards/upload</code> создаёт только текстовую часть карточки, а без фото товар покупателям не показывают. Фото добавляются после создания карточки: методом <code>/content/v3/media/save</code> по прямым ссылкам или <code>/content/v3/media/file</code> файлом. Обычно их удобнее залить через кабинет.</li>
+<li><strong>Токен на 180 дней.</strong> Запиши, когда он истечёт. После этого WB начнёт отвечать 401: создай новый токен и обнови <code>.env</code>.</li>
 </ul>
 
 <h2>Что в итоге</h2>
 
-<p>За полтора часа у тебя получился рабочий конвейер «фото и краткое описание → готовая карточка WB». Стоимость генерации одной карточки — меньше рубля. Времени экономишь — час на товар. На 100 товарах в месяц это уже окупает любой облачный сервис в десятки раз.</p>
+<p>За пару часов у тебя получился рабочий конвейер «фото и краткое описание → готовая карточка WB». Текстовая часть карточки стоит меньше рубля, фото добавляют сверху. Времени экономишь — час на товар. На 100 товарах в месяц это уже окупает любой облачный сервис в десятки раз.</p>
 
-<p>Технически ты потрогал два важных российских API: Yandex Cloud Foundation Models (это, по сути, продакшен-ready LLM-as-a-service от Яндекса) и Wildberries Content API (один из самых документированных marketplace API в РФ). Эти знания переиспользуются — от YandexGPT можно перейти к YandexART для генерации изображений, от WB к Ozon Seller API (он устроен похоже).</p>
+<p>Технически ты потрогал два важных российских API: Yandex AI Studio (OpenAI-совместимый доступ к YandexGPT и открытым моделям) и WB API, раздел «Контент» (один из самых документированных marketplace API в РФ). Эти знания переиспользуются: от YandexGPT можно перейти к Alice AI ART для генерации изображений, от WB к Ozon Seller API (он устроен похоже).</p>
 
 <p>И главное — это первый честный пример того, как AI реально снимает рутину, а не «генерит контент ради контента». Тут есть конкретный селлер, конкретная задача и измеримая экономия времени.</p>
 
 <div class="callout callout-success">
-<strong>Готово!</strong> Дальше — добавь интеграцию с фото-генерацией (<code>yandexgpt-vision</code> для анализа фото и формирования описаний) и сделай Telegram-бот поверх скрипта: селлер шлёт фото — получает готовую карточку прямо в Telegram. На базе p19 и p20 это уже почти готовый micro-SaaS.
+<strong>Готово!</strong> Дальше сделай бота поверх скрипта: селлер шлёт фото и получает готовую карточку прямо в чат. На базе p19 и p20 это уже почти готовый micro-SaaS.
 </div>
 `);
 
