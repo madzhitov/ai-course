@@ -220,3 +220,23 @@ html:root { --header:80px; } /* старый каркас отступает о�
   .v6-hero h1 { margin-top:20px !important; }
 }
 .v6-page .v6-rows a { display:inline-flex !important; align-items:center; min-height:var(--h-btn-sm) !important; }
+
+/* тёмные блоки: свечение из макета (Main.dc.html, блок «Для компаний») */
+.v6-dark { position:relative; overflow:hidden; }
+.v6-dark::before { content:''; position:absolute; left:-160px; top:-120px; width:620px; height:520px; border-radius:50%; background:radial-gradient(closest-side, rgba(90,111,158,.6), rgba(90,111,158,0)); pointer-events:none; }
+.v6-dark > * { position:relative; }
+.v6-companies { display:grid; grid-template-columns:repeat(auto-fit, minmax(340px, 1fr)); gap:40px; align-items:end; padding:72px 64px; }
+.v6-companies p { font-size:19px; margin:0 0 28px; color:#C9CACF; }
+@media (max-width:720px) { .v6-companies { grid-template-columns:1fr; padding:32px 24px; } }
+/* ссылки-кнопки и крошки: старые правила .lesson-content a (подчёркивание, зелёный) не действуют */
+.v6-page a.v6b, .v6f a.v6b, .v6h a.v6b { text-decoration:none !important; border-bottom:0 !important; color:var(--surface) !important; }
+.v6-page a.v6b.is-accent { color:#fff !important; }
+[data-theme="dark"] .v6-page a.v6b.is-accent { color:#0F0F12 !important; }
+.v6-page a.v6b.is-soft, .v6-page a.v6b.is-white { color:var(--ink) !important; }
+.v6-page a { border-bottom:0 !important; }
+.v6-crumbs { align-items:center; }
+.v6-crumbs > span { display:inline-flex; align-items:center; min-height:var(--h-btn-sm); }
+.v6-page .v6-crumbs a { color:var(--text-2) !important; text-decoration:underline !important; text-underline-offset:3px; }
+.v6-page .v6-crumbs a:hover { color:var(--accent) !important; }
+/* иконки шапки: старые правила для svg в шапке их сжимали */
+.v6h .v6-icon svg { width:20px !important; height:20px !important; flex-shrink:0; }
