@@ -35,6 +35,7 @@
     }).join('')}</div>`;
   }
   const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
+  const art = (name, cls) => `<div class="v6-art${cls ? ' ' + cls : ''}" aria-hidden="true"><img src="v6/art/${name}.svg" alt="" loading="lazy"></div>`;
 
   // ---------- данные ----------
   let D = null, loading = null;
@@ -43,12 +44,16 @@
     if (typeof fetch !== 'function') return Promise.reject(new Error('no fetch'));
     if (!loading) {
       const get = (f) => fetch(`v6/data/${f}.json`).then((r) => r.ok ? r.json() : Promise.reject(new Error(f + ' ' + r.status)));
-      loading = Promise.all(['roles', 'paths', 'tasks', 'units'].map(get)).then(([roles, paths, tasks, units]) => {
+      loading = Promise.all(['roles', 'paths', 'tasks', 'units', 'resources'].map(get)).then(([roles, paths, tasks, units, resources]) => {
         const allTasks = {};
         tasks.groups.forEach((g) => (g.directions || []).forEach((d) => (d.tasks || []).forEach((t) => {
           allTasks[t.id] = Object.assign({ group: g.id, direction: d }, t);
         })));
-        D = { roles: roles.roles, paths, groups: tasks.groups, units: units.units, tasks: allTasks };
+        const unitTask = (ref) => (units.units.find((u) => u.id === ref) || {}).task;
+        paths.rolePaths.forEach((rp) => (rp.stages || []).forEach((st) => {
+          st.tasks = [...new Set((st.steps || []).filter((x) => x.kind === 'unit').map((x) => unitTask(x.ref)).filter(Boolean))];
+        }));
+        D = { roles: roles.roles, paths, groups: tasks.groups, units: units.units, tasks: allTasks, resources: resources.resources };
         return D;
       }).catch((err) => { loading = null; throw err; });
     }
@@ -60,6 +65,18 @@
   const taskDone = (taskId) => unitsOf(taskId).some((u) => u.fromLesson && done(u.fromLesson));
   const taskReady = (taskId) => unitsOf(taskId).some((u) => u.status === 'from-lesson' || u.status === 'ready');
   const taskMins = (taskId) => { const u = unitsOf(taskId).find((x) => x.minutes); return u ? `${u.minutes} мин` : ''; };
+
+  const unitById = (id) => D.units.find((u) => u.id === id);
+  const stepDone = (st) => { const u = st.kind === 'unit' && unitById(st.ref); return !!(u && u.fromLesson && done(u.fromLesson)); };
+  const stepGo = (st) => {
+    if (st.kind === 'page' && st.ref === 'neyroseti-bez-vpn') return "location.href='/tools/neyroseti-bez-vpn/'";
+    const u = st.kind === 'unit' && unitById(st.ref);
+    if (u && u.fromLesson && lessonOf(u.fromLesson) && lessonOf(u.fromLesson).content) return `V6.openTask('${u.task}','seller-path')`;
+    return null;
+  };
+  const plural = (n, a, b, c) => { const x = n % 10, y = n % 100; return x === 1 && y !== 11 ? a : x >= 2 && x <= 4 && (y < 12 || y > 14) ? b : c; };
+  const RES_KIND = { template: 'шаблон', checklist: 'чек-лист', calculator: 'калькулятор', tool: 'инструмент', 'prompt-set': 'промпты' };
+  const STEP_KIND = { unit: 'юнит', framework: 'фреймворк', page: 'страница' };
 
   // ---------- каркас ----------
   function setPage(on, active) {
@@ -192,21 +209,16 @@
     const cnt = (ids) => `${ids.filter(done).length}/${ids.length}`;
     const r = resume();
     const curIn = (ids) => ids.map(String).includes(String(r.id));
-    const row = (n, title, ids) => `<li class="${curIn(ids) ? 'is-now' : ''}"><span class="n">${n}</span><span>${e(title)}</span><span class="c">${curIn(ids) ? 'сейчас · ' : ''}${cnt(ids)}</span></li>`;
+    const mainRow = (n, title, ids) => ({ n, t: title, c: (curIn(ids) ? 'сейчас · ' : '') + cnt(ids), now: curIn(ids), on: "V6.open('paths')" });
     const sp = D.paths.rolePaths.find((p) => p.role === 'seller');
-    const stageCnt = (st) => `${st.tasks.filter(taskDone).length}/${st.tasks.length}`;
+    const stageCnt = (st) => `${st.steps.filter(stepDone).length}/${st.steps.length}`;
     const proj = TRACK_LESSONS.filter((l) => l.track === 'projects');
-    return `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Пути</h2><p>Общий старт для всех, потом каждый идёт своей дорогой. Тропинки — короткие ветки рядом.</p></div><button class="v6-link" onclick="V6.open('paths')">Все пути →</button></div>
+    const card = (img, label, title, rows, foot) => `<article class="v6-pcard">${art(img)}<div class="v6-pcard-in"><span class="v6-pcard-label">${label}</span><h3>${e(title)}</h3>${rowList(rows)}<span class="v6-pcard-foot">${foot}</span></div></article>`;
+    return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Пути</h2><p>Общий старт для всех, потом каждый идёт своей дорогой. Тропинки — короткие ветки рядом.</p></div>
       <div class="v6-grid3">
-        <div class="v6-card v6-chapter"><div class="v6-ph" aria-hidden="true">[3D: лестница]</div><span class="v6-meta">Главный путь</span><h3 class="v6-h3">${e(D.paths.main.title)}</h3>
-          <ul class="v6-rows">${row('I.', 'Общий старт · база ИИ', cs)}${row('II.', lv[0].title, lv[0].lessons)}${row('III.', lv[1].title, lv[1].lessons)}</ul>
-          <span class="v6-meta">4 уровня · каждый замыкается Вехой</span><button class="v6b is-soft is-sm" onclick="V6.open('paths')">Открыть путь</button></div>
-        <div class="v6-card v6-chapter"><div class="v6-ph" aria-hidden="true">[3D: витрина магазина]</div><span class="v6-meta">Путь роли · новое</span><h3 class="v6-h3">${e(sp.title)}</h3>
-          <ul class="v6-rows">${sp.stages.map((st, i) => `<li><span class="n">${['I.', 'II.', 'III.'][i]}</span><span>${e(st.title)}</span><span class="c">${stageCnt(st)}</span></li>`).join('')}</ul>
-          <span class="v6-meta">для роли «Продаю онлайн»</span><button class="v6b is-soft is-sm" onclick="V6.chooseRole('seller','paths')">Открыть путь</button></div>
-        <div class="v6-card v6-chapter"><div class="v6-ph" aria-hidden="true">[3D: шар]</div><span class="v6-meta">Тропинка</span><h3 class="v6-h3">Мини-проекты «За 1 час»</h3>
-          <ul class="v6-rows"><li><span class="n">I.</span><span>Проекты с кодом за час</span><span class="c">${proj.filter((l) => done(l.id)).length}/${proj.length}</span></li></ul>
-          <span class="v6-meta">сворачивает после уровня 1</span><button class="v6b is-soft is-sm" onclick="openSection('projects')">Открыть тропинку</button></div>
+        ${card('main-path', 'Главный путь', D.paths.main.title, [mainRow('I.', 'Общий старт · база ИИ', cs), mainRow('II.', lv[0].title, lv[0].lessons), mainRow('III.', lv[1].title, lv[1].lessons)], '4 уровня · каждый замыкается Вехой')}
+        ${card('seller-path', 'Путь роли · новое', sp.title, sp.stages.map((st, i) => ({ n: ROMAN[i] + '.', t: st.title, c: stageCnt(st), on: "V6.openSellerPath('home')" })), 'для роли «Продаю онлайн»')}
+        ${card('trail-projects', 'Тропинка', 'Мини-проекты «За 1 час»', [{ n: 'I.', t: 'Проекты с кодом за час', c: `${proj.filter((l) => done(l.id)).length}/${proj.length}`, on: "openSection('projects')" }], 'сворачивает после уровня 1')}
       </div></section>`;
   }
 
@@ -214,7 +226,7 @@
     const rv = D.tasks['seller.customers.reviews'];
     const ru = unitsOf(rv.id).find((u) => u.result) || {};
     const e5 = lessonOf('e5'), p1 = lessonOf('p1');
-    const card = (title, text, tags, on) => `<div class="v6-task"><h3>${e(title)}</h3><p>${e(text)}</p><div class="v6-tags">${tags.map((t) => `<span class="v6t">${e(t)}</span>`).join('')}</div><button class="v6b is-soft is-sm" onclick="${on}">Открыть задачу</button></div>`;
+    const card = (title, text, tags, on) => `<div class="v6-task"><h3>${e(title)}</h3><p>${e(text)}</p><div class="v6-tags">${tags.map((t) => `<span class="v6t">${e(t)}</span>`).join('')}</div><button class="v6b is-soft v6-task-btn" onclick="${on}">Открыть задачу</button></div>`;
     return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Часто делают</h2><button class="v6-link" onclick="V6.open('tasks')">Все задачи →</button></div>
       <div class="v6-grid3">
         ${card('Ответить на отзывы пачкой', ru.result || '', ['Продаю онлайн', taskMins(rv.id), ru.noVpn ? 'без VPN' : ''].filter(Boolean), "V6.openTask('seller.customers.reviews','home')")}
@@ -323,7 +335,7 @@
   }
   function mapBlock() {
     const g = D.groups.find((x) => x.id === 'seller');
-    return `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Карта задач</h2><p>Восемь направлений по P&amp;L. Готовые задачи кликабельны, будущие помечены «скоро».</p></div></div>
+    return `<section class="v6-sec"><div class="v6-sec-head is-split"><h2 class="v6-h2">Карта задач</h2><p>Восемь направлений по P&amp;L. Готовые задачи кликабельны, будущие помечены «скоро».</p></div>
       <div class="v6-dirs">${g.directions.map((d, i) => `<div class="v6-dir"><span class="num">${String(i + 1).padStart(2, '0')}</span><h3>${e(d.title)}</h3>${d.description ? `<p>${e(d.description)}</p>` : ''}
         <div class="v6-dir-rows">${d.tasks.map((t) => t.status === 'soon' ? `<span class="v6-dr is-soon"><span>${e(t.title)}</span><span class="m">скоро</span></span>`
           : `<a class="v6-dr" href="#" onclick="V6.openTask('${e(t.id)}','role'); return false;"><span>${taskDone(t.id) ? '✓ ' : ''}${e(t.title)}</span><span class="m${taskReady(t.id) ? '' : ' is-wip'}">${taskReady(t.id) ? taskMins(t.id) : 'в работе'}</span></a>`).join('')}</div></div>`).join('')}</div></section>`;
@@ -343,15 +355,16 @@
           const chans = ['Wildberries', 'Ozon', 'Яндекс Маркет', 'Свой сайт', 'Соцсети и Telegram'];
           const t = nextSellerTask();
           const sp = D.paths.rolePaths.find((p) => p.role === 'seller');
-          body = `<div class="v6-role-hero"><div><span class="v6t">Роль · новое</span><h1 class="v6-d" style="margin-top:20px !important">${e(r.title)}</h1>
-              <p class="v6-lead">Маркетплейсы и свои каналы. Задачи разложены так, как через бизнес проходят деньги.</p>
-              <fieldset style="border:0;padding:0;margin:28px 0 0"><legend class="v6-meta">Где продаёте</legend><div class="v6-check">${chans.map((c, i) => `<label><input type="checkbox" value="${e(c)}" ${ch.includes(c) ? 'checked' : ''} onchange="V6.channels(this)">${e(c)}</label>`).join('')}</div></fieldset>${pick}</div>
-              <div class="v6-ph" aria-hidden="true">[3D: пакет с покупкой]</div></div>
-            ${t ? `<section class="v6-sec" style="margin-top:56px"><div class="v6-dark v6-dark-row"><div><span class="v6-meta">Следующая задача для вашего магазина</span><h2 class="v6-h2" style="margin-top:12px !important">${e(t.title)}</h2></div><button class="v6b is-accent" onclick="V6.openTask('${e(t.id)}','role')">Начать</button></div></section>` : ''}
+          const tu = t && D.units.find((u) => u.task === t.id);
+          body = `<section class="v6-phero v6-rhero"><div class="v6-phero-text"><span class="v6-eyebrow">Роль · новое</span><h1 class="v6-d">${e(r.title)}</h1>
+              <p class="v6-phero-lead">Маркетплейсы и свои каналы. Задачи разложены так, как через бизнес проходят деньги.</p>
+              <fieldset class="v6-chan"><legend>Где продаёте</legend><div class="v6-check">${chans.map((c) => `<label><input type="checkbox" value="${e(c)}" ${ch.includes(c) ? 'checked' : ''} onchange="V6.channels(this)">${e(c)}</label>`).join('')}</div></fieldset>${pick}</div>
+              ${art('role-seller', 'v6-phero-art')}</section>
+            ${t ? `<a class="v6-next v6-dark" href="#" onclick="V6.openTask('${e(t.id)}','role'); return false;"><span class="v6-next-in"><span class="v6-next-l">Следующая задача для вашего магазина</span><span class="v6-next-t">${e(t.title)}</span>${tu && tu.result ? `<span class="v6-next-p">${e(tu.result)}. ≈ ${tu.minutes} минут.</span>` : ''}</span><span class="v6b is-accent v6-btn-xl">Начать</span></a>` : ''}
             ${mapBlock()}
-            <section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Путь роли</h2><p>${e(sp.title)}: маркетплейс, свой канал, единая система по деньгам.</p></div></div>
-              <div class="v6-grid3">${sp.stages.map((st, i) => `<div class="v6-card v6-chapter"><span class="v6-meta">${ROMAN[i]}</span><h3 class="v6-h3">${e(st.title)}</h3>${rowList(st.tasks.map((tid, j) => { const tt = D.tasks[tid]; return { n: taskDone(tid) ? '✓' : String(j + 1), t: tt.title, c: tt.status === 'soon' ? 'скоро' : tt.status === 'new' ? 'в работе' : taskMins(tid), on: tt.status === 'soon' ? null : `V6.openTask('${tid}','role')`, done: taskDone(tid) }; }))}</div>`).join('')}</div></section>
-            <p class="v6-door v6-sec" style="margin-top:56px">Для команд: обучим менеджеров маркетплейсов или внедрим ИИ под ключ. <a href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'role-seller' })">Для компаний →</a></p>`;
+            <section class="v6-sec"><a class="v6-rolepath v6-rolepath-lg" href="#path-seller" onclick="V6.openSellerPath('role'); return false;">${art('role-seller-path')}<span class="v6-rolepath-in"><span class="v6-pcard-label">Путь роли</span><span class="v6-rolepath-t">${e(sp.title)}</span><span class="v6-rolepath-p">Три этапа: ${sp.stages.map((st) => st.title.toLowerCase()).join(', ')}.</span>
+              <span class="v6-tags">${sp.stages.map((st) => `<span class="v6t is-grey">${e(st.title)}</span>`).join('')}</span><span><span class="v6b is-soft v6-btn-lg">Открыть путь</span></span></span></a></section>
+            <section class="v6-sec"><div class="v6-doorbox"><span>Для команд: обучим менеджеров маркетплейсов или внедрим ИИ под ключ.</span><a class="v6b is-soft v6-btn-lg" href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'role-seller' })">Для компаний</a></div></section>`;
         } else {
           const ls_ = byNoCode(r.lessons || []).map(lessonOf).filter(Boolean);
           const routes = (typeof ROUTES !== 'undefined' ? ROUTES : []).filter((x) => (r.legacyRoutes || []).includes(x.id));
@@ -398,24 +411,27 @@
         const result = (us.find((u) => u.result) || {}).result;
         const neigh = (t.direction.tasks || []).filter((x) => x.id !== id);
         const door = (us.find((u) => u.agencyDoor) || {}).agencyDoor;
-        const way = (u) => {
-          const meta = [u.minutes ? `≈ ${u.minutes} мин` : '', u.level || '', u.noVpn ? 'без VPN' : ''].filter(Boolean);
-          if (u.fromLesson && lessonOf(u.fromLesson) && lessonOf(u.fromLesson).content) {
-            return `<div class="v6-way"><span class="v6-meta">по уроку ${e(u.fromLesson)}</span><h3>${e(u.title)}</h3><p>${e(lessonOf(u.fromLesson).title)}</p>${meta.length ? `<div class="v6-tags">${meta.map((m) => `<span class="v6t">${e(m)}</span>`).join('')}</div>` : ''}<button class="v6b is-sm" style="align-self:flex-start" onclick="openLesson(${lessonArg(u.fromLesson)})">Начать</button></div>`;
-          }
-          return `<div class="v6-way is-soon"><span class="v6-meta">скоро</span><h3>${e(u.title)}</h3><p>Этот способ готовится.</p></div>`;
+        const needs = [...new Set(us.flatMap((u) => u.needs || []))];
+        const way = (u, i) => {
+          const meta = [u.minutes ? `≈ ${u.minutes} мин` : '', u.level || '', ...(u.tools || []), u.noVpn ? 'без VPN' : ''].filter(Boolean);
+          const ready = u.fromLesson && lessonOf(u.fromLesson) && lessonOf(u.fromLesson).content;
+          const label = us.length > 1 ? (u.level === 'уверенный' ? 'Продвинутый' : 'Простой') : 'Способ';
+          return `<article class="v6-way2${ready ? '' : ' is-soon'}"><span class="v6-pcard-label">${label}${ready ? '' : ' · скоро'}</span><h3>${e(u.title)}</h3>
+            <p>${ready ? `По уроку ${e(u.fromLesson)}: ${e(lessonOf(u.fromLesson).title)}` : 'Этот способ готовится.'}</p>
+            ${meta.length ? `<div class="v6-tags">${meta.map((m) => `<span class="v6t">${e(m)}</span>`).join('')}</div>` : ''}
+            ${ready ? `<span><button class="v6b v6-btn-lg ${i ? 'is-soft' : ''}" onclick="openLesson(${lessonArg(u.fromLesson)})">Начать</button></span>` : ''}</article>`;
         };
-        box.innerHTML = `<nav class="v6-crumbs" aria-label="Хлебные крошки"><a onclick="V6.chooseRole('seller','task')">Продаю онлайн</a><span>/</span><span>${e(t.direction.title)}</span><span>/</span><span>Задача</span></nav>
-          <div class="v6-role-hero" style="padding-top:16px"><div><h1 class="v6-d">${e(t.title)}</h1>
-            ${result ? `<h2 class="v6-h3" style="margin-top:32px !important">Что получите</h2><p class="v6-lead" style="margin-top:12px">${e(result)}</p>` : t.status === 'soon' ? '<p class="v6-lead">Задача готовится — скоро здесь появятся способы её решить.</p>' : ''}</div>
-            <div class="v6-ph" aria-hidden="true">[3D: объект задачи]</div></div>
-          <section class="v6-sec" style="margin-top:56px"><div class="v6-hero" style="padding-top:0;grid-template-columns:minmax(0,2fr) minmax(0,1fr)"><div>
-            <h2 class="v6-h2" style="margin-bottom:24px !important">Выберите способ</h2>
-            ${us.length ? `<div class="v6-grid2">${us.map(way).join('')}</div>` : '<div class="v6-way is-soon"><h3>Способы появятся</h3><p>Для этой задачи пока нет готового юнита.</p></div>'}</div>
+        box.innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.chooseRole('seller','task')">Продаю онлайн</a><span>/</span><a onclick="V6.chooseRole('seller','task')">${e(t.direction.title)}</a><span>/</span><span>Задача</span></nav>
+          <section class="v6-phero v6-thero"><div class="v6-phero-text"><h1 class="v6-d">${e(t.title)}</h1>
+            ${result ? `<div class="v6-gets"><span class="v6-pcard-label">Что получите</span><span>${e(result)}</span></div>` : `<div class="v6-gets"><span class="v6-pcard-label">Что получите</span><span>${t.status === 'soon' ? 'Задача готовится: скоро здесь появятся способы её решить.' : 'Описание результата появится вместе со способом.'}</span></div>`}</div>
+            ${art('task', 'v6-phero-art v6-sp-art')}</section>
+          <section class="v6-tsec"><h2 class="v6-h2">Выберите способ</h2>
+            ${us.length ? `<div class="v6-ways2">${us.map(way).join('')}</div>` : '<div class="v6-ways2"><article class="v6-way2 is-soon"><span class="v6-pcard-label">скоро</span><h3>Способы появятся</h3><p>Для этой задачи пока нет готового юнита.</p></article></div>'}</section>
+          <section class="v6-tsec v6-tbottom"><div class="v6-tmain">${needs.length ? `<div class="v6-needs"><h3>Что понадобится</h3>${needs.map((n) => `<div><span class="v6-needs-dot"></span>${e(n)}</div>`).join('')}</div>` : ''}</div>
             <aside class="v6-side"><button class="v6-note" onclick="umTrack('alyosha-open', { from: 'task' }); aleshaToggle()"><span class="v6-ava">А</span><span>Застряли или не знаете, с чего начать? Спросите, подскажу.</span></button>
-              ${neigh.length ? `<div class="v6-card" style="padding:24px"><span class="v6-meta">Соседние задачи</span><ul class="v6-rows" style="margin-top:8px">${neigh.map((x) => `<li><span class="n">·</span><span>${x.status === 'soon' ? e(x.title) : `<a onclick="V6.openTask('${e(x.id)}','task')">${e(x.title)}</a>`}</span><span class="c">${x.status === 'soon' ? 'скоро' : ''}</span></li>`).join('')}</ul></div>` : ''}
-              ${door ? `<p class="v6-door">${e(door)}. <a href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'task' })">Узнать →</a></p>` : ''}
-            </aside></div></section>`;
+              ${neigh.length ? `<div class="v6-neigh"><span class="v6-meta">Соседние задачи</span>${neigh.map((x) => x.status === 'soon' ? `<span class="v6-neigh-i is-soon"><span>${e(x.title)}</span><span class="m">скоро</span></span>` : `<a class="v6-neigh-i" href="#" onclick="V6.openTask('${e(x.id)}','task'); return false;"><span>${e(x.title)}</span><span class="m">${taskMins(x.id) || (taskReady(x.id) ? '' : 'в работе')}</span></a>`).join('')}</div>` : ''}
+              ${door ? `<div class="v6-tdoor"><span>${e(door)}</span><a href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'task' })">Узнать →</a></div>` : ''}
+            </aside></section>`;
       }).catch(() => fail('v6-task'));
     }, 'tasks');
   }
@@ -443,21 +459,70 @@
       };
       const trailWhere = { 'level-1': 'ответвляется после уровня 1', 'common-start': 'сразу после общего старта', 'level-2': 'рядом с уровнем 2' };
       const sp = D.paths.rolePaths.find((p) => p.role === 'seller');
-      document.getElementById('v6-paths').innerHTML = `<div class="v6-role-hero"><div><h1 class="v6-d">Пути</h1><p class="v6-lead">Главный путь ведёт от первых промптов к своим ИИ-приложениям. Пути ролей — к результату в работе. Тропинки — короткие ветки рядом.</p></div><div class="v6-ph" aria-hidden="true">[3D: лестница]</div></div>
-        <section class="v6-sec" style="margin-top:56px"><div class="v6-dark v6-dark-row"><div><span class="v6-meta">Главный путь · вы здесь, ${e(typeof r.id === 'number' ? 'урок ' + r.id : r.title)}</span><h2 class="v6-h2" style="margin-top:12px !important">${e(m.title)}</h2><p style="margin-top:12px;max-width:560px">Общий старт из пяти уроков, потом четыре уровня. Каждый замыкается Вехой — вещью, собранной своими руками.</p></div>
-          <div style="display:flex;gap:12px;flex-wrap:wrap"><button class="v6b is-accent" onclick="openLesson(${lArg})">Продолжить ${typeof r.id === 'number' ? 'урок ' + r.id : ''}</button><button class="v6b is-white" onclick="openSection('main')">Все уроки</button></div></div>
-          <div class="v6-ph v6-soon" style="height:160px;margin-top:20px">[схема пути — делает Руслан]</div></section>
-        <section class="v6-sec"><div class="v6-grid2">
-          <div class="v6-card v6-chapter">${head('Общий старт · для всех', isHere(m.commonStart.lessons))}<h3 class="v6-h3">${e(m.commonStart.title)}</h3><p class="v6-chap-desc">${e(m.commonStart.description)}</p>${startRows()}${foot('после урока 5 — развилка', 1)}</div>
-          ${m.levels.map(level).join('')}
-        </div></section>
-        <section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Пути ролей</h2></div><div class="v6-grid2">
-          <div class="v6-way"><span class="v6t">новое</span><h3>${e(sp.title)}</h3><p>${sp.stages.map((s) => s.title).join(', ')}.</p><button class="v6b is-sm" style="align-self:flex-start" onclick="V6.chooseRole('seller','paths')">Открыть путь</button></div>
-          <div class="v6-way is-soon"><span class="v6-meta">скоро</span><h3>Пути продакта, проджекта и маркетолога</h3><p>Пока у этих ролей уроки и наборы задач.</p></div></div></section>
-        <section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Тропинки</h2><p>Ветки рядом с путём. Пройденное засчитывается и в пути, и в роли.</p></div></div><div class="v6-grid3">
-          ${D.paths.trails.map((t) => { const ls2 = TRACK_LESSONS.filter((l) => l.track === t.id); return `<div class="v6-card v6-chapter" style="padding:12px 12px 24px"><div class="v6-ph" aria-hidden="true">[3D: ${e(t.title)}]</div><div style="padding:0 12px;display:flex;flex-direction:column;gap:10px"><span class="v6-meta">${t.branchAfter ? trailWhere[t.branchAfter] || '' : 'отдельный мир · открыт всем'}</span><h3 class="v6-h3" style="font-size:24px !important">${e(t.title)}</h3><span class="v6-meta">${ls2.filter((l) => done(l.id)).length}/${ls2.length} · ${t.hint ? e(t.hint) : 'без обязательной базы'}</span><button class="v6b is-soft is-sm" style="align-self:flex-start" onclick="openSection('${e(t.id)}')">Открыть</button></div></div>`; }).join('')}
-        </div></section>`;
+      const trailArt = { projects: 'trail-projects-2', everyday: 'trail-everyday', industry: 'trail-industry', claude: 'trail-claude', vibe: 'trail-vibe' };
+      const hereLabel = typeof r.id === 'number' ? 'урок ' + r.id : r.title;
+      document.getElementById('v6-paths').innerHTML = `<section class="v6-phero"><div class="v6-phero-text"><span class="v6-eyebrow">Пути</span><h1 class="v6-d">Всё, что идёт по порядку</h1><p class="v6-phero-lead">Главный путь ведёт от первых промптов к своим ИИ-приложениям. Пути ролей — к результату в работе. Тропинки — короткие ветки рядом.</p></div>${art('paths-hero', 'v6-phero-art')}</section>
+        <section class="v6-psec"><div class="v6-pmain"><div class="v6-pmain-text"><span class="v6-pcard-label">Главный путь · вы здесь, ${e(hereLabel)}</span><h2 class="v6-pmain-h">${e(m.title)}</h2><p>Общий старт из пяти уроков, потом четыре уровня. Каждый замыкается Вехой — вещью, собранной своими руками.</p>
+            <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="openLesson(${lArg})">Продолжить ${typeof r.id === 'number' ? 'урок ' + r.id : 'урок'}</button><button class="v6b is-soft v6-btn-lg" onclick="openSection('main')">Все уроки</button></span></div>
+            <div class="v6-scheme">[схема пути — делает Руслан]</div></div>
+          <div class="v6-pgrid">
+            <article class="v6-card v6-chapter">${head('Общий старт · для всех', isHere(m.commonStart.lessons))}<h3 class="v6-h3">${e(m.commonStart.title)}</h3><p class="v6-chap-desc">${e(m.commonStart.description)}</p>${startRows()}${foot('после урока 5 — развилка', 1)}</article>
+            ${m.levels.map(level).join('')}
+          </div></section>
+        <section class="v6-psec"><h2 class="v6-psec-h">Пути ролей</h2><div class="v6-pgrid">
+          <a class="v6-rolepath" href="#path-seller" onclick="V6.openSellerPath('paths'); return false;">${art('paths-seller')}<span class="v6-rolepath-in"><span><span class="v6t">новое</span></span><span class="v6-rolepath-t">${e(sp.title)}</span><span class="v6-rolepath-p">${sp.stages.map((x) => x.title).join(', ')} — по деньгам.</span></span></a>
+          <div class="v6-soonbox"><span class="v6-soonbox-l">Скоро</span><span class="v6-soonbox-t">Пути продакта, проджекта и маркетолога</span><span class="v6-soonbox-p">Пока у этих ролей уроки и наборы задач.</span></div></div></section>
+        <section class="v6-psec"><div class="v6-sec-head"><h2 class="v6-psec-h">Тропинки</h2><p>Ветки рядом с путём. Пройденное засчитывается и в пути, и в роли.</p></div>
+          <div class="v6-trails">${D.paths.trails.map((t) => `<a class="v6-trail" href="#" onclick="openSection('${e(t.id)}'); return false;">${art(trailArt[t.id] || 'trail-projects')}<span class="v6-trail-in"><span class="v6-trail-w">${t.branchAfter ? trailWhere[t.branchAfter] || '' : 'отдельный мир · открыт всем'}</span><span class="v6-trail-t">${e(t.title)}</span></span></a>`).join('')}</div></section>`;
     }).catch(() => fail('v6-paths'));
+  }
+
+  // ---------- путь продавца (SellerPath.dc.html; ресурсы и Вехи без действия до этапа 2) ----------
+  function openSellerPath(from) {
+    go('path-seller', () => {
+      shell('<div class="v6c" id="v6-sp"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
+      load().then(() => {
+        track('path-open', { path: 'seller', from: from || 'link' });
+        const sp = D.paths.rolePaths.find((p) => p.role === 'seller');
+        const all = sp.stages.flatMap((st) => st.steps);
+        const cur = all.find((x) => !x.optional && !stepDone(x) && stepGo(x));
+        const curStage = sp.stages.find((st) => st.steps.includes(cur)) || sp.stages[0];
+        const res = (id) => D.resources.find((r) => r.id === id);
+        const chip = (r) => `<span class="v6-rchip"><span>${e(RES_KIND[r.kind] || r.kind)}</span>${e(r.title)}</span>`;
+        const step = (x) => {
+          const go = stepGo(x), isDone = stepDone(x), isCur = x === cur;
+          const title = go ? `<a class="v6-step-t" href="#" onclick="${go}; return false;">${e(x.title)}</a>` : `<span class="v6-step-t">${e(x.title)}</span>`;
+          const rs = (x.resources || []).map(res).filter(Boolean);
+          return `<div class="v6-step${isCur ? ' is-now' : ''}"><span class="v6-dotc${isDone ? ' is-done' : isCur ? ' is-now' : ''}">${isDone ? '✓' : ''}</span>
+            <div class="v6-step-b"><span class="v6-step-tags"><span class="v6t is-sm">${e(STEP_KIND[x.kind] || x.kind)}</span>${x.optional ? '<span class="v6-step-s">по желанию</span>' : ''}${!go && !isDone ? '<span class="v6-step-s">скоро</span>' : ''}</span>${title}${rs.length ? `<span class="v6-rchips">${rs.map(chip).join('')}</span>` : ''}</div>
+            <span class="v6-step-m">${x.minutes ? x.minutes + ' мин' : ''}</span></div>`;
+        };
+        const door = (st) => { const d = st.milestone && st.milestone.agencyDoor; return d ? `<div class="v6-mdoor"><span>${e(d)}</span><a href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'seller-path' })">Узнать →</a></div>` : ''; };
+        const stage = (st) => {
+          const req = st.steps.filter((x) => !x.optional).length, opt = st.steps.length - req;
+          const label = st === curStage ? 'вы здесь' : st.steps.every(stepDone) ? 'пройден' : 'дальше';
+          const m = st.milestone;
+          return `<section class="v6-stage"><div class="v6-stage-head"><div><span class="v6-pcard-label">Этап ${st.n} · ${label}</span><h2 class="v6-pmain-h">${e(st.title)} <span class="v6-stage-pr">— ${e(st.promise)}</span></h2></div><span class="v6-pcard-label">${req} ${plural(req, 'шаг', 'шага', 'шагов')}${opt ? ` · ${opt} по желанию` : ''}</span></div>
+            <div class="v6-steps-list">${st.steps.map(step).join('')}</div>
+            ${m ? `<div class="v6-mile"><div class="v6-mile-l"><span class="v6-mile-e">Веха этапа ${st.n} · Алёша сверит по рубрике</span><span class="v6-mile-t">${e(m.title)}</span><span class="v6-mile-g">${e(m.gives || '')}</span><span><span class="v6-mile-b">Собрать ${e(m.title.charAt(0).toLowerCase() + m.title.slice(1))}</span> <span class="v6-mile-soon">скоро</span></span></div>
+              <div class="v6-mile-r">${(m.rubric || []).map((c) => `<span><span class="v6-mile-dot">${c.must ? '●' : '○'}</span>${e(c.criterion)}</span>`).join('')}</div>${door(st)}</div>` : ''}</section>`;
+        };
+        const groups = [['Шаблоны', ['template']], ['Чек-листы', ['checklist']], ['Калькуляторы', ['calculator']], ['Инструменты', ['tool']], ['Промпты', ['prompt-set']]]
+          .map(([t, kinds]) => [t, D.resources.filter((r) => kinds.includes(r.kind) && (r.roles || []).includes('seller'))]).filter(([, rs]) => rs.length);
+        document.getElementById('v6-sp').innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.open('paths')">Пути</a><span>/</span><a onclick="V6.chooseRole('seller','seller-path')">Продаю онлайн</a><span>/</span><span>${e(sp.title)}</span></nav>
+          <section class="v6-phero" style="padding-top:24px;padding-bottom:56px"><div class="v6-phero-text"><span class="v6-eyebrow">Путь роли · Продаю онлайн</span><h1 class="v6-d">${e(sp.title)}</h1>
+            <p class="v6-phero-lead">Три этапа по деньгам: ${sp.stages.map((x) => x.promise).join(', ')}. Не уроки, а вещи для работы: юниты, методы, шаблоны, калькуляторы, чек-листы.</p>
+            <span class="v6-tags"><span class="v6t is-sm">этап ${curStage.n} из ${sp.stages.length}</span><span class="v6t is-sm is-grey">${sp.stages.filter((x) => x.milestone).length} Вехи</span><span class="v6t is-sm is-grey">${D.resources.length} полезных вещей</span></span></div>${art('seller-path-hero', 'v6-phero-art v6-sp-art')}</section>
+          <div class="v6-sp-body">
+            <section class="v6-prep"><span class="v6-prep-h">Подготовка · ${(sp.prep || []).reduce((n, x) => n + (x.minutes || 0), 0)} минут</span><div class="v6-prep-g">${(sp.prep || []).map((x) => { const go = stepGo(x); const inner = `<span class="v6-prep-l"><span class="v6-dotc">${''}</span><span class="v6-prep-t">${e(x.title)}</span></span><span class="v6-prep-m">${e(STEP_KIND[x.kind] || x.kind)} · ${x.minutes} мин${go ? '' : ' · скоро'}</span>`;
+              return go ? `<a class="v6-prep-i" href="#" onclick="${go}; return false;">${inner}</a>` : `<span class="v6-prep-i">${inner}</span>`; }).join('')}</div></section>
+            ${sp.stages.map(stage).join('')}
+            <section class="v6-kit"><div class="v6-sec-head"><h2 class="v6-psec-h">Набор продавца</h2><p>Пришли не учиться, а забрать таблицу? Всё полезное из пути — здесь, без порядка.</p></div>
+              <div class="v6-kit-g">${groups.map(([t, rs]) => `<div class="v6-kit-c"><span class="v6-kit-h"><span>${e(t)}</span><span class="v6-meta">${rs.length}</span></span><div class="v6-kit-l">${rs.map((r) => `<span class="v6-kit-i"><span class="v6-kit-t">${e(r.title)}</span><span class="v6-kit-g2">${e(r.gives || '')}</span>${r.status === 'ready' ? '' : '<span class="v6-kit-s">скоро</span>'}</span>`).join('')}</div></div>`).join('')}</div>
+              ${sp.note ? `<p class="v6-sp-note">${e(sp.note)}</p>` : ''}</section>
+          </div>`;
+      }).catch(() => fail('v6-sp'));
+    }, 'paths');
   }
 
   // ---------- Знания (минимум 1а; полный раздел — этап 1б) ----------
@@ -481,6 +546,7 @@
     if (PAGES[hash]) { open(hash); return true; }
     let m = hash.match(/^role-([a-z]+)$/); if (m) { openRole(m[1], 'link'); return true; }
     m = hash.match(/^task-([a-z0-9.-]+)$/); if (m) { openTask(m[1], 'link'); return true; }
+    if (hash === 'path-seller') { openSellerPath('link'); return true; }
     return false;
   }
 
@@ -530,5 +596,5 @@
     });
   }
 
-  window.V6 = { install, route, open, openTask, openRole, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
+  window.V6 = { install, route, open, openTask, openRole, openSellerPath, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
 })();

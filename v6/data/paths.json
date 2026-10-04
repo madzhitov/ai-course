@@ -268,33 +268,306 @@
    "id": "seller",
    "title": "От селлера к бренду",
    "role": "seller",
+   "prep": [
+    {
+     "kind": "framework",
+     "ref": "four-part-request",
+     "title": "Запрос из четырёх частей",
+     "minutes": 5,
+     "optional": false,
+     "status": "ready"
+    },
+    {
+     "kind": "page",
+     "ref": "neyroseti-bez-vpn",
+     "title": "Нейросети без VPN",
+     "minutes": 5,
+     "optional": false,
+     "status": "ready"
+    }
+   ],
    "stages": [
     {
+     "n": 1,
+     "id": "marketplace",
      "title": "Маркетплейс",
-     "tasks": [
-      "seller.listing.description",
-      "seller.customers.reviews",
-      "seller.channels.unit-economics",
-      "seller.assortment.competitors"
-     ]
+     "promise": "товар зарабатывает",
+     "steps": [
+      {
+       "kind": "framework",
+       "ref": "ecom-pnl",
+       "title": "E-commerce как P&L",
+       "minutes": 10,
+       "optional": false,
+       "status": "planned"
+      },
+      {
+       "kind": "unit",
+       "ref": "u-unit-economics-channels",
+       "title": "Юнит-экономика по каналам",
+       "minutes": 30,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-sku-calc",
+        "r-ue-table"
+       ]
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-competitors",
+       "title": "Разбор десяти конкурентов",
+       "minutes": 40,
+       "optional": false,
+       "status": "planned"
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-pains",
+       "title": "Боли покупателей из отзывов конкурентов",
+       "minutes": 30,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-competitor-reviews-tool"
+       ]
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-description",
+       "title": "Описание товара для всех каналов",
+       "minutes": 20,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-listing-checklist"
+       ]
+      },
+      {
+       "kind": "framework",
+       "ref": "listing-funnel",
+       "title": "Воронка карточки",
+       "minutes": 15,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-funnel-tool"
+       ]
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-reviews",
+       "title": "Ответы на отзывы пачкой",
+       "minutes": 15,
+       "optional": false,
+       "status": "ready",
+       "resources": [
+        "r-brand-voice"
+       ]
+      },
+      {
+       "kind": "framework",
+       "ref": "drr-romi",
+       "title": "ДРР и ROMI",
+       "minutes": 15,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-ads-threshold",
+        "r-ads-checklist"
+       ]
+      }
+     ],
+     "milestone": {
+      "id": "m-product-passport",
+      "title": "Паспорт товара",
+      "gives": "Один документ: экономика, конкуренты, карточка, порог рекламы",
+      "rubric": [
+       {
+        "criterion": "Посчитана юнит-экономика реального товара",
+        "must": true
+       },
+       {
+        "criterion": "Названы три главные боли покупателей из отзывов",
+        "must": true
+       },
+       {
+        "criterion": "Карточка прошла чек-лист",
+        "must": true
+       },
+       {
+        "criterion": "Посчитан порог рекламы",
+        "must": true
+       },
+       {
+        "criterion": "Есть одно решение, что изменить в первую очередь",
+        "must": false
+       }
+      ]
+     }
     },
     {
+     "n": 2,
+     "id": "own-channel",
      "title": "Свой канал",
-     "tasks": [
-      "seller.customers.repeat",
-      "seller.listing.social",
-      "seller.listing.keywords"
-     ]
+     "promise": "клиент твой",
+     "steps": [
+      {
+       "kind": "framework",
+       "ref": "contribution-margin-channels",
+       "title": "Маржинальный доход по каналам",
+       "minutes": 15,
+       "optional": false,
+       "status": "planned"
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-social",
+       "title": "Контент под товар для соцсетей и Telegram",
+       "minutes": 30,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-content-plan",
+        "r-social-prompts"
+       ]
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-repeat",
+       "title": "Повторные продажи по своей базе",
+       "minutes": 35,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-customer-base"
+       ]
+      },
+      {
+       "kind": "framework",
+       "ref": "rfm",
+       "title": "RFM",
+       "minutes": 15,
+       "optional": false,
+       "status": "planned"
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-competitors-pro",
+       "title": "Ресёрчер конкурентов (мини-проект, с кодом)",
+       "minutes": 75,
+       "optional": true,
+       "status": "planned"
+      }
+     ],
+     "milestone": {
+      "id": "m-own-base",
+      "title": "Своя база работает",
+      "gives": "База разделена на группы, первая цепочка повторной продажи запущена",
+      "rubric": [
+       {
+        "criterion": "База собрана в таблицу с группами RFM",
+        "must": true
+       },
+       {
+        "criterion": "Запущена одна цепочка повторной продажи",
+        "must": true
+       },
+       {
+        "criterion": "Посчитано, какой канал выгоднее для повторных продаж",
+        "must": false
+       }
+      ]
+     }
     },
     {
+     "n": 3,
+     "id": "system",
      "title": "Единая система",
-     "tasks": [
-      "seller.money.weekly",
-      "seller.stock.plan",
-      "seller.money.pnl"
-     ]
+     "promise": "магазин как P&L",
+     "steps": [
+      {
+       "kind": "framework",
+       "ref": "abc-xyz",
+       "title": "ABC / XYZ-анализ",
+       "minutes": 15,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-assortment-matrix"
+       ]
+      },
+      {
+       "kind": "framework",
+       "ref": "stock-turnover",
+       "title": "Оборачиваемость и запасы",
+       "minutes": 15,
+       "optional": false,
+       "status": "planned"
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-stock",
+       "title": "План остатков на все каналы",
+       "minutes": 30,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-stock-plan",
+        "r-supply-checklist"
+       ]
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-weekly",
+       "title": "Сводный недельный отчёт",
+       "minutes": 40,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-pnl-store"
+       ]
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-assistant",
+       "title": "Помощник продавца Wildberries (мини-проект)",
+       "minutes": 90,
+       "optional": true,
+       "status": "planned"
+      },
+      {
+       "kind": "framework",
+       "ref": "reputation-reviews",
+       "title": "Репутация и отзывы",
+       "minutes": 15,
+       "optional": false,
+       "status": "planned"
+      }
+     ],
+     "milestone": {
+      "id": "m-store-pnl",
+      "title": "P&L магазина",
+      "gives": "Сводный отчёт по всем каналам: выручка, маржа, расходы, прибыль",
+      "rubric": [
+       {
+        "criterion": "В отчёте все каналы продаж",
+        "must": true
+       },
+       {
+        "criterion": "Есть маржа по каналам и итоговая прибыль",
+        "must": true
+       },
+       {
+        "criterion": "Названы два решения на следующий месяц",
+        "must": true
+       }
+      ],
+      "agencyDoor": "Хотите, чтобы отчёт собирался сам? Услуга агентства, пример — Бертольд"
+     }
     }
-   ]
+   ],
+   "note": "ORM-модуль остаётся услугой агентства: в путь входит только карточка-метод «Репутация и отзывы»."
   }
  ],
  "trails": [

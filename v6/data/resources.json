@@ -1,0 +1,332 @@
+{
+ "version": "2026-10-04",
+ "resources": [
+  {
+   "id": "r-ue-table",
+   "kind": "template",
+   "title": "Таблица юнит-экономики по каналам",
+   "gives": "Таблица: маржа с одной продажи на каждом канале",
+   "format": "google-sheets",
+   "link": null,
+   "roles": [
+    "seller"
+   ],
+   "tasks": [
+    "seller.channels.unit-economics"
+   ],
+   "basedOn": [
+    "unit-economics-sku"
+   ],
+   "units": [
+    "u-unit-economics-channels"
+   ],
+   "minutes": 10,
+   "status": "planned"
+  },
+  {
+   "id": "r-sku-calc",
+   "kind": "calculator",
+   "title": "Калькулятор SKU",
+   "gives": "Маржинальный доход товара за минуту",
+   "format": "web",
+   "link": "framework:unit-economics-sku",
+   "roles": [
+    "seller"
+   ],
+   "tasks": [
+    "seller.channels.unit-economics"
+   ],
+   "basedOn": [
+    "unit-economics-sku"
+   ],
+   "units": [],
+   "minutes": 3,
+   "status": "ready"
+  },
+  {
+   "id": "r-competitor-reviews-tool",
+   "kind": "tool",
+   "title": "Разбор отзывов конкурентов",
+   "gives": "Загрузил выгрузку отзывов — получил список болей покупателей",
+   "format": "web",
+   "link": null,
+   "roles": [
+    "seller"
+   ],
+   "tasks": [
+    "seller.assortment.pains",
+    "seller.assortment.competitors"
+   ],
+   "basedOn": [
+    "jtbd"
+   ],
+   "units": [
+    "u-seller-pains"
+   ],
+   "minutes": 10,
+   "status": "planned",
+   "privacy": "Файл обрабатывается в браузере и никуда не отправляется"
+  },
+  {
+   "id": "r-listing-checklist",
+   "kind": "checklist",
+   "title": "Чек-лист карточки товара",
+   "gives": "Проверка карточки перед публикацией: фото, заголовок, характеристики, ответы",
+   "format": "pdf",
+   "link": null,
+   "roles": [
+    "seller"
+   ],
+   "tasks": [
+    "seller.listing.description"
+   ],
+   "basedOn": [
+    "aida"
+   ],
+   "units": [
+    "u-seller-description"
+   ],
+   "minutes": 10,
+   "status": "planned"
+  },
+  {
+   "id": "r-funnel-tool",
+   "kind": "tool",
+   "title": "Воронка карточки",
+   "gives": "Вставил показы, клики, корзину, заказы и выкуп — увидел, где теряешь",
+   "format": "web",
+   "link": null,
+   "roles": [
+    "seller"
+   ],
+   "tasks": [
+    "seller.listing.funnel"
+   ],
+   "basedOn": [
+    "listing-funnel"
+   ],
+   "units": [],
+   "minutes": 5,
+   "status": "planned",
+   "privacy": "Файл обрабатывается в браузере и никуда не отправляется"
+  },
+  {
+   "id": "r-brand-voice",
+   "kind": "template",
+   "title": "Голос бренда",
+   "gives": "Документ: как вы говорите с покупателями, примеры и запреты",
+   "format": "docx",
+   "link": null,
+   "roles": [
+    "seller",
+    "marketing"
+   ],
+   "tasks": [
+    "seller.customers.reviews",
+    "seller.listing.social"
+   ],
+   "basedOn": [
+    "four-part-request"
+   ],
+   "units": [
+    "u-seller-reviews"
+   ],
+   "minutes": 15,
+   "status": "planned"
+  },
+  {
+   "id": "r-ads-threshold",
+   "kind": "calculator",
+   "title": "Порог рекламы",
+   "gives": "Сколько можно тратить на рекламу и не уйти в минус",
+   "format": "web",
+   "link": null,
+   "roles": [
+    "seller"
+   ],
+   "tasks": [
+    "seller.promo.ads-threshold"
+   ],
+   "basedOn": [
+    "drr-romi",
+    "unit-economics-sku"
+   ],
+   "units": [],
+   "minutes": 5,
+   "status": "planned"
+  },
+  {
+   "id": "r-ads-checklist",
+   "kind": "checklist",
+   "title": "Чек-лист перед запуском рекламы",
+   "gives": "Экономика, карточка, остатки и цель кампании — до первого рубля",
+   "format": "pdf",
+   "link": null,
+   "roles": [
+    "seller"
+   ],
+   "tasks": [
+    "seller.promo.ads-threshold"
+   ],
+   "basedOn": [
+    "drr-romi"
+   ],
+   "units": [],
+   "minutes": 5,
+   "status": "planned"
+  },
+  {
+   "id": "r-content-plan",
+   "kind": "template",
+   "title": "Контент-план на месяц",
+   "gives": "Таблица постов и сторис под товары с датами и форматами",
+   "format": "google-sheets",
+   "link": null,
+   "roles": [
+    "seller",
+    "marketing"
+   ],
+   "tasks": [
+    "seller.listing.social"
+   ],
+   "basedOn": [],
+   "units": [
+    "u-seller-social"
+   ],
+   "minutes": 15,
+   "status": "planned"
+  },
+  {
+   "id": "r-social-prompts",
+   "kind": "prompt-set",
+   "title": "Промпты для соцсетей и Telegram",
+   "gives": "Набор промптов: пост, сторис, подборка, ответ подписчику",
+   "format": "web",
+   "link": null,
+   "roles": [
+    "seller",
+    "marketing"
+   ],
+   "tasks": [
+    "seller.listing.social"
+   ],
+   "basedOn": [
+    "four-part-request"
+   ],
+   "units": [
+    "u-seller-social"
+   ],
+   "minutes": null,
+   "status": "planned"
+  },
+  {
+   "id": "r-customer-base",
+   "kind": "template",
+   "title": "База клиентов с RFM",
+   "gives": "Таблица базы с автоматическими группами по давности, частоте и сумме",
+   "format": "google-sheets",
+   "link": null,
+   "roles": [
+    "seller"
+   ],
+   "tasks": [
+    "seller.customers.repeat"
+   ],
+   "basedOn": [
+    "rfm"
+   ],
+   "units": [
+    "u-seller-repeat"
+   ],
+   "minutes": 20,
+   "status": "planned"
+  },
+  {
+   "id": "r-assortment-matrix",
+   "kind": "template",
+   "title": "Ассортиментная матрица",
+   "gives": "Таблица: роли товаров, ценовая лестница, ABC/XYZ",
+   "format": "google-sheets",
+   "link": null,
+   "roles": [
+    "seller"
+   ],
+   "tasks": [
+    "seller.assortment.matrix"
+   ],
+   "basedOn": [
+    "abc-xyz"
+   ],
+   "units": [],
+   "minutes": 20,
+   "status": "planned"
+  },
+  {
+   "id": "r-stock-plan",
+   "kind": "template",
+   "title": "План остатков на все каналы",
+   "gives": "Таблица: продажи в день, запас в днях, когда заказывать",
+   "format": "google-sheets",
+   "link": null,
+   "roles": [
+    "seller"
+   ],
+   "tasks": [
+    "seller.stock.plan"
+   ],
+   "basedOn": [
+    "stock-turnover"
+   ],
+   "units": [
+    "u-seller-stock"
+   ],
+   "minutes": 20,
+   "status": "planned"
+  },
+  {
+   "id": "r-supply-checklist",
+   "kind": "checklist",
+   "title": "Чек-лист перед поставкой",
+   "gives": "Остатки, оборачиваемость, сезон и деньги — до заказа",
+   "format": "pdf",
+   "link": null,
+   "roles": [
+    "seller"
+   ],
+   "tasks": [
+    "seller.stock.plan"
+   ],
+   "basedOn": [
+    "stock-turnover"
+   ],
+   "units": [
+    "u-seller-stock"
+   ],
+   "minutes": 5,
+   "status": "planned"
+  },
+  {
+   "id": "r-pnl-store",
+   "kind": "template",
+   "title": "P&L магазина",
+   "gives": "Сводная таблица по всем каналам: выручка, маржа, расходы, прибыль",
+   "format": "google-sheets",
+   "link": null,
+   "roles": [
+    "seller"
+   ],
+   "tasks": [
+    "seller.money.pnl",
+    "seller.money.weekly"
+   ],
+   "basedOn": [
+    "ecom-pnl"
+   ],
+   "units": [
+    "u-seller-weekly"
+   ],
+   "minutes": 30,
+   "status": "planned"
+  }
+ ]
+}
