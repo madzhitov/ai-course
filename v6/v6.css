@@ -240,3 +240,21 @@ html:root { --header:80px; } /* старый каркас отступает о�
 .v6-page .v6-crumbs a:hover { color:var(--accent) !important; }
 /* иконки шапки: старые правила для svg в шапке их сжимали */
 .v6h .v6-icon svg { width:20px !important; height:20px !important; flex-shrink:0; }
+
+/* строки списков и карточки-главы — по макету Path.dc.html */
+.v6-list { display:flex; flex-direction:column; border-bottom:1px solid var(--line); }
+.v6-page .v6-list .v6-li { display:grid !important; grid-template-columns:40px minmax(0,1fr) auto; gap:10px; align-items:center; min-height:56px; padding:8px 0; border-top:1px solid var(--line); color:var(--ink) !important; text-decoration:none !important; font-size:17px; }
+.v6-page .v6-list a.v6-li:hover .t { color:var(--accent); }
+.v6-list .n { color:var(--text-3); }
+.v6-list .c { font-size:15px; color:var(--text-3); white-space:nowrap; }
+.v6-list .is-now .c { color:var(--accent); font-weight:600; }
+.v6-list .is-done .n { color:var(--ink); }
+.v6-list .is-off { color:var(--text-2) !important; }
+.v6-chapter { gap:10px; }
+.v6-chapter .v6-h3 { font-size:30px !important; }
+.v6-chap-head { display:flex; justify-content:space-between; align-items:center; gap:12px; min-height:36px; }
+.v6-chap-head .v6-meta { font-size:16px; color:var(--text-2); }
+.v6-chap-desc { margin:0 0 12px; font-size:17px; color:var(--text-2); }
+.v6-chap-foot { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; padding-top:12px; font-size:16px; margin-top:auto; }
+.v6-page a.v6-quiz { color:var(--accent) !important; font-weight:600; text-decoration:none !important; min-height:var(--h-btn-sm); display:inline-flex; align-items:center; }
+.v6-page a.v6-quiz:hover { text-decoration:underline !important; text-underline-offset:4px; }

@@ -26,6 +26,16 @@
   const byNoCode = (ids) => [...ids].sort((a, b) => rank(a) - rank(b));
   const anyProgress = () => Object.keys(progress || {}).some((k) => progress[k] === true);
 
+  // строка списка как в макете: номер · название · справа счётчик/статус; кликается вся строка
+  function rowList(items) {
+    return `<div class="v6-list">${items.map((it) => {
+      const inner = `<span class="n">${e(it.n)}</span><span class="t">${e(it.t)}</span><span class="c">${e(it.c || '')}</span>`;
+      return it.on ? `<a class="v6-li${it.now ? ' is-now' : ''}${it.done ? ' is-done' : ''}" href="#" onclick="${it.on}; return false;">${inner}</a>`
+        : `<span class="v6-li is-off">${inner}</span>`;
+    }).join('')}</div>`;
+  }
+  const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
+
   // ---------- данные ----------
   let D = null, loading = null;
   function load() {
@@ -340,7 +350,7 @@
             ${t ? `<section class="v6-sec" style="margin-top:56px"><div class="v6-dark v6-dark-row"><div><span class="v6-meta">Следующая задача для вашего магазина</span><h2 class="v6-h2" style="margin-top:12px !important">${e(t.title)}</h2></div><button class="v6b is-accent" onclick="V6.openTask('${e(t.id)}','role')">Начать</button></div></section>` : ''}
             ${mapBlock()}
             <section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Путь роли</h2><p>${e(sp.title)}: маркетплейс, свой канал, единая система по деньгам.</p></div></div>
-              <div class="v6-grid3">${sp.stages.map((st, i) => `<div class="v6-card"><span class="v6-meta">${['I', 'II', 'III'][i]}</span><h3 class="v6-h3" style="margin:8px 0 12px !important">${e(st.title)}</h3><ul class="v6-rows">${st.tasks.map((tid) => { const tt = D.tasks[tid]; return `<li><span class="n">${taskDone(tid) ? '✓' : '·'}</span><span>${tt.status === 'soon' ? e(tt.title) : `<a onclick="V6.openTask('${e(tid)}','role')">${e(tt.title)}</a>`}</span><span class="c">${tt.status === 'new' ? 'в работе' : ''}</span></li>`; }).join('')}</ul></div>`).join('')}</div></section>
+              <div class="v6-grid3">${sp.stages.map((st, i) => `<div class="v6-card v6-chapter"><span class="v6-meta">${ROMAN[i]}</span><h3 class="v6-h3">${e(st.title)}</h3>${rowList(st.tasks.map((tid, j) => { const tt = D.tasks[tid]; return { n: taskDone(tid) ? '✓' : String(j + 1), t: tt.title, c: tt.status === 'soon' ? 'скоро' : tt.status === 'new' ? 'в работе' : taskMins(tid), on: tt.status === 'soon' ? null : `V6.openTask('${tid}','role')`, done: taskDone(tid) }; }))}</div>`).join('')}</div></section>
             <p class="v6-door v6-sec" style="margin-top:56px">Для команд: обучим менеджеров маркетплейсов или внедрим ИИ под ключ. <a href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'role-seller' })">Для компаний →</a></p>`;
         } else {
           const ls_ = byNoCode(r.lessons || []).map(lessonOf).filter(Boolean);
@@ -417,16 +427,20 @@
       const r = resume();
       const lArg = lessonArg(r.id);
       const m = D.paths.main;
-      const step = (id) => { const l = lessonOf(id); if (!l) return ''; const now = String(r.id) === String(id) && !done(id);
-        return `<li class="${done(id) ? 'is-done' : now ? 'is-now' : ''}"><a onclick="openLesson(${lessonArg(id)})"><span class="dot">${done(id) ? '✓' : ''}</span><span>${e(id)}. ${e(l.title)}</span><span class="v6-meta">${done(id) ? 'пройден' : now ? 'сейчас' : l.content ? (l.duration ? l.duration + ' мин' : '') : 'пишется'}</span></a></li>`; };
       const cnt = (ids) => `${ids.filter(done).length}/${ids.length}`;
       const isHere = (ids) => ids.map(String).includes(String(r.id));
-      const level = (lv) => { const ph = PHASES.find((p) => p.id === lv.n); const quiz = typeof QUIZZES !== 'undefined' && QUIZZES[lv.n];
-        return `<div class="v6-card v6-chapter" ${isHere(lv.lessons) ? 'style="box-shadow:inset 0 0 0 3px var(--accent)"' : ''}><span class="v6-meta">Уровень ${lv.n}${isHere(lv.lessons) ? ' · вы здесь' : ''}</span><h3 class="v6-h3">${e(lv.title)}</h3><p style="margin:0;color:var(--text-2)">${e(ph ? ph.subtitle : '')}</p>
-          <ul class="v6-rows"><li><span class="n">уроки</span><span>${lv.lessons.filter((id) => lessonOf(id) && lessonOf(id).content).length} готово из ${lv.lessons.length}</span><span class="c">${cnt(lv.lessons)}</span></li></ul>
-          <p class="v6-veha">Веха · ${lv.milestone ? `<a class="v6-link" onclick="openLesson(${lessonArg(lv.milestone.lesson)})">${e(lv.milestone.title)}</a>` : 'появится вместе с уроками'}</p>
-          ${lv.note ? `<span class="v6t is-grey">${e(lv.note)}</span>` : ''}
-          <div style="display:flex;gap:12px;flex-wrap:wrap"><button class="v6b is-soft is-sm" onclick="openSection('main')">Уроки уровня</button>${quiz ? `<button class="v6-link" onclick="openQuiz(${lv.n})">Проверка уровня →</button>` : ''}</div></div>`; };
+      const quizLink = (n) => (typeof QUIZZES !== 'undefined' && QUIZZES[n]) ? `<a class="v6-quiz" href="#" onclick="openQuiz(${n}); return false;">Проверка уровня →</a>` : '';
+      const head = (label, here) => `<div class="v6-chap-head"><span class="v6-meta">${label}</span>${here ? '<span class="v6t is-sm">вы здесь</span>' : ''}</div>`;
+      const foot = (veha, n) => `<div class="v6-chap-foot"><span><span class="v6-meta">Веха · </span>${e(veha)}</span>${quizLink(n)}</div>`;
+      const firstOpen = (ids) => ids.find((id) => !done(id) && lessonOf(id) && lessonOf(id).content) || ids[0];
+      const startRows = () => rowList(m.commonStart.lessons.map((id) => { const l = lessonOf(id); const now = String(r.id) === String(id) && !done(id);
+        return { n: id, t: shortLessonLabel(l.title), c: done(id) ? 'пройден' : now ? 'сейчас' : (l.duration ? l.duration + ' мин' : ''), on: `openLesson(${lessonArg(id)})`, now, done: done(id) }; }));
+      const level = (lv) => {
+        const rows = rowList(lv.chapters.map((ch, i) => { const ready = ch.lessons.some((id) => lessonOf(id) && lessonOf(id).content); const now = isHere(ch.lessons);
+          return { n: ROMAN[i], t: ch.title, c: !ready ? 'пишется' : now ? 'сейчас' : cnt(ch.lessons), on: ready ? `openLesson(${lessonArg(firstOpen(ch.lessons))})` : null, now }; }));
+        return `<div class="v6-card v6-chapter">${head('Уровень ' + lv.n, isHere(lv.lessons))}<h3 class="v6-h3">${e(lv.title)}</h3><p class="v6-chap-desc">${e(lv.description || '')}</p>${rows}
+          ${lv.note ? `<p class="v6-meta" style="margin:0">${e(lv.note.charAt(0).toUpperCase() + lv.note.slice(1))}</p>` : ''}${foot(lv.milestone ? lv.milestone.title : 'появится вместе с уроками', lv.n)}</div>`;
+      };
       const trailWhere = { 'level-1': 'ответвляется после уровня 1', 'common-start': 'сразу после общего старта', 'level-2': 'рядом с уровнем 2' };
       const sp = D.paths.rolePaths.find((p) => p.role === 'seller');
       document.getElementById('v6-paths').innerHTML = `<div class="v6-role-hero"><div><h1 class="v6-d">Пути</h1><p class="v6-lead">Главный путь ведёт от первых промптов к своим ИИ-приложениям. Пути ролей — к результату в работе. Тропинки — короткие ветки рядом.</p></div><div class="v6-ph" aria-hidden="true">[3D: лестница]</div></div>
@@ -434,7 +448,7 @@
           <div style="display:flex;gap:12px;flex-wrap:wrap"><button class="v6b is-accent" onclick="openLesson(${lArg})">Продолжить ${typeof r.id === 'number' ? 'урок ' + r.id : ''}</button><button class="v6b is-white" onclick="openSection('main')">Все уроки</button></div></div>
           <div class="v6-ph v6-soon" style="height:160px;margin-top:20px">[схема пути — делает Руслан]</div></section>
         <section class="v6-sec"><div class="v6-grid2">
-          <div class="v6-card v6-chapter" ${isHere(m.commonStart.lessons) ? 'style="box-shadow:inset 0 0 0 3px var(--accent)"' : ''}><span class="v6-meta">Общий старт · для всех${isHere(m.commonStart.lessons) ? ' · вы здесь' : ''}</span><h3 class="v6-h3">База ИИ</h3><p style="margin:0;color:var(--text-2)">Без этого не работают юниты ни одной роли.</p><ul class="v6-steps">${m.commonStart.lessons.map(step).join('')}</ul><p class="v6-veha">${e(m.commonStart.note)}</p></div>
+          <div class="v6-card v6-chapter">${head('Общий старт · для всех', isHere(m.commonStart.lessons))}<h3 class="v6-h3">${e(m.commonStart.title)}</h3><p class="v6-chap-desc">${e(m.commonStart.description)}</p>${startRows()}${foot('после урока 5 — развилка', 1)}</div>
           ${m.levels.map(level).join('')}
         </div></section>
         <section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Пути ролей</h2></div><div class="v6-grid2">
@@ -506,6 +520,14 @@
     window.renderHome = home;
     window.renderFooter = footer;
     footer();
+    // смена «#…» без перезагрузки (ссылка, ручной ввод): у старого сайта реакции не было
+    window.addEventListener('hashchange', () => {
+      const h = location.hash.slice(1);
+      if (route(h)) return;
+      const m = h.match(/^lesson-(\d+|[a-z]\d+)$/);
+      if (m) { openLesson(/^\d+$/.test(m[1]) ? Number(m[1]) : m[1]); return; }
+      if (h === 'home' || h === '') openStaticPage('home');
+    });
   }
 
   window.V6 = { install, route, open, openTask, openRole, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
