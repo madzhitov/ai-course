@@ -28,13 +28,23 @@
    "placement": null,
    "firstWave": true,
    "firstWaveOrder": 11,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Dave_McClure",
+    "https://www.slideshare.net/dmc500hats/startup-metrics-for-pirates-seedcamp-2008-presentation?type=powerpoint",
+    "https://www.mindtheproduct.com/aarrr-vs-rarra-pirate-metrics-explained/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "aida",
    "title": "AIDA",
    "source": {
-    "author": "Э. Сент-Элмо Льюис",
+    "author": "Традиционно приписывается Э. Сент-Элмо Льюису (ок. 1898), авторство оспаривается",
     "book": null,
     "verified": false
    },
@@ -50,13 +60,23 @@
    "placement": null,
    "firstWave": true,
    "firstWaveOrder": 14,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://ojs.library.carleton.ca/index.php/pcharm/article/view/4340/3310",
+    "https://en.wikipedia.org/wiki/E._St._Elmo_Lewis",
+    "https://www.oxfordreference.com/display/10.1093/oi/authority.20110803095432783"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "medium"
+   }
   },
   {
    "id": "stp",
    "title": "STP (сегментация, таргетинг, позиционирование)",
    "source": {
-    "author": "Филип Котлер",
+    "author": "Сводная схема популяризирована Филипом Котлером; сегментация: Уэнделл Смит, 1956; позиционирование: Райс и Траут",
     "book": null,
     "verified": false
    },
@@ -72,7 +92,16 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://umbrex.com/resources/frameworks/strategy-frameworks/stp-framework/",
+    "https://umbrex.com/resources/frameworks/marketing-frameworks/stp-framework-segmentation-targeting-positioning/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "medium"
+   }
   },
   {
    "id": "4p-7p",
@@ -84,7 +113,7 @@
    },
    "label": "база",
    "group": "Маркетинг и рост",
-   "solves": "Проверить, не забыт ли рычаг: цена, канал, продукт",
+   "solves": "Проверить, не забыт ли рычаг: продукт, цена, канал, продвижение",
    "roles": [
     "marketing",
     "seller"
@@ -94,7 +123,17 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://en.wikipedia.org/wiki/E._Jerome_McCarthy",
+    "https://en.wikipedia.org/wiki/Marketing_mix",
+    "https://marketing.museum/the-history-of-the-marketing-mix-who-invented-the-4ps-and-why-they-still-matter-in-the-age-of-social-media/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "high"
+   }
   },
   {
    "id": "cjm",
@@ -116,7 +155,17 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.renascence.io/journal/who-invented-the-customer-journey-map-origins-and-evolution-of-a-cx-essential",
+    "https://oxfordsm.com/oxfordsm-insights/we-invented-the-customer-journey-map-for-eurostar-and-weve-still-got-it",
+    "https://blog.outofdark.com/a-short-history-of-customer-journey-mapping-and-where-its-going/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "jtbd",
@@ -139,7 +188,17 @@
    "placement": null,
    "firstWave": true,
    "firstWaveOrder": 12,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://strategyn.com/jobs-to-be-done/history-of-jtbd/",
+    "https://gopractice.io/product/jobs-to-be-done-the-theory-and-the-frameworks/",
+    "https://en.wikipedia.org/wiki/Anthony_Ulwick"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "rfm",
@@ -161,7 +220,16 @@
    "placement": null,
    "firstWave": true,
    "firstWaveOrder": 9,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.researchgate.net/publication/228399859_A_review_of_the_application_of_RFM_model",
+    "https://www.sciencedirect.com/science/article/pii/S1319157818304178"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "medium"
+   }
   },
   {
    "id": "ltv-cac",
@@ -183,7 +251,16 @@
    "placement": null,
    "firstWave": true,
    "firstWaveOrder": 10,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.dataally.ai/blog/ltv-to-cac-ratio",
+    "https://averagecac.com/ltv-cac/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "medium"
+   }
   },
   {
    "id": "ice",
@@ -205,7 +282,17 @@
    "placement": null,
    "firstWave": true,
    "firstWaveOrder": 15,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://blog.croct.com/post/ice-score-priorization",
+    "https://learningloop.io/glossary/ice-scoring-model",
+    "https://www.productcompass.pm/p/the-science-of-growth-with-sean-ellis"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "medium"
+   }
   },
   {
    "id": "see-think-do-care",
@@ -226,7 +313,16 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.kaushik.net/avinash/see-think-do-content-marketing-measurement-business-framework/",
+    "https://www.kaushik.net/avinash/see-think-do-care-win-content-marketing-measurement/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "positioning-dunford",
@@ -248,7 +344,17 @@
    "placement": null,
    "firstWave": true,
    "firstWaveOrder": 13,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://books.google.com/books/about/Obviously_Awesome.html?id=UAKCwwEACAAJ",
+    "https://www.amazon.com/Obviously-Awesome-Product-Positioning-Customers/dp/1999023005",
+    "https://commoncog.com/obviously-awesome/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "messaging-house",
@@ -269,19 +375,28 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.cascadeinsights.com/message-maps-frameworks-and-more-decrypting-the-differences-for-the-b2b-marketer/",
+    "https://sustainablecatalyst.com/message-house-and-the-architecture-of-strategic-messaging/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "medium"
+   }
   },
   {
    "id": "storybrand",
    "title": "StoryBrand",
    "source": {
-    "author": "Дональд Миллер",
+    "author": "Дональд Миллер, 2017",
     "book": null,
     "verified": false
    },
-   "label": "база",
+   "label": "тренд",
    "group": "Маркетинг и рост",
-   "solves": "Сделать клиента героем, а бренд — проводником",
+   "solves": "Сделать клиента героем истории, а бренд его проводником",
    "roles": [
     "marketing",
     "seller"
@@ -291,7 +406,16 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://grahammann.net/book-notes/building-a-storybrand-donald-miller",
+    "https://www.nateliason.com/notes/building-a-story-brand-donald-miller"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "medium"
+   }
   },
   {
    "id": "north-star",
@@ -313,7 +437,17 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://info.amplitude.com/rs/138-CDN-550/images/Amplitude-The-North-Star-Playbook.pdf",
+    "https://medium.com/@johnpcutler/what-ive-been-up-top-a-book-db39baac2122",
+    "https://magazine.startus.cc/sean-ellis-on-the-backbone-of-successful-growth-teams-the-north-star-metric/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "medium"
+   }
   },
   {
    "id": "growth-loops",
@@ -335,13 +469,22 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.reforge.com/blog/growth-loops",
+    "https://x.com/bbalfour/status/1024417730617700352"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "flywheel",
    "title": "Flywheel (маховик)",
    "source": {
-    "author": "HubSpot, по Джиму Коллинзу",
+    "author": "Джим Коллинз (Good to Great, 2001); маркетинговая версия HubSpot, 2018",
     "book": null,
     "verified": false
    },
@@ -357,7 +500,18 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.jimcollins.com/concepts/the-flywheel.html",
+    "https://blog.hubspot.com/marketing/our-flywheel",
+    "https://www.postalytics.com/blog/inbound-2018-the-flywheel-friction-more/",
+    "https://blog.thegistinbound.com/evolving-from-marketing-funnel-to-flywheel"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "medium"
+   }
   },
   {
    "id": "bowtie",
@@ -379,7 +533,16 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://winningbydesign.com/bowtie/",
+    "https://www.speakersassociates.com/speaker/jacco-van-der-kooij/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "plg",
@@ -401,7 +564,17 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://saasclub.io/podcast/saas-product-led-growth-and-new-customer-journey-blake-bartlett/",
+    "https://sacra.com/research/blake-bartlett-openview-future-product-led-growth/",
+    "https://www.pendo.io/glossary/product-led-growth/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "category-entry-points",
@@ -423,13 +596,23 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://minimba.com/articles/what-are-category-entry-points",
+    "http://www.jenniromaniuk.com/blog/2023/1/19/increasing-mental-market-share-by-using-category-entry-points",
+    "https://marketingscience.info/staff/professor-jenni-romaniuk"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "rule-95-5",
    "title": "Правило 95/5",
    "source": {
-    "author": "Ehrenberg-Bass и B2B Institute",
+    "author": "Джон Доус (Ehrenberg-Bass) для LinkedIn B2B Institute, 2021",
     "book": null,
     "verified": false
    },
@@ -445,7 +628,17 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://marketingscience.info/news-and-insights/the-955-rule-is-the-new-6040-rule",
+    "https://marketingscience.info/news-and-insights/the-955-rule-why-b2b-growth-starts-long-before-the-purchase",
+    "https://customerthink.com/what-the-955-rule-means-for-b2b-marketing/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "high"
+   }
   },
   {
    "id": "incrementality",
@@ -467,19 +660,28 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.remerge.io/blog-post/incrementality-tests-101-intent-to-treat-psa-ghost-ads-and-ghost-bids",
+    "https://www.haus.io/article/meta-incrementality-testing"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "medium"
+   }
   },
   {
    "id": "mmm",
    "title": "MMM (маркетинг-микс моделирование)",
    "source": {
-    "author": "открытые модели Robyn (Meta) и Meridian (Google)",
+    "author": "Эконометрический подход с 1960-х; открытые реализации Robyn (Meta) и Meridian (Google)",
     "book": null,
     "verified": false
    },
    "label": "тренд",
    "group": "Маркетинг и рост",
-   "solves": "Оценить вклад каналов без кук и атрибуции",
+   "solves": "Оценить вклад каналов по сводным данным, без отслеживания пользователей",
    "roles": [
     "marketing",
     "owner"
@@ -489,7 +691,18 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://github.com/facebookexperimental/Robyn",
+    "https://github.com/google/meridian",
+    "https://digiday.com/marketing/wtf-is-open-source-marketing-mix-modeling/",
+    "https://www.adexchanger.com/marketers/googles-meridian-and-metas-robyn-a-gift-to-measurement-or-trojan-horses/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "medium"
+   }
   },
   {
    "id": "lean-canvas",
@@ -512,7 +725,16 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.tilburguniversity.edu/campus/entrepreneurship/toolbox/lean-canvas",
+    "https://bmtoolbox.net/tools/lean-canvas/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "value-proposition-canvas",
@@ -534,13 +756,22 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.strategyzer.com/library/the-customer-value-map-v-0-8-now-called-value-proposition-canvas",
+    "https://www.strategyzer.com/library/value-proposition-design-book-summary"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "double-diamond",
    "title": "Double Diamond",
    "source": {
-    "author": "British Design Council, 2005",
+    "author": "Design Council (Великобритания), 2004",
     "book": null,
     "verified": false
    },
@@ -556,7 +787,16 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.designcouncil.org.uk/resources/the-double-diamond/history-of-the-double-diamond/",
+    "https://www.designcouncil.org.uk/resources/framework-for-innovation/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "high"
+   }
   },
   {
    "id": "opportunity-solution-tree",
@@ -577,7 +817,16 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.producttalk.org/glossary-discovery-opportunity-solution-tree/",
+    "https://amplitude.com/blog/opportunity-solution-tree"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "continuous-discovery",
@@ -599,7 +848,16 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.producttalk.org/glossary-discovery-continuous-discovery/",
+    "https://maze.co/guides/product-discovery/continuous/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "pmf-40",
@@ -621,7 +879,16 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://review.firstround.com/how-superhuman-built-an-engine-to-find-product-market-fit/",
+    "https://en.wikipedia.org/wiki/Product-market_fit"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "medium"
+   }
   },
   {
    "id": "pre-mortem",
@@ -643,7 +910,16 @@
    "placement": null,
    "firstWave": true,
    "firstWaveOrder": 16,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://hbr.org/2007/09/performing-a-project-premortem",
+    "https://www.researchgate.net/publication/3229642_Performing_a_Project_Premortem"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "rice",
@@ -665,7 +941,15 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "moscow",
@@ -687,7 +971,16 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://en.wikipedia.org/wiki/MoSCoW_method",
+    "https://t2informatik.de/en/smartpedia/moscow-method/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "kano",
@@ -708,7 +1001,16 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.semanticscholar.org/paper/Attractive-Quality-and-Must-Be-Quality-Kano-Seraku/b87d1ccf62791b914e2d1950729f2171369be429",
+    "https://en.wikipedia.org/wiki/Kano_model"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "impact-mapping",
@@ -730,7 +1032,16 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.goodreads.com/en/book/show/16084015-impact-mapping",
+    "https://www.impactmapping.org/role.html"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "medium"
+   }
   },
   {
    "id": "user-story-mapping",
@@ -752,19 +1063,27 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.oreilly.com/library/view/user-story-mapping/9781491904893/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "heart",
    "title": "HEART",
    "source": {
-    "author": "Google (Керри Родден)",
+    "author": "Google (Керри Родден, Хилари Хатчинсон, Синь Фу), 2010",
     "book": null,
     "verified": false
    },
    "label": "база",
    "group": "Продукт и управление",
-   "solves": "Выбрать метрики опыта: счастье, вовлечение, удержание",
+   "solves": "Выбрать метрики опыта по пяти осям: удовлетворённость, вовлечённость, принятие, удержание, успешность задач",
    "roles": [
     "product"
    ],
@@ -773,7 +1092,16 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://research.google/pubs/measuring-the-user-experience-on-a-large-scale-user-centered-metrics-for-web-applications/",
+    "https://research.google.com/pubs/archive/36299.pdf"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "high"
+   }
   },
   {
    "id": "cohorts",
@@ -785,7 +1113,7 @@
    },
    "label": "база",
    "group": "Продукт и управление",
-   "solves": "Увидеть удержание по поколениям клиентов",
+   "solves": "Увидеть, как удерживаются группы клиентов, пришедших в один и тот же период",
    "roles": [
     "product",
     "marketing",
@@ -796,7 +1124,16 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://amplitude.com/explore/analytics/cohort-retention-analysis",
+    "https://count.co/metric/cohort-retention-analysis"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "medium"
+   }
   },
   {
    "id": "hook-model",
@@ -817,7 +1154,16 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.nirandfar.com/how-to-trigger-product-usage-that-sticks/",
+    "https://www.goodreads.com/book/show/22668729-hooked"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "evals",
@@ -839,13 +1185,22 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://hamel.dev/blog/posts/evals/index.html",
+    "https://simonwillison.net/2024/Mar/31/your-ai-product-needs-evals/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "okr",
    "title": "OKR",
    "source": {
-    "author": "Энди Гроув, Джон Доэрр",
+    "author": "Энди Гроув (Intel, 1970-е); популяризировал Джон Доэрр",
     "book": null,
     "verified": false
    },
@@ -861,13 +1216,22 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.whatmatters.com/faqs/okr-meaning-definition-example",
+    "https://www.tability.io/odt/articles/a-complete-okr-history-from-intel-to-the-modern-workplace"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "high"
+   }
   },
   {
    "id": "raci-daci",
    "title": "RACI / DACI",
    "source": {
-    "author": "DACI — Intuit",
+    "author": "RACI: автор не установлен; DACI популяризировал Atlassian (происхождение из Intuit известно только по вторичным источникам)",
     "book": null,
     "verified": false
    },
@@ -883,7 +1247,17 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.atlassian.com/team-playbook/plays/daci",
+    "https://horkan.com/2023/08/29/raci-history-overview-and-critical-analysis",
+    "https://fourweekmba.com/daci-decision-making-framework/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "medium"
+   }
   },
   {
    "id": "shape-up",
@@ -895,7 +1269,7 @@
    },
    "label": "тренд",
    "group": "Продукт и управление",
-   "solves": "Работать 6-недельными циклами с жёсткими рамками",
+   "solves": "Работать 6-недельными циклами: срок фиксирован, объём гибкий, задачу заранее прорабатывают",
    "roles": [
     "project",
     "product"
@@ -905,7 +1279,15 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://basecamp.com/shapeup/0.3-chapter-01"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "high"
+   }
   },
   {
    "id": "minto-pyramid",
@@ -917,7 +1299,7 @@
    },
    "label": "база",
    "group": "Продукт и управление",
-   "solves": "Писать для руководителя: сначала вывод, потом аргументы",
+   "solves": "Строить деловой текст сверху вниз: сначала главный вывод, потом сгруппированные аргументы",
    "roles": [
     "all"
    ],
@@ -926,7 +1308,16 @@
    "placement": null,
    "firstWave": true,
    "firstWaveOrder": 17,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.barbaraminto.com/",
+    "https://www.mckinsey.com/alumni/news-and-events/global-news/alumni-news/barbara-minto-mece-i-invented-it-so-i-get-to-say-how-to-pronounce-it"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "high"
+   }
   },
   {
    "id": "ecom-pnl",
@@ -948,7 +1339,16 @@
    "placement": null,
    "firstWave": true,
    "firstWaveOrder": 2,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Contribution_margin",
+    "https://www.polaranalytics.com/post/poas-profit-on-ad-spend"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "medium"
+   }
   },
   {
    "id": "unit-economics-sku",
@@ -976,7 +1376,8 @@
     "use": [
      "перед запуском нового товара",
      "когда продажи растут, а денег не прибавляется",
-     "перед тем как поднять ставки в рекламе"
+     "перед тем как поднять ставки в рекламе",
+     "чтобы найти предельную закупочную цену до заказа партии"
     ],
     "avoid": [
      "для оценки всего магазина целиком — для этого P&L",
@@ -995,15 +1396,19 @@
    "steps": [
     {
      "title": "Возьмите цену продажи",
-     "text": "Цену, по которой покупатель реально платит, после скидок и акций."
+     "text": "Цену после ваших скидок и акций. Скидки, которые площадка даёт за свой счёт, не вычитайте: проверьте в отчёте, от какой цены считается комиссия."
     },
     {
      "title": "Вычтите комиссию площадки",
-     "text": "Процент категории плюс эквайринг, если он отдельный."
+     "text": "Процент вашей категории. Если эквайринг считают отдельно, прибавьте его к проценту."
+    },
+    {
+     "title": "Вычтите налог с продажи",
+     "text": "Процент от цены по вашей системе налогообложения, например УСН 6%. Если платите НДС, учтите и его."
     },
     {
      "title": "Вычтите логистику и хранение",
-     "text": "До покупателя и хранение на складе в пересчёте на одну штуку."
+     "text": "До покупателя и хранение на складе в пересчёте на одну выкупленную штуку. Плюс платная приёмка, если она есть."
     },
     {
      "title": "Вычтите себестоимость",
@@ -1011,11 +1416,11 @@
     },
     {
      "title": "Вычтите рекламу на единицу",
-     "text": "Расход на рекламу, делённый на число проданных штук."
+     "text": "Расход на рекламу за период, делённый на число выкупленных штук за тот же период."
     },
     {
      "title": "Учтите возвраты и невыкуп",
-     "text": "Обратная логистика и потери, распределённые на каждую продажу."
+     "text": "Прямая и обратная логистика невыкупленных штук, обработка возвратов и штрафы, разделённые на выкупленные штуки."
     },
     {
      "title": "Посмотрите, что осталось",
@@ -1033,7 +1438,13 @@
      },
      {
       "id": "commission",
-      "label": "Комиссия площадки",
+      "label": "Комиссия площадки с эквайрингом",
+      "unit": "%",
+      "kind": "percent"
+     },
+     {
+      "id": "tax",
+      "label": "Налог с продажи",
       "unit": "%",
       "kind": "percent"
      },
@@ -1062,18 +1473,18 @@
       "kind": "money"
      }
     ],
-    "formula": "Маржинальный доход = цена − цена × комиссия − логистика − себестоимость − реклама − потери. Доля = маржинальный доход / цена.",
+    "formula": "Маржинальный доход = цена − цена × (комиссия + налог) − логистика − себестоимость − реклама − потери. Доля = маржинальный доход / цена.",
     "noVpn": true
    },
    "example": {
     "industry": "одежда на маркетплейсе",
-    "text": "Платье за 2 000 ₽: комиссия 25% — 500 ₽, логистика и хранение 180 ₽, себестоимость 700 ₽, реклама 200 ₽, потери на невыкупе 120 ₽. Остаётся 300 ₽, или 15% от цены. Вывод: товар живой, но любая скидка больше 15% уводит его в минус.",
+    "text": "Платье за 2 000 ₽, цифры условные: комиссия 25% (500 ₽), налог 6% (120 ₽), логистика и хранение 180 ₽, себестоимость 700 ₽, реклама 200 ₽, потери на невыкупе 120 ₽. Остаётся 180 ₽, или 9% от цены. Вывод: товар живой, но запас тонкий. Скидка больше 13% уводит его в минус: комиссия и налог уменьшаются вместе с ценой, остальные расходы нет. Ставки комиссий в 2025–2026 годах менялись несколько раз, свою берите в кабинете площадки.",
     "illustrative": true
    },
    "mistakes": [
     "Считать от оборота, а не от денег, которые остаются",
-    "Забывать невыкуп и обратную логистику",
-    "Не делить рекламу на штуки и смотреть на неё отдельно",
+    "Забывать налог, невыкуп и обратную логистику",
+    "Делить рекламу на заказанные штуки, а не на выкупленные",
     "Брать себестоимость без доставки до склада"
    ],
    "gate": {
@@ -1127,7 +1538,15 @@
    ],
    "agencyDoor": "Сводный отчёт по каналам, который собирается сам — услуга агентства (пример: Бертольд)",
    "updated": "2026-10-04",
-   "full": true
+   "full": true,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Contribution_margin"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "contribution-margin-channels",
@@ -1152,7 +1571,16 @@
    "status": "planned",
    "alsoIn": [
     "marketing.measure"
-   ]
+   ],
+   "sources": [
+    "https://en.wikipedia.org/wiki/Contribution_margin",
+    "https://corporatefinanceinstitute.com/resources/accounting/contribution-margin-overview"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "drr-romi",
@@ -1177,7 +1605,16 @@
    "status": "planned",
    "alsoIn": [
     "marketing.measure"
-   ]
+   ],
+   "sources": [
+    "https://ads.vk.ru/insights/chto-takoe-drr",
+    "https://kontur.ru/compass/spravka-compass/53605-romi_v_marketinge_chto_eto_kak_schitat_formula"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "listing-funnel",
@@ -1198,7 +1635,16 @@
    "placement": null,
    "firstWave": true,
    "firstWaveOrder": 5,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://seller.wildberries.ru/instructions/ru/ru/material/sellers-analytics",
+    "https://www.bitrix24.ru/journal/voronka-prodazh-wildberries/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "medium"
+   }
   },
   {
    "id": "abc-xyz",
@@ -1220,7 +1666,16 @@
    "placement": null,
    "firstWave": true,
    "firstWaveOrder": 6,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "http://www.abc-analyse.info/abc/geschichte.html",
+    "https://www.moysklad.ru/poleznoe/shkola-torgovli/xyz-analiz/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "medium"
+   }
   },
   {
    "id": "assortment-matrix",
@@ -1245,7 +1700,16 @@
    "status": "planned",
    "alsoIn": [
     "marketing.audience"
-   ]
+   ],
+   "sources": [
+    "https://umbrex.com/resources/frameworks/pricing-frameworks/good-better-best-pricing/",
+    "https://competera.ai/resources/articles/maximizing-revenue-with-retail-pricing-ladders"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "medium"
+   }
   },
   {
    "id": "stock-turnover",
@@ -1266,7 +1730,16 @@
    "placement": null,
    "firstWave": true,
    "firstWaveOrder": 8,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://postavleno.ru/blog/oborachivaemost-tovara-na-wb-i-ozon/",
+    "https://kurs.alfabank.ru/articles/oborachivaemost-tovara-kak-schitat-i-derzhat-zapasy-pod-kontrolem/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "listing-as-landing",
@@ -1287,7 +1760,12 @@
    "placement": null,
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "low"
+   }
   },
   {
    "id": "reputation-reviews",
@@ -1312,20 +1790,25 @@
    "status": "planned",
    "alsoIn": [
     "marketing.message"
-   ]
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "low"
+   }
   },
   {
    "id": "four-part-request",
    "title": "Запрос из четырёх частей",
    "source": {
-    "author": "по руководствам Anthropic и OpenAI по составлению запросов",
+    "author": "собрано по руководствам Anthropic, OpenAI и Google по составлению запросов; деление на четыре части наше",
     "year": null,
     "book": null,
     "verified": false
    },
    "label": "база",
    "group": "ИИ-практика",
-   "solves": "Ставить ИИ задачу так, чтобы первый ответ был рабочим, а не общим",
+   "solves": "Ставить ИИ задачу так, чтобы ответ с первого раза был ближе к нужному, а не общим",
    "roles": [
     "all"
    ],
@@ -1359,11 +1842,11 @@
     },
     {
      "title": "Ограничения",
-     "text": "Что нельзя, объём, тон, сроки, чего вы точно не хотите увидеть."
+     "text": "Что нельзя, объём, тон, сроки, чего вы точно не хотите увидеть. Где можно, говорите, что нужно, а не только чего нельзя."
     },
     {
      "title": "Данные",
-     "text": "Приложите материалы целиком, а не пересказ: отзывы, таблицу, черновик, примеры."
+     "text": "Приложите материалы целиком, а не пересказ: отзывы, таблицу, черновик, примеры. Если материал длинный, вставьте его в начало, а задачу и требования после него. Если данных не хватает, разрешите ИИ сначала задать до трёх вопросов."
     },
     {
      "title": "Состав ответа",
@@ -1371,7 +1854,7 @@
     },
     {
      "title": "Сверьте ответ с образом успеха",
-     "text": "Если не совпало, поправьте ту часть запроса, которая подвела, а не весь запрос."
+     "text": "Если не совпало, сначала поправьте ту часть запроса, которая подвела. Не помогли две правки: перепишите запрос целиком с учётом того, что узнали."
     }
    ],
    "executor": {
@@ -1381,14 +1864,14 @@
    },
    "example": {
     "industry": "маркетплейс",
-    "text": "Вместо «ответь на отзывы» — «Хороший результат: ответы, после которых покупатель видит, что его услышали. Ограничения: до 300 знаков, без обещаний возврата денег. Данные: 20 отзывов ниже. Состав: по одному ответу на отзыв, каждый начинается по-разному».",
+    "text": "Вместо «ответь на отзывы» — «Хороший результат: ответы, после которых покупатель видит, что его услышали. Ограничения: 2–3 предложения, без обещаний возврата денег. Данные: 20 отзывов ниже. Состав: по одному ответу на отзыв, каждый начинается по-разному».",
     "illustrative": true
    },
    "mistakes": [
     "Пропускать образ успеха и сразу писать «сделай»",
     "Пересказывать данные своими словами вместо того, чтобы вставить их",
     "Не задавать форму ответа и потом переделывать",
-    "Переписывать весь запрос, когда подвела одна часть"
+    "Сразу переписывать весь запрос, хотя подвела одна часть"
    ],
    "gate": {
     "task": "Возьмите свой настоящий запрос к ИИ, перепишите его в четыре части и сравните ответы до и после.",
@@ -1435,13 +1918,27 @@
    ],
    "agencyDoor": null,
    "updated": "2026-10-04",
-   "full": true
+   "full": true,
+   "sources": [
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "https://web.archive.org/web/20250101165848/https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct",
+    "https://claude.com/blog/best-practices-for-prompt-engineering",
+    "https://developers.openai.com/api/docs/guides/prompt-engineering",
+    "https://github.com/openai/openai-cookbook/blob/main/examples/data/oai_docs/prompt-engineering.txt",
+    "https://ai.google.dev/gemini-api/docs/prompting-strategies",
+    "https://services.google.com/fh/files/misc/gemini_for_workspace_prompt_guide_october_2024_digital_final.pdf"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "high"
+   }
   },
   {
    "id": "goal-acceptance-criteria",
    "title": "Задача с критериями приёмки",
    "source": {
-    "author": null,
+    "author": "критерии успеха и проверка результата: руководства Anthropic",
     "book": null,
     "verified": false
    },
@@ -1456,13 +1953,24 @@
    "placement": "шаблон рядом с запросом из четырёх частей",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview",
+    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "https://code.claude.com/docs/en/best-practices",
+    "https://developers.openai.com/cookbook/examples/gpt-5/gpt-5-2_prompting_guide"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "high"
+   }
   },
   {
    "id": "reverse-interview",
    "title": "Обратное интервью",
    "source": {
-    "author": null,
+    "author": "паттерн Flipped Interaction: Жюль Уайт и соавторы, 2023",
     "book": null,
     "verified": false
    },
@@ -1477,13 +1985,24 @@
    "placement": "механика Алёши: он сам задаёт вопросы",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://arxiv.org/abs/2302.11382",
+    "https://arxiv.org/pdf/2302.11382",
+    "https://code.claude.com/docs/en/best-practices",
+    "https://developers.openai.com/cookbook/examples/gpt-5/gpt-5-2_prompting_guide"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "high"
+   }
   },
   {
    "id": "dear",
    "title": "Разбор задачи и карта допущений",
    "source": {
-    "author": "карта допущений — Дэвид Бланд, «Testing Business Ideas»",
+    "author": "карта допущений: Дэвид Бланд и Александр Остервальдер, «Testing Business Ideas», 2019",
     "book": null,
     "verified": false
    },
@@ -1499,13 +2018,22 @@
    "placement": "карточка и промпты на каждый шаг",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.wiley.com/en-us/Testing+Business+Ideas:+A+Field+Guide+for+Rapid+Experimentation-p-9781119551447",
+    "https://www.strategyzer.com/library/testing-business-ideas-book-summary"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "high"
+   }
   },
   {
    "id": "ai-decision-5-steps",
    "title": "Решение с ИИ: варианты, критерии, выбор",
    "source": {
-    "author": null,
+    "author": "проверка худшего исхода как премортем, Гэри Кляйн, HBR, 2007",
     "book": null,
     "verified": false
    },
@@ -1520,19 +2048,27 @@
    "placement": "шаблон решения",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "http://homepages.se.edu/cvonbergen/files/2013/01/Performing-a-Project-Premortem.pdf"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "medium"
+   }
   },
   {
    "id": "edge",
-   "title": "Как выбить ИИ из шаблонного ответа",
+   "title": "Как уйти от шаблонного ответа ИИ",
    "source": {
-    "author": null,
+    "author": "паттерны Question Refinement и Alternative Approaches: Жюль Уайт и соавторы, 2023",
     "book": null,
     "verified": false
    },
    "label": "база",
    "group": "ИИ-практика",
-   "solves": "Три вопроса, после которых ответ перестаёт быть общим",
+   "solves": "Попросить ИИ уточнить вопрос и предложить другие подходы, а не первый очевидный ответ",
    "roles": [
     "all"
    ],
@@ -1541,7 +2077,17 @@
    "placement": "мини-карточка «как выбить модель из банальности»",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://arxiv.org/pdf/2302.11382",
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "https://arxiv.org/abs/2402.01727"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "unsupported",
+    "confidence": "medium"
+   }
   },
   {
    "id": "how-make-better",
@@ -1562,7 +2108,17 @@
    "placement": "микро-привычка, подсказка в интерфейсе",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://arxiv.org/abs/2303.17651",
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "https://arxiv.org/abs/2310.01798"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "voice",
@@ -1584,13 +2140,22 @@
    "placement": "рубрика проверки текстов в «Покажите результат»",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+    "https://arxiv.org/abs/2506.08872"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "own-draft",
    "title": "Сначала свой черновик",
    "source": {
-    "author": null,
+    "author": "Доши и Хаузер, Science Advances, 2024",
     "book": null,
     "verified": false
    },
@@ -1605,13 +2170,23 @@
    "placement": "правило пути: сначала мысль человека",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.science.org/doi/10.1126/sciadv.adn5290",
+    "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:10.1126/sciadv.adn5290&resultType=core&format=json",
+    "https://arxiv.org/abs/2506.08872"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "medium"
+   }
   },
   {
    "id": "idea-batches",
    "title": "Идеи пачками",
    "source": {
-    "author": "принцип количества в мозговом штурме — Алекс Осборн",
+    "author": "принцип количества: Алекс Осборн, «Applied Imagination», 1953; для ИИ: Мейнке, Моллик и Тервиш, 2024",
     "book": null,
     "verified": false
    },
@@ -1627,13 +2202,23 @@
    "placement": "упражнение-игра",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Brainstorming",
+    "https://arxiv.org/abs/2402.01727",
+    "https://api.crossref.org/works/10.2139/ssrn.4526071"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "high"
+   }
   },
   {
    "id": "content-pipeline",
    "title": "Одна запись — много форматов",
    "source": {
-    "author": "COPE: «создай один раз, публикуй везде» — NPR",
+    "author": "модель «столп и микроконтент»: Гэри Вайнерчук",
     "book": null,
     "verified": false
    },
@@ -1649,19 +2234,28 @@
    "placement": "юнит с готовым промптом-разветвителем",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://cybercemetery.unt.edu/oilspill/20130121135722mp_/http://blog.programmableweb.com/2009/10/13/cope-create-once-publish-everywhere",
+    "https://garyvaynerchuk.com/content-marketing-strategy/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "medium"
+   }
   },
   {
    "id": "verb-or-profession",
    "title": "Делегировать задачи, а не профессии",
    "source": {
-    "author": "задачный подход к автоматизации — Дэвид Отор",
+    "author": "задачный подход: Отор, Леви и Мёрнейн, 2003; для ИИ: Элунду и соавторы, 2023",
     "book": null,
     "verified": false
    },
    "label": "база",
    "group": "ИИ-практика",
-   "solves": "Понять, какие операции работы отдать ИИ, а какие оставить себе",
+   "solves": "Разложить свою работу на задачи и решить, какие отдать ИИ, а какие оставить себе",
    "roles": [
     "owner",
     "project"
@@ -1671,7 +2265,17 @@
    "placement": "чек-лист",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.nber.org/papers/w8337",
+    "https://arxiv.org/abs/2303.10130",
+    "https://www.anthropic.com/news/the-anthropic-economic-index"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "high"
+   }
   },
   {
    "id": "assign-check-repeat",
@@ -1693,13 +2297,21 @@
    "placement": "карточка и шаблон ТЗ",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://code.claude.com/docs/en/best-practices"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "progressive-trust",
    "title": "Уровни доверия ИИ",
    "source": {
-    "author": null,
+    "author": "уровни автоматизации, Парасураман, Шеридан и Уикенс, 2000",
     "book": null,
     "verified": false
    },
@@ -1714,13 +2326,24 @@
    "placement": "связать с «Для компаний»",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://code.claude.com/docs/en/permission-modes",
+    "https://code.claude.com/docs/en/best-practices",
+    "https://api.crossref.org/works?query.bibliographic=A+model+for+types+and+levels+of+human+interaction+with+automation+Parasuraman&rows=1",
+    "https://arxiv.org/abs/2506.12469"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "rule-1995",
    "title": "Когда ИИ не нужен",
    "source": {
-    "author": null,
+    "author": "«зубчатая граница» возможностей ИИ, Делл'Аква, Моллик и соавторы, 2023",
     "book": null,
     "verified": false
    },
@@ -1735,13 +2358,21 @@
    "placement": "короткая анти-карточка",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://mitsloan.mit.edu/sites/default/files/2023-10/SSRN-id4573321.pdf"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "medium"
+   }
   },
   {
    "id": "answer-check",
    "title": "Проверка ответа ИИ",
    "source": {
-    "author": null,
+    "author": "по руководству Anthropic по снижению галлюцинаций",
     "book": null,
     "verified": false
    },
@@ -1756,7 +2387,17 @@
    "placement": "чек-лист в каждом юните",
    "firstWave": true,
    "firstWaveOrder": 18,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+    "https://github.com/openai/openai-cookbook/blob/main/examples/data/oai_docs/prompt-engineering.txt",
+    "https://arxiv.org/pdf/2302.11382"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "five-roles",
@@ -1778,13 +2419,21 @@
    "placement": "объединить с советом рецензентов",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Six_Thinking_Hats"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "review-board",
    "title": "Совет рецензентов",
    "source": {
-    "author": null,
+    "author": "Solo Performance Prompting, Ван и соавторы, 2023",
     "book": null,
     "verified": false
    },
@@ -1800,13 +2449,22 @@
    "placement": "промпт-набор «прогони идею через 4 роли»",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://arxiv.org/abs/2307.05300",
+    "https://code.claude.com/docs/en/best-practices"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "adversarial-validation",
    "title": "Перекрёстная проверка моделями",
    "source": {
-    "author": null,
+    "author": "перекрёстный допрос моделей, Коэн и соавторы, 2023",
     "book": null,
     "verified": false
    },
@@ -1822,13 +2480,23 @@
    "placement": "продвинутый уровень",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://arxiv.org/abs/2305.13281",
+    "https://arxiv.org/abs/2305.14325",
+    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "hard-reviewer",
    "title": "Режим жёсткого рецензента",
    "source": {
-    "author": null,
+    "author": "проблема угодливости, Шарма и соавторы, Anthropic, 2023",
     "book": null,
     "verified": false
    },
@@ -1843,7 +2511,16 @@
    "placement": "готовый системный промпт",
    "firstWave": true,
    "firstWaveOrder": 20,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://arxiv.org/abs/2310.13548",
+    "https://code.claude.com/docs/en/best-practices"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   },
   {
    "id": "bite",
@@ -1855,7 +2532,7 @@
    },
    "label": "база",
    "group": "ИИ-практика",
-   "solves": "Собрать с ИИ кликабельный прототип за вечер, без программиста",
+   "solves": "Собрать с ИИ кликабельный прототип без программиста, чтобы показать идею людям",
    "roles": [
     "product",
     "seller"
@@ -1865,13 +2542,21 @@
    "placement": "Тропинка «Вайб Код Вам Дам»",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://simonwillison.net/2025/Dec/10/html-tools/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "medium"
+   }
   },
   {
    "id": "ephemeral-html",
    "title": "Одноразовые HTML-инструменты",
    "source": {
-    "author": null,
+    "author": "HTML-инструменты: Саймон Уиллисон, 2025",
     "book": null,
     "verified": false
    },
@@ -1886,13 +2571,21 @@
    "placement": "там же, с примерами калькуляторов библиотеки",
    "firstWave": true,
    "firstWaveOrder": 19,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://simonwillison.net/2025/Dec/10/html-tools/"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "high"
+   }
   },
   {
    "id": "alter",
    "title": "Учебный план с ИИ",
    "source": {
-    "author": "интервальные повторения — кривая забывания Эббингауза",
+    "author": "интервальные повторения и самопроверка: обзор Данлоски и соавторов, 2013; эффект интервалов описал Эббингауз, 1885",
     "book": null,
     "verified": false
    },
@@ -1907,13 +2600,24 @@
    "placement": "механика тетради",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Spacing_effect",
+    "https://en.wikipedia.org/wiki/Hermann_Ebbinghaus",
+    "https://www.aft.org/ae/fall2013/dunlosky",
+    "https://api.crossref.org/works/10.1177/1529100612453266"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "fix",
+    "confidence": "high"
+   }
   },
   {
    "id": "socratic",
    "title": "Сократовский диалог",
    "source": {
-    "author": "сократический метод",
+    "author": "сократический метод; так же устроен учебный режим Claude (Anthropic, 2025)",
     "book": null,
     "verified": false
    },
@@ -1928,7 +2632,16 @@
    "placement": "режим Алёши при проверке работ",
    "firstWave": false,
    "firstWaveOrder": null,
-   "status": "planned"
+   "status": "planned",
+   "sources": [
+    "https://www.anthropic.com/news/introducing-claude-for-education",
+    "https://arxiv.org/abs/2303.08769"
+   ],
+   "checked": {
+    "date": "2026-10-04",
+    "verdict": "ok",
+    "confidence": "high"
+   }
   }
  ]
 }

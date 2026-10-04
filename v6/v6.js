@@ -726,6 +726,7 @@
           (c.related || []).map(fwById).filter(Boolean).length ? ['Рядом', (c.related || []).map(fwById).filter(Boolean).map(fwLink).join(', ')] : null,
           tasks.length ? ['Задачи', tasks.map((t) => `<a href="#task-${e(t.id)}" onclick="V6.openTask('${e(t.id)}','fw'); return false;">${e(t.title)}</a>`).join(', ')] : null,
           lessons.length ? ['Уроки', lessons.map((l) => `<a href="#lesson-${e(l)}" onclick="openLesson(${lessonArg(l)}); return false;">${e(lessonOf(l).title)}</a>`).join(', ')] : null,
+          (c.sources || []).filter((u) => /^https?:\/\//.test(u)).length ? ['Источники', c.sources.filter((u) => /^https?:\/\//.test(u)).map((u) => `<a href="${e(u)}" target="_blank" rel="noopener">${e(u.replace(/^https?:\/\/(www\.)?/, '').split('/')[0])}</a>`).join(', ') + (c.checked && c.checked.date ? ` <span class="v6-meta">· сверено ${e(c.checked.date.split('-').reverse().join('.'))}</span>` : '')] : null,
         ].filter(Boolean);
         box.innerHTML = hero + body + `<div class="v6-fwbody">
           ${links.length ? `<section class="v6-box"><h2>Связи</h2><div class="v6-links">${links.map(([k, v]) => `<div><span>${k}</span><span>${v}</span></div>`).join('')}</div></section>` : ''}
