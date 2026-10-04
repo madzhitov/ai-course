@@ -1,0 +1,1982 @@
+{
+ "note": "Собрано из v6-brief/frameworks (catalog.json + cards/*.json). Полные карточки помечены full: true.",
+ "version": "2026-10-04",
+ "cards": [
+  {
+   "id": "aarrr",
+   "title": "AARRR (пиратские метрики)",
+   "source": {
+    "author": "Дейв Макклюр, 2007",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Маркетинг и рост",
+   "solves": "Разложить рост на этапы и найти, где теряем людей",
+   "roles": [
+    "marketing",
+    "product",
+    "seller"
+   ],
+   "task": "marketing.growth",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": true,
+   "firstWaveOrder": 11,
+   "status": "planned"
+  },
+  {
+   "id": "aida",
+   "title": "AIDA",
+   "source": {
+    "author": "Э. Сент-Элмо Льюис",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Маркетинг и рост",
+   "solves": "Собрать рекламный текст или карточку по шагам внимания",
+   "roles": [
+    "marketing",
+    "seller"
+   ],
+   "task": "marketing.message",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": true,
+   "firstWaveOrder": 14,
+   "status": "planned"
+  },
+  {
+   "id": "stp",
+   "title": "STP (сегментация, таргетинг, позиционирование)",
+   "source": {
+    "author": "классика маркетинга (Котлер)",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Маркетинг и рост",
+   "solves": "Выбрать, кому продавать, прежде чем как",
+   "roles": [
+    "marketing",
+    "owner"
+   ],
+   "task": "marketing.audience",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "4p-7p",
+   "title": "4P / 7P",
+   "source": {
+    "author": "Маккарти, 1960; Бумс и Битнер, 1981",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Маркетинг и рост",
+   "solves": "Проверить, не забыт ли рычаг: цена, канал, продукт",
+   "roles": [
+    "marketing",
+    "seller"
+   ],
+   "task": "marketing.audience",
+   "executorHint": "чек-лист",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "cjm",
+   "title": "Customer Journey Map",
+   "source": {
+    "author": "практика UX и сервис-дизайна",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Маркетинг и рост",
+   "solves": "Увидеть путь клиента и точки боли",
+   "roles": [
+    "marketing",
+    "product"
+   ],
+   "task": "marketing.audience",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "jtbd",
+   "title": "JTBD (работа, которую нанимают)",
+   "source": {
+    "author": "Кристенсен; Моэста; Ульвик",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Маркетинг и рост",
+   "solves": "Понять, зачем на самом деле покупают",
+   "roles": [
+    "product",
+    "marketing",
+    "seller"
+   ],
+   "task": "marketing.audience",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": true,
+   "firstWaveOrder": 12,
+   "status": "planned"
+  },
+  {
+   "id": "rfm",
+   "title": "RFM",
+   "source": {
+    "author": "директ-маркетинг",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Маркетинг и рост",
+   "solves": "Разделить базу по давности, частоте и сумме покупок",
+   "roles": [
+    "marketing",
+    "seller"
+   ],
+   "task": "marketing.measure",
+   "executorHint": "инструмент",
+   "placement": null,
+   "firstWave": true,
+   "firstWaveOrder": 9,
+   "status": "planned"
+  },
+  {
+   "id": "ltv-cac",
+   "title": "LTV / CAC",
+   "source": {
+    "author": "юнит-экономика роста",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Маркетинг и рост",
+   "solves": "Понять, сколько можно платить за клиента",
+   "roles": [
+    "marketing",
+    "owner"
+   ],
+   "task": "marketing.measure",
+   "executorHint": "калькулятор",
+   "placement": null,
+   "firstWave": true,
+   "firstWaveOrder": 10,
+   "status": "planned"
+  },
+  {
+   "id": "ice",
+   "title": "ICE",
+   "source": {
+    "author": "Шон Эллис",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Маркетинг и рост",
+   "solves": "Быстро отсортировать гипотезы роста",
+   "roles": [
+    "marketing",
+    "product"
+   ],
+   "task": "marketing.growth",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": true,
+   "firstWaveOrder": 15,
+   "status": "planned"
+  },
+  {
+   "id": "see-think-do-care",
+   "title": "See-Think-Do-Care",
+   "source": {
+    "author": "Авинаш Кошик",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Маркетинг и рост",
+   "solves": "Разложить контент и рекламу по намерению аудитории",
+   "roles": [
+    "marketing"
+   ],
+   "task": "marketing.growth",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "positioning-dunford",
+   "title": "Позиционирование «Obviously Awesome»",
+   "source": {
+    "author": "Эйприл Данфорд, 2019",
+    "book": null,
+    "verified": false
+   },
+   "label": "тренд",
+   "group": "Маркетинг и рост",
+   "solves": "Сформулировать, чем мы лучше и для кого, без лозунгов",
+   "roles": [
+    "marketing",
+    "owner"
+   ],
+   "task": "marketing.audience",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": true,
+   "firstWaveOrder": 13,
+   "status": "planned"
+  },
+  {
+   "id": "messaging-house",
+   "title": "Messaging house",
+   "source": {
+    "author": "практика B2B-маркетинга",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Маркетинг и рост",
+   "solves": "Собрать главное сообщение, опоры и доказательства",
+   "roles": [
+    "marketing"
+   ],
+   "task": "marketing.message",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "storybrand",
+   "title": "StoryBrand",
+   "source": {
+    "author": "Дональд Миллер",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Маркетинг и рост",
+   "solves": "Сделать клиента героем, а бренд — проводником",
+   "roles": [
+    "marketing",
+    "seller"
+   ],
+   "task": "marketing.message",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "north-star",
+   "title": "North Star Metric",
+   "source": {
+    "author": "Шон Эллис, плейбук Amplitude",
+    "book": null,
+    "verified": false
+   },
+   "label": "тренд",
+   "group": "Маркетинг и рост",
+   "solves": "Выбрать одну метрику ценности для всей команды",
+   "roles": [
+    "product",
+    "owner"
+   ],
+   "task": "product.metrics",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "growth-loops",
+   "title": "Growth loops (петли роста)",
+   "source": {
+    "author": "Reforge",
+    "book": null,
+    "verified": false
+   },
+   "label": "тренд",
+   "group": "Маркетинг и рост",
+   "solves": "Строить рост как петлю, а не как воронку",
+   "roles": [
+    "marketing",
+    "product"
+   ],
+   "task": "marketing.growth",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "flywheel",
+   "title": "Flywheel (маховик)",
+   "source": {
+    "author": "HubSpot, по Джиму Коллинзу",
+    "book": null,
+    "verified": false
+   },
+   "label": "тренд",
+   "group": "Маркетинг и рост",
+   "solves": "Найти, что разгоняет рост от каждого клиента",
+   "roles": [
+    "owner",
+    "marketing"
+   ],
+   "task": "marketing.growth",
+   "executorHint": "инструмент",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "bowtie",
+   "title": "Bowtie (модель «бабочки»)",
+   "source": {
+    "author": "Winning by Design",
+    "book": null,
+    "verified": false
+   },
+   "label": "тренд",
+   "group": "Маркетинг и рост",
+   "solves": "Считать выручку после продажи: удержание и расширение",
+   "roles": [
+    "owner",
+    "marketing"
+   ],
+   "task": "marketing.measure",
+   "executorHint": "калькулятор",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "plg",
+   "title": "Product-Led Growth",
+   "source": {
+    "author": "OpenView",
+    "book": null,
+    "verified": false
+   },
+   "label": "тренд",
+   "group": "Маркетинг и рост",
+   "solves": "Продавать через сам продукт, а не через отдел продаж",
+   "roles": [
+    "product",
+    "owner"
+   ],
+   "task": "marketing.growth",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "category-entry-points",
+   "title": "Category Entry Points и ментальная доступность",
+   "source": {
+    "author": "Байрон Шарп, Дженни Романюк (Ehrenberg-Bass)",
+    "book": null,
+    "verified": false
+   },
+   "label": "тренд",
+   "group": "Маркетинг и рост",
+   "solves": "Понять, в каких ситуациях о бренде должны вспоминать",
+   "roles": [
+    "marketing",
+    "owner"
+   ],
+   "task": "marketing.audience",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "rule-95-5",
+   "title": "Правило 95/5",
+   "source": {
+    "author": "Ehrenberg-Bass и B2B Institute",
+    "book": null,
+    "verified": false
+   },
+   "label": "тренд",
+   "group": "Маркетинг и рост",
+   "solves": "Не ждать, что реклама продаст сегодня: большая часть рынка сейчас не покупает",
+   "roles": [
+    "marketing",
+    "owner"
+   ],
+   "task": "marketing.measure",
+   "executorHint": "калькулятор",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "incrementality",
+   "title": "Инкрементальность и holdout-тесты",
+   "source": {
+    "author": "практика performance-маркетинга",
+    "book": null,
+    "verified": false
+   },
+   "label": "тренд",
+   "group": "Маркетинг и рост",
+   "solves": "Отличить настоящий эффект рекламы от совпадения",
+   "roles": [
+    "marketing",
+    "owner"
+   ],
+   "task": "marketing.measure",
+   "executorHint": "инструмент",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "mmm",
+   "title": "MMM (маркетинг-микс моделирование)",
+   "source": {
+    "author": "эконометрика; открытые Robyn (Meta) и Meridian (Google)",
+    "book": null,
+    "verified": false
+   },
+   "label": "тренд",
+   "group": "Маркетинг и рост",
+   "solves": "Оценить вклад каналов без кук и атрибуции",
+   "roles": [
+    "marketing",
+    "owner"
+   ],
+   "task": "marketing.measure",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "lean-canvas",
+   "title": "Lean Canvas",
+   "source": {
+    "author": "Эш Мауриа",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Продукт и управление",
+   "solves": "Описать бизнес-идею на одной странице",
+   "roles": [
+    "product",
+    "owner",
+    "seller"
+   ],
+   "task": "product.discovery",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "value-proposition-canvas",
+   "title": "Value Proposition Canvas",
+   "source": {
+    "author": "Остервальдер, Strategyzer",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Продукт и управление",
+   "solves": "Сопоставить боли клиента и выгоды продукта",
+   "roles": [
+    "product",
+    "marketing"
+   ],
+   "task": "product.discovery",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "double-diamond",
+   "title": "Double Diamond",
+   "source": {
+    "author": "British Design Council, 2005",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Продукт и управление",
+   "solves": "Сначала понять проблему, потом искать решение",
+   "roles": [
+    "product",
+    "project"
+   ],
+   "task": "product.discovery",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "opportunity-solution-tree",
+   "title": "Opportunity Solution Tree",
+   "source": {
+    "author": "Тереза Торрес",
+    "book": null,
+    "verified": false
+   },
+   "label": "тренд",
+   "group": "Продукт и управление",
+   "solves": "Связать цель, возможности, решения и эксперименты",
+   "roles": [
+    "product"
+   ],
+   "task": "product.discovery",
+   "executorHint": "инструмент",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "continuous-discovery",
+   "title": "Continuous Discovery и продуктовая тройка",
+   "source": {
+    "author": "Тереза Торрес",
+    "book": null,
+    "verified": false
+   },
+   "label": "тренд",
+   "group": "Продукт и управление",
+   "solves": "Говорить с клиентами каждую неделю, а не раз в год",
+   "roles": [
+    "product",
+    "owner"
+   ],
+   "task": "product.discovery",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "pmf-40",
+   "title": "Product-Market Fit по Шону Эллису (тест 40%)",
+   "source": {
+    "author": "Шон Эллис",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Продукт и управление",
+   "solves": "Проверить, нужен ли продукт рынку",
+   "roles": [
+    "product",
+    "owner"
+   ],
+   "task": "product.discovery",
+   "executorHint": "инструмент",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "pre-mortem",
+   "title": "Pre-mortem",
+   "source": {
+    "author": "Гэри Кляйн",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Продукт и управление",
+   "solves": "Представить провал заранее и найти его причины",
+   "roles": [
+    "project",
+    "owner"
+   ],
+   "task": "product.manage",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": true,
+   "firstWaveOrder": 16,
+   "status": "planned"
+  },
+  {
+   "id": "rice",
+   "title": "RICE",
+   "source": {
+    "author": "Intercom (Шон Макбрайд)",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Продукт и управление",
+   "solves": "Сравнить задачи по охвату, эффекту, уверенности и трудозатратам",
+   "roles": [
+    "product",
+    "project"
+   ],
+   "task": "product.prioritize",
+   "executorHint": "калькулятор",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "moscow",
+   "title": "MoSCoW",
+   "source": {
+    "author": "Дай Клегг, Oracle, 1994",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Продукт и управление",
+   "solves": "Договориться, что обязательно в релизе, а что нет",
+   "roles": [
+    "project",
+    "product"
+   ],
+   "task": "product.prioritize",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "kano",
+   "title": "Kano",
+   "source": {
+    "author": "Нориаки Кано, 1984",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Продукт и управление",
+   "solves": "Отличить базовые ожидания от фич, которые восхищают",
+   "roles": [
+    "product"
+   ],
+   "task": "product.prioritize",
+   "executorHint": "инструмент",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "impact-mapping",
+   "title": "Impact Mapping",
+   "source": {
+    "author": "Гойко Аджич",
+    "book": null,
+    "verified": false
+   },
+   "label": "тренд",
+   "group": "Продукт и управление",
+   "solves": "Связать цель бизнеса с поведением людей и задачами",
+   "roles": [
+    "product",
+    "owner"
+   ],
+   "task": "product.prioritize",
+   "executorHint": "инструмент",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "user-story-mapping",
+   "title": "User Story Mapping",
+   "source": {
+    "author": "Джефф Паттон",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Продукт и управление",
+   "solves": "Нарезать продукт на релизы по пути пользователя",
+   "roles": [
+    "product",
+    "project"
+   ],
+   "task": "product.prioritize",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "heart",
+   "title": "HEART",
+   "source": {
+    "author": "Google (Керри Родден)",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Продукт и управление",
+   "solves": "Выбрать метрики опыта: счастье, вовлечение, удержание",
+   "roles": [
+    "product"
+   ],
+   "task": "product.metrics",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "cohorts",
+   "title": "Когортный анализ",
+   "source": {
+    "author": "продуктовая аналитика",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Продукт и управление",
+   "solves": "Увидеть удержание по поколениям клиентов",
+   "roles": [
+    "product",
+    "marketing",
+    "seller"
+   ],
+   "task": "product.metrics",
+   "executorHint": "инструмент",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "hook-model",
+   "title": "Hook Model",
+   "source": {
+    "author": "Нир Эяль",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Продукт и управление",
+   "solves": "Спроектировать привычку пользоваться продуктом",
+   "roles": [
+    "product"
+   ],
+   "task": "product.metrics",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "evals",
+   "title": "Evals для ИИ-фич",
+   "source": {
+    "author": "практика ИИ-продуктов",
+    "book": null,
+    "verified": false
+   },
+   "label": "тренд",
+   "group": "Продукт и управление",
+   "solves": "Проверять качество ИИ-функции набором тестов, а не на глаз",
+   "roles": [
+    "product",
+    "owner"
+   ],
+   "task": "product.metrics",
+   "executorHint": "инструмент",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "okr",
+   "title": "OKR",
+   "source": {
+    "author": "Энди Гроув, Джон Доэрр",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Продукт и управление",
+   "solves": "Связать амбициозные цели с измеримыми результатами",
+   "roles": [
+    "owner",
+    "project"
+   ],
+   "task": "product.manage",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "raci-daci",
+   "title": "RACI / DACI",
+   "source": {
+    "author": "управление проектами; DACI — Intuit, Atlassian",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Продукт и управление",
+   "solves": "Договориться, кто решает, кто делает, кого спрашивают",
+   "roles": [
+    "project",
+    "owner"
+   ],
+   "task": "product.manage",
+   "executorHint": "инструмент",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "shape-up",
+   "title": "Shape Up",
+   "source": {
+    "author": "Basecamp (Райан Сингер)",
+    "book": null,
+    "verified": false
+   },
+   "label": "тренд",
+   "group": "Продукт и управление",
+   "solves": "Работать 6-недельными циклами с жёсткими рамками",
+   "roles": [
+    "project",
+    "product"
+   ],
+   "task": "product.manage",
+   "executorHint": "шаблон",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "minto-pyramid",
+   "title": "Пирамида Минто",
+   "source": {
+    "author": "Барбара Минто",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "Продукт и управление",
+   "solves": "Писать для руководителя: сначала вывод, потом аргументы",
+   "roles": [
+    "all"
+   ],
+   "task": "product.manage",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": true,
+   "firstWaveOrder": 17,
+   "status": "planned"
+  },
+  {
+   "id": "ecom-pnl",
+   "title": "E-commerce как P&L",
+   "source": {
+    "author": "Руслан Маджитов",
+    "book": null,
+    "verified": false
+   },
+   "label": "авторский",
+   "group": "E-commerce и селлер (авторский блок)",
+   "solves": "Смотреть на канал и маркетинг через прибыль, а не через трафик",
+   "roles": [
+    "owner",
+    "seller"
+   ],
+   "task": "seller.money.pnl",
+   "executorHint": "шаблон",
+   "placement": null,
+   "firstWave": true,
+   "firstWaveOrder": 2,
+   "status": "planned"
+  },
+  {
+   "id": "unit-economics-sku",
+   "title": "Юнит-экономика SKU",
+   "source": {
+    "author": "практика e-commerce",
+    "year": null,
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "E-commerce и селлер (авторский блок)",
+   "solves": "Понять, зарабатывает ли конкретный товар после всех комиссий и расходов",
+   "roles": [
+    "seller",
+    "owner"
+   ],
+   "task": "seller.channels.unit-economics",
+   "executorHint": "калькулятор",
+   "placement": null,
+   "firstWave": true,
+   "firstWaveOrder": 3,
+   "status": "draft",
+   "when": {
+    "use": [
+     "перед запуском нового товара",
+     "когда продажи растут, а денег не прибавляется",
+     "перед тем как поднять ставки в рекламе"
+    ],
+    "avoid": [
+     "для оценки всего магазина целиком — для этого P&L",
+     "если нет себестоимости хотя бы примерной"
+    ]
+   },
+   "tasks": [
+    "seller.channels.unit-economics",
+    "seller.money.pnl",
+    "seller.promo.ads-threshold"
+   ],
+   "industries": [
+    "marketplaces",
+    "ecommerce"
+   ],
+   "steps": [
+    {
+     "title": "Возьмите цену продажи",
+     "text": "Цену, по которой покупатель реально платит, после скидок и акций."
+    },
+    {
+     "title": "Вычтите комиссию площадки",
+     "text": "Процент категории плюс эквайринг, если он отдельный."
+    },
+    {
+     "title": "Вычтите логистику и хранение",
+     "text": "До покупателя и хранение на складе в пересчёте на одну штуку."
+    },
+    {
+     "title": "Вычтите себестоимость",
+     "text": "Закупка или производство, упаковка, доставка до склада."
+    },
+    {
+     "title": "Вычтите рекламу на единицу",
+     "text": "Расход на рекламу, делённый на число проданных штук."
+    },
+    {
+     "title": "Учтите возвраты и невыкуп",
+     "text": "Обратная логистика и потери, распределённые на каждую продажу."
+    },
+    {
+     "title": "Посмотрите, что осталось",
+     "text": "Маржинальный доход на штуку в рублях и в процентах от цены. Это и есть ответ."
+    }
+   ],
+   "executor": {
+    "kind": "calculator",
+    "inputs": [
+     {
+      "id": "price",
+      "label": "Цена продажи",
+      "unit": "₽",
+      "kind": "money"
+     },
+     {
+      "id": "commission",
+      "label": "Комиссия площадки",
+      "unit": "%",
+      "kind": "percent"
+     },
+     {
+      "id": "logistics",
+      "label": "Логистика и хранение на штуку",
+      "unit": "₽",
+      "kind": "money"
+     },
+     {
+      "id": "cogs",
+      "label": "Себестоимость",
+      "unit": "₽",
+      "kind": "money"
+     },
+     {
+      "id": "ads",
+      "label": "Реклама на штуку",
+      "unit": "₽",
+      "kind": "money"
+     },
+     {
+      "id": "returns",
+      "label": "Потери на возвратах и невыкупе на штуку",
+      "unit": "₽",
+      "kind": "money"
+     }
+    ],
+    "formula": "Маржинальный доход = цена − цена × комиссия − логистика − себестоимость − реклама − потери. Доля = маржинальный доход / цена.",
+    "noVpn": true
+   },
+   "example": {
+    "industry": "одежда на маркетплейсе",
+    "text": "Платье за 2 000 ₽: комиссия 25% — 500 ₽, логистика и хранение 180 ₽, себестоимость 700 ₽, реклама 200 ₽, потери на невыкупе 120 ₽. Остаётся 300 ₽, или 15% от цены. Вывод: товар живой, но любая скидка больше 15% уводит его в минус.",
+    "illustrative": true
+   },
+   "mistakes": [
+    "Считать от оборота, а не от денег, которые остаются",
+    "Забывать невыкуп и обратную логистику",
+    "Не делить рекламу на штуки и смотреть на неё отдельно",
+    "Брать себестоимость без доставки до склада"
+   ],
+   "gate": {
+    "task": "Посчитайте юнит-экономику одного своего товара и напишите, что сделаете с ценой, рекламой или закупкой.",
+    "submit": "table",
+    "rubric": [
+     {
+      "criterion": "Посчитан реальный товар, а не пример",
+      "must": true
+     },
+     {
+      "criterion": "Учтены все шесть статей расходов",
+      "must": true
+     },
+     {
+      "criterion": "Есть вывод: зарабатывает товар или нет",
+      "must": true
+     },
+     {
+      "criterion": "Есть одно конкретное действие",
+      "must": true
+     },
+     {
+      "criterion": "Посчитан порог скидки или рекламы, после которого товар уходит в минус",
+      "must": false
+     }
+    ],
+    "toNotebook": true,
+    "toGallery": "ask"
+   },
+   "terms": [
+    "unit-economics",
+    "contribution-margin",
+    "sku",
+    "drr",
+    "buyout",
+    "pnl"
+   ],
+   "requires": [
+    "ecom-pnl"
+   ],
+   "related": [
+    "contribution-margin-channels",
+    "drr-romi",
+    "assortment-matrix",
+    "stock-turnover"
+   ],
+   "lessons": [],
+   "units": [
+    "u-unit-economics-channels"
+   ],
+   "agencyDoor": "Сводный отчёт по каналам, который собирается сам — услуга агентства (пример: Бертольд)",
+   "updated": "2026-10-04",
+   "full": true
+  },
+  {
+   "id": "contribution-margin-channels",
+   "title": "Маржинальный доход по каналам",
+   "source": {
+    "author": "практика e-commerce",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "E-commerce и селлер (авторский блок)",
+   "solves": "Сравнить каналы по деньгам, которые остаются",
+   "roles": [
+    "owner",
+    "marketing"
+   ],
+   "task": "seller.channels.unit-economics",
+   "executorHint": "калькулятор",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "drr-romi",
+   "title": "ДРР и ROMI",
+   "source": {
+    "author": "практика e-commerce",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "E-commerce и селлер (авторский блок)",
+   "solves": "Понять, окупается ли реклама и сколько можно тратить",
+   "roles": [
+    "seller",
+    "marketing"
+   ],
+   "task": "seller.promo.ads-threshold",
+   "executorHint": "калькулятор",
+   "placement": null,
+   "firstWave": true,
+   "firstWaveOrder": 4,
+   "status": "planned"
+  },
+  {
+   "id": "listing-funnel",
+   "title": "Воронка карточки маркетплейса",
+   "source": {
+    "author": "практика маркетплейсов",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "E-commerce и селлер (авторский блок)",
+   "solves": "Найти, где карточка теряет: показы → клики → корзина → заказ → выкуп",
+   "roles": [
+    "seller"
+   ],
+   "task": "seller.listing.funnel",
+   "executorHint": "инструмент",
+   "placement": null,
+   "firstWave": true,
+   "firstWaveOrder": 5,
+   "status": "planned"
+  },
+  {
+   "id": "abc-xyz",
+   "title": "ABC / XYZ-анализ",
+   "source": {
+    "author": "классика управления запасами",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "E-commerce и селлер (авторский блок)",
+   "solves": "Разделить ассортимент по вкладу в выручку и стабильности спроса",
+   "roles": [
+    "seller",
+    "owner"
+   ],
+   "task": "seller.assortment.matrix",
+   "executorHint": "инструмент",
+   "placement": null,
+   "firstWave": true,
+   "firstWaveOrder": 6,
+   "status": "planned"
+  },
+  {
+   "id": "assortment-matrix",
+   "title": "Ассортиментная матрица и ценовая лестница",
+   "source": {
+    "author": "практика ритейла",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "E-commerce и селлер (авторский блок)",
+   "solves": "Собрать линейку: входной, основной, премиальный товар",
+   "roles": [
+    "seller",
+    "marketing"
+   ],
+   "task": "seller.assortment.matrix",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": true,
+   "firstWaveOrder": 7,
+   "status": "planned"
+  },
+  {
+   "id": "stock-turnover",
+   "title": "Оборачиваемость и запасы",
+   "source": {
+    "author": "практика ритейла",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "E-commerce и селлер (авторский блок)",
+   "solves": "Не замораживать деньги в складе и не терять продажи из-за пустых полок",
+   "roles": [
+    "seller"
+   ],
+   "task": "seller.stock.plan",
+   "executorHint": "калькулятор",
+   "placement": null,
+   "firstWave": true,
+   "firstWaveOrder": 8,
+   "status": "planned"
+  },
+  {
+   "id": "rfm-ecom",
+   "title": "RFM и когорты для e-commerce",
+   "source": {
+    "author": "директ-маркетинг",
+    "book": null,
+    "verified": false
+   },
+   "label": "база",
+   "group": "E-commerce и селлер (авторский блок)",
+   "solves": "Вернуть клиента повторно и посчитать удержание",
+   "roles": [
+    "marketing",
+    "seller"
+   ],
+   "task": "seller.customers.repeat",
+   "executorHint": "ссылки на rfm и cohorts",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "listing-as-landing",
+   "title": "Карточка товара как продающая страница",
+   "source": {
+    "author": "Руслан Маджитов",
+    "book": null,
+    "verified": false
+   },
+   "label": "авторский",
+   "group": "E-commerce и селлер (авторский блок)",
+   "solves": "Собрать фото, заголовок, SEO маркетплейса и отзывы в систему",
+   "roles": [
+    "seller"
+   ],
+   "task": "seller.listing.description",
+   "executorHint": "инструмент",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "reputation-reviews",
+   "title": "Репутация и отзывы",
+   "source": {
+    "author": "Руслан Маджитов",
+    "book": null,
+    "verified": false
+   },
+   "label": "авторский",
+   "group": "E-commerce и селлер (авторский блок)",
+   "solves": "Управлять рейтингом и ответами на отзывы",
+   "roles": [
+    "seller",
+    "marketing"
+   ],
+   "task": "seller.customers.reviews",
+   "executorHint": "промпт",
+   "placement": null,
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "four-part-request",
+   "title": "Запрос из четырёх частей",
+   "source": {
+    "author": "Козырькова",
+    "year": null,
+    "book": "[название книги]",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": "Ставить ИИ задачу так, чтобы первый ответ был рабочим, а не общим",
+   "roles": [
+    "all"
+   ],
+   "task": "ai.think",
+   "executorHint": null,
+   "placement": "базовый урок, входная точка в путь",
+   "firstWave": true,
+   "firstWaveOrder": 1,
+   "status": "draft",
+   "when": {
+    "use": [
+     "любая задача длиннее одного вопроса",
+     "когда ответ получается общим или не тем"
+    ],
+    "avoid": [
+     "для коротких справочных вопросов — там хватит одной фразы"
+    ]
+   },
+   "tasks": [
+    "ai.think",
+    "ai.write",
+    "ai.delegate"
+   ],
+   "industries": [
+    "any"
+   ],
+   "steps": [
+    {
+     "title": "Образ успеха",
+     "text": "Опишите, как выглядит хороший результат и для кого он: что человек сделает, когда его получит."
+    },
+    {
+     "title": "Ограничения",
+     "text": "Что нельзя, объём, тон, сроки, чего вы точно не хотите увидеть."
+    },
+    {
+     "title": "Данные",
+     "text": "Приложите материалы целиком, а не пересказ: отзывы, таблицу, черновик, примеры."
+    },
+    {
+     "title": "Состав ответа",
+     "text": "Задайте форму: сколько вариантов, какие разделы, таблица или текст."
+    },
+    {
+     "title": "Сверьте ответ с образом успеха",
+     "text": "Если не совпало, поправьте ту часть запроса, которая подвела, а не весь запрос."
+    }
+   ],
+   "executor": {
+    "kind": "prompt",
+    "prompt": "Хороший результат: [как он выглядит и для кого].\nОграничения: [объём, тон, чего нельзя].\nДанные: [вставьте материалы целиком].\nСостав ответа: [формат, число вариантов, разделы].\nЕсли данных не хватает, сначала задай мне до трёх вопросов.",
+    "noVpn": true
+   },
+   "example": {
+    "industry": "маркетплейс",
+    "text": "Вместо «ответь на отзывы» — «Хороший результат: ответы, после которых покупатель видит, что его услышали. Ограничения: до 300 знаков, без обещаний возврата денег. Данные: 20 отзывов ниже. Состав: по одному ответу на отзыв, каждый начинается по-разному».",
+    "illustrative": true
+   },
+   "mistakes": [
+    "Пропускать образ успеха и сразу писать «сделай»",
+    "Пересказывать данные своими словами вместо того, чтобы вставить их",
+    "Не задавать форму ответа и потом переделывать",
+    "Переписывать весь запрос, когда подвела одна часть"
+   ],
+   "gate": {
+    "task": "Возьмите свой настоящий запрос к ИИ, перепишите его в четыре части и сравните ответы до и после.",
+    "submit": "text",
+    "rubric": [
+     {
+      "criterion": "Есть все четыре части",
+      "must": true
+     },
+     {
+      "criterion": "Образ успеха конкретный: понятно, что человек сделает с результатом",
+      "must": true
+     },
+     {
+      "criterion": "Данные приложены, а не пересказаны",
+      "must": true
+     },
+     {
+      "criterion": "Описано, чем ответ «после» лучше ответа «до»",
+      "must": true
+     }
+    ],
+    "toNotebook": true,
+    "toGallery": "ask"
+   },
+   "terms": [
+    "prompt",
+    "context",
+    "context-window"
+   ],
+   "requires": [],
+   "related": [
+    "goal-acceptance-criteria",
+    "reverse-interview",
+    "answer-check"
+   ],
+   "lessons": [
+    "4",
+    "5"
+   ],
+   "units": [
+    "u-seller-reviews",
+    "u-seller-description"
+   ],
+   "agencyDoor": null,
+   "updated": "2026-10-04",
+   "full": true
+  },
+  {
+   "id": "goal-acceptance-criteria",
+   "title": "/goal с критериями приёмки и правом задать 3 вопроса",
+   "source": {
+    "author": "Миллер",
+    "book": "Миллер",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "all"
+   ],
+   "task": "ai.think",
+   "executorHint": null,
+   "placement": "шаблон рядом с запросом из четырёх частей",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "reverse-interview",
+   "title": "Обратное интервью",
+   "source": {
+    "author": "Миллер, Свадия",
+    "book": "Миллер, Свадия",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "all"
+   ],
+   "task": "ai.think",
+   "executorHint": null,
+   "placement": "механика Алёши: он сам задаёт вопросы",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "dear",
+   "title": "DEAR: декомпозиция, аудит допущений, рекомбинация, эксперимент",
+   "source": {
+    "author": "Свадия",
+    "book": "Свадия",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "owner",
+    "product"
+   ],
+   "task": "ai.think",
+   "executorHint": null,
+   "placement": "карточка и промпты на каждый шаг",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "ai-decision-5-steps",
+   "title": "Решение с ИИ в 5 шагов",
+   "source": {
+    "author": "Козырькова",
+    "book": "Козырькова",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "owner"
+   ],
+   "task": "ai.think",
+   "executorHint": null,
+   "placement": "шаблон решения",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "fear-4-layers",
+   "title": "Деконструкция страха в 4 слоя",
+   "source": {
+    "author": "Миллер",
+    "book": "Миллер",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "owner",
+    "seller"
+   ],
+   "task": "ai.think",
+   "executorHint": null,
+   "placement": "рядом с Pre-mortem",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "edge",
+   "title": "EDGE и три проверочных вопроса против шаблона",
+   "source": {
+    "author": "Свадия",
+    "book": "Свадия",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "all"
+   ],
+   "task": "ai.think",
+   "executorHint": null,
+   "placement": "мини-карточка «как выбить модель из банальности»",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "how-make-better",
+   "title": "«Как мне сделать это лучше?»",
+   "source": {
+    "author": "Козырькова",
+    "book": "Козырькова",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "all"
+   ],
+   "task": "ai.think",
+   "executorHint": null,
+   "placement": "микро-привычка, подсказка в интерфейсе",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "voice",
+   "title": "VOICE: проверено, присвоено, оригинально, ясно, вовлекает",
+   "source": {
+    "author": "Свадия",
+    "book": "Свадия",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "marketing",
+    "seller"
+   ],
+   "task": "ai.write",
+   "executorHint": null,
+   "placement": "рубрика проверки текстов в «Покажите результат»",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "own-draft",
+   "title": "Свой черновик и свой голос",
+   "source": {
+    "author": "Моллик",
+    "book": "Моллик",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "all"
+   ],
+   "task": "ai.write",
+   "executorHint": null,
+   "placement": "правило пути: сначала мысль человека",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "first-draft-vs-slop",
+   "title": "First Draft против AI slop",
+   "source": {
+    "author": "Миллер",
+    "book": "Миллер",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "marketing"
+   ],
+   "task": "ai.write",
+   "executorHint": null,
+   "placement": "объединить с «Свой черновик и свой голос»",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "idea-batches",
+   "title": "Идеи пачками: 30 и 100 вариантов",
+   "source": {
+    "author": "Моллик",
+    "book": "Моллик",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "marketing",
+    "product"
+   ],
+   "task": "ai.write",
+   "executorHint": null,
+   "placement": "упражнение-игра",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "content-pipeline",
+   "title": "Конвейер контента: одна запись → 9 форматов",
+   "source": {
+    "author": "Миллер",
+    "book": "Миллер",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "marketing",
+    "seller"
+   ],
+   "task": "ai.write",
+   "executorHint": null,
+   "placement": "юнит с готовым промптом-разветвителем",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "verb-or-profession",
+   "title": "Глагол или профессия: что делегировать",
+   "source": {
+    "author": "Козырькова",
+    "book": "Козырькова",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "owner",
+    "project"
+   ],
+   "task": "ai.delegate",
+   "executorHint": null,
+   "placement": "чек-лист",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "assign-check-repeat",
+   "title": "Поручил, проверил, повторил; ТЗ как PRD и SOP",
+   "source": {
+    "author": "Моллик",
+    "book": "Моллик",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "owner",
+    "project"
+   ],
+   "task": "ai.delegate",
+   "executorHint": null,
+   "placement": "карточка и шаблон ТЗ",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "progressive-trust",
+   "title": "Прогрессивное доверие: читать → черновик → действие",
+   "source": {
+    "author": "Миллер",
+    "book": "Миллер",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "owner"
+   ],
+   "task": "ai.delegate",
+   "executorHint": null,
+   "placement": "связать с «Для компаний»",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "rule-1995",
+   "title": "Правило 1995 года: когда ИИ не нужен",
+   "source": {
+    "author": "Козырькова",
+    "book": "Козырькова",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "all"
+   ],
+   "task": "ai.delegate",
+   "executorHint": null,
+   "placement": "короткая анти-карточка",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "answer-check",
+   "title": "Памятка проверки ответов ИИ",
+   "source": {
+    "author": "Козырькова",
+    "book": "Козырькова",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "all"
+   ],
+   "task": "ai.verify",
+   "executorHint": null,
+   "placement": "чек-лист в каждом юните",
+   "firstWave": true,
+   "firstWaveOrder": 18,
+   "status": "planned"
+  },
+  {
+   "id": "five-roles",
+   "title": "Пять ролей против слепых зон",
+   "source": {
+    "author": "Свадия",
+    "book": "Свадия",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "owner",
+    "marketing"
+   ],
+   "task": "ai.verify",
+   "executorHint": null,
+   "placement": "объединить с советом рецензентов",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "review-board",
+   "title": "Совет рецензентов и виртуальный совет директоров",
+   "source": {
+    "author": "Миллер",
+    "book": "Миллер",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "owner",
+    "product"
+   ],
+   "task": "ai.verify",
+   "executorHint": null,
+   "placement": "промпт-набор «прогони идею через 4 роли»",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "adversarial-validation",
+   "title": "Стравливание моделей",
+   "source": {
+    "author": "Миллер",
+    "book": "Миллер",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "product",
+    "owner"
+   ],
+   "task": "ai.verify",
+   "executorHint": null,
+   "placement": "продвинутый уровень",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "hard-reviewer",
+   "title": "Анти-угодливость: режим жёсткого рецензента",
+   "source": {
+    "author": "Миллер, Моллик",
+    "book": "Миллер, Моллик",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "all"
+   ],
+   "task": "ai.verify",
+   "executorHint": null,
+   "placement": "готовый системный промпт",
+   "firstWave": true,
+   "firstWaveOrder": 20,
+   "status": "planned"
+  },
+  {
+   "id": "bite",
+   "title": "BITE: прототип без кода",
+   "source": {
+    "author": "Свадия",
+    "book": "Свадия",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "product",
+    "seller"
+   ],
+   "task": "ai.build",
+   "executorHint": null,
+   "placement": "Тропинка «Вайб Код Вам Дам»",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "ephemeral-html",
+   "title": "Эфемерные HTML-инструменты",
+   "source": {
+    "author": "Миллер",
+    "book": "Миллер",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "all"
+   ],
+   "task": "ai.build",
+   "executorHint": null,
+   "placement": "там же, с примерами калькуляторов библиотеки",
+   "firstWave": true,
+   "firstWaveOrder": 19,
+   "status": "planned"
+  },
+  {
+   "id": "alter",
+   "title": "ALTER: личный университет",
+   "source": {
+    "author": "Свадия",
+    "book": "Свадия",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "all"
+   ],
+   "task": "ai.learn",
+   "executorHint": null,
+   "placement": "механика тетради",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  },
+  {
+   "id": "socratic",
+   "title": "Сократовский режим",
+   "source": {
+    "author": "Моллик",
+    "book": "Моллик",
+    "verified": false
+   },
+   "label": "база",
+   "group": "ИИ-практика: четыре книги",
+   "solves": null,
+   "roles": [
+    "all"
+   ],
+   "task": "ai.learn",
+   "executorHint": null,
+   "placement": "режим Алёши при проверке работ",
+   "firstWave": false,
+   "firstWaveOrder": null,
+   "status": "planned"
+  }
+ ]
+}
