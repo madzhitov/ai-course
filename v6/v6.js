@@ -131,6 +131,9 @@
     try { aleshaHide(); } catch (_) {}
     try { closeSidebar(); } catch (_) {}
     setPage(true, active);
+    // страница не перезагружается: ссылка шапки или меню остаётся в фокусе и рисует рамку — снимаем
+    const fa = document.activeElement;
+    if (fa && fa.closest && fa.closest('.v6h, #v6-menu')) fa.blur();
     history.replaceState(null, '', '#' + hash);
     render();
   }

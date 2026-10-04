@@ -686,3 +686,10 @@ body:has(.v6-lbar) .alesha-widget:not(.is-open) { bottom:108px; }
   .v6-lbar-r .v6b { flex:1; padding:0 12px; }
   .v6-lbar-r .v6b.is-soft { flex:0 0 auto; }
 }
+
+/* длинные слова в заголовках карточек («Позиционирование», «Инкрементальность») не вылезают за рамку */
+.v6-page h1, .v6-page h2, .v6-page h3, .v6-fw-t, .v6-pathc-t, .v6-rolepath-t, .v6-trail-t, .v6-next-t, .v6-mile-t, .v6-gate-t, .v6-step-t, .v6-kit-t,
+.v6-pcard h3, .v6-dir h3, .v6-task h3, .v6-way2 h3, .v6-fwhead-t, .v6-lside-t, .v6-stage .v6-pmain-h {
+  overflow-wrap:break-word; hyphens:auto; -webkit-hyphens:auto;
+}
+.v6-fw, .v6-pathc, .v6-pcard, .v6-dir, .v6-task, .v6-way2, .v6-box, .v6-stage { min-width:0; }
