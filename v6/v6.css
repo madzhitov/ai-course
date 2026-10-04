@@ -613,3 +613,4 @@ body.v6 .lesson-content .v6-page .v6-links a:hover { text-decoration:underline !
 .v6-art.v6-icon-art img { transform:scale(1.35); }
 .v6-art img[src$=".webp"] { object-fit:cover; }
 .v6-pathc .v6-art { height:auto; aspect-ratio:3 / 2; }
+.v6-pcard .v6-art { height:auto; aspect-ratio:16 / 9; }

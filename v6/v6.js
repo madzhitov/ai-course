@@ -246,13 +246,14 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     const mainRow = (n, title, ids) => ({ n, t: title, c: (curIn(ids) ? 'сейчас · ' : '') + cnt(ids), now: curIn(ids), on: "V6.open('paths')" });
     const sp = D.paths.rolePaths.find((p) => p.role === 'seller');
     const stageCnt = (st) => `${st.steps.filter(stepDone).length}/${st.steps.length}`;
-    const proj = TRACK_LESSONS.filter((l) => l.track === 'projects');
     const card = (img, label, title, rows, foot) => `<article class="v6-pcard">${art(img)}<div class="v6-pcard-in"><span class="v6-pcard-label">${label}</span><h3>${e(title)}</h3>${rowList(rows)}<span class="v6-pcard-foot">${foot}</span></div></article>`;
-    return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Пути</h2><p>Общий старт для всех, потом каждый идёт своей дорогой. Тропинки — короткие ветки рядом.</p></div>
-      <div class="v6-grid3">
-        ${card('main-path', 'Главный путь', D.paths.main.title, [mainRow('I.', 'Общий старт · база ИИ', cs), mainRow('II.', lv[0].title, lv[0].lessons), mainRow('III.', lv[1].title, lv[1].lessons)], '4 уровня · каждый замыкается Вехой')}
-        ${card('seller-path', 'Путь роли · новое', sp.title, sp.stages.map((st, i) => ({ n: ROMAN[i] + '.', t: st.title, c: stageCnt(st), on: "V6.openSellerPath('home')" })), 'для роли «Продаю онлайн»')}
-        ${card('trail-projects', 'Тропинка', 'Мини-проекты «За 1 час»', [{ n: 'I.', t: 'Проекты с кодом за час', c: `${proj.filter((l) => done(l.id)).length}/${proj.length}`, on: "openSection('projects')" }], 'сворачивает после уровня 1')}
+    const dataCard = (key, fn) => { const x = dataPath(key); return card(x.art, x.label, x.title, x.stages.map((st, i) => ({ n: ROMAN[i] + '.', t: st.title, c: `${st.tasks.filter((t) => taskReady(t.id)).length}/${st.tasks.length}`, on: `V6.${fn}('home')` })), 'собирается · готовые задачи этапа'); };
+    return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Пути</h2><p>Общий старт для всех, потом каждый идёт своей дорогой: главный путь или путь своей роли.</p></div>
+      <div class="v6-pathgrid">
+        ${card('main-path', 'Для всех', D.paths.main.title, [mainRow('I.', 'Общий старт · база ИИ', cs), mainRow('II.', lv[0].title, lv[0].lessons), mainRow('III.', lv[1].title, lv[1].lessons)], `${lv.length} уровня · каждый замыкается Вехой`)}
+        ${card('seller-path', 'Продаю онлайн', sp.title, sp.stages.map((st, i) => ({ n: ROMAN[i] + '.', t: st.title, c: stageCnt(st), on: "V6.openSellerPath('home')" })), `${sp.stages.length} этапа · ${sp.stages.filter((x) => x.milestone).length} Вехи`)}
+        ${dataCard('product', 'openProductPath')}
+        ${dataCard('marketing', 'openMarketingPath')}
       </div></section>`;
   }
 
