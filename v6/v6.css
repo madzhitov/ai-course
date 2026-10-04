@@ -602,3 +602,12 @@ body.v6 .lesson-content .v6-page .v6-links a:hover { text-decoration:underline !
 .v6-box .v6t, .v6-exec .v6t { white-space:normal; height:auto; min-height:36px; padding:6px 14px; line-height:1.35; }
 @media (min-width:900px) { .v6-pathgrid { grid-template-columns:repeat(2, minmax(0, 1fr)); } }
 .v6-thero .v6t { white-space:normal; height:auto; min-height:36px; padding:6px 14px; line-height:1.35; }
+
+/* ===== логотип (v6/brand, 04.10.2026) ===== */
+.v6h-logo { display:block; height:26px; width:auto; color:var(--accent); }
+.v6h-brand:hover .v6h-logo { color:var(--ink); }
+.v6h.is-logo-anim .v6h-logo .bar { transform-box:fill-box; transform-origin:left center; animation:v6-logo-bar .9s cubic-bezier(.2,.8,.2,1) .4s both; }
+@keyframes v6-logo-bar { from { transform:scaleX(.66); } to { transform:scaleX(1); } }
+@media (prefers-reduced-motion:reduce) { .v6h.is-logo-anim .v6h-logo .bar { animation:none; } }
+.v6f-mark { display:block; width:44px; height:auto; color:var(--accent); margin-bottom:20px; }
+@media (max-width:720px) { .v6h-logo { height:22px; } }

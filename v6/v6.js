@@ -149,7 +149,8 @@
     f.className = 'site-footer v6 v6f';
     const a = (on, t) => `<li><a onclick="${on}; return false;" href="#">${t}</a></li>`;
     f.innerHTML = `<div class="v6f-in">
-        <div><div class="v6f-word">Артефакты,<br>а не сертификаты.</div></div>
+        <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 895 740" class="v6f-mark" aria-hidden="true" focusable="false"><g transform="translate(0 700) scale(1 -1)" fill="currentColor"><path d="M7.2 0 L319.3 700 L479.5 700 L792.1 0 L622.9 0 L366.1 617.6 L430.4 617.6 L173.6 0 Z"/><path d="M163.9 149.8 L206.4 272.7 L855 272.7 L800 149.8 Z"/></g></svg>
+<div class="v6f-word">Артефакты,<br>а не сертификаты.</div></div>
         <div><p class="v6f-h">Платформа</p><ul>${a("V6.open('roles')", 'Роли')}${a("V6.open('tasks')", 'Задачи')}${a("V6.open('paths')", 'Пути')}${a("V6.open('knowledge')", 'Знания')}</ul></div>
         <div><p class="v6f-h">О проекте</p><ul>${a("openStaticPage('about')", 'Что это')}${a("openStaticPage('howto')", 'Как заниматься')}${a("openStaticPage('changelog')", 'Что нового')}${a("openStaticPage('resources')", 'Источники')}</ul></div>
         <div><p class="v6f-h">Помощь</p><ul>${a("openStaticPage('faq')", 'FAQ')}${a('openGlossary()', 'Глоссарий')}<li><a href="/tools/neyroseti-bez-vpn/">Нейросети без VPN</a></li></ul></div>
@@ -781,6 +782,7 @@
 
   function install() {
     entryHash = location.hash;
+    if (!entryHash || entryHash === '#home') { const h = document.querySelector('.v6h'); if (h) h.classList.add('is-logo-anim'); }
     prevVisit = ls.get(KEY.last);
     ls.set(KEY.last, new Date().toISOString());
     // уход на урок, раздел, глоссарий, квиз — снять оболочку v6
