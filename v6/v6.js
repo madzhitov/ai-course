@@ -286,8 +286,6 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
   const companies = () => `<section class="v6-sec"><div class="v6-dark v6-companies"><div><span class="v6-meta" style="font-size:17px;color:#C9CACF">Для компаний</span><h2 class="v6-h2" style="margin-top:16px !important">ИИ для вашей команды</h2></div>
       <div><p>Сотрудники учатся бесплатно по ролям. Агентство подключается, когда нужно обучение с ведущим или внедрение под ключ.</p><a class="v6b is-accent" href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'home' })">Обсудить задачу</a></div></div></section>`;
 
-  const whoBlock = () => `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Кто вы?</h2><button class="v6-link" onclick="V6.open('roles')">Все роли →</button></div><div class="v6-grid2">${whoRows(false)}</div></section>`;
-
   function home() {
     setPage(true, null);
     const el = shell('<div class="v6c" id="v6-home"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
@@ -296,7 +294,8 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       track('home-state', { state: st });
       const r = resume();
       const lArg = lessonArg(r.id);
-      let top = '', below = '';
+      // меняется только верхний блок; ниже — одна и та же структура для всех (решение Руслана 05.10)
+      let top = '';
       if (st === 'A') {
         top = `<div class="v6-hero"><div>
             <span class="v6-eyebrow">Артефакты, а не сертификаты <span>от пользователя к создателю</span></span>
@@ -305,7 +304,6 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
             ${askForm('v6-ask-a')}${chips()}
             <p style="margin-top:20px"><button class="v6-quiet" onclick="openLesson(1)">Не знаю, с чего начать → общий старт, урок 1</button></p>
           </div><div class="v6-who"><h2>Кто вы?</h2>${whoRows(true)}<button class="v6-quiet" onclick="V6.open('roles')">Все роли: маркетолог, специалист, владелец бизнеса →</button></div></div>`;
-        below = pathsBlock() + oftenBlock() + companies();
       } else if (st === 'B' || st === 'E') {
         const left = [1, 2, 3, 4, 5].filter((n) => !done(n)).length;
         const inStart = typeof r.id === 'number' && r.id <= 5;
@@ -319,7 +317,6 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
             <div>${st === 'E' && news.length ? `<h2 class="v6-h3" style="font-family:var(--font-display);font-weight:800;font-size:var(--fs-h4)">Пока вас не было, кое-что изменилось</h2><ul class="v6-rows v6-news" style="margin-top:12px">${news.map((c) => `<li><span class="n">${e(fmtDateRu(c.date))}</span><span style="grid-column:span 2">${e(stripEmoji(c.title))}</span></li>`).join('')}</ul>`
               : `<span class="v6-meta">Или что-то другое сегодня</span><h2 class="v6-h3" style="font-family:var(--font-display);font-weight:800;font-size:var(--fs-h4);margin-top:8px">Есть задача прямо сейчас?</h2>${askForm('v6-ask-b')}${chips()}`}</div>
           </div>`;
-        below = whoBlock() + pathsBlock() + newsBlock() + companies();
       } else if (st === 'C') {
         top = `<div style="padding-top:56px"><span class="v6-eyebrow">Общий старт пройден · уроки 1–5</span>
             <h1 class="v6-d" style="margin-top:24px !important">Развилка. Куда дальше?</h1>
@@ -330,7 +327,6 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
               <div class="v6-task"><span class="v6-meta">Другие роли</span><h3>Другая роль</h3><p>Для себя, продакт, проджект, маркетолог, специалист, владелец бизнеса.</p><span class="v6t">уроки роли</span><button class="v6b is-sm" onclick="V6.fork('other')">Выбрать</button></div>
             </div>
             <button class="v6-note" style="margin-top:20px" onclick="aleshaToggle()"><span class="v6-ava">А</span><span>Не уверены? Расскажите, чем занимаетесь, и я подскажу дорогу.</span></button></div>`;
-        below = pathsBlock() + companies();
       } else { // D
         const rr = role(ls.get(KEY.role)) || role('creator');
         let next = '', doneList = '';
@@ -347,9 +343,8 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         }
         top = `<div style="padding-top:40px"><p class="v6-meta">${e(rr.title)} · <button class="v6-quiet" onclick="V6.open('roles')">сменить роль</button></p>
             <div class="v6-hero" style="padding-top:8px"><div class="v6-dark">${next}</div><div>${askForm('v6-ask-d')}<div style="margin-top:28px">${doneList}</div></div></div></div>`;
-        below = (rr.id === 'seller' ? mapBlock() : pathsBlock()) + newsBlock() + companies();
       }
-      document.getElementById('v6-home').innerHTML = top + below;
+      document.getElementById('v6-home').innerHTML = top + pathsBlock() + oftenBlock() + newsBlock() + companies();
     }).catch(() => fail('v6-home'));
     return el;
   }
