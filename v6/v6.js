@@ -667,10 +667,22 @@
   // ---------- карточка фреймворка (CardSku.dc.html, CardPrompt.dc.html) ----------
   let fwCur = null;
   const rub = (n) => Math.round(n).toLocaleString('ru-RU') + ' ₽';
+  // выражение карточки (executor.expr): только id полей, числа и + - * / ( )
+  function evalExpr(expr, v) {
+    const ids = Object.keys(v);
+    const names = expr.match(/[A-Za-z_]\w*/g) || [];
+    if (!/^[\w\s+\-*\/().]+$/.test(expr) || names.some((n) => !ids.includes(n))) return NaN;
+    try { return Function(...ids, `return (${expr});`)(...ids.map((k) => v[k])); } catch (_) { return NaN; }
+  }
   function calc() {
     const c = fwCur, box = document.getElementById('v6-calc');
     if (!c || !box) return;
     const v = {}; c.executor.inputs.forEach((i) => { v[i.id] = parseFloat(String((box.querySelector(`[data-in="${i.id}"]`) || {}).value || '0').replace(/\s/g, '').replace(',', '.')) || 0; });
+    if (c.executor.expr) {
+      const r = evalExpr(c.executor.expr, v), res = c.executor.result || {};
+      box.querySelector('.v6-calc-n').textContent = Number.isFinite(r) ? `${r.toLocaleString('ru-RU', { maximumFractionDigits: res.digits ?? 1 })}${res.unit ? ' ' + res.unit : ''}` : '—';
+      return;
+    }
     const price = v[c.executor.inputs[0].id];
     const parts = c.executor.inputs.slice(1).map((i) => ({ t: i.label, n: i.kind === 'percent' ? price * v[i.id] / 100 : v[i.id] }));
     const left = price - parts.reduce((n, x) => n + x.n, 0);
@@ -705,9 +717,9 @@
         let body = '';
         if (c.full) {
           const ex = c.executor || {};
-          const exec = ex.kind === 'calculator' && ex.inputs && ex.inputs.length > 1 ? `<section class="v6-exec" aria-label="ИИ-исполнитель: калькулятор"><div class="v6-exec-h"><h2>Посчитайте свой случай</h2><span class="v6t">ИИ-исполнитель · калькулятор</span></div>
+          const exec = ex.kind === 'calculator' && ex.inputs && ex.inputs.length > 0 ? `<section class="v6-exec" aria-label="ИИ-исполнитель: калькулятор"><div class="v6-exec-h"><h2>Посчитайте свой случай</h2><span class="v6t">ИИ-исполнитель · калькулятор</span></div>
               <div id="v6-calc"><div class="v6-calc-in">${ex.inputs.map((i) => `<label>${e(i.label)}<span><input type="text" inputmode="decimal" data-in="${e(i.id)}" value="" placeholder="0" oninput="V6.calc()"><i>${e(i.unit || '')}</i></span></label>`).join('')}</div>
-              <div class="v6-calc-out"><div class="v6-calc-top"><span>Остаётся с одной продажи</span><span class="v6-calc-n"></span></div><div class="v6-calc-bar"></div><div class="v6-calc-leg"></div><p class="v6-meta" style="margin:0">${e(ex.formula || '')}</p></div></div></section>`
+              <div class="v6-calc-out"><div class="v6-calc-top"><span>${e(ex.expr ? (ex.result || {}).label || 'Результат' : 'Остаётся с одной продажи')}</span><span class="v6-calc-n"></span></div>${ex.expr ? '' : '<div class="v6-calc-bar"></div><div class="v6-calc-leg"></div>'}<p class="v6-meta" style="margin:0">${e(ex.formula || '')}</p></div></div></section>`
             : ex.kind === 'prompt' ? `<section class="v6-exec" aria-label="ИИ-исполнитель: промпт"><div class="v6-exec-h"><h2>Заготовка запроса</h2><span class="v6t">ИИ-исполнитель · промпт${ex.noVpn ? ' · без VPN' : ''}</span></div><pre class="v6-prompt" id="v6-prompt">${e(ex.prompt || '')}</pre><span><button class="v6b v6-btn-lg" onclick="V6.copyPrompt(this)">Скопировать</button></span></section>` : '';
           const g = c.gate;
           body = `<div class="v6-fwbody">
@@ -734,7 +746,9 @@
           ${!c.full && near.length ? `<section class="v6-tsec" style="padding-bottom:0"><h2 class="v6-h2">Рядом в этом направлении</h2>${fwGrid(near, 'fw')}</section>` : ''}
           ${c.agencyDoor ? `<div class="v6-doorbox"><span>${e(c.agencyDoor)}</span><a class="v6b is-soft v6-btn-lg" href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'fw' })">Узнать</a></div>` : ''}
         </div>`;
-        if (c.full && c.executor && c.executor.kind === 'calculator' && c.executor.inputs && c.example) {
+        if (c.full && c.executor && c.executor.defaults) {
+          document.querySelectorAll('#v6-calc [data-in]').forEach((el) => { const d = c.executor.defaults[el.dataset.in]; if (d != null) el.value = String(d).replace('.', ','); });
+        } else if (c.full && c.executor && c.executor.kind === 'calculator' && c.executor.inputs && c.example) {
           // подставить числа из примера карточки, если они там есть по порядку полей
           // «комиссия 25% — 500 ₽»: рубли сразу после процента — пересчёт, а не отдельное поле
           const nums = []; let prev = '';
