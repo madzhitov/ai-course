@@ -631,7 +631,8 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
               return go ? `<a class="v6-prep-i" href="#" onclick="${go}; return false;">${inner}</a>` : `<span class="v6-prep-i">${inner}</span>`; }).join('')}</div></section>
             ${sp.stages.map(stage).join('')}
             <section class="v6-kit"><div class="v6-sec-head"><h2 class="v6-psec-h">Набор продавца</h2><p>Пришли не учиться, а забрать таблицу? Всё полезное из пути — здесь, без порядка.</p></div>
-              <div class="v6-kit-g">${groups.map(([t, rs]) => `<div class="v6-kit-c"><span class="v6-kit-h"><span>${e(t)}</span><span class="v6-meta">${rs.length}</span></span><div class="v6-kit-l">${rs.map((r) => `<span class="v6-kit-i"><span class="v6-kit-t">${e(r.title)}</span><span class="v6-kit-g2">${e(r.gives || '')}</span>${r.status === 'ready' ? '' : '<span class="v6-kit-s">скоро</span>'}</span>`).join('')}</div></div>`).join('')}</div>
+              <div class="v6-kit-g">${groups.map(([t, rs]) => `<div class="v6-kit-c"><span class="v6-kit-h"><span>${e(t)}</span><span class="v6-meta">${rs.length}</span></span><div class="v6-kit-l">${rs.map((r) => { const fw = r.status === 'ready' && /^framework:/.test(r.link || '') && fwById(r.link.slice(10)); const inner = `<span class="v6-kit-t">${e(r.title)}</span><span class="v6-kit-g2">${e(r.gives || '')}</span>${fw ? '<span class="v6-kit-s is-go">открыть →</span>' : r.status === 'ready' ? '' : '<span class="v6-kit-s">скоро</span>'}`;
+                return fw ? `<a class="v6-kit-i" href="#fw-${e(fw.id)}" onclick="V6.openFw('${e(fw.id)}','kit'); return false;">${inner}</a>` : `<span class="v6-kit-i">${inner}</span>`; }).join('')}</div></div>`).join('')}</div>
               ${sp.note ? `<p class="v6-sp-note">${e(sp.note)}</p>` : ''}</section>
           </div>`;
       }).catch(() => fail('v6-sp'));

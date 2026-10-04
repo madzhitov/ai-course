@@ -743,3 +743,6 @@ body.v6 .lesson-content .v6-page a.v6-mile-b { color:#16161A; }
 .v6-nbreply { display:flex; gap:12px; align-items:flex-start; background:var(--ground); border-radius:18px; padding:14px 16px; font-size:15px; line-height:1.5; color:var(--text-2); }
 .v6-nbreply .v6-ava { width:32px; height:32px; font-size:14px; }
 .v6-rub-reply p, .v6-nbreply p { margin:0 0 8px; } .v6-rub-reply p:last-child, .v6-nbreply p:last-child { margin:0; }
+body.v6 .lesson-content .v6-page a.v6-kit-i { color:var(--ink); }
+body.v6 .lesson-content .v6-page a.v6-kit-i:hover .v6-kit-t { color:var(--accent); }
+.v6-kit-s.is-go { color:var(--accent); }
