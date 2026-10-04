@@ -195,7 +195,7 @@ def classify_batch(emails):
     ]
 
     resp = client.messages.create(
-        model="claude-sonnet-5",
+        model="claude-sonnet-5-5",
         max_tokens=4000,
         system=CLASSIFY_PROMPT,
         messages=[{"role": "user", "content": json.dumps(payload, ensure_ascii=False)}],
@@ -210,7 +210,7 @@ def classify_batch(emails):
     return json.loads(text)
 </code></pre>
 
-<p>Я выбрал <code>claude-sonnet-5</code> — она достаточно умная для нюансов («это срочно от босса» vs «это рассылка от Jira»). Haiku тоже подойдёт, но иногда промахивается с «template».</p>
+<p>Я выбрал <code>claude-sonnet-5-5</code> — она достаточно умная для нюансов («это срочно от босса» vs «это рассылка от Jira»). Haiku тоже подойдёт, но иногда промахивается с «template».</p>
 
 <h2>Шаг 4: сохраняем черновики в папку Drafts</h2>
 

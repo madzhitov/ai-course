@@ -126,7 +126,7 @@
 <h2>5. Skills в API</h2>
 <p>Для разработчиков Skills доступны через Claude API. Пример включения Excel skill:</p>
 <pre><code>response = client.messages.create(
-  model="claude-sonnet-5",
+  model="claude-sonnet-5-5",
   max_tokens=4000,
   messages=[{"role": "user", "content": "Проанализируй прикреплённый Excel"}],
   tools=[{

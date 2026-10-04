@@ -63,34 +63,34 @@
 
 <h3>Большая четвёрка проприетарных моделей</h3>
 
-<p><strong>OpenAI (GPT, ChatGPT).</strong> Партнёр Microsoft. Линейка: GPT-4o, GPT-4o-mini, o1, o3, o4-mini.</p>
+<p><strong>OpenAI (GPT, ChatGPT).</strong> Партнёр Microsoft. Линейка: gpt-6-astra (самая мощная), gpt-6.1-sol (почти как Astra, но дешевле), gpt-6-luna (самая экономная). Старые gpt-4o и gpt-4o-mini ещё есть в API, на них удобно считать примеры в этом уроке.</p>
 <ul>
-<li>GPT-4o — флагман, мультимодальный (текст + картинки + аудио).</li>
-<li>o1/o3 — «reasoning» модели со встроенным Chain-of-Thought (пошаговое рассуждение перед ответом); медленнее и дороже, но решают то, что флагманы не вывозят.</li>
+<li>gpt-6-astra: флагман OpenAI. GPT-4o (2024) была мультимодальной моделью прошлого поколения (текст + картинки + аудио).</li>
+<li>o1/o3 были первыми «reasoning»-моделями OpenAI. Перед ответом они рассуждают пошагово (Chain-of-Thought), поэтому медленнее и дороже. Сейчас такое рассуждение встроено в основные модели (GPT-6, Claude, Gemini), а o1 OpenAI отключает 23 октября 2026.</li>
 </ul>
 
 <p><strong>Anthropic (Claude).</strong> Конкурент №1. Акцент на безопасности и качестве рассуждений. Линейка: Claude Opus, Sonnet, Haiku.</p>
 <ul>
-<li>Opus — флагман, силён в анализе документов и коде.</li>
-<li>Sonnet — рабочая лошадка, лучший баланс цена/качество на 2026.</li>
+<li>Opus: для долгих агентных задач с кодом и документами, Anthropic советует начинать с него. Над ним стоит Fable, он для самых тяжёлых рассуждений.</li>
+<li>Sonnet: рабочая лошадка. По описанию Anthropic, лучшее сочетание скорости и интеллекта.</li>
 <li>Haiku — самая быстрая.</li>
 </ul>
 
 <p><strong>Google (Gemini).</strong> Сильно интегрирован с Google ecosystem.</p>
 <ul>
-<li>Gemini 1.5 Pro — окно контекста до <strong>1 миллиона токенов</strong>.</li>
+<li>Gemini 3.x (сейчас Gemini 3.8 Flash и 3.5 Flash-Lite): окно контекста около <strong>1 миллиона токенов</strong>, на вход принимают текст, картинки, аудио, видео и PDF.</li>
 <li>Flash — быстрая дешёвая.</li>
 </ul>
 
-<p><strong>Microsoft (Phi и Copilot).</strong> Phi — «маленькие но умные» (3.5–14B). Копилоты в Office, GitHub — это GPT-4 + кастомизации.</p>
+<p><strong>Microsoft (Phi и Copilot).</strong> Phi: «маленькие, но умные» модели (до 14B) с открытыми весами под лицензией MIT. Копилоты не привязаны к одной модели: в GitHub Copilot можно выбрать модели OpenAI, Anthropic, Google и других.</p>
 
 <h3>Большая тройка open-source</h3>
 
-<p><strong>Meta (Llama).</strong> Llama 3.1, 3.2, 3.3. Размеры: 1B, 3B, 8B, 70B, 405B. Llama 3.1 405B сравнима с GPT-4o.</p>
+<p><strong>Meta (Llama).</strong> Llama 3.1, 3.2, 3.3 (2024 год; размеры 1B, 3B, 8B, 70B, 405B), затем Llama 4 Scout и Maverick (апрель 2025). В 2026 Meta выпустила закрытую модель Muse Spark. По оценке самой Meta, Llama 3.1 405B на момент выхода была конкурентоспособна с GPT-4o.</p>
 
 <p><strong>Mistral AI (Франция).</strong> Mistral 7B, Mixtral 8x7B (MoE), Mistral Large. Часть открытые (Apache 2.0), часть проприетарные.</p>
 
-<p><strong>DeepSeek (Китай).</strong> DeepSeek-V3, DeepSeek-R1 (reasoning). Полностью open-source (MIT). R1 показал результаты сопоставимые с o1 при кратно меньшей цене.</p>
+<p><strong>DeepSeek (Китай).</strong> DeepSeek-V3 и DeepSeek-R1 (reasoning) вышли на рубеже 2024–2025. R1 выложен под лицензией MIT; у V3 код под MIT, а веса под собственной лицензией DeepSeek (коммерческое использование разрешено). По данным самих авторов, R1 сопоставим с OpenAI o1 в математике, коде и рассуждениях. Сейчас в API DeepSeek работают модели V4.</p>
 
 <h3>Специализированные модели</h3>
 <ul>
@@ -116,16 +116,17 @@
 <tr><th>Модель</th><th>Контекст</th></tr>
 <tr><td>GPT-3.5 (старая)</td><td>16k</td></tr>
 <tr><td>GPT-4o</td><td>128k</td></tr>
-<tr><td>Claude 3.5 Sonnet</td><td>200k</td></tr>
+<tr><td>claude-sonnet-5-5 / claude-opus-5-5</td><td>1M</td></tr>
+<tr><td>claude-haiku-4-5</td><td>200k</td></tr>
 <tr><td>Llama 3.1</td><td>128k</td></tr>
-<tr><td>Gemini 1.5 Pro</td><td>1M (миллион)</td></tr>
+<tr><td>Gemini 3.8 Flash</td><td>1M (миллион)</td></tr>
 <tr><td>DeepSeek-V3</td><td>128k</td></tr>
 </table>
 <p>На практике: 128k ≈ среднего размера роман. 200k ≈ длинный технический документ + переписка.</p>
 
 <h3>3. Качество (бенчмарки)</h3>
 <p>Главные: MMLU (общие знания), GPQA, HumanEval/MBPP (программирование), MATH (математика).</p>
-<p>Бенчмарки врут — смотри живые сравнения: <a href="https://chat.lmsys.org" target="_blank">Chatbot Arena</a>, где модели оценивают вслепую люди.</p>
+<p>Бенчмарки врут — смотри живые сравнения: <a href="https://arena.ai" target="_blank">Arena</a> (раньше Chatbot Arena), где модели оценивают вслепую люди.</p>
 
 <h3>4. Скорость (tokens/sec)</h3>
 <ul>
@@ -141,23 +142,26 @@
 <tr><td>GPT-4o</td><td>$2.50</td><td>$10.00</td></tr>
 <tr><td>GPT-4o-mini</td><td>$0.15</td><td>$0.60</td></tr>
 <tr><td>o1</td><td>$15.00</td><td>$60.00</td></tr>
-<tr><td>Claude Opus 4</td><td>$15.00</td><td>$75.00</td></tr>
-<tr><td>Claude Sonnet 4</td><td>$3.00</td><td>$15.00</td></tr>
-<tr><td>Claude Haiku</td><td>$0.25</td><td>$1.25</td></tr>
-<tr><td>Gemini 1.5 Pro</td><td>$1.25</td><td>$5.00</td></tr>
-<tr><td>Gemini 1.5 Flash</td><td>$0.075</td><td>$0.30</td></tr>
-<tr><td>Llama 3.1 70B</td><td>$0.35</td><td>$0.40</td></tr>
-<tr><td>DeepSeek-V3</td><td>$0.14</td><td>$0.28</td></tr>
+<tr><td>claude-opus-5-5</td><td>$4.00</td><td>$20.00</td></tr>
+<tr><td>claude-sonnet-5-5</td><td>$2.00</td><td>$10.00</td></tr>
+<tr><td>claude-haiku-4-5</td><td>$1.00</td><td>$5.00</td></tr>
+<tr><td>Gemini 3.8 Flash</td><td>$0.75</td><td>$3.75</td></tr>
+<tr><td>Gemini 3.5 Flash-Lite</td><td>$0.30</td><td>$2.50</td></tr>
+<tr><td>Llama 3.1 70B</td><td colspan="2">зависит от провайдера</td></tr>
+<tr><td>DeepSeek V4.1-Flash</td><td>$0.15–0.30</td><td>$0.60–1.20</td></tr>
 </table>
+<p>Цена Gemini 3.8 Flash действует до 31 декабря 2026, с 1 января 2027 она станет $1.50 / $7.50.</p>
+<p>У DeepSeek цена зависит от времени суток, вне пиковых часов вдвое дешевле.</p>
+<p>У моделей с открытыми весами нет единой цены, её задаёт тот, кто их хостит. Сравнивай тарифы нескольких провайдеров.</p>
 
-<p><strong>Реальный пример:</strong> промпт 1000 токенов + ответ 500. GPT-4o = $0.0075 (~70 коп). GPT-4o-mini = $0.00045 (~4 коп). Разница 100x на массовых задачах.</p>
+<p><strong>Реальный пример:</strong> промпт 1000 токенов + ответ 500. GPT-4o = $0.0075 (~70 коп). GPT-4o-mini = $0.00045 (~4 коп). Разница примерно в 17 раз на массовых задачах.</p>
 
 <h3>6. Мультимодальность</h3>
 <ul>
-<li>Картинки на вход: GPT-4o, Claude 3.5+, Gemini, Llama 3.2 Vision.</li>
+<li>Картинки на вход: GPT, Claude (все текущие модели), Gemini, Llama 3.2 Vision и Llama 4.</li>
 <li>Аудио на вход: GPT-4o, Gemini.</li>
-<li>Видео на вход: Gemini 1.5 Pro.</li>
-<li>Картинки на выход: DALL·E, Imagen, Flux. (LLM сама не рисует — вызывает image-модель.)</li>
+<li>Видео на вход: Gemini (например, Gemini 3.8 Flash).</li>
+<li>Картинки на выход: GPT Image (OpenAI), Nano Banana (Gemini Flash Image), Flux. Часть мультимодальных моделей рисует сама (например, Gemini Flash Image), у других картинку делает отдельная image-модель по вызову.</li>
 </ul>
 
 <h3>7. Лицензия и приватность</h3>
@@ -197,7 +201,7 @@
 </div>
 
 <div class="callout callout-success">
-<strong>Преимущества Open-source (Llama, Mistral):</strong>
+<strong>Преимущества моделей с открытыми весами (Llama, Mistral, DeepSeek):</strong>
 <ul>
 <li>✅ Полная приватность — данные не выходят за периметр.</li>
 <li>✅ Бесплатно после развёртки.</li>
@@ -217,7 +221,7 @@
 <tr><th>Сценарий</th><th>Выбор</th></tr>
 <tr><td>Прототип</td><td>Proprietary mini (4o-mini, Haiku)</td></tr>
 <tr><td>Продакшен, простые задачи</td><td>Proprietary mini или OS на инфре</td></tr>
-<tr><td>Сложные рассуждения, code</td><td>Топовая proprietary (Opus, GPT-4o, o1)</td></tr>
+<tr><td>Сложные рассуждения, code</td><td>Топовая proprietary (Claude Opus 5.5 или Fable 5.1, gpt-6-astra)</td></tr>
 <tr><td>Конфиденциальные данные</td><td>Self-host OS или Azure OpenAI с DPA</td></tr>
 <tr><td>Регулируемая отрасль</td><td>Self-host OS или вендор с compliance</td></tr>
 <tr><td>Офлайн / on-device</td><td>Маленькая OS-модель (Phi, Llama 3.2 1B/3B)</td></tr>
@@ -232,7 +236,7 @@
 </ol>
 <p><strong>Что полезно:</strong></p>
 <ol>
-<li><a href="https://chat.lmsys.org" target="_blank">Chatbot Arena</a> — реальные люди голосуют вслепую.</li>
+<li><a href="https://arena.ai" target="_blank">Arena</a> — реальные люди голосуют вслепую.</li>
 <li><a href="https://artificialanalysis.ai" target="_blank">Artificial Analysis</a> — сравнение по качеству, скорости, цене.</li>
 <li><strong>Свои evals:</strong> для твоей задачи прогони 20–50 запросов через модели и оцени руками.</li>
 </ol>
@@ -245,7 +249,7 @@
 
 <h3>Сценарий 2: ассистент юриста</h3>
 <p>Длинные документы, точность критична, конфиденциальные данные.</p>
-<p><strong>Выбор: Claude Sonnet 4 на AWS Bedrock</strong> (с DPA) или <strong>Llama 3.1 70B self-hosted</strong>.</p>
+<p><strong>Выбор: claude-sonnet-5-5 на AWS Bedrock</strong> (с DPA) или <strong>Llama 3.1 70B self-hosted</strong>.</p>
 
 <h3>Сценарий 3: автокатегоризация писем</h3>
 <p>5000 писем в день, 20 категорий, важны скорость и цена.</p>
@@ -253,7 +257,7 @@
 
 <h3>Сценарий 4: код-ревьюер в CI/CD</h3>
 <p>Большой контекст, качество понимания кода критично.</p>
-<p><strong>Выбор: Claude Sonnet 4</strong> или <strong>DeepSeek-Coder</strong>.</p>
+<p><strong>Выбор: claude-sonnet-5-5</strong> или <strong>DeepSeek V4-Pro</strong>.</p>
 
 <h3>Сценарий 5: креативные сценарии для маркетинга</h3>
 <p>Креатив &gt; точность. Объём небольшой.</p>
@@ -268,7 +272,7 @@
 <li><strong>Параметр</strong> — настраиваемое число в нейросети.</li>
 <li><strong>Контекст</strong> — токены, видимые модели за раз.</li>
 <li><strong>MMLU</strong> — Massive Multitask Language Understanding.</li>
-<li><strong>Chatbot Arena</strong> — слепое голосование за ответы.</li>
+<li><strong>Arena</strong> (раньше Chatbot Arena) — слепое голосование за ответы.</li>
 <li><strong>Pareto-frontier</strong> — оптимальные модели по соотношению цены/качества.</li>
 <li><strong>MoE</strong> — Mixture of Experts. Mixtral, DeepSeek-V3.</li>
 <li><strong>Reasoning model</strong> — LLM со встроенной длинной CoT.</li>
@@ -289,7 +293,7 @@
 </ol>
 
 <h3>Упражнение 2. Чтение Arena (10 минут)</h3>
-<p>Зайди на <a href="https://chat.lmsys.org" target="_blank">chat.lmsys.org</a> в режиме Battle, голосуй вслепую 10 раз.</p>
+<p>Зайди на <a href="https://arena.ai" target="_blank">arena.ai</a> в режиме Battle, голосуй вслепую 10 раз.</p>
 
 <h3>Упражнение 3. Расчёт стоимости (10 минут)</h3>
 <p>Возьми один кейс. Прикинь объём. Посчитай месячную стоимость для трёх моделей. Формула: <code>запросов × 30 × (input_токенов × input_цена + output_токенов × output_цена) / 1М</code>.</p>
@@ -311,7 +315,7 @@
 Перед финальным ответом генерирует длинный «черновик мышления» (CoT). Резко повышает качество на сложных задачах, но медленнее и дороже.</p>
 
 <p><strong>2. У меня 1 миллион токенов входа. Какие модели подходят?</strong><br>
-Только Gemini 1.5 Pro (1M context). Альтернатива: chunking + любая модель.</p>
+Сейчас окно около 1M токенов у многих моделей: claude-sonnet-5-5 и claude-opus-5-5, GPT-6, Gemini 3.8 Flash, DeepSeek V4. Но если вход ровно миллион, места под ответ почти не останется, поэтому надёжнее разбить текст на куски (chunking) или взять RAG.</p>
 
 <p><strong>3. Через интерфейс или через API?</strong><br>
 Через интерфейс — разовые задачи, исследовательский креатив. Через API — автоматизация, ассистенты, скрипты, programmatic-control.</p>
@@ -320,7 +324,7 @@
 Веса опубликованы, можно скачать, дообучать. Но <strong>обучающие данные</strong> не публиковались.</p>
 
 <p><strong>5. Я в России и нет доступа к OpenAI. Что делать?</strong><br>
-(а) Anthropic — работает; (б) YandexGPT, GigaChat; (в) self-host (Llama, DeepSeek через Ollama).</p>
+(а) Anthropic, OpenAI и Google официально Россию не поддерживают: в их списках доступных стран её нет, так что на них не рассчитывай; (б) российские сервисы: YandexGPT, GigaChat; (в) self-host моделей с открытыми весами (Llama, DeepSeek через Ollama).</p>
 
 <p><strong>6. Бенчмарки против моих личных тестов — кто прав?</strong><br>
 Ты. На твоих задачах твои evals главнее любого бенчмарка.</p>
@@ -329,10 +333,10 @@
 Архитектура, где router выбирает 1–2 эксперта на токен. Mixtral 8x7B = 47B параметров, активны ~13B.</p>
 
 <p><strong>8. Топовая модель или дешёвая для классификации 100 категорий?</strong><br>
-Дешёвая. Объём важнее качества — за миллион писем экономия в 30 раз.</p>
+Дешёвая. Задача простая и массовая: дешёвая модель обычно справляется, а стоит в разы, а то и в десятки раз меньше топовой (например, gpt-6-luna примерно в 100 раз дешевле gpt-6-astra). Сначала проверь качество на 50 своих примеров.</p>
 
-<p><strong>9. Что такое Chatbot Arena?</strong><br>
-Платформа от LMSYS, где люди голосуют за ответы вслепую. Aggregate Elo-рейтинг.</p>
+<p><strong>9. Что такое Arena (раньше Chatbot Arena)?</strong><br>
+Платформа, где люди голосуют за ответы вслепую. Aggregate Elo-рейтинг.</p>
 
 <p><strong>10. 200k контекст — всегда хорошо?</strong><br>
 Не всегда. Цена линейна с длиной, lost in the middle, RAG часто лучше.</p>
@@ -340,7 +344,7 @@
 <h2>10. Что должно остаться в голове</h2>
 <ol>
 <li>Нет одной «лучшей модели» — есть лучшая под задачу.</li>
-<li>Цена и качество не линейны — 90% задач решает mini-модель в 30 раз дешевле.</li>
+<li>Цена и качество не линейны: многие рабочие задачи решает дешёвая модель, которая стоит в разы, а то и в десятки раз меньше флагмана. Проверь на своих примерах.</li>
 <li>Open-source уже хорош — для большинства задач Llama 70B хватает.</li>
 <li>Бенчмарки шумны — делай свои evals.</li>
 <li>Reasoning models — отдельный класс.</li>
