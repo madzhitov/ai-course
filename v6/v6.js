@@ -324,9 +324,9 @@
   function mapBlock() {
     const g = D.groups.find((x) => x.id === 'seller');
     return `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Карта задач</h2><p>Восемь направлений по P&amp;L. Готовые задачи кликабельны, будущие помечены «скоро».</p></div></div>
-      <div class="v6-dirs">${g.directions.map((d, i) => `<div class="v6-dir"><span class="num">${String(i + 1).padStart(2, '0')}</span><h3>${e(d.title)}</h3>
-        ${d.tasks.map((t) => t.status === 'soon' ? `<span class="is-soon"><span>${e(t.title)}</span><span class="v6-meta">скоро</span></span>`
-          : `<a onclick="V6.openTask('${e(t.id)}','role')"><span>${taskDone(t.id) ? '✓ ' : ''}${e(t.title)}</span><span class="v6-meta">${taskReady(t.id) ? (taskMins(t.id) || '→') : 'в работе'}</span></a>`).join('')}</div>`).join('')}</div></section>`;
+      <div class="v6-dirs">${g.directions.map((d, i) => `<div class="v6-dir"><span class="num">${String(i + 1).padStart(2, '0')}</span><h3>${e(d.title)}</h3>${d.description ? `<p>${e(d.description)}</p>` : ''}
+        <div class="v6-dir-rows">${d.tasks.map((t) => t.status === 'soon' ? `<span class="v6-dr is-soon"><span>${e(t.title)}</span><span class="m">скоро</span></span>`
+          : `<a class="v6-dr" href="#" onclick="V6.openTask('${e(t.id)}','role'); return false;"><span>${taskDone(t.id) ? '✓ ' : ''}${e(t.title)}</span><span class="m${taskReady(t.id) ? '' : ' is-wip'}">${taskReady(t.id) ? taskMins(t.id) : 'в работе'}</span></a>`).join('')}</div></div>`).join('')}</div></section>`;
   }
   function openRole(id, from) {
     go('role-' + id, () => {
@@ -363,7 +363,7 @@
             ${routes.length ? `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Готовые маршруты</h2></div><div class="v6-grid2">${routes.map((x) => `<div class="v6-task"><h3>${e(stripEmoji(x.title))}</h3><p>${e(x.description || '')}</p><span class="v6-meta">${e(x.meta || '')}</span><button class="v6b is-soft is-sm" onclick="openLesson(${lessonArg(x.lessons[0])})">Начать маршрут</button></div>`).join('')}</div></section>` : ''}
             ${r.id === 'creator' ? `<section class="v6-sec"><div class="v6-dark v6-dark-row"><div><span class="v6-meta">Путь роли</span><h2 class="v6-h2" style="margin-top:12px !important">${e(D.paths.main.title)}</h2><p style="margin-top:12px">Общий старт из пяти уроков, потом четыре уровня. Каждый замыкается Вехой.</p></div><button class="v6b is-accent" onclick="V6.open('paths')">Открыть путь</button></div></section>`
               : `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Уроки роли</h2></div><div class="v6-card"><ul class="v6-steps">${ls_.map((l) => l.content ? `<li class="${done(l.id) ? 'is-done' : ''}"><a onclick="openLesson(${lessonArg(l.id)})"><span class="dot">${done(l.id) ? '✓' : ''}</span><span>${e(l.title)}</span><span class="v6-meta">${l.duration ? l.duration + ' мин' : ''}</span></a></li>` : `<li><span class="row"><span class="dot"></span><span class="v6-meta">${e(l.title)}</span><span class="v6-meta">пишется</span></span></li>`).join('')}</ul></div></section>`}
-            ${group ? `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Задачи роли</h2><p>Направления и задачи уже разложены. Способы решения появятся.</p></div></div><div class="v6-dirs">${group.directions.filter((d) => r.id !== 'project' || /prioritize|manage/.test(d.id)).map((d) => `<div class="v6-dir"><h3>${e(d.title)}</h3>${(d.tasks || []).map((t) => `<span class="is-soon"><span>${e(t.title)}</span><span class="v6-meta">скоро</span></span>`).join('')}</div>`).join('')}</div></section>` : ''}`;
+            ${group ? `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Задачи роли</h2><p>Направления и задачи уже разложены. Способы решения появятся.</p></div></div><div class="v6-dirs">${group.directions.filter((d) => r.id !== 'project' || /prioritize|manage/.test(d.id)).map((d) => `<div class="v6-dir"><h3>${e(d.title)}</h3>${(d.tasks || []).map((t) => `<span class="v6-dr is-soon"><span>${e(t.title)}</span><span class="m">скоро</span></span>`).join('')}</div>`).join('')}</div></section>` : ''}`;
         }
         document.getElementById('v6-role').innerHTML = body;
       }).catch(() => fail('v6-role'));
@@ -383,7 +383,7 @@
       const others = D.groups.filter((g) => g.id !== 'seller');
       document.getElementById('v6-tasks').innerHTML = `<div style="padding-top:56px"><h1 class="v6-d">Задачи</h1><p class="v6-lead">С чем приходят. У каждой задачи — готовый результат и способы его получить.</p>${askForm('v6-ask-t')}</div>
         <section class="v6-sec" style="margin-top:72px"><div class="v6-sec-head"><h2 class="v6-h2">${e(seller.title)}</h2></div>${mapBlock().replace(/^<section class="v6-sec">/, '<div>').replace(/<\/section>$/, '</div>')}</section>
-        ${others.map((g) => `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">${e(g.title)}</h2><p>Задачи разложены, способы решения появятся.</p></div></div><div class="v6-dirs">${g.directions.map((d) => `<div class="v6-dir"><h3>${e(d.title)}</h3>${(d.tasks || [{ title: 'Задачи направления' }]).map((t) => `<span class="is-soon"><span>${e(t.title)}</span><span class="v6-meta">скоро</span></span>`).join('')}</div>`).join('')}</div></section>`).join('')}`;
+        ${others.map((g) => `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">${e(g.title)}</h2><p>Задачи разложены, способы решения появятся.</p></div></div><div class="v6-dirs">${g.directions.map((d) => `<div class="v6-dir"><h3>${e(d.title)}</h3>${(d.tasks || [{ title: 'Задачи направления' }]).map((t) => `<span class="v6-dr is-soon"><span>${e(t.title)}</span><span class="m">скоро</span></span>`).join('')}</div>`).join('')}</div></section>`).join('')}`;
     }).catch(() => fail('v6-tasks'));
   }
   function openTask(id, from) {

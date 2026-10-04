@@ -258,3 +258,20 @@ html:root { --header:80px; } /* старый каркас отступает о�
 .v6-chap-foot { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; padding-top:12px; font-size:16px; margin-top:auto; }
 .v6-page a.v6-quiz { color:var(--accent) !important; font-weight:600; text-decoration:none !important; min-height:var(--h-btn-sm); display:inline-flex; align-items:center; }
 .v6-page a.v6-quiz:hover { text-decoration:underline !important; text-underline-offset:4px; }
+
+/* страницы v6: старое правило .lesson-content a (зелёные, подчёркнутые) не действует */
+body.v6 .lesson-content .v6-page a { color:inherit; text-decoration:none; }
+body.v6 .lesson-content .v6-page .v6-door a { text-decoration:underline; text-underline-offset:3px; color:var(--text-2); }
+/* карта задач — по макету Role.dc.html */
+.v6-page .v6-dirs { grid-template-columns:repeat(auto-fit, minmax(270px, 1fr)); align-items:start; }
+.v6-page .v6-dir { border-radius:var(--r-lg); padding:28px; display:flex; flex-direction:column; gap:6px; }
+.v6-page .v6-dir .num { font-size:15px; color:var(--text-3); }
+.v6-page .v6-dir h3 { font-size:24px !important; font-weight:800 !important; letter-spacing:-0.02em !important; margin:0 !important; }
+.v6-page .v6-dir > p { margin:0 0 10px; font-size:16px; color:var(--text-2); }
+.v6-dir-rows { display:flex; flex-direction:column; }
+body.v6 .lesson-content .v6-page .v6-dr { display:flex !important; justify-content:space-between; align-items:center; gap:12px; min-height:52px; padding:10px 0; border-top:1px solid var(--line); font-size:17px; color:var(--ink); text-decoration:none; }
+body.v6 .lesson-content .v6-page a.v6-dr:hover span:first-child { color:var(--accent); }
+.v6-dr .m { font-size:14px; color:var(--accent); white-space:nowrap; }
+.v6-dr .m.is-wip { color:var(--text-3); }
+body.v6 .lesson-content .v6-page .v6-dr.is-soon { color:var(--text-3); }
+.v6-dr.is-soon .m { color:var(--text-3); }
