@@ -5,7 +5,7 @@
    после основного скрипта и до разбора адреса. */
 (function () {
   'use strict';
-  const KEY = { role: 'v6-role', channels: 'v6-channels', last: 'v6-last-visit', units: 'v6-units', notes: 'v6-notes', dates: 'v6-done-dates', tgOffer: 'v6-tg-offer' };
+  const KEY = { role: 'v6-role', channels: 'v6-channels', last: 'v6-last-visit', units: 'v6-units', notes: 'v6-notes', dates: 'v6-done-dates', tgOffer: 'v6-tg-offer', checks: 'v6-checks' };
   const jget = (k) => { try { return JSON.parse(ls.get(k) || '{}') || {}; } catch (_) { return {}; } };
   const jset = (k, v) => ls.set(k, JSON.stringify(v));
   const LONG_AWAY_DAYS = 21;
@@ -617,7 +617,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
           const m = st.milestone;
           return `<section class="v6-stage"><div class="v6-stage-head"><div><span class="v6-pcard-label">Этап ${st.n} · ${label}</span><h2 class="v6-pmain-h">${e(st.title)} <span class="v6-stage-pr">— ${e(st.promise)}</span></h2></div><span class="v6-pcard-label">${req} ${plural(req, 'шаг', 'шага', 'шагов')}${opt ? ` · ${opt} по желанию` : ''}</span></div>
             <div class="v6-steps-list">${st.steps.map(step).join('')}</div>
-            ${m ? `<div class="v6-mile"><div class="v6-mile-l"><span class="v6-mile-e">Веха этапа ${st.n} · Алёша сверит по рубрике</span><span class="v6-mile-t">${e(m.title)}</span><span class="v6-mile-g">${e(m.gives || '')}</span><span><span class="v6-mile-b">Собрать ${e(m.title.charAt(0).toLowerCase() + m.title.slice(1))}</span> <span class="v6-mile-soon">скоро</span></span></div>
+            ${m ? `<div class="v6-mile"><div class="v6-mile-l"><span class="v6-mile-e">Веха этапа ${st.n} · Алёша сверит по рубрике</span><span class="v6-mile-t">${e(m.title)}</span><span class="v6-mile-g">${e(m.gives || '')}</span><span><a class="v6-mile-b" href="#veha-seller-${st.n}" onclick="V6.openVeha(${st.n},'path'); return false;">Собрать ${e(m.title.charAt(0).toLowerCase() + m.title.slice(1))}</a>${(jget(KEY.checks)['veha:seller-' + st.n] || {}).verdict ? ` <span class="v6-mile-soon">Алёша · ${e(jget(KEY.checks)['veha:seller-' + st.n].verdict)}</span>` : ''}</span></div>
               <div class="v6-mile-r">${(m.rubric || []).map((c) => `<span><span class="v6-mile-dot">${c.must ? '●' : '○'}</span>${e(c.criterion)}</span>`).join('')}</div>${door(st)}</div>` : ''}</section>`;
         };
         const groups = [['Шаблоны', ['template']], ['Чек-листы', ['checklist']], ['Калькуляторы', ['calculator']], ['Инструменты', ['tool']], ['Промпты', ['prompt-set']]]
@@ -739,7 +739,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
             <section class="v6-box"><h2>Шаги</h2><div class="v6-fwsteps">${(c.steps || []).map((x, i) => `<div><span class="n">${i + 1}</span><span><b>${e(x.title)}</b><span>${e(x.text)}</span></span></div>`).join('')}</div></section>
             ${exec}
             <div class="v6-fw2">${c.example ? `<section class="v6-box"><h2>Пример</h2><span><span class="v6t is-grey">${c.example.illustrative ? 'условный пример · ' : ''}${e(c.example.industry || '')}</span></span><p class="v6-fw-ex">${e(c.example.text)}</p></section>` : ''}${(c.mistakes || []).length ? `<section class="v6-box"><h2>Частые ошибки</h2>${dots(c.mistakes, 'is-ink')}</section>` : ''}</div>
-            ${g ? `<section class="v6-gate"><div class="v6-gate-l"><span class="v6-gate-e"><span class="v6-ava">А</span>Калитка · Алёша сверит по рубрике</span><span class="v6-gate-t">${e(g.task)}</span><span><button class="v6b is-accent v6-btn-lg" onclick="umTrack('alyosha-open', { from: 'fw-gate' }); aleshaToggle()">Спросить Алёшу</button></span><span class="v6-gate-n">Сверка по рубрике и тетрадь появятся на следующем этапе. Пока Алёша подскажет в чате.</span></div>
+            ${g ? `<section class="v6-gate"><div class="v6-gate-l"><span class="v6-gate-e"><span class="v6-ava">А</span>Калитка · Алёша сверит по рубрике</span><span class="v6-gate-t">${e(g.task)}</span>${rubricBox('gate:' + c.id, `Калитка: ${c.title}`, g.task, g.rubric || [])}<span class="v6-gate-n">Результат попадёт в тетрадь. В «Сделали другие» — только если согласитесь.</span></div>
               <div class="v6-gate-r"><span class="v6-gate-rh">Рубрика</span>${(g.rubric || []).map((x) => `<span><span class="v6-mile-dot">${x.must ? '●' : '○'}</span><span>${e(x.criterion)}${x.must ? '' : ' <i>· по желанию</i>'}</span></span>`).join('')}</div></section>` : ''}
           </div>`;
         } else {
@@ -941,24 +941,28 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     const units = jget(KEY.units);
     Object.keys(units).filter((k) => units[k].result).forEach((k) => { const u = D && unitById(k); if (!u) return;
       out.push({ type: 'unit', id: k, title: u.title, label: { yes: 'Юнит · получилось', almost: 'Юнит · почти', no: 'Юнит · нужна помощь' }[units[k].result], date: units[k].date, text: units[k].note || '', open: `V6.openUnit('${k}','notebook')` }); });
+    const checks = jget(KEY.checks);
+    Object.keys(checks).forEach((k) => { const c = checks[k]; const [kind, ref] = k.split(':');
+      out.push({ type: 'check', id: k, title: (c.title || '').replace(/^(Веха|Калитка): /, ''), label: (kind === 'veha' ? 'Веха' : 'Калитка') + (c.verdict ? ` · Алёша: ${c.verdict}` : ' · без проверки'), date: c.date, text: c.text || '', reply: c.reply || '',
+        open: kind === 'veha' ? `V6.openVeha(${ref.split('-').pop()},'notebook')` : `V6.openFw('${ref}','notebook')` }); });
     return out.sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
   }
   function nbList() {
     const box = document.getElementById('v6-nblist'); if (!box) return;
     const q = NB.q.trim().toLowerCase();
     const all = notebookEntries();
-    const list = all.filter((x) => (NB.f === 'all' || (NB.f === 'lesson' ? x.type !== 'unit' : x.type === NB.f)) && (!q || (x.title + ' ' + x.text).toLowerCase().includes(q)));
+    const list = all.filter((x) => (NB.f === 'all' || (NB.f === 'lesson' ? (x.type === 'lesson' || x.type === 'note') : NB.f === 'unit' ? x.type === 'unit' : NB.f === 'alesha' ? !!x.reply : x.type === NB.f)) && (!q || (x.title + ' ' + x.text).toLowerCase().includes(q)));
     const day = (d) => { if (!d) return 'Без даты'; const x = new Date(d), t = new Date(); const diff = Math.floor((new Date(t.toDateString()) - new Date(x.toDateString())) / 864e5); return diff === 0 ? 'Сегодня' : diff === 1 ? 'Вчера' : x.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }); };
     if (!all.length) { box.innerHTML = `<div class="v6-nbempty"><h2 class="v6-ucard-t">Тетрадь пока пуста</h2><p>Сюда попадают пройденные уроки, сделанные задачи и ваши заметки к урокам.</p><button class="v6b v6-btn-lg" onclick="V6.open('roles')">Выбрать задачу</button></div>`; return; }
     if (!list.length) { box.innerHTML = `<p class="v6-lead">Ничего не нашлось. <button class="v6-quiet" onclick="V6.askAlesha('Тетрадь', '${e(NB.q).replace(/'/g, '')}')">Спросить Алёшу</button></p>`; return; }
     let last = '';
     box.innerHTML = list.map((x) => { const d = day(x.date), head = d !== last ? `<span class="v6-nbday">${e(d)}</span>` : ''; last = d;
-      return `${head}<article class="v6-nbitem"><span class="v6-pcard-label">${e(x.label)}</span><a class="v6-nbitem-t" href="#" onclick="${x.open}; return false;">${e(x.title)}</a>${x.text ? `<p>${e(x.text)}</p>` : ''}
+      return `${head}<article class="v6-nbitem"><span class="v6-pcard-label">${e(x.label)}</span><a class="v6-nbitem-t" href="#" onclick="${x.open}; return false;">${e(x.title)}</a>${x.text ? `<p>${e(x.text.length > 400 ? x.text.slice(0, 400) + '…' : x.text)}</p>` : ''}${x.reply ? `<div class="v6-nbreply"><span class="v6-ava">А</span><span>${aleshaMarkdown(x.reply.length > 500 ? x.reply.slice(0, 500) + '…' : x.reply)}</span></div>` : ''}
         ${x.text ? `<button class="v6-quiet" onclick="V6.askAlesha(${JSON.stringify(x.title).replace(/"/g, '&quot;')}, ${JSON.stringify('Моя заметка к «' + x.title + '»: ' + x.text + '\nСверь, правильно ли я понял, и подскажи, что улучшить.').replace(/"/g, '&quot;')})">Показать Алёше</button>` : ''}</article>`; }).join('');
   }
   function nbFilter(f, el) { NB.f = f; document.querySelectorAll('[data-nbf]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.nbf === f))); nbList(); }
   function nbSearch(el) { NB.q = el.value; nbList(); }
-  const NB_KEYS = () => [STORAGE_KEY, KEY.units, KEY.notes, KEY.dates, KEY.role, KEY.channels];
+  const NB_KEYS = () => [STORAGE_KEY, KEY.units, KEY.notes, KEY.dates, KEY.checks, KEY.role, KEY.channels];
   function nbExport() {
     const data = { app: 'artefakty', version: 1, date: new Date().toISOString(), keys: {} };
     NB_KEYS().forEach((k) => { const v = ls.get(k); if (v != null) data.keys[k] = v; });
@@ -993,13 +997,75 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       const r = resume();
       const pill = (f, t) => `<button type="button" class="v6-pill" data-nbf="${f}" aria-pressed="${NB.f === f}" onclick="V6.nbFilter('${f}', this)">${t}</button>`;
       document.getElementById('v6-nb').innerHTML = `<section class="v6-sechero"><div><h1 class="v6-d">Тетрадь</h1><p class="v6-lead">История вашего обучения: пройденные уроки, сделанные задачи и заметки.</p></div></section>
-        <div class="v6-nbgrid"><div><div class="v6-kfilters" style="margin:32px 0 24px"><label class="v6-nbsearch"><span class="v6-sr">Поиск по тетради</span><input type="search" placeholder="Поиск по заметкам" value="${e(NB.q)}" oninput="V6.nbSearch(this)"></label><div class="v6-pills">${pill('all', 'Всё')}${pill('lesson', 'Уроки')}${pill('unit', 'Задачи')}</div></div><div id="v6-nblist"></div></div>
+        <div class="v6-nbgrid"><div><div class="v6-kfilters" style="margin:32px 0 24px"><label class="v6-nbsearch"><span class="v6-sr">Поиск по тетради</span><input type="search" placeholder="Поиск по заметкам" value="${e(NB.q)}" oninput="V6.nbSearch(this)"></label><div class="v6-pills">${pill('all', 'Всё')}${pill('lesson', 'Уроки')}${pill('unit', 'Задачи')}${pill('check', 'Вехи и калитки')}${pill('alesha', 'С ответом Алёши')}</div></div><div id="v6-nblist"></div></div>
           <aside class="v6-side" style="padding-top:32px">${r && r.id != null ? `<div class="v6-neigh"><span class="v6-meta">Продолжить</span><a class="v6-neigh-i" href="#" onclick="openLesson(${lessonArg(r.id)}); return false;"><span>${e(r.title || '')}</span><span class="m">→</span></a></div>` : ''}
             <div class="v6-tdoor"><b>Тетрадь только в этом браузере</b><span>Очистка браузера сотрёт записи. Скачайте файл, чтобы не потерять; сохранение через Telegram появится скоро.</span>
               <span class="v6-btns"><button class="v6b is-white is-sm" onclick="V6.nbExport()">Скачать как файл</button><label class="v6b is-sm v6-nbload">Загрузить из файла<input type="file" accept="application/json,.json" onchange="V6.nbImport(this)" hidden></label></span>
               <button class="v6-quiet v6-nbreset" onclick="V6.nbReset()">Очистить всё</button></div></aside></div>`;
       nbList();
     }).catch(() => fail('v6-nb'));
+  }
+
+  // ---------- сверка по рубрике (Вехи, калитка карточки): Алёша через тот же /api/alesha, результат — в тетрадь ----------
+  // v6-checks = { 'veha:seller-1' | 'gate:<fw>': { title, text, verdict: 'зачтено'|'почти'|null, reply, date } }
+  const RUBRICS = {};
+  function rubricBox(key, title, task, rubric) {
+    RUBRICS[key] = { title, task, rubric };
+    const prev = jget(KEY.checks)[key] || {};
+    return `<div class="v6-rub" data-key="${e(key)}"><label class="v6-sr" for="rub-${e(key)}">Ваша работа</label>
+      <textarea id="rub-${e(key)}" class="v6-rub-in" placeholder="Вставьте свой документ, таблицу или ссылку и пару слов о том, что сделали">${e(prev.text || '')}</textarea>
+      <span class="v6-btns"><button class="v6b is-accent v6-btn-lg" onclick="V6.rubricRun('${e(key)}', this)">Показать Алёше</button><button class="v6b is-soft v6-btn-lg" onclick="V6.rubricSave('${e(key)}')">Только в тетрадь</button></span>
+      <div class="v6-rub-out" aria-live="polite">${prev.verdict ? rubricOut(prev) : prev.text ? '<span class="v6-meta">Сохранено в тетрадь без проверки.</span>' : ''}</div></div>`;
+  }
+  function rubricOut(c) {
+    return `<span class="v6t${c.verdict === 'зачтено' ? '' : ' is-grey'}">Алёша · ${e(c.verdict)}</span><div class="v6-rub-reply">${aleshaMarkdown(c.reply || '')}</div><span class="v6-meta">Записано в тетрадь${c.date ? ' · ' + new Date(c.date).toLocaleDateString('ru-RU') : ''}</span>`;
+  }
+  function rubricStore(key, patch) { const all = jget(KEY.checks); all[key] = Object.assign({ title: (RUBRICS[key] || {}).title }, all[key] || {}, patch, { date: new Date().toISOString() }); jset(KEY.checks, all); return all[key]; }
+  function rubricSave(key) {
+    const box = document.querySelector(`.v6-rub[data-key="${key}"]`); const text = box.querySelector('textarea').value.trim();
+    if (!text) { box.querySelector('textarea').focus(); return; }
+    rubricStore(key, { text });
+    box.querySelector('.v6-rub-out').innerHTML = '<span class="v6-meta">Сохранено в тетрадь без проверки.</span>';
+  }
+  async function rubricRun(key, btn) {
+    const r = RUBRICS[key], box = document.querySelector(`.v6-rub[data-key="${key}"]`), out = box.querySelector('.v6-rub-out');
+    const text = box.querySelector('textarea').value.trim();
+    if (!text) { box.querySelector('textarea').focus(); return; }
+    rubricStore(key, { text });
+    btn.disabled = true; out.innerHTML = '<span class="v6-meta">Алёша сверяет по рубрике…</span>';
+    const must = r.rubric.filter((c) => c.must).map((c) => '• ' + c.criterion).join('\n');
+    const opt = r.rubric.filter((c) => !c.must).map((c) => '• ' + c.criterion).join('\n');
+    const context = `Сверка работы ученика по рубрике.\nЗадание: ${r.task}\nОбязательные критерии:\n${must}${opt ? `\nПо желанию:\n${opt}` : ''}`;
+    const question = `Сверь мою работу по рубрике. Ответь строго в формате:\nВЕРДИКТ: зачтено или почти\n+ критерий — коротко, почему выполнен\n- критерий — что добавить\nСОВЕТ: одно предложение.\n«Зачтено» — только если выполнены все обязательные критерии.\n\nМоя работа:\n${text.slice(0, 4000)}`;
+    try {
+      const res = await fetch(ALESHA_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lessonTitle: r.title, lessonText: context, history: [], question }) });
+      if (!res.ok) throw new Error(res.status === 429 ? 'limit' : 'http');
+      const reader = res.body.getReader(), dec = new TextDecoder(); let acc = '';
+      for (;;) { const { done: fin, value } = await reader.read(); if (fin) break; acc += dec.decode(value, { stream: true }); out.innerHTML = `<div class="v6-rub-reply">${aleshaMarkdown(acc)}</div>`; }
+      const m = acc.match(/ВЕРДИКТ:\s*(зачтено|почти)/i);
+      const c = rubricStore(key, { verdict: m ? m[1].toLowerCase() : 'почти', reply: acc.replace(/\**\s*ВЕРДИКТ:[^\n]*\n?/i, '').replace(/^\s*\*\*\s*$/gm, '').trim() });
+      out.innerHTML = rubricOut(c);
+      track('rubric-check', { key, verdict: c.verdict });
+    } catch (err) {
+      out.innerHTML = `<span class="v6-meta">${err.message === 'limit' ? 'Алёша на сегодня устал: лимит вопросов в час. Работа сохранена в тетрадь, покажите позже.' : 'Алёша сейчас недоступен. Работа сохранена в тетрадь, покажите позже.'}</span>`;
+    } finally { btn.disabled = false; }
+  }
+  // Веха пути продавца: #veha-seller-<n>
+  function openVeha(n, from) {
+    go('veha-seller-' + n, () => {
+      shell('<div class="v6c" id="v6-veha"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
+      load().then(() => {
+        const sp = D.paths.rolePaths.find((p) => p.role === 'seller'); const st = sp.stages.find((x) => String(x.n) === String(n));
+        if (!st || !st.milestone) { document.getElementById('v6-veha').innerHTML = '<h1 class="v6-d" style="padding-top:56px">Такой Вехи нет</h1>'; return; }
+        const m = st.milestone; track('veha-open', { stage: n, from: from || 'link' });
+        document.getElementById('v6-veha').innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.open('paths')">Пути</a><span>/</span><a onclick="V6.openSellerPath('veha')">${e(sp.title)}</a><span>/</span><span>Веха этапа ${e(n)}</span></nav>
+          <section class="v6-uhead"><span class="v6-eyebrow">Веха этапа ${e(n)} · ${e(st.title)}</span><h1 class="v6-d">${e(m.title)}</h1><p class="v6-phero-lead">${e(m.gives || '')}</p></section>
+          <div class="v6-ugrid"><aside class="v6-lside"><span class="v6-lside-t">Рубрика</span>${(m.rubric || []).map((c) => `<span class="v6-lstep"><span class="v6-mile-dot">${c.must ? '●' : '○'}</span><span>${e(c.criterion)}${c.must ? '' : ' <i>по желанию</i>'}</span></span>`).join('')}<span class="v6-lside-f">● обязательно · ○ по желанию</span></aside>
+            <div class="v6-ucard"><span class="v6-pcard-label">Соберите и покажите</span><h2 class="v6-ucard-t">${e(m.title)}</h2><p>Соберите документ по шагам этапа: ${st.steps.filter((x) => !x.optional).map((x) => x.title).join(', ')}. Вставьте его сюда, и Алёша сверит по рубрике.</p>
+              ${rubricBox('veha:seller-' + n, `Веха: ${m.title}`, m.gives || m.title, m.rubric || [])}
+              ${m.agencyDoor ? `<p class="v6-meta">${e(m.agencyDoor)} · <a href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'veha' })">Узнать</a></p>` : ''}</div></div>`;
+      }).catch(() => fail('v6-veha'));
+    }, 'paths');
   }
 
   // ---------- маршрутизация ----------
@@ -1018,6 +1084,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     if (hash === 'path-marketing') { openMarketingPath('link'); return true; }
     m = hash.match(/^fw-([a-z0-9-]+)$/); if (m) { openFw(m[1], 'link'); return true; }
     m = hash.match(/^unit-([a-z0-9-]+)$/); if (m) { openUnit(m[1], 'link'); return true; }
+    m = hash.match(/^veha-seller-(\d)$/); if (m) { openVeha(m[1], 'link'); return true; }
     return false;
   }
 
@@ -1078,5 +1145,5 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     });
   }
 
-  window.V6 = { install, route, open, lessonDone, lessonNote, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, openKnowledge, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
+  window.V6 = { install, route, open, lessonDone, lessonNote, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, openKnowledge, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
 })();
