@@ -764,3 +764,9 @@ body.v6 .lesson-content .v6-page a.v6-kit-i:hover .v6-kit-t { color:var(--accent
   body.v6 { background:#fff !important; }
   .v6-box { padding:0 !important; }
 }
+.v6-funnel-in { display:grid; grid-template-columns:minmax(0,1fr) 140px 140px; gap:8px 12px; align-items:center; font-size:15px; color:var(--text-2); }
+.v6-funnel-in b { font-size:14px; color:var(--ink); }
+.v6-funnel-in input { height:48px; border:0; border-radius:14px; background:var(--ground); padding:0 14px; font:inherit; font-size:17px; font-weight:600; color:var(--ink); min-width:0; }
+.v6-funnel-in input:focus { outline:2px solid var(--accent); }
+.v6-restable tr.is-min td { color:var(--accent); font-weight:600; }
+@media (max-width:600px) { .v6-funnel-in { grid-template-columns:minmax(0,1fr) 90px 90px; } }

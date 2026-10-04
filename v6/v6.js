@@ -1075,12 +1075,17 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
   function resCheck(id, key, el) { const st = jget('v6-res-' + id); st[key] = el.checked; jset('v6-res-' + id, st); }
   function funnel() {
     const box = document.getElementById('v6-funnel'); if (!box) return;
-    const v = [...box.querySelectorAll('[data-in]')].map((el) => parseFloat(String(el.value).replace(/\s/g, '').replace(',', '.')) || 0);
-    const labels = [...box.querySelectorAll('[data-in]')].map((el) => el.dataset.label);
-    const conv = v.slice(1).map((x, i) => (v[i] ? x / v[i] * 100 : 0));
-    const min = conv.length ? Math.min(...conv.filter((x, i) => v[i] > 0)) : 0;
-    box.querySelector('.v6-funnel-out').innerHTML = conv.map((c, i) => `<div class="v6-funnel-row${c === min && v[i] ? ' is-min' : ''}"><span>${e(labels[i])} → ${e(labels[i + 1])}</span><b>${v[i] ? c.toLocaleString('ru-RU', { maximumFractionDigits: 1 }) + '%' : '—'}</b></div>`).join('') +
-      (v[0] && v[v.length - 1] ? `<div class="v6-funnel-row is-total"><span>Из ${e(labels[0].toLowerCase())} до ${e(labels[labels.length - 1].toLowerCase())}</span><b>${(v[v.length - 1] / v[0] * 100).toLocaleString('ru-RU', { maximumFractionDigits: 2 })}%</b></div>` : '');
+    const r = resById('r-funnel-tool'), c = r.content;
+    const val = (p, id) => { const el = box.querySelector(`[data-p="${p}"][data-in="${id}"]`); const v = parseFloat(String(el && el.value || '').replace(/\s/g, '').replace(',', '.')); return Number.isFinite(v) ? v : null; };
+    const rows = c.conversions.map((cv) => {
+      const at = (p) => { const v = {}; c.inputs.forEach((i) => { v[i.id] = val(p, i.id); }); return Object.values(v).some((x) => x == null) && cv.expr.match(/[a-z_]+/g).some((k) => v[k] == null || v[k] === 0) ? null : evalExpr(cv.expr, v); };
+      const now = at(0), prev = at(1); const ch = now != null && prev ? (now / prev - 1) * 100 : null;
+      return { cv, now, prev, ch };
+    });
+    const worst = rows.filter((x) => x.ch != null && x.ch < 0).sort((a, b) => a.ch - b.ch)[0];
+    const fmt = (x, d = 1) => (x == null || !Number.isFinite(x) ? '—' : x.toLocaleString('ru-RU', { maximumFractionDigits: d }));
+    box.querySelector('.v6-funnel-out').innerHTML = `<div class="v6-restable"><table><tr><th>Переход</th><th>${e(c.periods[0])}</th><th>${e(c.periods[1])}</th><th>Изменение</th></tr>${rows.map((x) => `<tr class="${x === worst ? 'is-min' : ''}"><td>${e(x.cv.label)}</td><td>${fmt(x.now)}%</td><td>${fmt(x.prev)}%</td><td>${x.ch == null ? '—' : (x.ch > 0 ? '+' : '') + fmt(x.ch, 0) + '%'}</td></tr>`).join('')}</table></div>
+      ${worst ? `<div class="v6-tgoffer"><b>Самый большой провал: ${e(worst.cv.label)} (${fmt(worst.ch, 0)}%).</b>${worst.cv.reads ? `<span>${e(worst.cv.reads)}</span>` : ''}${worst.cv.fixWhere ? `<span>Где чинить: ${e(worst.cv.fixWhere)}</span>` : ''}</div>` : '<p class="v6-meta" style="margin:0">Падений по сравнению с прошлым периодом нет.</p>'}`;
   }
   function openRes(id, from) {
     go('res-' + id, () => {
@@ -1108,9 +1113,11 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
             <div class="v6-calc-out"><div class="v6-calc-top"><span>${e((ex.result || {}).label || 'Результат')}</span><span class="v6-calc-n"></span></div><p class="v6-meta" style="margin:0">${e(ex.formula || '')}</p></div></div></section>
             ${c.example ? `<div class="v6-box"><h2>Пример</h2><p class="v6-fw-ex">${e(c.example)}</p></div>` : ''}`;
         } else if (id === 'r-funnel-tool' && c.inputs) {
-          main = `<section class="v6-exec" id="v6-funnel"><div class="v6-exec-h"><h2>Вставьте числа за период</h2><span class="v6t">инструмент · в браузере</span></div>
-            <div class="v6-calc-in">${c.inputs.map((i) => `<label>${e(i.label)}<span><input type="text" inputmode="numeric" data-in="${e(i.id)}" data-label="${e(i.short || i.label)}" value="${e(i.default ?? '')}" oninput="V6.funnel()"></span></label>`).join('')}</div>
-            <div class="v6-calc-out v6-funnel-out"></div>${c.read ? `<p class="v6-meta" style="margin:0">${e(c.read)}</p>` : ''}</section>
+          const pp = c.periods || ['Сейчас', 'Прошлый период'];
+          main = `<section class="v6-exec" id="v6-funnel"><div class="v6-exec-h"><h2>Вставьте числа за два периода</h2><span class="v6t">инструмент · считается в браузере</span></div>
+            <div class="v6-funnel-in"><span></span>${pp.map((p) => `<b>${e(p)}</b>`).join('')}${c.inputs.map((i) => `<span>${e(i.label)}</span>${pp.map((p, pi) => `<input type="text" inputmode="numeric" aria-label="${e(i.label)}, ${e(p)}" data-p="${pi}" data-in="${e(i.id)}" value="${e(((c.defaults || {})[p] || {})[i.id] ?? '')}" oninput="V6.funnel()">`).join('')}`).join('')}</div>
+            <div class="v6-calc-out v6-funnel-out"></div>${c.biggestDrop ? `<p class="v6-meta" style="margin:0">${e(c.biggestDrop)}</p>` : ''}</section>
+            ${(c.cautions || []).length ? `<div class="v6-box"><h2>Осторожно</h2>${c.cautions.map((x) => `<div class="v6-dotrow"><span class="v6-dot is-ink"></span><span>${e(x)}</span></div>`).join('')}</div>` : ''}
             ${c.example ? `<div class="v6-box"><h2>Пример</h2><p class="v6-fw-ex">${e(c.example)}</p></div>` : ''}`;
         } else if ((r.kind === 'tool' || r.kind === 'prompt-set') && (c.prompt || c.prompts)) {
           const ps = c.prompts || [{ title: 'Промпт', when: '', prompt: c.prompt }];
