@@ -72,16 +72,19 @@
     }
    ],
    "almost": [
-    "Ответы звучат одинаково — добавьте: «каждый ответ начинай по-разному, опирайся на детали отзыва»",
-    "Модель обещает лишнее — перечислите, чего вы не делаете",
-    "Слишком длинно — «не больше двух предложений»"
+    "Ответы звучат одинаково. Добавьте: «каждый ответ начинай по-разному, опирайся на детали отзыва»",
+    "Модель обещает лишнее: перечислите, чего вы не делаете",
+    "Слишком длинно: «не больше двух предложений»"
    ],
    "basedOn": [
     "four-part-request",
     "answer-check"
    ],
    "fromLesson": "e7",
-   "status": "from-lesson"
+   "status": "from-lesson",
+   "resources": [
+    "r-brand-voice"
+   ]
   },
   {
    "id": "u-seller-description",
@@ -150,7 +153,10 @@
    ],
    "fromLesson": "e6",
    "status": "from-lesson",
-   "review": true
+   "review": true,
+   "resources": [
+    "r-listing-checklist"
+   ]
   },
   {
    "id": "u-seller-assistant",
@@ -741,7 +747,11 @@
    ],
    "fromLesson": "e7",
    "status": "from-lesson",
-   "review": true
+   "review": true,
+   "resources": [
+    "r-content-plan",
+    "r-social-prompts"
+   ]
   },
   {
    "id": "u-seller-repeat",

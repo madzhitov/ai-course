@@ -502,7 +502,6 @@
    ],
    "sources": [
     "https://strategyn.com/jobs-to-be-done/history-of-jtbd/",
-    "https://gopractice.io/product/jobs-to-be-done-the-theory-and-the-frameworks/",
     "https://en.wikipedia.org/wiki/Anthony_Ulwick",
     "https://www.insidehighered.com/blogs/technology-and-learning/jobs-be-done-framework-and-competing-against-luck",
     "https://wisewords.blog/book-summaries/demand-side-sales-101-book-summary/",
@@ -4520,7 +4519,7 @@
    "id": "how-make-better",
    "title": "«Как мне сделать это лучше?»",
    "source": {
-    "author": "самопроверка модели — Self-Refine, Мадаан и соавторы, 2023",
+    "author": "самопроверка модели: Self-Refine, Мадаан и соавторы, 2023",
     "book": null,
     "verified": false
    },
@@ -4643,7 +4642,7 @@
   },
   {
    "id": "content-pipeline",
-   "title": "Одна запись — много форматов",
+   "title": "Одна запись, много форматов",
    "source": {
     "author": "модель «столп и микроконтент»: Гэри Вайнерчук",
     "book": null,

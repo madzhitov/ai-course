@@ -82,7 +82,7 @@ html:root { --header:80px; } /* старый каркас отступает о�
 .v6-icon svg { width:20px; height:20px; }
 .v6h-burger { display:none; }
 .v6-menu { display:none; }
-@media (max-width:980px) {
+@media (max-width:1240px) {
   .v6h-nav, .v6h-right .v6-link, .v6h-right .v6b { display:none; }
   .v6h-right { margin-left:auto; }
   .v6h-burger { display:inline-flex; }
@@ -896,3 +896,6 @@ body.v6 .lesson-content .v6-page .v6-lsheet .lesson-view a:not(.v6b):not(.v6t):h
 body.v6 .lesson-content .v6-page .v6-lsheet .lesson-view a:not(.v6b):not(.v6t) { transition:background-color .15s, color .15s; }
 .v6-crumbs a:hover, .v6-quiet:hover, .v6-link:hover { color:var(--ink); }
 .v6-uhead .v6t { white-space:normal; height:auto; min-height:36px; padding-top:6px; padding-bottom:6px; max-width:100%; box-sizing:border-box; line-height:1.35; }
+@media (min-width:1241px) and (max-width:1360px) { .v6h-nav { gap:20px; } .v6h-right .v6-link { margin-right:2px; font-size:15px; } .v6h-in { gap:16px; } }
+
+.v6h-brand { flex:none; }
