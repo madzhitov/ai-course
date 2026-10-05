@@ -1,0 +1,47 @@
+/* Статические страницы (уроки /lessons/*.html и инструменты /tools/*) в виде v6.
+   Подключает build_pages.js после tropa-lesson.css, только если этот файл есть (на main его нет). */
+html:root {
+  --hvoya-bg:#F3F4F7; --hvoya-panel:#FFFFFF; --hvoya-card:#F3F4F7; --hvoya-line:#E6E7EC;
+  --hvoya-ink:#16161A; --hvoya-muted:#5A5B63; --hvoya-faint:#6E6F78;
+  --hvoya-accent:#1F2F5C; --hvoya-accent-soft:#E3E8F2; --hvoya-accent-mid:#B9C4DD; --accent-hover:#16224A;
+}
+body { background:#F3F4F7 !important; color:#16161A; font-family:'Golos Text','PT Sans',system-ui,sans-serif !important; }
+.v6s-h { background:#fff; border-bottom:1px solid #E6E7EC; }
+.v6s-in { max-width:1240px; margin:0 auto; padding:0 40px; height:72px; display:flex; align-items:center; gap:32px; box-sizing:border-box; }
+.v6s-logo { display:inline-flex; }
+.v6s-logo img { height:24px; width:auto; display:block; }
+.v6s-nav { display:flex; gap:24px; margin-left:auto; }
+.v6s-nav a { color:#16161A; text-decoration:none; font-size:17px; }
+.v6s-nav a:hover { color:#1F2F5C; text-decoration:underline; text-underline-offset:4px; }
+.pp-home { display:none !important; }
+#lesson-content { max-width:960px !important; padding:40px 40px 72px !important; }
+#lesson-content .lesson-view { max-width:none !important; background:#fff; border-radius:40px; padding:56px 64px; box-sizing:border-box; }
+#lesson-content h1, #lesson-content h2, #lesson-content h3, #lesson-content .lesson-view h3.tl-name {
+  font-family:'Montserrat','Arial Black',sans-serif !important; font-weight:800 !important; letter-spacing:-0.02em !important; color:#16161A !important; }
+#lesson-content h1 { font-size:clamp(32px,4vw,48px) !important; line-height:1.05 !important; margin:0 0 20px !important; }
+#lesson-content h2 { font-size:28px !important; line-height:1.15 !important; margin:44px 0 14px !important; border:0 !important; padding:0 !important; }
+#lesson-content h3 { font-size:20px !important; margin:28px 0 10px !important; }
+#lesson-content .lesson-view > p, #lesson-content .lesson-view > ul li, #lesson-content .lesson-view > ol li { font-size:18px; line-height:1.65; color:#2A2B30; }
+#lesson-content .lesson-view a:not(.pp-open a) { color:#1F2F5C; text-underline-offset:3px; }
+#lesson-content .lesson-view a:not(.pp-open a):hover { background:#E3E8F2; border-radius:4px; text-decoration-thickness:2px; }
+#lesson-content .callout { background:#E3E8F2 !important; border-color:transparent !important; color:#16161A !important; border-radius:20px !important; }
+#lesson-content pre { background:#F3F4F7 !important; border:0 !important; border-radius:16px !important; }
+.pp-open { border-top:1px solid #E6E7EC !important; }
+.pp-open a { background:#1F2F5C !important; border-radius:999px !important; padding:14px 24px !important; }
+.pp-open a:hover { background:#16224A !important; }
+.tl-chip { border:0 !important; background:#F3F4F7 !important; padding:10px 16px !important; min-height:40px; }
+.tl-chip[aria-pressed="true"] { background:#16161A !important; color:#fff !important; }
+.tl-row { border-top-color:#E6E7EC !important; }
+.tl-mark { color:#1F2F5C !important; }
+@media (max-width:720px) {
+  .v6s-in { padding:0 20px; height:64px; gap:16px; }
+  .v6s-nav { gap:14px; }
+  .v6s-nav a { font-size:15px; }
+  #lesson-content { padding:20px 12px 56px !important; }
+  #lesson-content .lesson-view { padding:28px 20px; border-radius:28px; }
+}
+@media (max-width:420px) { .v6s-in { gap:12px; } .v6s-nav { gap:12px; } .v6s-nav a { font-size:14px; } .v6s-h .v6s-logo img { content:url(/v6/brand/mark.svg); width:28px !important; height:28px !important; } }
+/* старая раскладка «Тропы» (колонка меню слева) на статических страницах не нужна */
+body { display:block !important; grid-template-columns:none !important; }
+.v6s-h { display:block; width:100%; position:relative; z-index:2; }
+.v6s-logo img { width:150px !important; height:24px !important; max-width:none !important; }

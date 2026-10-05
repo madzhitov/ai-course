@@ -890,3 +890,8 @@ body.v6 .lesson-content .v6-page .v6-draft-l:hover { color:var(--accent); }
   #v6-fwp .v6-fwsteps > div { padding:2mm 0 !important; }
 }
 body.v6 .lesson-content .v6-legacy-view .sub-lead { font-size:20px !important; line-height:1.5 !important; color:var(--text-2) !important; margin:0 0 16px !important; }
+/* ссылки: рука на всех ссылках-кнопках и заметный отклик на наведение в тексте */
+a[onclick], a[role="link"] { cursor:pointer; }
+body.v6 .lesson-content .v6-page .v6-lsheet .lesson-view a:not(.v6b):not(.v6t):hover { color:var(--ink) !important; text-decoration-thickness:2px; text-decoration-color:var(--accent); background:var(--accent-tint); border-radius:4px; }
+body.v6 .lesson-content .v6-page .v6-lsheet .lesson-view a:not(.v6b):not(.v6t) { transition:background-color .15s, color .15s; }
+.v6-crumbs a:hover, .v6-quiet:hover, .v6-link:hover { color:var(--ink); }

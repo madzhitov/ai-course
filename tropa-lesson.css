@@ -2234,7 +2234,7 @@ main {
   font-weight: 700;
 }
 
-.lesson-content p { margin-bottom: 1rem; }
+.lesson-content p:where(:not(.v6-page p)) { margin-bottom: 1rem; }
 
 .lesson-content ul, .lesson-content ol {
   margin: 0.75rem 0 1.25rem 1.5rem;
@@ -2778,7 +2778,7 @@ main {
 .lesson-content h1 { font-size: 40px !important; font-weight: 800 !important; line-height: 1.1 !important; letter-spacing: -0.025em !important; }
 .lesson-content h2 { font-size: 22px !important; font-weight: 700 !important; letter-spacing: -0.015em !important; border-top: 1px solid var(--border) !important; padding-top: 1.5rem !important; }
 .lesson-content h3 { font-size: 17px !important; font-weight: 700 !important; letter-spacing: -0.01em !important; }
-.lesson-content p { font-size: 16px; line-height: 1.65; }
+.lesson-content p:where(:not(.v6-page p)) { font-size: 16px; line-height: 1.65; }
 .lesson-content a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
 .lesson-content a:hover { color: var(--link); text-decoration-thickness: 2px; }
 .lesson-content code { background: var(--bg-code) !important; color: var(--text) !important; padding: 2px 5px !important; border-radius: 3px !important; font-family: ui-monospace, "SF Mono", Monaco, Consolas, monospace !important; font-size: 13px !important; }

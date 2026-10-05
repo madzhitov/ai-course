@@ -1433,6 +1433,11 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     ls.set(KEY.last, new Date().toISOString());
     // уход на урок, раздел, глоссарий, квиз — снять оболочку v6
     window.openGlossary = (termId) => openDict(termId);
+    // ссылки-кнопки <a onclick> без адреса: доступны с клавиатуры (Tab, Enter) и читаются как ссылки
+    const linkify = (root) => root.querySelectorAll && root.querySelectorAll('a[onclick]:not([href]):not([tabindex])').forEach((a) => { a.tabIndex = 0; a.setAttribute('role', 'link'); });
+    linkify(document);
+    new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach((n) => n.nodeType === 1 && linkify(n.parentNode || n)))).observe(document.body, { childList: true, subtree: true });
+    document.addEventListener('keydown', (ev) => { const a = ev.target; if (ev.key === 'Enter' && a && a.matches && a.matches('a[onclick]:not([href])')) { ev.preventDefault(); a.click(); } });
     termEvents();   // старый глоссарий → Словарь мира в Знаниях
     ['openLesson', 'openSection', 'openQuiz'].forEach((fn) => {
       const orig = window[fn];
