@@ -10,6 +10,9 @@
   const jset = (k, v) => ls.set(k, JSON.stringify(v));
   const LONG_AWAY_DAYS = 21;
   const COMPANIES_URL = 'https://madzhitov.ru';
+  // ?v=<хеш> из собственного src (ставит stamp_assets.sh): тот же ключ сбрасывает кеш данных
+  const VQ = ((document.currentScript && document.currentScript.src.match(/[?&]v=([0-9a-f]+)/)) || [])[1];
+  const dataUrl = (f) => 'v6/data/' + f + (VQ ? '?v=' + VQ : '');
   const CHEV = '<svg class="v6-chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>';
 
   const ls = {
@@ -49,7 +52,7 @@
     if (D) return Promise.resolve(D);
     if (typeof fetch !== 'function') return Promise.reject(new Error('no fetch'));
     if (!loading) {
-      const get = (f) => fetch(`v6/data/${f}.json`).then((r) => r.ok ? r.json() : Promise.reject(new Error(f + ' ' + r.status)));
+      const get = (f) => fetch(dataUrl(f + '.json')).then((r) => r.ok ? r.json() : Promise.reject(new Error(f + ' ' + r.status)));
       loading = Promise.all(['roles', 'paths', 'tasks', 'units', 'resources', 'frameworks'].map(get)).then(([roles, paths, tasks, units, resources, frameworks]) => {
         const allTasks = {};
         tasks.groups.forEach((g) => (g.directions || []).forEach((d) => (d.tasks || []).forEach((t) => {
@@ -233,7 +236,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     </form><div class="v6-results" hidden aria-live="polite"></div>`;
   // ---------- витрина «Вы уносите» на главной (data/home-examples.json — условные примеры, TODO: реальные выходы задач) ----------
   let HX = null, hxTab = 'unit';
-  const loadHX = () => (HX ? Promise.resolve(HX) : fetch('v6/data/home-examples.json').then((r) => (r.ok ? r.json() : { tabs: [] })).catch(() => ({ tabs: [] })).then((d) => { HX = d; return d; }));
+  const loadHX = () => (HX ? Promise.resolve(HX) : fetch(dataUrl('home-examples.json')).then((r) => (r.ok ? r.json() : { tabs: [] })).catch(() => ({ tabs: [] })).then((d) => { HX = d; return d; }));
   function showOpen(t) {
     const u = t.unit && unitById(t.unit);
     if (hasSteps(u)) return `V6.openUnit('${e(u.id)}','home-show')`;
@@ -668,7 +671,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         areas: (typeof GLOSSARY_CATEGORIES !== 'undefined' ? GLOSSARY_CATEGORIES : []).map((c) => ({ id: c.id, title: c.title })),
         terms: (typeof GLOSSARY !== 'undefined' ? GLOSSARY : []).map((t) => ({ id: t.id, term: t.term, en: null, aliases: t.aliases || [], area: t.category, short: t.short, cards: [], lessons: t.lessons || [] })),
       });
-      dictLoading = (typeof fetch === 'function' ? fetch('v6/data/dictionary.json').then((r) => (r.ok ? r.json() : Promise.reject())) : Promise.reject())
+      dictLoading = (typeof fetch === 'function' ? fetch(dataUrl('dictionary.json')).then((r) => (r.ok ? r.json() : Promise.reject())) : Promise.reject())
         .catch(legacy).then((d) => { DICT = d; return d; });
     }
     return dictLoading;
