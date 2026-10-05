@@ -164,15 +164,33 @@
     },
     {
      "id": "ai.write",
-     "title": "Писать"
+     "title": "Писать",
+     "tasks": [
+      {
+       "id": "ai.write.hard-letter",
+       "title": "Написать трудное письмо"
+      }
+     ]
     },
     {
      "id": "ai.delegate",
-     "title": "Делегировать"
+     "title": "Делегировать",
+     "tasks": [
+      {
+       "id": "ai.delegate.routine",
+       "title": "Поручить ИИ повторяющуюся задачу"
+      }
+     ]
     },
     {
      "id": "ai.verify",
-     "title": "Проверять"
+     "title": "Проверять",
+     "tasks": [
+      {
+       "id": "ai.verify.answer",
+       "title": "Проверить ответ ИИ, прежде чем на него опереться"
+      }
+     ]
     },
     {
      "id": "ai.build",
