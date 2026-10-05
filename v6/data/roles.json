@@ -162,7 +162,7 @@
    "title": "Для себя",
    "description": "Еда, дети, поездки, документы",
    "isNew": false,
-   "taskGroup": null,
+   "taskGroup": "self",
    "path": null,
    "legacyRoutes": [
     "daily-life",

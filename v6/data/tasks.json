@@ -386,6 +386,32 @@
      ]
     }
    ]
+  },
+  {
+   "id": "self",
+   "title": "Для себя",
+   "directions": [
+    {
+     "id": "self.work",
+     "title": "Работа",
+     "tasks": [
+      {
+       "id": "self.work.resume",
+       "title": "Подготовить резюме под вакансию"
+      }
+     ]
+    },
+    {
+     "id": "self.docs",
+     "title": "Документы",
+     "tasks": [
+      {
+       "id": "self.docs.contract",
+       "title": "Разобрать договор перед подписью"
+      }
+     ]
+    }
+   ]
   }
  ],
  "note_descriptions": "Подзаголовки направлений продавца — из макета design/reference/screens/Role.dc.html (04.10.2026)."
