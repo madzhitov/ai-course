@@ -36864,87 +36864,126 @@ function copyAnchor(termId) {
 function renderResources() {
   document.getElementById('lesson-content').innerHTML = `
     <h1>Источники</h1>
-    <p class="sub-lead">«Артефакты» — не «откуда я всё взял», а последовательный путь, собранный из лучших источников. Ниже — что читать дополнительно, по темам.</p>
+    <p class="sub-lead">Методы в «Артефактах» собраны по первоисточникам. Здесь то, что стоит читать дальше: сначала по ролям, потом по темам. Большинство материалов на английском. Ссылки проверены в октябре 2026 года.</p>
 
-    <h2>Anthropic / Claude — официальные</h2>
-    <p>Если работаешь с Claude — это must-read.</p>
+    <div class="callout callout-info">
+      <strong>Про доступ из России.</strong> X (Twitter) заблокирован, нужен VPN. Telegram и YouTube могут не открываться без VPN, такие ссылки помечены. Сервисы Anthropic и OpenAI из России недоступны, но их документация открывается.
+    </div>
+
+    <h2>Всем, кто работает с ИИ</h2>
+    <p>Как ставить задачу модели. Из этих руководств собран «Запрос из четырёх частей».</p>
     <ul>
-      <li><a href="https://docs.claude.com" target="_blank"><strong>docs.claude.com</strong></a> — официальная документация. Лучшая в индустрии.</li>
-      <li><a href="https://anthropic.com/news" target="_blank"><strong>anthropic.com/news</strong></a> — инженерный блог: Constitutional AI, prompt caching, Computer Use, MCP.</li>
-      <li><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank"><strong>anthropic-cookbook</strong> на GitHub</a> — рабочие примеры кода.</li>
-      <li><a href="https://github.com/anthropics/courses" target="_blank"><strong>anthropics/courses</strong></a> — официальные курсы Anthropic для разработчиков. На английском, я перевожу и адаптирую.</li>
-      <li><a href="https://www.anthropic.com/research" target="_blank"><strong>Research</strong></a> — научные статьи Anthropic.</li>
-      <li><a href="https://github.com/anthropics/claude-code" target="_blank"><strong>Claude Code</strong></a> — CLI для разработчиков.</li>
-      <li><a href="https://modelcontextprotocol.io" target="_blank"><strong>modelcontextprotocol.io</strong></a> — спецификация MCP.</li>
+      <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" target="_blank" rel="noopener"><strong>Anthropic: как писать запросы к Claude</strong></a>. Официальное руководство с примерами.</li>
+      <li><a href="https://developers.openai.com/api/docs/guides/prompt-engineering" target="_blank" rel="noopener"><strong>OpenAI: Prompt engineering</strong></a>. То же от OpenAI.</li>
+      <li><a href="https://ai.google.dev/gemini-api/docs/prompting-strategies" target="_blank" rel="noopener"><strong>Google: Prompting strategies</strong></a>. Руководство по запросам к Gemini.</li>
+      <li><a href="https://academy.claude.com/" target="_blank" rel="noopener"><strong>Claude Academy</strong></a>. Бесплатные курсы Anthropic: основы работы с ИИ, возможности и ограничения моделей.</li>
     </ul>
 
-    <h2>Образовательные ресурсы по AI / ML</h2>
+    <h2>Продаю онлайн: маркетплейсы</h2>
+    <p>Правила и цифры площадок меняются часто. Сверяйтесь с официальной справкой, а не с пересказами.</p>
     <ul>
-      <li><a href="https://www.youtube.com/@AndrejKarpathy" target="_blank"><strong>Andrej Karpathy</strong> на YouTube</a> — лучшие на свете лекции про LLM. Особенно «Let's build GPT from scratch» и «Intro to Large Language Models». Всё бесплатно.</li>
-      <li><a href="https://simonwillison.net" target="_blank"><strong>Simon Willison's blog</strong></a> — лучший источник «что нового и что важно». Создатель Datasette, ведёт практически ежедневно.</li>
-      <li><a href="https://magazine.sebastianraschka.com" target="_blank"><strong>Sebastian Raschka</strong></a> — глубокие разборы LLM-архитектур, fine-tuning, RAG. Для вдумчивого чтения.</li>
-      <li><a href="https://huggingface.co/learn" target="_blank"><strong>Hugging Face Course</strong></a> — бесплатный курс от создателей одной из главных ML-экосистем.</li>
-      <li><a href="https://www.deeplearning.ai" target="_blank"><strong>DeepLearning.AI</strong></a> — короткие курсы Andrew Ng. Особенно «ChatGPT Prompt Engineering for Developers» и LangChain-серия.</li>
-      <li><a href="https://www.fast.ai" target="_blank"><strong>fast.ai</strong></a> — практический курс от Jeremy Howard. «Top-down» подход — сразу делать, разбираться по ходу.</li>
+      <li><a href="https://seller.wildberries.ru/instructions/ru/ru" target="_blank" rel="noopener"><strong>Wildberries: справочный центр продавца</strong></a>. Схемы работы, карточки, продвижение, финансы. Отдельно стоит раздел <a href="https://seller.wildberries.ru/instructions/ru/ru/material/sellers-analytics" target="_blank" rel="noopener">про аналитику продавца</a>.</li>
+      <li><a href="https://dev.wildberries.ru/docs/openapi/api-information" target="_blank" rel="noopener"><strong>Wildberries: документация WB API</strong></a>. Товары, заказы, аналитика, отчёты. Там же журнал изменений.</li>
+      <li><a href="https://seller-edu.ozon.ru/" target="_blank" rel="noopener"><strong>Ozon: образовательный центр продавца</strong></a>. Официальные инструкции по работе с маркетплейсом.</li>
+      <li><a href="https://docs.ozon.ru/api/seller/" target="_blank" rel="noopener"><strong>Ozon: документация Seller API</strong></a>. Товары, остатки, цены, отправления, отчёты.</li>
+      <li><a href="https://dev.ozon.ru/" target="_blank" rel="noopener"><strong>Ozon for dev</strong></a>. Новости API и сообщество разработчиков Ozon.</li>
     </ul>
 
-    <h2>Инструменты и фреймворки</h2>
+    <h2>Маркетологу</h2>
     <ul>
-      <li><a href="https://python.langchain.com" target="_blank"><strong>LangChain</strong></a> — стандарт-де-факто для LLM-приложений на Python.</li>
-      <li><a href="https://docs.llamaindex.ai" target="_blank"><strong>LlamaIndex</strong></a> — фреймворк специально под RAG и работу с данными.</li>
-      <li><a href="https://sdk.vercel.ai" target="_blank"><strong>Vercel AI SDK</strong></a> — для TypeScript / Next.js приложений.</li>
-      <li><a href="https://ollama.com" target="_blank"><strong>Ollama</strong></a> — локальный запуск open-source моделей. Самый простой путь.</li>
-      <li><a href="https://www.cursor.com" target="_blank"><strong>Cursor</strong></a> и <a href="https://claude.com/code" target="_blank"><strong>Claude Code</strong></a> — IDE и CLI с интегрированным AI.</li>
-      <li><a href="https://www.trychroma.com" target="_blank"><strong>Chroma</strong></a> и <a href="https://qdrant.tech" target="_blank"><strong>Qdrant</strong></a> — векторные БД.</li>
+      <li><strong>Клейтон Кристенсен и соавторы, «Закон успешных инноваций»</strong> (Competing Against Luck, 2016). Первоисточник идеи «работы, которую клиент нанимает» (JTBD).</li>
+      <li><strong>Боб Моэста, Грег Энгл, Demand-Side Sales 101</strong> (2020). JTBD применительно к продажам: как помочь клиенту сделать шаг вперёд. На английском.</li>
+      <li><strong>Эйприл Данфорд, Obviously Awesome</strong> (2019). Пошаговый метод позиционирования. На английском, <a href="https://www.aprildunford.com/books" target="_blank" rel="noopener">страница книги у автора</a>.</li>
+      <li><strong>Шон Эллис, Морган Браун, «Взрывной рост»</strong> (Hacking Growth, 2017). Откуда пришли ICE и North Star Metric.</li>
+      <li><a href="https://info.amplitude.com/rs/138-CDN-550/images/Amplitude-The-North-Star-Playbook.pdf" target="_blank" rel="noopener"><strong>Amplitude: The North Star Playbook</strong></a>. Как выбрать главную метрику и разложить её на составляющие. PDF, на английском.</li>
     </ul>
 
-  <h2> Сообщества и блоги практиков</h2>
+    <h2>Продакту и проджекту</h2>
     <ul>
-      <li><a href="https://eugeneyan.com" target="_blank"><strong>Eugene Yan</strong></a> — applied ML в проде, очень много про LLM-eval и архитектуру.</li>
-      <li><a href="https://hamel.dev" target="_blank"><strong>Hamel Husain</strong></a> — fine-tuning, evals, ML-консалтинг.</li>
-      <li><a href="https://www.latent.space" target="_blank"><strong>Latent Space</strong></a> — подкаст и блог про практику AI-стартапов.</li>
-      <li><a href="https://swyx.io" target="_blank"><strong>swyx</strong></a> — создатель Latent Space, много пишет про экосистему.</li>
-      <li>Twitter/X: <strong>@karpathy, @simonw, @swyx, @hwchase17 (LangChain), @jeremyphoward (fast.ai), @rasbt (Sebastian Raschka)</strong>.</li>
+      <li><strong>Эш Мауриа, Running Lean</strong>. Книга автора Lean Canvas, на английском. Коротко о самом холсте в <a href="https://ashmaurya.com/blog/what-is-lean-canvas" target="_blank" rel="noopener">блоге автора</a>.</li>
+      <li><a href="https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/" target="_blank" rel="noopener"><strong>Intercom: RICE</strong></a>. Исходная статья Шона Макбрайда о приоритизации.</li>
+      <li><a href="https://research.google/pubs/measuring-the-user-experience-on-a-large-scale-user-centered-metrics-for-web-applications/" target="_blank" rel="noopener"><strong>Google: фреймворк HEART</strong></a>. Статья Керри Родден и коллег (CHI 2010) о метриках пользовательского опыта.</li>
+      <li><strong>Джон Дорр, «Измеряйте самое важное»</strong> (Measure What Matters, 2018). Как устроены OKR, от Intel до Google.</li>
+      <li><a href="https://rework.withgoogle.com/intl/en/guides/set-goals-with-okrs" target="_blank" rel="noopener"><strong>Google re:Work: цели через OKR</strong></a>. Короткое практическое руководство.</li>
     </ul>
 
-  <h2> На русском</h2>
+    <h2>Владельцу бизнеса</h2>
     <ul>
-      <li><a href="https://yandex.cloud/ru/docs/yandexgpt" target="_blank">Документация YandexGPT</a> — для тех кто работает с российскими моделями.</li>
-      <li><a href="https://developers.sber.ru/docs/ru/gigachat/individuals-quickstart" target="_blank">GigaChat Quickstart</a> — старт со Сбером.</li>
-      <li><a href="https://www.youtube.com/@karpov_courses" target="_blank">karpov.courses на YouTube</a> — много бесплатного материала про ML на русском.</li>
-      <li>Telegram-каналы: <strong>@addmeto</strong> (Григорий Бакунов про технологии), <strong>@gonzo_ML</strong> (научные статьи разбирают), <strong>@denissexy</strong> (Денис Ширяев — продуктовый AI).</li>
+      <li><a href="https://www.forentrepreneurs.com/saas-metrics-2/" target="_blank" rel="noopener"><strong>Дэвид Скок: SaaS Metrics 2.0</strong></a>. Подробно про LTV, CAC и ориентир «3 к 1». Написано для подписочного бизнеса, логика пригодится и в других.</li>
+      <li>Из разделов выше: «Закон успешных инноваций», чтобы понять, за что платят клиенты, и «Измеряйте самое важное», чтобы ставить цели команде.</li>
+    </ul>
+
+    <h2>Создаю на ИИ: Anthropic и Claude</h2>
+    <ul>
+      <li><a href="https://platform.claude.com/docs/en/home" target="_blank" rel="noopener"><strong>Документация Claude</strong></a>. API, модели, инструменты, руководства.</li>
+      <li><a href="https://code.claude.com/docs/en/overview" target="_blank" rel="noopener"><strong>Документация Claude Code</strong></a> и <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">репозиторий на GitHub</a>. ИИ-агент для работы с кодом в терминале и редакторе.</li>
+      <li><a href="https://github.com/anthropics/claude-cookbooks" target="_blank" rel="noopener"><strong>Claude Cookbooks</strong></a> на GitHub. Рабочие примеры кода (раньше назывался anthropic-cookbook).</li>
+      <li><a href="https://modelcontextprotocol.io" target="_blank" rel="noopener"><strong>Model Context Protocol</strong></a>. Спецификация и документация MCP.</li>
+      <li><a href="https://www.anthropic.com/engineering" target="_blank" rel="noopener"><strong>Инженерный блог Anthropic</strong></a>. Как строить агентов и инструменты на Claude.</li>
+      <li><a href="https://www.anthropic.com/research" target="_blank" rel="noopener"><strong>Anthropic Research</strong></a>. Научные работы компании.</li>
+    </ul>
+
+    <h2>Создаю на ИИ: инструменты</h2>
+    <ul>
+      <li><a href="https://docs.langchain.com" target="_blank" rel="noopener"><strong>LangChain</strong></a>. Один из самых распространённых фреймворков для приложений на LLM, Python и JavaScript.</li>
+      <li><a href="https://developers.llamaindex.ai/python/framework/" target="_blank" rel="noopener"><strong>LlamaIndex</strong></a>. Фреймворк для поиска по документам (RAG) и работы с данными.</li>
+      <li><a href="https://ai-sdk.dev" target="_blank" rel="noopener"><strong>AI SDK от Vercel</strong></a>. Для приложений на TypeScript и Next.js.</li>
+      <li><a href="https://ollama.com" target="_blank" rel="noopener"><strong>Ollama</strong></a>. Запуск открытых моделей на своём компьютере.</li>
+      <li><a href="https://cursor.com" target="_blank" rel="noopener"><strong>Cursor</strong></a> и <a href="https://claude.com/product/claude-code" target="_blank" rel="noopener"><strong>Claude Code</strong></a>. Редактор кода и агент для терминала со встроенным ИИ.</li>
+      <li><a href="https://www.trychroma.com" target="_blank" rel="noopener"><strong>Chroma</strong></a> и <a href="https://qdrant.tech" target="_blank" rel="noopener"><strong>Qdrant</strong></a>. Векторные базы данных.</li>
+    </ul>
+
+    <h2>Как устроены модели</h2>
+    <ul>
+      <li><a href="https://www.youtube.com/@AndrejKarpathy" target="_blank" rel="noopener"><strong>Andrej Karpathy</strong> на YouTube</a>. Подробные лекции про LLM. Для всех: «Intro to Large Language Models», для тех, кто пишет код: «Let's build GPT». Может не открываться без VPN.</li>
+      <li><a href="https://magazine.sebastianraschka.com" target="_blank" rel="noopener"><strong>Sebastian Raschka</strong></a>. Глубокие разборы архитектур LLM, дообучения, RAG. Для вдумчивого чтения.</li>
+      <li><a href="https://huggingface.co/learn" target="_blank" rel="noopener"><strong>Hugging Face Learn</strong></a>. Бесплатные курсы, в том числе по LLM.</li>
+      <li><a href="https://www.fast.ai" target="_blank" rel="noopener"><strong>fast.ai</strong></a>. Бесплатный практический курс Jeremy Howard: сначала делаете, потом разбираетесь.</li>
+      <li><a href="https://www.deeplearning.ai" target="_blank" rel="noopener"><strong>DeepLearning.AI</strong></a>. Короткие курсы Andrew Ng и партнёров по работе с LLM.</li>
+    </ul>
+
+    <h2>Блоги практиков</h2>
+    <ul>
+      <li><a href="https://simonwillison.net" target="_blank" rel="noopener"><strong>Simon Willison</strong></a>. Часто и по делу пишет о новых моделях и инструментах. Автор Datasette.</li>
+      <li><a href="https://eugeneyan.com" target="_blank" rel="noopener"><strong>Eugene Yan</strong></a>. Прикладное машинное обучение в продуктах, оценка качества LLM.</li>
+      <li><a href="https://hamel.dev" target="_blank" rel="noopener"><strong>Hamel Husain</strong></a>. Оценка качества (evals) и дообучение моделей.</li>
+      <li><a href="https://www.latent.space" target="_blank" rel="noopener"><strong>Latent Space</strong></a>. Блог и подкаст о том, как компании строят продукты на ИИ.</li>
+      <li><a href="https://swyx.io" target="_blank" rel="noopener"><strong>swyx</strong></a>. Сооснователь Latent Space, пишет об экосистеме ИИ-инструментов.</li>
+      <li>X (Twitter): <strong>@karpathy, @simonw, @swyx, @hwchase17 (LangChain), @jeremyphoward (fast.ai), @rasbt (Sebastian Raschka)</strong>. Заблокирован в России, нужен VPN.</li>
+    </ul>
+
+    <h2>На русском</h2>
+    <ul>
+      <li><a href="https://aistudio.yandex.ru/docs/ru/" target="_blank" rel="noopener">Документация Yandex AI Studio</a>. Модели YandexGPT и инструменты Яндекса для ИИ-приложений.</li>
+      <li><a href="https://developers.sber.ru/docs/ru/gigachat/individuals-quickstart" target="_blank" rel="noopener">GigaChat API: быстрый старт</a>. Как начать работать с моделью Сбера.</li>
+      <li>Telegram-каналы: <a href="https://t.me/gonzo_ML" target="_blank" rel="noopener"><strong>@gonzo_ML</strong></a> (разборы научных статей по машинному обучению), <a href="https://t.me/denissexy" target="_blank" rel="noopener"><strong>@denissexy</strong></a> (о нейросетях и продуктах на них). Telegram может не открываться без VPN.</li>
     </ul>
 
     <h2>Чтобы быть в курсе</h2>
     <ul>
-      <li><a href="https://anthropic.com/news" target="_blank">Anthropic blog</a> — новости про Claude.</li>
-      <li><a href="https://openai.com/blog" target="_blank">OpenAI blog</a> — новости про GPT.</li>
-      <li><a href="https://huggingface.co/papers" target="_blank">Hugging Face Papers</a> — самые обсуждаемые статьи по AI с ежедневным обновлением.</li>
-      <li><a href="https://buttondown.email/ainews" target="_blank">AI News</a> — ежедневный дайджест.</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Новости Anthropic</a>. Релизы Claude.</li>
+      <li><a href="https://openai.com/news/" target="_blank" rel="noopener">Новости OpenAI</a>. Релизы GPT и ChatGPT.</li>
+      <li><a href="https://huggingface.co/papers" target="_blank" rel="noopener">Hugging Face Papers</a>. Свежие статьи по ИИ, которые обсуждает сообщество.</li>
+      <li><a href="https://news.smol.ai" target="_blank" rel="noopener">AINews</a>. Дайджест новостей ИИ.</li>
     </ul>
 
-  <h2> Подкасты</h2>
+    <h2>Подкасты</h2>
     <ul>
-      <li><strong>Latent Space</strong> — практика AI-индустрии.</li>
-      <li><strong>Lex Fridman Podcast</strong> — длинные интервью с топовыми исследователями.</li>
-      <li><strong>The Gradient</strong> — академический angle.</li>
-      <li><strong>No Priors</strong> — фокус на стартапах.</li>
+      <li><a href="https://www.latent.space/podcast" target="_blank" rel="noopener"><strong>Latent Space</strong></a>. Практика ИИ-индустрии.</li>
+      <li><a href="https://lexfridman.com/podcast" target="_blank" rel="noopener"><strong>Lex Fridman Podcast</strong></a>. Длинные интервью, в том числе с исследователями ИИ.</li>
+      <li><a href="https://www.nopriors.com" target="_blank" rel="noopener"><strong>No Priors</strong></a>. Интервью с основателями ИИ-компаний и инвесторами.</li>
     </ul>
 
-  <h2> Как использовать всё это</h2>
+    <h2>Как пользоваться списком</h2>
     <ol>
-      <li><strong>Не читай всё.</strong> Из этого списка выбери 3–5 источников и подпишись.</li>
-      <li><strong>Один длинный контент в неделю.</strong> Лекция Karpathy, статья Raschka, эпизод Latent Space.</li>
-      <li><strong>Один источник новостей</strong> — чтобы не пропустить релизы.</li>
-      <li><strong>Сообщество</strong> — Telegram-чат, чтобы обсуждать с другими.</li>
+      <li><strong>Не читайте всё.</strong> Выберите 3–5 источников под свою роль и подпишитесь.</li>
+      <li><strong>Один длинный материал в неделю.</strong> Глава книги, лекция или выпуск подкаста.</li>
+      <li><strong>Один источник новостей.</strong> Этого хватит, чтобы не пропускать важные релизы.</li>
+      <li><strong>Первоисточник рядом с методом.</strong> Когда работаете по карточке метода, откройте источник, из которого он взят.</li>
     </ol>
 
-    <div class="callout callout-info">
-   <strong> Совет:</strong> на каждый из этих источников я буду <strong>точечно</strong> ссылаться внутри уроков, когда тема того требует. Этот список — твоя shortlist для самостоятельного развития.
-    </div>
-
     <p style="text-align: center; margin-top: 3rem; color: var(--text-muted); font-size: 0.9rem;">
-      «Артефакты» собирает и поддерживает <strong>Руслан Маджитов</strong>. Вопросы и предложения — Telegram: <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a>.
+      Список собирает <strong>Руслан Маджитов</strong>, предложения: <a href="https://t.me/madzhitov" target="_blank" rel="noopener">@madzhitov</a> в Telegram.
     </p>
   `;
 }
