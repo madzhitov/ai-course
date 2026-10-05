@@ -895,3 +895,4 @@ a[onclick], a[role="link"] { cursor:pointer; }
 body.v6 .lesson-content .v6-page .v6-lsheet .lesson-view a:not(.v6b):not(.v6t):hover { color:var(--ink) !important; text-decoration-thickness:2px; text-decoration-color:var(--accent); background:var(--accent-tint); border-radius:4px; }
 body.v6 .lesson-content .v6-page .v6-lsheet .lesson-view a:not(.v6b):not(.v6t) { transition:background-color .15s, color .15s; }
 .v6-crumbs a:hover, .v6-quiet:hover, .v6-link:hover { color:var(--ink); }
+.v6-uhead .v6t { white-space:normal; height:auto; min-height:36px; padding-top:6px; padding-bottom:6px; max-width:100%; box-sizing:border-box; line-height:1.35; }
