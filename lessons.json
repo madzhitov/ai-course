@@ -860,8 +860,8 @@
       "id": "p5",
       "track": "projects",
       "phase": null,
-      "title": "AI-ресёрчер конкурентов с ежедневным TG-дайджестом",
-      "duration": 75,
+      "title": "ИИ-ресёрчер конкурентов с дайджестом на почту",
+      "duration": 120,
       "published": true,
       "url": "https://ai.madzhitov.ru/lessons/p5.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-p5"
@@ -1011,7 +1011,7 @@
       "track": "projects",
       "phase": null,
       "title": "AI-помощник продавца Wildberries на YandexGPT",
-      "duration": 90,
+      "duration": 120,
       "published": true,
       "url": "https://ai.madzhitov.ru/lessons/p20.html",
       "app_url": "https://ai.madzhitov.ru/#lesson-p20"

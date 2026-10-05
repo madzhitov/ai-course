@@ -1,0 +1,603 @@
+{
+ "version": "2026-10-04",
+ "main": {
+  "id": "main",
+  "title": "От пользователя к создателю",
+  "commonStart": {
+   "lessons": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+   ],
+   "note": "для всех ролей; после урока 5 развилка",
+   "title": "База ИИ",
+   "description": "Без этого не работают юниты ни одной роли."
+  },
+  "levels": [
+   {
+    "n": 1,
+    "title": "Пользователь",
+    "lessons": [
+     "6",
+     "7",
+     "8",
+     "9",
+     "10",
+     "11",
+     "12"
+    ],
+    "milestone": {
+     "lesson": "7",
+     "title": "чат-приложение с памятью"
+    },
+    "description": "Первые приложения, поиск, изображения, безопасность.",
+    "chapters": [
+     {
+      "title": "Первое приложение и чат с памятью",
+      "lessons": [
+       "6",
+       "7"
+      ]
+     },
+     {
+      "title": "Поиск, изображения, low-code",
+      "lessons": [
+       "8",
+       "9",
+       "10"
+      ]
+     },
+     {
+      "title": "UX и безопасность",
+      "lessons": [
+       "11",
+       "12"
+      ]
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "title": "Строитель",
+    "lessons": [
+     "13",
+     "14",
+     "15",
+     "16",
+     "17",
+     "18",
+     "19",
+     "20",
+     "21",
+     "22",
+     "23",
+     "24",
+     "25",
+     "26",
+     "27",
+     "28",
+     "29",
+     "30"
+    ],
+    "milestone": {
+     "lesson": "30",
+     "title": "агент с инструментами по чек-листу"
+    },
+    "description": "Агенты, инструменты, RAG, MCP, продакшен.",
+    "chapters": [
+     {
+      "title": "Функции, RAG, жизненный цикл",
+      "lessons": [
+       "13",
+       "14",
+       "15",
+       "16",
+       "17",
+       "18"
+      ]
+     },
+     {
+      "title": "Агенты и инструменты",
+      "lessons": [
+       "19",
+       "20",
+       "21",
+       "22",
+       "23",
+       "24"
+      ]
+     },
+     {
+      "title": "Мульти-агенты и продакшен",
+      "lessons": [
+       "25",
+       "26",
+       "27",
+       "28",
+       "29",
+       "30"
+      ]
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "title": "Практик",
+    "lessons": [
+     "31",
+     "32",
+     "33",
+     "34",
+     "35",
+     "36",
+     "37",
+     "38",
+     "39",
+     "40",
+     "41",
+     "42",
+     "43",
+     "44",
+     "45",
+     "46",
+     "47",
+     "48",
+     "49",
+     "50"
+    ],
+    "milestone": {
+     "lesson": "34",
+     "title": "своя нейросеть на NumPy"
+    },
+    "description": "Что под капотом: нейросети, зрение, текст, трансформеры.",
+    "chapters": [
+     {
+      "title": "Нейросети с нуля",
+      "lessons": [
+       "31",
+       "32",
+       "33",
+       "34",
+       "35",
+       "36",
+       "37"
+      ]
+     },
+     {
+      "title": "Компьютерное зрение",
+      "lessons": [
+       "38",
+       "39",
+       "40",
+       "41",
+       "42",
+       "43"
+      ]
+     },
+     {
+      "title": "Текст и трансформеры",
+      "lessons": [
+       "44",
+       "45",
+       "46",
+       "47",
+       "48",
+       "49",
+       "50"
+      ]
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "title": "Инженер",
+    "lessons": [
+     "51",
+     "52",
+     "53",
+     "54",
+     "55",
+     "56",
+     "57",
+     "58",
+     "59",
+     "60",
+     "61",
+     "62",
+     "63",
+     "64",
+     "65",
+     "66",
+     "67",
+     "68",
+     "69",
+     "70",
+     "71",
+     "72"
+    ],
+    "milestone": null,
+    "note": "уроки 57–72 пишутся",
+    "description": "Классический ML, fine-tuning, продакшен.",
+    "chapters": [
+     {
+      "title": "Основы ML и данные",
+      "lessons": [
+       "51",
+       "52",
+       "53",
+       "54",
+       "55",
+       "56"
+      ]
+     },
+     {
+      "title": "Регрессия, классификация, кластеризация",
+      "lessons": [
+       "57",
+       "58",
+       "59",
+       "60",
+       "61",
+       "62",
+       "63",
+       "64"
+      ]
+     },
+     {
+      "title": "RL, MLOps, fine-tuning",
+      "lessons": [
+       "65",
+       "66",
+       "67",
+       "68",
+       "69",
+       "70",
+       "71",
+       "72"
+      ]
+     }
+    ]
+   }
+  ],
+  "levelCheck": "бывшие квизы по фазам"
+ },
+ "rolePaths": [
+  {
+   "id": "seller",
+   "title": "От селлера к бренду",
+   "role": "seller",
+   "prep": [
+    {
+     "kind": "framework",
+     "ref": "four-part-request",
+     "title": "Запрос из четырёх частей",
+     "minutes": 5,
+     "optional": false,
+     "status": "ready"
+    },
+    {
+     "kind": "page",
+     "ref": "neyroseti-bez-vpn",
+     "title": "Нейросети без VPN",
+     "minutes": 5,
+     "optional": false,
+     "status": "ready"
+    }
+   ],
+   "stages": [
+    {
+     "n": 1,
+     "id": "marketplace",
+     "title": "Маркетплейс",
+     "promise": "товар зарабатывает",
+     "steps": [
+      {
+       "kind": "framework",
+       "ref": "ecom-pnl",
+       "title": "E-commerce как P&L",
+       "minutes": 10,
+       "optional": false,
+       "status": "planned"
+      },
+      {
+       "kind": "unit",
+       "ref": "u-unit-economics-channels",
+       "title": "Юнит-экономика по каналам",
+       "minutes": 30,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-sku-calc",
+        "r-ue-table"
+       ]
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-competitors",
+       "title": "Разбор десяти конкурентов",
+       "minutes": 40,
+       "optional": false,
+       "status": "planned"
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-pains",
+       "title": "Боли покупателей из отзывов конкурентов",
+       "minutes": 30,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-competitor-reviews-tool"
+       ]
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-description",
+       "title": "Описание товара для всех каналов",
+       "minutes": 20,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-listing-checklist"
+       ]
+      },
+      {
+       "kind": "framework",
+       "ref": "listing-funnel",
+       "title": "Воронка карточки",
+       "minutes": 15,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-funnel-tool"
+       ]
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-reviews",
+       "title": "Ответы на отзывы пачкой",
+       "minutes": 15,
+       "optional": false,
+       "status": "ready",
+       "resources": [
+        "r-brand-voice"
+       ]
+      },
+      {
+       "kind": "framework",
+       "ref": "drr-romi",
+       "title": "ДРР и ROMI",
+       "minutes": 15,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-ads-threshold",
+        "r-ads-checklist"
+       ]
+      }
+     ],
+     "milestone": {
+      "id": "m-product-passport",
+      "title": "Паспорт товара",
+      "gives": "Один документ: экономика, конкуренты, карточка, порог рекламы",
+      "rubric": [
+       {
+        "criterion": "Посчитана юнит-экономика реального товара",
+        "must": true
+       },
+       {
+        "criterion": "Названы три главные боли покупателей из отзывов",
+        "must": true
+       },
+       {
+        "criterion": "Карточка прошла чек-лист",
+        "must": true
+       },
+       {
+        "criterion": "Посчитан порог рекламы",
+        "must": true
+       },
+       {
+        "criterion": "Есть одно решение, что изменить в первую очередь",
+        "must": false
+       }
+      ]
+     }
+    },
+    {
+     "n": 2,
+     "id": "own-channel",
+     "title": "Свой канал",
+     "promise": "клиент твой",
+     "steps": [
+      {
+       "kind": "framework",
+       "ref": "contribution-margin-channels",
+       "title": "Маржинальный доход по каналам",
+       "minutes": 15,
+       "optional": false,
+       "status": "planned"
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-social",
+       "title": "Контент под товар для соцсетей и Telegram",
+       "minutes": 30,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-content-plan",
+        "r-social-prompts"
+       ]
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-repeat",
+       "title": "Повторные продажи по своей базе",
+       "minutes": 35,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-customer-base"
+       ]
+      },
+      {
+       "kind": "framework",
+       "ref": "rfm",
+       "title": "RFM",
+       "minutes": 15,
+       "optional": false,
+       "status": "planned"
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-competitors-pro",
+       "title": "Ресёрчер конкурентов (мини-проект, с кодом)",
+       "minutes": 75,
+       "optional": true,
+       "status": "planned"
+      }
+     ],
+     "milestone": {
+      "id": "m-own-base",
+      "title": "Своя база работает",
+      "gives": "База разделена на группы, первая цепочка повторной продажи запущена",
+      "rubric": [
+       {
+        "criterion": "База собрана в таблицу с группами RFM",
+        "must": true
+       },
+       {
+        "criterion": "Запущена одна цепочка повторной продажи",
+        "must": true
+       },
+       {
+        "criterion": "Посчитано, какой канал выгоднее для повторных продаж",
+        "must": false
+       }
+      ]
+     }
+    },
+    {
+     "n": 3,
+     "id": "system",
+     "title": "Единая система",
+     "promise": "магазин как P&L",
+     "steps": [
+      {
+       "kind": "framework",
+       "ref": "abc-xyz",
+       "title": "ABC / XYZ-анализ",
+       "minutes": 15,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-assortment-matrix"
+       ]
+      },
+      {
+       "kind": "framework",
+       "ref": "stock-turnover",
+       "title": "Оборачиваемость и запасы",
+       "minutes": 15,
+       "optional": false,
+       "status": "planned"
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-stock",
+       "title": "План остатков на все каналы",
+       "minutes": 30,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-stock-plan",
+        "r-supply-checklist"
+       ]
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-weekly",
+       "title": "Сводный недельный отчёт",
+       "minutes": 40,
+       "optional": false,
+       "status": "planned",
+       "resources": [
+        "r-pnl-store"
+       ]
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-assistant",
+       "title": "Помощник продавца Wildberries (мини-проект)",
+       "minutes": 90,
+       "optional": true,
+       "status": "planned"
+      },
+      {
+       "kind": "framework",
+       "ref": "reputation-reviews",
+       "title": "Репутация и отзывы",
+       "minutes": 15,
+       "optional": false,
+       "status": "planned"
+      }
+     ],
+     "milestone": {
+      "id": "m-store-pnl",
+      "title": "P&L магазина",
+      "gives": "Сводный отчёт по всем каналам: выручка, маржа, расходы, прибыль",
+      "rubric": [
+       {
+        "criterion": "В отчёте все каналы продаж",
+        "must": true
+       },
+       {
+        "criterion": "Есть маржа по каналам и итоговая прибыль",
+        "must": true
+       },
+       {
+        "criterion": "Названы два решения на следующий месяц",
+        "must": true
+       }
+      ],
+      "agencyDoor": "Хотите, чтобы отчёт собирался сам? Услуга агентства, пример: Бертольд"
+     }
+    }
+   ],
+   "note": "ORM-модуль остаётся услугой агентства: в путь входит только карточка-метод «Репутация и отзывы»."
+  }
+ ],
+ "trails": [
+  {
+   "id": "projects",
+   "title": "Мини-проекты «За 1 час»",
+   "branchAfter": "level-1",
+   "hint": "нужны основы API из уроков 6–7"
+  },
+  {
+   "id": "everyday",
+   "title": "AI каждый день",
+   "branchAfter": "common-start"
+  },
+  {
+   "id": "industry",
+   "title": "Темы под индустрии",
+   "branchAfter": "common-start"
+  },
+  {
+   "id": "claude",
+   "title": "Claude Deep Dive",
+   "branchAfter": "level-2"
+  },
+  {
+   "id": "vibe",
+   "title": "Вайб Код Вам Дам",
+   "branchAfter": null,
+   "note": "отдельный мир, открыт всем"
+  }
+ ],
+ "note_chapters": "Главы уровней, их названия и описания уровней — из макета design/reference/screens/Path.dc.html (04.10.2026)."
+}

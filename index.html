@@ -29,12 +29,13 @@
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Course","name":"Артефакты","description":"Бесплатная база умений по AI на русском: 144 урока от первых промптов до своих AI-приложений. AI-наставник в каждом уроке.","url":"https://ai.madzhitov.ru/","inLanguage":"ru","isAccessibleForFree":true,"image":"https://ai.madzhitov.ru/og-default.png","provider":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🤖%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="v6/brand/favicon.svg" type="image/svg+xml">
 
 <!-- Inter font for editorial style -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Cormorant+Unicase:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="v6/v6.css">
 
 <!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js">
@@ -122,74 +123,7 @@
   --shadow-lg: none;
 }
 
-[data-theme="dark"] {
-  /* ===== Палитра ХВОЯ, тёмная ===== */
-  --hvoya-bg: #13140f;
-  --hvoya-panel: #191b14;
-  --hvoya-card: #1c1f17;
-  --hvoya-line: #2a2c22;
-  --hvoya-ink: #eaece2;
-  --hvoya-muted: #9aa08c;
-  --hvoya-faint: #585c4c;
-  --hvoya-accent: #5fae86;
-  --hvoya-accent-soft: #12251c;
-  --hvoya-accent-mid: #2c5742;
 
-  --bg: var(--hvoya-bg);
-  --panel: var(--hvoya-panel);
-  --card: var(--hvoya-card);
-  --line: var(--hvoya-line);
-  --ink: var(--hvoya-ink);
-  --muted: var(--hvoya-muted);
-  --faint: var(--hvoya-faint);
-  --accent-mid: var(--hvoya-accent-mid);
-
-  --bg-sidebar: var(--hvoya-panel);
-  --bg-card: var(--hvoya-panel);
-  --bg-code: var(--hvoya-card);
-  --bg-elevated: var(--hvoya-card);
-  --bg-soft: var(--hvoya-card);
-  --text: var(--hvoya-ink);
-  --text-muted: var(--hvoya-muted);
-  --text-soft: var(--hvoya-faint);
-  --border: var(--hvoya-line);
-  --border-soft: var(--hvoya-line);
-  --border-strong: var(--hvoya-faint);
-
-  --accent: var(--hvoya-accent);
-  --accent-hover: #6fc096;
-  --accent-soft: var(--hvoya-accent-soft);
-  --accent-text: #13140f;
-
-  --link: var(--hvoya-accent);
-  --link-soft: var(--hvoya-accent-soft);
-  --link-border: var(--hvoya-accent-mid);
-
-  --cat-prompts: #1e3a8a;       --cat-prompts-text: #93c5fd;
-  --cat-agents: #581c87;        --cat-agents-text: #d8b4fe;
-  --cat-claude: #4c1d95;        --cat-claude-text: #c4b5fd;
-  --cat-projects: #14532d;      --cat-projects-text: #86efac;
-  --cat-industry: #78350f;      --cat-industry-text: #fcd34d;
-  --cat-vibe: #831843;          --cat-vibe-text: #f9a8d4;
-  --cat-rag: #831843;           --cat-rag-text: #fda4af;
-  --cat-ml: #7c2d12;            --cat-ml-text: #fdba74;
-  --cat-nlp: #134e4a;           --cat-nlp-text: #5eead4;
-  --cat-safety: #7f1d1d;        --cat-safety-text: #fca5a5;
-  --cat-api: #312e81;           --cat-api-text: #a5b4fc;
-  --cat-fundamentals: #831843;  --cat-fundamentals-text: #f9a8d4;
-
-  --status-complete: #14532d;   --status-complete-text: #86efac;
-  --status-ongoing: #1e3a8a;    --status-ongoing-text: #93c5fd;
-  --status-draft: #27272a;      --status-draft-text: #a1a1aa;
-
-  --success: #4ade80;           --success-soft: #14532d;
-  --warning: #fb923c;           --warning-soft: #78350f;
-  --danger: #f87171;            --danger-soft: #7f1d1d;
-
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
-  --shadow: 0 4px 12px rgba(0,0,0,0.4);
-  --shadow-lg: 0 10px 30px rgba(0,0,0,0.5);
-}
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -241,7 +175,7 @@ body {
   -webkit-backdrop-filter: blur(12px);
 }
 
-[data-theme="dark"] .top-nav { background: rgba(10, 10, 11, 0.85); }
+
 
 .top-nav-logo {
   font-weight: 700;
@@ -1634,10 +1568,7 @@ main {
 .lesson-content pre:hover .copy-btn { opacity: 1; }
 .lesson-content pre .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
 .lesson-content pre .copy-btn.copied { color: var(--success, #16a34a); border-color: var(--success, #16a34a); }
-[data-theme="dark"] .lesson-content pre .copy-btn {
-  background: rgba(0,0,0,0.5);
-  border-color: rgba(255,255,255,0.15);
-}
+
 
 /* ============================================
    Alesha — AI-тьютор виджет (sticky right-rail)
@@ -1653,11 +1584,7 @@ main {
   z-index: 50;
 }
 .alesha-widget.is-lesson { display: flex; }
-[data-theme="dark"] .alesha-widget {
-  background: #18181b;
-  border-color: rgba(167, 139, 250, 0.25);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-}
+
 
 /* Алёша: плавающий пузырь внизу-справа на ВСЕХ экранах (десктоп = как мобилка).
    Свёрнуто — кружок «А»; по клику раскрывается вверх в панель. */
@@ -1701,8 +1628,8 @@ main {
 }
 .alesha-widget.is-open .alesha-collapse-icon::before { content: '✕'; font-size: 1rem; font-weight: 600; }
 .alesha-widget.is-open .alesha-collapse-icon:hover { background: rgba(0,0,0,0.15); }
-[data-theme="dark"] .alesha-widget.is-open { background: #18181b; }
-[data-theme="dark"] .alesha-widget.is-open .alesha-collapse-icon { background: rgba(255,255,255,0.1); color: #fff; }
+
+
 
 /* Collapse button on desktop — small minimize icon top-right of widget */
 .alesha-min-btn {
@@ -1872,7 +1799,7 @@ main {
   display: flex;
   flex-direction: column;
 }
-[data-theme="dark"] .search-overlay-panel { background: #18181b; }
+
 .search-overlay-input {
   width: 100%;
   padding: 1.1rem 1.25rem;
@@ -1927,10 +1854,7 @@ main {
   padding: 0 2px;
   border-radius: 2px;
 }
-[data-theme="dark"] .search-result-snippet mark {
-  background: rgba(255, 215, 0, 0.22);
-  color: #fef08a;
-}
+
 .search-empty, .search-loading {
   padding: 2rem 1.25rem;
   text-align: center;
@@ -2092,10 +2016,7 @@ main {
   background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(236, 72, 153, 0.08));
   border: 1px solid rgba(124, 58, 237, 0.2);
 }
-[data-theme="dark"] .alesha-announce {
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.18), rgba(236, 72, 153, 0.12));
-  border-color: rgba(167, 139, 250, 0.3);
-}
+
 .alesha-announce .alesha-logo { flex-shrink: 0; }
 .alesha-announce-body { flex: 1; min-width: 0; }
 .alesha-announce-eyebrow {
@@ -2159,7 +2080,7 @@ main {
   line-height: 1.5;
   font-style: italic;
 }
-[data-theme="dark"] .diagram { background: rgba(124, 58, 237, 0.08); border-color: rgba(167, 139, 250, 0.18); }
+
 
 .resume-banner {
   display: flex;
@@ -2277,7 +2198,7 @@ main {
   font-weight: 700;
 }
 
-.lesson-content p { margin-bottom: 1rem; }
+.lesson-content p:where(:not(.v6-page p)) { margin-bottom: 1rem; }
 
 .lesson-content ul, .lesson-content ol {
   margin: 0.75rem 0 1.25rem 1.5rem;
@@ -2375,8 +2296,8 @@ main {
   text-decoration: underline;
   font-weight: 600;
 }
-[data-theme="dark"] .callout a { color: #c4b5fd; }
-[data-theme="dark"] .callout-info { background: rgba(124, 58, 237, 0.18); }
+
+
 
 .lesson-actions {
   display: flex;
@@ -2821,7 +2742,7 @@ main {
 .lesson-content h1 { font-size: 40px !important; font-weight: 800 !important; line-height: 1.1 !important; letter-spacing: -0.025em !important; }
 .lesson-content h2 { font-size: 22px !important; font-weight: 700 !important; letter-spacing: -0.015em !important; border-top: 1px solid var(--border) !important; padding-top: 1.5rem !important; }
 .lesson-content h3 { font-size: 17px !important; font-weight: 700 !important; letter-spacing: -0.01em !important; }
-.lesson-content p { font-size: 16px; line-height: 1.65; }
+.lesson-content p:where(:not(.v6-page p)) { font-size: 16px; line-height: 1.65; }
 .lesson-content a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
 .lesson-content a:hover { color: var(--link); text-decoration-thickness: 2px; }
 .lesson-content code { background: var(--bg-code) !important; color: var(--text) !important; padding: 2px 5px !important; border-radius: 3px !important; font-family: ui-monospace, "SF Mono", Monaco, Consolas, monospace !important; font-size: 13px !important; }
@@ -2850,7 +2771,7 @@ main {
 
 /* === Callouts (info/warning/etc.) === */
 .callout-info { background: var(--link-soft) !important; border: 1px solid var(--link-border) !important; border-radius: 10px !important; color: var(--text); }
-[data-theme="dark"] .callout-info { background: var(--link-soft) !important; }
+
 .callout { border-left: none !important; padding: 14px 18px !important; }
 .callout-success { background: rgba(34, 197, 94, 0.08) !important; border: 1px solid rgba(34, 197, 94, 0.25) !important; }
 .callout-warning { background: rgba(245, 158, 11, 0.08) !important; border: 1px solid rgba(245, 158, 11, 0.25) !important; }
@@ -2867,14 +2788,14 @@ main {
 
 /* === Alesha announce on home → editorial === */
 .alesha-announce { background: var(--bg-card) !important; border: 1px solid var(--border) !important; border-radius: 14px !important; }
-[data-theme="dark"] .alesha-announce { background: var(--bg-card) !important; border-color: var(--border) !important; }
+
 .alesha-announce-eyebrow { color: var(--text-muted) !important; }
 .alesha-announce-btn { background: var(--text) !important; color: var(--bg) !important; }
 .alesha-announce-btn:hover { background: var(--accent-hover) !important; box-shadow: none !important; }
 
 /* === Alesha logo → editorial (monochrome, не gradient) === */
 .alesha-logo { background: var(--text) !important; color: var(--bg) !important; }
-[data-theme="dark"] .alesha-logo { background: var(--text) !important; color: var(--bg) !important; }
+
 
 /* === Alesha widget — editorial (пузырь внизу-справа на ВСЕХ экранах) === */
 .alesha-widget.is-lesson { background: var(--text) !important; border: none !important; border-radius: 50% !important; box-shadow: 0 6px 20px rgba(0,0,0,0.22) !important; }
@@ -2912,7 +2833,7 @@ main {
 
 /* === SVG diagrams === */
 .diagram { background: var(--bg-soft) !important; border: 1px solid var(--border) !important; }
-[data-theme="dark"] .diagram { background: var(--bg-soft) !important; border-color: var(--border) !important; }
+
 
 /* === About page progress block === */
 .about-progress-block { background: var(--bg-soft) !important; border: 1px solid var(--border) !important; border-radius: 10px; }
@@ -3466,7 +3387,7 @@ main {
   border: 1px solid var(--border);
   border-radius: 14px;
 }
-[data-theme="dark"] .sandbox { background: var(--bg-soft); }
+
 .sandbox-loading {
   text-align: center;
   color: var(--text-muted);
@@ -3587,7 +3508,7 @@ main {
   overflow: hidden;
   position: relative;
 }
-[data-theme="dark"] .sb-bar-track { background: var(--bg); }
+
 .sb-bar-fill {
   height: 100%;
   background: var(--text);
@@ -3629,7 +3550,7 @@ main {
   margin-bottom: 1rem;
   border-left: 3px solid var(--text);
 }
-[data-theme="dark"] .sb-prompt { background: var(--bg); }
+
 
 /* === Phase headings in About ("Что ты узнаешь") === */
 .phase-h3 {
@@ -3939,7 +3860,7 @@ code, pre, kbd, samp,
 #lesson-content .art-meta a { color:var(--muted); cursor:pointer; text-decoration:underline; text-decoration-color:var(--line); }
 #lesson-content .art-empty { font-size:15px; color:var(--muted); margin:26px 0 8px; }
 #lesson-content .art-submit { display:inline-block; margin-top:6px; padding:10px 16px; border-radius:10px; background:var(--accent); color:#fff; font-weight:600; font-size:14px; text-decoration:none; }
-html[data-theme="dark"] #lesson-content .art-submit { color:#0f1a14; }
+
 .art-nudge { display:flex; align-items:center; gap:10px; margin:28px 0 0; font-size:14px; color:var(--muted); line-height:1.5; }
 .art-nudge a { color:var(--accent); cursor:pointer; text-decoration:none; font-weight:600; }
 .art-nudge a:hover { text-decoration:underline; }
@@ -3962,7 +3883,7 @@ html[data-theme="dark"] #lesson-content .art-submit { color:#0f1a14; }
 .tile .em { line-height:1; margin-bottom:10px; color:var(--accent); }
 .tile .em svg { width:24px; height:24px; display:block; }
 .t-vibe .em { color:var(--bg); }
-html[data-theme="dark"] .t-vibe .em { color:var(--ink); }
+
 .tile .cnt { font-size:12px; font-weight:600; margin-top:auto; padding-top:12px; color:var(--muted); }
 .tile .subs { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
 .tile .subs span { font-size:12.5px; padding:7px 10px; border-radius:9px; background:var(--panel); color:var(--accent); border:1px solid var(--line); transition:.12s; white-space:nowrap; }
@@ -4004,15 +3925,12 @@ html[data-theme="dark"] .t-vibe .em { color:var(--ink); }
 .t-claude { background:var(--accent-soft); }
 .t-vibe { background:var(--ink); color:var(--bg); }
 .t-vibe .sub, .t-vibe .cnt { color:color-mix(in srgb, var(--bg) 80%, transparent); }
-html[data-theme="dark"] .tile.tint-cur { color:#0f1a14; }
-html[data-theme="dark"] .tile.tint-cur .num { background:rgba(0,0,0,.18); color:#0f1a14; }
-html[data-theme="dark"] .tile.tint-cur .sub,
-html[data-theme="dark"] .tile.tint-cur .bignum span,
-html[data-theme="dark"] .tile.tint-cur .here { color:rgba(15,26,20,.8); }
-html[data-theme="dark"] .tile.tint-cur .here .alesha-logo { background:#0f1a14 !important; color:var(--accent) !important; }
-html[data-theme="dark"] .t-vibe { background:#000; color:var(--ink); }
-html[data-theme="dark"] .t-vibe .sub,
-html[data-theme="dark"] .t-vibe .cnt { color:color-mix(in srgb, var(--ink) 65%, transparent); }
+
+
+
+
+
+
 /* режим маршрута */
 .board.routing .tile[data-r]:not(.on) { opacity:.28; }
 .board.routing .tile.on { opacity:1; box-shadow:0 0 0 2px var(--accent); }
@@ -4159,26 +4077,22 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 
 <!-- ТРОПА F2: двухстрочная мачта по эталону. Старые секц-ссылки скрыты
      (data-section нужны setActiveTopNav); видимая навигация — в .h-nav. -->
-<header class="tropa-header">
-  <div class="h-row1">
-    <div class="h-left">
-      <button class="burger menu-toggle" onclick="toggleSidebar()" aria-label="Меню"><span></span><span></span><span></span></button>
-      <a class="masthead" href="#home" onclick="openStaticPage('home'); return false;">
-        <span class="mh-word hvoya-title">Артефакты<b>.</b></span>
-        <span class="mh-tag">От пользователя к создателю</span>
-      </a>
-    </div>
-    <div class="h-right">
-      <button class="aly-hbtn" onclick="aleshaToggle()" aria-label="Алёша"><span class="alesha-logo aly-ava">А</span><span class="aly-name">Алёша</span></button>
-      <button class="icon-btn theme-toggle" onclick="toggleTheme()" aria-label="Тема"><span id="theme-icon">◐</span><span id="theme-label" style="display:none"></span></button>
+<header class="v6 v6h">
+  <div class="v6h-in">
+    <a class="v6h-brand" href="#home" aria-label="Артефакты — на главную" onclick="openStaticPage('home'); return false;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 6245 1000" class="v6h-logo" aria-hidden="true" focusable="false"><g transform="translate(0 700) scale(1 -1)" fill="currentColor"><path d="M7.2 0 L319.3 700 L479.5 700 L792.1 0 L622.9 0 L366.1 617.6 L430.4 617.6 L173.6 0 Z"/><path class="bar" d="M163.9 149.8 L206.4 272.7 L855 272.7 L800 149.8 Z"/></g><path fill="currentColor" d="M1292.0 707.5Q1224.6 707.5 1173.3 677.6Q1122.0 647.7 1093.6 586.5Q1065.3 525.2 1065.3 431.2Q1065.3 335.8 1092.4 274.8Q1119.6 213.8 1170.7 184.1Q1221.8 154.4 1292.0 154.4Q1368.2 154.4 1428.8 188.6Q1489.4 222.8 1524.8 284.8Q1560.2 346.8 1560.2 431.2Q1560.2 515.6 1524.8 577.5Q1489.4 639.5 1428.8 673.5Q1368.2 707.5 1292.0 707.5ZM974.7 894.0V162.0H1123.3V272.2L1120.7 431.8L1130.7 591.3V894.0ZM1265.2 579.8Q1304.0 579.8 1334.9 562.1Q1365.8 544.3 1384.1 510.7Q1402.4 477.0 1402.4 431.2Q1402.4 384.3 1384.1 351.0Q1365.8 317.6 1334.9 299.9Q1304.0 282.1 1265.2 282.1Q1226.3 282.1 1195.4 299.9Q1164.6 317.6 1146.2 351.0Q1127.9 384.3 1127.9 431.2Q1127.9 477.0 1146.2 510.7Q1164.6 544.3 1195.4 562.1Q1226.3 579.8 1265.2 579.8Z M1763.8 700.0V253.8L1798.9 289.7H1582.3V162.0H2100.9V289.7H1884.3L1919.4 253.8V700.0Z M2424.7 707.5Q2332.5 707.5 2263.5 671.7Q2194.4 636.0 2156.4 573.3Q2118.4 510.6 2118.4 430.8Q2118.4 350.2 2155.6 287.7Q2192.8 225.2 2257.9 189.8Q2322.9 154.4 2404.9 154.4Q2484.1 154.4 2547.5 187.9Q2610.8 221.4 2647.8 283.8Q2684.8 346.2 2684.8 433.2Q2684.8 442.2 2684.1 453.7Q2683.4 465.1 2682.4 474.7H2245.1V383.8H2599.8L2539.5 411.0Q2540.1 369.4 2522.9 338.1Q2505.7 306.9 2475.7 289.2Q2445.8 271.6 2405.7 271.6Q2365.6 271.6 2335.2 289.2Q2304.7 306.9 2288.0 338.4Q2271.2 370.0 2271.2 412.8V437.2Q2271.2 481.2 2290.7 514.4Q2310.1 547.5 2345.8 565.4Q2381.4 583.4 2429.3 583.4Q2472.1 583.4 2504.5 570.4Q2536.8 557.3 2564.4 530.7L2647.4 620.7Q2609.8 663.1 2554.0 685.3Q2498.2 707.5 2424.7 707.5Z M3128.1 711.7Q2952.6 709.3 2856.9 637.3Q2761.2 565.3 2761.2 429.4Q2761.2 294.8 2856.6 224.6Q2952.0 154.4 3131.1 153.0Q3133.1 153.0 3141.3 153.0Q3149.6 153.0 3157.9 153.0Q3166.2 153.0 3167.6 153.0Q3349.1 153.0 3448.5 223.2Q3548.0 293.4 3548.0 429.4Q3548.0 567.1 3448.2 639.4Q3348.5 711.7 3167.0 711.7Q3165.2 711.7 3156.1 711.7Q3147.0 711.7 3138.7 711.7Q3130.5 711.7 3128.1 711.7ZM3137.8 591.9Q3140.6 591.9 3149.7 591.9Q3158.8 591.9 3161.6 591.9Q3244.8 591.9 3297.0 574.2Q3349.1 556.5 3373.7 520.4Q3398.3 484.4 3398.3 429.4Q3398.3 375.7 3373.9 341.3Q3349.5 306.9 3297.3 290.1Q3245.2 273.4 3161.6 273.4Q3159.2 273.4 3150.1 273.4Q3141.0 273.4 3138.2 273.4Q3058.2 273.4 3008.3 291.1Q2958.3 308.9 2935.1 343.0Q2911.9 377.1 2911.9 429.4Q2911.9 483.4 2935.1 518.9Q2958.3 554.5 3008.4 572.7Q3058.4 590.9 3137.8 591.9ZM3083.2 894.0V-42.0H3225.5V894.0Z M3966.7 700.0V595.1L3957.3 571.5V383.9Q3957.3 333.6 3926.8 306.0Q3896.3 278.4 3832.8 278.4Q3790.4 278.4 3748.8 291.7Q3707.1 305.0 3677.7 328.0L3622.0 219.4Q3666.4 187.6 3728.3 171.0Q3790.1 154.4 3854.1 154.4Q3977.6 154.4 4045.5 212.3Q4113.3 270.2 4113.3 392.7V700.0ZM3803.2 707.5Q3740.5 707.5 3695.5 686.3Q3650.5 665.2 3626.6 628.2Q3602.7 591.2 3602.7 544.8Q3602.7 497.2 3626.0 461.1Q3649.4 425.0 3700.4 404.5Q3751.4 384.0 3833.3 384.0H3975.7V474.9H3850.6Q3795.3 474.9 3774.9 492.7Q3754.5 510.6 3754.5 538.4Q3754.5 567.7 3777.7 585.3Q3801.0 602.9 3841.7 602.9Q3881.0 602.9 3912.2 584.7Q3943.5 566.4 3957.3 529.8L3980.9 602.2Q3964.3 653.6 3919.3 680.6Q3874.2 707.5 3803.2 707.5Z M4629.7 700.0 4450.1 445.3 4576.6 369.5 4813.6 700.0ZM4248.7 700.0V162.0H4404.7V700.0ZM4358.6 495.6V370.9H4546.9V495.6ZM4591.8 448.5 4445.5 432.8 4635.2 162.0H4800.8Z M5000.8 700.0V253.8L5035.9 289.7H4819.3V162.0H5337.9V289.7H5121.3L5156.4 253.8V700.0Z M5683.0 700.6 5420.7 700.0V162.0H5576.3V333.6L5704.4 334.2Q5809.5 334.8 5863.2 381.3Q5916.9 427.8 5916.9 512.8Q5916.9 601.8 5856.2 651.5Q5795.4 701.2 5683.0 700.6ZM5668.5 590.2Q5713.8 590.8 5737.9 570.6Q5762.1 550.5 5762.1 510.6Q5762.1 470.7 5738.2 453.1Q5714.4 435.5 5668.5 434.9L5576.3 434.3V589.6ZM5974.7 700.0V162.0H6130.3V700.0Z"/></svg>
+</a>
+    <nav class="v6h-nav" aria-label="Разделы"><a  data-nav="roles" href="#roles" onclick="V6.open('roles'); return false;">Роли</a><a  data-nav="tasks" href="#tasks" onclick="V6.open('tasks'); return false;">Задачи</a><a  data-nav="paths" href="#paths" onclick="V6.open('paths'); return false;">Пути</a><a  data-nav="knowledge" href="#knowledge" onclick="V6.open('knowledge'); return false;">Знания</a><a  data-nav="notebook" href="#notebook" onclick="V6.open('notebook'); return false;">Тетрадь</a></nav>
+    <div class="v6h-right">
+      <a class="v6-link" href="#about" onclick="openStaticPage('about'); return false;">Что это</a><a class="v6-link" href="#companies" onclick="V6.open('companies'); return false;">Для компаний</a>
+      <button class="v6-icon" type="button" onclick="openSearchOverlay()" aria-label="Поиск"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      <button class="v6b is-accent is-sm" type="button" onclick="umTrack('alyosha-open', { from: 'header' }); aleshaToggle()">Спросить Алёшу</button>
+      <button class="v6-icon v6h-burger" type="button" id="v6-burger" aria-expanded="false" aria-controls="v6-menu" aria-label="Меню" onclick="V6.toggleMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </div>
-  <nav class="h-nav">
-    <a onclick="openSection('main'); return false;">Основной путь</a>
-    <a onclick="openStaticPage('trails'); return false;">5 тропинок</a>
-    <a onclick="openStaticPage('about'); return false;">Что это</a>
-  </nav>
-  <!-- скрытые секц-ссылки для setActiveTopNav -->
+  <div class="v6-menu" id="v6-menu">
+    <nav aria-label="Меню"><a  data-nav="roles" href="#roles" onclick="V6.open('roles'); return false;">Роли</a><a  data-nav="tasks" href="#tasks" onclick="V6.open('tasks'); return false;">Задачи</a><a  data-nav="paths" href="#paths" onclick="V6.open('paths'); return false;">Пути</a><a  data-nav="knowledge" href="#knowledge" onclick="V6.open('knowledge'); return false;">Знания</a><a  data-nav="notebook" href="#notebook" onclick="V6.closeMenu(); V6.open('notebook'); return false;">Тетрадь</a></nav>
+    <div class="v6-menu-sub"><a href="#about" onclick="V6.closeMenu(); openStaticPage('about'); return false;">Что это</a><a href="#companies" onclick="V6.closeMenu(); V6.open('companies'); return false;">Для компаний</a><button type="button" class="v6-menu-item" onclick="V6.closeMenu(); umTrack('alyosha-open', { from: 'menu' }); aleshaToggle()">Спросить Алёшу</button></div>
+  </div>
   <nav class="top-nav-links" aria-hidden="true" style="display:none">
     <a data-section="main" onclick="openSection('main'); return false;"></a>
     <a data-section="everyday" onclick="openSection('everyday'); return false;"></a>
@@ -4194,7 +4108,7 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 <aside class="sidebar">
   <!-- Тропа: статичный блок (тема/поиск/прогресс-бар/Введение-ссылки) убран —
        тема в хедере, поиск по ⌘K, ссылки в «Указателях». Скрытые элементы
-       сохранены, т.к. на них завязаны toggleTheme/поиск. -->
+       сохранены, т.к. на них завязан поиск. -->
   <input type="text" id="search-box" style="display:none" oninput="onSearchInput(this.value)">
   <span id="global-progress-text" style="display:none"></span><span id="global-progress-bar" style="display:none"></span>
 
@@ -4210,12 +4124,13 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 <!-- Full-text search overlay -->
 <div class="search-overlay" id="search-overlay" onclick="if(event.target===this) closeSearchOverlay()">
   <div class="search-overlay-panel">
-    <input type="text" id="search-overlay-input" class="search-overlay-input" placeholder="Что ищешь? Введи слово или фразу..." oninput="runFullSearch(this.value)" onkeydown="if(event.key==='Escape')closeSearchOverlay()">
+    <input type="text" id="search-overlay-input" class="search-overlay-input" placeholder="Что ищете? Слово или фраза…" oninput="runFullSearch(this.value)" onkeydown="if(event.key==='Escape')closeSearchOverlay()">
     <div class="search-results" id="search-results"></div>
-    <div class="search-footer">↑↓ — выбрать, Enter — открыть, Esc — закрыть</div>
+    <div class="search-footer">↑↓ выбрать · Enter открыть · Esc закрыть</div>
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
+<script src="v6/v6.js"></script>
 
 <!-- Alesha — persistent AI tutor widget -->
 <div class="alesha-widget" id="alesha-widget" data-lesson-title="" data-lesson-id="">
@@ -4281,7 +4196,7 @@ const TRACK_LESSONS = [
   { id: "p2", track: "projects", title: "RAG над своими заметками (Obsidian / Notion)", duration: 60 },
   { id: "p3", track: "projects", title: "Свой MCP-сервер: подключаем Claude к Notion / Linear / своему API", duration: 60 },
   { id: "p4", track: "projects", title: "Анализ счетов и чеков через Claude Vision: фото → таблица расходов", duration: 60 },
-  { id: "p5", track: "projects", title: "AI-ресёрчер конкурентов с ежедневным TG-дайджестом", duration: 75 },
+  { id: "p5", track: "projects", title: "ИИ-ресёрчер конкурентов с дайджестом на почту", duration: 120 },
   { id: "p6", track: "projects", title: "Self-hosted Perplexity: Q&A с поиском по твоим данным", duration: 75 },
   { id: "p7", track: "projects", title: "AI-помощник для встреч: транскрипция + summary + задачи в Notion", duration: 90 },
   { id: "p8", track: "projects", title: "Анти-спам: AI классифицирует входящие письма и отвечает на простые", duration: 75 },
@@ -4296,7 +4211,7 @@ const TRACK_LESSONS = [
   { id: "p17", track: "projects", title: "Конспект лекции из аудио: Whisper + Claude → структурированный markdown", duration: 60 },
   { id: "p18", track: "projects", title: "Генератор Anki-карточек из PDF учебника для подготовки к экзамену", duration: 60 },
   { id: "p19", track: "projects", title: "TG-бот для саммари длинных чатов на GigaChat (без VPN)", duration: 75 },
-  { id: "p20", track: "projects", title: "AI-помощник продавца Wildberries на YandexGPT", duration: 90 },
+  { id: "p20", track: "projects", title: "AI-помощник продавца Wildberries на YandexGPT", duration: 120 },
   { id: "p21", track: "projects", title: "Локальный AI-секретарь на Ollama — без облака и подписок", duration: 75 },
   { id: "p22", track: "projects", title: "RAG для своих документов (госуслуги, медкарта, договоры) на локальных моделях", duration: 90 },
 
@@ -21213,7 +21128,6 @@ Voice mode в Claude/ChatGPT, в котором AI играет роль HR и �
 
 
 registerLesson("e6", `
-
 <h1>Урок e6. Карточки товаров для маркетплейсов по фото</h1>
 
 <h2>Зачем тебе этот урок</h2>
@@ -21236,7 +21150,7 @@ registerLesson("e6", `
 <li>Не измеряет реальные размеры (длина, ширина в см). Размеры даёшь ты.</li>
 <li>Не знает точный состав ткани, если этикетки не видно. Состав даёшь ты.</li>
 <li>Не назначает цену. Цена — твоё решение.</li>
-<li>Не гарантирует уникальность описания (в спорных случаях лучше проверить через сервисы антиплагиата маркетплейса).</li>
+<li>Не гарантирует уникальность описания (в спорных случаях проверь текст сервисом проверки уникальности).</li>
 </ul>
 
 <h2>2. Главный промпт: карточка одного товара</h2>
@@ -21257,11 +21171,13 @@ registerLesson("e6", `
 
 Сделай карточку товара:
 
-1. ЗАГОЛОВОК (до 100 символов для Wildberries / до 250 для Ozon):
+1. ЗАГОЛОВОК (до 60 символов для Wildberries / до 200 для Ozon):
    — Категория + название + ключевые характеристики
      (цвет, размер, материал)
    — Без эмодзи, без капс-лока
-   — Включи 2-3 главных поисковых запроса
+   — Без повторов и перечня синонимов
+   — Без пола, возраста, сезона и бренда: Wildberries просит
+     не писать их в названии
 
 2. ОПИСАНИЕ (300-600 знаков):
    — Первая фраза — что это и для кого.
@@ -21269,7 +21185,7 @@ registerLesson("e6", `
      (только по фото и тому, что я указал, без выдумок).
    — Где и когда удобно носить/использовать.
    — Без слов "лучший", "уникальный", "не имеет аналогов" —
-     это блокирует модерация Wildberries.
+     правила Wildberries и Ozon против оценочных слов.
    — Без обещаний "не линяет / не растягивается /
      прослужит годы" — нельзя.
 
@@ -21299,7 +21215,7 @@ registerLesson("e6", `
 
 <blockquote>
 <p><strong>Заголовок:</strong><br>
-Кроссовки детские для мальчика на липучке, белые с серым, 28 размер, лёгкая подошва</p>
+Кроссовки на липучке с лёгкой подошвой, белые с серым</p>
 
 <p><strong>Описание:</strong><br>
 Удобные кроссовки для активного ребёнка. Верх из мягкой искусственной кожи с текстильными вставками — нога дышит, не устаёт даже за длинный день. Лёгкая ЭВА-подошва — пружинит при ходьбе и беге, не утяжеляет. Застёжка-липучка — ребёнок наденет сам без помощи взрослого. Подходят для садика, прогулок, активных игр на улице. Сезон — весна-лето, межсезонье в сухую погоду.</p>
@@ -21365,7 +21281,7 @@ registerLesson("e6", `
 [10 КЛЮЧЕВЫХ СЛОВ через запятую]
 [ХАРАКТЕРИСТИКИ списком]
 
-Длины: заголовок до 100 знаков, описание 300-500 знаков.
+Длины: заголовок до 60 знаков, описание 300-500 знаков.
 Не выдумывай состав и размеры — я их укажу с этикетки.
 
 Готов? Отправляю первый товар.</code></pre>
@@ -21379,7 +21295,7 @@ registerLesson("e6", `
 
 <h2>6. SEO для маркетплейсов: как AI помогает с ключевыми словами</h2>
 
-<p>Поисковая выдача внутри Wildberries и Ozon работает на ключевых словах. Чем больше релевантных слов в заголовке, описании и поле «ключевые слова» — тем выше товар в выдаче.</p>
+<p>Поиск Wildberries и Ozon учитывает слова из названия, описания и характеристик товара. Важно не количество, а точность: Ozon понижает названия, набитые синонимами, а Wildberries просит не вставлять в описание списки поисковых запросов и индексирует текст сам.</p>
 
 <p>Отдельный промпт для глубокого подбора ключевых слов:</p>
 
@@ -21402,7 +21318,7 @@ registerLesson("e6", `
 
 Не используй названия брендов-конкурентов.</code></pre>
 
-<p>На выходе — 28 ключевых фраз. Лучшие 10-15 выбираешь сам, вставляешь в поле «ключевые слова» в админке. Остальные распределяешь по описанию (естественно, без переспама).</p>
+<p>На выходе — 28 ключевых фраз. Лучшие 10-15 выбираешь сам и вписываешь обычными фразами в описание и характеристики, без перечня через запятую. Отдельного поля для ключевых слов в карточке Wildberries нет. Если оно есть у твоей площадки или категории, используй его.</p>
 
 <h2>7. Что НЕЛЬЗЯ писать в карточке (и как AI этому учится)</h2>
 
@@ -21446,7 +21362,7 @@ registerLesson("e6", `
 <dd>Проверка карточки сотрудником или алгоритмом маркетплейса перед публикацией. Карточку могут вернуть на доработку или заблокировать за нарушения (запрещённые слова, недостоверные характеристики, плохое фото).</dd>
 
 <dt><strong>Мультимодальный AI</strong></dt>
-<dd>Модель, которая работает не только с текстом, но и с фото/документами. Claude, ChatGPT, Gemini — все умеют. Для карточек товаров это критично: одни тексты без фото — на 30% слабее.</dd>
+<dd>Модель, которая работает не только с текстом, но и с фото/документами. Claude, ChatGPT, Gemini — все умеют. Для карточек товаров это удобно: модель видит товар на фото и описывает то, что на нём есть.</dd>
 </dl>
 
 <h2>10. Практика (30 минут)</h2>
@@ -21487,7 +21403,6 @@ AI хорошо: распознаёт товар, цвет, стиль, мате
 <li><strong>Для массы — шаблон-чат.</strong> Один раз настроил формат, дальше каждый товар = 1-2 строки + фото.</li>
 <li><strong>Не «AI вместо тебя», а «AI рядом с тобой».</strong> Финальная карточка — твоя. Прочитай, поправь, добавь личное. Тогда работает.</li>
 </ol>
-
 `);
 
 
@@ -23641,101 +23556,384 @@ if uploaded:
 // МИНИ-ПРОЕКТ p5: AI-ресёрчер конкурентов
 // ============================================================
 registerLesson("p5", `
-<h1>Проект «За 1 час»: AI-ресёрчер конкурентов с TG-дайджестом</h1>
+<h1>Проект: ИИ-ресёрчер конкурентов с дайджестом на почту</h1>
 
 <div class="lesson-meta">
-  <span><strong>Что построим:</strong> скрипт, ежедневно сканирующий конкурентов и присылающий дайджест в Telegram</span>
-  <span><strong>Время:</strong> ~75 минут</span>
-  <span><strong>Уровень:</strong> Python + урок 14 (RAG)</span>
+  <span><strong>Что построим:</strong> скрипт, который раз в день проверяет блоги, сообщества ВКонтакте и страницы сайтов конкурентов и присылает на почту короткий дайджест: что нового и что это значит для тебя</span>
+  <span><strong>Время:</strong> ~2 часа работы. Пароль приложения для почты начинает действовать через 2–3 часа, поэтому создай его первым</span>
+  <span><strong>Уровень:</strong> уверенный: Python 3.10+, терминал, переменные окружения</span>
+  <span><strong>Стек:</strong> Python, YandexGPT (Yandex AI Studio), VK API, Яндекс Почта. Всё работает из России без VPN и оплачивается российской картой</span>
 </div>
 
 <h2>Зачем</h2>
-<p>«Что нового у конкурентов?» — занудный вопрос, на который нужно знать ответ еженедельно. Скрипт автоматизирует: парсит их сайты/блоги/changelog, выделяет изменения, отправляет краткий дайджест в твой Telegram.</p>
+<p>«Что нового у конкурентов?» Ответ нужен каждую неделю, а искать его скучно. Скрипт делает это сам: читает их блоги, посты в сообществах ВКонтакте и страницы сайта без RSS (цены, каталог, акции), находит новое и присылает тебе письмо из 3–5 пунктов по каждому конкуренту.</p>
 
-<h2>Архитектура</h2>
-<pre><code>Cron (раз в сутки) →
-  for each competitor:
-    fetch sitemap/RSS →
-    diff vs yesterday →
-    Claude summarize new content →
-  collate → format → Telegram bot</code></pre>
+<h2>Как это устроено</h2>
+<pre><code>Расписание (раз в сутки) →
+  для каждого конкурента:
+    RSS блога / стена сообщества VK / страница сайта →
+    что появилось с прошлой проверки (state.json) →
+    YandexGPT: 3–5 пунктов «что нового и что это значит» →
+  одно письмо на почту (Telegram по желанию)</code></pre>
 
-<h2>Шаг 1. Зависимости</h2>
-<pre><code>pip install anthropic httpx feedparser python-telegram-bot beautifulsoup4</code></pre>
+<div class="callout callout-info">
+<strong>Почему такой стек.</strong> API Anthropic в России недоступен и российской картой не оплачивается. Telegram с февраля 2026 года в России работает с перебоями, у многих только через VPN, а <code>api.telegram.org</code> с российских адресов может не открываться. Поэтому модель здесь YandexGPT, а дайджест приходит письмом. Telegram оставили как опцию.
+</div>
 
-<h2>Шаг 2. Источники</h2>
+<h2>Шаг 0. Пароль приложения для почты (5 мин, сделай первым)</h2>
+<p>Скрипт отправляет письмо через SMTP Яндекс Почты. Обычный пароль от Яндекс ID для этого не подходит, нужен пароль приложения.</p>
+<ol>
+<li>Открой <a href="https://id.yandex.ru/security" target="_blank">id.yandex.ru/security</a> → «Доступ к вашим данным» → «Пароли приложений».</li>
+<li>Выбери тип «Почта», задай имя, например <code>digest</code>, нажми «Далее». Пароль покажут один раз: сразу скопируй.</li>
+<li>В настройках Почты открой раздел «Почтовые программы». Включи «С сервера imap.yandex.ru по протоколу IMAP» и проверь, что включено «Пароли приложений и OAuth-токены». Сохрани.</li>
+</ol>
+<p>Пароль начнёт действовать через 2–3 часа. Пока ждёшь, делай остальные шаги.</p>
+
+<h2>Шаг 1. Ключ YandexGPT (15 мин)</h2>
+<ol>
+<li>Зайди в <a href="https://aistudio.yandex.ru" target="_blank">Yandex AI Studio</a> через Яндекс ID и создай организацию. Каталог <code>default</code> появится сам.</li>
+<li>Привяжи платёжный аккаунт. Физлицо привязывает карту; резиденты России платят в рублях картами российских банков (Мир, Visa, MasterCard).</li>
+<li>Нажми «Создать API-ключ» в правом верхнем углу. Сервисный аккаунт с нужными правами создастся вместе с ключом. Сохрани секрет ключа: он понадобится в шаге 4.</li>
+<li>Скопируй идентификатор каталога (folder_id): наведи курсор на имя каталога, он скопируется в буфер.</li>
+</ol>
+<p>Модель по умолчанию в скрипте: YandexGPT Pro 5.1 (<code>yandexgpt-5.1</code>), 0,8 ₽ за 1000 токенов на входе и столько же на выходе. YandexGPT Lite (<code>yandexgpt-5-lite</code>) в четыре раза дешевле, 0,2 ₽, но пишет проще. Запуск, в котором новое нашлось у 5–10 конкурентов, это примерно 5–20 тысяч токенов, то есть 4–16 ₽ на Pro 5.1. Если нового нет, модель не вызывается и денег не тратит.</p>
+
+<h2>Шаг 2. Сервисный ключ ВКонтакте (10 мин, если следишь за сообществами)</h2>
+<p>Посты сообществ читаем методом <code>wall.get</code> VK API. Ему хватает сервисного ключа приложения: вход пользователя не нужен.</p>
+<ol>
+<li>Создай приложение в кабинете <a href="https://id.vk.com/about/business/go" target="_blank">VK ID</a>. При создании VK ID выдаёт сервисный ключ доступа, он лежит в настройках приложения.</li>
+<li>Срок действия у ключа не ограничен. Храни его только у себя на компьютере или сервере. Если ключ утёк, обнови его в настройках приложения.</li>
+</ol>
+<p>Так читаются только открытые сообщества. Закрытые группы скрипт не увидит, и это правильно.</p>
+
+<h2>Шаг 3. Зависимости</h2>
+<pre><code>pip install openai httpx feedparser beautifulsoup4</code></pre>
+<p>Пакет <code>openai</code> нужен не ради OpenAI: у Yandex AI Studio есть OpenAI-совместимый API, и этот клиент с ним работает. Нужен Python 3.10 или новее.</p>
+
+<h2>Шаг 4. Ключи в переменных окружения</h2>
+<p>Ключи не пишем в код. Создай рядом со скриптом файл <code>secrets.sh</code>:</p>
+<pre><code>export YC_API_KEY="секрет API-ключа AI Studio"
+export YC_FOLDER_ID="идентификатор каталога"
+export VK_SERVICE_KEY="сервисный ключ VK"     # если следишь за VK
+export SMTP_USER="you@yandex.ru"
+export SMTP_PASSWORD="пароль приложения из шага 0"
+export MAIL_TO="you@yandex.ru"                 # можно несколько через запятую
+# export YC_MODEL="yandexgpt-5-lite"           # если нужна модель дешевле</code></pre>
+<p>Закрой файл от чужих глаз: <code>chmod 600 secrets.sh</code>. Если код лежит в git, допиши <code>secrets.sh</code> в <code>.gitignore</code>.</p>
+
+<h2>Шаг 5. Источники (20 мин)</h2>
+<p>Весь код дальше собирай в один файл <code>main.py</code>, блок за блоком, сверху вниз. Первый блок: список конкурентов.</p>
 <pre><code>SOURCES = [
-  {"name": "Competitor A", "rss": "https://compA.com/feed.xml"},
-  {"name": "Competitor B", "rss": "https://compB.com/blog/rss"},
-  {"name": "Competitor C", "changelog": "https://compC.com/changelog"},
+    {"name": "Конкурент А", "type": "rss", "url": "https://example.com/blog/feed"},
+    {"name": "Конкурент Б", "type": "vk", "domain": "example_shop"},
+    {"name": "Конкурент В", "type": "page", "url": "https://example.org/prices",
+     "selector": "main"},
 ]</code></pre>
+<p>Три типа источников:</p>
+<ul>
+<li><strong>rss</strong>: лента блога или новостей. Попробуй адреса <code>/feed</code>, <code>/rss</code>, <code>/blog/feed</code> или найди в коде страницы ссылку с <code>application/rss+xml</code>.</li>
+<li><strong>vk</strong>: открытое сообщество ВКонтакте. В <code>domain</code> пиши короткий адрес, то есть часть ссылки после <code>vk.com/</code>.</li>
+<li><strong>page</strong>: страница сайта без RSS, например цены или каталог. В <code>selector</code> укажи CSS-селектор блока с содержимым (посмотри через «Просмотреть код» в браузере), чтобы меню и баннеры не считались изменениями. Без селектора скрипт берёт всю страницу.</li>
+</ul>
+<div class="callout callout-warning">
+<strong>Только открытые источники.</strong> Скрипт читает то, что видит любой посетитель, раз в сутки, и перед чтением страницы проверяет <code>robots.txt</code>. Карточки на маркетплейсах им не собирай: у площадок свои правила доступа к данным. Разбор карточек конкурентов удобнее сделать вручную с чат-ИИ.
+</div>
 
-<h2>Шаг 3. Парсинг RSS + дифф</h2>
-<pre><code>import feedparser, json, os
-SEEN_FILE = "seen.json"
-seen = json.load(open(SEEN_FILE)) if os.path.exists(SEEN_FILE) else {}
+<h2>Шаг 6. Память: что уже видели</h2>
+<p>Скрипт помнит, какие записи уже разобрал, и хранит последний снимок каждой страницы. Всё лежит в <code>state.json</code>. В памяти номера записей держим во множестве (<code>set</code>): проверка «уже видели?» быстрая и без повторов. JSON множества не умеет, поэтому на диск пишем список.</p>
+<pre><code>import json, os
 
-def fetch_new(source):
-    feed = feedparser.parse(source["rss"])
-    new = [e for e in feed.entries if e.id not in seen.get(source["name"], set())]
-    seen.setdefault(source["name"], []).extend(e.id for e in new)
-    return new</code></pre>
+STATE_FILE = "state.json"
 
-<h2>Шаг 4. Суммаризация через Claude</h2>
-<pre><code>import anthropic
-client = anthropic.Anthropic()
+def load_state():
+    if not os.path.exists(STATE_FILE):
+        return {"seen": {}, "pages": {}}
+    with open(STATE_FILE, encoding="utf-8") as f:
+        data = json.load(f)
+    # на диске списки, в памяти множества: проверка "уже видели?" быстрая
+    data["seen"] = {name: set(ids) for name, ids in data["seen"].items()}
+    return data
 
-def summarize(entries, competitor):
-    text = "\\n\\n".join(f"## {e.title}\\n{e.summary}" for e in entries)
-    msg = client.messages.create(
-      model="⟦claude.smart⟧",
-      max_tokens=600,
-      messages=[{"role": "user", "content": f'''Конкурент: {competitor}
-Новые публикации:
+def save_state(state):
+    data = {"seen": {name: sorted(ids) for name, ids in state["seen"].items()},
+            "pages": state["pages"]}
+    with open(STATE_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=1)</code></pre>
+
+<h2>Шаг 7. Блоги: RSS</h2>
+<p>Все источники приводим к одному виду: <code>id</code>, <code>title</code>, <code>text</code>, <code>link</code>. Тогда остальной код не думает, откуда пришла запись.</p>
+<pre><code>import httpx, feedparser
+from bs4 import BeautifulSoup
+
+USER_AGENT = "competitor-digest/1.0"
+
+def clean(html):
+    return BeautifulSoup(html or "", "html.parser").get_text(" ", strip=True)
+
+def fetch_rss(src, state):
+    r = httpx.get(src["url"], headers={"User-Agent": USER_AGENT},
+                  timeout=30, follow_redirects=True)
+    r.raise_for_status()
+    feed = feedparser.parse(r.content)
+    items = []
+    for e in feed.entries:
+        items.append({
+            "id": e.get("id") or e.get("link") or e.get("title", ""),
+            "title": e.get("title", ""),
+            "text": clean(e.get("summary", "")),
+            "link": e.get("link", ""),
+        })
+    return items</code></pre>
+
+<h2>Шаг 8. Сообщества ВКонтакте</h2>
+<p>Запрос идёт на <code>api.vk.ru</code>, ключ передаём в заголовке <code>Authorization: Bearer</code>, версию API в параметре <code>v</code>. Берём 20 последних постов, метод отдаёт до 100.</p>
+<pre><code>VK_API = "https://api.vk.ru/method/wall.get"
+VK_VERSION = "5.199"
+
+def fetch_vk(src, state):
+    r = httpx.get(VK_API,
+                  params={"domain": src["domain"], "count": 20, "v": VK_VERSION},
+                  headers={"Authorization": f"Bearer {os.environ['VK_SERVICE_KEY']}"},
+                  timeout=30)
+    data = r.json()
+    if "error" in data:
+        raise RuntimeError(data["error"].get("error_msg", "ошибка VK API"))
+    items = []
+    for post in data["response"]["items"]:
+        items.append({
+            "id": str(post["id"]),
+            "title": "",
+            "text": post.get("text", ""),
+            "link": f"https://vk.com/wall{post['owner_id']}_{post['id']}",
+        })
+    return items</code></pre>
+
+<h2>Шаг 9. Страницы без RSS</h2>
+<p>Скачиваем страницу, оставляем текст нужного блока и сравниваем с прошлым снимком. В дайджест уходят только изменившиеся строки: <code>+</code> добавилось, <code>-</code> пропало. В первый раз скрипт просто запоминает страницу.</p>
+<pre><code>import difflib, hashlib
+from urllib.parse import urlsplit
+from urllib.robotparser import RobotFileParser
+
+def allowed_by_robots(url):
+    parts = urlsplit(url)
+    rp = RobotFileParser(f"{parts.scheme}://{parts.netloc}/robots.txt")
+    rp.read()
+    return rp.can_fetch(USER_AGENT, url)
+
+def fetch_page(src, state):
+    url = src["url"]
+    if not allowed_by_robots(url):
+        raise RuntimeError("robots.txt запрещает читать эту страницу")
+    r = httpx.get(url, headers={"User-Agent": USER_AGENT},
+                  timeout=30, follow_redirects=True)
+    r.raise_for_status()
+    soup = BeautifulSoup(r.text, "html.parser")
+    for tag in soup(["script", "style", "noscript"]):
+        tag.decompose()
+    part = soup.select_one(src["selector"]) if src.get("selector") else soup
+    if part is None:
+        raise RuntimeError(f"на странице нет блока {src['selector']}")
+    lines = [s.strip() for s in part.get_text("\\n").splitlines() if s.strip()]
+    text = "\\n".join(lines)
+
+    old = state["pages"].get(src["name"])
+    state["pages"][src["name"]] = text
+    if old is None or old == text:
+        return []  # первый снимок или ничего не поменялось
+    diff = [d for d in difflib.ndiff(old.splitlines(), lines)
+            if d.startswith(("+ ", "- "))]
+    diff_text = "\\n".join(diff[:60])
+    return [{
+        "id": hashlib.sha256(diff_text.encode("utf-8")).hexdigest()[:16],
+        "title": "Изменения на странице",
+        "text": diff_text,
+        "link": url,
+    }]</code></pre>
+
+<h2>Шаг 10. Дайджест через YandexGPT</h2>
+<p>Клиент OpenAI смотрит на Yandex AI Studio: адрес <code>https://ai.api.cloud.yandex.net/v1</code>, ключ AI Studio, folder_id в параметре <code>project</code>. Модель задаётся как <code>gpt://&lt;folder_id&gt;/yandexgpt-5.1</code>.</p>
+<pre><code>from openai import OpenAI
+
+FOLDER_ID = os.environ["YC_FOLDER_ID"]
+MODEL = os.environ.get("YC_MODEL", "yandexgpt-5.1")
+
+llm = OpenAI(api_key=os.environ["YC_API_KEY"], project=FOLDER_ID,
+             base_url="https://ai.api.cloud.yandex.net/v1")
+
+PROMPT = """Конкурент: {name}
+Что у него появилось с прошлой проверки (посты, статьи, изменения на сайте;
+строки с "+" добавились, с "-" пропали):
+
 {text}
 
-Сделай дайджест (3–5 буллетов):
-- Что нового (продукт / фича / партнёрство / маркетинговый ход)?
-- Что это значит для нас?
-- Опасно / нейтрально / возможность.
+Сделай дайджест из 3-5 пунктов:
+- что нового: товар, цена, акция, ассортимент, партнёрство, найм;
+- что это значит для нас;
+- пометка: угроза, нейтрально или возможность.
+Опирайся только на текст выше, не додумывай. Если важного нет,
+напиши одной строкой: «Ничего важного». Пиши простым текстом, без разметки."""
 
-Только важное. Прямо, без воды.'''}]
+def summarize(items, name):
+    text = "\\n\\n".join(f"{it['title']}\\n{it['text'][:1500]}\\n{it['link']}"
+                       for it in items)
+    resp = llm.chat.completions.create(
+        model=f"gpt://{FOLDER_ID}/{MODEL}",
+        messages=[{"role": "user", "content": PROMPT.format(name=name, text=text)}],
+        temperature=0.3,
+        max_tokens=800,
     )
-    return msg.content[0].text</code></pre>
+    return resp.choices[0].message.content.strip()</code></pre>
+<p><strong>Если у тебя есть доступ к API Anthropic</strong> (Россия не входит в список стран, где он доступен), можно взять Claude. Поставь <code>pip install anthropic</code>, положи ключ в <code>ANTHROPIC_API_KEY</code>, создай <code>client = anthropic.Anthropic()</code> и в <code>summarize</code> замени вызов на <code>client.messages.create(model="⟦claude.smart⟧", max_tokens=800, messages=[...])</code>. Текст ответа лежит в <code>msg.content[0].text</code>.</p>
+<p><strong>GigaChat API</strong> от Сбера тоже работает из России, но настраивать его дольше: по ключу авторизации нужно получать токен доступа, он живёт 30 минут. С 1 сентября 2026 года новые клиенты оплачивают его на платформе cloud.ru. С клиентом OpenAI он совместим частично.</p>
 
-<h2>Шаг 5. Telegram</h2>
-<pre><code>import httpx
-BOT_TOKEN = os.environ["TG_BOT_TOKEN"]
-CHAT_ID = os.environ["TG_CHAT_ID"]
+<h2>Шаг 11. Письмо на почту</h2>
+<p>Яндекс Почта принимает письма от программ на <code>smtp.yandex.ru</code>, порт 465, SSL. Логин: твой адрес, пароль: пароль приложения из шага 0.</p>
+<pre><code>import smtplib
+from email.message import EmailMessage
 
-def send_telegram(text):
-    httpx.post(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
-               json={"chat_id": CHAT_ID, "text": text, "parse_mode": "Markdown"})</code></pre>
+def send_email(subject, body):
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"] = os.environ["SMTP_USER"]
+    msg["To"] = os.environ["MAIL_TO"]
+    msg.set_content(body)
+    with smtplib.SMTP_SSL("smtp.yandex.ru", 465, timeout=30) as smtp:
+        smtp.login(os.environ["SMTP_USER"], os.environ["SMTP_PASSWORD"])
+        smtp.send_message(msg)</code></pre>
 
-<h2>Шаг 6. Основной цикл</h2>
-<pre><code>def main():
-    digest = "🔍 *Конкуренты — что нового:*\\n\\n"
+<h3>По желанию: копия в Telegram</h3>
+<p>Если Telegram работает и у тебя, и у тех, кто читает дайджест, добавь функцию ниже и две переменные: <code>TG_BOT_TOKEN</code> (бот создаётся у @BotFather) и <code>TG_CHAT_ID</code>. Telegram принимает до 4096 знаков в сообщении, поэтому длинный дайджест режем на части. Разметку не включаем: звёздочки и подчёркивания из ответа модели ломают Markdown.</p>
+<pre><code>def send_telegram(text):
+    token = os.environ["TG_BOT_TOKEN"]
+    for i in range(0, len(text), 4000):  # лимит Telegram 4096 знаков
+        r = httpx.post(f"https://api.telegram.org/bot{token}/sendMessage",
+                       json={"chat_id": os.environ["TG_CHAT_ID"],
+                             "text": text[i:i + 4000]},
+                       timeout=30)
+        r.raise_for_status()</code></pre>
+<p>Если Telegram не нужен, этот блок можно не добавлять: скрипт вызывает его, только когда задана переменная <code>TG_BOT_TOKEN</code>.</p>
+
+<h2>Шаг 12. Основной цикл</h2>
+<pre><code>from datetime import date
+
+FETCHERS = {"rss": fetch_rss, "vk": fetch_vk, "page": fetch_page}
+MAX_ITEMS = 10      # не больше 10 новых записей на конкурента за раз
+FIRST_RUN_ITEMS = 3 # в первый раз разбираем только 3 последние записи
+
+def main():
+    state = load_state()
+    pages_before = dict(state["pages"])
+    parts, errors = [], []
     for src in SOURCES:
-        new = fetch_new(src)
-        if not new: continue
-        digest += f"*{src['name']}*:\\n{summarize(new, src['name'])}\\n\\n"
-    send_telegram(digest)
-    json.dump(seen, open(SEEN_FILE, "w"))</code></pre>
+        name = src["name"]
+        try:
+            items = FETCHERS[src["type"]](src, state)
+            first_run = name not in state["seen"]
+            known = state["seen"].setdefault(name, set())
+            new = [it for it in items if it["id"] not in known]
+            if new:
+                limit = FIRST_RUN_ITEMS if first_run else MAX_ITEMS
+                parts.append(f"{name}\\n{summarize(new[:limit], name)}")
+            known.update(it["id"] for it in new)
+        except Exception as e:
+            errors.append(f"{name}: {e}")
+            # снимок страницы не обновляем, чтобы не потерять изменения
+            if name in pages_before:
+                state["pages"][name] = pages_before[name]
+            else:
+                state["pages"].pop(name, None)
 
-<h2>Шаг 7. Cron (10 мин)</h2>
-<p>Запускай через GitHub Actions (бесплатно), Railway cron или просто <code>crontab -e</code>:</p>
-<pre><code>0 9 * * * cd /path/to/project && python main.py</code></pre>
+    if not parts and not errors:
+        print("Нового нет, письмо не отправляю")
+        save_state(state)
+        return
+    body = "\\n\\n".join(parts) or "Нового нет."
+    if errors:
+        body += "\\n\\nНе удалось проверить:\\n" + "\\n".join(errors)
+    subject = f"Конкуренты: что нового, {date.today():%d.%m.%Y}"
+    send_email(subject, body)
+    if os.environ.get("TG_BOT_TOKEN"):
+        try:
+            send_telegram(f"{subject}\\n\\n{body}")
+        except Exception as e:
+            print("Telegram не ответил:", e)
+    save_state(state)  # сохраняем, только если письмо ушло
+
+if __name__ == "__main__":
+    main()</code></pre>
+<p>Что здесь важно:</p>
+<ul>
+<li>В первый раз по каждому источнику разбираются только 3 последние записи, остальные просто запоминаются. Иначе первое письмо будет огромным.</li>
+<li>Если источник упал (сайт не открылся, ключ VK неверный), остальные всё равно проверяются, а ошибка попадает в конец письма.</li>
+<li><code>state.json</code> сохраняется только после того, как письмо ушло. Не ушло: в следующий раз то же новое придёт снова, ничего не потеряется.</li>
+</ul>
+
+<h2>Шаг 13. Первый запуск (10 мин)</h2>
+<pre><code>. ./secrets.sh
+python3 main.py</code></pre>
+<p>Проверь письмо: у каждого пункта должна быть реальная запись или изменение на странице за ним. Запусти ещё раз: должно появиться «Нового нет, письмо не отправляю». Если первое письмо не пришло, а ошибка про логин, проверь, прошли ли 2–3 часа с создания пароля приложения.</p>
+
+<h2>Шаг 14. Расписание (15 мин)</h2>
+<p><strong>Свой компьютер или сервер.</strong> Самый простой путь: cron. Открой <code>crontab -e</code> и добавь строку (запуск каждый день в 9:00):</p>
+<pre><code>0 9 * * * cd /path/to/project && . ./secrets.sh && /usr/bin/python3 main.py >> digest.log 2>&1</code></pre>
+<p>Путь к Python узнай командой <code>which python3</code> и подставь свой. Компьютер в это время должен быть включён, поэтому надёжнее небольшой сервер. На Windows то же самое делает Планировщик заданий.</p>
+<p><strong>GitHub Actions</strong>, если GitHub у тебя открывается. Создай приватный репозиторий с <code>main.py</code>, ключи добавь в Settings → Secrets and variables → Actions, а этот файл положи в <code>.github/workflows/digest.yml</code>:</p>
+<pre><code>name: digest
+on:
+  schedule:
+    - cron: "0 9 * * *"
+      timezone: "Europe/Moscow"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install openai httpx feedparser beautifulsoup4
+      - run: python main.py
+        env:
+          YC_API_KEY: \${{ secrets.YC_API_KEY }}
+          YC_FOLDER_ID: \${{ secrets.YC_FOLDER_ID }}
+          VK_SERVICE_KEY: \${{ secrets.VK_SERVICE_KEY }}
+          SMTP_USER: \${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: \${{ secrets.SMTP_PASSWORD }}
+          MAIL_TO: \${{ secrets.MAIL_TO }}
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state.json
+          git commit -m "update state" || echo "nothing to commit"
+          git push</code></pre>
+<p>Последний шаг сохраняет <code>state.json</code> обратно в репозиторий, иначе каждый запуск начинался бы с нуля. Оговорки:</p>
+<ul>
+<li>Серверы GitHub стоят за рубежом. Запросы к YandexGPT, VK и smtp.yandex.ru пойдут оттуда. Проверь вручную кнопкой Run workflow (её даёт <code>workflow_dispatch</code>), прежде чем полагаться на расписание.</li>
+<li>Запуск по расписанию может опаздывать, когда GitHub загружен. Для приватных репозиториев на бесплатном тарифе есть 2000 минут в месяц, ежедневному скрипту хватит с запасом.</li>
+<li>В публичном репозитории расписание само отключается, если 60 дней в нём не было активности.</li>
+</ul>
+
+<h2>Если не работает</h2>
+<ul>
+<li><strong>Ошибка входа в SMTP</strong>: пароль приложения ещё не заработал (2–3 часа), не включён доступ для почтовых программ или вместо пароля приложения стоит обычный.</li>
+<li><strong>VK отвечает ошибкой</strong>: проверь ключ и короткий адрес сообщества. Закрытые сообщества сервисный ключ не читает.</li>
+<li><strong>«robots.txt запрещает»</strong>: сайт просит роботов эту страницу не читать. Убери её из списка или найди у конкурента RSS.</li>
+<li><strong>Страница «меняется» каждый день</strong>: в блок попадают дата, счётчики или случайные товары. Сузь <code>selector</code> до нужной части.</li>
+<li><strong>Модель отвечает 400</strong>: проверь имя модели. Устаревшие модели Yandex отключает, и старый адрес перестаёт работать. Актуальный список в документации AI Studio.</li>
+</ul>
 
 <h2>Расширения</h2>
 <ul>
-<li><strong>Web scraping</strong> сайтов без RSS (Playwright).</li>
-<li><strong>Job openings</strong> — отдельный поток: что нанимают (стратегические сигналы).</li>
-<li><strong>Анализ соцсетей</strong> — Twitter/LinkedIn API.</li>
-<li><strong>Еженедельный отчёт</strong> с трендами.</li>
+<li><strong>Вакансии конкурентов</strong>: страница «Карьера» как источник типа <code>page</code>. Кого нанимают, туда и растут.</li>
+<li><strong>Недельный отчёт</strong>: раз в неделю отдай модели все письма за 7 дней и попроси тренды.</li>
+<li><strong>Несколько читателей</strong>: перечисли адреса в <code>MAIL_TO</code> через запятую.</li>
 </ul>
 
 <div class="callout callout-info">
-<strong>📌 Закрепление:</strong> подписки на чужие блоги ты больше не читаешь — твой бот делает это за тебя и шлёт только важное.
+<strong>📌 Закрепление:</strong> блоги, сообщества и прайсы конкурентов ты больше не листаешь. Скрипт проверяет их каждое утро и присылает только новое, с пометкой, что это значит для тебя.
 </div>
 `);
 
@@ -27424,13 +27622,13 @@ sudo journalctl -u summary-bot -f</code></pre>
 
 
 registerLesson("p20", `
-<h1>Проект «За 1 час»: AI-помощник продавца Wildberries на YandexGPT</h1>
+<h1>Проект: AI-помощник продавца Wildberries на YandexGPT</h1>
 
 <div class="lesson-meta">
-  <span><strong>Что построим:</strong> скрипт, который по фото товара генерирует готовую карточку для WB и загружает её через Seller API</span>
-  <span><strong>Время:</strong> ~90 минут</span>
+  <span><strong>Что построим:</strong> скрипт, который по фото товара генерирует готовую карточку для WB и загружает её через WB API</span>
+  <span><strong>Время:</strong> ~2 часа, из них до 30 минут WB сам создаёт карточку после загрузки</span>
   <span><strong>Уровень:</strong> Python + базовое понимание REST API</span>
-  <span><strong>Стек:</strong> Python 3.10+, requests, YandexGPT API, WB Content API</span>
+  <span><strong>Стек:</strong> Python 3.10+, requests, Pillow, Yandex AI Studio (Qwen3.6 35B и YandexGPT Lite 5), WB API (категория «Контент»)</span>
 </div>
 
 <h2>Что в итоге будет</h2>
@@ -27438,9 +27636,9 @@ registerLesson("p20", `
 <p>CLI-утилита, которая:</p>
 <ul>
 <li>Принимает на вход путь к папке с фото товара и краткое описание («синие женские джинсы, размер 42-50, состав хлопок 98%»);</li>
-<li>Отдаёт фото + описание в YandexGPT с правильным промптом;</li>
+<li>Показывает фото модели Qwen3.6 35B, а то, что она увидела, вместе с описанием отдаёт в YandexGPT с правильным промптом;</li>
 <li>Получает готовую карточку: <strong>заголовок до 60 символов</strong>, <strong>описание до 1000 символов</strong>, характеристики, ключевые слова;</li>
-<li>Формирует валидный JSON под WB Content API и (опционально) загружает карточку в личный кабинет продавца;</li>
+<li>Сопоставляет характеристики со справочником предмета WB и (опционально) загружает карточку в кабинет продавца через WB API;</li>
 <li>Поддерживает батч-режим: одна команда — папка из 20 товаров — 20 карточек.</li>
 </ul>
 
@@ -27449,65 +27647,69 @@ registerLesson("p20", `
 <h2>Требования</h2>
 
 <ul>
-<li>Аккаунт в <strong>Yandex Cloud</strong> с привязанной картой (любая РФ-карта). Оплата в рублях, по факту использования. Стартовый грант обычно ~4000 ₽;</li>
-<li>Аккаунт продавца на Wildberries с доступом в <strong>«Личный кабинет поставщика»</strong>;</li>
-<li>Python 3.10+, библиотеки <code>requests</code> и <code>python-dotenv</code>;</li>
-<li>Фотографии товаров — минимум 1, лучше 3–5 ракурсов.</li>
+<li>Аккаунт в <strong>Yandex Cloud</strong> с платёжным аккаунтом и привязанной банковской картой. Оплата в рублях, по факту использования. Новым пользователям дают стартовый грант от 4000 ₽ на 60 дней, если привязать карту сразу при создании платёжного аккаунта;</li>
+<li>Кабинет продавца Wildberries (портал WB Partners). Токен API может создать только владелец кабинета;</li>
+<li>Python 3.10+, библиотеки <code>requests</code>, <code>python-dotenv</code> и <code>Pillow</code>;</li>
+<li>Фотографии товаров: минимум 1, лучше 2-3 ракурса (скрипт отправляет модели первые три).</li>
 </ul>
 
 <h2>Архитектура</h2>
 
 <pre><code>┌──────────────────┐     ┌──────────────────────┐     ┌────────────────────┐
-│  Папка с фото    │────▶│  generator.py        │────▶│  YandexGPT API     │
-│  + brief.txt     │     │  (склейка контекста, │     │  (genai endpoint)  │
-│                  │◀────│   парсинг ответа)    │◀────│                    │
+│  Папка с фото    │────▶│  generator.py        │────▶│  Yandex AI Studio  │
+│  + brief.txt     │     │  (фото → факты,      │     │  Qwen3.6 35B,      │
+│                  │◀────│   факты → карточка)  │◀────│  YandexGPT Lite 5  │
 └──────────────────┘     └──────────────────────┘     └────────────────────┘
                                   │
                                   ▼
                          ┌──────────────────┐     ┌────────────────────┐
-                         │  card.json       │────▶│  WB Content API    │
-                         │  (готовая        │     │  (создание         │
-                         │   карточка)      │◀────│   карточки)        │
+                         │  card.json       │────▶│  WB API, Контент   │
+                         │  (проверяешь     │     │  (справочник,      │
+                         │   глазами)       │◀────│  создание, ошибки) │
                          └──────────────────┘     └────────────────────┘
 </code></pre>
 
-<h2>Шаг 1: Yandex Cloud — каталог, сервисный аккаунт, API-ключ</h2>
+<h2>Шаг 1: Yandex AI Studio, API-ключ и каталог</h2>
+
+<p>Модели работают в Yandex AI Studio, это часть Yandex Cloud. Нужны две вещи: API-ключ и идентификатор каталога <code>folder_id</code>.</p>
 
 <ol>
-<li>Идёшь в <a href="https://console.cloud.yandex.ru" target="_blank">console.cloud.yandex.ru</a>, логинишься через Яндекс ID.</li>
-<li>Если каталога нет — Yandex Cloud сам предложит создать. Привяжи карту. Включается биллинг.</li>
-<li>В меню слева — <strong>Identity and Access Management → Сервисные аккаунты → Создать</strong>. Имя <code>wb-bot</code>.</li>
-<li>Выдай этому сервисному аккаунту роль <code>ai.languageModels.user</code> на каталог. Без этой роли API будет отвечать 403.</li>
-<li>В карточке сервисного аккаунта — <strong>Создать новый ключ → API-ключ</strong>. Копируешь сразу, повторно не покажет.</li>
-<li>Запомни <code>folder_id</code> (он в URL консоли или в шапке каталога) — он нужен в каждом запросе.</li>
+<li>Идёшь в <a href="https://aistudio.yandex.ru" target="_blank">aistudio.yandex.ru</a>, логинишься через Яндекс ID. Если платёжного аккаунта ещё нет, создай его и сразу привяжи карту.</li>
+<li>В правом верхнем углу нажми <strong>Создать API-ключ</strong>, выбери срок действия ключа и нажми <strong>Создать</strong>. AI Studio сам заведёт сервисный аккаунт с нужными ролями и выдаст ключ с доступом к моделям.</li>
+<li>Скопируй секретный ключ сразу: после закрытия окна его не покажут.</li>
+<li>Запомни <code>folder_id</code> каталога, в котором создан ключ (он в URL консоли или в шапке каталога). Он нужен в каждом запросе.</li>
 </ol>
 
-<p>Стоимость <code>yandexgpt-lite</code>: примерно 0.20 ₽ за 1000 токенов на вход и столько же на выход. Одна карточка — ~3000 токенов, итого меньше рубля. На 100 карточек — около 60–80 ₽. Это сильно дешевле, чем нанять копирайтера на ту же сотню.</p>
+<p>Если создаёшь ключ вручную в консоли Yandex Cloud: сервисному аккаунту нужна роль <code>ai.languageModels.user</code> на каталог, а ключу область действия для генерации текста. В документации встречаются две: <code>yc.ai.languageModels.execute</code> и <code>yc.ai.foundationModels.execute</code>. Создать API-ключ может пользователь с ролью <code>resource-manager.admin</code> на каталог.</p>
 
-<h2>Шаг 2: Токен Wildberries Seller API</h2>
+<p>Цены синхронного режима, с НДС: YandexGPT Lite 0,20 ₽ за 1000 токенов на вход и столько же на выход, Qwen3.6 35B 0,20 ₽ за 1000 входящих и 0,30 ₽ за 1000 исходящих. Текстовая часть одной карточки около 3000 токенов, это меньше рубля. Фото тоже считаются во входящих токенах, поэтому с ними дороже: точную цену карточки посмотри в детализации расходов после первых 2-3 товаров. Это всё равно сильно дешевле, чем нанять копирайтера на ту же сотню.</p>
+
+<h2>Шаг 2: Токен WB API</h2>
 
 <ol>
-<li>Заходишь в <a href="https://seller.wildberries.ru" target="_blank">seller.wildberries.ru</a>.</li>
-<li>Профиль (правый верхний угол) → <strong>Настройки → Доступ к API</strong>.</li>
-<li>Нажимаешь <strong>«Создать новый токен»</strong>. Имя — например <code>ai-card-generator</code>.</li>
-<li>В правах выбираешь <strong>«Контент»</strong> (и опционально <strong>«Цены и скидки»</strong>, если будешь обновлять цены). НЕ давай токену больше прав, чем нужно — если утечёт, ущерб меньше.</li>
-<li>Опция «Только для чтения» — снимаем (иначе не сможем создавать карточки).</li>
-<li>Копируешь токен. Это JWT-строка длиной ~150 символов.</li>
+<li>Заходишь в <a href="https://seller.wildberries.ru" target="_blank">seller.wildberries.ru</a> под владельцем кабинета: создавать токены может только он.</li>
+<li>Открываешь раздел <strong>Интеграции по API</strong>, нажимаешь <strong>+ Создать токен</strong> и выбираешь вкладку <strong>Для интеграции вручную</strong>.</li>
+<li>Тип токена: <strong>Персональный</strong>. Он для собственных программ на твоём компьютере или сервере. Передавать его третьим лицам и использовать в облачных сервисах нельзя.</li>
+<li>Имя, например <code>ai-card-generator</code>. Категория: <strong>Контент</strong> (и <strong>Цены и скидки</strong>, если будешь обновлять цены). Не давай токену больше прав, чем нужно: если утечёт, ущерб меньше.</li>
+<li>Уровень доступа: <strong>Чтение и запись</strong>, иначе карточки не создать.</li>
+<li>Отметь, что не будешь передавать токен третьим лицам, нажми <strong>Создать</strong>, потом <strong>Скопировать и закрыть</strong>. Ещё раз посмотреть токен не получится. Он действует 180 дней, потом создай новый и обнови <code>.env</code>.</li>
 </ol>
 
-<p>Endpoint для создания карточек: <code>https://content-api.wildberries.ru/content/v2/cards/upload</code>. Документация — на <a href="https://dev.wildberries.ru" target="_blank">dev.wildberries.ru</a>, раздел «Контент».</p>
+<p>Проверить токен можно запросом <code>GET https://content-api.wildberries.ru/ping</code> с токеном в заголовке <code>Authorization</code>. Документация на <a href="https://dev.wildberries.ru" target="_blank">dev.wildberries.ru</a>, раздел «Работа с товарами».</p>
 
 <h2>Шаг 3: Структура проекта</h2>
 
 <pre><code>mkdir wb-ai-cards && cd wb-ai-cards
 python3 -m venv venv && source venv/bin/activate
-pip install requests==2.32.3 python-dotenv==1.0.1 Pillow==10.4.0</code></pre>
+pip install requests==2.34.2 python-dotenv==1.2.4 Pillow==12.3.0</code></pre>
 
 <p>Файл <code>.env</code>:</p>
 
 <pre><code>YC_API_KEY=AQVNxxxxxxxxxxxxxxxxxx
 YC_FOLDER_ID=b1g123456789abcdef
 WB_TOKEN=eyJhbGciOiJFUzI1NiIsImtpZCI6...</code></pre>
+
+<p>В <code>.env</code> два ключа доступа: добавь его в <code>.gitignore</code> и никому не пересылай.</p>
 
 <p>Структура папок:</p>
 
@@ -27535,15 +27737,15 @@ WB_TOKEN=eyJhbGciOiJFUzI1NiIsImtpZCI6...</code></pre>
 
 <p><code>prompts/clothes.txt</code>:</p>
 
-<pre><code>Ты — копирайтер маркетплейса. Сделай карточку товара для Wildberries по фото и описанию ниже.
+<pre><code>Ты копирайтер маркетплейса. Сделай карточку товара для Wildberries по описанию продавца и списку того, что видно на фото.
 
 Категория: ОДЕЖДА.
 
 Жёсткие ограничения:
-- "title": до 60 символов, начинается с типа товара (Джинсы, Платье, Футболка), без CAPS и без эмодзи
-- "description": до 1000 символов, абзацами через \\n\\n. Структура: общее описание → состав и качество → для каких случаев → советы по уходу. Без слов "купить", "лучший", "идеальный" — WB не любит маркетинговую воду.
-- "characteristics": массив объектов {"name": "...", "value": "..."}. Обязательные: "Состав", "Сезон", "Страна производства" (если не известна — пиши "Россия"). НЕ ВЫДУМЫВАЙ цифр. Если данных нет — оставь поле пустым.
-- "keywords": массив из 10-15 слов для поиска, через которые товар найдут (без знаков препинания, lowercase).
+- "title": до 60 символов. Тип товара и главное отличие, например "Джинсы прямые с высокой посадкой". Без бренда, пола, возраста, сезона и состава. Без повторов, синонимов, CAPS, эмодзи и спецсимволов.
+- "description": до 1000 символов, абзацами через \\n\\n. Структура: общее описание → материал и качество → для каких случаев. Уход пиши, только если он есть в описании продавца. Без слов "купить", "лучший", "идеальный" и без списков поисковых запросов.
+- "characteristics": массив объектов {"name": "...", "value": "..."}. Если ниже дан список характеристик Wildberries, бери названия только из него и заполни обязательные (*), если для них есть факты. НЕ ВЫДУМЫВАЙ: чего нет в описании продавца или на фото, в массив не включай.
+- "keywords": 10-15 слов и фраз, по которым товар ищут (lowercase, без знаков препинания). Главные из них должны естественно звучать в описании. Отдельного поля для них у Wildberries нет.
 
 Верни СТРОГО JSON по схеме. Никаких комментариев до или после.
 
@@ -27553,77 +27755,121 @@ WB_TOKEN=eyJhbGciOiJFUzI1NiIsImtpZCI6...</code></pre>
   "description": "string",
   "characteristics": [{"name": "string", "value": "string"}],
   "keywords": ["string"]
-}
-</code></pre>
+}</code></pre>
 
 <p>Аналогично <code>electronics.txt</code> (упор на ТТХ: мощность, напряжение, разъёмы) и <code>home.txt</code> (материал, размеры, вес, инструкция по сборке).</p>
 
 <p>Главное правило промпта — <strong>«не выдумывай характеристики»</strong>. Если модели не дать этого ограничения, она радостно напишет про джинсы «состав: хлопок 100%, плотность 320 г/м², пропитка водоотталкивающая» — даже если из фото видно только цвет.</p>
 
-<h2>Шаг 5: Вызов YandexGPT</h2>
+<p>Правила для названия взяты из справки WB: до 60 символов, только суть, без бренда, пола, возраста, сезона, оценок вроде «лучший» и спецсимволов. Отдельного поля для ключевых слов в карточке WB нет, а списки поисковых запросов в описании WB просит не писать. Поэтому <code>keywords</code> здесь подсказка: главные слова должны просто звучать в описании.</p>
+
+<h2>Шаг 5: Вызов моделей Yandex AI Studio</h2>
+
+<p>У AI Studio есть OpenAI-совместимый API: один адрес <code>https://ai.api.cloud.yandex.net/v1/chat/completions</code> для всех моделей, ключ в заголовке <code>Authorization: Api-Key ...</code>, каталог в заголовке <code>OpenAI-Project</code>. Фото понимает Qwen3.6 35B, картинки передаются в Base64. Поэтому работаем в два шага: Qwen перечисляет, что видно на фото, а YandexGPT Lite 5 по этим фактам и твоему brief.txt пишет карточку.</p>
 
 <p>Файл <code>generator.py</code>:</p>
 
-<pre><code>import os
+<pre><code>import io
+import os
 import json
 import base64
 import logging
 from pathlib import Path
+
 import requests
+from PIL import Image
 
 log = logging.getLogger("generator")
 
-YC_URL = "https://llm.api.cloud.yandex.net/foundationModels/v1/completion"
+# OpenAI-совместимый API Yandex AI Studio
+YC_URL = "https://ai.api.cloud.yandex.net/v1/chat/completions"
+VISION_MODEL = "qwen3.6-35b-a3b"  # Qwen3.6 35B: понимает фото в Base64
+TEXT_MODEL = "yandexgpt-5-lite"   # YandexGPT Lite 5: пишет карточку
+PHOTO_EXT = {".jpg", ".jpeg", ".png", ".webp"}
+
+PHOTO_PROMPT = (
+    "Перечисли списком, что видно на фото товара: тип товара, цвет, крой или форма, "
+    "заметные детали (застёжка, карманы, принт), текст с ярлыка, если он читается. "
+    "Пиши только то, что видно. Состав, размеры и страну производства не угадывай."
+)
 
 
-def _read_brief(item_dir: Path) -> str:
+def _chat(model: str, content, system: str = "", temperature: float = 0.3) -&gt; str:
+    folder = os.getenv("YC_FOLDER_ID")
+    messages = []
+    if system:
+        messages.append({"role": "system", "content": system})
+    messages.append({"role": "user", "content": content})
+
+    body = {
+        "model": f"gpt://{folder}/{model}",
+        "messages": messages,
+        "temperature": temperature,
+    }
+    headers = {
+        "Authorization": f"Api-Key {os.getenv('YC_API_KEY')}",
+        "OpenAI-Project": folder,
+        "Content-Type": "application/json",
+    }
+    r = requests.post(YC_URL, json=body, headers=headers, timeout=120)
+    if r.status_code &gt;= 400:
+        log.error(f"AI Studio {r.status_code}: {r.text[:500]}")
+    r.raise_for_status()
+    return r.json()["choices"][0]["message"]["content"]
+
+
+def _read_brief(item_dir: Path) -&gt; str:
     brief = item_dir / "brief.txt"
     return brief.read_text(encoding="utf-8").strip() if brief.exists() else ""
 
 
-def _encode_photos(item_dir: Path, max_n: int = 3) -> list[str]:
-    """YandexGPT (text-only) фото не понимает — для multimodal нужен другой endpoint.
-    Пока используем только описания фото (имена файлов как намёк)."""
-    photos = sorted(p for p in item_dir.iterdir() if p.suffix.lower() in {".jpg", ".jpeg", ".png"})
-    return [p.name for p in photos[:max_n]]
+def _photo_to_data_url(path: Path, max_side: int = 1024) -&gt; str:
+    """Уменьшаем фото до 1024 px: меньше токенов и быстрее запрос."""
+    img = Image.open(path)
+    img.thumbnail((max_side, max_side))
+    buf = io.BytesIO()
+    img.convert("RGB").save(buf, format="JPEG", quality=85)
+    return "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode("ascii")
 
 
-def generate_card(item_dir: Path, category: str = "clothes") -> dict:
+def describe_photos(item_dir: Path, max_n: int = 3) -&gt; str:
+    photos = sorted(p for p in item_dir.iterdir() if p.suffix.lower() in PHOTO_EXT)[:max_n]
+    if not photos:
+        return ""
+    content = [{"type": "text", "text": PHOTO_PROMPT}]
+    for p in photos:
+        content.append({"type": "image_url", "image_url": {"url": _photo_to_data_url(p)}})
+    log.info(f"Фото на распознавание: {item_dir.name}, {len(photos)} шт.")
+    return _chat(VISION_MODEL, content, temperature=0.1)
+
+
+def _charcs_hint(charcs: list) -&gt; str:
+    if not charcs:
+        return ""
+    names = [c["name"] + (" *" if c.get("required") else "") for c in charcs]
+    return (
+        "\\n\\nХарактеристики этого предмета на Wildberries "
+        "(названия бери только отсюда, * значит обязательная):\\n" + "\\n".join(names)
+    )
+
+
+def generate_card(item_dir: Path, category: str = "clothes", charcs: list = None) -&gt; dict:
     brief = _read_brief(item_dir)
-    photo_names = _encode_photos(item_dir)
+    photo_facts = describe_photos(item_dir)
 
     prompt_file = Path("prompts") / f"{category}.txt"
     system_prompt = prompt_file.read_text(encoding="utf-8")
 
     user_text = (
         f"Описание от продавца:\\n{brief}\\n\\n"
-        f"Имена файлов фото (как доп. подсказка): {', '.join(photo_names)}"
+        f"Что видно на фото:\\n{photo_facts or 'фото нет'}"
+        f"{_charcs_hint(charcs or [])}"
     )
 
-    body = {
-        "modelUri": f"gpt://{os.getenv('YC_FOLDER_ID')}/yandexgpt-lite/latest",
-        "completionOptions": {
-            "stream": False,
-            "temperature": 0.3,
-            "maxTokens": 2000,
-        },
-        "messages": [
-            {"role": "system", "text": system_prompt},
-            {"role": "user", "text": user_text},
-        ],
-    }
+    log.info(f"YandexGPT: {item_dir.name}, category={category}")
+    raw = _chat(TEXT_MODEL, user_text, system=system_prompt, temperature=0.3)
 
-    headers = {
-        "Authorization": f"Api-Key {os.getenv('YC_API_KEY')}",
-        "Content-Type": "application/json",
-    }
-
-    log.info(f"YandexGPT request for {item_dir.name}, category={category}")
-    r = requests.post(YC_URL, json=body, headers=headers, timeout=60)
-    r.raise_for_status()
-    raw = r.json()["result"]["alternatives"][0]["message"]["text"]
-
-    # YandexGPT иногда оборачивает JSON в \`\`\`json ... \`\`\`. Чистим.
+    # Модель иногда оборачивает JSON в \`\`\`json ... \`\`\`. Чистим.
     raw = raw.strip()
     if raw.startswith("\`\`\`"):
         raw = raw.split("\`\`\`")[1]
@@ -27633,164 +27879,314 @@ def generate_card(item_dir: Path, category: str = "clothes") -> dict:
 
     try:
         card = json.loads(raw)
-    except json.JSONDecodeError as e:
-        log.error(f"Не смог распарсить ответ как JSON: {raw[:500]}")
+    except json.JSONDecodeError:
+        log.error(f"Не смог разобрать ответ как JSON: {raw[:500]}")
         raise
 
-    # пост-валидация: title никогда не должен быть длиннее 60
-    if len(card.get("title", "")) > 60:
+    # Пост-проверка: название на WB до 60 символов, описание держим до 1000
+    if len(card.get("title", "")) &gt; 60:
         card["title"] = card["title"][:60].rsplit(" ", 1)[0]
-    if len(card.get("description", "")) > 1000:
-        card["description"] = card["description"][:1000].rsplit(" ", 1)[0] + "..."
+    if len(card.get("description", "")) &gt; 1000:
+        card["description"] = card["description"][:1000].rsplit(" ", 1)[0]
 
-    return card
-</code></pre>
+    card["photo_facts"] = photo_facts  # чтобы сверить глазами, что модель увидела на фото
+    return card</code></pre>
 
-<p>Заметка про мультимодальность. У YandexGPT есть отдельная мультимодальная модель (<code>yandexgpt-vision</code> в visionai endpoint), которая принимает base64-картинки. Если хочется реального анализа фото — переключайся на неё, формат запроса похожий. Для большинства задач карточек хватает описания от продавца + имени файла (которое селлеры часто называют осмысленно: <code>front.jpg</code>, <code>label.jpg</code>).</p>
+<p>Заметка про фото. Модель видит цвет, крой, детали и текст на ярлыке, но не состав и не размеры. Поэтому в запросе прямо сказано их не угадывать, а то, что модель увидела, сохраняется в <code>card.json</code> в поле <code>photo_facts</code>: сверь его с фото глазами. Если фото в папке нет, скрипт обойдётся одним brief.txt.</p>
+
+<p>Модели в AI Studio обновляются: старые версии отключают, и запрос по старому имени возвращает ошибку 400. Если так случилось, посмотри актуальные имена в <a href="https://aistudio.yandex.ru/docs/ru/ai-studio/concepts/generation/models" target="_blank">списке моделей</a> и поправь <code>VISION_MODEL</code> и <code>TEXT_MODEL</code>.</p>
 
 <h2>Шаг 6: Загрузка карточки в WB</h2>
+
+<p>Как WB принимает карточку, по документации метода <code>POST /content/v2/cards/upload</code>:</p>
+
+<ul>
+<li>характеристики только по числовым id: <code>{"id": 12, "value": ["синий"]}</code>. Тип значения задаёт справочник предмета <code>GET /content/v2/object/charcs/{subjectId}</code>: <code>charcType</code> 1 значит массив строк, 4 значит число;</li>
+<li>название и описание идут отдельными полями. Характеристики с <code>existNamedField: true</code> тоже передаются отдельно, в массив их не кладём;</li>
+<li>цвет, пол, страну производства, сезон, ставку НДС и ТН ВЭД WB берёт из своих справочников, значение должно с ними совпадать;</li>
+<li><code>dimensions</code>: габариты упаковки в сантиметрах и вес с упаковкой <code>weightBrutto</code> в килограммах. Если их не передать, WB поставит нули;</li>
+<li><code>skus</code> это баркоды. Если своих нет, поле не передаём: WB сгенерирует баркоды сам;</li>
+<li>лимит метода: 10 запросов в минуту, интервал 6 секунд;</li>
+<li>карточка создаётся асинхронно, до 30 минут. Ответ 200 ещё не значит, что она создана: ошибки смотрят методом <code>POST /content/v2/cards/error/list</code>.</li>
+</ul>
 
 <p>Файл <code>wb_uploader.py</code>:</p>
 
 <pre><code>import os
-import json
+import re
 import time
 import logging
 import requests
 
 log = logging.getLogger("wb")
 
-WB_UPLOAD = "https://content-api.wildberries.ru/content/v2/cards/upload"
+WB_API = "https://content-api.wildberries.ru"
+UPLOAD_PAUSE = 6  # создание карточек: 10 запросов в минуту, интервал 6 секунд
 
 
-def upload_card(card: dict, vendor_code: str, subject_id: int, brand: str, price_rub: int) -> dict:
+def _request(method: str, path: str, **kwargs) -&gt; dict:
+    headers = {"Authorization": os.getenv("WB_TOKEN"), "Content-Type": "application/json"}
+    for _ in range(3):
+        r = requests.request(method, WB_API + path, headers=headers, timeout=30, **kwargs)
+        if r.status_code == 429:
+            wait = int(r.headers.get("X-Ratelimit-Retry", "10"))
+            log.warning(f"WB 429: слишком часто, жду {wait} с")
+            time.sleep(wait)
+            continue
+        if r.status_code &gt;= 400:
+            log.error(f"WB {r.status_code}: {r.text[:500]}")
+        r.raise_for_status()
+        return r.json()
+    raise RuntimeError("WB всё ещё отвечает 429, попробуйте позже")
+
+
+def find_subjects(name: str) -&gt; list:
+    """ID предмета по названию: поиск по подстроке, например «джинсы»."""
+    return _request("GET", "/content/v2/object/all", params={"name": name, "limit": 50})["data"]
+
+
+def get_charcs(subject_id: int) -&gt; list:
+    """Характеристики предмета. Оставляем те, что передаются в массиве characteristics."""
+    data = _request("GET", f"/content/v2/object/charcs/{subject_id}", params={"locale": "ru"})["data"]
+    # existNamedField=true: поле передаётся отдельным параметром; charcType=0: не используется
+    return [c for c in data if not c.get("existNamedField") and c.get("charcType") in (1, 4)]
+
+
+def get_limits() -&gt; dict:
+    """Сколько карточек ещё можно создать: freeLimits + paidLimits минус уже созданные."""
+    return _request("GET", "/content/v2/cards/limits")["data"]
+
+
+def _to_number(value):
+    if isinstance(value, list):
+        value = value[0] if value else ""
+    m = re.search(r"\\d+(?:[.,]\\d+)?", str(value))
+    if not m:
+        return None
+    num = float(m.group().replace(",", "."))
+    return int(num) if num.is_integer() else num
+
+
+def map_characteristics(card_chars: list, charcs: list) -&gt; tuple:
+    """{"name", "value"} из card.json превращаем в {"id", "value"} для WB."""
+    by_name = {c["name"].strip().lower(): c for c in charcs}
+    result, problems = [], []
+    for ch in card_chars:
+        name = str(ch.get("name", "")).strip()
+        value = ch.get("value")
+        if value in (None, "", []):
+            continue
+        c = by_name.get(name.lower())
+        if not c:
+            problems.append(f"нет в справочнике предмета: {name}")
+            continue
+        if c["charcType"] == 4:  # число
+            num = _to_number(value)
+            if num is None:
+                problems.append(f"не число: {name} = {value}")
+                continue
+            result.append({"id": c["charcID"], "value": num})
+        else:  # массив строк
+            values = value if isinstance(value, list) else [value]
+            values = [str(v).strip() for v in values if str(v).strip()]
+            if c.get("maxCount"):
+                values = values[: c["maxCount"]]
+            result.append({"id": c["charcID"], "value": values})
+
+    filled = {r["id"] for r in result}
+    for c in charcs:
+        if c.get("required") and c["charcID"] not in filled:
+            problems.append(f"не заполнена обязательная: {c['name']}")
+    return result, problems
+
+
+def upload_card(card: dict, vendor_code: str, subject_id: int, brand: str, price_rub: int,
+                dimensions: dict, characteristics: list, sizes: list) -&gt; dict:
     """
-    vendor_code — твой внутренний артикул (любая строка).
-    subject_id — числовой ID предмета (категории) в WB. Получается отдельным
-                 запросом /content/v2/object/all (там список).
+    vendor_code: ваш артикул (любая строка до 72 символов).
+    dimensions: габариты упаковки в см и вес с упаковкой в кг.
+    sizes: размеры из размерной сетки, например ["42", "44"]; для товара без размеров пустой список.
+    Баркоды (skus) не передаём: WB сгенерирует их сам.
     """
-    payload = [{
-        "subjectID": subject_id,
-        "variants": [{
-            "vendorCode": vendor_code,
-            "title": card["title"],
-            "description": card["description"],
-            "brand": brand,
-            "dimensions": {"length": 30, "width": 20, "height": 5},  # см; ставь свои
-            "characteristics": card.get("characteristics", []),
-            "sizes": [{
-                "techSize": "0",
-                "wbSize": "",
-                "price": price_rub,
-                "skus": [vendor_code]
-            }]
-        }]
-    }]
+    if sizes:
+        size_list = [{"techSize": s, "wbSize": s, "price": price_rub} for s in sizes]
+    else:
+        size_list = [{"price": price_rub}]
 
-    headers = {
-        "Authorization": os.getenv("WB_TOKEN"),
-        "Content-Type": "application/json",
+    variant = {
+        "vendorCode": vendor_code,
+        "title": card["title"],
+        "description": card["description"],
+        "dimensions": dimensions,
+        "characteristics": characteristics,
+        "sizes": size_list,
     }
+    if brand:
+        variant["brand"] = brand
+
+    payload = [{"subjectID": subject_id, "variants": [variant]}]
 
     log.info(f"WB upload: vendorCode={vendor_code}, title={card['title']!r}")
-    r = requests.post(WB_UPLOAD, json=payload, headers=headers, timeout=30)
+    res = _request("POST", "/content/v2/cards/upload", json=payload)
+    time.sleep(UPLOAD_PAUSE)  # не упираемся в лимит 10 запросов в минуту
+    return res
 
-    if r.status_code == 429:
-        # rate limit — ждём и пробуем ещё раз
-        log.warning("WB rate limit, sleep 30s")
-        time.sleep(30)
-        r = requests.post(WB_UPLOAD, json=payload, headers=headers, timeout=30)
 
-    r.raise_for_status()
-    return r.json()
-</code></pre>
+def get_errors(vendor_codes: set) -&gt; dict:
+    """Ошибки создания карточек (черновики) по нашим артикулам из последних 100 пакетов."""
+    body = {"cursor": {"limit": 100}, "order": {"ascending": False}}
+    data = _request("POST", "/content/v2/cards/error/list", json=body)["data"]
+    found = {}
+    for batch in data.get("items", []):
+        for code, errs in batch.get("errors", {}).items():
+            if code in vendor_codes:
+                found.setdefault(code, []).extend(errs)
+    return found</code></pre>
 
-<p>Обрати внимание: токен WB кладётся в заголовок <code>Authorization</code> как есть, без префикса <code>Bearer</code>. Это нестандартно, но так у WB. Если поставишь <code>Bearer</code> — получишь 401 и долго будешь дебажить.</p>
+<p>Токен WB кладётся в заголовок <code>Authorization</code> как есть, так показано в документации WB API.</p>
+
+<p>Размеры из <code>--sizes</code> уходят в <code>techSize</code> и <code>wbSize</code> (российский размер). Если у размерного товара размеры не указать, WB создаст размер-заглушку, поэтому для одежды передавай их.</p>
 
 <h2>Шаг 7: Главный скрипт</h2>
 
 <p>Файл <code>main.py</code>:</p>
 
-<pre><code>import os
-import json
+<pre><code>import json
 import logging
 import argparse
 from pathlib import Path
 from dotenv import load_dotenv
 
 from generator import generate_card
-from wb_uploader import upload_card
+from wb_uploader import find_subjects, get_charcs, get_limits, map_characteristics, upload_card, get_errors
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 log = logging.getLogger("main")
 
 
-def process_one(item_dir: Path, category: str, upload: bool, brand: str, price: int, subject_id: int):
+def process_one(item_dir: Path, args, charcs: list):
     log.info(f"=== {item_dir.name} ===")
-
-    card = generate_card(item_dir, category=category)
     out = item_dir / "card.json"
-    out.write_text(json.dumps(card, ensure_ascii=False, indent=2), encoding="utf-8")
-    log.info(f"saved {out}")
 
-    if upload:
-        vendor_code = item_dir.name  # используем имя папки как артикул
-        try:
-            res = upload_card(card, vendor_code, subject_id, brand, price)
-            log.info(f"WB ответ: {res}")
-        except Exception as e:
-            log.exception(f"WB upload failed for {item_dir.name}: {e}")
+    if args.upload and out.exists():
+        # Заливаем то, что вы уже проверили и поправили руками, а не новую генерацию
+        card = json.loads(out.read_text(encoding="utf-8"))
+        log.info(f"беру проверенный {out}")
+    else:
+        card = generate_card(item_dir, category=args.category, charcs=charcs)
+        out.write_text(json.dumps(card, ensure_ascii=False, indent=2), encoding="utf-8")
+        log.info(f"saved {out}")
+
+    if not charcs:
+        return
+    wb_chars, problems = map_characteristics(card.get("characteristics", []), charcs)
+    for p in problems:
+        log.warning(f"{item_dir.name}: {p}")
+
+    if args.upload:
+        if any(p.startswith("не заполнена обязательная") for p in problems):
+            log.warning(f"{item_dir.name}: пропускаю загрузку, допишите обязательные характеристики в card.json")
+            return
+        dims = {"length": args.length, "width": args.width, "height": args.height, "weightBrutto": args.weight}
+        sizes = [s.strip() for s in args.sizes.split(",") if s.strip()]
+        res = upload_card(card, item_dir.name, args.subject_id, args.brand, args.price, dims, wb_chars, sizes)
+        log.info(f"WB ответ: {res}")
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--goods-dir", default="goods", help="папка с подпапками-товарами")
     ap.add_argument("--category", default="clothes", choices=["clothes", "electronics", "home"])
-    ap.add_argument("--brand", default="NoBrand")
-    ap.add_argument("--price", type=int, default=1990)
-    ap.add_argument("--subject-id", type=int, required=False, default=0,
-                    help="ID категории WB (обязателен, если --upload)")
+    ap.add_argument("--find-subject", help="найти ID предмета WB по названию, например джинсы")
+    ap.add_argument("--subject-id", type=int, default=0, help="ID предмета WB (обязателен для --upload)")
     ap.add_argument("--upload", action="store_true", help="реально загружать в WB")
+    ap.add_argument("--check-errors", action="store_true", help="показать ошибки создания карточек")
+    ap.add_argument("--brand", default="", help="бренд из справочника WB; пусто, если бренда нет")
+    ap.add_argument("--price", type=int, default=0, help="цена в рублях, целое число")
+    ap.add_argument("--sizes", default="", help="размеры через запятую, например 42,44,46")
+    ap.add_argument("--length", type=int, default=0, help="длина упаковки, см")
+    ap.add_argument("--width", type=int, default=0, help="ширина упаковки, см")
+    ap.add_argument("--height", type=int, default=0, help="высота упаковки, см")
+    ap.add_argument("--weight", type=float, default=0, help="вес с упаковкой, кг")
     args = ap.parse_args()
+
+    if args.find_subject:
+        for s in find_subjects(args.find_subject):
+            print(s["subjectID"], s["subjectName"], "/", s["parentName"])
+        return
 
     goods = Path(args.goods_dir)
     items = sorted(p for p in goods.iterdir() if p.is_dir())
     log.info(f"Найдено товаров: {len(items)}")
 
+    if args.check_errors:
+        errors = get_errors({p.name for p in items})
+        for code, errs in errors.items():
+            print(code, ":", "; ".join(errs))
+        if not errors:
+            print("Ошибок по этим артикулам нет")
+        return
+
+    if args.upload:
+        if not args.subject_id or args.price &lt; 50:
+            ap.error("для --upload нужны --subject-id и --price от 50 ₽")
+        if min(args.length, args.width, args.height) &lt;= 0 or args.weight &lt;= 0:
+            ap.error("для --upload укажите --length, --width, --height (см) и --weight (кг) упаковки")
+        log.info(f"Лимиты на создание карточек: {get_limits()}")
+
+    charcs = get_charcs(args.subject_id) if args.subject_id else []
+
     for item in items:
         try:
-            process_one(item, args.category, args.upload, args.brand, args.price, args.subject_id)
+            process_one(item, args, charcs)
         except Exception as e:
             log.exception(f"Ошибка по {item.name}: {e}")
 
+    if args.upload:
+        log.info("Карточки создаются до 30 минут. Потом проверьте: python main.py --check-errors")
+
 
 if __name__ == "__main__":
-    main()
-</code></pre>
+    main()</code></pre>
+
+<p>С <code>--upload</code> скрипт не генерирует карточку заново, а берёт уже проверенный тобой <code>card.json</code>. Товар без обязательных характеристик он не отправляет и пишет в лог, чего не хватает.</p>
 
 <h2>Запуск и проверка</h2>
 
-<p>Сначала генерим карточки без заливки (dry-run):</p>
+<p>Сначала найди ID предмета. Поиск идёт по подстроке:</p>
 
-<pre><code>python main.py --goods-dir goods --category clothes</code></pre>
+<pre><code>python main.py --find-subject джинсы</code></pre>
+
+<p>Скрипт напечатает ID, предмет и родительскую категорию. Выбери подходящий и запиши ID в табличку, чтобы не искать снова.</p>
+
+<p>Потом генерим карточки без заливки (dry-run). С <code>--subject-id</code> модель получает список характеристик этого предмета и пишет их названия так, как их ждёт WB:</p>
+
+<pre><code>python main.py --goods-dir goods --category clothes --subject-id ID_ПРЕДМЕТА</code></pre>
 
 <p>Скрипт пройдётся по всем подпапкам, для каждой создаст <code>card.json</code> рядом с фото. Открываешь, читаешь глазами. Если ок — заливаешь:</p>
 
-<pre><code>python main.py --goods-dir goods --category clothes \\
-  --upload --brand "MyBrand" --price 2490 --subject-id 192</code></pre>
+<pre><code>python main.py --goods-dir goods --category clothes --subject-id ID_ПРЕДМЕТА \\
+  --upload --brand "MyBrand" --price 2490 --sizes 42,44,46 \\
+  --length 30 --width 20 --height 5 --weight 0.6</code></pre>
 
-<p><code>subject-id</code> ищется через отдельный GET-запрос на <code>/content/v2/object/all</code> с параметром <code>name=джинсы</code>. Сделай это один раз вручную через <code>curl</code> и запиши ID нужных категорий в табличку.</p>
+<p>Начни с одного товара: положи в отдельную папку только его. Бренд должен быть в справочнике WB. Если бренда нет, не передавай <code>--brand</code>. Габариты и вес укажи свои, по упаковке. Перед загрузкой скрипт выводит лимиты на создание карточек: можно создать (freeLimits + paidLimits) минус уже созданные карточки, включая корзину.</p>
 
-<p>У меня на тесте: 12 товаров одежды → 12 карточек за 4 минуты. Загрузка в WB — ещё минута. Из 12 описаний 2 пришлось руками поправить (модель оба раза подзагнула состав ткани, потому что в brief.txt я этого не указал). Остальные 10 пошли как есть.</p>
+<p>Через 30 минут проверь, не застряли ли карточки в черновиках:</p>
+
+<pre><code>python main.py --goods-dir goods --check-errors</code></pre>
+
+<p>Если ошибки есть, поправь <code>card.json</code> и загрузи товар ещё раз: карточка уйдёт из списка ошибок, когда WB примет исправленный вариант.</p>
+
+<p>Рассчитывай, что часть карточек придётся править руками. Чаще всего модель додумывает то, чего нет в brief.txt, например состав ткани. Поэтому состав и размеры пиши в brief.txt сам.</p>
 
 <h2>Расширения</h2>
 
 <ul>
 <li><strong>Батч-обработка папки фото.</strong> Сейчас один товар = одна подпапка. Можно сделать обратный режим: одна большая папка с файлами вида <code>джинсы-синие-001.jpg</code>, скрипт сам группирует и парсит имя для brief.</li>
-<li><strong>Авто-обновление по тренду ключевиков.</strong> WB сам показывает в кабинете «популярные запросы по категории». Парсишь раз в неделю, скармливаешь YandexGPT и просишь переписать <code>keywords</code> и слегка <code>description</code>. Заметно бустит выдачу.</li>
+<li><strong>Обновление описаний под поисковые запросы.</strong> Если видишь в аналитике кабинета, по каким запросам ищут твой товар, раз в неделю отдавай их YandexGPT и проси поправить <code>description</code>, чтобы главные слова звучали в тексте. Списком запросы в описание не вставляй: WB просит так не делать.</li>
 <li><strong>A/B-тестирование заголовков.</strong> Генеришь 3 варианта <code>title</code>, через WB API меняешь раз в неделю, смотришь конверсию в кабинете. Через месяц у тебя статистически лучший заголовок.</li>
-<li><strong>Мультимодальность.</strong> Переключи endpoint на <code>yandexgpt-vision</code> и шли реальные base64-фото. Тогда модель сможет описать цвет, фактуру, угол — особенно полезно для категорий вроде декора.</li>
+<li><strong>Модель посильнее.</strong> Поменяй <code>TEXT_MODEL</code> на YandexGPT Pro 5.1 (<code>yandexgpt-5.1</code>, 0,80 ₽ за 1000 токенов) и сравни карточки на пяти товарах.</li>
 <li><strong>Чек на запрещёнку.</strong> Перед загрузкой прогоняешь карточку через второй промпт «есть ли тут запрещённые WB обещания: лечит, сертифицирован, гарантирует». Если да — флаг, ручная проверка.</li>
 </ul>
 
@@ -27799,22 +28195,24 @@ if __name__ == "__main__":
 <ul>
 <li><strong>WB банит за враньё в характеристиках.</strong> Если карточка обещает «хлопок 100%», а покупатель получает синтетику — будут возвраты, штрафы и в худшем случае блокировка. Лучше пустое поле, чем выдуманное. Промпт это явно требует, но проверяй глазами.</li>
 <li><strong>YandexGPT любит «эссе» вместо JSON.</strong> Иногда возвращает «Вот ваш JSON: \`\`\`json {...} \`\`\`». Чищу через split — но если будет упорно срываться, добавь в промпт «не пиши ничего кроме JSON» дважды и понизь temperature до 0.1.</li>
-<li><strong>Rate limit WB API.</strong> На <code>/cards/upload</code> — 100 запросов в минуту, на остальных ручках бывает 10. Если льёшь сотни карточек — добавь <code>time.sleep(0.7)</code> между запросами. У меня в коде есть базовый ретрай на 429, но превентивно лучше не упираться.</li>
-<li><strong>subjectID разный для разных подкатегорий.</strong> «Женские джинсы» и «мужские джинсы» — разные ID. Не угадывай: получи список через API и держи у себя справочник.</li>
-<li><strong>Сезонность характеристик.</strong> Для одежды поле «Сезон» обязательное. YandexGPT иногда забывает добавить, особенно если в brief не указано. Сделай пост-валидацию: если поле отсутствует — добавляй <code>"всесезонный"</code> по умолчанию или возвращай товар на ручную обработку.</li>
-<li><strong>Картинки грузятся отдельно.</strong> <code>/cards/upload</code> только создаёт текстовую часть карточки. Фото льются другим endpoint'ом — <code>/content/v3/media/save</code>. Если хочешь полный цикл — добавь и это, но обычно фото удобнее заливать через web-кабинет (drag-n-drop там лучше).</li>
+<li><strong>Лимиты WB API.</strong> На создание карточек 10 запросов в минуту с интервалом 6 секунд, на большинство других методов «Контента» 100 в минуту. В коде пауза 6 секунд после каждой загрузки и повтор после 429 по заголовку <code>X-Ratelimit-Retry</code>.</li>
+<li><strong>Лимит на число карточек.</strong> У продавца есть бесплатный и платный лимит на создание карточек, остаток показывает <code>GET /content/v2/cards/limits</code>. Проверяй его до большой загрузки. Код 402 в WB API к этому лимиту не относится: его получают сервисы из Каталога решений для бизнеса.</li>
+<li><strong>subjectID угадывать нельзя.</strong> Похожие товары могут относиться к разным предметам, и у каждого свой набор характеристик. Ищи ID через <code>--find-subject</code> и держи у себя справочник.</li>
+<li><strong>Обязательные характеристики.</strong> Они свои у каждого предмета, в справочнике это поле <code>required</code>. Скрипт пишет в лог, какие не заполнены. Не подставляй значения по умолчанию: лучше допиши факт в card.json сам или верни товар на ручную обработку.</li>
+<li><strong>Картинки грузятся отдельно.</strong> <code>/cards/upload</code> создаёт только текстовую часть карточки, а без фото товар покупателям не показывают. Фото добавляются после создания карточки: методом <code>/content/v3/media/save</code> по прямым ссылкам или <code>/content/v3/media/file</code> файлом. Обычно их удобнее залить через кабинет.</li>
+<li><strong>Токен на 180 дней.</strong> Запиши, когда он истечёт. После этого WB начнёт отвечать 401: создай новый токен и обнови <code>.env</code>.</li>
 </ul>
 
 <h2>Что в итоге</h2>
 
-<p>За полтора часа у тебя получился рабочий конвейер «фото и краткое описание → готовая карточка WB». Стоимость генерации одной карточки — меньше рубля. Времени экономишь — час на товар. На 100 товарах в месяц это уже окупает любой облачный сервис в десятки раз.</p>
+<p>За пару часов у тебя получился рабочий конвейер «фото и краткое описание → готовая карточка WB». Текстовая часть карточки стоит меньше рубля, фото добавляют сверху. Времени экономишь — час на товар. На 100 товарах в месяц это уже окупает любой облачный сервис в десятки раз.</p>
 
-<p>Технически ты потрогал два важных российских API: Yandex Cloud Foundation Models (это, по сути, продакшен-ready LLM-as-a-service от Яндекса) и Wildberries Content API (один из самых документированных marketplace API в РФ). Эти знания переиспользуются — от YandexGPT можно перейти к YandexART для генерации изображений, от WB к Ozon Seller API (он устроен похоже).</p>
+<p>Технически ты потрогал два важных российских API: Yandex AI Studio (OpenAI-совместимый доступ к YandexGPT и открытым моделям) и WB API, раздел «Контент» (один из самых документированных marketplace API в РФ). Эти знания переиспользуются: от YandexGPT можно перейти к Alice AI ART для генерации изображений, от WB к Ozon Seller API (он устроен похоже).</p>
 
 <p>И главное — это первый честный пример того, как AI реально снимает рутину, а не «генерит контент ради контента». Тут есть конкретный селлер, конкретная задача и измеримая экономия времени.</p>
 
 <div class="callout callout-success">
-<strong>Готово!</strong> Дальше — добавь интеграцию с фото-генерацией (<code>yandexgpt-vision</code> для анализа фото и формирования описаний) и сделай Telegram-бот поверх скрипта: селлер шлёт фото — получает готовую карточку прямо в Telegram. На базе p19 и p20 это уже почти готовый micro-SaaS.
+<strong>Готово!</strong> Дальше сделай бота поверх скрипта: селлер шлёт фото и получает готовую карточку прямо в чат. На базе p19 и p20 это уже почти готовый micro-SaaS.
 </div>
 `);
 
@@ -31393,6 +31791,7 @@ registerLesson("i15", `
 <pre><code>Риск:            провайдер оплаты не выдаст тестовые доступы
 Вероятность:     средняя
 Влияние:         +2 недели к сроку
+Владелец:        менеджер проекта
 Ранний сигнал:   нет ответа на письмо 5 рабочих дней
 Снижаем:         заводим запасного провайдера параллельно
 Если сработает:  релиз без онлайн-оплаты</code></pre>
@@ -31476,7 +31875,6 @@ registerLesson("i15", `
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> процесс существует не ради порядка, а ради раннего знания: чтобы то, что иначе всплывёт в день релиза, всплыло за месяц, пока с этим можно что-то сделать. Доски, спринты и статусы — оснастка вокруг этой задачи.
 </div>
-
 `);
 
 
@@ -34293,7 +34691,6 @@ CREATE POLICY &quot;users_own_orders&quot; ON orders
 // ============================================================
 
 const STORAGE_KEY = 'ai-course-progress';
-const THEME_KEY = 'ai-course-theme';
 
 let currentLessonId = null;
 let progress = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
@@ -34705,18 +35102,18 @@ function makeSnippet(text, query) {
 function runFullSearch(query) {
   const results = document.getElementById('search-results');
   if (!query || query.length < 2) {
-    results.innerHTML = `<div class="search-empty">Введи минимум 2 символа</div>`;
+    results.innerHTML = `<div class="search-empty">Введите хотя бы 2 символа</div>`;
     return;
   }
   if (!searchIndex) searchIndex = buildSearchIndex();
   if (!searchIndex) {
-    results.innerHTML = `<div class="search-empty">Поиск загружается, подожди секунду...</div>`;
+    results.innerHTML = `<div class="search-empty">Поиск загружается, секунду…</div>`;
     setTimeout(() => runFullSearch(query), 500);
     return;
   }
   const hits = searchIndex.search(query, { combineWith: 'AND' }).slice(0, 12);
   if (hits.length === 0) {
-    results.innerHTML = `<div class="search-empty">Ничего не нашёл по запросу «${query}». Попробуй другое слово.</div>`;
+    results.innerHTML = `<div class="search-empty">Ничего не нашлось по запросу «${esc(query)}». Попробуйте другое слово.</div>`;
     return;
   }
   searchActiveIdx = 0;
@@ -34920,7 +35317,7 @@ function initTemperatureSandbox(el) {
     <div class="sb-prompt">Промпт: «Столица Франции —»</div>
 
     <div class="sb-control-row">
-      <input type="range" min="0" max="2" step="0.05" value="0.7" class="sb-slider" />
+      <input type="range" min="0" max="2" step="0.05" value="0.7" class="sb-slider" aria-label="Temperature" />
       <div class="sb-value">T = <span class="sb-value-num">0.70</span></div>
     </div>
 
@@ -35348,10 +35745,10 @@ function renderArtifacts() {
   document.getElementById('lesson-content').innerHTML = `
     <div class="lesson-view">
       <h1>Что собрали</h1>
-      <p class="sub-lead">Вещи, которые люди собрали по урокам: боты, помощники, скрипты, таблицы. Не сертификаты, а артефакты. Они работают.</p>
+      <p class="sub-lead">Вещи, которые люди сделали на «Артефактах»: боты, помощники, таблицы, шаблоны. Не сертификаты, а артефакты. Они работают.</p>
       ${list}
       <h2 class="mp-h2">Как сюда попасть</h2>
-      <p class="sec-lead">Собрал что-то по уроку? Покажи. Напиши в Telegram: ссылку, которая открывается без входа, одну строку о том, что оно делает, и по какому уроку сделано. Подпишем так, как скажешь: именем, ником или без имени. Новое появляется здесь раз в неделю.</p>
+      <p class="sec-lead">Сделали что-то по задаче или уроку? Покажите. В конце юнита есть кнопка «Показать результат». Или напишите в Telegram: ссылку, которая открывается без входа, одну строку о том, что вещь делает, и по какой задаче или уроку она сделана. Подпишем так, как скажете: именем, ником или без имени. Новое появляется здесь раз в неделю.</p>
       <a class="art-submit" href="https://t.me/madzhitov" target="_blank" rel="noopener" onclick="umTrack('artifact-submit-click', { from: 'page' })">Написать @madzhitov</a>
     </div>
   `;
@@ -36386,87 +36783,126 @@ function copyAnchor(termId) {
 function renderResources() {
   document.getElementById('lesson-content').innerHTML = `
     <h1>Источники</h1>
-    <p class="sub-lead">«Артефакты» — не «откуда я всё взял», а последовательный путь, собранный из лучших источников. Ниже — что читать дополнительно, по темам.</p>
+    <p class="sub-lead">Методы в «Артефактах» собраны по первоисточникам. Здесь то, что стоит читать дальше: сначала по ролям, потом по темам. Большинство материалов на английском. Ссылки проверены в октябре 2026 года.</p>
 
-    <h2>Anthropic / Claude — официальные</h2>
-    <p>Если работаешь с Claude — это must-read.</p>
+    <div class="callout callout-info">
+      <strong>Про доступ из России.</strong> X (Twitter) заблокирован, нужен VPN. Telegram и YouTube могут не открываться без VPN, такие ссылки помечены. Сервисы Anthropic и OpenAI из России недоступны, но их документация открывается.
+    </div>
+
+    <h2>Всем, кто работает с ИИ</h2>
+    <p>Как ставить задачу модели. Из этих руководств собран «Запрос из четырёх частей».</p>
     <ul>
-      <li><a href="https://docs.claude.com" target="_blank"><strong>docs.claude.com</strong></a> — официальная документация. Лучшая в индустрии.</li>
-      <li><a href="https://anthropic.com/news" target="_blank"><strong>anthropic.com/news</strong></a> — инженерный блог: Constitutional AI, prompt caching, Computer Use, MCP.</li>
-      <li><a href="https://github.com/anthropics/anthropic-cookbook" target="_blank"><strong>anthropic-cookbook</strong> на GitHub</a> — рабочие примеры кода.</li>
-      <li><a href="https://github.com/anthropics/courses" target="_blank"><strong>anthropics/courses</strong></a> — официальные курсы Anthropic для разработчиков. На английском, я перевожу и адаптирую.</li>
-      <li><a href="https://www.anthropic.com/research" target="_blank"><strong>Research</strong></a> — научные статьи Anthropic.</li>
-      <li><a href="https://github.com/anthropics/claude-code" target="_blank"><strong>Claude Code</strong></a> — CLI для разработчиков.</li>
-      <li><a href="https://modelcontextprotocol.io" target="_blank"><strong>modelcontextprotocol.io</strong></a> — спецификация MCP.</li>
+      <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" target="_blank" rel="noopener"><strong>Anthropic: как писать запросы к Claude</strong></a>. Официальное руководство с примерами.</li>
+      <li><a href="https://developers.openai.com/api/docs/guides/prompt-engineering" target="_blank" rel="noopener"><strong>OpenAI: Prompt engineering</strong></a>. То же от OpenAI.</li>
+      <li><a href="https://ai.google.dev/gemini-api/docs/prompting-strategies" target="_blank" rel="noopener"><strong>Google: Prompting strategies</strong></a>. Руководство по запросам к Gemini.</li>
+      <li><a href="https://academy.claude.com/" target="_blank" rel="noopener"><strong>Claude Academy</strong></a>. Бесплатные курсы Anthropic: основы работы с ИИ, возможности и ограничения моделей.</li>
     </ul>
 
-    <h2>Образовательные ресурсы по AI / ML</h2>
+    <h2>Продаю онлайн: маркетплейсы</h2>
+    <p>Правила и цифры площадок меняются часто. Сверяйтесь с официальной справкой, а не с пересказами.</p>
     <ul>
-      <li><a href="https://www.youtube.com/@AndrejKarpathy" target="_blank"><strong>Andrej Karpathy</strong> на YouTube</a> — лучшие на свете лекции про LLM. Особенно «Let's build GPT from scratch» и «Intro to Large Language Models». Всё бесплатно.</li>
-      <li><a href="https://simonwillison.net" target="_blank"><strong>Simon Willison's blog</strong></a> — лучший источник «что нового и что важно». Создатель Datasette, ведёт практически ежедневно.</li>
-      <li><a href="https://magazine.sebastianraschka.com" target="_blank"><strong>Sebastian Raschka</strong></a> — глубокие разборы LLM-архитектур, fine-tuning, RAG. Для вдумчивого чтения.</li>
-      <li><a href="https://huggingface.co/learn" target="_blank"><strong>Hugging Face Course</strong></a> — бесплатный курс от создателей одной из главных ML-экосистем.</li>
-      <li><a href="https://www.deeplearning.ai" target="_blank"><strong>DeepLearning.AI</strong></a> — короткие курсы Andrew Ng. Особенно «ChatGPT Prompt Engineering for Developers» и LangChain-серия.</li>
-      <li><a href="https://www.fast.ai" target="_blank"><strong>fast.ai</strong></a> — практический курс от Jeremy Howard. «Top-down» подход — сразу делать, разбираться по ходу.</li>
+      <li><a href="https://seller.wildberries.ru/instructions/ru/ru" target="_blank" rel="noopener"><strong>Wildberries: справочный центр продавца</strong></a>. Схемы работы, карточки, продвижение, финансы. Отдельно стоит раздел <a href="https://seller.wildberries.ru/instructions/ru/ru/material/sellers-analytics" target="_blank" rel="noopener">про аналитику продавца</a>.</li>
+      <li><a href="https://dev.wildberries.ru/docs/openapi/api-information" target="_blank" rel="noopener"><strong>Wildberries: документация WB API</strong></a>. Товары, заказы, аналитика, отчёты. Там же журнал изменений.</li>
+      <li><a href="https://seller-edu.ozon.ru/" target="_blank" rel="noopener"><strong>Ozon: образовательный центр продавца</strong></a>. Официальные инструкции по работе с маркетплейсом.</li>
+      <li><a href="https://docs.ozon.ru/api/seller/" target="_blank" rel="noopener"><strong>Ozon: документация Seller API</strong></a>. Товары, остатки, цены, отправления, отчёты.</li>
+      <li><a href="https://dev.ozon.ru/" target="_blank" rel="noopener"><strong>Ozon for dev</strong></a>. Новости API и сообщество разработчиков Ozon.</li>
     </ul>
 
-    <h2>Инструменты и фреймворки</h2>
+    <h2>Маркетологу</h2>
     <ul>
-      <li><a href="https://python.langchain.com" target="_blank"><strong>LangChain</strong></a> — стандарт-де-факто для LLM-приложений на Python.</li>
-      <li><a href="https://docs.llamaindex.ai" target="_blank"><strong>LlamaIndex</strong></a> — фреймворк специально под RAG и работу с данными.</li>
-      <li><a href="https://sdk.vercel.ai" target="_blank"><strong>Vercel AI SDK</strong></a> — для TypeScript / Next.js приложений.</li>
-      <li><a href="https://ollama.com" target="_blank"><strong>Ollama</strong></a> — локальный запуск open-source моделей. Самый простой путь.</li>
-      <li><a href="https://www.cursor.com" target="_blank"><strong>Cursor</strong></a> и <a href="https://claude.com/code" target="_blank"><strong>Claude Code</strong></a> — IDE и CLI с интегрированным AI.</li>
-      <li><a href="https://www.trychroma.com" target="_blank"><strong>Chroma</strong></a> и <a href="https://qdrant.tech" target="_blank"><strong>Qdrant</strong></a> — векторные БД.</li>
+      <li><strong>Клейтон Кристенсен и соавторы, «Закон успешных инноваций»</strong> (Competing Against Luck, 2016). Первоисточник идеи «работы, которую клиент нанимает» (JTBD).</li>
+      <li><strong>Боб Моэста, Грег Энгл, Demand-Side Sales 101</strong> (2020). JTBD применительно к продажам: как помочь клиенту сделать шаг вперёд. На английском.</li>
+      <li><strong>Эйприл Данфорд, Obviously Awesome</strong> (2019). Пошаговый метод позиционирования. На английском, <a href="https://www.aprildunford.com/books" target="_blank" rel="noopener">страница книги у автора</a>.</li>
+      <li><strong>Шон Эллис, Морган Браун, «Взрывной рост»</strong> (Hacking Growth, 2017). Откуда пришли ICE и North Star Metric.</li>
+      <li><a href="https://info.amplitude.com/rs/138-CDN-550/images/Amplitude-The-North-Star-Playbook.pdf" target="_blank" rel="noopener"><strong>Amplitude: The North Star Playbook</strong></a>. Как выбрать главную метрику и разложить её на составляющие. PDF, на английском.</li>
     </ul>
 
-  <h2> Сообщества и блоги практиков</h2>
+    <h2>Продакту и проджекту</h2>
     <ul>
-      <li><a href="https://eugeneyan.com" target="_blank"><strong>Eugene Yan</strong></a> — applied ML в проде, очень много про LLM-eval и архитектуру.</li>
-      <li><a href="https://hamel.dev" target="_blank"><strong>Hamel Husain</strong></a> — fine-tuning, evals, ML-консалтинг.</li>
-      <li><a href="https://www.latent.space" target="_blank"><strong>Latent Space</strong></a> — подкаст и блог про практику AI-стартапов.</li>
-      <li><a href="https://swyx.io" target="_blank"><strong>swyx</strong></a> — создатель Latent Space, много пишет про экосистему.</li>
-      <li>Twitter/X: <strong>@karpathy, @simonw, @swyx, @hwchase17 (LangChain), @jeremyphoward (fast.ai), @rasbt (Sebastian Raschka)</strong>.</li>
+      <li><strong>Эш Мауриа, Running Lean</strong>. Книга автора Lean Canvas, на английском. Коротко о самом холсте в <a href="https://ashmaurya.com/blog/what-is-lean-canvas" target="_blank" rel="noopener">блоге автора</a>.</li>
+      <li><a href="https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/" target="_blank" rel="noopener"><strong>Intercom: RICE</strong></a>. Исходная статья Шона Макбрайда о приоритизации.</li>
+      <li><a href="https://research.google/pubs/measuring-the-user-experience-on-a-large-scale-user-centered-metrics-for-web-applications/" target="_blank" rel="noopener"><strong>Google: фреймворк HEART</strong></a>. Статья Керри Родден и коллег (CHI 2010) о метриках пользовательского опыта.</li>
+      <li><strong>Джон Дорр, «Измеряйте самое важное»</strong> (Measure What Matters, 2018). Как устроены OKR, от Intel до Google.</li>
+      <li><a href="https://rework.withgoogle.com/intl/en/guides/set-goals-with-okrs" target="_blank" rel="noopener"><strong>Google re:Work: цели через OKR</strong></a>. Короткое практическое руководство.</li>
     </ul>
 
-  <h2> На русском</h2>
+    <h2>Владельцу бизнеса</h2>
     <ul>
-      <li><a href="https://yandex.cloud/ru/docs/yandexgpt" target="_blank">Документация YandexGPT</a> — для тех кто работает с российскими моделями.</li>
-      <li><a href="https://developers.sber.ru/docs/ru/gigachat/individuals-quickstart" target="_blank">GigaChat Quickstart</a> — старт со Сбером.</li>
-      <li><a href="https://www.youtube.com/@karpov_courses" target="_blank">karpov.courses на YouTube</a> — много бесплатного материала про ML на русском.</li>
-      <li>Telegram-каналы: <strong>@addmeto</strong> (Григорий Бакунов про технологии), <strong>@gonzo_ML</strong> (научные статьи разбирают), <strong>@denissexy</strong> (Денис Ширяев — продуктовый AI).</li>
+      <li><a href="https://www.forentrepreneurs.com/saas-metrics-2/" target="_blank" rel="noopener"><strong>Дэвид Скок: SaaS Metrics 2.0</strong></a>. Подробно про LTV, CAC и ориентир «3 к 1». Написано для подписочного бизнеса, логика пригодится и в других.</li>
+      <li>Из разделов выше: «Закон успешных инноваций», чтобы понять, за что платят клиенты, и «Измеряйте самое важное», чтобы ставить цели команде.</li>
+    </ul>
+
+    <h2>Создаю на ИИ: Anthropic и Claude</h2>
+    <ul>
+      <li><a href="https://platform.claude.com/docs/en/home" target="_blank" rel="noopener"><strong>Документация Claude</strong></a>. API, модели, инструменты, руководства.</li>
+      <li><a href="https://code.claude.com/docs/en/overview" target="_blank" rel="noopener"><strong>Документация Claude Code</strong></a> и <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">репозиторий на GitHub</a>. ИИ-агент для работы с кодом в терминале и редакторе.</li>
+      <li><a href="https://github.com/anthropics/claude-cookbooks" target="_blank" rel="noopener"><strong>Claude Cookbooks</strong></a> на GitHub. Рабочие примеры кода (раньше назывался anthropic-cookbook).</li>
+      <li><a href="https://modelcontextprotocol.io" target="_blank" rel="noopener"><strong>Model Context Protocol</strong></a>. Спецификация и документация MCP.</li>
+      <li><a href="https://www.anthropic.com/engineering" target="_blank" rel="noopener"><strong>Инженерный блог Anthropic</strong></a>. Как строить агентов и инструменты на Claude.</li>
+      <li><a href="https://www.anthropic.com/research" target="_blank" rel="noopener"><strong>Anthropic Research</strong></a>. Научные работы компании.</li>
+    </ul>
+
+    <h2>Создаю на ИИ: инструменты</h2>
+    <ul>
+      <li><a href="https://docs.langchain.com" target="_blank" rel="noopener"><strong>LangChain</strong></a>. Один из самых распространённых фреймворков для приложений на LLM, Python и JavaScript.</li>
+      <li><a href="https://developers.llamaindex.ai/python/framework/" target="_blank" rel="noopener"><strong>LlamaIndex</strong></a>. Фреймворк для поиска по документам (RAG) и работы с данными.</li>
+      <li><a href="https://ai-sdk.dev" target="_blank" rel="noopener"><strong>AI SDK от Vercel</strong></a>. Для приложений на TypeScript и Next.js.</li>
+      <li><a href="https://ollama.com" target="_blank" rel="noopener"><strong>Ollama</strong></a>. Запуск открытых моделей на своём компьютере.</li>
+      <li><a href="https://cursor.com" target="_blank" rel="noopener"><strong>Cursor</strong></a> и <a href="https://claude.com/product/claude-code" target="_blank" rel="noopener"><strong>Claude Code</strong></a>. Редактор кода и агент для терминала со встроенным ИИ.</li>
+      <li><a href="https://www.trychroma.com" target="_blank" rel="noopener"><strong>Chroma</strong></a> и <a href="https://qdrant.tech" target="_blank" rel="noopener"><strong>Qdrant</strong></a>. Векторные базы данных.</li>
+    </ul>
+
+    <h2>Как устроены модели</h2>
+    <ul>
+      <li><a href="https://www.youtube.com/@AndrejKarpathy" target="_blank" rel="noopener"><strong>Andrej Karpathy</strong> на YouTube</a>. Подробные лекции про LLM. Для всех: «Intro to Large Language Models», для тех, кто пишет код: «Let's build GPT». Может не открываться без VPN.</li>
+      <li><a href="https://magazine.sebastianraschka.com" target="_blank" rel="noopener"><strong>Sebastian Raschka</strong></a>. Глубокие разборы архитектур LLM, дообучения, RAG. Для вдумчивого чтения.</li>
+      <li><a href="https://huggingface.co/learn" target="_blank" rel="noopener"><strong>Hugging Face Learn</strong></a>. Бесплатные курсы, в том числе по LLM.</li>
+      <li><a href="https://www.fast.ai" target="_blank" rel="noopener"><strong>fast.ai</strong></a>. Бесплатный практический курс Jeremy Howard: сначала делаете, потом разбираетесь.</li>
+      <li><a href="https://www.deeplearning.ai" target="_blank" rel="noopener"><strong>DeepLearning.AI</strong></a>. Короткие курсы Andrew Ng и партнёров по работе с LLM.</li>
+    </ul>
+
+    <h2>Блоги практиков</h2>
+    <ul>
+      <li><a href="https://simonwillison.net" target="_blank" rel="noopener"><strong>Simon Willison</strong></a>. Часто и по делу пишет о новых моделях и инструментах. Автор Datasette.</li>
+      <li><a href="https://eugeneyan.com" target="_blank" rel="noopener"><strong>Eugene Yan</strong></a>. Прикладное машинное обучение в продуктах, оценка качества LLM.</li>
+      <li><a href="https://hamel.dev" target="_blank" rel="noopener"><strong>Hamel Husain</strong></a>. Оценка качества (evals) и дообучение моделей.</li>
+      <li><a href="https://www.latent.space" target="_blank" rel="noopener"><strong>Latent Space</strong></a>. Блог и подкаст о том, как компании строят продукты на ИИ.</li>
+      <li><a href="https://swyx.io" target="_blank" rel="noopener"><strong>swyx</strong></a>. Сооснователь Latent Space, пишет об экосистеме ИИ-инструментов.</li>
+      <li>X (Twitter): <strong>@karpathy, @simonw, @swyx, @hwchase17 (LangChain), @jeremyphoward (fast.ai), @rasbt (Sebastian Raschka)</strong>. Заблокирован в России, нужен VPN.</li>
+    </ul>
+
+    <h2>На русском</h2>
+    <ul>
+      <li><a href="https://aistudio.yandex.ru/docs/ru/" target="_blank" rel="noopener">Документация Yandex AI Studio</a>. Модели YandexGPT и инструменты Яндекса для ИИ-приложений.</li>
+      <li><a href="https://developers.sber.ru/docs/ru/gigachat/individuals-quickstart" target="_blank" rel="noopener">GigaChat API: быстрый старт</a>. Как начать работать с моделью Сбера.</li>
+      <li>Telegram-каналы: <a href="https://t.me/gonzo_ML" target="_blank" rel="noopener"><strong>@gonzo_ML</strong></a> (разборы научных статей по машинному обучению), <a href="https://t.me/denissexy" target="_blank" rel="noopener"><strong>@denissexy</strong></a> (о нейросетях и продуктах на них). Telegram может не открываться без VPN.</li>
     </ul>
 
     <h2>Чтобы быть в курсе</h2>
     <ul>
-      <li><a href="https://anthropic.com/news" target="_blank">Anthropic blog</a> — новости про Claude.</li>
-      <li><a href="https://openai.com/blog" target="_blank">OpenAI blog</a> — новости про GPT.</li>
-      <li><a href="https://huggingface.co/papers" target="_blank">Hugging Face Papers</a> — самые обсуждаемые статьи по AI с ежедневным обновлением.</li>
-      <li><a href="https://buttondown.email/ainews" target="_blank">AI News</a> — ежедневный дайджест.</li>
+      <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Новости Anthropic</a>. Релизы Claude.</li>
+      <li><a href="https://openai.com/news/" target="_blank" rel="noopener">Новости OpenAI</a>. Релизы GPT и ChatGPT.</li>
+      <li><a href="https://huggingface.co/papers" target="_blank" rel="noopener">Hugging Face Papers</a>. Свежие статьи по ИИ, которые обсуждает сообщество.</li>
+      <li><a href="https://news.smol.ai" target="_blank" rel="noopener">AINews</a>. Дайджест новостей ИИ.</li>
     </ul>
 
-  <h2> Подкасты</h2>
+    <h2>Подкасты</h2>
     <ul>
-      <li><strong>Latent Space</strong> — практика AI-индустрии.</li>
-      <li><strong>Lex Fridman Podcast</strong> — длинные интервью с топовыми исследователями.</li>
-      <li><strong>The Gradient</strong> — академический angle.</li>
-      <li><strong>No Priors</strong> — фокус на стартапах.</li>
+      <li><a href="https://www.latent.space/podcast" target="_blank" rel="noopener"><strong>Latent Space</strong></a>. Практика ИИ-индустрии.</li>
+      <li><a href="https://lexfridman.com/podcast" target="_blank" rel="noopener"><strong>Lex Fridman Podcast</strong></a>. Длинные интервью, в том числе с исследователями ИИ.</li>
+      <li><a href="https://www.nopriors.com" target="_blank" rel="noopener"><strong>No Priors</strong></a>. Интервью с основателями ИИ-компаний и инвесторами.</li>
     </ul>
 
-  <h2> Как использовать всё это</h2>
+    <h2>Как пользоваться списком</h2>
     <ol>
-      <li><strong>Не читай всё.</strong> Из этого списка выбери 3–5 источников и подпишись.</li>
-      <li><strong>Один длинный контент в неделю.</strong> Лекция Karpathy, статья Raschka, эпизод Latent Space.</li>
-      <li><strong>Один источник новостей</strong> — чтобы не пропустить релизы.</li>
-      <li><strong>Сообщество</strong> — Telegram-чат, чтобы обсуждать с другими.</li>
+      <li><strong>Не читайте всё.</strong> Выберите 3–5 источников под свою роль и подпишитесь.</li>
+      <li><strong>Один длинный материал в неделю.</strong> Глава книги, лекция или выпуск подкаста.</li>
+      <li><strong>Один источник новостей.</strong> Этого хватит, чтобы не пропускать важные релизы.</li>
+      <li><strong>Первоисточник рядом с методом.</strong> Когда работаете по карточке метода, откройте источник, из которого он взят.</li>
     </ol>
 
-    <div class="callout callout-info">
-   <strong> Совет:</strong> на каждый из этих источников я буду <strong>точечно</strong> ссылаться внутри уроков, когда тема того требует. Этот список — твоя shortlist для самостоятельного развития.
-    </div>
-
     <p style="text-align: center; margin-top: 3rem; color: var(--text-muted); font-size: 0.9rem;">
-      «Артефакты» собирает и поддерживает <strong>Руслан Маджитов</strong>. Вопросы и предложения — Telegram: <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a>.
+      Список собирает <strong>Руслан Маджитов</strong>, предложения: <a href="https://t.me/madzhitov" target="_blank" rel="noopener">@madzhitov</a> в Telegram.
     </p>
   `;
 }
@@ -36711,6 +37147,16 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-10-04",
+    title: "Новые иллюстрации и логотип",
+    tag: "update",
+    items: [
+      "Логотип «Артефакты» в шапке, знак в подвале, своя иконка во вкладке браузера",
+      "Объёмные иллюстрации в одном стиле: пути, роли, задачи, Знания, карточки методов",
+      "У каждой роли своя картинка, в списке ролей — миниатюры"
+    ]
+  },
   {
     date: "2026-10-04",
     title: "Сверили факты в общем старте",
@@ -37669,447 +38115,140 @@ function renderMyProgress() {
 function renderAbout() {
   const all = allLessons();
   const total = all.length;
-  const totalMain = LESSONS.length;
-  const totalTracks = TRACK_LESSONS.length;
-  const done = all.filter(l => isCompleted(l.id)).length;
   const written = all.filter(l => l.content).length;
-  const writtenPct = Math.round(written / total * 100);
-  const donePct = total ? Math.round(done / total * 100) : 0;
-
+  const trackN = (id) => TRACK_LESSONS.filter(l => l.track === id && l.content).length;
   document.getElementById('lesson-content').innerHTML = `
     <h1>Что это</h1>
 
-    <p style="font-size: 1.15rem; color: var(--text-muted); margin-bottom: 1.5rem;">
-      Бесплатная база умений по искусственному интеллекту на русском языке. Один последовательный путь от полного нуля до уровня инженера.
-    </p>
+    <p class="sub-lead">«Артефакты»: бесплатная платформа про ИИ в работе, на русском. Вы приходите с задачей и уходите с готовой вещью: таблицей, текстом, ботом, планом.</p>
 
-    <p class="about-quiet">${totalMain} ${pluralUrok(totalMain)} в главном пути, ещё ~${totalTracks} в параллельных тропинках, 4 фазы. Артефакты активно дописываются — где готово, то и проходишь.</p>
+    <p class="about-quiet">Готово ${written} из ${total} уроков, плюс задачи по ролям, карточки методов, словарь и набор шаблонов. Платформа дописывается: где готово, то и проходите.</p>
 
-    <div class="callout callout-info about-author" style="margin-bottom: 1rem;">
-      «Артефакты» собирает и постоянно обновляет <a href="https://madzhitov.ru" target="_blank" rel="noopener"><strong>Руслан Маджитов</strong></a>. Делюсь практикой, которую сам прохожу — пишу про работу с Claude, агентов, ML-инжиниринг и интеграции в реальные продукты.
-      Telegram для вопросов и предложений: <a href="https://t.me/madzhitov" target="_blank">@madzhitov</a>.
+    <div class="callout callout-info about-author">
+      «Артефакты» собирает и обновляет <a href="https://madzhitov.ru" target="_blank" rel="noopener"><strong>Руслан Маджитов</strong></a>. Здесь то, что он сам делает в работе: ИИ в продажах, маркетинге и продуктах, агенты, Claude, автоматизации. Вопросы и предложения: <a href="https://t.me/madzhitov" target="_blank" rel="noopener">@madzhitov</a> в Telegram.
     </div>
 
-    <a href="https://t.me/artefakty_ai" target="_blank" rel="noopener" onclick="umTrack('tg-click', { from: 'about' })" style="display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: inherit; margin-bottom: 2rem; transition: transform 0.15s, box-shadow 0.15s;">
+    <a href="https://t.me/artefakty_ai" target="_blank" rel="noopener" onclick="umTrack('tg-click', { from: 'about' })" style="display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: inherit; margin-bottom: 2rem;">
       <div style="width: 44px; height: 44px; background: #0a0a0a; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #fff;">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
       </div>
       <div style="flex: 1;">
-        <div style="font-weight: 600; font-size: 1rem; color: var(--text); margin-bottom: 0.15rem;">Канал автора в Telegram: «Артефакты, а не сертификаты»</div>
-        <div style="font-size: 0.9rem; color: var(--text-muted);">Концепты дня, разборы экспериментов, рабочие промпты, фейлы. 2 поста в неделю.</div>
+        <div style="font-weight: 600; font-size: 1rem; color: var(--text); margin-bottom: 0.15rem;">Канал «Артефакты, а не сертификаты» в Telegram</div>
+        <div style="font-size: 0.9rem; color: var(--text-muted);">Новые уроки и задачи, рабочие промпты, разборы экспериментов.</div>
       </div>
       <div style="color: var(--text-muted); font-size: 1.5rem; flex-shrink: 0;">→</div>
     </a>
 
     <h2>Артефакты, а не сертификаты</h2>
-    <p style="font-size: 1.1rem; color: var(--text); margin-bottom: 1rem;">
-      Главный принцип. После каждого блока у тебя на руках остаётся <strong>рабочая вещь</strong>, а не PDF-бумажка о прохождении.
-    </p>
-    <p>Сертификат — это сигнал в прошлое: «я где-то учился». Артефакт — рабочий инструмент, который остаётся с тобой и работает уже завтра. Свой настроенный GPT/Project, свой Skill, свой Telegram-бот, свой RAG над заметками, свой mini-агент. То, что можно <strong>использовать в работе</strong> или <strong>положить в портфолио</strong> — настоящий «я сделал X», а не «я прошёл курс Y».</p>
-    <p>Почему так:</p>
+    <p>Главный принцип: после задачи или урока у вас остаётся <strong>рабочая вещь</strong>, а не справка о прохождении. Свой шаблон ответов на отзывы, таблица юнит-экономики, план контента, настроенный помощник, Telegram-бот.</p>
+    <p>Сертификат говорит «я где-то учился». Вещь говорит «я умею это сделать», и ею можно пользоваться завтра. Поэтому сертификатов здесь нет и не будет.</p>
+
+    <h2>Как устроено</h2>
     <ul>
-      <li><strong>Серьёзные источники не выдают сертификатов.</strong> Anthropic Cookbook, OpenAI Cookbook, лекции Karpathy — никто. Их репутация ≫ любой бумажки.</li>
-      <li><strong>HR-ы и инженеры научились их отличать.</strong> Сертификат «об участии» без лицензии Рособрнадзора в резюме не работает. Работает — реальный проект на GitHub или в портфолио.</li>
-      <li><strong>Артефакт честнее.</strong> Бумажка говорит «я где-то был». Проект говорит «я могу это сделать».</li>
-    </ul>
-    <p>Поэтому ты не получишь сертификата. Ты получишь набор работающих вещей — и навык их собирать дальше уже самому. Это и есть смысл.</p>
-
-    <h2>Для кого это</h2>
-    <p>Если ты:</p>
-    <ul>
-      <li>Активно пользуешься ChatGPT/Claude, но чувствуешь что используешь на 10% возможностей.</li>
-      <li>Хочешь встроить ИИ в свою работу или продукт, но не знаешь с чего начать.</li>
-      <li>Слышал про «агентов», «RAG», «embeddings» и хочешь разобраться, что это и зачем.</li>
-      <li>Думаешь о смене карьеры в ИИ-сферу и нужна структурированная база.</li>
-      <li>Просто любопытен — что там под капотом ChatGPT.</li>
-    </ul>
-    <p>...то это твоё. <strong>Подготовка не требуется.</strong> Достаточно базовой компьютерной грамотности. Программирование пригодится с 6-го урока, но даже его можно осваивать по ходу.</p>
-
-    <h2>Что ты узнаешь</h2>
-
-    <h3 class="phase-h3"><span class="phase-h3-icon">${phaseIcon(1)}</span>Фаза 1. Пользователь (12 уроков)</h3>
-    <p>Стать <strong>продвинутым юзером</strong> ИИ. Понимать как работают LLM, писать сильные промпты, делать первые приложения. Освоишь ChatGPT/Claude/Gemini на максимум, научишься выбирать модель под задачу, защищаться от галлюцинаций и инжекшен-атак, поднимать чат-боты и semantic-поиск по своим документам.</p>
-
-    <h3 class="phase-h3"><span class="phase-h3-icon">${phaseIcon(2)}</span>Фаза 2. Строитель (18 уроков)</h3>
-    <p>Делать <strong>рабочие AI-продукты</strong>. Function calling, RAG, агенты, мульти-агентные системы, продакшен. После фазы ты сможешь спроектировать и собрать многошагового агента с памятью, инструментами и мониторингом, и задеплоить его в облако.</p>
-
-    <h3 class="phase-h3"><span class="phase-h3-icon">${phaseIcon(3)}</span>Фаза 3. Практик (20 уроков)</h3>
-    <p>Понять <strong>что под капотом</strong> ИИ. Нейросети с нуля на NumPy, потом PyTorch. Компьютерное зрение (CNN, transfer learning, GAN), NLP (эмбеддинги, RNN, трансформеры). После фазы ты прочитаешь любую ML-статью или код и поймёшь.</p>
-
-    <h3 class="phase-h3"><span class="phase-h3-icon">${phaseIcon(4)}</span>Фаза 4. Инженер (22 урока)</h3>
-    <p>Стать <strong>ML-инженером</strong>. Классическое ML (регрессия, классификация, кластеризация, RL), MLOps, fine-tuning LLM (LoRA, QLoRA), запуск open-source моделей. После фазы ты делаешь end-to-end ML-проекты — от грязных данных до задеплоенной модели в проде.</p>
-
-    <h2>Параллельные тропинки</h2>
-    <p>Помимо главного пути — есть три <strong>параллельные ветки</strong>, в которые можно нырять в любой момент. Они не зависят от прогресса по фазам.</p>
-
-    <div class="track-cards">
-      <div class="track-card" onclick="openSection('claude')">
-        <div class="track-card-icon">${phaseIcon('claude')}</div>
-        <div class="track-card-body">
-          <div class="track-card-tag">CLAUDE DEEP DIVE</div>
-          <h3>Глубоко про Claude (8 уроков)</h3>
-          <p>Artifacts, Projects, MCP, Computer Use, Claude Code, prompt caching, Constitutional AI, сравнение с GPT/Gemini. Самая детальная серия про Claude на русском.</p>
-          <div class="track-card-meta">Для тех, кто работает с Claude в продукте или дев-флоу</div>
-        </div>
-      </div>
-
-      <div class="track-card" onclick="openSection('projects')">
-        <div class="track-card-icon">${phaseIcon('projects')}</div>
-        <div class="track-card-body">
-          <div class="track-card-tag">МИНИ-ПРОЕКТЫ «ЗА 1 ЧАС»</div>
-          <h3>18 рабочих pet-проектов</h3>
-          <p>Telegram-бот для саммари, RAG над заметками, свой MCP-сервер, OCR чеков через Vision, ресёрчер конкурентов, self-hosted Perplexity, AI-помощник для встреч, анти-спам, поиск по TG, авто-ревьюер PR. <strong>2026:</strong> голосовой ассистент (Whisper+Claude+TTS), свой Claude Skill, browser-расширение «AI рядом с текстом», локальный AI на Ollama, личный AI-секретарь. <strong>Для обучающихся:</strong> AI-репетитор Сократическим методом, конспект лекции из аудио, генератор Anki-карточек из PDF.</p>
-          <div class="track-card-meta">Каждый проект делается за час–полтора. Реально живые. Можно класть в портфолио.</div>
-        </div>
-      </div>
-
-      <div class="track-card" onclick="openSection('industry')">
-        <div class="track-card-icon">${phaseIcon('industry')}</div>
-        <div class="track-card-body">
-          <div class="track-card-tag">ТЕМЫ ПОД ИНДУСТРИИ</div>
-          <h3>ИИ для конкретных профессий</h3>
-          <p>Юристы, маркетологи, HR, разработчики, финансисты — где AI реально применять, где осторожно, где категорически нельзя. С готовыми промптами и compliance-аспектами (GDPR, EU AI Act).</p>
-          <div class="track-card-meta">Прикладные знания для своей области без теории</div>
-        </div>
-      </div>
-
-      <div class="track-card" onclick="openSection('everyday')">
-        <div class="track-card-icon">${phaseIcon('everyday')}</div>
-        <div class="track-card-body">
-          <div class="track-card-tag">AI КАЖДЫЙ ДЕНЬ · NEW</div>
-          <h3>AI для всех — без кода (10 уроков)</h3>
-          <p>Фото холодильника → ужин. Помощник родителя и сказка на ночь. Школьник: разбор задачи и флешкарты. Резюме под вакансию + тренажёр собеседования. Карточки товаров для маркетплейса. План поездки. Разговорный партнёр на языке. Разбор медвыписки и договора.</p>
-          <div class="track-card-meta">Каждый урок — 20–40 минут. Работает только в ChatGPT/Claude через приложение, ничего ставить не надо.</div>
-        </div>
-      </div>
-    </div>
-
-    <h2>Как устроен один урок</h2>
-    <p>Каждый урок — это самодостаточный мини-учебник, ~50 минут чтения + 60 минут практики:</p>
-    <ul>
-      <li><strong>Зачем тебе этот урок</strong> — мотивация и что узнаешь.</li>
-      <li><strong>Глубокая теория</strong> — без воды, на пальцах, с историей и контекстом.</li>
-      <li><strong>Живые примеры с цифрами</strong> — реальные кейсы, разобранные по шагам.</li>
-      <li><strong>Рабочий код</strong> — копируй, запускай, получай результат.</li>
-      <li><strong>Тонкости и подводные камни</strong> — то что в туториалах обычно умалчивается.</li>
-      <li><strong>Глоссарий</strong> — все термины с объяснениями.</li>
-      <li><strong>Практика</strong> — упражнения с понятным результатом.</li>
-      <li><strong>Самопроверка</strong> — 10 вопросов с разбором ответов.</li>
+      <li><strong><a href="#roles" onclick="V6.open('roles'); return false;">Роли</a>.</strong> Кто вы: продаёте онлайн, маркетолог, продакт, проджект, специалист, владелец бизнеса или хотите создавать на ИИ.</li>
+      <li><strong><a href="#tasks" onclick="V6.open('tasks'); return false;">Задачи</a>.</strong> Что нужно сделать: ответить на отзывы, посчитать экономику товара, выбрать метрику.</li>
+      <li><strong>Юниты.</strong> Как сделать задачу за час: шаги, готовый промпт, проверка по чек-листу. В конце вопрос «Получилось?», и если почти, то частые причины и как поправить.</li>
+      <li><strong><a href="#knowledge" onclick="V6.open('knowledge'); return false;">Методы</a>.</strong> Каким методом думать о задаче: юнит-экономика, RFM, воронка, JTBD. В карточке калькулятор или заготовка запроса.</li>
+      <li><strong>Уроки.</strong> Почему это работает. Для тех, кто хочет понимать, а не только делать.</li>
+      <li><strong><a href="#paths" onclick="V6.open('paths'); return false;">Пути</a>.</strong> В каком порядке: главный путь для всех и пути ролей, у продавца это «От селлера к бренду».</li>
+      <li><strong><a href="#notebook" onclick="V6.open('notebook'); return false;">Тетрадь</a>.</strong> Что вы уже сделали: результаты задач и заметки к урокам.</li>
+      <li><strong>Алёша.</strong> ИИ-наставник: объяснит урок на вашем примере и сверит работу по рубрике.</li>
     </ul>
 
-    <h2>Сколько времени займёт</h2>
-    <p>При темпе <strong>1 урок в день</strong> база проходится за 4–5 месяцев. По 2 урока в день — 2 месяца. По воскресеньям только — 1.5 года. Главное — <strong>регулярность</strong>, не темп.</p>
-    <p>Не пытайся прочитать всё за неделю. ИИ — это область, в которой нужно <strong>встраивать новые концепции в свою работу</strong>, иначе быстро забудется.</p>
+    <h2>Для кого</h2>
+    <p>Для тех, кто пользуется ИИ от случая к случаю и хочет, чтобы он делал заметную часть работы. Подготовка не нужна. Задачи ролей и большинство уроков без кода. Код появляется в главном пути с урока 6 и в мини-проектах, базового Python хватит.</p>
 
-    <h2>Чем отличается от других русскоязычных курсов</h2>
-    <p>В рунете есть несколько курсов про Claude или ChatGPT — обычно адаптации зарубежных программ на 10–15 уроков. Это полезно как введение, но это про <strong>один инструмент</strong>, а не про AI literacy.</p>
-
-    <div class="compare-block">
-      <div class="compare-row compare-head">
-        <div></div>
-        <div>Обычный курс-знакомство</div>
-        <div class="us">Артефакты</div>
-      </div>
-      <div class="compare-row">
-        <div>Уроков</div>
-        <div>11–12</div>
-        <div class="us"><strong>95</strong></div>
-      </div>
-      <div class="compare-row">
-        <div>Общее время</div>
-        <div>2–3 часа</div>
-        <div class="us"><strong>~150 часов</strong></div>
-      </div>
-      <div class="compare-row">
-        <div>Тема</div>
-        <div>Только Claude</div>
-        <div class="us"><strong>AI literacy:</strong> LLM, агенты, ML, CV, NLP</div>
-      </div>
-      <div class="compare-row">
-        <div>Источник</div>
-        <div>Перевод Anthropic Academy</div>
-        <div class="us"><strong>Свой контент</strong> на базе Microsoft + опыт</div>
-      </div>
-      <div class="compare-row">
-        <div>AI-наставник</div>
-        <div>—</div>
-        <div class="us"><strong>Алёша</strong> в каждом уроке</div>
-      </div>
-      <div class="compare-row">
-        <div>Pet-проекты</div>
-        <div>—</div>
-        <div class="us"><strong>10 проектов</strong> с реальным кодом</div>
-      </div>
-      <div class="compare-row">
-        <div>Для индустрий</div>
-        <div>Кейсы по ролям</div>
-        <div class="us"><strong>5 уроков</strong> с compliance и risk-частью</div>
-      </div>
-      <div class="compare-row">
-        <div>Цена</div>
-        <div>Бесплатно (некоторые — премиум)</div>
-        <div class="us"><strong>Бесплатно навсегда</strong>, MIT-лицензия</div>
-      </div>
-    </div>
-
-    <p style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.95rem;">Если тебе нужно «5 минут попробовать Claude» — иди к ним, они короче. Если хочешь <strong>понять AI как область</strong> и научиться делать собственные приложения — оставайся тут.</p>
-
-    <h2>И ещё несколько вещей</h2>
+    <h2>Главный путь и Тропинки</h2>
+    <p><strong>Главный путь</strong> ведёт от пользователя к создателю: общий старт из пяти уроков, затем четыре уровня. Пользователь: промпты, модели, проверка ответов. Строитель: приложения на API, RAG, агенты. Практик: что внутри нейросетей. Инженер: классическое машинное обучение и дообучение моделей.</p>
+    <p><strong>Тропинки</strong> идут рядом, в них можно свернуть в любой момент:</p>
     <ul>
-      <li><strong>Один путь</strong>, а не пять разных курсов с пересечениями.</li>
-   <li> <strong>На русском</strong>, с примерами под русскоязычный контекст.</li>
-      <li><strong>Прогресс сохраняется</strong> в браузере. Закрыл вкладку — продолжишь с того же места.</li>
-   <li> <strong>Работает на любом устройстве.</strong></li>
-   <li> <strong>Открытый код</strong> — можешь делать pull request с правками.</li>
+      <li>«ИИ каждый день»: применения без кода (готово ${trackN('everyday')}).</li>
+      <li>«Темы под индустрии»: ИИ под профессию (готово ${trackN('industry')}).</li>
+      <li>«Мини-проекты»: рабочие проекты с кодом, от бота до помощника продавца (готово ${trackN('projects')}).</li>
+      <li>«Claude Deep Dive»: всё важное про Claude (готово ${trackN('claude')}).</li>
+      <li>«Вайб Код Вам Дам»: как собирать приложения вместе с ИИ (готово ${trackN('vibe')}).</li>
     </ul>
 
-    <h2>В чём принципиальное отличие</h2>
-    <p>Обычные курсы про AI делают одно из двух:</p>
-    <ul>
-      <li><strong>Учат одному инструменту</strong> — «как пользоваться ChatGPT», «5 промптов которые», и подобные программы-знакомства. Это полезно как первый шаг, но не даёт общей картины.</li>
-      <li><strong>Учат теории глубоко и сухо</strong> — академические курсы (Coursera, Stanford) про математику нейросетей. Хорошо для научной карьеры, плохо для применения.</li>
-    </ul>
+    <h2>Откуда содержание</h2>
+    <p>Основа уроков главного пути: четыре открытых курса Microsoft на лицензии MIT (generative-ai-for-beginners, ai-agents-for-beginners, AI-For-Beginners, ML-For-Beginners). Они переработаны в один путь, дополнены примерами на русском и актуальными моделями.</p>
+    <p>Карточки методов собраны по первоисточникам: книгам, статьям и документации. У каждой полной карточки есть дата сверки. Модели и цены в уроках подставляются из справочника, его проверяют каждую неделю, чтобы уроки не устаревали.</p>
+    <p>Код сайта открыт на <a href="https://github.com/madzhitov/ai-course" target="_blank" rel="noopener">GitHub</a> под лицензией MIT.</p>
 
-    <p>«Артефакты» — <strong>между этими крайностями</strong>. Не «как нажать кнопку», но и не «градиентный спуск по матрицам». Это <strong>AI literacy для практиков</strong>:</p>
-    <ul>
-      <li>Чтобы ты <strong>понимал что происходит внутри</strong>, когда отправляешь запрос в LLM — на уровне «токены, контекст, температура», а не на уровне «волшебная коробка отвечает».</li>
-      <li>Чтобы ты <strong>делал свои AI-приложения</strong> — не пересказывая чужие туториалы, а от понимания принципов.</li>
-      <li>Чтобы ты <strong>читал статьи и код</strong> в области без ощущения «всё непонятное».</li>
-      <li>Чтобы тебе было <strong>не больно</strong> — без затянутых лекций и сухих формул. На русском, тоном «коллега объясняет коллеге».</li>
-    </ul>
-
-    <p>Это длинно. 144 урока (128 уже готовы, остальные дописываются). ~150 часов. Не для тех, кто хочет «быстро попробовать». Для тех, кто хочет <strong>надолго</strong>.</p>
-
-    <h2>Что планируем дальше</h2>
-    <p>«Артефакты» активно растут. Вот что уже в работе или близко на горизонте:</p>
-
-    <div class="roadmap-block">
-      <div class="roadmap-section">
-        <div class="roadmap-section-title">Уроки</div>
-        <ul>
-          <li>Доделать Фазу 2 (агенты) — уроки 23–30 про мульти-агентные системы, метакогницию, MCP, агентов в проде</li>
-          <li>Развернуть Фазу 3 (Практик) — компьютерное зрение, NLP, трансформеры</li>
-          <li>Открыть Фазу 4 (Инженер) — классический ML, MLOps, fine-tuning LLM</li>
-        </ul>
-      </div>
-
-      <div class="roadmap-section">
-        <div class="roadmap-section-title">Интерактив</div>
-        <ul>
-          <li>Песочница температуры уже есть в Уроке 1 — следом будут токенизатор, контекстное окно, эмбеддинги</li>
-          <li>Возможность запускать Python прямо в браузере для практических уроков</li>
-          <li>Live-сравнение моделей (Claude vs GPT vs Gemini) на одном промпте</li>
-        </ul>
-      </div>
-
-      <div class="roadmap-section">
-    <div class="roadmap-section-title"> Сообщество</div>
-        <ul>
-          <li>Запуск Telegram-канала — анонсы новых уроков, личный опыт автора, разборы</li>
-          <li>Чат подписчиков — для вопросов и взаимопомощи</li>
-          <li>Cohort-mode — раз в 1-2 месяца открытый набор группы, прохождение Фазы 1 за 4 недели вместе</li>
-          <li>Showcase pet-проектов — галерея работ студентов</li>
-        </ul>
-      </div>
-
-      <div class="roadmap-section">
-        <div class="roadmap-section-title">Качество и доступность</div>
-        <ul>
-          <li>Сертификаты по окончании фазы — PDF с QR на публичный профиль</li>
-          <li>Алёша с памятью — будет помнить твои предыдущие диалоги между сессиями</li>
-          <li>Перевод на английский — если будет ресурс</li>
-        </ul>
-      </div>
-    </div>
-
-    <p style="color: var(--text-muted); font-size: 14px; margin-top: 1rem;">
-      Идеи и пожелания — пиши в Telegram <a href="https://t.me/madzhitov" target="_blank"><strong>@madzhitov</strong></a>. Открытый код — можно прислать pull request.
-    </p>
-
-    <h2>Откуда контент</h2>
-    <p>Базой служат четыре открытых курса Microsoft (все на MIT-лицензии):</p>
-    <ul>
-      <li><a href="https://github.com/microsoft/generative-ai-for-beginners" target="_blank">generative-ai-for-beginners</a></li>
-      <li><a href="https://github.com/microsoft/ai-agents-for-beginners" target="_blank">ai-agents-for-beginners</a></li>
-      <li><a href="https://github.com/microsoft/AI-For-Beginners" target="_blank">AI-For-Beginners</a></li>
-      <li><a href="https://github.com/microsoft/ML-For-Beginners" target="_blank">ML-For-Beginners</a></li>
-    </ul>
-    <p>Эти курсы — отличные сами по себе, но они <strong>отдельные</strong> и параллельные. Я переработал материал в один последовательный путь, дополнил недостающим (примеры на русском, актуальные цены и модели 2026, тонкости production), сделал тоном «коллега объясняет», а не «лектор читает».</p>
-
-    <h2>Готов начать?</h2>
-    <div class="callout callout-success" style="text-align: center; padding: 2rem;">
-      <p style="font-size: 1.15rem; margin-bottom: 1.5rem;">Не торопись. Один урок — это не строчка-указатель, а полноценное занятие.</p>
-      <button class="nav-btn" style="font-size: 1.05rem; padding: 0.75rem 1.5rem; background: var(--accent); color: white; border-color: var(--accent);" onclick="openStaticPage('howto')">Сначала почитать «Как заниматься» →</button>
-      <span style="display: inline-block; margin: 0 0.5rem; color: var(--text-muted);">или</span>
-      <button class="nav-btn" style="font-size: 1.05rem; padding: 0.75rem 1.5rem;" onclick="openLesson(1)">Сразу к Уроку 1 →</button>
-    </div>
-
-    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 3rem; text-align: center;">
-      Готовых полных уроков на текущий момент: <strong>${written}</strong> из ${total}. Остальные пишутся постепенно (~2 урока в день). Возвращайся за обновлениями.
-    </p>
+    <h2>С чего начать</h2>
+    <p>Если есть задача, <a href="#roles" onclick="V6.open('roles'); return false;">выберите роль</a> и найдите её в списке. Если хочется разобраться с самого начала, начните с <a href="#lesson-1" onclick="openLesson(1); return false;">урока 1</a> общего старта. А перед этим загляните в <a href="#howto" onclick="openStaticPage('howto'); return false;">«Как заниматься»</a>.</p>
   `;
 }
 
 function renderHowTo() {
   document.getElementById('lesson-content').innerHTML = `
     <h1>Как заниматься</h1>
+    <p class="sub-lead">Здесь не нужно проходить всё подряд. Семь правил, чтобы ИИ начал работать на вас, а знания не выветрились через неделю.</p>
 
-    <p class="sub-lead">Просто читать недостаточно. Ниже — 7 принципов, которые отличают тех, кто дошёл до конца, от тех, кто бросил на пятом уроке.</p>
+    <h2>1. Начните с задачи</h2>
+    <p>Выберите <a href="#roles" onclick="V6.open('roles'); return false;">роль</a>, а в ней задачу, которая стоит перед вами на этой неделе. Один юнит занимает до часа, мини-проекты с кодом дольше. Одна сделанная задача полезнее пяти прочитанных уроков.</p>
 
-    <h2>1. Не больше 1 урока в день</h2>
-    <p>Кажется заманчивым «пройти всё за выходные» — не пройдёшь. Один глубокий урок в день усваивается, накопленные за полгода знания остаются. Двадцать поверхностно прочитанных уроков забываются за неделю.</p>
-    <p>Если очень хочешь больше — делай <strong>2 урока в день максимум</strong>: один утром, один вечером, с обязательной практикой между ними.</p>
+    <h2>2. Делайте на своих данных</h2>
+    <p>Подставляйте в промпты свой товар, свои отзывы, свои цифры. Примеры в юнитах условные, они нужны только чтобы показать формат. Результат должен остаться у вас как рабочая вещь, а не как упражнение.</p>
+    <p>Перед отправкой в чат-ИИ убирайте имена, телефоны и почту клиентов.</p>
 
-    <h2>2. После каждого урока — практика</h2>
-    <p>В каждом уроке есть секция «Практика» с конкретными упражнениями. <strong>Делай их.</strong> Без практики 80% прочитанного выветрится за неделю. Это не «дополнительные задания» — это сам процесс обучения.</p>
-    <p>Если упражнение на код — реально открой редактор и напиши код. Если на размышление — реально сядь и подумай 10 минут с ручкой и бумагой.</p>
+    <h2>3. Проверяйте по чек-листу</h2>
+    <p>В конце юнита вопрос «Получилось?». Отвечайте честно: «Почти» покажет частые причины и как поправить. Это быстрее, чем начинать заново.</p>
 
-    <h2>3. Веди файл progress.md</h2>
-    <p>Создай рядом файл <code>progress.md</code> или <code>прогресс.md</code>. После каждого урока пиши в него:</p>
-    <ul>
-      <li><strong>Дата</strong> и номер урока.</li>
-      <li><strong>3 ключевые мысли</strong>, которые остались в голове.</li>
-      <li><strong>Что я сделал руками</strong> — какой код написал, какой файл создал.</li>
-      <li><strong>Что осталось мутным</strong> — туда вернёшься, когда тема всплывёт в следующих уроках.</li>
-      <li><strong>«До этого я думал X, теперь понимаю Y»</strong> — самый сильный фиксатор новой ментальной модели.</li>
-    </ul>
-    <p>Через 30 уроков у тебя будет ценный личный конспект, который ты будешь пересматривать.</p>
+    <h2>4. Записывайте в тетрадь</h2>
+    <p>Что вышло, что поправили, что пригодится в следующий раз. <a href="#notebook" onclick="V6.open('notebook'); return false;">Тетрадь</a> хранится в этом браузере. Раз в несколько недель скачивайте её файлом: так она не потеряется при очистке браузера и переедет на другое устройство.</p>
 
-    <h2>4. Один сквозной проект</h2>
-    <p>Возьми <strong>одну реальную задачу</strong> из своей жизни. Например:</p>
-    <ul>
-      <li>«Ассистент по моим заметкам» — отвечает на вопросы по моим Obsidian/Notion-файлам.</li>
-      <li>«Бот в Telegram, который суммирует длинные переписки».</li>
-      <li>«Анализатор моих писем — что критично, что подождёт».</li>
-      <li>«Помощник в чтении научных статей».</li>
-    </ul>
-    <p>Этот проект расти будет вместе с базой:</p>
-    <ul>
-      <li>В Фазе 1 ты собёрешь его как простой скрипт с промптом.</li>
-      <li>В Фазе 2 — добавишь RAG и сделаешь агентом.</li>
-      <li>В Фазе 3 — поймёшь как работает то, что внутри.</li>
-      <li>В Фазе 4 — обучишь свою специализированную модель и задеплоишь.</li>
-    </ul>
-    <p>В конце у тебя будет рабочий продукт под твою задачу + полное понимание как он работает.</p>
+    <h2>5. Покажите работу Алёше</h2>
+    <p>На Вехах пути и в карточках методов Алёша сверяет работу по рубрике и подсказывает, что доделать. Это не экзамен: можно сохранить работу в тетрадь и без проверки.</p>
 
-    <h2>5. Возвращайся к контролю фазы</h2>
-    <p>В конце каждой из 4 фаз есть «Контроль фазы» — список того, что ты должен уметь после неё. <strong>Не переходи в следующую фазу</strong>, пока не можешь связно ответить на эти вопросы вслух.</p>
-    <p>Лайфхак: пересказывай вслух самому себе или ребёнку, как будто объясняешь нетехнарю. Если не можешь объяснить — значит не понял.</p>
+    <h2>6. Уроки, чтобы понимать</h2>
+    <p>Когда хочется понять, почему метод работает, открывайте уроки. По главному пути лучше идти по порядку, один-два урока в день, с практикой после каждого. Двадцать уроков за выходные забываются за неделю.</p>
+    <p>Для уроков с кодом понадобится ключ API к модели. Какие сервисы работают из России без VPN, смотрите в <a href="/tools/neyroseti-bez-vpn/">живом списке</a>.</p>
 
-    <h2>6. Заведи аккаунт у LLM-провайдера сразу</h2>
-    <p>К Уроку 6 тебе понадобится API-ключ. Лучше сделать это <strong>прямо сейчас</strong>, а не откладывать:</p>
-    <ul>
-      <li><a href="https://platform.openai.com" target="_blank">OpenAI</a> — пополни на $5 (хватит на всю базу).</li>
-      <li><a href="https://console.anthropic.com" target="_blank">Anthropic (Claude)</a> — альтернатива, особенно если в России.</li>
-      <li>Поставь monthly budget — например, $20. Защитит от случайного слива.</li>
-    </ul>
+    <h2>7. Застряли, спросите</h2>
+    <p>Кнопка «Спросить Алёшу» есть в каждом уроке и юните. Если тема не идёт, пройдите урок на 70% и двигайтесь дальше: через несколько уроков многое встанет на место.</p>
 
-    <h2>7. Не бросай при первом затыке</h2>
-    <p>В Фазе 3 (нейросети) и в начале Фазы 4 (классика ML) — будут моменты, когда захочется бросить. Это <strong>нормально</strong>. Любой кто прошёл — проходил через это.</p>
-    <p>Если застрял на уроке — не пытайся понять всё сразу. Пройди его на 70%, иди дальше. Через 5–10 уроков вернёшься, и многое станет очевидным — потому что в голове появятся другие концепции, которые помогут.</p>
-
-    <h2>Темп — на ваш выбор</h2>
-    <table>
-      <tr><th>Темп</th><th>Длительность</th><th>Кому подходит</th></tr>
-      <tr><td>1 урок/день</td><td>~5 месяцев</td><td>Идеальный темп. Глубоко и без выгорания.</td></tr>
-      <tr><td>2 урока/день</td><td>~2.5 месяца</td><td>Если есть много времени и сильная мотивация.</td></tr>
-      <tr><td>1 урок/выходные</td><td>~18 месяцев</td><td>Если совмещаешь с работой и семьёй. Главное — не бросать.</td></tr>
-      <tr><td>«За неделю»</td><td>—</td><td>Не работает. Знание не успеет осесть.</td></tr>
-    </table>
-
-    <h2>Что делать если...</h2>
-    <p><strong>...я не понимаю урок?</strong> — Отметь, что неясно, в <code>progress.md</code>. Иди дальше. Через 3–5 уроков вернись — обычно становится понятно.</p>
-    <p><strong>...я пропустил неделю?</strong> — Открой <code>progress.md</code> и быстро пробеги по последним 3–5 записям. Прочитай раздел «Что должно остаться в голове» в этих уроках. Можно идти дальше.</p>
-    <p><strong>...мне скучно в Фазе 4?</strong> — Можно остановиться после Фазы 2. Этого хватает чтобы делать почти любые ИИ-продукты на современных инструментах. Фазы 3 и 4 — для тех, кто хочет идти в исследования или ML-инжиниринг.</p>
-    <p><strong>...я хочу пропустить теорию и сразу к коду?</strong> — Тогда тебе пригодятся сразу Уроки 6, 7, 8 (API, чат, semantic search). Но через 1–2 недели вернись и прочитай теоретические — пригодятся.</p>
-
-    <div class="callout callout-info" style="margin-top: 3rem;">
-   <strong> Закрепление:</strong> прежде чем идти к Уроку 1, реши:
-      <ul>
-        <li>Какой у меня темп? (1/день, 2/день, по выходным?)</li>
-        <li>Какая моя сквозная задача? (Какой проект я буду делать через все фазы?)</li>
-        <li>Где я буду вести progress.md?</li>
-      </ul>
-      Запиши это где-нибудь. Это твой контракт с самим собой.
+    <div class="callout callout-info">
+      <strong>Перед началом решите три вещи:</strong> какая задача у вас первая, сколько времени в неделю вы готовы давать и где будете хранить файл тетради. Запишите это. Дальше всё проще.
     </div>
-
-    <div style="text-align: center; margin-top: 2rem;">
-      <button class="nav-btn" style="font-size: 1.05rem; padding: 0.75rem 1.5rem; background: var(--accent); color: white; border-color: var(--accent);" onclick="openLesson(1)">Готов. К Уроку 1 →</button>
-    </div>
+    <p><a href="#roles" onclick="V6.open('roles'); return false;">Выбрать роль и задачу</a> · <a href="#lesson-1" onclick="openLesson(1); return false;">Начать с урока 1</a></p>
   `;
 }
 
 function renderFAQ() {
+  const all = allLessons();
   document.getElementById('lesson-content').innerHTML = `
     <h1>Частые вопросы</h1>
     <p class="sub-lead">Коротко о том, что чаще всего спрашивают про «Артефакты».</p>
 
-    <h2>Это правда бесплатно?</h2>
-    <p>Да. Полностью. Никаких подписок, регистраций, лид-магнитов, premium-уровней. Контент открыт по MIT-лицензии — можно даже использовать в своих проектах со ссылкой.</p>
-    <p>Единственная вещь, на которую ты потратишь деньги — API-ключ OpenAI/Anthropic с урока 6. Хватит $5 на всю базу.</p>
+    <h3>Это правда бесплатно?</h3>
+    <p>Да. Без подписок, регистрации и платных уровней. Платить может понадобиться только сервису ИИ: в уроках с кодом нужен ключ API к модели, а в некоторых юнитах удобнее платная версия чат-ИИ. Сайт за это денег не берёт.</p>
 
-    <h2>Я ничего не знаю про программирование. Это нормально?</h2>
-    <p>Нормально. Первые 5 уроков — без кода вообще. С урока 6 появляется Python. Если ты совсем не знаешь Python — параллельно пройди бесплатный <a href="https://stepik.org/course/67" target="_blank">мини-курс на Stepik</a> или книгу «Автоматизация рутинных задач с помощью Python».</p>
-    <p>Глубокого знания не требуется. Базовые конструкции (переменные, функции, циклы, условия) — этого хватит для всех Фаз 1 и 2. К Фазе 3 нужно будет знать классы и numpy.</p>
+    <h3>Нужно уметь программировать?</h3>
+    <p>Нет. Задачи ролей, юниты и большинство уроков без кода. Код появляется в главном пути с урока 6 и в мини-проектах. Для них хватит базового Python: переменные, функции, циклы, условия.</p>
 
-    <h2>На какой машине это всё запускать?</h2>
-    <ul>
-      <li><strong>Фазы 1–2:</strong> любой ноутбук. Всё работает через API-вызовы.</li>
-      <li><strong>Фаза 3:</strong> для лёгких упражнений хватит Mac M1+ или ПК с GPU 6+ ГБ. Для серьёзных задач — Google Colab (бесплатно).</li>
-      <li><strong>Фаза 4:</strong> аналогично + есть упражнения с fine-tuning, для которых пригодится GPU 16+ ГБ или облако.</li>
-    </ul>
+    <h3>Работает ли это из России?</h3>
+    <p>Да. В юнитах первыми стоят сервисы, которые открываются из России без VPN, например GigaChat. ChatGPT и Claude официально в России не работают, и это указано там, где они упоминаются. Свежий список: <a href="/tools/neyroseti-bez-vpn/">«Какие нейросети работают в России без VPN»</a>.</p>
 
-    <h2>Я в России / Беларуси. Как с OpenAI?</h2>
-    <p>OpenAI напрямую не работает. Варианты:</p>
-    <ul>
-      <li><strong>Anthropic Claude</strong> — работает, оплата картой UnionPay или зарубежной.</li>
-      <li><strong>YandexGPT, GigaChat от Сбера</strong> — российские альтернативы.</li>
-      <li><strong>OpenRouter</strong> — единый API ко множеству моделей, иногда работает с российских карт.</li>
-      <li><strong>Self-hosted Llama / Mistral</strong> через Ollama — полностью бесплатно.</li>
-    </ul>
-    <p>В уроках буду давать рабочий код, в комментариях указывать альтернативные провайдеры.</p>
+    <h3>Где хранится мой прогресс?</h3>
+    <p>В этом браузере на этом устройстве: отметки уроков, ответы в юнитах, тетрадь. Аккаунта нет. Чтобы перенести всё на другое устройство или не потерять при очистке браузера, скачайте тетрадь файлом и загрузите её там.</p>
 
-    <h2>Сколько времени займёт?</h2>
-    <p>При темпе 1 урок/день — ~5 месяцев. 2 урока/день — ~2.5 месяца. Подробнее в разделе «Как заниматься».</p>
+    <h3>Можно заниматься с телефона?</h3>
+    <p>Да, сайт работает на телефоне. Юниты и уроки удобно проходить где угодно. Для уроков с кодом нужен компьютер.</p>
 
-    <h2>Я могу читать с телефона?</h2>
-    <p>Да, сайт адаптивен. Но <strong>практика</strong> на телефоне неудобна — для упражнений с кодом нужен компьютер.</p>
+    <h3>Где задать вопрос по уроку или задаче?</h3>
+    <p>Спросите Алёшу: кнопка есть в каждом уроке и юните. Он отвечает по теме урока или задачи. Вопросов в час ограниченное число, чтобы хватало всем. Предложения и найденные ошибки присылайте в Telegram <a href="https://t.me/madzhitov" target="_blank" rel="noopener">@madzhitov</a>.</p>
 
-    <h2>Прогресс сохраняется?</h2>
-    <p>Да, в браузере (localStorage). Закрыл вкладку — открыл снова, всё на месте. Но это привязано к конкретному браузеру на конкретном устройстве. На другом устройстве — начнёшь заново.</p>
-    <p>Если хочешь синхронизировать между устройствами — сохрани прогресс через JSON-экспорт (планируется в следующих обновлениях).</p>
+    <h3>Будет сертификат?</h3>
+    <p>Нет. Результат здесь: ваша вещь, сделанная по задаче или уроку. Ею можно пользоваться и её можно показать. С согласия авторов работы попадают в «Что собрали».</p>
 
-    <h2>Можно ли использовать материалы в своих учебных программах / корпоративном обучении?</h2>
-    <p>Можно. Лицензия MIT. Просьба ставить ссылку на оригинал и указывать авторство.</p>
+    <h3>Можно учить так команду?</h3>
+    <p>Да. Сотрудники занимаются бесплатно, каждый по своей роли. Если нужно обучение с ведущим или внедрение под ваши процессы, смотрите <a href="#companies" onclick="V6.open('companies'); return false;">«Для компаний»</a>.</p>
 
-    <h2>А если мне не нравится формат / есть замечания?</h2>
-    <p>«Артефакты» открыты на GitHub. Можно сделать issue с предложением, или PR с правкой. Конструктивная критика приветствуется.</p>
+    <h3>Можно использовать материалы у себя?</h3>
+    <p>Да. Код и уроки открыты на <a href="https://github.com/madzhitov/ai-course" target="_blank" rel="noopener">GitHub</a> под лицензией MIT. Сохраняйте указание авторства и ссылку на оригинал.</p>
 
-    <h2>Где задавать вопросы по содержанию урока?</h2>
-    <p>Лучшее место — задать вопрос самому ChatGPT/Claude. Просто скопируй кусок урока и спроси «объясни подробнее» или «приведи ещё пример». Для новичков это самая мощная практика.</p>
-
-    <h2>Контент будет обновляться?</h2>
-    <p>Да. Сейчас написано ${LESSONS.filter(l => l.content).length} уроков из ${LESSONS.length}. Остальные пишутся ~2 в день. Кроме того, по мере выхода новых моделей и фреймворков — корректирую соответствующие уроки.</p>
-
-    <h2>Можно ли получить сертификат?</h2>
-    <p>Нет. Сертификаты — это бизнес-модель платных платформ. Тут — открытое знание для самообразования. Лучший «сертификат» — твой собственный pet-проект, сделанный здесь.</p>
-
-    <h2>Чем отличается от bootcamp / курсов на Coursera?</h2>
-    <ul>
-      <li>Bootcamp/Coursera — структура + менторы + сертификат + €1000–€5000.</li>
-      <li>Это структура (без менторов), без сертификата, бесплатно.</li>
-      <li>Если у тебя есть деньги и нужны сертификаты для HR — иди на платное.</li>
-      <li>Если нужны знания и навыки — этого хватает.</li>
-    </ul>
-
-    <h2>Куда дальше?</h2>
-    <p>В конце Фазы 4 будет раздел «Что дальше» с конкретными рекомендациями в зависимости от твоего интереса:</p>
-    <ul>
-      <li><strong>LLM-инженер</strong> — DeepLearning.AI specs, LangChain, evals.</li>
-      <li><strong>ML-инженер</strong> — Andrew Ng ML Specialization, Kaggle competitions.</li>
-      <li><strong>Researcher</strong> — Stanford CS229/CS231n/CS224n, чтение arXiv.</li>
-      <li><strong>Product-AI</strong> — focus на UX, evals, продуктовую интеграцию.</li>
-    </ul>
+    <h3>Содержание обновляется?</h3>
+    <p>Да. Сейчас готово ${all.filter(l => l.content).length} из ${all.length} уроков, задачи и методы добавляются. Модели и цены в уроках сверяются со справочником каждую неделю. Что изменилось, видно в <a href="#changelog" onclick="openStaticPage('changelog'); return false;">«Что нового»</a>.</p>
   `;
 }
 
@@ -38176,21 +38315,8 @@ function filterLessons(query) {
   });
 }
 
-function toggleTheme() {
-  const current = document.documentElement.getAttribute('data-theme');
-  const next = current === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  document.getElementById('theme-label').textContent = next === 'dark' ? 'Светлая тема' : 'Тёмная тема';
-  localStorage.setItem(THEME_KEY, next);
-}
-
-// Init
-const savedTheme = localStorage.getItem(THEME_KEY);
-if (savedTheme) {
-  document.documentElement.setAttribute('data-theme', savedTheme);
-  document.getElementById('theme-label').textContent = savedTheme === 'dark' ? 'Светлая тема' : 'Тёмная тема';
-}
-
+// Init (v6: тёмной темы нет — решение 05.10.2026, сайт всегда светлый)
+if (window.V6) V6.install();
 buildNav();
 updateProgressUI();
 
@@ -38213,6 +38339,8 @@ if (hashMatch) {
   openGlossary(glossaryTermHash[1]);
 } else if (staticHash === 'glossary') {
   openGlossary();
+} else if (window.V6 && V6.route(staticHash)) {
+  // роли, задачи, Пути, Знания — v6/v6.js
 } else if (['home', 'about', 'howto', 'faq', 'changelog', 'resources', 'admin', 'my-progress', 'routes', 'trails', 'artifacts'].includes(staticHash)) {
   openStaticPage(staticHash);
 } else {
