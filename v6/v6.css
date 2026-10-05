@@ -799,3 +799,37 @@ body.v6 .lesson-content .v6-page a.v6-kit-i:hover .v6-kit-t { color:var(--accent
 .v6-legacy-view :is(.track-cards, .cl-list, .glossary-terms, .gloss-chips, .gloss-search, .tv-list, .tv-sources) { max-width:none !important; }
 /* поиск по словарю прячет термины inline-стилем; старое правило «display:block !important» его перебивало (баг был и на проде) */
 #lesson-content .glossary-term.gt[style*="display: none"] { display:none !important; }
+
+/* Знания: поиск, вкладки, словарь, библиотека уроков */
+.v6-ksearch input { width:100%; box-sizing:border-box; height:60px; border:0; border-radius:var(--r-pill); background:var(--surface); padding:0 24px; font:inherit; font-size:18px; color:var(--ink); }
+.v6-ksearch input:focus { outline:3px solid var(--accent); outline-offset:2px; }
+.v6-ktabs { display:flex; gap:8px; flex-wrap:wrap; margin:24px 0 32px; border-bottom:1px solid var(--line); }
+.v6-ktab { display:inline-flex; align-items:center; gap:10px; min-height:52px; padding:0 18px; border:0; background:none; font:inherit; font-family:var(--font-display); font-weight:800; font-size:18px; color:var(--text-2); cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-1px; }
+.v6-ktab[aria-selected="true"] { color:var(--ink); border-bottom-color:var(--accent); }
+.v6-ktab .v6-meta { font-family:var(--font-body); font-weight:500; }
+.v6-select { min-height:44px; border:0; border-radius:var(--r-pill); background:var(--surface); padding:0 16px; font:inherit; font-size:16px; color:var(--ink); max-width:100%; }
+.v6-termgrid { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:16px; margin-top:16px; }
+.v6-termrow { background:var(--surface); border-radius:var(--r-md); padding:20px 22px; display:flex; flex-direction:column; gap:8px; scroll-margin-top:calc(var(--header, 80px) + 24px); }
+.v6-termrow.is-now { box-shadow:inset 0 0 0 3px var(--accent); }
+body.v6 .lesson-content .v6-page .v6-termrow h3 { font-family:var(--font-display) !important; font-size:19px !important; font-weight:800 !important; margin:0 !important; }
+.v6-term-en { font-family:var(--font-body); font-weight:400; font-size:15px; color:var(--text-3); letter-spacing:0; }
+.v6-termrow p { margin:0; font-size:16px; line-height:1.5; color:var(--text-2); }
+.v6-termrow .v6-tags { margin-top:4px; }
+.v6-dictarea + .v6-dictarea { margin-top:40px; }
+.v6-lgroup { background:var(--surface); border-radius:var(--r-md); padding:6px 22px; margin-bottom:12px; }
+.v6-lgroup summary { display:flex; justify-content:space-between; align-items:center; gap:16px; min-height:56px; cursor:pointer; list-style:none; }
+.v6-lgroup summary::-webkit-details-marker { display:none; }
+.v6-lgroup[open] summary { border-bottom:1px solid var(--line); margin-bottom:6px; }
+@media (max-width:720px) { .v6-termgrid { grid-template-columns:1fr; } .v6-ktab { font-size:16px; padding:0 10px; } }
+/* термин в тексте урока и подсказка */
+body.v6 .lesson-content .v6-term { all:unset; cursor:help; color:inherit; text-decoration:underline dotted var(--accent); text-decoration-thickness:2px; text-underline-offset:4px; }
+body.v6 .lesson-content .v6-term:focus-visible { outline:3px solid var(--accent); outline-offset:2px; border-radius:4px; }
+.v6-termtip { position:fixed; z-index:400; background:var(--ink, #16161A); color:#fff; border-radius:20px; padding:18px 20px; box-sizing:border-box; display:flex; flex-direction:column; gap:6px; font-family:'Golos Text','PT Sans',system-ui,sans-serif; font-size:15px; line-height:1.45; box-shadow:0 12px 32px rgba(0,0,0,.18); }
+.v6-termtip[hidden] { display:none; }
+.v6-termtip b { font-family:'Montserrat','Arial Black',sans-serif; font-weight:800; font-size:17px; }
+.v6-termtip-en { color:#B9BAC0; font-size:14px; }
+.v6-termtip p { margin:4px 0 0; color:#fff; }
+.v6-termtip-w { color:#B9BAC0; font-size:14px; }
+.v6-termtip a { color:#fff; text-decoration:underline; text-underline-offset:3px; }
+.v6-termtip-go { margin-top:6px; font-weight:600; }
+body.v6 .lesson-content .v6-page h2.v6-fwhead-t { font-size:28px !important; }

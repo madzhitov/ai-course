@@ -634,41 +634,189 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     }, 'paths');
   }
 
-  // ---------- Знания: каталог фреймворков (Knowledge.dc.html) + библиотека, глоссарий, источники ----------
-  const KF = { role: '', label: '' };
+  // ---------- Знания (Knowledge.dc.html): вкладки «Фреймворки · Словарь мира · Уроки», поиск, фильтры ----------
+  // словарь — data/dictionary.json (слит из старого глоссария и 48 стартовых терминов); если файла нет — старый GLOSSARY
+  let DICT = null, dictLoading = null;
+  function loadDict() {
+    if (DICT) return Promise.resolve(DICT);
+    if (!dictLoading) {
+      const legacy = () => ({
+        areas: (typeof GLOSSARY_CATEGORIES !== 'undefined' ? GLOSSARY_CATEGORIES : []).map((c) => ({ id: c.id, title: c.title })),
+        terms: (typeof GLOSSARY !== 'undefined' ? GLOSSARY : []).map((t) => ({ id: t.id, term: t.term, en: null, aliases: t.aliases || [], area: t.category, short: t.short, cards: [], lessons: t.lessons || [] })),
+      });
+      dictLoading = (typeof fetch === 'function' ? fetch('v6/data/dictionary.json').then((r) => (r.ok ? r.json() : Promise.reject())) : Promise.reject())
+        .catch(legacy).then((d) => { DICT = d; return d; });
+    }
+    return dictLoading;
+  }
+  const termById = (id) => DICT && DICT.terms.find((t) => t.id === id);
+
+  const KF = { role: '', label: '', task: '', ind: '' };
+  let KT = 'fw', KQ = '', KTERM = '';
+  const has = (s, q) => String(s || '').toLowerCase().includes(q);
+  const IND = [['marketplaces', 'Маркетплейсы'], ['ecommerce', 'E-commerce'], ['services', 'Услуги'], ['b2b', 'B2B']];
   function fwList() {
     const box = document.getElementById('v6-fwlist');
     if (!box) return;
-    const cards = D.fw.filter((c) => (!KF.role || (c.roles || []).includes(KF.role)) && (!KF.label || c.label === KF.label)).sort(fwSort);
+    const q = KQ.toLowerCase();
+    const cards = D.fw.filter((c) => (!KF.role || (c.roles || []).includes(KF.role)) && (!KF.label || c.label === KF.label)
+      && (!KF.task || [c.task, ...(c.tasks || [])].some((t) => t && String(t).startsWith(KF.task + '.')))
+      && (!KF.ind || !(c.industries || []).length || (c.industries || []).some((i) => i === KF.ind || i === 'any'))
+      && (!q || has(c.title, q) || has(c.solves, q))).sort(fwSort);
     if (!cards.length) { box.innerHTML = '<p class="v6-lead">Под эти фильтры карточек нет.</p>'; return; }
-    if (KF.role) { box.innerHTML = `<div class="v6-fwhead"><span class="v6-fwhead-t">${e(roleName(KF.role))} · в порядке изучения</span><span class="v6-meta">${cards.length} ${plural(cards.length, 'карточка', 'карточки', 'карточек')}</span></div>${fwGrid(cards, 'knowledge')}`; return; }
+    if (KF.role || q) { box.innerHTML = `<div class="v6-fwhead"><span class="v6-fwhead-t">${KF.role ? e(roleName(KF.role)) + ' · в порядке изучения' : 'Найдено'}</span><span class="v6-meta">${cards.length} ${plural(cards.length, 'карточка', 'карточки', 'карточек')}</span></div>${fwGrid(cards, 'knowledge')}`; return; }
     const groups = [...new Set(D.fw.map((c) => c.group))];
     box.innerHTML = groups.map((g) => { const cs = cards.filter((c) => c.group === g); return cs.length ? `<div class="v6-fwhead"><span class="v6-fwhead-t">${e(GROUP_T[g] || g)}</span><span class="v6-meta">${cs.length}</span></div>${fwGrid(cs, 'knowledge')}` : ''; }).join('');
   }
   function kf(k, v) {
     KF[k] = v;
     document.querySelectorAll(`[data-kf="${k}"]`).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === v)));
+    if (k === 'area') { dictList(); return; }
     fwList();
   }
-  function openKnowledge(rid) { KF.role = rid || ''; KF.label = ''; open('knowledge'); }
+  function ksearch(v) { KQ = v.trim(); if (KT === 'fw') fwList(); else if (KT === 'dict') dictList(); else lessonList(); }
+  function ktab(t) { KT = t; KTERM = ''; go(t === 'dict' ? 'dictionary' : t === 'lessons' ? 'knowledge-lessons' : 'knowledge', knowledgePage, 'knowledge'); }
+  function openKnowledge(rid) { KF.role = rid || ''; KF.label = ''; KT = 'fw'; open('knowledge'); }
+  function openDict(termId) { KT = 'dict'; KTERM = termId || ''; KF.area = ''; go(termId ? 'term-' + termId : 'dictionary', knowledgePage, 'knowledge'); }
+
+  // строка термина: название, оригинал, определение, где работает (карточки, уроки)
+  function termRow(t) {
+    const cards = (t.cards || []).map(fwById).filter(Boolean);
+    const ls = (t.lessons || []).map(lessonOf).filter((l) => l && l.content).slice(0, 3);
+    return `<article class="v6-termrow${t.id === KTERM ? ' is-now' : ''}" id="term-${e(t.id)}"><h3>${e(t.term)}${t.en ? ` <span class="v6-term-en">${e(t.en)}</span>` : ''}</h3><p>${e(t.short)}</p>
+      ${cards.length || ls.length ? `<span class="v6-tags">${cards.map((c) => `<a class="v6t is-grey" href="#fw-${e(c.id)}" onclick="V6.openFw('${e(c.id)}','term'); return false;">метод · ${e(c.title)}</a>`).join('')}${ls.map((l) => `<a class="v6t is-grey" href="#lesson-${e(l.id)}" onclick="openLesson(${lessonArg(l.id)}); return false;">урок · ${e(shortLessonLabel(l.title))}</a>`).join('')}</span>` : ''}</article>`;
+  }
+  function dictList() {
+    const box = document.getElementById('v6-dictlist');
+    if (!box || !DICT) return;
+    const q = KQ.toLowerCase();
+    const terms = DICT.terms.filter((t) => (!KF.area || t.area === KF.area) && (!q || [t.term, t.en, t.short, ...(t.aliases || [])].some((x) => has(x, q))));
+    if (!terms.length) { box.innerHTML = '<p class="v6-lead">Такого термина пока нет. Спросите Алёшу: он объяснит и подскажет, где об этом урок.</p>'; return; }
+    box.innerHTML = DICT.areas.map((a) => { const ts = terms.filter((t) => t.area === a.id); return ts.length ? `<section class="v6-dictarea"><div class="v6-fwhead"><h2 class="v6-fwhead-t">${e(a.title)}</h2><span class="v6-meta">${ts.length}</span></div><div class="v6-termgrid">${ts.map(termRow).join('')}</div></section>` : ''; }).join('');
+    if (KTERM) { const el = document.getElementById('term-' + KTERM); if (el) setTimeout(() => el.scrollIntoView({ block: 'center' }), 50); }
+  }
+  function lessonList() {
+    const box = document.getElementById('v6-lessonlist');
+    if (!box) return;
+    const q = KQ.toLowerCase();
+    const row = (id, i) => { const l = lessonOf(id); if (!l || (q && !has(l.title, q))) return null;
+      return { n: typeof l.id === 'number' ? String(l.id) : String(i + 1), t: l.title, c: l.content ? (done(l.id) ? 'пройден ✓' : mins(l.id)) : 'пишется', done: done(l.id), on: l.content ? `openLesson(${lessonArg(l.id)})` : null }; };
+    const m = D.paths.main;
+    const groups = [{ t: 'Главный путь · ' + m.commonStart.title, ids: m.commonStart.lessons }, ...m.levels.map((lv) => ({ t: `Главный путь · уровень ${lv.n} · ${lv.title}`, ids: lv.lessons })),
+      ...(typeof TRACKS !== 'undefined' ? TRACKS : []).map((tr) => ({ t: 'Тропинка · ' + tr.title, ids: TRACK_LESSONS.filter((x) => x.track === tr.id).map((x) => x.id) }))];
+    const html = groups.map((g) => { const rows = g.ids.map(row).filter(Boolean); return rows.length ? `<details class="v6-lgroup"${q ? ' open' : ''}><summary><span class="v6-fwhead-t">${e(g.t)}</span><span class="v6-meta">${rows.length} ${pluralUrok(rows.length)}</span></summary>${rowList(rows)}</details>` : ''; }).join('');
+    box.innerHTML = html || '<p class="v6-lead">Уроков с таким названием нет.</p>';
+  }
+
+  // ---------- термин в тексте урока (components.md: пунктир акцентом, тёмная подсказка 360px) ----------
+  // первое упоминание каждого термина, не больше 15 на урок; не в коде, ссылках, заголовках и собственном глоссарии урока
+  const TERM_MAX = 15;
+  const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  let termIndex = null;
+  function termNames(t) {
+    const out = new Set();
+    const add = (s) => { s = String(s || '').trim(); if (s.length >= 3) out.add(s); };
+    String(t.term).split(/\s+\/\s+/).forEach((p) => { const m = p.match(/^(.*?)\s*\((.+)\)$/); if (m) { add(m[1]); add(m[2]); } else add(p); });
+    (t.aliases || []).forEach(add);
+    return [...out];
+  }
+  function buildTermIndex() {
+    const names = [];
+    DICT.terms.forEach((t) => termNames(t).forEach((n, i) => names.push([n, t.id, i])));
+    // одно написание у двух терминов: выигрывает тот, у кого это название, а не синоним
+    const map = new Map();
+    [...names].sort((a, b) => a[2] - b[2]).forEach(([n, id]) => { if (!map.has(n.toLowerCase())) map.set(n.toLowerCase(), id); });
+    names.sort((a, b) => b[0].length - a[0].length);   // длинные раньше: «контекстное окно» до «контекст»
+    // кириллица — с окончанием до трёх букв (токены, промптов); латиница и аббревиатуры — целиком
+    const parts = names.map(([n]) => (/[а-яё]$/i.test(n) ? escRe(n) + '[а-яё]{0,3}' : escRe(n)));
+    const re = new RegExp(`(?<![\\p{L}\\p{N}])(${parts.join('|')})(?![\\p{L}\\p{N}])`, 'iu');
+    termIndex = { re, find: (s) => { const low = s.toLowerCase(); for (const [k, id] of map) if (low === k || (low.startsWith(k) && /[а-яё]$/.test(k) && low.length - k.length <= 3)) return id; return null; } };
+  }
+  function termify(view) {
+    if (!DICT || !view || view.dataset.terms) return;
+    view.dataset.terms = '1';
+    if (!termIndex) buildTermIndex();
+    const seen = new Set();
+    const skip = (n) => n.parentElement && n.parentElement.closest('a, code, pre, h1, h2, h3, h4, button, dl, .v6-term, .lesson-time-meta, .v6-lcrumbs, .v6-ltags, script, style, textarea');
+    const walker = document.createTreeWalker(view, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.nodeValue.trim().length > 2 && !skip(n) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT) });
+    const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+    for (const node of nodes) {
+      if (seen.size >= TERM_MAX) break;
+      let cur = node;
+      for (let guard = 0; guard < 5 && cur; guard++) {
+        const m = cur.nodeValue.match(termIndex.re); if (!m) break;
+        const id = termIndex.find(m[1]);
+        const at = m.index + m[0].indexOf(m[1]);
+        if (!id || seen.has(id)) { cur = cur.splitText(at + m[1].length); continue; }
+        seen.add(id);
+        const word = cur.splitText(at); const rest = word.splitText(m[1].length);
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'v6-term'; b.dataset.term = id; b.textContent = word.nodeValue;
+        word.replaceWith(b); cur = rest;
+        if (seen.size >= TERM_MAX) break;
+      }
+    }
+  }
+  function termTip(btn) {
+    const t = termById(btn.dataset.term); if (!t) return;
+    let tip = document.getElementById('v6-termtip');
+    if (!tip) { tip = document.createElement('div'); tip.id = 'v6-termtip'; tip.className = 'v6-termtip'; tip.setAttribute('role', 'tooltip'); tip.setAttribute('aria-live', 'polite'); document.body.appendChild(tip); }
+    const cards = (t.cards || []).map(fwById).filter(Boolean).slice(0, 3);
+    tip.innerHTML = `<b>${e(t.term)}</b>${t.en ? `<span class="v6-termtip-en">${e(t.en)}</span>` : ''}<p>${e(t.short)}</p>${cards.length ? `<span class="v6-termtip-w">Где работает: ${cards.map((c) => `<a href="#fw-${e(c.id)}" onclick="V6.openFw('${e(c.id)}','term'); return false;">${e(c.title)}</a>`).join(', ')}</span>` : ''}<a class="v6-termtip-go" href="#term-${e(t.id)}" onclick="V6.openDict('${e(t.id)}'); return false;">В словарь →</a>`;
+    tip.hidden = false;
+    const r = btn.getBoundingClientRect(), w = Math.min(360, innerWidth - 32);
+    tip.style.width = w + 'px';
+    tip.style.left = Math.max(16, Math.min(r.left, innerWidth - w - 16)) + 'px';
+    const below = r.bottom + 10 + tip.offsetHeight < innerHeight - 90;
+    tip.style.top = (below ? r.bottom + 10 : Math.max(90, r.top - tip.offsetHeight - 10)) + 'px';
+    tip.dataset.for = t.id;
+    if (tip.dataset.tracked !== t.id) { tip.dataset.tracked = t.id; track('term-open', { term: t.id }); }
+  }
+  function termHide() { const tip = document.getElementById('v6-termtip'); if (tip) tip.hidden = true; }
+  let termTimer = null;
+  function termEvents() {
+    const isTerm = (x) => x && x.closest && x.closest('.v6-term');
+    const inTip = (x) => x && x.closest && x.closest('#v6-termtip');
+    document.addEventListener('mouseover', (ev) => { const b = isTerm(ev.target); if (b) { clearTimeout(termTimer); termTip(b); } else if (inTip(ev.target)) clearTimeout(termTimer); });
+    document.addEventListener('mouseout', (ev) => { if (isTerm(ev.target) || inTip(ev.target)) { clearTimeout(termTimer); termTimer = setTimeout(termHide, 250); } });
+    document.addEventListener('focusin', (ev) => { const b = isTerm(ev.target); if (b) termTip(b); });
+    document.addEventListener('click', (ev) => { const b = isTerm(ev.target); if (b) { ev.preventDefault(); termTip(b); } else if (!inTip(ev.target)) termHide(); });
+    document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') termHide(); });
+    window.addEventListener('scroll', termHide, { passive: true });
+  }
+
   function knowledgePage() {
     shell('<div class="v6c" id="v6-kn"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
-    load().then(() => {
+    Promise.all([load(), loadDict()]).then(() => {
       const start = fwById('four-part-request');
       const roles = ['seller', 'marketing', 'product', 'project', 'owner', 'all'];
-      const pill = (k, v, t) => `<button type="button" class="v6-pill" data-kf="${k}" data-v="${v}" aria-pressed="${KF[k] === v}" onclick="V6.kf('${k}','${v}')">${t}</button>`;
-      document.getElementById('v6-kn').innerHTML = `<section class="v6-phero"><div class="v6-phero-text"><span class="v6-eyebrow">Знания</span><h1 class="v6-d">Методы, слова и уроки</h1><p class="v6-phero-lead">Фреймворки — каким методом думать о задаче. Глоссарий — что значит слово. Уроки — почему это работает.</p></div>${art('knowledge', 'v6-phero-art')}</section>
-        <section class="v6-psec"><div class="v6-kfilters"><div class="v6-kf"><span class="v6-meta">Роль</span><div class="v6-pills">${pill('role', '', 'Все')}${roles.map((r) => pill('role', r, e(r === 'all' ? 'ИИ для всех' : roleName(r)))).join('')}</div></div>
-          <div class="v6-kf"><span class="v6-meta">Метка</span><div class="v6-pills">${pill('label', '', 'Все')}${['база', 'тренд', 'авторский'].map((l) => pill('label', l, l)).join('')}</div></div></div>
+      const pill = (k, v, t) => `<button type="button" class="v6-pill" data-kf="${k}" data-v="${v}" aria-pressed="${(KF[k] || '') === v}" onclick="V6.kf('${k}','${v}')">${t}</button>`;
+      const dirs = D.groups.flatMap((g) => (g.directions || []).filter((d) => D.fw.some((c) => [c.task, ...(c.tasks || [])].some((t) => t && String(t).startsWith(d.id + '.')))).map((d) => [d.id, `${g.title} · ${d.title}`]));
+      const tab = (t, title, n) => `<button type="button" role="tab" class="v6-ktab" aria-selected="${KT === t}" onclick="V6.ktab('${t}')">${title}<span class="v6-meta">${n}</span></button>`;
+      const nLessons = LESSONS.filter((l) => l.content).length + TRACK_LESSONS.filter((l) => l.content).length;
+      let body = '';
+      if (KT === 'fw') {
+        const preview = DICT.terms.filter((t) => (t.cards || []).length).slice(0, 6);
+        body = `<div class="v6-kfilters"><div class="v6-kf"><span class="v6-meta">Роль</span><div class="v6-pills">${pill('role', '', 'Все')}${roles.map((r) => pill('role', r, e(r === 'all' ? 'ИИ для всех' : roleName(r)))).join('')}</div></div>
+            <div class="v6-kf"><label class="v6-meta" for="v6-kf-task">Задача</label><select id="v6-kf-task" class="v6-select" onchange="V6.kf('task', this.value)"><option value="">Все задачи</option>${dirs.map(([id, t]) => `<option value="${e(id)}"${KF.task === id ? ' selected' : ''}>${e(t)}</option>`).join('')}</select></div>
+            <div class="v6-kf"><span class="v6-meta">Индустрия</span><div class="v6-pills">${pill('ind', '', 'Любая')}${IND.map(([v, t]) => pill('ind', v, t)).join('')}</div></div>
+            <div class="v6-kf"><span class="v6-meta">Метка</span><div class="v6-pills">${pill('label', '', 'Все')}${['база', 'тренд', 'авторский'].map((l) => pill('label', l, l)).join('')}</div></div></div>
           ${start ? `<a class="v6-next v6-dark" style="margin:32px 0 0" href="#fw-${start.id}" onclick="V6.openFw('${start.id}','knowledge'); return false;"><span class="v6-next-in"><span class="v6-next-l">Начните с этого · для всех ролей</span><span class="v6-next-t">${e(start.title)}</span><span class="v6-next-p">Без него не работает ни один промпт в юнитах. Пять минут, и первый ответ ИИ становится рабочим.</span></span><span class="v6b is-accent v6-btn-xl">Открыть</span></a>` : ''}
-          <div id="v6-fwlist"></div></section>
+          <div id="v6-fwlist"></div>
+          ${preview.length ? `<section class="v6-psec"><div class="v6-sec-head"><div><h2 class="v6-psec-h">Словарь мира</h2><p class="v6-meta">${DICT.terms.length} ${plural(DICT.terms.length, 'термин', 'термина', 'терминов')}${DICT.terms.some((t) => t.en) ? ' · с английским оригиналом' : ''}</p></div><button class="v6-link" onclick="V6.ktab('dict')">Весь словарь →</button></div><div class="v6-termgrid">${preview.map(termRow).join('')}</div></section>` : ''}`;
+      } else if (KT === 'dict') {
+        body = `<div class="v6-kf"><span class="v6-meta">Область</span><div class="v6-pills">${pill('area', '', 'Все')}${DICT.areas.filter((a) => DICT.terms.some((t) => t.area === a.id)).map((a) => pill('area', a.id, e(a.title))).join('')}</div></div><div id="v6-dictlist"></div>`;
+      } else {
+        body = `<p class="v6-meta" style="margin:0 0 8px">Все уроки по главному пути и Тропинкам. Отметка «пройден» хранится в этом браузере.</p><div id="v6-lessonlist"></div>`;
+      }
+      document.getElementById('v6-kn').innerHTML = `<section class="v6-phero"><div class="v6-phero-text"><span class="v6-eyebrow">Знания</span><h1 class="v6-d">Методы, слова и уроки</h1><p class="v6-phero-lead">Фреймворки — каким методом думать о задаче. Словарь — что значит слово. Уроки — почему это работает.</p></div>${art('knowledge', 'v6-phero-art')}</section>
+        <section class="v6-psec"><form class="v6-ksearch" role="search" onsubmit="return false"><label class="v6-sr" for="v6-kq">Поиск по знаниям</label><input id="v6-kq" type="search" placeholder="Поиск по знаниям: метод, слово, урок" value="${e(KQ)}" oninput="V6.ksearch(this.value)"></form>
+          <div class="v6-ktabs" role="tablist" aria-label="Разделы знаний">${tab('fw', 'Фреймворки', D.fw.length)}${tab('dict', 'Словарь мира', DICT.terms.length)}${tab('lessons', 'Уроки', nLessons)}</div>
+          <div class="v6-kbody">${body}</div></section>
         <section class="v6-psec"><h2 class="v6-psec-h">Ещё в Знаниях</h2><div class="v6-grid2" style="margin-top:28px">
-          <div class="v6-task"><h3>Библиотека уроков</h3><p>Все уроки курса по уровням и Тропинкам.</p><button class="v6b is-soft is-sm" onclick="openSection('main')">Открыть</button></div>
-          <div class="v6-task"><h3>Глоссарий</h3><p>Термины ИИ простыми словами.</p><button class="v6b is-soft is-sm" onclick="openGlossary()">Открыть</button></div>
           <div class="v6-task"><h3>Источники</h3><p>Курсы, книги и документация, на которых стоят уроки.</p><button class="v6b is-soft is-sm" onclick="openStaticPage('resources')">Открыть</button></div>
           <div class="v6-task"><h3>Нейросети без VPN</h3><p>Живой список: что работает из России, что бесплатно.</p><a class="v6b is-soft is-sm" href="/tools/neyroseti-bez-vpn/">Открыть</a></div>
         </div></section>`;
-      fwList();
+      if (KT === 'fw') fwList(); else if (KT === 'dict') dictList(); else lessonList();
     }).catch(() => fail('v6-kn'));
   }
 
@@ -843,6 +991,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       if (first) wrap.insertBefore(first, wrap.querySelector('.v6-lgrid'));
       const cur = wrap.querySelector('.v6-lstep.is-now');
       if (cur) cur.scrollIntoView({ block: 'nearest' });
+      loadDict().then(() => termify(view)).catch(() => {});
     }).catch(() => {});
   }
 
@@ -1167,10 +1316,14 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
   const PAGES = { roles: rolesPage, tasks: tasksPage, paths: pathsPage, knowledge: knowledgePage, notebook: notebookPage };
   function open(name) {
     if (name === 'home') { openStaticPage('home'); return; }
+    if (name === 'knowledge') { KT = 'fw'; KTERM = ''; }
     go(name, PAGES[name], name);
   }
   function route(hash) {
     if (PAGES[hash]) { open(hash); return true; }
+    if (hash === 'dictionary' || hash === 'glossary') { openDict(); return true; }
+    if (hash === 'knowledge-lessons') { KT = 'lessons'; go(hash, knowledgePage, 'knowledge'); return true; }
+    let t = hash.match(/^(?:term|glossary)-(.+)$/); if (t) { openDict(t[1]); return true; }
     let m = hash.match(/^role-([a-z]+)$/); if (m) { openRole(m[1], 'link'); return true; }
     m = hash.match(/^task-([a-z0-9.-]+)$/); if (m) { openTask(m[1], 'link'); return true; }
     if (hash === 'path-seller') { openSellerPath('link'); return true; }
@@ -1219,7 +1372,9 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     prevVisit = ls.get(KEY.last);
     ls.set(KEY.last, new Date().toISOString());
     // уход на урок, раздел, глоссарий, квиз — снять оболочку v6
-    ['openLesson', 'openSection', 'openGlossary', 'openQuiz'].forEach((fn) => {
+    window.openGlossary = (termId) => openDict(termId);
+    termEvents();   // старый глоссарий → Словарь мира в Знаниях
+    ['openLesson', 'openSection', 'openQuiz'].forEach((fn) => {
       const orig = window[fn];
       if (typeof orig !== 'function') return;
       window[fn] = function () { setPage(false, null); const r = orig.apply(this, arguments); if (fn === 'openLesson') firstVisitNote(arguments[0]); return r; };
@@ -1268,5 +1423,5 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     });
   }
 
-  window.V6 = { install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, openKnowledge, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
+  window.V6 = { install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, openKnowledge, openDict, ktab, ksearch, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
 })();
