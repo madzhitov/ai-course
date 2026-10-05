@@ -181,7 +181,7 @@
     const qs = stems(q);
     const score = (title) => { const t = norm(title); return qs.reduce((n, w) => n + (t.includes(w) ? 1 : 0), 0); };
     const items = [];
-    Object.values(D.tasks).forEach((t) => { if (t.group === 'seller' && t.status !== 'soon') items.push({ s: score(t.title) + 0.5, html: `<button type="button" onclick="V6.openTask('${e(t.id)}','search')"><span>${e(t.title)}</span><span class="v6t is-sm">задача</span></button>` }); });
+    Object.values(D.tasks).forEach((t) => { if (taskReady(t.id)) items.push({ s: score(t.title) + 0.5, html: `<button type="button" onclick="V6.openTask('${e(t.id)}','search')"><span>${e(t.title)}</span><span class="v6t is-sm">задача</span></button>` }); });
     [...LESSONS, ...TRACK_LESSONS].filter((l) => l.content).forEach((l) => items.push({ s: score(l.title), html: `<button type="button" onclick="openLesson(${lessonArg(l.id)})"><span>${e(l.title)}</span><span class="v6-meta">урок ${e(l.id)}</span></button>` }));
     const hits = items.filter((x) => x.s >= 1).sort((a, b) => b.s - a.s).slice(0, 6);
     out.hidden = false;
@@ -190,31 +190,9 @@
     track('search', { results: hits.length ? '1+' : '0' });
     return false;
   }
-  const askForm = (id) => `<form class="v6-ask" onsubmit="return V6.ask(this)" role="search">
-      <label for="${id}">Опишите задачу</label>
-      <input id="${id}" type="text" placeholder="Опишите задачу своими словами" autocomplete="off">
-      <button class="v6b" type="submit">Подобрать</button>
-    </form><div class="v6-results" hidden aria-live="polite"></div>`;
 
-  function chips() {
-    const c = [
-      ['Ответить на отзывы', taskMins('seller.customers.reviews'), "V6.openTask('seller.customers.reviews','home')"],
-      ['Резюме под вакансию', mins('e5'), "openLesson('e5')"],
-      ['Разобрать договор', mins('e10'), "openLesson('e10')"],
-      ['Бот за час', mins('p1'), "openLesson('p1')"],
-    ];
-    return `<div class="v6-chips">${c.map(([t, m, on]) => `<button type="button" class="v6-chip" onclick="${on}">${t}${m ? ` <span>${m}</span>` : ''}</button>`).join('')}</div>`;
-  }
 
 const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<span class="v6-role-thumb" aria-hidden="true"><img src="${artSrc(n)}" alt="" loading="lazy"></span>` : '<span class="v6-role-thumb is-empty" aria-hidden="true"></span>'; };
-  function whoRows(limit) {
-    const pick = limit ? ['seller', 'creator', 'self', 'product'] : D.roles.map((r) => r.id);
-    return pick.map((id) => {
-      const r = role(id);
-      const title = (limit && id === 'product') ? 'Продакт или проджект' : r.title;
-      return `<button type="button" class="v6-role-row has-thumb" onclick="V6.chooseRole('${r.id}','home')">${roleThumb(r.id)}<span><b>${e(title)}${r.isNew ? ' <span class="v6t is-sm">новое</span>' : ''}</b><small>${e(r.description)}</small></span>${CHEV}</button>`;
-    }).join('');
-  }
 
   // ---------- состояния главной (ia/states.md) ----------
   let prevVisit = null;
@@ -243,53 +221,115 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     return null;
   }
 
-  function pathsBlock() {
-    const lv = D.paths.main.levels;
-    const cs = D.paths.main.commonStart.lessons;
-    const cnt = (ids) => `${ids.filter(done).length}/${ids.length}`;
-    const r = resume();
-    const curIn = (ids) => ids.map(String).includes(String(r.id));
-    const mainRow = (n, title, ids) => ({ n, t: title, c: (curIn(ids) ? 'сейчас · ' : '') + cnt(ids), now: curIn(ids), on: "V6.open('paths')" });
-    const sp = D.paths.rolePaths.find((p) => p.role === 'seller');
-    const stageCnt = (st) => `${st.steps.filter(stepDone).length}/${st.steps.length}`;
-    const card = (img, label, title, rows, foot) => `<article class="v6-pcard">${art(img)}<div class="v6-pcard-in"><span class="v6-pcard-label">${label}</span><h3>${e(title)}</h3>${rowList(rows)}<span class="v6-pcard-foot">${foot}</span></div></article>`;
-    const dataCard = (key, fn) => { const x = dataPath(key); return card(x.art, x.label, x.title, x.stages.map((st, i) => ({ n: ROMAN[i] + '.', t: st.title, c: `${st.tasks.filter((t) => taskReady(t.id)).length}/${st.tasks.length}`, on: `V6.${fn}('home')` })), 'собирается · готовые задачи этапа'); };
-    return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Пути</h2><p>Общий старт для всех, потом каждый идёт своей дорогой: главный путь или путь своей роли.</p></div>
-      <div class="v6-pathgrid">
-        ${card('main-path', 'Для всех', D.paths.main.title, [mainRow('I.', 'Общий старт · база ИИ', cs), mainRow('II.', lv[0].title, lv[0].lessons), mainRow('III.', lv[1].title, lv[1].lessons)], `${lv.length} уровня · каждый замыкается Вехой`)}
-        ${card('seller-path', 'Продаю онлайн', sp.title, sp.stages.map((st, i) => ({ n: ROMAN[i] + '.', t: st.title, c: stageCnt(st), on: "V6.openSellerPath('home')" })), `${sp.stages.length} этапа · ${sp.stages.filter((x) => x.milestone).length} Вехи`)}
-        ${dataCard('product', 'openProductPath')}
-        ${dataCard('marketing', 'openMarketingPath')}
-      </div></section>`;
+
+
+
+
+
+  const askForm = (id) => `<form class="v6-ask" onsubmit="return V6.ask(this)" role="search">
+      <label for="${id}">Опишите задачу</label>
+      <input id="${id}" type="text" placeholder="Опишите задачу своими словами" autocomplete="off">
+      <button class="v6b" type="submit">Подобрать</button>
+    </form><div class="v6-results" hidden aria-live="polite"></div>`;
+  // ---------- витрина «Вы уносите» на главной (data/home-examples.json — условные примеры, TODO: реальные выходы задач) ----------
+  let HX = null, hxTab = 'unit';
+  const loadHX = () => (HX ? Promise.resolve(HX) : fetch('v6/data/home-examples.json').then((r) => (r.ok ? r.json() : { tabs: [] })).catch(() => ({ tabs: [] })).then((d) => { HX = d; return d; }));
+  function showOpen(t) {
+    const u = t.unit && unitById(t.unit);
+    if (hasSteps(u)) return `V6.openUnit('${e(u.id)}','home-show')`;
+    if (t.task && D.tasks[t.task]) return `V6.openTask('${e(t.task)}','home-show')`;
+    return t.lesson ? `openLesson(${lessonArg(t.lesson)})` : "V6.open('tasks')";
+  }
+  function showPanel(t) {
+    if (t.type === 'bars') return `<div class="v6-bars">${t.rows.map((r) => `<div class="v6-bar${r.negative ? ' is-neg' : ''}"><span class="v6-bar-h"><b>${e(r.name)}</b><b class="v6-bar-v">${e(r.value)}</b></span><span class="v6-bar-t"><i style="width:${Number(r.pct) || 0}%"></i></span></div>`).join('')}
+        ${t.alesha ? `<p class="v6-show-al"><span class="v6-ava is-sq">А</span><span>${e(t.alesha)}</span></p>` : ''}</div>`;
+    if (t.type === 'reviews') return `<div class="v6-show-list">${t.items.map((x) => `<div class="v6-show-item"><span class="v6-show-q"><span class="v6-stars" aria-label="оценка ${x.stars} из 5">${'★'.repeat(x.stars)}${'☆'.repeat(5 - x.stars)}</span><span>«${e(x.quote)}»</span></span><p>${e(x.answer)}</p></div>`).join('')}<p class="v6-meta">${e(t.note || '')}</p></div>`;
+    if (t.type === 'resume') return `<div class="v6-show-list"><div class="v6-show-item"><span class="v6-show-q"><b>${e(t.name)}</b><span>${e(t.role)}</span>${t.pill ? `<span class="v6-pill-s">${e(t.pill)}</span>` : ''}</span><ul>${t.points.map((x) => `<li>${e(x)}</li>`).join('')}</ul></div><p class="v6-meta">${e(t.note || '')}</p></div>`;
+    if (t.type === 'contract') return `<div class="v6-show-list"><p class="v6-meta" style="margin:0">${e(t.doc || '')}</p>${t.items.map((x) => `<div class="v6-show-item"><span class="v6-show-q"><b>${e(x.where)}</b><span>${e(x.risk)}</span></span><p>${e(x.ask)}</p></div>`).join('')}<p class="v6-meta">${e(t.note || '')}</p></div>`;
+    return '';
+  }
+  function showcase() {
+    const tabs = (HX && HX.tabs) || [];
+    if (!tabs.length) return '';
+    const t = tabs.find((x) => x.id === hxTab) || tabs[0];
+    const u = t.unit && unitById(t.unit);
+    const time = u && u.minutes ? `${u.minutes} мин` : '';
+    return `<div class="v6-tabs" role="group" aria-label="Примеры задач">${tabs.map((x) => `<button type="button" class="v6-tab" aria-pressed="${x.id === t.id}" onclick="V6.showTab('${e(x.id)}')">${e(x.label)}</button>`).join('')}</div>
+      <div class="v6-show-top"><span class="v6-meta">Вы уносите</span><span class="v6-pill-s">пример${time ? ' · ' + time : ''}</span></div>
+      <p class="v6-show-take">${e(t.take)}</p>
+      ${showPanel(t)}
+      <span><button class="v6b is-accent v6-btn-lg" onclick="${showOpen(t)}">Открыть задачу →</button></span>`;
+  }
+  function showTab(id) { hxTab = id; const el = document.getElementById('v6-show'); if (el) { el.innerHTML = showcase(); const b = el.querySelector('.v6-tab[aria-pressed="true"]'); if (b) b.focus(); } track('home-show', { tab: id }); }
+
+
+  // ---------- главная v2: «Приносите задачу» и «Кто вы?» (задания ролей — из данных) ----------
+  function howBlock() {
+    const n = D.units.filter(hasSteps).length;
+    const card = (ico, t, p, acc) => `<div class="v6-how-c"><span class="v6-how-i${acc ? ' is-acc' : ''}" aria-hidden="true">${ico}</span><h3>${t}</h3><p>${p}</p></div>`;
+    return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Приносите задачу.<br>Уносите готовую&nbsp;вещь.</h2><p>Каждая задача собрана заранее. Думать, с чего начать, не нужно: всё уже лежит внутри.</p></div>
+      <div class="v6-how">
+        ${card('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 7h14M5 12h10M5 17h7"/></svg>', 'Готовый промпт', 'Написан под задачу, а не «в общем». Копируете, подставляете своё.')}
+        ${card('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 10h16M10 10v10"/></svg>', 'Шаблон', 'Где нужно: таблица, калькулятор или документ. Результат остаётся у вас.')}
+        ${card('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>', 'Чек-лист', 'Три-пять пунктов, по которым видно, что вышло хорошо.')}
+        ${card('А', 'Сверка с Алёшей', 'Застряли или получилось почти: Алёша подскажет, что поправить. На Вехах сверит работу по рубрике.', true)}
+      </div>
+      <p class="v6-how-f"><button class="v6b is-soft" onclick="V6.open('tasks')">Все ${n} ${plural(n, 'задание', 'задания', 'заданий')}</button><span class="v6-meta">обычно до часа</span></p></section>`;
+  }
+  function whoBlock2() {
+    const feat = ((HX && HX.tabs) || []).map((t) => t.unit);
+    const roles = [['seller', 'Маркетплейсы и свои каналы'], ['creator', 'Боты, приложения, агенты'], ['self', 'Еда, дети, поездки, документы'], ['product', 'Исследования, приоритеты, документация']];
+    const cards = roles.map(([id, sub]) => {
+      const r = role(id); if (!r) return '';
+      const us = r.taskGroup ? D.units.filter((u) => hasSteps(u) && D.tasks[u.task] && D.tasks[u.task].group === r.taskGroup) : [];
+      us.sort((a, b) => ((feat.indexOf(b.id) >= 0) - (feat.indexOf(a.id) >= 0)) || (feat.indexOf(a.id) - feat.indexOf(b.id)));
+      const rows = us.slice(0, 3).map((u) => `<a class="v6-who2-t" href="#unit-${e(u.id)}" onclick="V6.openUnit('${e(u.id)}','home-role'); return false;"><span>${e(D.tasks[u.task].title)}</span><span class="v6-meta">${u.minutes ? u.minutes + ' мин' : ''}</span></a>`).join('');
+      return `<article class="v6-who2-c"><a class="v6-who2-h" href="#role-${id}" onclick="V6.openRole('${id}','home'); return false;">${ART_WEBP.has('role-' + id) ? `<span class="v6-who2-img"><img src="${artSrc('role-' + id)}" alt="" loading="lazy"></span>` : ''}<b>${e(id === 'product' ? 'Продакт или проджект' : r.title)}</b><span class="v6-meta">${e(sub)}</span></a>
+        <div class="v6-who2-l">${rows || '<span class="v6-meta">Задачи собираются</span>'}</div></article>`;
+    }).join('');
+    return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Кто вы?</h2><p>Выберите роль, и сначала покажем задачи, которые нужны именно вам.</p></div>
+      <div class="v6-who2">${cards}</div><p class="v6-how-f"><button class="v6-link" onclick="V6.open('roles')">Все роли: маркетолог, специалист, владелец бизнеса →</button></p></section>`;
   }
 
-  function oftenBlock() {
-    const rv = D.tasks['seller.customers.reviews'];
-    const ru = unitsOf(rv.id).find((u) => u.result) || {};
-    const e5 = lessonOf('e5'), p1 = lessonOf('p1');
-    const card = (title, text, tags, on) => `<div class="v6-task"><h3>${e(title)}</h3><p>${e(text)}</p><div class="v6-tags">${tags.map((t) => `<span class="v6t">${e(t)}</span>`).join('')}</div><button class="v6b is-soft v6-task-btn" onclick="${on}">Открыть задачу</button></div>`;
-    return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Часто делают</h2><button class="v6-link" onclick="V6.open('tasks')">Все задачи →</button></div>
-      <div class="v6-grid3">
-        ${card('Ответить на отзывы пачкой', ru.result || '', ['Продаю онлайн', taskMins(rv.id), ru.noVpn ? 'без VPN' : ''].filter(Boolean), "V6.openTask('seller.customers.reviews','home')")}
-        ${card('Подготовить резюме под вакансию', e5 ? e5.title : '', ['Для себя', mins('e5')].filter(Boolean), "openLesson('e5')")}
-        ${card('Собрать Telegram-бота за час', p1 ? p1.title : '', ['Создаю на ИИ', mins('p1')].filter(Boolean), "openLesson('p1')")}
-      </div></section>`;
+  // ---------- главная v2, этап 3: обучение (пути, уроки), методы, «Что нового» и компании ----------
+  function learnBlock() {
+    const nLessons = [...LESSONS, ...TRACK_LESSONS].filter((l) => l.content).length;
+    const nTrails = (D.paths.trails || []).length;
+    const big = (img, label, title, text, on) => `<a class="v6-learn-c" href="#" onclick="${on}; return false;"><span class="v6-learn-img"><img src="${artSrc(img)}" alt="" loading="lazy"></span><span class="v6-learn-b"><span class="v6-meta">${label}</span><b>${title}</b><span>${text}</span><span class="v6-learn-go">Идти →</span></span></a>`;
+    const small = (title, text, on) => `<a class="v6-learn-s" href="#" onclick="${on}; return false;"><span><b>${title}</b><span class="v6-meta">${text}</span></span><span class="v6-meta">собирается</span></a>`;
+    const trails = (D.paths.trails || []).map((t) => `<a href="#section-${e(t.id)}" onclick="openSection('${e(t.id)}'); return false;">${e(t.title)}</a>`).join('');
+    return `<section class="v6-sec"><div class="v6-sec-head"><div><span class="v6-eyebrow">Обучение</span><h2 class="v6-h2" style="margin-top:16px !important">Когда захочется глубже</h2></div><p>Задачи дают результат сегодня. Уроки и пути дают навык: от первых промптов до своих приложений на ИИ. Каждый уровень замыкается Вехой, вещью, которую вы собрали сами.</p></div>
+      <div class="v6-learn-facts"><span><b>${nLessons}</b> ${pluralUrok(nLessons)} с практикой</span><span><b>${nTrails}</b> ${plural(nTrails, 'тропинка', 'тропинки', 'тропинок')} по интересам</span><span><b>Алёша</b> объяснит урок на вашем примере</span>
+        <span class="v6-btns"><button class="v6b is-accent" onclick="openLesson(1)">Начать с урока 1</button><button class="v6b is-soft" onclick="V6.ktab('lessons')">Все уроки</button></span></div>
+      <div class="v6-learn">
+        ${big('main-path', 'Для всех', e(D.paths.main.title), 'Начинается с общей базы ИИ: пять уроков. Дальше четыре уровня, от пользователя до инженера.', "V6.openMainPath('home')")}
+        ${big('seller-path', 'Продаю онлайн', 'От селлера к бренду', 'Паспорт товара, своя база, P&amp;L магазина. Три этапа, три Вехи.', "V6.openSellerPath('home')")}
+      </div>
+      <div class="v6-learn-row">
+        ${small('Путь продакта', 'исследование, приоритеты, метрики, управление работой', "V6.openProductPath('home')")}
+        ${small('Путь маркетолога', 'аудитория, воронка, контент, измерение эффекта', "V6.openMarketingPath('home')")}
+      </div>
+      ${trails ? `<p class="v6-roleline" style="margin-top:20px"><span>Тропинки рядом с путём:</span>${trails}</p>` : ''}</section>`;
   }
-
-  function newsBlock(since) {
-    const items = (CHANGELOG || []).filter((c) => !since || c.date > since).slice(0, since ? 5 : 3);
-    if (!items.length) return '';
-    return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Что нового</h2><button class="v6-link" onclick="openStaticPage('changelog')">Все изменения →</button></div>
-      <div class="v6-card"><ul class="v6-rows v6-news">${items.map((c) => `<li><span class="n" style="grid-column:span 1">${e(fmtDateRu(c.date))}</span><span style="grid-column:span 2">${e(stripEmoji(c.title))}</span></li>`).join('')}</ul></div></section>`;
+  function methodsBlock2() {
+    const n = D.fw.length;
+    const pick = ['unit-economics-sku', 'jtbd', 'rfm', 'okr'].map(fwById).filter(Boolean);
+    const show = pick.length === 4 ? pick : D.fw.filter((c) => c.full).slice(0, 4);
+    return `<section class="v6-sec v6-meth2"><div><h2 class="v6-h2">${n} ${plural(n, 'метод', 'метода', 'методов')} под капотом</h2>
+        <p>Под каждой задачей лежит метод из книги или исследования, не пересказ. Захотите разобраться, почему так, откройте его карточку: там калькулятор или готовый запрос.</p>
+        <button class="v6-link" onclick="V6.open('knowledge')">Все методы и словарь мира →</button></div>
+      <div class="v6-meth2-c">${show.map((c) => `<a class="v6-chip2" href="#fw-${e(c.id)}" onclick="V6.openFw('${e(c.id)}','home'); return false;">${e(c.title)}</a>`).join('')}<span class="v6-chip2 is-more">и ещё ${n - show.length}</span></div></section>`;
   }
-
-  const companies = () => `<section class="v6-sec"><div class="v6-dark v6-companies"><div><span class="v6-meta" style="font-size:17px;color:#C9CACF">Для компаний</span><h2 class="v6-h2" style="margin-top:16px !important">ИИ для вашей команды</h2></div>
-      <div><p>Сотрудники учатся бесплатно по ролям. Агентство подключается, когда нужно обучение с ведущим или внедрение под ключ.</p><button class="v6b is-accent" onclick="V6.open('companies')">Форматы для команд</button></div></div></section>`;
-
+  function newsCo() {
+    const items = (CHANGELOG || []).slice(0, 3);
+    return `<section class="v6-sec v6-newsco"><div><div class="v6-sec-head" style="margin-bottom:16px"><h2 class="v6-h3" style="font-family:var(--font-display);font-weight:800">Что нового</h2><button class="v6-link" onclick="openStaticPage('changelog')">Все изменения →</button></div>
+        <ul class="v6-rows v6-news">${items.map((c) => `<li><span class="n">${e(fmtDateRu(c.date))}</span><span style="grid-column:span 2">${e(stripEmoji(c.title))}</span></li>`).join('')}</ul></div>
+      <div class="v6-newsco-r"><p>Если это нужно всей команде, соберём такую же тропу под вашу компанию.</p><button class="v6-link" onclick="V6.open('companies')">Для компаний →</button></div></section>`;
+  }
   function home() {
     setPage(true, null);
     const el = shell('<div class="v6c" id="v6-home"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
-    load().then(() => {
+    Promise.all([load(), loadHX()]).then(() => {
       const st = homeState();
       track('home-state', { state: st });
       const r = resume();
@@ -317,20 +357,18 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
             : bar(`Ваша роль: ${e(rr.title)}`, 'Готовые уроки роли пройдены', `<button class="v6b is-soft is-sm" onclick="V6.open('roles')">Другие роли</button>`);
         }
       }
-      const nFw = D.fw.length, nUnits = D.units.filter(hasSteps).length;
-      const top = `${strip}<div class="v6-hero"><div>
-          <span class="v6-eyebrow">Артефакты, а не сертификаты <span>бесплатно, на русском</span></span>
-          <h1 class="v6-d v6-home-h1">Методы для бизнеса и&nbsp;для&nbsp;себя. С&nbsp;ИИ за&nbsp;час</h1>
-          <p class="v6-lead">База знаний, где каждое знание сразу превращается в дело. ${nFw} ${plural(nFw, 'метод', 'метода', 'методов')} из книг и исследований: юнит-экономика, JTBD, RFM, OKR и другие. Выберите задачу, пройдите её по шагам с готовым промптом и ИИ-наставником и унесите готовую вещь: таблицу, текст, план, бота.</p>
-          <div class="v6-usp">
-            <div><b>Методы из первоисточников</b><span>Не пересказы, а книги и исследования. В карточке метода калькулятор или готовый запрос.</span></div>
-            <div><b>Задача, а не курс</b><span>${nUnits} ${plural(nUnits, 'задача', 'задачи', 'задач')} по шагам, до часа каждая. Проверка по чек-листу, результат остаётся у вас.</span></div>
-            <div><b>Работает в России</b><span>Первыми идут сервисы без VPN. Бесплатно и без регистрации.</span></div>
-          </div>
-          <span class="v6-btns" style="margin-top:28px"><button class="v6b is-accent v6-btn-lg" onclick="V6.open('tasks')">Выбрать задачу</button><button class="v6b is-soft v6-btn-lg" onclick="V6.open('knowledge')">Все методы</button></span>
-          <div style="margin-top:28px">${askForm('v6-ask-a')}${chips()}</div>
-        </div><div class="v6-who"><h2>Кто вы?</h2>${whoRows(true)}<button class="v6-quiet" onclick="V6.open('roles')">Все роли: маркетолог, специалист, владелец бизнеса →</button></div></div>`;
-      document.getElementById('v6-home').innerHTML = top + pathsBlock() + oftenBlock() + newsBlock() + companies();
+      const top = `${strip}<section class="v6-hero2">
+        <div class="v6-hero2-l">
+          <span class="v6-badge"><b>Бесплатно</b> · на русском · сервисы без VPN</span>
+          <h1 class="v6-d v6-home-h1">Готовые решения для&nbsp;работы и&nbsp;для&nbsp;себя.</h1>
+          <p class="v6-hero2-lead">Выберите задачу, подставьте свои данные и через час заберите результат: таблицу, текст, план или бота. Промпт и чек-лист уже внутри, где нужно, есть шаблон.</p>
+          <form class="v6-hask" onsubmit="return V6.ask(this)" role="search"><label for="v6-hask-in">Какая у вас задача?</label>
+            <span class="v6-hask-row"><input id="v6-hask-in" type="text" placeholder="например, ответить на 40 отзывов" autocomplete="off"><button class="v6b is-accent" type="submit">Подобрать</button></span></form><div class="v6-results" hidden aria-live="polite"></div>
+          <p class="v6-roleline"><span>Или начните с роли:</span>${[['seller', 'продаю онлайн'], ['creator', 'создаю на ИИ'], ['self', 'для себя'], ['product', 'продакт или проджект']].map(([id, t]) => `<a href="#role-${id}" onclick="V6.openRole('${id}','home'); return false;">${t}</a>`).join('')}</p>
+        </div>
+        <div class="v6-show" id="v6-show">${showcase()}</div>
+      </section>`;
+      document.getElementById('v6-home').innerHTML = top + howBlock() + whoBlock2() + learnBlock() + methodsBlock2() + newsCo();
     }).catch(() => fail('v6-home'));
     return el;
   }
@@ -1477,5 +1515,5 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     });
   }
 
-  window.V6 = { install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, fwPrint, openKnowledge, openDict, ktab, ksearch, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
+  window.V6 = { install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, fwPrint, showTab, openKnowledge, openDict, ktab, ksearch, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
 })();

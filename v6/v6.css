@@ -106,21 +106,21 @@ html:root { --header:80px; } /* старый каркас отступает о�
 @media (max-width:720px) { .v6f-in { grid-template-columns:1fr 1fr; } .v6f-in > div:first-child { grid-column:1 / -1; } }
 
 /* hero главной */
-.v6-hero { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:56px; padding-top:56px; align-items:start; }
-.v6-hero h1 { margin-top:24px !important; }
-.v6-ask { display:flex; gap:10px; margin-top:32px; max-width:620px; }
-.v6-ask label { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
-.v6-ask input { flex:1; min-width:0; min-height:var(--h-btn); border:0; border-radius:var(--r-sm); background:var(--surface); padding:0 20px; font:inherit; font-size:18px; color:var(--ink); }
-.v6-ask input::placeholder { color:var(--text-3); }
-.v6-chips { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
-.v6-chip { display:inline-flex; align-items:center; gap:8px; min-height:var(--h-btn-sm); padding:0 16px; border-radius:var(--r-pill); background:var(--surface); border:0; font:inherit; font-size:16px; color:var(--ink); cursor:pointer; }
-.v6-chip span { color:var(--text-3); font-size:14px; }
-.v6-chip:hover { background:var(--accent-tint); }
+
+
+
+
+
+
+
+
+
+
 .v6-results { margin-top:16px; max-width:620px; background:var(--surface); border-radius:var(--r-md); padding:8px 20px; }
 .v6-results[hidden] { display:none; }
 .v6-results a, .v6-results button { display:flex; justify-content:space-between; gap:16px; align-items:center; width:100%; min-height:52px; border:0; border-bottom:1px solid var(--line); background:none; font:inherit; color:var(--ink); text-align:left; cursor:pointer; text-decoration:none; }
 .v6-results a:last-child, .v6-results button:last-child { border-bottom:0; }
-.v6-who h2 { font-family:var(--font-display); font-weight:800; font-size:var(--fs-h4); margin:8px 0 16px; }
+
 .v6-role-row { display:flex; justify-content:space-between; align-items:center; gap:16px; width:100%; padding:22px 24px; margin-bottom:10px; background:var(--surface); border-radius:var(--r-md); border:0; font:inherit; color:var(--ink); text-align:left; cursor:pointer; }
 .v6-role-row:hover { box-shadow:inset 0 0 0 2px var(--accent); }
 .v6-role-row b { display:block; font-size:20px; font-weight:600; }
@@ -198,15 +198,15 @@ html:root { --header:80px; } /* старый каркас отступает о�
 .v6-first button { background:none; border:0; font-size:22px; color:#5A5B63; cursor:pointer; min-width:44px; min-height:44px; }
 
 @media (max-width:980px) {
-  .v6-hero, .v6-role-hero { grid-template-columns:1fr; gap:40px; }
+   .v6-role-hero { grid-template-columns:1fr; gap:40px; }
   .v6-grid3 { grid-template-columns:1fr; }
   .v6-dirs, .v6-grid2 { grid-template-columns:1fr; }
 }
 @media (max-width:720px) {
   .v6-sec { margin-top:72px; }
-  .v6-hero { padding-top:32px; }
-  .v6-ask { flex-direction:column; }
-  .v6-ask .v6b { width:100%; }
+
+
+
   .v6-dark { padding:28px; border-radius:28px; }
   .v6-card, .v6-task, .v6-dir, .v6-way { padding:24px; border-radius:24px; }
   .v6-role-hero .v6-ph { height:220px; }
@@ -218,7 +218,7 @@ html:root { --header:80px; } /* старый каркас отступает о�
 .v6-page .v6-crumbs a { min-height:var(--h-btn-sm) !important; }
 @media (max-width:720px) {
   .v6-eyebrow span { display:none; }
-  .v6-hero h1 { margin-top:20px !important; }
+
 }
 .v6-page .v6-rows a { display:inline-flex !important; align-items:center; min-height:var(--h-btn-sm) !important; }
 
@@ -281,18 +281,18 @@ body.v6 .lesson-content .v6-page .v6-dr.is-soon { color:var(--text-3); }
    и иначе перебивают (.lesson-content h1/h2/h3 c !important). */
 body.v6 .lesson-content .v6-page h1.v6-d { font-size:clamp(48px, 6vw, 88px) !important; line-height:.98 !important; letter-spacing:-0.035em !important; font-weight:800 !important; }
 body.v6 .lesson-content .v6-page h2.v6-h2 { font-size:clamp(40px, 4.6vw, 64px) !important; line-height:1 !important; letter-spacing:-0.035em !important; font-weight:800 !important; }
-body.v6 .lesson-content .v6-hero .v6-lead { font-size:22px; line-height:1.45; max-width:520px; }
+
 .v6-sec-head > p, .v6-sec-head div > p { font-size:19px; line-height:1.5; color:var(--text-2); max-width:440px; margin:0; }
 body.v6 .lesson-content .v6-sec-head .v6-link { font-size:18px; font-weight:400; color:var(--text-2); text-decoration:underline; text-underline-offset:4px; }
 /* поле задачи: белая плашка, внутри поле и кнопка */
-.v6-ask { gap:8px; padding:8px; background:var(--surface); border-radius:22px; max-width:580px; margin-top:32px; box-sizing:border-box; }
-.v6-ask input { background:transparent; border-radius:0; padding:0 16px; height:56px; min-height:56px; }
-.v6-ask .v6b { height:56px; padding:0 26px; border-radius:16px; font-size:18px; }
-.v6-chip { height:44px; padding:0 16px; }
-.v6-chip span { color:var(--text-3); }
+
+
+
+
+
 /* «Кто вы?» */
-body.v6 .lesson-content .v6-page .v6-who h2 { font-family:var(--font-display) !important; font-size:24px !important; font-weight:700 !important; letter-spacing:normal !important; margin:0 0 6px !important; padding:0 4px 6px !important; }
-body.v6 .lesson-content .v6-who .v6-quiet { font-size:17px; color:var(--text-2); padding:10px 4px; }
+
+
 /* карточки путей: иллюстрация сверху, строки — ссылки */
 .v6-pcard { background:var(--surface); border-radius:var(--r-lg); display:flex; flex-direction:column; }
 .v6-art { height:260px; background:var(--placeholder); border-radius:28px; margin:12px 12px 0; overflow:hidden; display:flex; align-items:center; justify-content:center; }
@@ -905,10 +905,112 @@ body.v6 .lesson-content .v6-page .v6-lsheet .lesson-view a:not(.v6b):not(.v6t) {
 .v6-resume .v6-meta { color:var(--on-dark-2); }
 .v6-resume b { font-family:var(--font-display); font-weight:800; font-size:20px; line-height:1.25; }
 .v6-resume .v6b.is-soft { background:var(--surface-dark-2); color:var(--on-dark); }
-.v6-usp { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:28px; }
-.v6-usp div { background:var(--surface); border-radius:20px; padding:16px 18px; display:flex; flex-direction:column; gap:6px; }
-.v6-usp b { font-family:var(--font-display); font-weight:800; font-size:17px; line-height:1.25; }
-.v6-usp span { font-size:15px; line-height:1.45; color:var(--text-2); }
-@media (max-width:900px) { .v6-usp { grid-template-columns:1fr; } }
-body.v6 .lesson-content .v6-page h1.v6-d.v6-home-h1 { font-size:clamp(38px,3.7vw,56px) !important; line-height:1.02 !important; }
-.v6-hero .v6b.is-soft { background:var(--surface); }
+
+
+
+
+
+
+/* главная v2: первый экран «Готовые решения» и витрина «Вы уносите» */
+.v6 { --neg-text:#A3470F; --neg-bar:#C2672E; }
+.v6-hero2 { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:48px 56px; align-items:start; padding-top:56px; }
+.v6-hero2-l { display:flex; flex-direction:column; gap:24px; min-width:0; }
+.v6-badge { align-self:flex-start; padding:8px 14px; border-radius:999px; background:var(--surface); font-size:14px; color:var(--text-2); }
+.v6-badge b { color:var(--ink); font-weight:600; }
+body.v6 .lesson-content .v6-page h1.v6-d.v6-home-h1 { font-size:clamp(42px,5.2vw,72px) !important; line-height:1.02 !important; margin:0 !important; hyphens:manual !important; -webkit-hyphens:manual !important; }
+.v6-hero2-lead { margin:0; max-width:520px; font-size:19px; line-height:1.5; color:var(--text-2); }
+.v6-hask { display:flex; flex-direction:column; gap:10px; max-width:560px; }
+.v6-hask label { font-size:14px; font-weight:600; }
+.v6-hask-row { display:flex; gap:6px; background:var(--surface); border-radius:18px; padding:6px; }
+.v6-hask-row input { flex:1 1 auto; min-width:0; border:0; background:transparent; padding:0 14px; font:inherit; font-size:16px; color:var(--ink); min-height:48px; }
+.v6-hask-row input:focus { outline:none; }
+.v6-hask-row:focus-within { outline:3px solid var(--accent); outline-offset:2px; }
+.v6-roleline { display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; font-size:15px; margin:0; }
+.v6-roleline span { color:var(--text-3); }
+body.v6 .lesson-content .v6-page .v6-roleline a { color:var(--accent); font-weight:600; text-decoration:underline; text-underline-offset:4px; }
+.v6-show { background:var(--surface); border-radius:32px; padding:clamp(20px,3vw,30px); display:flex; flex-direction:column; gap:18px; min-width:0; box-sizing:border-box; }
+.v6-tabs { display:flex; flex-wrap:wrap; gap:6px; }
+.v6-tab { min-height:40px; padding:0 14px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink); font:inherit; font-size:14px; font-weight:600; cursor:pointer; }
+.v6-tab[aria-pressed="true"] { background:var(--accent); border-color:var(--accent); color:#fff; }
+.v6-show-top { display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+.v6-pill-s { font-size:12px; color:var(--text-3); padding:5px 10px; border:1px solid var(--line); border-radius:999px; white-space:nowrap; }
+body.v6 .lesson-content .v6-page .v6-show-take { margin:0; font-family:var(--font-display); font-weight:700; font-size:24px; line-height:1.22; letter-spacing:-0.01em; }
+.v6-bars { display:flex; flex-direction:column; gap:14px; }
+.v6-bar { display:flex; flex-direction:column; gap:6px; }
+.v6-bar-h { display:flex; justify-content:space-between; font-size:15px; }
+.v6-bar-v { font-variant-numeric:tabular-nums; }
+.v6-bar.is-neg .v6-bar-v { color:var(--neg-text); }
+.v6-bar-t { height:10px; border-radius:999px; background:#EEF0F6; display:block; }
+.v6-bar-t i { display:block; height:10px; border-radius:999px; background:var(--accent); }
+.v6-bar.is-neg .v6-bar-t i { background:var(--neg-bar); }
+.v6-show-al { display:flex; gap:12px; align-items:flex-start; background:var(--ground); border-radius:18px; padding:14px 16px; margin:0; font-size:15px; line-height:1.5; }
+.v6-ava.is-sq { flex:0 0 26px; width:26px; height:26px; border-radius:8px; font-size:13px; }
+.v6-show-list { display:flex; flex-direction:column; gap:10px; }
+.v6-show-item { background:var(--ground); border-radius:18px; padding:14px 16px; display:flex; flex-direction:column; gap:8px; }
+.v6-show-q { display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; font-size:14px; color:var(--text-2); }
+.v6-show-q b { color:var(--ink); }
+.v6-show-item p, .v6-show-item ul { margin:0; font-size:15px; line-height:1.5; }
+.v6-show-item ul { padding-left:18px; }
+.v6-stars { font-size:13px; letter-spacing:2px; color:var(--accent); }
+@media (max-width:900px) { .v6-hero2 { grid-template-columns:1fr; padding-top:32px; } }
+/* главная v2: «Приносите задачу» и «Кто вы?» */
+.v6-how { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; }
+.v6-how-c { background:var(--surface); border-radius:24px; padding:22px; display:flex; flex-direction:column; gap:10px; }
+.v6-how-i { width:36px; height:36px; border-radius:10px; background:var(--ground); color:var(--ink); display:inline-flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:800; }
+.v6-how-i svg { width:20px; height:20px; }
+.v6-how-i.is-acc { background:var(--accent); color:#fff; }
+body.v6 .lesson-content .v6-page .v6-how-c h3 { font-family:var(--font-display) !important; font-weight:800 !important; font-size:18px !important; margin:4px 0 0 !important; }
+.v6-how-c p { margin:0; font-size:15px; line-height:1.5; color:var(--text-2); }
+.v6-how-f { display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin:20px 0 0; }
+.v6-how-f .v6b.is-soft { background:var(--surface); }
+.v6-who2 { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; }
+.v6-who2-c { background:var(--surface); border-radius:24px; padding:10px 10px 16px; display:flex; flex-direction:column; gap:12px; min-width:0; }
+body.v6 .lesson-content .v6-page a.v6-who2-h { display:flex; flex-direction:column; gap:4px; color:var(--ink); text-decoration:none; }
+.v6-who2-img { display:block; aspect-ratio:3/2; border-radius:18px; overflow:hidden; background:var(--ground); margin-bottom:10px; }
+.v6-who2-img img { width:100%; height:100%; object-fit:cover; display:block; }
+.v6-who2-h b { font-family:var(--font-display); font-weight:800; font-size:18px; padding:0 8px; }
+.v6-who2-h .v6-meta { padding:0 8px; }
+body.v6 .lesson-content .v6-page a.v6-who2-h:hover b { color:var(--accent); }
+.v6-who2-l { display:flex; flex-direction:column; padding:0 8px; border-top:1px solid var(--line); }
+body.v6 .lesson-content .v6-page a.v6-who2-t { display:flex; justify-content:space-between; gap:10px; padding:10px 0; border-bottom:1px solid var(--line); font-size:14px; font-weight:600; color:var(--ink); text-decoration:none; }
+body.v6 .lesson-content .v6-page a.v6-who2-t:hover { color:var(--accent); }
+.v6-who2-t .v6-meta { white-space:nowrap; font-weight:400; }
+.v6-who2-l > .v6-meta { padding:10px 0; }
+@media (max-width:1100px) { .v6-how, .v6-who2 { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:600px) { .v6-how, .v6-who2 { grid-template-columns:1fr; } }
+@media (min-width:900px) { body.v6 .lesson-content .v6-page h2.v6-h2 { hyphens:manual !important; -webkit-hyphens:manual !important; } }
+/* главная v2, этап 3 */
+.v6-learn-facts { display:flex; flex-wrap:wrap; align-items:center; gap:12px 28px; margin:0 0 24px; font-size:16px; color:var(--text-2); }
+.v6-learn-facts b { color:var(--ink); font-family:var(--font-display); font-weight:800; }
+.v6-learn-facts .v6b.is-soft { background:var(--surface); }
+.v6-learn { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+body.v6 .lesson-content .v6-page a.v6-learn-c { display:grid; grid-template-columns:minmax(0,0.9fr) minmax(0,1fr); gap:20px; background:var(--surface); border-radius:28px; padding:12px; color:var(--ink); text-decoration:none; align-items:center; }
+.v6-learn-img { display:block; aspect-ratio:1/1; border-radius:20px; overflow:hidden; background:var(--ground); }
+.v6-learn-img img { width:100%; height:100%; object-fit:cover; display:block; }
+.v6-learn-b { display:flex; flex-direction:column; gap:8px; padding:8px 8px 8px 0; }
+.v6-learn-b b { font-family:var(--font-display); font-weight:800; font-size:24px; line-height:1.15; }
+.v6-learn-b > span:not(.v6-meta):not(.v6-learn-go) { font-size:15px; line-height:1.5; color:var(--text-2); }
+.v6-learn-go { font-weight:600; color:var(--accent); margin-top:4px; }
+body.v6 .lesson-content .v6-page a.v6-learn-c:hover .v6-learn-go { text-decoration:underline; text-underline-offset:4px; }
+.v6-learn-row { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-top:16px; }
+body.v6 .lesson-content .v6-page a.v6-learn-s { display:flex; justify-content:space-between; align-items:center; gap:16px; background:var(--surface); border-radius:20px; padding:16px 20px; color:var(--ink); text-decoration:none; }
+.v6-learn-s > span:first-child { display:flex; flex-direction:column; gap:4px; }
+.v6-learn-s b { font-family:var(--font-display); font-weight:800; font-size:17px; }
+.v6-meth2 { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:32px; align-items:center; background:var(--surface); border-radius:32px; padding:clamp(24px,4vw,48px); }
+.v6-meth2 p { color:var(--text-2); font-size:17px; line-height:1.55; margin:16px 0; }
+.v6-meth2-c { display:flex; flex-wrap:wrap; gap:10px; }
+body.v6 .lesson-content .v6-page a.v6-chip2, .v6-chip2 { display:inline-flex; align-items:center; min-height:44px; padding:0 18px; border-radius:999px; background:var(--ground); color:var(--ink); font-weight:600; text-decoration:none; }
+body.v6 .lesson-content .v6-page a.v6-chip2:hover { background:var(--accent-tint); color:var(--accent); }
+.v6-chip2.is-more { background:transparent; border:1.5px dashed var(--line); color:var(--text-2); font-weight:500; }
+.v6-newsco { display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); gap:32px; align-items:start; padding-bottom:40px; }
+.v6-newsco-r { background:var(--surface); border-radius:24px; padding:24px; }
+.v6-newsco-r p { margin:0 0 8px; color:var(--text-2); font-size:16px; line-height:1.5; }
+@media (max-width:900px) { .v6-learn, .v6-learn-row, .v6-meth2, .v6-newsco { grid-template-columns:1fr; } }
+@media (max-width:600px) { body.v6 .lesson-content .v6-page a.v6-learn-c { grid-template-columns:1fr; } .v6-learn-b { padding:4px 8px 8px; } }
+/* поле подбора задачи на странице «Задачи» (стили вернул после чистки главной) */
+.v6-ask { display:flex; gap:8px; padding:8px; background:var(--surface); border-radius:22px; max-width:580px; margin-top:32px; box-sizing:border-box; }
+.v6-ask label { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+.v6-ask input { flex:1; min-width:0; border:0; background:transparent; border-radius:0; padding:0 16px; height:56px; min-height:56px; font:inherit; font-size:18px; color:var(--ink); }
+.v6-ask input::placeholder { color:var(--text-3); }
+.v6-ask .v6b { height:56px; padding:0 26px; border-radius:16px; font-size:18px; }
+@media (max-width:720px) { .v6-ask { flex-direction:column; } .v6-ask .v6b { width:100%; } }
