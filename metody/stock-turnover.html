@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Оборачиваемость и запасы — Артефакты</title>
+<meta name="description" content="Оборачиваемость и запасы: Понять, на сколько дней продаж хватит остатка, и решить, когда и сколько дозаказывать. Когда применять, шаги, пример, частые ошибки, калькулятор.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Оборачиваемость и запасы">
+<meta property="og:description" content="Оборачиваемость и запасы: Понять, на сколько дней продаж хватит остатка, и решить, когда и сколько дозаказывать. Когда применять, шаги, пример, частые ошибки, калькулятор.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:url" content="https://ai.madzhitov.ru/metody/stock-turnover.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/metody/stock-turnover.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tropa-lesson.css">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Оборачиваемость и запасы","description":"Оборачиваемость и запасы: Понять, на сколько дней продаж хватит остатка, и решить, когда и сколько дозаказывать. Когда применять, шаги, пример, частые ошибки, калькулятор.","url":"https://ai.madzhitov.ru/metody/stock-turnover.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-04"}</script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../v6/static.css">
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../#roles">Роли</a><a href="../#tasks">Задачи</a><a href="../#paths">Пути</a><a href="../#knowledge">Знания</a></nav></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
+    <h1>Оборачиваемость и запасы</h1>
+    <p class="lead">Понять, на сколько дней продаж хватит остатка, и решить, когда и сколько дозаказывать.</p>
+    <p class="st-meta">Автор метода: общепринятая практика управления запасами</p>
+    
+    <h2>Когда применять</h2><ul class="st-list"><li>перед каждой поставкой на склад площадки</li><li>когда товар часто заканчивается или, наоборот, лежит месяцами</li><li>чтобы понять, сколько денег заморожено в запасе</li><li>перед распродажей залежавшегося товара</li></ul>
+    <h2>Когда не надо</h2><ul class="st-list"><li>для новинок, пока продажи не устоялись</li><li>в разгар акции или распродажи без поправки: дневные продажи завышены</li><li>для товаров с сильной сезонностью по средним за год</li></ul>
+    <h2>Шаги</h2><ol class="st-list"><li><strong>Возьмите остаток.</strong> Сколько штук товара у вас в запасе. Считайте склады площадки, свой склад и товар в пути отдельно, потом сложите, если решаете за весь запас.</li><li><strong>Возьмите продажи за последние недели.</strong> Например, за 2–4 недели: это не норма, а компромисс между свежими и устойчивыми данными. Выкупленные или проданные штуки, как вы привыкли считать. Исключите аномальные дни: акцию, распродажу, поломку карточки.</li><li><strong>Посчитайте среднесуточные продажи.</strong> Продано за период, делённое на число дней в периоде.</li><li><strong>Посчитайте оборачиваемость в днях.</strong> Остаток, делённый на среднесуточные продажи. Это число дней, на которое хватит запаса при нынешних продажах.</li><li><strong>Сравните с временем пополнения.</strong> Сложите срок производства или закупки, доставки до склада площадки, приёмки и страховой запас в днях. Это минимальный запас, с которого пора заказывать.</li><li><strong>Примите решение.</strong> Дней запаса меньше времени пополнения: заказывайте сейчас или готовьтесь к дефициту. Намного больше: не дозаказывайте, подумайте об акции для залежавшегося товара. Посчитайте также деньги в запасе по себестоимости.</li><li><strong>Проверьте по отчётам площадки.</strong> В кабинете есть свои отчёты об оборачиваемости и ликвидности запасов. Сверьте их с вашим расчётом и поймите разницу. Тарифы хранения смотрите там же.</li></ol>
+    <h2>Формула</h2><p>Среднесуточные продажи = продано / дней. Оборачиваемость в днях = остаток / среднесуточные продажи.</p><p class="st-meta">В интерактивной версии считает калькулятор: подставьте свои числа.</p>
+    
+    <h2>Пример</h2><p><span class="st-meta">Условный пример. </span>Остаток 600 штук, продано 300 штук за 30 дней. Среднесуточные продажи 300 / 30 = 10 штук. Оборачиваемость 600 / 10 = 60 дней. Пополнение занимает 21 день до склада и ещё 7 дней страхового запаса, всего 28 дней. Значит заказывать нужно, когда останется запаса на 28 дней, то есть через 60 − 28 = 32 дня. При себестоимости 700 ₽ в запасе заморожено 600 × 700 = 420 000 ₽.</p>
+    <h2>Частые ошибки</h2><ul class="st-list"><li>Брать продажи за один день или за день акции</li><li>Считать остаток без товара в пути или, наоборот, считать его дважды</li><li>Не вычитать время пополнения и страховой запас</li><li>Путать оборачиваемость в днях и в оборотах</li><li>Смотреть только на количество, а не на деньги в запасе</li></ul>
+    <h2>Проверьте себя</h2><p>Посчитайте оборачиваемость трёх своих товаров и для одного из них назначьте дату следующего заказа.</p><ul class="st-list"><li>Взяты реальные остатки и продажи по трём товарам</li><li>Оборачиваемость посчитана в днях, период продаж назван</li><li>Для одного товара указано время пополнения и дата заказа</li><li>Посчитаны деньги в запасе хотя бы по одному товару (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
+    <h2>Задания по шагам с этим методом</h2><ul class="st-list"><li><a href="../zadaniya/u-seller-stock.html">План остатков и заказа на все каналы</a></li></ul>
+    <h2>Рядом</h2><p><a href="../metody/abc-xyz.html">ABC / XYZ-анализ</a>, <a href="../metody/unit-economics-sku.html">Юнит-экономика SKU</a>, <a href="../metody/contribution-margin-channels.html">Маржинальный доход по каналам</a></p>
+    
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://postavleno.ru/blog/oborachivaemost-tovara-na-wb-i-ozon/" rel="nofollow noopener" target="_blank">postavleno.ru</a></li><li><a href="https://en.wikipedia.org/wiki/Inventory_turnover" rel="nofollow noopener" target="_blank">en.wikipedia.org</a></li><li><a href="https://en.wikipedia.org/wiki/Reorder_point" rel="nofollow noopener" target="_blank">en.wikipedia.org</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <div class="pp-open"><a href="../#fw-stock-turnover">Открыть с калькулятором и проверкой Алёши →</a></div>
+  </div>
+</main>
+</body>
+</html>

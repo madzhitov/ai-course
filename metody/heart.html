@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEART — Артефакты</title>
+<meta name="description" content="HEART: Выбрать метрики опыта по пяти осям: удовлетворённость, вовлечённость, принятие, удержание, успешность задач. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HEART">
+<meta property="og:description" content="HEART: Выбрать метрики опыта по пяти осям: удовлетворённость, вовлечённость, принятие, удержание, успешность задач. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:url" content="https://ai.madzhitov.ru/metody/heart.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/metody/heart.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tropa-lesson.css">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"HEART","description":"HEART: Выбрать метрики опыта по пяти осям: удовлетворённость, вовлечённость, принятие, удержание, успешность задач. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.","url":"https://ai.madzhitov.ru/metody/heart.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-04"}</script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../v6/static.css">
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../#roles">Роли</a><a href="../#tasks">Задачи</a><a href="../#paths">Пути</a><a href="../#knowledge">Знания</a></nav></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
+    <h1>HEART</h1>
+    <p class="lead">Выбрать метрики опыта по пяти осям: удовлетворённость, вовлечённость, принятие, удержание, успешность задач.</p>
+    <p class="st-meta">Автор метода: Google (Керри Родден, Хилари Хатчинсон, Синь Фу), Measuring the User Experience on a Large Scale: User-Centered Metrics for Web Applications (CHI 2010)</p>
+    
+    <h2>Когда применять</h2><ul class="st-list"><li>вы запустили или перерисовали продукт и хотите понять, стало ли пользователям лучше</li><li>команда не может договориться, какие метрики смотреть на дашборде</li><li>нужно сравнить два варианта интерфейса не по выручке, а по опыту пользователей</li><li>вы хотите уйти от общих счётчиков (визиты, число активных) к показателям, привязанным к цели</li></ul>
+    <h2>Когда не надо</h2><ul class="st-list"><li>на ранней стадии, пока вы ещё исследуете проблему: метрики полезны для запущенного продукта, а не вместо исследований</li><li>как единственный источник выводов: цифры стоит сверять с юзабилити-тестами и интервью</li><li>если цель не сформулирована: сначала цели, иначе метрики будут ни к чему не привязаны</li><li>когда пользователей так мало, что проценты скачут от одного человека: поговорите с каждым</li></ul>
+    <h2>Шаги</h2><ol class="st-list"><li><strong>Решите, что оцениваете.</strong> Весь продукт или одну функцию, редизайн, эксперимент. Цели у функции и у всего продукта могут отличаться, так что считайте отдельно.</li><li><strong>Goals: цели по пяти осям.</strong> Happiness (удовлетворённость: нравится ли, удобно ли), Engagement (вовлечённость: как часто и глубоко пользуются), Adoption (принятие: сколько новых пользователей начало), Retention (удержание: сколько осталось), Task success (успешность задач: получается ли сделать задуманное). Для каждой оси либо напишите цель, либо осознанно пропустите.</li><li><strong>Signals: как цель проявится.</strong> Какие действия и ощущения покажут успех или провал. Выбирайте сигналы, которые двигаются только когда опыт меняется. Иногда провал заметнее успеха: брошенное задание, отмена действия, раздражение. Заранее решите, откуда данные: логи или опрос.</li><li><strong>Metrics: превратите сигналы в метрики.</strong> По возможности считайте доли, проценты и средние на пользователя: общие счётчики растут просто от роста базы. Проверьте, что нужные события логируются и что трафик ботов исключён.</li><li><strong>Определите, что значат «принял» и «удержался».</strong> Принятие: достаточно ли зайти или нужно выполнить ключевое действие, например создать аккаунт. Удержание: какое окно, неделя, месяц или 90 дней подходит вашему продукту.</li><li><strong>Соберите дашборд.</strong> Для начала хватит одной-двух метрик на ось, у каждой цель, сигнал и источник. Сразу решите, какой результат заставит вас что-то поменять.</li><li><strong>Сверьте с живыми людьми.</strong> После редизайна удовлетворённость может сначала упасть из-за неприятия перемен: в статье так было с iGoogle, и показатель потом восстановился. Подождите, пока метрика стабилизируется, и сверьте с интервью и юзабилити-тестами.</li></ol>
+    
+    <h2>Готовый запрос к ИИ</h2><div class="st-prompt">Помоги мне составить набор метрик по фреймворку HEART (Happiness, Engagement, Adoption, Retention, Task success) и процессу Goals, Signals, Metrics.<br>Что оцениваем: [продукт целиком или функция/редизайн].<br>Кто пользователи: [кто они и зачем приходят].<br>Что изменилось или планируется: [описание изменения].<br>Источники данных: [какие события в логах есть, есть ли опросы].<br>Состав ответа: таблица из пяти строк по осям HEART. В колонках: цель (Goal), сигнал (Signal), метрика (Metric) с формулой, источник данных, какое решение она поможет принять. Если ось не подходит для моего случая, оставь строку и объясни почему. Метрики формулируй как доли, проценты или средние на пользователя, а не общие счётчики. Отдельным списком отметь, чего не хватает в данных, и как это добрать.<br>Правила: не придумывай мои данные и значения метрик. Для каждой метрики уточни, что считается «принял» и в каком окне считается удержание.<br>Если данных не хватает, сначала задай мне до трёх вопросов.</div>
+    <h2>Пример</h2><p><span class="st-meta">Условный пример. </span>Команда переделала модуль «Отчёты». Happiness: оценка удобства в опросе после построения отчёта по семибалльной шкале. Engagement: среднее число отчётов на активного пользователя в неделю. Adoption: доля активных аккаунтов, впервые построивших отчёт за последние 7 дней. Retention: доля пользователей, строивших отчёты в прошлом месяце и строящих в этом. Task success: доля попыток построить отчёт, дошедших до выгрузки, и время до первой выгрузки. Пример решения по этим цифрам: если после редизайна Task success не вырос, а Happiness упала и не восстановилась за полтора месяца, возвращаем старую логику экспорта.</p>
+    <h2>Частые ошибки</h2><ul class="st-list"><li>Молча пропустить оси, не решив явно, нужны ли они для вашего продукта</li><li>Считать общие счётчики (визиты, число активных) вместо долей и средних на пользователя</li><li>Составлять метрики до целей: тогда они ни с чем не связаны</li><li>Делать выводы о редизайне сразу после запуска, пока люди привыкают к новому</li><li>Не проверять, что события действительно логируются, а боты исключены</li></ul>
+    <h2>Проверьте себя</h2><p>Составьте набор метрик HEART для своего продукта или функции: таблица по пяти осям (цель, сигнал, метрика, источник) и решение, которое вы будете принимать по этим цифрам.</p><ul class="st-list"><li>Рассмотрены все пять осей, пропуск оси объяснён</li><li>У каждой метрики есть цель и сигнал, а не только формула</li><li>Счётчики, которые растут вместе с базой, заменены долями, процентами или средними на пользователя</li><li>Указано, что считается «принял» и в каком окне считается удержание</li><li>Названо решение, которое изменится, если метрика пойдёт вверх или вниз (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
+    
+    <h2>Рядом</h2><p><a href="../metody/north-star.html">North Star Metric</a>, <a href="../metody/aarrr.html">AARRR (пиратские метрики)</a>, <a href="../metody/okr.html">OKR</a></p>
+    
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://research.google/pubs/measuring-the-user-experience-on-a-large-scale-user-centered-metrics-for-web-applications/" rel="nofollow noopener" target="_blank">research.google</a></li><li><a href="https://research.google.com/pubs/archive/36299.pdf" rel="nofollow noopener" target="_blank">research.google.com</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <div class="pp-open"><a href="../#fw-heart">Открыть с готовым запросом и проверкой Алёши →</a></div>
+  </div>
+</main>
+</body>
+</html>

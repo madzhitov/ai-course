@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Помощник продавца Wildberries: карточки пачкой из папки с товарами — Артефакты</title>
+<meta name="description" content="Помощник продавца Wildberries: карточки пачкой из папки с товарами. Утилита, которая из папки с фото и описаниями товаров пачкой делает черновики карточек Wildberries (заголовок, описание, характерист">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Помощник продавца Wildberries: карточки пачкой из папки с товарами">
+<meta property="og:description" content="Помощник продавца Wildberries: карточки пачкой из папки с товарами. Утилита, которая из папки с фото и описаниями товаров пачкой делает черновики карточек Wildberries (заголовок, описание, характерист">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:url" content="https://ai.madzhitov.ru/zadaniya/u-seller-assistant.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/zadaniya/u-seller-assistant.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tropa-lesson.css">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Помощник продавца Wildberries: карточки пачкой из папки с товарами","description":"Помощник продавца Wildberries: карточки пачкой из папки с товарами. Утилита, которая из папки с фото и описаниями товаров пачкой делает черновики карточек Wildberries (заголовок, описание, характерист","url":"https://ai.madzhitov.ru/zadaniya/u-seller-assistant.html","inLanguage":"ru","totalTime":"PT120M","tool":[{"@type":"HowToTool","name":"Python"},{"@type":"HowToTool","name":"Yandex AI Studio (Qwen3.6 35B, YandexGPT Lite 5)"},{"@type":"HowToTool","name":"WB API (Контент)"}],"step":[{"@type":"HowToStep","position":1,"name":"Настройте Yandex AI Studio","text":"Урок p20, раздел «Шаг 1»: в aistudio.yandex.ru нажмите «Создать API-ключ», и AI Studio сам создаст сервисный аккаунт с нужными ролями. Ключ показывают один раз, скопируйте сразу. Запишите folder_id каталога, в котором создан ключ."},{"@type":"HowToStep","position":2,"name":"Создайте токен Wildberries","text":"В кабинете продавца откройте «Интеграции по API», нажмите «+ Создать токен», вкладка «Для интеграции вручную». Тип персональный: он для ваших собственных программ. Категория только «Контент», уровень доступа «Чтение и запись». Токен показывают один раз, и он действует 180 дней; нигде его не публикуйте и не отправляйте в чат."},{"@type":"HowToStep","position":3,"name":"Соберите проект","text":"Раздел «Шаг 3» урока: папка, виртуальное окружение, зависимости, файл .env с тремя ключами и папки goods/item_001 с фото и brief.txt. Добавьте .env в .gitignore, если используете git. В brief.txt пишите состав и размеры: чего там нет, модель не должна додумывать."},{"@type":"HowToStep","position":4,"name":"Скопируйте код и запустите без загрузки","text":"Файлы prompts/clothes.txt, generator.py, wb_uploader.py и main.py возьмите из разделов «Шаг 4» - «Шаг 7» урока p20. Найдите ID предмета: python main.py --find-subject джинсы. Затем выполните python main.py --goods-dir goods --category clothes --subject-id ВАШ_ID на двух-трёх товарах: рядом с фото появится card.json, в кабинет ничего не уходит. Для второй проверки отправьте card.json в чат этим запросом."},{"@type":"HowToStep","position":5,"name":"Проверьте характеристики","text":"Код загрузки в уроке, раздел «Шаг 6»: он сам сопоставляет названия характеристик из card.json с id из справочника предмета и пишет в лог, каких обязательных не хватает. Допишите недостающие факты в card.json руками, ничего не угадывая."},{"@type":"HowToStep","position":6,"name":"Загрузите один товар и проверьте","text":"Раздел «Запуск и проверка»: запустите main.py с --upload, --subject-id, ценой, размерами и габаритами упаковки на одном товаре. Ответ 200 ещё не значит, что карточка создана: создание идёт асинхронно, до 30 минут. Потом выполните python main.py --check-errors. Остальные товары загружайте после этого."}]}</script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../v6/static.css">
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../#roles">Роли</a><a href="../#tasks">Задачи</a><a href="../#paths">Пути</a><a href="../#knowledge">Знания</a></nav></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../zadaniya/">Задания по шагам</a></div>
+    <h1>Помощник продавца Wildberries: карточки пачкой из папки с товарами</h1>
+    <p class="lead">Утилита, которая из папки с фото и описаниями товаров пачкой делает черновики карточек Wildberries (заголовок, описание, характеристики по справочнику WB, ключевые слова), и проверенная загрузка первой карточки в кабинет</p>
+    <p class="st-meta">около 120 мин · уверенный · без VPN · задача «Собрать помощника продавца»</p>
+    <p class="st-meta">Черновик на согласовании: текст может уточняться.</p>
+    <h2>Чем делать</h2><p>Python, Yandex AI Studio (Qwen3.6 35B, YandexGPT Lite 5), WB API (Контент)</p>
+    <h2>Что подготовить</h2><ul class="st-list"><li>Аккаунт Yandex Cloud с платёжным аккаунтом и доступ владельца к кабинету продавца Wildberries (токен API создаёт только владелец)</li><li>Python 3.10+ и умение запускать скрипты в терминале</li><li>Папка на каждый товар: 1-3 фото и файл brief.txt с фактами (категория, цвет, состав, размеры)</li><li>Размеры упаковки в сантиметрах и вес с упаковкой в килограммах</li></ul>
+    <h2>Шаги</h2>
+    <h3>1. Настройте Yandex AI Studio</h3><p>Урок p20, раздел «Шаг 1»: в aistudio.yandex.ru нажмите «Создать API-ключ», и AI Studio сам создаст сервисный аккаунт с нужными ролями. Ключ показывают один раз, скопируйте сразу. Запишите folder_id каталога, в котором создан ключ.</p>
+    <h3>2. Создайте токен Wildberries</h3><p>В кабинете продавца откройте «Интеграции по API», нажмите «+ Создать токен», вкладка «Для интеграции вручную». Тип персональный: он для ваших собственных программ. Категория только «Контент», уровень доступа «Чтение и запись». Токен показывают один раз, и он действует 180 дней; нигде его не публикуйте и не отправляйте в чат.</p>
+    <h3>3. Соберите проект</h3><p>Раздел «Шаг 3» урока: папка, виртуальное окружение, зависимости, файл .env с тремя ключами и папки goods/item_001 с фото и brief.txt. Добавьте .env в .gitignore, если используете git. В brief.txt пишите состав и размеры: чего там нет, модель не должна додумывать.</p>
+    <h3>4. Скопируйте код и запустите без загрузки</h3><p>Файлы prompts/clothes.txt, generator.py, wb_uploader.py и main.py возьмите из разделов «Шаг 4» - «Шаг 7» урока p20. Найдите ID предмета: python main.py --find-subject джинсы. Затем выполните python main.py --goods-dir goods --category clothes --subject-id ВАШ_ID на двух-трёх товарах: рядом с фото появится card.json, в кабинет ничего не уходит. Для второй проверки отправьте card.json в чат этим запросом.</p><div class="st-prompt">Проверь эту карточку для Wildberries на запрещённые обещания и выдуманные факты: «лечит», «сертифицирован», «гарантирует», «лучший», состав и размеры, которых нет в моём описании.<br>Моё описание: [содержимое brief.txt]<br>Карточка: [содержимое card.json]<br>Верни список проблемных мест и что поправить.<br>Если данных не хватает, сначала задай мне до трёх вопросов.</div>
+    <h3>5. Проверьте характеристики</h3><p>Код загрузки в уроке, раздел «Шаг 6»: он сам сопоставляет названия характеристик из card.json с id из справочника предмета и пишет в лог, каких обязательных не хватает. Допишите недостающие факты в card.json руками, ничего не угадывая.</p>
+    <h3>6. Загрузите один товар и проверьте</h3><p>Раздел «Запуск и проверка»: запустите main.py с --upload, --subject-id, ценой, размерами и габаритами упаковки на одном товаре. Ответ 200 ещё не значит, что карточка создана: создание идёт асинхронно, до 30 минут. Потом выполните python main.py --check-errors. Остальные товары загружайте после этого.</p><ul class="st-list"><li>Состав и размеры в карточке совпадают с brief.txt, ничего не добавлено от себя</li><li>photo_facts в card.json совпадает с тем, что на фото</li><li>subject-id взят из --find-subject, габариты и вес упаковки ваши</li><li>--check-errors не показывает ошибок по артикулу, карточка видна в кабинете</li></ul>
+    <h2>Если получилось почти</h2><ul class="st-list"><li>Yandex отвечает ошибкой доступа: ключ скопирован не целиком, у сервисного аккаунта нет роли ai.languageModels.user на каталог или у ключа не та область действия. Проще всего создать ключ заново кнопкой «Создать API-ключ» в AI Studio</li><li>Yandex отвечает 400 на имя модели: эту версию вывели из эксплуатации, возьмите актуальное имя из списка моделей AI Studio и поправьте VISION_MODEL или TEXT_MODEL</li><li>Ответ модели не разбирается как JSON: добавьте в промпт «не пиши ничего, кроме JSON» и понизьте temperature до 0.1</li><li>Wildberries отвечает 401, 403 или 429: 401 значит токен истёк или скопирован не целиком, 403 значит токен не той категории (проверьте запросом GET https://content-api.wildberries.ru/ping), 429 значит слишком часто, в коде уже есть пауза 6 секунд и повтор. Если карточки не создаются, проверьте остаток лимита: GET /content/v2/cards/limits</li></ul>
+    
+    <h2>Опирается на методы</h2><p>Карточка товара как продающая страница, Проверка ответа ИИ</p>
+    <h2>Почему это работает</h2><p><a href="../lessons/p20.html">AI-помощник продавца Wildberries на YandexGPT</a></p>
+    <div class="pp-open"><a href="../#unit-u-seller-assistant">Пройти с отметками шагов и записью в тетрадь →</a></div>
+  </div>
+</main>
+</body>
+</html>

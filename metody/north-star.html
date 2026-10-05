@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>North Star Metric — Артефакты</title>
+<meta name="description" content="North Star Metric: Выбрать одну метрику, которая показывает, сколько ценности клиенты получают от продукта, и собрать вокруг неё команду. Когда применять, шаги, пример, частые ошибки, готовый запрос к">
+<meta property="og:type" content="article">
+<meta property="og:title" content="North Star Metric">
+<meta property="og:description" content="North Star Metric: Выбрать одну метрику, которая показывает, сколько ценности клиенты получают от продукта, и собрать вокруг неё команду. Когда применять, шаги, пример, частые ошибки, готовый запрос к">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:url" content="https://ai.madzhitov.ru/metody/north-star.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/metody/north-star.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tropa-lesson.css">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"North Star Metric","description":"North Star Metric: Выбрать одну метрику, которая показывает, сколько ценности клиенты получают от продукта, и собрать вокруг неё команду. Когда применять, шаги, пример, частые ошибки, готовый запрос к","url":"https://ai.madzhitov.ru/metody/north-star.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-04"}</script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../v6/static.css">
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../#roles">Роли</a><a href="../#tasks">Задачи</a><a href="../#paths">Пути</a><a href="../#knowledge">Знания</a></nav></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
+    <h1>North Star Metric</h1>
+    <p class="lead">Выбрать одну метрику, которая показывает, сколько ценности клиенты получают от продукта, и собрать вокруг неё команду.</p>
+    <p class="st-meta">Автор метода: Шон Эллис популяризировал понятие (Hacking Growth, 2017, с Морганом Брауном); фреймворк описан Amplitude в The North Star Playbook (Джон Катлер и соавторы), The North Star Playbook (Amplitude)</p>
+    
+    <h2>Когда применять</h2><ul class="st-list"><li>команда спорит о приоритетах и у каждого своя метрика успеха</li><li>вы строите продукт или большую функцию и хотите связать ежедневную работу с ростом</li><li>нужно объяснить руководителю, как работа команды связана с результатом бизнеса</li><li>после смены стратегии, когда старая метрика уже не отражает суть</li></ul>
+    <h2>Когда не надо</h2><ul class="st-list"><li>пока неизвестно, за что клиенты вообще ценят продукт: сначала исследование, иначе метрика закрепит догадку</li><li>как замену целей, дорожной карты или приоритизации: метрика показывает направление, а не порядок задач</li><li>в компании с несколькими продуктами для разных клиентских баз и с разными стратегиями: там может понадобиться своя метрика на каждый продукт, но сначала проверьте, не один ли это продукт в глазах клиента</li></ul>
+    <h2>Шаги</h2><ol class="st-list"><li><strong>Определите, в какую игру играет продукт.</strong> Внимание: человек погружается в продукт, и чем дольше, тем лучше ему. Транзакции: человек ищет нужное и совершает сделки. Продуктивность: человек нанимает продукт для работы. От этого зависят кандидаты метрики.</li><li><strong>Запишите ценность одной фразой.</strong> В плейбуке это упражнение строится вокруг фразы «Наш путь к долгому устойчивому росту зависит от того, насколько мы умеем …». Допишите её словами клиента, без цифр и без выручки. Если не получается, вернитесь к интервью.</li><li><strong>Предложите три-пять кандидатов.</strong> Каждый кандидат: счёт, доля или отношение, например «число клиентов, доведших проект до конца за неделю». Ежедневных активных пользователей, регистрации, скачивания и просмотры плейбук называет тщеславными метриками, а выручка запаздывает: такие кандидаты не подходят.</li><li><strong>Проверьте кандидатов по семи вопросам.</strong> Выражает ценность для клиента? Отражает стратегию? Опережает бизнес-результат? Можно влиять работой команды? Понятна нетехническим людям? Измерима? Не тщеславная? Каждое «нет» запишите.</li><li><strong>Оставьте одну метрику.</strong> Оставьте кандидата, который увереннее всех проходит проверку, и обсудите спорные ответы с командой. Если метрику можно накрутить, ничего не меняя для клиента, она не годится.</li><li><strong>Разложите на входные метрики.</strong> Входные метрики: небольшой набор дополняющих друг друга факторов, из которых складывается главная, например активация, частота, глубина использования. У каждой должны быть название и определение, и каждую должна двигать работа конкретной команды. На старте можно взять три-пять.</li><li><strong>Привяжите работу к входам.</strong> Каждая инициатива в квартале должна объяснять, какой вход она двигает. Меняйте метрику, когда меняется стратегия или она перестаёт предсказывать выручку, а не из-за одного плохого месяца.</li></ol>
+    
+    <h2>Готовый запрос к ИИ</h2><div class="st-prompt">Помоги мне выбрать North Star Metric для продукта.<br>Продукт: [что это и для кого].<br>Как продукт зарабатывает: [подписка, комиссия, реклама, разовые продажи].<br>Ценность для клиента, как я её понимаю: [что клиент получает, из интервью или отзывов].<br>Какие данные у меня есть: [какие события и показатели уже собираются].<br>Сделай по шагам: 1) определи, в какую игру играет продукт (внимание, транзакции или продуктивность) и почему; 2) сформулируй одной фразой, в чём ценность для клиента; 3) предложи три-пять кандидатов метрики; 4) проверь каждого по семи вопросам (выражает ценность клиента, отражает стратегию, опережает выручку, на неё можно влиять, понятна нетехнической аудитории, измерима, не тщеславная) и покажи таблицей «да/нет/неясно» с пояснением; 5) предложи одну метрику и три-пять входных метрик к ней; 6) перечисли, какие события придётся начать собирать.<br>Правила: не считай активных пользователей, регистрации, скачивания и выручку подходящими кандидатами без особых оснований, объясни почему. Не выдумывай мои данные: если чего-то не знаешь, помечай «нужно проверить».<br>Если данных не хватает, сначала задай мне до трёх вопросов.</div>
+    <h2>Пример</h2><p><span class="st-meta">Условный пример. </span>Игра: продуктивность, человек учится ради результата. Ценность: человек регулярно занимается и продвигается. Кандидаты: ежедневные активные пользователи (говорят о визитах, но не о пользе, тщеславная метрика), выручка (запаздывает, это итог), «число пользователей, завершивших три урока за неделю» (близко к ценности, но надо проверить, что это опережает продление подписки). Выбираем третий вариант. Входные метрики: доля новых пользователей, прошедших первый урок в день установки; число уроков на активного пользователя в неделю; доля вернувшихся после недели без занятий; доля открытых напоминаний. Гипотеза о связи метрики с продлением подписки проверяется на данных за прошлые месяцы.</p>
+    <h2>Частые ошибки</h2><ul class="st-list"><li>Выбрать активных пользователей, регистрации или выручку: первые две тщеславные, третья запаздывает</li><li>Взять метрику, которую можно двигать напрямую, не принося клиенту пользы</li><li>Назначить сразу несколько главных метрик, и они начинают конфликтовать</li><li>Выбрать метрику в одиночку и не обсудить с командой, чья работа должна её двигать</li><li>Считать метрику вечной и не пересматривать при смене стратегии</li></ul>
+    <h2>Проверьте себя</h2><p>Выберите North Star Metric для своего продукта: пришлите определение игры, фразу о ценности, трёх-пяти кандидатов с проверкой по чек-листу, выбранную метрику и три-пять входных метрик.</p><ul class="st-list"><li>Метрика связана с ценностью для клиента и объяснена его словами</li><li>Проверено не меньше трёх кандидатов, и по каждому видны ответы на вопросы чек-листа</li><li>Выбрана одна метрика и объяснено, почему она не тщеславная и не запаздывающая</li><li>Есть входные метрики (на старте три-пять), и у каждой понятно, работа какой команды её двигает</li><li>Указано, какие данные нужно начать собирать, и кто будет следить за метрикой (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
+    <h2>Задания по шагам с этим методом</h2><ul class="st-list"><li><a href="../zadaniya/u-product-north-star.html">Главная метрика и контр-метрика с формулой</a></li></ul>
+    <h2>Рядом</h2><p><a href="../metody/okr.html">OKR</a>, <a href="../metody/heart.html">HEART</a>, <a href="../metody/aarrr.html">AARRR (пиратские метрики)</a></p>
+    <h2>Уроки</h2><ul class="st-list"><li><a href="../lessons/i14.html">Основы продукта: проблема, гипотеза, метрика</a></li></ul>
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://info.amplitude.com/rs/138-CDN-550/images/Amplitude-The-North-Star-Playbook.pdf" rel="nofollow noopener" target="_blank">info.amplitude.com</a></li><li><a href="https://andrewclark.co.uk/product-book-summaries/hacking-growth" rel="nofollow noopener" target="_blank">andrewclark.co.uk</a></li><li><a href="https://magazine.startus.cc/sean-ellis-on-the-backbone-of-successful-growth-teams-the-north-star-metric/" rel="nofollow noopener" target="_blank">magazine.startus.cc</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <div class="pp-open"><a href="../#fw-north-star">Открыть с готовым запросом и проверкой Алёши →</a></div>
+  </div>
+</main>
+</body>
+</html>

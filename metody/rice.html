@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RICE — Артефакты</title>
+<meta name="description" content="RICE: Сравнить идеи из бэклога одним числом, чтобы спорить об оценках, а не о вкусах. Когда применять, шаги, пример, частые ошибки, калькулятор.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RICE">
+<meta property="og:description" content="RICE: Сравнить идеи из бэклога одним числом, чтобы спорить об оценках, а не о вкусах. Когда применять, шаги, пример, частые ошибки, калькулятор.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:url" content="https://ai.madzhitov.ru/metody/rice.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/metody/rice.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tropa-lesson.css">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"RICE","description":"RICE: Сравнить идеи из бэклога одним числом, чтобы спорить об оценках, а не о вкусах. Когда применять, шаги, пример, частые ошибки, калькулятор.","url":"https://ai.madzhitov.ru/metody/rice.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-04"}</script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../v6/static.css">
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../#roles">Роли</a><a href="../#tasks">Задачи</a><a href="../#paths">Пути</a><a href="../#knowledge">Знания</a></nav></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
+    <h1>RICE</h1>
+    <p class="lead">Сравнить идеи из бэклога одним числом, чтобы спорить об оценках, а не о вкусах.</p>
+    <p class="st-meta">Автор метода: Шон Макбрайд, Intercom</p>
+    
+    <h2>Когда применять</h2><ul class="st-list"><li>в бэклоге больше идей, чем команда успеет сделать</li><li>нужно объяснить стейкхолдерам, почему одну задачу берём раньше другой</li><li>перед планированием квартала или релиза</li><li>когда идеи одного типа и их можно оценить по одним и тем же четырём вопросам</li></ul>
+    <h2>Когда не надо</h2><ul class="st-list"><li>для обязательных задач (законодательство, безопасность, критичные баги): они не конкурируют по баллам</li><li>если охват нельзя оценить хотя бы грубо: число получится из воздуха</li><li>когда идеи принципиально разного масштаба и природы, например новая линейка продукта и правка кнопки</li><li>как окончательный вердикт: балл это повод для разговора, а не приговор</li></ul>
+    <h2>Шаги</h2><ol class="st-list"><li><strong>Выберите период и единицу охвата.</strong> Один период для всех идей, например «за квартал», и одна единица: люди, заказы, клиенты. Охват это число этих единиц, которых идея коснётся за период. Берите из своих данных, а не по ощущению.</li><li><strong>Оцените влияние по шкале.</strong> Влияние на цель для одного человека из охвата. Шкала: 3 огромное, 2 высокое, 1 среднее, 0,5 низкое, 0,25 минимальное. Сначала решите, на какую цель смотрите, иначе оценки не сравнить.</li><li><strong>Оцените уверенность.</strong> Насколько вы доверяете оценкам охвата и влияния: 100% высокая, 80% средняя, 50% низкая. Ниже 50% автор метода называет почти выстрелом наугад. Будьте честны: если оценку нечем подкрепить, кроме ощущения, ставьте низкую уверенность.</li><li><strong>Спросите команду про трудозатраты.</strong> В человеко-месяцах всех, кто участвует: продукт, дизайн, разработка. Берите целые числа, а для работы заметно меньше месяца ставьте 0,5. Оценку лучше спросить у тех, кто будет делать.</li><li><strong>Посчитайте и отсортируйте.</strong> Балл = охват × влияние × уверенность / трудозатраты. Введите в калькулятор по каждой идее и составьте таблицу от большего к меньшему.</li><li><strong>Проверьте верхушку здравым смыслом.</strong> Отсортируйте список и посмотрите, какие баллы кажутся слишком высокими или слишком низкими. Найдите оценку, которая вытянула результат, уточните её и пересчитайте. Или признайте, что ошиблась интуиция, а не расчёт.</li><li><strong>Запишите источник каждой оценки.</strong> Рядом с цифрами: данные, аналогия или ощущение. Через месяц будет видно, какие оценки подвели, и ваш следующий расчёт станет точнее.</li></ol>
+    <h2>Формула</h2><p>Балл RICE = охват × влияние × уверенность / трудозатраты. Уверенность вводится в процентах (80 = 80%) и в формуле делится на 100.</p><p class="st-meta">В интерактивной версии считает калькулятор: подставьте свои числа.</p>
+    
+    <h2>Пример</h2><p><span class="st-meta">Условный пример. </span>Три идеи в бэклоге на квартал. Идея A, «Отчёты одним кликом»: охват 1 200 клиентов за квартал, влияние 2, уверенность 80%, трудозатраты 3 человеко-месяца. Балл: 1 200 × 2 × 0,8 / 3 = 640. Идея B, «Подсказки в первом входе»: охват 4 000, влияние 0,5, уверенность 80%, трудозатраты 2. Балл: 4 000 × 0,5 × 0,8 / 2 = 800. Идея C, «Интеграция с бухгалтерской системой»: охват 300, влияние 3, уверенность 50%, трудозатраты 1,5. Балл: 300 × 3 × 0,5 / 1,5 = 300. Порядок: B, A, C. У идеи C самое высокое влияние, но низкая уверенность: прежде чем отбрасывать, проведите пять интервью и поднимите оценку уверенности или снимите идею.</p>
+    <h2>Частые ошибки</h2><ul class="st-list"><li>Брать охват по ощущению, а не из аналитики</li><li>Подгонять влияние под решение, которое уже приняли, а потом удивляться, что всё сходится</li><li>Считать разные периоды охвата для разных идей</li><li>Занижать трудозатраты, не спросив тех, кто будет делать</li><li>Воспринимать балл как точный ответ и не обсуждать оценки с командой</li></ul>
+    <h2>Проверьте себя</h2><p>Возьмите от пяти до восьми реальных идей из своего бэклога, посчитайте RICE в калькуляторе и пришлите таблицу с оценками и источником каждой оценки. Добавьте вывод: что берёте первым и чему не доверяете в расчёте.</p><ul class="st-list"><li>Не меньше пяти реальных идей, не пример из карточки</li><li>Для всех идей один период и одна единица охвата</li><li>Влияние поставлено по шкале (3; 2; 1; 0,5; 0,25), уверенность из набора 100, 80, 50 (или ниже, с пояснением)</li><li>Для каждой оценки указан источник: данные, аналогия или ощущение</li><li>В выводе названа оценка, в которой вы меньше всего уверены, и что проверите (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
+    
+    <h2>Рядом</h2><p><a href="../metody/ice.html">ICE</a>, <a href="../metody/kano.html">Модель Кано</a></p>
+    <h2>Уроки</h2><ul class="st-list"><li><a href="../lessons/i14.html">Основы продукта: проблема, гипотеза, метрика</a></li><li><a href="../lessons/i11.html">ИИ для продакт-менеджеров: исследования, приоритизация, документация</a></li></ul>
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/" rel="nofollow noopener" target="_blank">intercom.com</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <div class="pp-open"><a href="../#fw-rice">Открыть с калькулятором и проверкой Алёши →</a></div>
+  </div>
+</main>
+</body>
+</html>

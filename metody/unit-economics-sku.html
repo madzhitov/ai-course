@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Юнит-экономика SKU — Артефакты</title>
+<meta name="description" content="Юнит-экономика SKU: Понять, зарабатывает ли конкретный товар после всех комиссий и расходов. Когда применять, шаги, пример, частые ошибки, калькулятор.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Юнит-экономика SKU">
+<meta property="og:description" content="Юнит-экономика SKU: Понять, зарабатывает ли конкретный товар после всех комиссий и расходов. Когда применять, шаги, пример, частые ошибки, калькулятор.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:url" content="https://ai.madzhitov.ru/metody/unit-economics-sku.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/metody/unit-economics-sku.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tropa-lesson.css">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Юнит-экономика SKU","description":"Юнит-экономика SKU: Понять, зарабатывает ли конкретный товар после всех комиссий и расходов. Когда применять, шаги, пример, частые ошибки, калькулятор.","url":"https://ai.madzhitov.ru/metody/unit-economics-sku.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-04"}</script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../v6/static.css">
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../#roles">Роли</a><a href="../#tasks">Задачи</a><a href="../#paths">Пути</a><a href="../#knowledge">Знания</a></nav></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
+    <h1>Юнит-экономика SKU</h1>
+    <p class="lead">Понять, зарабатывает ли конкретный товар после всех комиссий и расходов.</p>
+    
+    <p class="st-meta">Сначала: <a href="../metody/ecom-pnl.html">E-commerce как P&amp;L</a></p>
+    <h2>Когда применять</h2><ul class="st-list"><li>перед запуском нового товара</li><li>когда продажи растут, а денег не прибавляется</li><li>перед тем как поднять ставки в рекламе</li><li>чтобы найти предельную закупочную цену до заказа партии</li></ul>
+    <h2>Когда не надо</h2><ul class="st-list"><li>для оценки всего магазина целиком: для этого есть P&amp;L</li><li>если нет себестоимости хотя бы примерной</li></ul>
+    <h2>Шаги</h2><ol class="st-list"><li><strong>Возьмите цену продажи.</strong> Цену после ваших скидок и акций. Скидки, которые площадка даёт за свой счёт, не вычитайте: проверьте в отчёте, от какой цены считается комиссия.</li><li><strong>Вычтите комиссию площадки.</strong> Процент вашей категории. Если эквайринг считают отдельно, прибавьте его к проценту.</li><li><strong>Вычтите налог с продажи.</strong> Процент от цены по вашей системе налогообложения, например УСН 6%. Если платите НДС, учтите и его.</li><li><strong>Вычтите логистику и хранение.</strong> До покупателя и хранение на складе в пересчёте на одну выкупленную штуку. Плюс платная приёмка, если она есть.</li><li><strong>Вычтите себестоимость.</strong> Закупка или производство, упаковка, доставка до склада.</li><li><strong>Вычтите рекламу на единицу.</strong> Расход на рекламу за период, делённый на число выкупленных штук за тот же период.</li><li><strong>Учтите возвраты и невыкуп.</strong> Прямая и обратная логистика невыкупленных штук, обработка возвратов и штрафы, разделённые на выкупленные штуки.</li><li><strong>Посмотрите, что осталось.</strong> Маржинальный доход на штуку в рублях и в процентах от цены. Это и есть ответ.</li></ol>
+    <h2>Формула</h2><p>Маржинальный доход = цена − цена × (комиссия + налог) − логистика − себестоимость − реклама − потери. Доля = маржинальный доход / цена.</p><p class="st-meta">В интерактивной версии считает калькулятор: подставьте свои числа.</p>
+    
+    <h2>Пример</h2><p><span class="st-meta">Условный пример. </span>Платье за 2 000 ₽, цифры условные: комиссия 25% (500 ₽), налог 6% (120 ₽), логистика и хранение 180 ₽, себестоимость 700 ₽, реклама 200 ₽, потери на невыкупе 120 ₽. Остаётся 180 ₽, или 9% от цены. Вывод: товар живой, но запас тонкий. Скидка больше 13% уводит его в минус: комиссия и налог уменьшаются вместе с ценой, остальные расходы нет. Ставки комиссий в 2025–2026 годах менялись несколько раз, свою берите в кабинете площадки.</p>
+    <h2>Частые ошибки</h2><ul class="st-list"><li>Считать от оборота, а не от денег, которые остаются</li><li>Забывать налог, невыкуп и обратную логистику</li><li>Делить рекламу на заказанные штуки, а не на выкупленные</li><li>Брать себестоимость без доставки до склада</li></ul>
+    <h2>Проверьте себя</h2><p>Посчитайте юнит-экономику одного своего товара и напишите, что сделаете с ценой, рекламой или закупкой.</p><ul class="st-list"><li>Посчитан реальный товар, а не пример</li><li>Учтены все шесть статей расходов</li><li>Есть вывод: зарабатывает товар или нет</li><li>Есть одно конкретное действие</li><li>Посчитан порог скидки или рекламы, после которого товар уходит в минус (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
+    <h2>Задания по шагам с этим методом</h2><ul class="st-list"><li><a href="../zadaniya/u-unit-economics-channels.html">Юнит-экономика товара в 2–3 каналах по таблице</a></li><li><a href="../zadaniya/u-unit-economics-exports.html">Юнит-экономика всех артикулов по выгрузкам WB и Ozon</a></li></ul>
+    <h2>Рядом</h2><p><a href="../metody/contribution-margin-channels.html">Маржинальный доход по каналам</a>, <a href="../metody/drr-romi.html">ДРР и ROMI</a>, <a href="../metody/stock-turnover.html">Оборачиваемость и запасы</a></p>
+    
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://en.wikipedia.org/wiki/Contribution_margin" rel="nofollow noopener" target="_blank">en.wikipedia.org</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <div class="pp-open"><a href="../#fw-unit-economics-sku">Открыть с калькулятором и проверкой Алёши →</a></div>
+  </div>
+</main>
+</body>
+</html>

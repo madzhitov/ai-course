@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICE — Артефакты</title>
+<meta name="description" content="ICE: Быстро отсортировать десятки гипотез роста и выбрать, какие проверять первыми. Когда применять, шаги, пример, частые ошибки, калькулятор.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ICE">
+<meta property="og:description" content="ICE: Быстро отсортировать десятки гипотез роста и выбрать, какие проверять первыми. Когда применять, шаги, пример, частые ошибки, калькулятор.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:url" content="https://ai.madzhitov.ru/metody/ice.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/metody/ice.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tropa-lesson.css">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"ICE","description":"ICE: Быстро отсортировать десятки гипотез роста и выбрать, какие проверять первыми. Когда применять, шаги, пример, частые ошибки, калькулятор.","url":"https://ai.madzhitov.ru/metody/ice.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-04"}</script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../v6/static.css">
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../#roles">Роли</a><a href="../#tasks">Задачи</a><a href="../#paths">Пути</a><a href="../#knowledge">Знания</a></nav></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
+    <h1>ICE</h1>
+    <p class="lead">Быстро отсортировать десятки гипотез роста и выбрать, какие проверять первыми.</p>
+    <p class="st-meta">Автор метода: Шон Эллис, Hacking Growth (Шон Эллис, Морган Браун, 2017)</p>
+    
+    <h2>Когда применять</h2><ul class="st-list"><li>в списке больше пяти гипотез и спорят, с какой начать</li><li>команда регулярно запускает небольшие эксперименты</li><li>нет времени на подробную оценку и нужен грубый, но общий порядок</li><li>перед недельным планированием экспериментов</li></ul>
+    <h2>Когда не надо</h2><ul class="st-list"><li>для стратегических решений на год: это инструмент для мелких тестов</li><li>когда есть данные об охвате и стоимости: тогда точнее RICE или расчёт эффекта в деньгах</li><li>если оценки ставят в одиночку или подгоняют под уже принятое решение</li><li>если команда по-разному понимает, что значит «10» в Impact</li></ul>
+    <h2>Шаги</h2><ol class="st-list"><li><strong>Выпишите гипотезы одним форматом.</strong> Для каждой: что делаем, для кого, какую метрику сдвинет. Расплывчатое «улучшить сайт» оценить невозможно.</li><li><strong>Договоритесь о шкалах.</strong> Что для вас 10 и что 1 по каждому из трёх критериев. Оценки идут от 1 до 10. Impact: насколько сдвинет выбранную метрику. Confidence: насколько вы уверены, что получится. Ease: насколько просто и быстро проверить.</li><li><strong>Оцените Impact.</strong> Каждую гипотезу по общему для всех шкале, в идеале командой, а не в одиночку.</li><li><strong>Оцените Confidence честно.</strong> Высокая оценка нужна тем гипотезам, за которыми есть данные, предыдущий тест или опыт. Догадка получает низкий балл.</li><li><strong>Оцените Ease.</strong> Чем меньше времени и людей нужно, чтобы запустить проверку, тем выше балл. Это не про то, насколько хочется.</li><li><strong>Посчитайте и отсортируйте.</strong> В книге «Hacking Growth» три оценки усредняют: (Impact + Confidence + Ease) / 3. Затем отсортируйте гипотезы по убыванию. Вручную или в калькуляторе ниже.</li><li><strong>Возьмите верхние и пересчитайте после теста.</strong> В работу идут гипотезы сверху списка. После теста пересмотрите Confidence у похожих идей: вы узнали новое.</li></ol>
+    <h2>Формула</h2><p>ICE = (Impact + Confidence + Ease) / 3, как в книге «Hacking Growth». Каждая оценка от 1 до 10, итог тоже от 1 до 10; чем выше, тем раньше проверять. Встречается и произведение трёх оценок (так считает, например, Итамар Гилад): оно сильнее наказывает гипотезы с одной низкой оценкой. Выберите один способ и не смешивайте их в одном списке.</p><p class="st-meta">В интерактивной версии считает калькулятор: подставьте свои числа.</p>
+    
+    <h2>Пример</h2><p><span class="st-meta">Условный пример. </span>Интернет-магазин одежды выбирает, какую гипотезу роста продаж проверить первой. Письмо о забытой корзине: Impact 7, Confidence 8, Ease 9, итого (7 + 8 + 9) / 3 = 8,0. Для сравнения: таблица размеров прямо в карточке товара (6, 6, 8, итого 6,7) и коллаборация с блогером (9, 3, 3, итого 5,0). Коллаборация обещает больше всего, но уверенности нет, и запустить её сложно, поэтому она последняя. Первым идёт письмо о забытой корзине: уверенность высокая, проверить можно за неделю.</p>
+    <h2>Частые ошибки</h2><ul class="st-list"><li>Оценивать в одиночку и подгонять баллы под желаемую гипотезу</li><li>Ставить высокий Confidence без данных или прошлых тестов</li><li>Менять шкалу от гипотезы к гипотезе или смешивать в одном списке произведения и средние</li><li>Считать итог точным числом: это подсказка для порядка, а не измерение</li><li>Не пересчитывать Confidence после теста</li></ul>
+    <h2>Проверьте себя</h2><p>Запишите пять своих гипотез роста, оцените Impact, Confidence, Ease, посчитайте ICE и выберите одну для проверки на ближайшей неделе.</p><ul class="st-list"><li>Минимум пять реальных гипотез, у каждой указаны метрика и аудитория</li><li>Для каждой есть три оценки от 1 до 10 и посчитан итог одним способом</li><li>Для оценки Confidence указано, на чём она держится: данные, тест, опыт или догадка</li><li>Выбрана одна гипотеза и записан критерий, по которому поймёте, сработала она или нет</li><li>Оценки выставлены вместе с коллегой или проверены им (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
+    
+    <h2>Рядом</h2><p><a href="../metody/rice.html">RICE</a>, <a href="../metody/aarrr.html">AARRR (пиратские метрики)</a>, <a href="../metody/north-star.html">North Star Metric</a></p>
+    <h2>Уроки</h2><ul class="st-list"><li><a href="../lessons/i14.html">Основы продукта: проблема, гипотеза, метрика</a></li></ul>
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://learningloop.io/glossary/ice-scoring-model" rel="nofollow noopener" target="_blank">learningloop.io</a></li><li><a href="https://www.productcompass.pm/p/the-science-of-growth-with-sean-ellis" rel="nofollow noopener" target="_blank">productcompass.pm</a></li><li><a href="https://blog.croct.com/post/ice-score-priorization" rel="nofollow noopener" target="_blank">blog.croct.com</a></li><li><a href="https://itamargilad.com/ice-scores/" rel="nofollow noopener" target="_blank">itamargilad.com</a></li><li><a href="https://itamargilad.com/the-tool-that-will-help-you-choose-better-product-ideas/" rel="nofollow noopener" target="_blank">itamargilad.com</a></li><li><a href="https://growthmethod.com/ice-framework/" rel="nofollow noopener" target="_blank">growthmethod.com</a></li><li><a href="https://airfocus.com/glossary/what-is-the-ice-scoring-model/" rel="nofollow noopener" target="_blank">airfocus.com</a></li><li><a href="https://grahammann.net/book-notes/hacking-growth-sean-ellis" rel="nofollow noopener" target="_blank">grahammann.net</a></li><li><a href="https://bookcademy.wordpress.com/2019/10/28/the-ice-score-hacking-growth-by-sean-ellis-morgan-brown/" rel="nofollow noopener" target="_blank">bookcademy.wordpress.com</a></li><li><a href="https://www.penguinrandomhouse.com/books/545936/hacking-growth-by-sean-ellis-founder-of-growthhackerscom-and-morgan-brown/" rel="nofollow noopener" target="_blank">penguinrandomhouse.com</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <div class="pp-open"><a href="../#fw-ice">Открыть с калькулятором и проверкой Алёши →</a></div>
+  </div>
+</main>
+</body>
+</html>

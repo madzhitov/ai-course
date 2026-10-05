@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LTV / CAC — Артефакты</title>
+<meta name="description" content="LTV / CAC: Понять, сколько можно платить за привлечение клиента, чтобы он принёс больше, чем стоил. Когда применять, шаги, пример, частые ошибки, калькулятор.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LTV / CAC">
+<meta property="og:description" content="LTV / CAC: Понять, сколько можно платить за привлечение клиента, чтобы он принёс больше, чем стоил. Когда применять, шаги, пример, частые ошибки, калькулятор.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:url" content="https://ai.madzhitov.ru/metody/ltv-cac.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/metody/ltv-cac.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tropa-lesson.css">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"LTV / CAC","description":"LTV / CAC: Понять, сколько можно платить за привлечение клиента, чтобы он принёс больше, чем стоил. Когда применять, шаги, пример, частые ошибки, калькулятор.","url":"https://ai.madzhitov.ru/metody/ltv-cac.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-04"}</script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../v6/static.css">
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../#roles">Роли</a><a href="../#tasks">Задачи</a><a href="../#paths">Пути</a><a href="../#knowledge">Знания</a></nav></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
+    <h1>LTV / CAC</h1>
+    <p class="lead">Понять, сколько можно платить за привлечение клиента, чтобы он принёс больше, чем стоил.</p>
+    <p class="st-meta">Автор метода: общепринятое отношение; ориентир 3 к 1 для SaaS популяризировал Дэвид Скок</p>
+    
+    <h2>Когда применять</h2><ul class="st-list"><li>решаете, сколько можно тратить на рекламу и акции для новых клиентов</li><li>сравниваете каналы привлечения</li><li>у клиентов есть повторные покупки и данные о них</li><li>оцениваете, что выгоднее: поднять чек, добиться повторных визитов или снизить стоимость привлечения</li></ul>
+    <h2>Когда не надо</h2><ul class="st-list"><li>повторных покупок почти нет и данных мало: LTV станет гаданием</li><li>не посчитана маржа: считать по выручке нельзя, цифра окажется завышенной</li><li>нужно решение по рекламе на неделю: смотрите окупаемость периода</li></ul>
+    <h2>Шаги</h2><ol class="st-list"><li><strong>Определите клиента и срок.</strong> Клиент: тот, кто купил хотя бы раз. Выберите срок, за который считаете LTV, например 12 месяцев, и всегда пишите его рядом с результатом: LTV за год и LTV за всю жизнь клиента дают разные отношения.</li><li><strong>Возьмите средний чек.</strong> Выручка делённая на число покупок за срок, по данным кассы или CRM.</li><li><strong>Возьмите маржу с чека.</strong> Доля, которая остаётся после себестоимости товара или услуги (валовая). Это не выручка и не чистая прибыль.</li><li><strong>Посчитайте число покупок на клиента.</strong> Сколько покупок в среднем делает клиент за выбранный срок. Для подписки с постоянным месячным оттоком средняя жизнь клиента примерно равна 1 / отток месяцев, но это прогноз на всю жизнь, а не на 12 месяцев: не смешивайте его с годовым расчётом. Ошибка в доле оттока сильно меняет результат.</li><li><strong>Посчитайте LTV.</strong> Средний чек × маржа × число покупок. Это валовая прибыль с клиента за срок.</li><li><strong>Посчитайте CAC.</strong> Все расходы на привлечение за период (реклама, скидки новым, зарплата и подрядчики по привлечению) делённые на число новых клиентов за тот же период.</li><li><strong>Разделите LTV на CAC и сравните.</strong> Ориентир из первоисточника: Дэвид Скок писал, что у лучших SaaS-компаний отношение выше 3, иногда 7–8. Для кофейни, школы или магазина этот порог не проверялся, поэтому сравнивайте с тем, хватает ли валовой прибыли на аренду, зарплаты и прибыль.</li></ol>
+    <h2>Формула</h2><p>LTV = средний чек × маржа × число покупок. CAC = расходы на привлечение / число новых клиентов за тот же период. Отношение = LTV / CAC.</p><p class="st-meta">В интерактивной версии считает калькулятор: подставьте свои числа.</p>
+    
+    <h2>Пример</h2><p><span class="st-meta">Условный пример. </span>Кофейня. Средний чек 350 ₽, маржа с чека 60%, постоянный гость приходит за год 12 раз, привлечение одного нового постоянного гостя стоит 900 ₽ (листовки и реклама на 45 000 ₽ в месяц привели 50 новых постоянных гостей). LTV = 350 × 60% × 12 = 2 520 ₽ валовой прибыли за год. Отношение 2 520 / 900 = 2,8: каждый рубль, вложенный в привлечение, возвращает 2,8 ₽ валовой прибыли за год. Привлечение окупается, но из этой прибыли ещё платят за аренду и зарплаты, поэтому запас небольшой. Что двигать: число визитов (бонус за каждую десятую чашку), чек (десерт к кофе) или стоимость привлечения (приглашение от постоянных гостей).</p>
+    <h2>Частые ошибки</h2><ul class="st-list"><li>Считать LTV по выручке, а не по прибыли после себестоимости</li><li>Брать расходы на привлечение за один период, а число новых клиентов за другой, или сравнивать LTV за разные сроки</li><li>Не включать в CAC зарплаты, скидки новичкам и работу подрядчиков</li><li>Считать одну цифру на все каналы, когда каналы приводят разных клиентов</li><li>Принимать порог 3 из мира SaaS за закон для любого бизнеса</li></ul>
+    <h2>Проверьте себя</h2><p>Посчитайте LTV, CAC и их отношение для своего бизнеса или одного канала привлечения за 12 месяцев и напишите одно решение по итогам.</p><ul class="st-list"><li>Использованы реальные цифры, а не цифры из примера</li><li>LTV считается по марже, а не по выручке</li><li>В CAC учтены все расходы на привлечение, период один и тот же</li><li>Есть вывод и одно действие: что двигать (чек, повторные покупки или стоимость привлечения)</li><li>Посчитаны два канала и сравнены между собой (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
+    
+    <h2>Рядом</h2><p><a href="../metody/unit-economics-sku.html">Юнит-экономика SKU</a>, <a href="../metody/contribution-margin-channels.html">Маржинальный доход по каналам</a>, <a href="../metody/drr-romi.html">ДРР и ROMI</a>, <a href="../metody/rfm.html">RFM</a>, <a href="../metody/aarrr.html">AARRR (пиратские метрики)</a></p>
+    <h2>Уроки</h2><ul class="st-list"><li><a href="../lessons/i13.html">Основы маркетинга: воронка, каналы, позиционирование</a></li><li><a href="../lessons/i14.html">Основы продукта: проблема, гипотеза, метрика</a></li></ul>
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://www.forentrepreneurs.com/saas-metrics-2/" rel="nofollow noopener" target="_blank">forentrepreneurs.com</a></li><li><a href="https://averagecac.com/ltv-cac/" rel="nofollow noopener" target="_blank">averagecac.com</a></li><li><a href="https://www.dataally.ai/blog/ltv-to-cac-ratio" rel="nofollow noopener" target="_blank">dataally.ai</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <div class="pp-open"><a href="../#fw-ltv-cac">Открыть с калькулятором и проверкой Алёши →</a></div>
+  </div>
+</main>
+</body>
+</html>

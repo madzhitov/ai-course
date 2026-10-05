@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RFM — Артефакты</title>
+<meta name="description" content="RFM: Разделить покупателей своей базы на группы по давности, частоте и сумме покупок и решить, кому что написать. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RFM">
+<meta property="og:description" content="RFM: Разделить покупателей своей базы на группы по давности, частоте и сумме покупок и решить, кому что написать. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:url" content="https://ai.madzhitov.ru/metody/rfm.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/metody/rfm.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tropa-lesson.css">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"RFM","description":"RFM: Разделить покупателей своей базы на группы по давности, частоте и сумме покупок и решить, кому что написать. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.","url":"https://ai.madzhitov.ru/metody/rfm.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-04"}</script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../v6/static.css">
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../#roles">Роли</a><a href="../#tasks">Задачи</a><a href="../#paths">Пути</a><a href="../#knowledge">Знания</a></nav></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
+    <h1>RFM</h1>
+    <p class="lead">Разделить покупателей своей базы на группы по давности, частоте и сумме покупок и решить, кому что написать.</p>
+    <p class="st-meta">Автор метода: практика директ-маркетинга</p>
+    
+    <h2>Когда применять</h2><ul class="st-list"><li>есть своя база покупателей: сайт, Telegram, мессенджеры, CRM</li><li>перед рассылкой, чтобы не писать всем одно и то же</li><li>чтобы найти спящих клиентов, которых ещё можно вернуть</li><li>чтобы выделить лучших клиентов и ничего у них не потерять</li></ul>
+    <h2>Когда не надо</h2><ul class="st-list"><li>если покупателей меньше нескольких десятков: групп получится слишком мало</li><li>на маркетплейсе без доступа к данным покупателей: смотрите, что даёт кабинет, и работайте со своими каналами</li><li>если у клиентов одна покупка за всю историю: частоту оценить нечем</li></ul>
+    <h2>Шаги</h2><ol class="st-list"><li><strong>Соберите таблицу покупок.</strong> Одна строка на заказ: номер клиента, дата, сумма. Имена, телефоны и почту уберите, оставьте обезличенный номер.</li><li><strong>Посчитайте три показателя на клиента.</strong> Давность (R): сколько дней прошло с последней покупки. Частота (F): сколько заказов за выбранный период. Деньги (M): сколько он потратил за этот период.</li><li><strong>Поставьте оценки.</strong> Каждой оси дайте оценку от 1 до 5. Один способ: расположите клиентов по порядку и разделите на пять равных групп. Для давности меньше дней значит выше оценка.</li><li><strong>Склейте оценки в понятные группы.</strong> Не оставляйте 125 сочетаний. Хватит четырёх-шести групп: лучшие, новички, засыпающие, потерянные, при желании ещё постоянные и разовые. Правила попадания должны покрывать всех клиентов без пересечений.</li><li><strong>Назначьте действие каждой группе.</strong> Лучшим: поблагодарить и дать ранний доступ к новинкам. Новичкам: помочь со второй покупкой. Засыпающим: напомнить о себе по поводу, который им близок. Потерянным: одно последнее письмо или оставить в покое.</li><li><strong>Проверьте на малой группе.</strong> Отправьте сообщение части группы, а остальным не отправляйте. Через срок, за который у вас обычно случается повторная покупка (например, 2–4 недели), сравните число заказов в двух частях.</li><li><strong>Пересчитывайте регулярно.</strong> Раз в месяц или квартал. Клиенты переходят из группы в группу, и сегменты устаревают.</li></ol>
+    
+    <h2>Готовый запрос к ИИ</h2><div class="st-prompt">Ты аналитик по работе с базой покупателей небольшого интернет-магазина. Помоги сделать RFM-сегментацию.<br><br>Мой бизнес: [что продаю и кому]. Период анализа: [например, последние 12 месяцев].<br>Таблица заказов (без имён и контактов, только номер клиента, дата, сумма): [вставьте или опишите структуру].<br><br>Сделай:<br>1. Объясни, как посчитать давность, частоту и сумму на клиента в моей таблице, и дай формулы для Excel или Google Таблиц.<br>2. Предложи границы оценок от 1 до 5 для моего случая и объясни выбор.<br>3. Предложи четыре-шесть групп с простыми названиями и правилами попадания.<br>4. Для каждой группы предложи одно сообщение (тема и первые две строки) и повод для него.<br>5. Предложи, как проверить, что сообщение сработало.<br>Не придумывай цифры по моей базе. Напомни, что рассылать можно только тем, кто согласился на сообщения.<br><br>Если данных не хватает, сначала задай мне до трёх вопросов.</div>
+    <h2>Пример</h2><p><span class="st-meta">Условный пример. </span>База из 1 200 покупателей за 12 месяцев, цифры условные. После оценок и склейки получилось четыре группы: лучшие (последняя покупка не раньше двух месяцев назад и два заказа и больше) 90 человек, новички (одна покупка, и она была не раньше двух месяцев назад) 330, засыпающие (последняя покупка 2–6 месяцев назад) 300, потерянные (больше полугода) 480. Всего 90 + 330 + 300 + 480 = 1 200. Решения: лучшим предложить ранний доступ к новинке, новичкам прислать подсказку по завариванию и повод повторить заказ, засыпающим одно письмо с напоминанием, потерянным отдельно не тратить бюджет. Проверка: половине засыпающих отправить письмо, другой половине нет, через три недели сравнить число заказов.</p>
+    <h2>Частые ошибки</h2><ul class="st-list"><li>Рассылать всей базе одно и то же</li><li>Грузить в чат-ИИ имена, телефоны и почту клиентов</li><li>Оставлять все 125 сочетаний оценок вместо нескольких понятных групп</li><li>Считать группы навсегда и не пересчитывать</li><li>Писать людям, которые не соглашались на сообщения</li></ul>
+    <h2>Проверьте себя</h2><p>Разделите свою базу на группы по RFM и напишите действие и текст сообщения хотя бы для двух групп.</p><ul class="st-list"><li>Использованы реальные данные своей базы, персональные данные убраны</li><li>Посчитаны давность, частота и сумма на клиента</li><li>Получены понятные группы и их размер</li><li>Для двух групп есть действие и текст сообщения</li><li>Есть способ проверить, что сообщение сработало (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
+    <h2>Задания по шагам с этим методом</h2><ul class="st-list"><li><a href="../zadaniya/u-seller-repeat.html">Повторные продажи по своей базе</a></li></ul>
+    <h2>Рядом</h2><p><a href="../metody/abc-xyz.html">ABC / XYZ-анализ</a>, <a href="../metody/reputation-reviews.html">Репутация и отзывы</a></p>
+    
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://en.wikipedia.org/wiki/RFM_(market_research)" rel="nofollow noopener" target="_blank">en.wikipedia.org</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <div class="pp-open"><a href="../#fw-rfm">Открыть с готовым запросом и проверкой Алёши →</a></div>
+  </div>
+</main>
+</body>
+</html>

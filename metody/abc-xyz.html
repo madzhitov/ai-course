@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABC / XYZ-анализ — Артефакты</title>
+<meta name="description" content="ABC / XYZ-анализ: Разложить ассортимент по вкладу в выручку и стабильности спроса и выбрать политику запасов для каждой группы. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ABC / XYZ-анализ">
+<meta property="og:description" content="ABC / XYZ-анализ: Разложить ассортимент по вкладу в выручку и стабильности спроса и выбрать политику запасов для каждой группы. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:url" content="https://ai.madzhitov.ru/metody/abc-xyz.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/metody/abc-xyz.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tropa-lesson.css">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"ABC / XYZ-анализ","description":"ABC / XYZ-анализ: Разложить ассортимент по вкладу в выручку и стабильности спроса и выбрать политику запасов для каждой группы. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.","url":"https://ai.madzhitov.ru/metody/abc-xyz.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-04"}</script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../v6/static.css">
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../#roles">Роли</a><a href="../#tasks">Задачи</a><a href="../#paths">Пути</a><a href="../#knowledge">Знания</a></nav></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
+    <h1>ABC / XYZ-анализ</h1>
+    <p class="lead">Разложить ассортимент по вкладу в выручку и стабильности спроса и выбрать политику запасов для каждой группы.</p>
+    <p class="st-meta">Автор метода: ABC: Х. Форд Дики, General Electric; XYZ: единого автора нет</p>
+    
+    <h2>Когда применять</h2><ul class="st-list"><li>в ассортименте много товаров и на глаз не видно, какие из них главные</li><li>когда не понятно, какие товары держат бизнес, а какие просто занимают склад</li><li>перед планированием поставок и закупок</li><li>перед сокращением ассортимента</li></ul>
+    <h2>Когда не надо</h2><ul class="st-list"><li>если товаров меньше десяти: итог видно и без таблицы</li><li>для новинок младше нескольких месяцев: выделите их отдельно</li><li>для сезонных товаров целиком за год без учёта сезона: стабильность получится ложной</li></ul>
+    <h2>Шаги</h2><ol class="st-list"><li><strong>Выгрузите продажи по товарам.</strong> Выручка или, лучше, маржинальный доход по каждому товару и продажи в штуках по месяцам за 6–12 месяцев.</li><li><strong>Проведите ABC.</strong> Расположите товары от большего вклада к меньшему и посчитайте накопительную долю. Верхние товары до примерно 80% вклада это A, следующие до примерно 95% это B, остальные C. Границы условные, подстройте под себя.</li><li><strong>Проведите XYZ.</strong> Для каждого товара посчитайте коэффициент вариации: стандартное отклонение продаж по месяцам, делённое на среднее. В таблицах это функция СТАНДОТКЛОН.Г (по всем месяцам) или СТАНДОТКЛОН (выборочное, даёт чуть больше); выберите одну для всех товаров. Границы условные: в русскоязычных разборах часто берут до 10% X, 10–25% Y, больше 25% Z. Это договорённость, а не стандарт, подстройте под свой ассортимент.</li><li><strong>Соберите матрицу 3 на 3.</strong> У каждого товара получится пара, например AX или CZ. Посчитайте, сколько товаров и какую долю выручки даёт каждая ячейка.</li><li><strong>Назначьте политику по ячейкам.</strong> Один из распространённых вариантов. AX и BX: поставки точно в срок и частые небольшие партии. AY и BY: страховой запас и контроль уровня. AZ и BZ: минимум запаса или заказ под спрос, постоянное внимание. C: большие интервалы между поставками, подумайте, нужны ли эти товары.</li><li><strong>Выделите особые случаи.</strong> Новинки отдельно. Сезонные товары считайте внутри сезона. Товары с остатком, но без продаж, помечайте для распродажи.</li><li><strong>Пересчитывайте.</strong> Раз в квартал или перед большой закупкой: товары переходят из группы в группу.</li></ol>
+    
+    <h2>Готовый запрос к ИИ</h2><div class="st-prompt">Ты аналитик ассортимента для продавца на маркетплейсах и в своих каналах. Помоги провести ABC/XYZ-анализ.<br><br>Мой ассортимент: [категория, число товаров]. Период: [например, 12 месяцев].<br>Таблица: товар, выручка или маржинальный доход за период, продажи по месяцам в штуках: [вставьте].<br>Сезонность: [есть / нет, в какие месяцы].<br>Новинки, которые продаются меньше полугода: [список].<br><br>Сделай:<br>1. ABC: отсортируй товары по вкладу, посчитай накопительную долю, раздели на A, B, C. Покажи границы, которые использовал.<br>2. XYZ: посчитай коэффициент вариации по месяцам для каждого товара и раздели на X, Y, Z. Покажи границы.<br>3. Сведи в матрицу 3 на 3: сколько товаров и какая доля выручки в каждой ячейке.<br>4. Для каждой ячейки предложи политику запасов и закупки в одну строку.<br>5. Отдельно выдели новинки и сезонные товары и объясни, почему.<br>Показывай формулы, чтобы я мог перепроверить расчёт в таблице.<br><br>Если данных не хватает, сначала задай мне до трёх вопросов.</div>
+    <h2>Пример</h2><p><span class="st-meta">Условный пример. </span>Выручка за год по товарам в порядке убывания, тыс. ₽: 400, 250, 150, 70, 50, 30, 20, 15, 10, 5, всего 1 000. Накопительно: 40%, 65%, 80%, 87%, 92%, 95%, 97%, 98,5%, 99,5%, 100%. Первые три товара дают 80%, это A. Товары с четвёртого по шестой дают ещё 15%, это B. Остальные четыре дают 5%, это C. Проверка: 800 + 150 + 50 = 1 000. Спрос первого товара по четырём месяцам: 100, 110, 90, 100 штук. Среднее 100, стандартное отклонение по всем месяцам около 7, коэффициент вариации около 7%, это X, итого AX. У другого товара: 20, 120, 0, 60 штук. Среднее 50, отклонение около 46, коэффициент вариации около 92%, это Z. Для надёжности берите 6–12 месяцев, четыре взяты ради краткости.</p>
+    <h2>Частые ошибки</h2><ul class="st-list"><li>Считать ABC по штукам вместо выручки или маржинального дохода</li><li>Считать XYZ по двум-трём точкам данных</li><li>Не отделять новинки и сезонные товары</li><li>Считать границы 80/95 и 10/25 законом, а не удобной договорённостью</li><li>Выкидывать группу C, не проверив, не нужна ли она для полноты ассортимента</li></ul>
+    <h2>Проверьте себя</h2><p>Проведите ABC/XYZ по своему ассортименту и напишите политику закупки для двух самых важных ячеек матрицы.</p><ul class="st-list"><li>Использован реальный ассортимент не меньше десяти товаров</li><li>ABC посчитан по выручке или марже с накопительной долей</li><li>XYZ посчитан по продажам по месяцам, границы названы</li><li>Есть матрица и политика минимум для двух ячеек</li><li>Новинки и сезонные товары учтены отдельно (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
+    <h2>Задания по шагам с этим методом</h2><ul class="st-list"><li><a href="../zadaniya/u-seller-stock.html">План остатков и заказа на все каналы</a></li></ul>
+    <h2>Рядом</h2><p><a href="../metody/stock-turnover.html">Оборачиваемость и запасы</a>, <a href="../metody/unit-economics-sku.html">Юнит-экономика SKU</a></p>
+    
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://en.wikipedia.org/wiki/ABC_analysis" rel="nofollow noopener" target="_blank">en.wikipedia.org</a></li><li><a href="https://www.cin7.com/industry-terms/inventory-classification/" rel="nofollow noopener" target="_blank">cin7.com</a></li><li><a href="https://www.moysklad.ru/poleznoe/shkola-torgovli/xyz-analiz/" rel="nofollow noopener" target="_blank">moysklad.ru</a></li><li><a href="https://ouci.dntb.gov.ua/en/works/408pAWy4/" rel="nofollow noopener" target="_blank">ouci.dntb.gov.ua</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <div class="pp-open"><a href="../#fw-abc-xyz">Открыть с готовым запросом и проверкой Алёши →</a></div>
+  </div>
+</main>
+</body>
+</html>

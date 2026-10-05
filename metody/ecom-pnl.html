@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-commerce как P&amp;L — Артефакты</title>
+<meta name="description" content="E-commerce как P&amp;L: Собрать отчёт о прибылях и убытках магазина или кабинета и увидеть, сколько денег остаётся. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="E-commerce как P&amp;L">
+<meta property="og:description" content="E-commerce как P&amp;L: Собрать отчёт о прибылях и убытках магазина или кабинета и увидеть, сколько денег остаётся. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:url" content="https://ai.madzhitov.ru/metody/ecom-pnl.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/metody/ecom-pnl.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tropa-lesson.css">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"E-commerce как P&L","description":"E-commerce как P&L: Собрать отчёт о прибылях и убытках магазина или кабинета и увидеть, сколько денег остаётся. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.","url":"https://ai.madzhitov.ru/metody/ecom-pnl.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-04"}</script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../v6/static.css">
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../#roles">Роли</a><a href="../#tasks">Задачи</a><a href="../#paths">Пути</a><a href="../#knowledge">Знания</a></nav></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
+    <h1>E-commerce как P&amp;L</h1>
+    <p class="lead">Собрать отчёт о прибылях и убытках магазина или кабинета и увидеть, сколько денег остаётся.</p>
+    <p class="st-meta">Автор метода: Руслан Маджитов</p>
+    
+    <h2>Когда применять</h2><ul class="st-list"><li>раз в месяц, чтобы понять итог по кабинету или по всему магазину</li><li>когда оборот растёт, а денег на счёте не прибавляется</li><li>перед решением о найме, закупке или расширении ассортимента</li><li>когда вы работаете в нескольких каналах и нужен общий итог</li></ul>
+    <h2>Когда не надо</h2><ul class="st-list"><li>для решения по одному товару: для него есть юнит-экономика SKU</li><li>если нет отчётов о продажах и расходах хотя бы за один полный месяц</li></ul>
+    <h2>Шаги</h2><ol class="st-list"><li><strong>Выберите период и границы.</strong> Один календарный месяц и один кабинет или канал. Продажу и её расходы относите к месяцу, когда товар выкуплен, даже если площадка заплатит в следующем месяце. Задержку выплаты вы увидите на шаге сверки с деньгами.</li><li><strong>Запишите выручку по выкупленным.</strong> Выручка считается по товарам, которые покупатель забрал, а не по заказам. Данные берите из отчёта о продажах или реализации в кабинете площадки, названия отчётов смотрите там же.</li><li><strong>Вычтите переменные расходы.</strong> Всё, что растёт вместе с продажами: комиссия и эквайринг, логистика и хранение, приёмка, штрафы, реклама, налог, если он считается от выручки (например, УСН «доходы»). Отдельной строкой вычтите себестоимость именно проданных штук, а не закупленных.</li><li><strong>Получите маржинальный доход.</strong> Выручка минус переменные расходы. Запишите сумму и долю от выручки. Это деньги, которые остаются на постоянные расходы и прибыль.</li><li><strong>Вычтите постоянные расходы.</strong> То, что платится независимо от продаж: зарплаты, склад или офис, сервисы и подписки, бухгалтерия, съёмка. Если расход общий для нескольких каналов, пока оставьте его на уровне всего магазина.</li><li><strong>Выведите операционную прибыль.</strong> Маржинальный доход минус постоянные расходы. Это прибыль месяца на бумаге.</li><li><strong>Сверьте прибыль с деньгами.</strong> Прибыль и деньги на счёте расходятся. Разницу объясняют: закупка товара в запас, задержка выплат площадки, налоги к уплате, возвраты. Если разницы вы объяснить не можете, отчёт неполный.</li></ol>
+    
+    <h2>Готовый запрос к ИИ</h2><div class="st-prompt">Ты финансовый аналитик для продавца на маркетплейсах и в своих каналах (Россия, 2026). Помоги собрать P&amp;L.<br><br>Период: [месяц]. Канал или кабинет: [Wildberries / Ozon / свой сайт / все вместе].<br>Система налогообложения: [например, УСН доходы 6%].<br><br>Мои данные:<br>Выручка по выкупленным, ₽: [число]<br>Комиссия и эквайринг, ₽: [число]<br>Логистика, хранение, приёмка, ₽: [число]<br>Штрафы и прочие удержания, ₽: [число]<br>Реклама, ₽: [число]<br>Налог с продажи, ₽: [число]<br>Себестоимость проданных штук, ₽: [число]<br>Постоянные расходы по статьям, ₽: [зарплата, склад, сервисы, прочее]<br>Закуплено товара за месяц по себестоимости, ₽: [число]<br>Поступило денег на счёт от площадок за месяц, ₽: [число]<br><br>Сделай:<br>1. Таблицу P&amp;L: выручка, переменные расходы, маржинальный доход и его доля, постоянные расходы, операционная прибыль и её доля.<br>2. Сверку прибыли с движением денег: что объясняет разницу.<br>3. Три самые большие статьи расходов и один вопрос по каждой, который мне стоит проверить.<br>Не придумывай цифры: если статьи не хватает, так и напиши. Тарифы и правила площадок не называй, отправляй меня в кабинет.<br><br>Если данных не хватает, сначала задай мне до трёх вопросов.</div>
+    <h2>Пример</h2><p><span class="st-meta">Условный пример. </span>Месяц, цифры условные. Выручка по выкупленным 1 000 000 ₽. Переменные расходы: комиссия 220 000, логистика и хранение 150 000, реклама 90 000, налог 60 000, себестоимость проданных штук 280 000. Всего 800 000, маржинальный доход 200 000 ₽ (20%). Постоянные расходы: менеджер 80 000, сервисы и съёмка 30 000, прочее 20 000, всего 130 000. Операционная прибыль 70 000 ₽ (7%). Сверка: за месяц закуплено товара на 350 000 ₽, а продано по себестоимости на 280 000 ₽, значит запас вырос на 70 000 ₽. Прибыль на бумаге 70 000, а деньги на счёте за месяц не прибавились: если остальные выплаты пришли вовремя, эту сумму съела закупка в запас.</p>
+    <h2>Частые ошибки</h2><ul class="st-list"><li>Считать по заказам, а не по выкупленным</li><li>Вычитать закупку целиком вместо себестоимости проданного</li><li>Забывать налог, штрафы и платную приёмку</li><li>Путать прибыль с деньгами на счёте и не делать сверку</li><li>Раскидывать постоянные расходы по товарам и каналам поровну без причины</li></ul>
+    <h2>Проверьте себя</h2><p>Соберите P&amp;L своего кабинета или магазина за последний полный месяц и напишите, какая статья расходов съедает больше всего и что вы проверите.</p><ul class="st-list"><li>Взяты реальные цифры за один полный месяц</li><li>Выручка посчитана по выкупленным, переменные и постоянные расходы разделены</li><li>Есть маржинальный доход, операционная прибыль и доли от выручки</li><li>Сделана сверка прибыли с деньгами, разница объяснена</li><li>Названа одна статья расходов для проверки и одно действие (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
+    <h2>Задания по шагам с этим методом</h2><ul class="st-list"><li><a href="../zadaniya/u-seller-weekly.html">Сводный отчёт за неделю по всем каналам</a></li></ul>
+    <h2>Рядом</h2><p><a href="../metody/unit-economics-sku.html">Юнит-экономика SKU</a>, <a href="../metody/contribution-margin-channels.html">Маржинальный доход по каналам</a>, <a href="../metody/drr-romi.html">ДРР и ROMI</a>, <a href="../metody/stock-turnover.html">Оборачиваемость и запасы</a></p>
+    
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://en.wikipedia.org/wiki/Contribution_margin" rel="nofollow noopener" target="_blank">en.wikipedia.org</a></li><li><a href="https://corporatefinanceinstitute.com/resources/accounting/contribution-margin-overview" rel="nofollow noopener" target="_blank">corporatefinanceinstitute.com</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <div class="pp-open"><a href="../#fw-ecom-pnl">Открыть с готовым запросом и проверкой Алёши →</a></div>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Воронка карточки маркетплейса — Артефакты</title>
+<meta name="description" content="Воронка карточки маркетплейса: Найти шаг, на котором карточка теряет покупателей, и проверить одну правку за раз. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Воронка карточки маркетплейса">
+<meta property="og:description" content="Воронка карточки маркетплейса: Найти шаг, на котором карточка теряет покупателей, и проверить одну правку за раз. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:url" content="https://ai.madzhitov.ru/metody/listing-funnel.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/metody/listing-funnel.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tropa-lesson.css">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Воронка карточки маркетплейса","description":"Воронка карточки маркетплейса: Найти шаг, на котором карточка теряет покупателей, и проверить одну правку за раз. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.","url":"https://ai.madzhitov.ru/metody/listing-funnel.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-04"}</script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../v6/static.css">
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../#roles">Роли</a><a href="../#tasks">Задачи</a><a href="../#paths">Пути</a><a href="../#knowledge">Знания</a></nav></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
+    <h1>Воронка карточки маркетплейса</h1>
+    <p class="lead">Найти шаг, на котором карточка теряет покупателей, и проверить одну правку за раз.</p>
+    <p class="st-meta">Автор метода: Руслан Маджитов</p>
+    
+    <h2>Когда применять</h2><ul class="st-list"><li>продажи упали или не растут при тех же вложениях в рекламу</li><li>перед тем как менять фото, цену или описание наугад</li><li>после запуска нового товара, чтобы понять, чему он не соответствует</li><li>когда много заказов, но мало выкупов</li></ul>
+    <h2>Когда не надо</h2><ul class="st-list"><li>если товар только что появился и данных меньше недели</li><li>для сравнения двух разных товаров между собой: сравнивайте товар с ним же в прошлом или с категорией</li></ul>
+    <h2>Шаги</h2><ol class="st-list"><li><strong>Выгрузите воронку по одному товару.</strong> Возьмите период, за который набралось достаточно заказов, например 2–4 недели, из аналитики кабинета: показы (если доступны в вашем тарифе аналитики), переходы в карточку, добавления в корзину, заказы, выкупы. Названия отчётов смотрите в кабинете.</li><li><strong>Посчитайте переходы между шагами.</strong> Клики к показам, корзина к кликам, заказы к корзине, выкупы к заказам. Каждая доля показывает, сколько людей прошло дальше.</li><li><strong>Сравните с ориентиром.</strong> Сравните эти доли с тем же товаром в прошлом периоде. Если кабинет даёт сравнение с категорией или площадкой, возьмите и его. Чужие «средние по рынку» из статей не берите.</li><li><strong>Найдите самый большой провал.</strong> Шаг, где доля упала сильнее всего или заметно ниже категории. Работайте только с ним.</li><li><strong>Привяжите провал к элементу карточки.</strong> Показы: ключевые слова, участие в акциях. Клики: главное фото, цена, рейтинг. Корзина: остальные фото, видео, описание, ответы на вопросы. Заказ: цена, срок доставки, наличие размеров. Выкуп: совпадает ли товар с ожиданиями (размер, цвет, комплектация).</li><li><strong>Сформулируйте одну гипотезу.</strong> Одна правка за раз: «если сделать X, доля на шаге Y вырастет». Несколько правок сразу не дадут понять, что сработало.</li><li><strong>Подождите и сравните.</strong> Дайте правке время набрать данные. На старте можно взять 7–10 дней, так советуют практические разборы, но важнее, чтобы заказов набралось достаточно для сравнения. Выкуп отстаёт от заказа, поэтому долю выкупа считайте по заказам, которые покупатели уже забрали или вернули. Учтите акции и рекламу в эти дни, иначе вы сравните не то.</li></ol>
+    
+    <h2>Готовый запрос к ИИ</h2><div class="st-prompt">Ты аналитик продавца на маркетплейсе. Помоги найти слабое место в воронке карточки.<br><br>Товар: [название и категория]. Площадка: [Wildberries / Ozon].<br>Период сейчас: [даты]. Период для сравнения: [даты, например предыдущие две недели].<br><br>Данные за период сейчас: показы [число или нет данных], переходы в карточку [число], в корзину [число], заказы [число], выкупы [число].<br>Данные за период сравнения: показы [число или нет данных], переходы [число], в корзину [число], заказы [число], выкупы [число].<br>Что менялось в этот период: [цена, фото, акции, реклама, сезон].<br>Темы последних отзывов и вопросов: [кратко].<br><br>Сделай:<br>1. Таблицу долей между шагами за оба периода и разницу.<br>2. Назови один шаг с самым большим провалом и объясни, почему именно он.<br>3. Предложи три гипотезы правки для этого шага, от самой простой к сложной. Для каждой напиши, что измерить и через сколько дней.<br>Не называй средних значений по рынку. Если нужен ориентир, скажи, какой отчёт открыть в кабинете.<br><br>Если данных не хватает, сначала задай мне до трёх вопросов.</div>
+    <h2>Пример</h2><p><span class="st-meta">Условный пример. </span>Две недели, цифры условные. Показы 40 000, переходы в карточку 1 200 (3% от показов), в корзину 180 (15% от переходов), заказы 90 (50% от корзины), выкупы 36 (40% от заказов). За предыдущие две недели те же шаги, но выкуп 54 из 90 заказов, то есть 60%. В обоих периодах считаем только заказы, которые уже забрали или вернули. Провал на последнем шаге: люди заказывают, но не забирают. В отзывах 7 из 12 негативных про размер. Гипотеза: добавить таблицу размеров на второе фото и пометку «маломерит» в описание. Проверка: через 10 дней снова снять долю выкупа по уже забранным и возвращённым заказам, цель вернуться к прежним 60%.</p>
+    <h2>Частые ошибки</h2><ul class="st-list"><li>Менять фото, цену и описание одновременно</li><li>Смотреть только заказы и не смотреть выкупы</li><li>Сравнивать с «средним по рынку» из статей вместо своего прошлого и категории в кабинете</li><li>Делать выводы по данным за два-три дня или по свежим заказам, которые ещё не успели выкупить</li><li>Не учитывать, что в период ушла акция или выросла реклама</li></ul>
+    <h2>Проверьте себя</h2><p>Разберите воронку одного своего товара: покажите доли по шагам, назовите главный провал и одну гипотезу с датой проверки.</p><ul class="st-list"><li>Взят реальный товар и реальные цифры двух периодов</li><li>Посчитаны доли между всеми шагами воронки</li><li>Назван один шаг-провал с обоснованием</li><li>Гипотеза одна, привязана к элементу карточки, с планом замера</li><li>Учтены акции и реклама периода (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
+    <h2>Задания по шагам с этим методом</h2><ul class="st-list"><li><a href="../zadaniya/u-seller-competitors.html">Разбор десяти конкурентов в чат-ИИ</a></li><li><a href="../zadaniya/u-seller-keywords.html">Ключевые запросы и характеристики для карточки</a></li></ul>
+    <h2>Рядом</h2><p><a href="../metody/reputation-reviews.html">Репутация и отзывы</a>, <a href="../metody/drr-romi.html">ДРР и ROMI</a>, <a href="../metody/unit-economics-sku.html">Юнит-экономика SKU</a></p>
+    
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://seller.wildberries.ru/instructions/ru/ru/material/sellers-analytics" rel="nofollow noopener" target="_blank">seller.wildberries.ru</a></li><li><a href="https://www.bitrix24.ru/journal/voronka-prodazh-wildberries/" rel="nofollow noopener" target="_blank">bitrix24.ru</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <div class="pp-open"><a href="../#fw-listing-funnel">Открыть с готовым запросом и проверкой Алёши →</a></div>
+  </div>
+</main>
+</body>
+</html>

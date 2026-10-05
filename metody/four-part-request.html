@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Запрос из четырёх частей — Артефакты</title>
+<meta name="description" content="Запрос из четырёх частей: Ставить ИИ задачу так, чтобы ответ с первого раза был ближе к нужному, а не общим. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Запрос из четырёх частей">
+<meta property="og:description" content="Запрос из четырёх частей: Ставить ИИ задачу так, чтобы ответ с первого раза был ближе к нужному, а не общим. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:url" content="https://ai.madzhitov.ru/metody/four-part-request.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/metody/four-part-request.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tropa-lesson.css">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Запрос из четырёх частей","description":"Запрос из четырёх частей: Ставить ИИ задачу так, чтобы ответ с первого раза был ближе к нужному, а не общим. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.","url":"https://ai.madzhitov.ru/metody/four-part-request.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-04"}</script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../v6/static.css">
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../#roles">Роли</a><a href="../#tasks">Задачи</a><a href="../#paths">Пути</a><a href="../#knowledge">Знания</a></nav></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
+    <h1>Запрос из четырёх частей</h1>
+    <p class="lead">Ставить ИИ задачу так, чтобы ответ с первого раза был ближе к нужному, а не общим.</p>
+    <p class="st-meta">Автор метода: собрано по руководствам Anthropic, OpenAI и Google по составлению запросов; деление на четыре части наше</p>
+    
+    <h2>Когда применять</h2><ul class="st-list"><li>любая задача длиннее одного вопроса</li><li>когда ответ получается общим или не тем</li></ul>
+    <h2>Когда не надо</h2><ul class="st-list"><li>для коротких справочных вопросов: там хватит одной фразы</li></ul>
+    <h2>Шаги</h2><ol class="st-list"><li><strong>Образ успеха.</strong> Опишите, как выглядит хороший результат и для кого он: что человек сделает, когда его получит.</li><li><strong>Ограничения.</strong> Что нельзя, объём, тон, сроки, чего вы точно не хотите увидеть. Где можно, говорите, что нужно, а не только чего нельзя.</li><li><strong>Данные.</strong> Приложите материалы целиком, а не пересказ: отзывы, таблицу, черновик, примеры. Если материал длинный, вставьте его в начало, а задачу и требования после него. Если данных не хватает, разрешите ИИ сначала задать до трёх вопросов.</li><li><strong>Состав ответа.</strong> Задайте форму: сколько вариантов, какие разделы, таблица или текст.</li><li><strong>Сверьте ответ с образом успеха.</strong> Если не совпало, сначала поправьте ту часть запроса, которая подвела. Не помогли две правки: перепишите запрос целиком с учётом того, что узнали.</li></ol>
+    
+    <h2>Готовый запрос к ИИ</h2><div class="st-prompt">Хороший результат: [как он выглядит и для кого].<br>Ограничения: [объём, тон, чего нельзя].<br>Данные: [вставьте материалы целиком].<br>Состав ответа: [формат, число вариантов, разделы].<br>Если данных не хватает, сначала задай мне до трёх вопросов.</div>
+    <h2>Пример</h2><p><span class="st-meta">Условный пример. </span>Вместо «ответь на отзывы» напишите: «Хороший результат: ответы, после которых покупатель видит, что его услышали. Ограничения: 2–3 предложения, без обещаний возврата денег. Данные: 20 отзывов ниже. Состав: по одному ответу на отзыв, каждый начинается по-разному».</p>
+    <h2>Частые ошибки</h2><ul class="st-list"><li>Пропускать образ успеха и сразу писать «сделай»</li><li>Пересказывать данные своими словами вместо того, чтобы вставить их</li><li>Не задавать форму ответа и потом переделывать</li><li>Сразу переписывать весь запрос, хотя подвела одна часть</li></ul>
+    <h2>Проверьте себя</h2><p>Возьмите свой настоящий запрос к ИИ, перепишите его в четыре части и сравните ответы до и после.</p><ul class="st-list"><li>Есть все четыре части</li><li>Образ успеха конкретный: понятно, что человек сделает с результатом</li><li>Данные приложены, а не пересказаны</li><li>Описано, чем ответ «после» лучше ответа «до»</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
+    <h2>Задания по шагам с этим методом</h2><ul class="st-list"><li><a href="../zadaniya/u-seller-reviews.html">Ответы на отзывы пачкой в голосе бренда</a></li><li><a href="../zadaniya/u-seller-social.html">Контент под товар для соцсетей и мессенджеров</a></li></ul>
+    
+    <h2>Уроки</h2><ul class="st-list"><li><a href="../lessons/4.html">Урок 4. Основы промпт-инжиниринга</a></li><li><a href="../lessons/5.html">Урок 5. Продвинутые техники промптов: CoT, ReAct, chaining</a></li></ul>
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" rel="nofollow noopener" target="_blank">platform.claude.com</a></li><li><a href="https://web.archive.org/web/20250101165848/https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct" rel="nofollow noopener" target="_blank">web.archive.org</a></li><li><a href="https://claude.com/blog/best-practices-for-prompt-engineering" rel="nofollow noopener" target="_blank">claude.com</a></li><li><a href="https://developers.openai.com/api/docs/guides/prompt-engineering" rel="nofollow noopener" target="_blank">developers.openai.com</a></li><li><a href="https://github.com/openai/openai-cookbook/blob/main/examples/data/oai_docs/prompt-engineering.txt" rel="nofollow noopener" target="_blank">github.com</a></li><li><a href="https://ai.google.dev/gemini-api/docs/prompting-strategies" rel="nofollow noopener" target="_blank">ai.google.dev</a></li><li><a href="https://services.google.com/fh/files/misc/gemini_for_workspace_prompt_guide_october_2024_digital_final.pdf" rel="nofollow noopener" target="_blank">services.google.com</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <div class="pp-open"><a href="../#fw-four-part-request">Открыть с готовым запросом и проверкой Алёши →</a></div>
+  </div>
+</main>
+</body>
+</html>
