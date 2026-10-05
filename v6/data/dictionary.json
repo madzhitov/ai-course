@@ -1,0 +1,2268 @@
+{
+ "areas": [
+  {
+   "id": "money",
+   "title": "Деньги и экономика"
+  },
+  {
+   "id": "marketing",
+   "title": "Маркетинг"
+  },
+  {
+   "id": "ecom",
+   "title": "Маркетплейсы и e-commerce"
+  },
+  {
+   "id": "product",
+   "title": "Продукт"
+  },
+  {
+   "id": "ai-basics",
+   "title": "Работа с ИИ"
+  },
+  {
+   "id": "basics",
+   "title": "Базовые понятия"
+  },
+  {
+   "id": "models",
+   "title": "Модели и архитектуры"
+  },
+  {
+   "id": "params",
+   "title": "Параметры генерации"
+  },
+  {
+   "id": "prompting",
+   "title": "Промптинг"
+  },
+  {
+   "id": "behavior",
+   "title": "Поведение моделей"
+  },
+  {
+   "id": "memory",
+   "title": "Память и контекст"
+  },
+  {
+   "id": "rag",
+   "title": "Эмбеддинги и RAG"
+  },
+  {
+   "id": "agents",
+   "title": "Агенты"
+  },
+  {
+   "id": "benchmarks",
+   "title": "Бенчмарки и сравнение"
+  },
+  {
+   "id": "safety",
+   "title": "Безопасность"
+  },
+  {
+   "id": "legal",
+   "title": "Юридическое"
+  },
+  {
+   "id": "api",
+   "title": "API и разработка"
+  },
+  {
+   "id": "tools",
+   "title": "Инструменты"
+  }
+ ],
+ "terms": [
+  {
+   "id": "cac",
+   "term": "CAC",
+   "en": "customer acquisition cost",
+   "aliases": [
+    "cac",
+    "customer acquisition cost",
+    "стоимость привлечения клиента"
+   ],
+   "area": "money",
+   "short": "Средняя стоимость привлечения одного нового платящего клиента: расходы на маркетинг и продажи за период, делённые на число новых клиентов. 300 000 ₽ на рекламу и 600 новых клиентов дают CAC 500 ₽.",
+   "cards": [
+    "ltv-cac",
+    "aarrr"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "ltv",
+   "term": "LTV",
+   "en": "lifetime value (customer lifetime value)",
+   "aliases": [
+    "ltv",
+    "clv",
+    "cltv",
+    "lifetime value",
+    "customer lifetime value",
+    "пожизненная ценность клиента"
+   ],
+   "area": "money",
+   "short": "Сколько денег клиент приносит компании за всё время отношений с ней. Для решений полезнее считать LTV по маржинальному доходу, а не по выручке, иначе ценность клиента завышена.",
+   "cards": [
+    "ltv-cac",
+    "rfm",
+    "cohorts",
+    "bowtie"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "pnl",
+   "term": "P&L",
+   "en": "profit and loss statement",
+   "aliases": [
+    "p&l",
+    "pnl",
+    "опиу",
+    "отчёт о прибылях и убытках",
+    "profit and loss"
+   ],
+   "area": "money",
+   "short": "Отчёт о прибылях и убытках: выручка за период минус все расходы (себестоимость, комиссии, логистика, реклама, налоги), внизу чистая прибыль. Показывает, заработал ли бизнес за месяц или квартал, но не показывает движение денег.",
+   "cards": [
+    "ecom-pnl",
+    "unit-economics-sku",
+    "contribution-margin-channels"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "roi",
+   "term": "ROI",
+   "en": "return on investment",
+   "aliases": [
+    "roi",
+    "return on investment"
+   ],
+   "area": "money",
+   "short": "Окупаемость любых вложений: (прибыль от вложения − сумма вложения) / сумма вложения × 100%. ROI 50% значит, что каждый вложенный рубль вернулся и принёс ещё 50 копеек.",
+   "cards": [
+    "drr-romi"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "romi",
+   "term": "ROMI",
+   "en": "return on marketing investment",
+   "aliases": [
+    "romi",
+    "return on marketing investment"
+   ],
+   "area": "money",
+   "short": "Окупаемость маркетинговых вложений: (доход от маркетинга − расходы на маркетинг) / расходы × 100%. Доход берут как маржинальный доход или валовую прибыль, а не выручку: 100 000 ₽ рекламы и 250 000 ₽ маржинального дохода дают ROMI 150%.",
+   "cards": [
+    "drr-romi",
+    "incrementality",
+    "mmm"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "drr",
+   "term": "ДРР",
+   "en": null,
+   "aliases": [
+    "дрр",
+    "доля рекламных расходов"
+   ],
+   "area": "money",
+   "short": "Доля рекламных расходов: сколько процентов выручки уходит на рекламу, ДРР = реклама / выручка × 100%. 15 000 ₽ рекламы при выручке 100 000 ₽ дают ДРР 15%; важно оговаривать, от какой выручки считают: всей или только рекламной.",
+   "cards": [
+    "drr-romi",
+    "unit-economics-sku"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "contribution-margin",
+   "term": "Маржинальный доход",
+   "en": "contribution margin",
+   "aliases": [
+    "маржинальный доход",
+    "маржинальная прибыль",
+    "contribution margin"
+   ],
+   "area": "money",
+   "short": "Выручка минус переменные расходы: себестоимость, комиссия площадки, логистика, реклама на единицу. Товар за 1 000 ₽ с переменными расходами 700 ₽ даёт 300 ₽ маржинального дохода, из которых покрываются постоянные расходы.",
+   "cards": [
+    "contribution-margin-channels",
+    "unit-economics-sku",
+    "ecom-pnl"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "inventory-turnover",
+   "term": "Оборачиваемость",
+   "en": "inventory turnover",
+   "aliases": [
+    "оборачиваемость",
+    "inventory turnover"
+   ],
+   "area": "money",
+   "short": "Как быстро продаётся запас. На маркетплейсах её обычно считают в днях: средний остаток / средние продажи в день; 600 штук на складе при продажах 20 в день дают 30 дней.",
+   "cards": [
+    "stock-turnover",
+    "abc-xyz"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "payback",
+   "term": "Окупаемость",
+   "en": "payback period",
+   "aliases": [
+    "окупаемость",
+    "срок окупаемости",
+    "payback",
+    "payback period"
+   ],
+   "area": "money",
+   "short": "Срок, за который вложения возвращаются. В маркетинге чаще всего это окупаемость привлечения клиента: CAC, делённый на маржинальный доход с клиента в месяц; при CAC 3 000 ₽ и 500 ₽ в месяц выходит 6 месяцев.",
+   "cards": [
+    "ltv-cac"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "unit-economics",
+   "term": "Юнит-экономика",
+   "en": "unit economics",
+   "aliases": [
+    "юнит-экономика",
+    "юнит экономика",
+    "unit economics"
+   ],
+   "area": "money",
+   "short": "Расчёт прибыли на одну единицу: товар, заказ или клиента. Если одна продажа после всех переменных расходов убыточна, рост объёма только увеличивает убыток.",
+   "cards": [
+    "unit-economics-sku",
+    "ltv-cac",
+    "ecom-pnl"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "attribution",
+   "term": "Атрибуция",
+   "en": "attribution",
+   "aliases": [
+    "атрибуция",
+    "attribution",
+    "модель атрибуции"
+   ],
+   "area": "marketing",
+   "short": "Распределение заслуг за покупку между рекламными каналами и касаниями. Модели атрибуции (по последнему клику, по первому, линейная) делят одну и ту же продажу по-разному и не доказывают, что без канала её бы не было.",
+   "cards": [
+    "mmm",
+    "incrementality",
+    "drr-romi"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "incrementality",
+   "term": "Инкрементальность",
+   "en": "incrementality",
+   "aliases": [
+    "инкрементальность",
+    "incrementality",
+    "инкрементальный эффект"
+   ],
+   "area": "marketing",
+   "short": "Дополнительный результат, который появился именно из-за действия (рекламы, скидки) и не случился бы без него. Измеряют сравнением с контрольной группой, которая рекламу не видела (holdout-тест).",
+   "cards": [
+    "incrementality",
+    "mmm",
+    "drr-romi"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "category",
+   "term": "Категория",
+   "en": "category",
+   "aliases": [
+    "категория",
+    "product category"
+   ],
+   "area": "marketing",
+   "short": "Группа товаров или услуг, которые покупатель считает способами решить одну задачу и сравнивает между собой. От выбранной категории зависит, с кем продукт сравнивают и какую цену считают нормальной.",
+   "cards": [
+    "positioning-dunford",
+    "category-entry-points"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true,
+   "highlight": false
+  },
+  {
+   "id": "cohort",
+   "term": "Когорта",
+   "en": "cohort",
+   "aliases": [
+    "когорта",
+    "cohort",
+    "когортный анализ"
+   ],
+   "area": "marketing",
+   "short": "Группа клиентов, объединённых общим событием в одном периоде, обычно месяцем первой покупки или регистрации. Сравнение когорт показывает, улучшается ли удержание, не смешивая новых клиентов со старыми.",
+   "cards": [
+    "cohorts",
+    "ltv-cac"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "mental-availability",
+   "term": "Ментальная доступность",
+   "en": "mental availability",
+   "aliases": [
+    "ментальная доступность",
+    "mental availability"
+   ],
+   "area": "marketing",
+   "short": "Вероятность, что покупатель вспомнит бренд в ситуации покупки. Понятие из работ Байрона Шарпа и Дженни Романюк (Институт Эренберга-Басса); растёт, когда бренд связан с большим числом таких ситуаций.",
+   "cards": [
+    "category-entry-points",
+    "rule-95-5"
+   ],
+   "lessons": [],
+   "source": "http://www.jenniromaniuk.com/blog/2023/1/19/increasing-mental-market-share-by-using-category-entry-points",
+   "isNew": true
+  },
+  {
+   "id": "churn",
+   "term": "Отток",
+   "en": "churn",
+   "aliases": [
+    "отток",
+    "churn",
+    "churn rate"
+   ],
+   "area": "marketing",
+   "short": "Доля клиентов, которые перестали покупать или отменили подписку за период. Отток 5% в месяц значит, что без новых клиентов через год останется около 54% базы.",
+   "cards": [
+    "cohorts",
+    "aarrr",
+    "bowtie"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "positioning",
+   "term": "Позиционирование",
+   "en": "positioning",
+   "aliases": [
+    "позиционирование",
+    "positioning"
+   ],
+   "area": "marketing",
+   "short": "Место, которое продукт занимает в голове покупателя среди альтернатив: для кого он, с чем его сравнивают и чем он лучше. Понятие популяризировали Эл Райс и Джек Траут (статьи 1969–1972 годов, книга 1981 года).",
+   "cards": [
+    "positioning-dunford",
+    "stp",
+    "messaging-house"
+   ],
+   "lessons": [],
+   "source": "https://en.wikipedia.org/wiki/Positioning_(marketing)",
+   "isNew": true
+  },
+  {
+   "id": "segment",
+   "term": "Сегмент",
+   "en": "segment",
+   "aliases": [
+    "сегмент",
+    "segment"
+   ],
+   "area": "marketing",
+   "short": "Группа клиентов, похожих по важному для покупки признаку: задаче, ситуации, поведению, доходу. Сегмент полезен, если на него можно отдельно повлиять продуктом, ценой или сообщением.",
+   "cards": [
+    "stp",
+    "rfm",
+    "jtbd",
+    "positioning-dunford"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "category-entry-points",
+   "term": "Точки входа в категорию",
+   "en": "category entry points (CEPs)",
+   "aliases": [
+    "точки входа в категорию",
+    "точка входа в категорию",
+    "category entry points",
+    "category entry point"
+   ],
+   "area": "marketing",
+   "short": "Ситуации, потребности и поводы, в которых человек начинает думать о категории ещё до выбора бренда: «нужен подарок коллеге», «сломался чайник». Чем к большему числу таких точек привязан бренд, тем выше его ментальная доступность.",
+   "cards": [
+    "category-entry-points"
+   ],
+   "lessons": [],
+   "source": "http://www.jenniromaniuk.com/blog/2023/1/19/increasing-mental-market-share-by-using-category-entry-points",
+   "isNew": true
+  },
+  {
+   "id": "retention",
+   "term": "Удержание",
+   "en": "retention",
+   "aliases": [
+    "удержание",
+    "retention",
+    "retention rate"
+   ],
+   "area": "marketing",
+   "short": "Доля клиентов, которые продолжают покупать или пользоваться продуктом через заданное время. Из 1 000 клиентов, пришедших в январе, через два месяца вернулись 250: удержание 25%.",
+   "cards": [
+    "cohorts",
+    "aarrr",
+    "heart",
+    "bowtie"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "value-proposition",
+   "term": "Ценностное предложение",
+   "en": "value proposition",
+   "aliases": [
+    "ценностное предложение",
+    "value proposition"
+   ],
+   "area": "marketing",
+   "short": "Короткое объяснение, какую пользу клиент получает от продукта и почему стоит выбрать его, а не альтернативу. Формулируется на языке задачи клиента, а не свойств продукта.",
+   "cards": [
+    "value-proposition-canvas",
+    "lean-canvas",
+    "positioning-dunford",
+    "messaging-house"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "sku",
+   "term": "SKU",
+   "en": "stock keeping unit",
+   "aliases": [
+    "sku",
+    "stock keeping unit",
+    "единица складского учёта"
+   ],
+   "area": "ecom",
+   "short": "Единица складского учёта: конкретный вариант товара со своим кодом. Футболка в трёх цветах и четырёх размерах даёт 12 SKU.",
+   "cards": [
+    "unit-economics-sku",
+    "abc-xyz",
+    "stock-turnover",
+    "assortment-matrix"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "assortment-matrix",
+   "term": "Ассортиментная матрица",
+   "en": "assortment matrix",
+   "aliases": [
+    "ассортиментная матрица",
+    "матрица ассортимента",
+    "assortment matrix"
+   ],
+   "area": "ecom",
+   "short": "Таблица всех товаров магазина, разложенных по категориям, ценовым уровням и ролям: входной, основной, премиальный, сопутствующий. Помогает увидеть пробелы и дубли в ассортименте.",
+   "cards": [
+    "assortment-matrix",
+    "abc-xyz"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "buyout",
+   "term": "Выкуп",
+   "en": null,
+   "aliases": [
+    "выкуп",
+    "процент выкупа"
+   ],
+   "area": "ecom",
+   "short": "Доля заказанных товаров, которые покупатель забрал и оплатил, а не отказался при получении или вернул. При выкупе 60% из 100 заказов продано 60, а логистику маркетплейс часто берёт и за невыкупленные.",
+   "cards": [
+    "unit-economics-sku",
+    "listing-funnel",
+    "ecom-pnl"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "product-card",
+   "term": "Карточка товара",
+   "en": "product card (product detail page)",
+   "aliases": [
+    "карточка товара",
+    "product card",
+    "product detail page",
+    "pdp",
+    "листинг"
+   ],
+   "area": "ecom",
+   "short": "Страница товара на маркетплейсе или в интернет-магазине: фото, название, цена, характеристики, описание, отзывы. От неё зависит, кликнут ли на товар в поиске и положат ли его в корзину.",
+   "cards": [
+    "listing-funnel",
+    "listing-as-landing",
+    "reputation-reviews"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "add-to-cart-rate",
+   "term": "Конверсия в корзину",
+   "en": "add-to-cart rate",
+   "aliases": [
+    "конверсия в корзину",
+    "add-to-cart rate",
+    "add to cart rate"
+   ],
+   "area": "ecom",
+   "short": "Доля посетителей карточки, которые добавили товар в корзину. 1 000 переходов в карточку и 80 добавлений дают конверсию в корзину 8%.",
+   "cards": [
+    "listing-funnel",
+    "listing-as-landing"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "reorder-point",
+   "term": "Точка дозаказа",
+   "en": "reorder point",
+   "aliases": [
+    "точка дозаказа",
+    "точка перезаказа",
+    "reorder point"
+   ],
+   "area": "ecom",
+   "short": "Остаток, при котором пора заказывать новую партию, чтобы товар не закончился, пока она едет. Считают как продажи в день × срок поставки + страховой запас: 20 шт. × 15 дней + 100 = 400 шт.",
+   "cards": [
+    "stock-turnover",
+    "abc-xyz"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "price-ladder",
+   "term": "Ценовая лестница",
+   "en": "price ladder",
+   "aliases": [
+    "ценовая лестница",
+    "price ladder",
+    "good-better-best"
+   ],
+   "area": "ecom",
+   "short": "Несколько уровней цены внутри линейки, например 990, 1 990 и 3 490 ₽ за базовую, основную и премиальную версию. Даёт покупателю выбор и делает средний вариант понятнее на фоне соседних.",
+   "cards": [
+    "assortment-matrix"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "discovery",
+   "term": "Discovery",
+   "en": "product discovery",
+   "aliases": [
+    "discovery",
+    "product discovery",
+    "дискавери"
+   ],
+   "area": "product",
+   "short": "Работа, в которой команда выясняет, какую проблему решать и какое решение сработает, до того как вкладываться в разработку: интервью, прототипы, быстрые тесты.",
+   "cards": [
+    "continuous-discovery",
+    "opportunity-solution-tree",
+    "double-diamond",
+    "jtbd"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "mvp",
+   "term": "MVP",
+   "en": "minimum viable product",
+   "aliases": [
+    "mvp",
+    "minimum viable product",
+    "минимально жизнеспособный продукт"
+   ],
+   "area": "product",
+   "short": "Минимальная версия продукта, на которой можно проверить главную гипотезу на реальных клиентах с наименьшими затратами. Термин ввёл Фрэнк Робинсон в 2001 году, популяризировали Стив Бланк и Эрик Рис.",
+   "cards": [
+    "lean-canvas",
+    "bite"
+   ],
+   "lessons": [],
+   "source": "https://en.wikipedia.org/wiki/Minimum_viable_product",
+   "isNew": true
+  },
+  {
+   "id": "north-star",
+   "term": "North Star",
+   "en": "North Star Metric",
+   "aliases": [
+    "north star",
+    "north star metric",
+    "метрика полярной звезды"
+   ],
+   "area": "product",
+   "short": "Одна главная метрика продукта, которая отражает ценность, получаемую клиентами, и при росте тянет за собой выручку. Пример для сервиса доставки: число заказов, доставленных вовремя.",
+   "cards": [
+    "north-star",
+    "okr"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "pmf",
+   "term": "Product-market fit",
+   "en": "product-market fit",
+   "aliases": [
+    "product-market fit",
+    "product/market fit",
+    "pmf",
+    "соответствие продукта рынку"
+   ],
+   "area": "product",
+   "short": "Состояние, когда продукт находится на хорошем рынке и удовлетворяет его потребность: клиенты возвращаются, рекомендуют и расстроятся, если продукт исчезнет. Формулировку популяризировал Марк Андриссен в 2007 году, ссылаясь на Энди Рэчлеффа.",
+   "cards": [
+    "pmf-40",
+    "lean-canvas"
+   ],
+   "lessons": [],
+   "source": "https://pmarchive.com/guide_to_startups_part4.html",
+   "isNew": true
+  },
+  {
+   "id": "backlog",
+   "term": "Бэклог",
+   "en": "backlog",
+   "aliases": [
+    "бэклог",
+    "беклог",
+    "backlog"
+   ],
+   "area": "product",
+   "short": "Упорядоченный список задач, идей и доработок, которые команда может взять в работу. Сверху то, что делать раньше; порядок регулярно пересматривают.",
+   "cards": [
+    "rice",
+    "moscow",
+    "kano",
+    "user-story-mapping"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "hypothesis",
+   "term": "Гипотеза",
+   "en": "hypothesis",
+   "aliases": [
+    "гипотеза",
+    "hypothesis"
+   ],
+   "area": "product",
+   "short": "Проверяемое предположение, что изменение даст измеримый результат: «если добавить видео в карточку, конверсия в корзину вырастет на 10%». Хорошая гипотеза заранее говорит, какой результат её опровергнет.",
+   "cards": [
+    "ice",
+    "rice",
+    "lean-canvas",
+    "opportunity-solution-tree"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "release",
+   "term": "Релиз",
+   "en": "release",
+   "aliases": [
+    "релиз",
+    "release"
+   ],
+   "area": "product",
+   "short": "Выпуск новой версии продукта или набора изменений для пользователей. Один релиз может включать несколько фич и исправлений.",
+   "cards": [
+    "moscow",
+    "user-story-mapping",
+    "shape-up"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "feature",
+   "term": "Фича",
+   "en": "feature",
+   "aliases": [
+    "фича",
+    "feature"
+   ],
+   "area": "product",
+   "short": "Отдельная функция продукта, которую пользователь может заметить и применить: фильтр по цене, экспорт в Excel, напоминание.",
+   "cards": [
+    "kano",
+    "rice",
+    "moscow"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "task-horizon",
+   "term": "Горизонт задачи",
+   "en": "time horizon (50% task-completion time horizon)",
+   "aliases": [
+    "горизонт задачи",
+    "горизонт задач",
+    "time horizon",
+    "task horizon"
+   ],
+   "area": "ai-basics",
+   "short": "Длина задач (по времени, которое на них тратит специалист), которые ИИ-агент выполняет с вероятностью 50%. Метрику предложила METR в 2025 году на задачах программирования: тогда у лучшей модели горизонт был около часа и удваивался примерно каждые 7 месяцев.",
+   "cards": [
+    "verb-or-profession",
+    "progressive-trust"
+   ],
+   "lessons": [],
+   "source": "https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/",
+   "isNew": true
+  },
+  {
+   "id": "jagged-frontier",
+   "term": "Зубчатый фронтир",
+   "en": "jagged technological frontier",
+   "aliases": [
+    "зубчатый фронтир",
+    "jagged frontier",
+    "jagged technological frontier"
+   ],
+   "area": "ai-basics",
+   "short": "Неровная граница возможностей ИИ: одни задачи он делает лучше человека, а на соседних, на вид не сложнее, ошибается. Термин из эксперимента Гарварда и BCG 2023 года с 758 консультантами (Делл’Аква, Моллик и др.): за границей решения с ИИ оказались верными реже, чем без него.",
+   "cards": [
+    "rule-1995",
+    "verb-or-profession",
+    "answer-check"
+   ],
+   "lessons": [],
+   "source": "https://www.hbs.edu/faculty/Pages/item.aspx?num=64700",
+   "isNew": true
+  },
+  {
+   "id": "context",
+   "term": "Контекст",
+   "en": "context",
+   "aliases": [
+    "context"
+   ],
+   "area": "ai-basics",
+   "short": "Всё, что модель видит, когда пишет ответ: системные инструкции, история диалога, запрос, приложенные файлы, результаты поиска и инструментов. Чего нет в контексте, модель не знает, кроме выученного при обучении.",
+   "cards": [
+    "four-part-request",
+    "reverse-interview",
+    "goal-acceptance-criteria"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true,
+   "highlight": false
+  },
+  {
+   "id": "harness",
+   "term": "Обвязка",
+   "en": "harness (agent harness)",
+   "aliases": [
+    "обвязка",
+    "harness",
+    "agent harness"
+   ],
+   "area": "ai-basics",
+   "short": "Всё, что окружает модель и делает из неё рабочего агента: инструкции, инструменты, доступ к файлам, память между сессиями, проверки, права и правила остановки. Термин закрепился в 2025–2026 годах; одна и та же модель в разной обвязке работает заметно по-разному.",
+   "cards": [
+    "assign-check-repeat",
+    "progressive-trust"
+   ],
+   "lessons": [],
+   "source": "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents",
+   "isNew": true
+  },
+  {
+   "id": "shadow-ai",
+   "term": "Теневой ИИ",
+   "en": "shadow AI",
+   "aliases": [
+    "теневой ии",
+    "shadow ai"
+   ],
+   "area": "ai-basics",
+   "short": "Использование сотрудниками ИИ-сервисов без ведома и одобрения компании, например загрузка рабочих документов в личный чат-бот. Название по аналогии с «теневым ИТ»; главные риски в утечке данных и решениях, которые никто не проверял.",
+   "cards": [],
+   "lessons": [],
+   "source": "https://www.ibm.com/think/topics/shadow-ai",
+   "isNew": true
+  },
+  {
+   "id": "sycophancy",
+   "term": "Угодливость",
+   "en": "sycophancy",
+   "aliases": [
+    "угодливость",
+    "sycophancy",
+    "подхалимство"
+   ],
+   "area": "ai-basics",
+   "short": "Склонность модели подстраиваться под мнение пользователя вместо честного ответа: хвалить слабую идею, менять верный ответ после возражения. Исследователи Anthropic в 2023 году показали, что это общее свойство ассистентов, отчасти вызванное обучением на оценках людей.",
+   "cards": [
+    "hard-reviewer",
+    "review-board",
+    "how-make-better",
+    "adversarial-validation"
+   ],
+   "lessons": [],
+   "source": "https://arxiv.org/abs/2310.13548",
+   "isNew": true
+  },
+  {
+   "id": "evals",
+   "term": "Эвалы",
+   "en": "evals (evaluations)",
+   "aliases": [
+    "эвалы",
+    "evals",
+    "eval"
+   ],
+   "area": "ai-basics",
+   "short": "Набор тестовых примеров с критериями оценки, на котором регулярно проверяют качество ИИ-функции или промпта. Позволяют сравнивать версии числом («верно в 92 случаях из 100»), а не на глаз.",
+   "cards": [
+    "evals"
+   ],
+   "lessons": [],
+   "source": null,
+   "isNew": true
+  },
+  {
+   "id": "ai",
+   "term": "AI / ИИ",
+   "en": "artificial intelligence",
+   "aliases": [
+    "искусственный интеллект",
+    "artificial intelligence"
+   ],
+   "area": "basics",
+   "short": "Общий термин для систем, имитирующих интеллектуальное поведение. Зонтик над ML, DL, GenAI.",
+   "cards": [],
+   "lessons": [
+    1
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "dl",
+   "term": "Deep Learning / DL",
+   "en": "deep learning",
+   "aliases": [
+    "глубокое обучение"
+   ],
+   "area": "basics",
+   "short": "Подмножество ML: нейросети с большим числом слоёв. Распознавание лиц, перевод, LLM: всё это DL.",
+   "cards": [],
+   "lessons": [
+    1
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "genai",
+   "term": "GenAI / Generative AI",
+   "en": "generative AI",
+   "aliases": [
+    "генеративный ии"
+   ],
+   "area": "basics",
+   "short": "Модели, которые создают новый контент (текст, картинки, код), а не только классифицируют.",
+   "cards": [],
+   "lessons": [
+    1
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "llm",
+   "term": "LLM (Large Language Model)",
+   "en": "large language model",
+   "aliases": [
+    "большая языковая модель"
+   ],
+   "area": "basics",
+   "short": "Большая нейросеть, обученная предсказывать следующий токен. GPT, Claude, Gemini, Llama.",
+   "cards": [],
+   "lessons": [
+    1,
+    2
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "ml",
+   "term": "ML (Machine Learning)",
+   "en": "machine learning",
+   "aliases": [
+    "машинное обучение"
+   ],
+   "area": "basics",
+   "short": "Подмножество AI: системы, которые учатся на данных, а не следуют жёстким правилам.",
+   "cards": [],
+   "lessons": [
+    1,
+    51
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "param",
+   "term": "Параметр (B параметров)",
+   "en": "parameter",
+   "aliases": [
+    "parameter",
+    "weights"
+   ],
+   "area": "basics",
+   "short": "Настраиваемое число внутри нейросети. Llama 70B = 70 миллиардов параметров.",
+   "cards": [],
+   "lessons": [
+    1,
+    2
+   ],
+   "source": null,
+   "isNew": false,
+   "highlight": false
+  },
+  {
+   "id": "token",
+   "term": "Токен",
+   "en": "token",
+   "aliases": [
+    "token"
+   ],
+   "area": "basics",
+   "short": "Кусочек текста, которым модель читает и пишет: часть слова, целое слово или знак. В английском тексте в среднем около 4 символов на токен, в русском обычно меньше, поэтому тот же смысл по-русски занимает больше токенов.",
+   "cards": [
+    "four-part-request"
+   ],
+   "lessons": [
+    1
+   ],
+   "source": "https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them",
+   "isNew": false
+  },
+  {
+   "id": "attention",
+   "term": "Attention",
+   "en": "attention",
+   "aliases": [
+    "механизм внимания"
+   ],
+   "area": "models",
+   "short": "Механизм трансформера, фокусирующий внимание на релевантных токенах контекста.",
+   "cards": [],
+   "lessons": [
+    1,
+    48
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "bpe",
+   "term": "BPE (Byte-Pair Encoding)",
+   "en": "byte-pair encoding",
+   "aliases": [
+    "byte-pair encoding"
+   ],
+   "area": "models",
+   "short": "Алгоритм разбиения текста на токены. Учится на корпусе, какие пары символов часто идут вместе.",
+   "cards": [],
+   "lessons": [
+    1
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "embedding-model",
+   "term": "Embedding model",
+   "en": "embedding model",
+   "aliases": [
+    "модель эмбеддингов"
+   ],
+   "area": "models",
+   "short": "Превращает текст в числовой вектор. Нужна не для общения, а для поиска и кластеризации. Например, text-embedding-3, BGE-M3.",
+   "cards": [],
+   "lessons": [
+    2,
+    8
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "knowledge-cutoff",
+   "term": "Knowledge cutoff",
+   "en": "knowledge cutoff",
+   "aliases": [
+    "дата обучения"
+   ],
+   "area": "models",
+   "short": "Дата, на которой остановились обучающие данные модели. После неё модель ничего не знает без поиска.",
+   "cards": [],
+   "lessons": [
+    1
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "moe",
+   "term": "MoE (Mixture of Experts)",
+   "en": "mixture of experts",
+   "aliases": [
+    "смесь экспертов"
+   ],
+   "area": "models",
+   "short": "Архитектура, в которой для каждого токена маршрутизатор включает лишь несколько «экспертов» из многих (в Mixtral 2 из 8), поэтому модель большая, а вычислений на шаг мало. Mixtral, DeepSeek-V3.",
+   "cards": [],
+   "lessons": [
+    2
+   ],
+   "source": "https://arxiv.org/abs/2401.04088",
+   "isNew": false
+  },
+  {
+   "id": "multimodal",
+   "term": "Multimodal",
+   "en": "multimodal",
+   "aliases": [
+    "мультимодальная"
+   ],
+   "area": "models",
+   "short": "Принимает несколько типов входа: текст + картинки + аудио. GPT-4o, Claude 3.5+, Gemini.",
+   "cards": [],
+   "lessons": [
+    2
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "reasoning-model",
+   "term": "Reasoning model",
+   "en": "reasoning model",
+   "aliases": [
+    "модель рассуждений"
+   ],
+   "area": "models",
+   "short": "LLM со встроенным длинным CoT перед ответом. o1, o3, DeepSeek-R1, Gemini 2.0 Thinking. Медленнее и дороже, но решают сложную логику.",
+   "cards": [],
+   "lessons": [
+    2,
+    5
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "rlhf",
+   "term": "RLHF",
+   "en": "reinforcement learning from human feedback",
+   "aliases": [
+    "reinforcement learning from human feedback"
+   ],
+   "area": "models",
+   "short": "Reinforcement Learning from Human Feedback. Дообучение модели на оценках людей, чтобы ответы стали полезнее.",
+   "cards": [],
+   "lessons": [
+    1
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "context-window",
+   "term": "Контекстное окно",
+   "en": "context window",
+   "aliases": [
+    "context window",
+    "окно контекста"
+   ],
+   "area": "models",
+   "short": "Сколько токенов модель учитывает за один раз: инструкции, историю диалога, файлы и сам ответ. У популярных моделей в 2026 году это сотни тысяч токенов, у некоторых миллион и больше.",
+   "cards": [
+    "four-part-request"
+   ],
+   "lessons": [
+    1,
+    2
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "freq-penalty",
+   "term": "Frequency / Presence penalty",
+   "en": "frequency / presence penalty",
+   "aliases": [],
+   "area": "params",
+   "short": "Штрафы за повторы (от -2 до 2). Frequency штрафует за частоту токена, presence за сам факт упоминания.",
+   "cards": [],
+   "lessons": [
+    4
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "max-tokens",
+   "term": "Max tokens",
+   "en": "max tokens",
+   "aliases": [
+    "maxtokens"
+   ],
+   "area": "params",
+   "short": "Жёсткий лимит длины ответа. Остановит даже на полуслове.",
+   "cards": [],
+   "lessons": [
+    4
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "seed",
+   "term": "Seed",
+   "en": "seed",
+   "aliases": [],
+   "area": "params",
+   "short": "Число для воспроизводимости генерации при temperature больше 0. Поддерживают не все провайдеры, и даже у OpenAI одинаковый результат не гарантирован.",
+   "cards": [],
+   "lessons": [
+    6
+   ],
+   "source": "https://platform.openai.com/docs/api-reference/chat/create",
+   "isNew": false
+  },
+  {
+   "id": "stop",
+   "term": "Stop sequence",
+   "en": "stop sequence",
+   "aliases": [
+    "стоп-последовательность"
+   ],
+   "area": "params",
+   "short": "Строка, при появлении которой генерация останавливается.",
+   "cards": [],
+   "lessons": [
+    4
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "temperature",
+   "term": "Temperature",
+   "en": "temperature",
+   "aliases": [
+    "температура"
+   ],
+   "area": "params",
+   "short": "Параметр случайности при генерации. Шкала зависит от провайдера (у OpenAI 0–2, у Anthropic 0–1): при 0 ответы почти одинаковые, при высоких значениях разнообразнее.",
+   "cards": [],
+   "lessons": [
+    1,
+    4
+   ],
+   "source": "https://docs.anthropic.com/en/api/messages",
+   "isNew": false
+  },
+  {
+   "id": "top-p",
+   "term": "Top-p / nucleus sampling",
+   "en": "top-p (nucleus sampling)",
+   "aliases": [],
+   "area": "params",
+   "short": "Альтернатива temperature: модель выбирает следующий токен только из самых вероятных вариантов, которые вместе набирают вероятность p (например, 0,9).",
+   "cards": [],
+   "lessons": [
+    4
+   ],
+   "source": "https://arxiv.org/abs/1904.09751",
+   "isNew": false
+  },
+  {
+   "id": "cot",
+   "term": "CoT (Chain-of-Thought)",
+   "en": "chain-of-thought",
+   "aliases": [
+    "цепочка рассуждений",
+    "пошаговое рассуждение"
+   ],
+   "area": "prompting",
+   "short": "Техника промпта «рассуждай пошагово»: модель пишет промежуточные шаги и использует их как черновик. На обычных моделях заметно повышает точность в математике и логике, у моделей рассуждений этот шаг уже встроен.",
+   "cards": [],
+   "lessons": [
+    5
+   ],
+   "source": "https://arxiv.org/abs/2201.11903",
+   "isNew": false
+  },
+  {
+   "id": "few-shot",
+   "term": "Few-shot",
+   "en": "few-shot prompting",
+   "aliases": [],
+   "area": "prompting",
+   "short": "Промпт с 2–5 примерами вход→выход. Резко повышает качество для нестандартных форматов.",
+   "cards": [],
+   "lessons": [
+    4
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "map-reduce",
+   "term": "Map-reduce (LLM)",
+   "en": "map-reduce",
+   "aliases": [],
+   "area": "prompting",
+   "short": "Частный случай chaining: одним промптом обрабатываем каждый кусок данных, вторым агрегируем.",
+   "cards": [],
+   "lessons": [
+    5
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "prompt",
+   "term": "Prompt",
+   "en": "prompt",
+   "aliases": [
+    "промпт",
+    "промт"
+   ],
+   "area": "prompting",
+   "short": "Текст-инструкция, отправляемая модели.",
+   "cards": [
+    "four-part-request",
+    "goal-acceptance-criteria",
+    "reverse-interview"
+   ],
+   "lessons": [
+    4
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "prompt-chaining",
+   "term": "Prompt chaining",
+   "en": "prompt chaining",
+   "aliases": [
+    "цепочка промптов"
+   ],
+   "area": "prompting",
+   "short": "Сложную задачу режем на этапы, каждый этап решает отдельный промпт. Выход одного становится входом следующего.",
+   "cards": [],
+   "lessons": [
+    5
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "react",
+   "term": "ReAct",
+   "en": "ReAct (reasoning + acting)",
+   "aliases": [
+    "reasoning + acting"
+   ],
+   "area": "prompting",
+   "short": "Цикл Thought → Action → Observation для агентов. Модель чередует рассуждение и вызов инструментов.",
+   "cards": [],
+   "lessons": [
+    5,
+    16
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "self-consistency",
+   "term": "Self-consistency",
+   "en": "self-consistency",
+   "aliases": [],
+   "area": "prompting",
+   "short": "Прогон одного промпта N раз с temperature>0 + голосование за самый частый ответ.",
+   "cards": [],
+   "lessons": [
+    5
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "structured-output",
+   "term": "Structured output",
+   "en": "structured output",
+   "aliases": [
+    "структурированный вывод",
+    "json mode"
+   ],
+   "area": "prompting",
+   "short": "Режим, в котором модель гарантированно отвечает валидным JSON по заданной схеме. У OpenAI это response_format с json_schema и strict; старый режим json_object гарантирует только валидный JSON, но не схему.",
+   "cards": [],
+   "lessons": [
+    4,
+    6
+   ],
+   "source": "https://platform.openai.com/docs/guides/structured-outputs",
+   "isNew": false
+  },
+  {
+   "id": "system-prompt",
+   "term": "System prompt",
+   "en": "system prompt",
+   "aliases": [
+    "системный промпт"
+   ],
+   "area": "prompting",
+   "short": "Инструкция на весь диалог: роль, правила, стиль. Задаётся один раз в начале.",
+   "cards": [],
+   "lessons": [
+    4,
+    7
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "tot",
+   "term": "ToT (Tree-of-Thoughts)",
+   "en": "tree of thoughts",
+   "aliases": [
+    "дерево рассуждений"
+   ],
+   "area": "prompting",
+   "short": "Модель генерирует несколько путей решения, оценивает их, продолжает лучший. Дерево вариантов.",
+   "cards": [],
+   "lessons": [
+    5
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "user-prompt",
+   "term": "User prompt",
+   "en": "user prompt",
+   "aliases": [
+    "пользовательский промпт"
+   ],
+   "area": "prompting",
+   "short": "Конкретное сообщение пользователя в чате.",
+   "cards": [],
+   "lessons": [
+    4
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "zero-shot",
+   "term": "Zero-shot",
+   "en": "zero-shot prompting",
+   "aliases": [],
+   "area": "prompting",
+   "short": "Промпт без примеров, только инструкция.",
+   "cards": [],
+   "lessons": [
+    4
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "bias",
+   "term": "Bias",
+   "en": "bias",
+   "aliases": [
+    "предвзятость"
+   ],
+   "area": "behavior",
+   "short": "Систематическое смещение модели: она повторяет стереотипы из обучающего корпуса.",
+   "cards": [],
+   "lessons": [
+    3
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "hallucination",
+   "term": "Hallucination / Галлюцинация",
+   "en": "hallucination",
+   "aliases": [
+    "галлюцинация",
+    "hallucination"
+   ],
+   "area": "behavior",
+   "short": "Уверенно неправильный ответ. Модель не врёт намеренно: её цель правдоподобие, а не правда.",
+   "cards": [
+    "answer-check",
+    "adversarial-validation",
+    "voice"
+   ],
+   "lessons": [
+    1,
+    3
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "lost-in-the-middle",
+   "term": "Lost in the middle",
+   "en": "lost in the middle",
+   "aliases": [],
+   "area": "behavior",
+   "short": "Свойство LLM: модель лучше помнит начало и конец длинного контекста, а середину хуже.",
+   "cards": [],
+   "lessons": [
+    1
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "stateless",
+   "term": "Stateless",
+   "en": "stateless",
+   "aliases": [],
+   "area": "behavior",
+   "short": "Без сохранения состояния между вызовами. API языковых моделей stateless, «память» создаёт приложение.",
+   "cards": [],
+   "lessons": [
+    1,
+    7
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "conversation-history",
+   "term": "Conversation history",
+   "en": "conversation history",
+   "aliases": [
+    "история диалога"
+   ],
+   "area": "memory",
+   "short": "Массив сообщений диалога, который приложение ведёт и шлёт LLM при каждом запросе.",
+   "cards": [],
+   "lessons": [
+    7
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "sliding-window",
+   "term": "Sliding window",
+   "en": "sliding window",
+   "aliases": [
+    "скользящее окно"
+   ],
+   "area": "memory",
+   "short": "Стратегия памяти: храним только последние N сообщений, остальное выбрасываем.",
+   "cards": [],
+   "lessons": [
+    7
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "summary-memory",
+   "term": "Summary memory",
+   "en": "summary memory",
+   "aliases": [
+    "саммари-память"
+   ],
+   "area": "memory",
+   "short": "Старые сообщения сжимаем в краткое summary и заменяем им детальную историю.",
+   "cards": [],
+   "lessons": [
+    7
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "vector-memory",
+   "term": "Vector memory",
+   "en": "vector memory",
+   "aliases": [
+    "векторная память"
+   ],
+   "area": "memory",
+   "short": "Храним сообщения в векторной БД, при запросе достаём релевантные через эмбеддинги. Это RAG.",
+   "cards": [],
+   "lessons": [
+    7,
+    14
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "ann",
+   "term": "ANN (Approximate Nearest Neighbor)",
+   "en": "approximate nearest neighbor",
+   "aliases": [],
+   "area": "rag",
+   "short": "Приближённый поиск ближайших векторов. Жертвует точностью ради скорости. Популярный алгоритм: HNSW.",
+   "cards": [],
+   "lessons": [
+    8
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "bm25",
+   "term": "BM25",
+   "en": "BM25 (Best Matching 25)",
+   "aliases": [],
+   "area": "rag",
+   "short": "Классический алгоритм keyword-поиска. Используется в hybrid search вместе с эмбеддингами.",
+   "cards": [],
+   "lessons": [
+    8
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "chunk",
+   "term": "Chunk",
+   "en": "chunk",
+   "aliases": [
+    "чанк"
+   ],
+   "area": "rag",
+   "short": "Кусок исходного документа, нарезанный для эмбеддинга. Обычно 200–800 токенов с overlap.",
+   "cards": [],
+   "lessons": [
+    8
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "cosine",
+   "term": "Cosine similarity",
+   "en": "cosine similarity",
+   "aliases": [
+    "косинусное сходство"
+   ],
+   "area": "rag",
+   "short": "Мера близости двух векторов от -1 до 1. Стандарт для сравнения эмбеддингов.",
+   "cards": [],
+   "lessons": [
+    8
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "embedding",
+   "term": "Embedding / Эмбеддинг",
+   "en": "embedding",
+   "aliases": [
+    "эмбеддинг",
+    "embedding"
+   ],
+   "area": "rag",
+   "short": "Числовой вектор фиксированной длины (1536, 3072, ...), представляющий смысл текста.",
+   "cards": [],
+   "lessons": [
+    8
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "hybrid-search",
+   "term": "Hybrid search",
+   "en": "hybrid search",
+   "aliases": [
+    "гибридный поиск"
+   ],
+   "area": "rag",
+   "short": "Combo semantic (эмбеддинги) + keyword (BM25). На проде почти всегда побеждает чистый semantic.",
+   "cards": [],
+   "lessons": [
+    8
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "knn",
+   "term": "k-NN",
+   "en": "k-nearest neighbors",
+   "aliases": [
+    "k-nearest neighbors"
+   ],
+   "area": "rag",
+   "short": "k-Nearest Neighbors: поиск k ближайших векторов перебором. Точный, но медленный на больших базах.",
+   "cards": [],
+   "lessons": [
+    8
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "rag",
+   "term": "RAG (Retrieval-Augmented Generation)",
+   "en": "retrieval-augmented generation",
+   "aliases": [],
+   "area": "rag",
+   "short": "Шаблон: даём модели документы из векторной БД и просим ответить на их основе. Борется с галлюцинациями.",
+   "cards": [],
+   "lessons": [
+    14
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "reranking",
+   "term": "Reranking",
+   "en": "reranking",
+   "aliases": [
+    "переранжирование"
+   ],
+   "area": "rag",
+   "short": "Пересортировка топ-K результатов второй моделью (cross-encoder). Сильно повышает качество.",
+   "cards": [],
+   "lessons": [
+    8
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "vector-db",
+   "term": "Vector DB",
+   "en": "vector database",
+   "aliases": [
+    "векторная бд"
+   ],
+   "area": "rag",
+   "short": "Хранилище векторов с быстрым поиском ближайших. Chroma, Qdrant, Pinecone, pgvector, Milvus.",
+   "cards": [],
+   "lessons": [
+    8
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "mcp",
+   "term": "MCP (Model Context Protocol)",
+   "en": "Model Context Protocol",
+   "aliases": [],
+   "area": "agents",
+   "short": "Открытый протокол для стандартного подключения ИИ-моделей к внешним системам: файлам, сервисам, базам. Предложен Anthropic в ноябре 2024 года, с декабря 2025 года развивается в Agentic AI Foundation при Linux Foundation.",
+   "cards": [],
+   "lessons": [
+    28
+   ],
+   "source": "https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation",
+   "isNew": false
+  },
+  {
+   "id": "tool-use",
+   "term": "Tool use / Function calling",
+   "en": "tool use / function calling",
+   "aliases": [
+    "вызов инструментов",
+    "tool use",
+    "function calling"
+   ],
+   "area": "agents",
+   "short": "Модель решает вызвать определённую функцию (поиск, API, БД) и получает результат в контекст.",
+   "cards": [],
+   "lessons": [
+    13,
+    19
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "agent",
+   "term": "Агент",
+   "en": "AI agent",
+   "aliases": [
+    "ai agent",
+    "ии-агент",
+    "ai-агент"
+   ],
+   "area": "agents",
+   "short": "LLM + инструменты + цикл «подумай-сделай-проверь». В отличие от чат-бота умеет действовать в мире.",
+   "cards": [
+    "progressive-trust",
+    "assign-check-repeat"
+   ],
+   "lessons": [
+    16
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "lmsys",
+   "term": "Arena (Chatbot Arena)",
+   "en": "Chatbot Arena / LMArena / Arena",
+   "aliases": [
+    "chatbot arena",
+    "lmarena",
+    "lmsys"
+   ],
+   "area": "benchmarks",
+   "short": "Платформа, где люди вслепую сравнивают пары ответов разных моделей, а из голосов строится рейтинг. Запущена в 2023 году как Chatbot Arena (LMSYS), в 2024 году стала LMArena, с января 2026 года называется Arena.",
+   "cards": [],
+   "lessons": [
+    2
+   ],
+   "source": "https://en.wikipedia.org/wiki/LMArena",
+   "isNew": false
+  },
+  {
+   "id": "mmlu",
+   "term": "MMLU",
+   "en": "Massive Multitask Language Understanding",
+   "aliases": [
+    "massive multitask"
+   ],
+   "area": "benchmarks",
+   "short": "Massive Multitask Language Understanding: стандартный бенчмарк общих знаний (57 предметов).",
+   "cards": [],
+   "lessons": [
+    2
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "pareto",
+   "term": "Pareto-frontier",
+   "en": "Pareto frontier",
+   "aliases": [
+    "парето-граница"
+   ],
+   "area": "benchmarks",
+   "short": "Набор моделей, для которых нет более дешёвой того же качества и более качественной той же цены.",
+   "cards": [],
+   "lessons": [
+    2
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "ttft",
+   "term": "TTFT (Time to First Token)",
+   "en": "time to first token",
+   "aliases": [],
+   "area": "benchmarks",
+   "short": "Задержка между запросом и первым токеном ответа. Важно для real-time приложений.",
+   "cards": [],
+   "lessons": [
+    2
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "defense-in-depth",
+   "term": "Defense in depth",
+   "en": "defense in depth",
+   "aliases": [
+    "многослойная защита"
+   ],
+   "area": "safety",
+   "short": "Принцип: защита из нескольких слоёв (фильтры + валидация + права + мониторинг). Ни один слой не панацея.",
+   "cards": [],
+   "lessons": [
+    12
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "hitl",
+   "term": "HITL (Human-in-the-loop)",
+   "en": "human-in-the-loop",
+   "aliases": [
+    "человек в петле"
+   ],
+   "area": "safety",
+   "short": "Обязательное участие человека в критичных решениях ИИ-системы. Найм, медицина, финансы.",
+   "cards": [
+    "progressive-trust",
+    "answer-check"
+   ],
+   "lessons": [
+    3,
+    21
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "jailbreak",
+   "term": "Jailbreak",
+   "en": "jailbreak",
+   "aliases": [],
+   "area": "safety",
+   "short": "Обход safety-фильтров модели через хитрые промпты («представь что ты эксперт по...»).",
+   "cards": [],
+   "lessons": [
+    12
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "moderation",
+   "term": "Moderation API",
+   "en": "moderation API",
+   "aliases": [
+    "модерация"
+   ],
+   "area": "safety",
+   "short": "Готовый фильтр вредного контента (OpenAI Moderation, Azure Content Safety).",
+   "cards": [],
+   "lessons": [
+    12
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "prompt-injection",
+   "term": "Prompt injection",
+   "en": "prompt injection",
+   "aliases": [
+    "инжекшен"
+   ],
+   "area": "safety",
+   "short": "Атака: внедрение инструкций через данные, которые модель принимает за указания.",
+   "cards": [],
+   "lessons": [
+    3,
+    12
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "red-team",
+   "term": "Red team / Red teaming",
+   "en": "red teaming",
+   "aliases": [
+    "красная команда"
+   ],
+   "area": "safety",
+   "short": "Группа, которая специально пытается «сломать» систему и найти уязвимости до релиза.",
+   "cards": [],
+   "lessons": [
+    3,
+    12
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "152fz",
+   "term": "152-ФЗ",
+   "en": null,
+   "aliases": [
+    "закон о персональных данных"
+   ],
+   "area": "legal",
+   "short": "Российский закон о персональных данных. Требует хранения данных граждан РФ в РФ.",
+   "cards": [],
+   "lessons": [
+    3
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "dpa",
+   "term": "DPA (Data Processing Agreement)",
+   "en": "data processing agreement",
+   "aliases": [],
+   "area": "legal",
+   "short": "Юридическое соглашение с вендором об обработке данных. Нужно для GDPR-compliance.",
+   "cards": [],
+   "lessons": [
+    3
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "ai-act",
+   "term": "EU AI Act",
+   "en": "EU Artificial Intelligence Act",
+   "aliases": [],
+   "area": "legal",
+   "short": "Регулирование ИИ в ЕС. Для систем высокого риска (найм, образование, правосудие) действуют особые требования.",
+   "cards": [],
+   "lessons": [
+    3
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "gdpr",
+   "term": "GDPR",
+   "en": "General Data Protection Regulation",
+   "aliases": [],
+   "area": "legal",
+   "short": "General Data Protection Regulation (EU). Штрафы до 4% годового оборота за нарушения.",
+   "cards": [],
+   "lessons": [
+    3
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "high-risk-ai",
+   "term": "High-risk AI",
+   "en": "high-risk AI system",
+   "aliases": [],
+   "area": "legal",
+   "short": "Категория в EU AI Act: системы с серьёзным влиянием на жизнь людей. Требуют документации, аудита, HITL.",
+   "cards": [],
+   "lessons": [
+    3
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "pii",
+   "term": "PII (Personally Identifiable Information)",
+   "en": "personally identifiable information",
+   "aliases": [
+    "персданные"
+   ],
+   "area": "legal",
+   "short": "Данные, по которым можно идентифицировать человека. Имя, email, телефон, паспорт, адрес, биометрия.",
+   "cards": [],
+   "lessons": [
+    3
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "api",
+   "term": "API",
+   "en": "application programming interface",
+   "aliases": [],
+   "area": "api",
+   "short": "Application Programming Interface: программный интерфейс, через который программы обращаются к сервису, обычно по HTTP.",
+   "cards": [],
+   "lessons": [
+    6
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "api-key",
+   "term": "API key",
+   "en": "API key",
+   "aliases": [
+    "ключ api"
+   ],
+   "area": "api",
+   "short": "Секретный ключ для авторизации запросов к API. Не кладите его в код и git, храните в переменных окружения (.env).",
+   "cards": [],
+   "lessons": [
+    6
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "endpoint",
+   "term": "Endpoint",
+   "en": "endpoint",
+   "aliases": [],
+   "area": "api",
+   "short": "Конкретный URL API. Для OpenAI чата: https://api.openai.com/v1/chat/completions.",
+   "cards": [],
+   "lessons": [
+    6
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "exp-backoff",
+   "term": "Exponential backoff",
+   "en": "exponential backoff",
+   "aliases": [],
+   "area": "api",
+   "short": "Стратегия retry с растущей задержкой (1, 2, 4, 8 сек). Для временных ошибок (rate limit, network).",
+   "cards": [],
+   "lessons": [
+    6
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "finish-reason",
+   "term": "finish_reason",
+   "en": "finish_reason",
+   "aliases": [],
+   "area": "api",
+   "short": "Причина остановки генерации: stop (норма), length (упёрлось в max_tokens), tool_calls, content_filter.",
+   "cards": [],
+   "lessons": [
+    6
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "rate-limit",
+   "term": "Rate limit",
+   "en": "rate limit",
+   "aliases": [
+    "лимит запросов"
+   ],
+   "area": "api",
+   "short": "Лимит запросов в единицу времени. У OpenAI обычно тысячи RPM.",
+   "cards": [],
+   "lessons": [
+    6
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "sdk",
+   "term": "SDK (Software Development Kit)",
+   "en": "software development kit",
+   "aliases": [],
+   "area": "api",
+   "short": "Библиотека-обёртка над API. Например, openai и anthropic: официальные SDK.",
+   "cards": [],
+   "lessons": [
+    6
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "streaming",
+   "term": "Streaming",
+   "en": "streaming",
+   "aliases": [
+    "стриминг"
+   ],
+   "area": "api",
+   "short": "Постепенный вывод ответа модели по мере генерации (а не вся пачка в конце).",
+   "cards": [],
+   "lessons": [
+    6,
+    7
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "chroma",
+   "term": "Chroma",
+   "en": "Chroma",
+   "aliases": [],
+   "area": "tools",
+   "short": "Лёгкая локальная векторная БД. Идеальна для прототипов и обучения RAG.",
+   "cards": [],
+   "lessons": [
+    8
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "langchain",
+   "term": "LangChain",
+   "en": "LangChain",
+   "aliases": [],
+   "area": "tools",
+   "short": "Популярный фреймворк для приложений на LLM (Python и JavaScript). Альтернатива: LlamaIndex.",
+   "cards": [],
+   "lessons": [
+    17
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "ollama",
+   "term": "Ollama",
+   "en": "Ollama",
+   "aliases": [],
+   "area": "tools",
+   "short": "Самый простой способ запускать open-source LLM локально (Llama, Mistral, Phi).",
+   "cards": [],
+   "lessons": [
+    2
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "qdrant",
+   "term": "Qdrant",
+   "en": "Qdrant",
+   "aliases": [],
+   "area": "tools",
+   "short": "Open-source векторная БД для production. Self-hosted или managed cloud.",
+   "cards": [],
+   "lessons": [
+    8
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "streamlit",
+   "term": "Streamlit",
+   "en": "Streamlit",
+   "aliases": [],
+   "area": "tools",
+   "short": "Python-фреймворк для быстрых веб-интерфейсов к ML-моделям. Чат-бот за 30 строк.",
+   "cards": [],
+   "lessons": [
+    7
+   ],
+   "source": null,
+   "isNew": false
+  },
+  {
+   "id": "tiktoken",
+   "term": "tiktoken",
+   "en": "tiktoken",
+   "aliases": [],
+   "area": "tools",
+   "short": "Python-библиотека OpenAI для подсчёта токенов в тексте перед отправкой в API.",
+   "cards": [],
+   "lessons": [
+    7
+   ],
+   "source": null,
+   "isNew": false
+  }
+ ]
+}

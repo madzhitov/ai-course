@@ -722,7 +722,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
   }
   function buildTermIndex() {
     const names = [];
-    DICT.terms.forEach((t) => termNames(t).forEach((n, i) => names.push([n, t.id, i])));
+    DICT.terms.filter((t) => t.highlight !== false).forEach((t) => termNames(t).forEach((n, i) => names.push([n, t.id, i])));
     // одно написание у двух терминов: выигрывает тот, у кого это название, а не синоним
     const map = new Map();
     [...names].sort((a, b) => a[2] - b[2]).forEach(([n, id]) => { if (!map.has(n.toLowerCase())) map.set(n.toLowerCase(), id); });
