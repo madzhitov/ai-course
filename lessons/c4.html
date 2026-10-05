@@ -61,9 +61,9 @@
 
 <p>Это <strong>API-фича</strong> Claude (не доступная пока в claude.ai как фича для пользователя), которая даёт модели три инструмента:</p>
 <ol>
-<li><strong>computer</strong> — делать скриншоты, двигать мышь, кликать, набирать текст.</li>
+<li><strong>computer</strong> — набор (toolset) из 17 действий: скриншот, клики, движение мыши, набор текста, клавиши, прокрутка, zoom.</li>
 <li><strong>bash</strong> — выполнять команды в shell.</li>
-<li><strong>text_editor</strong> — читать и редактировать файлы напрямую.</li>
+<li><strong>text editor</strong> (<code>str_replace_based_edit_tool</code>) — читать и редактировать файлы напрямую.</li>
 </ol>
 
 <p>В цикле:</p>
@@ -73,7 +73,8 @@ Claude делает screenshot
      ↓
 Видит экран → решает что делать
      ↓
-Вызывает action: «click(345, 200)» или «type("hello")»
+Вызывает действие: «left_click(345, 200)» или «type("hello")»,
+иногда несколько подряд за один ход
      ↓
 Действие выполняется на машине
      ↓
@@ -123,30 +124,44 @@ Claude делает новый screenshot
 
 <p>Computer Use — это не магия. Это просто <strong>API loop</strong>:</p>
 
-<pre><code># Псевдокод
+<pre><code># Псевдокод: execute_tool() ты пишешь сам, под свою машину
+import anthropic
+
+client = anthropic.Anthropic()
+
+TOOLS = [
+    {"type": "computer_toolset_20260801"},  # 17 действий: screenshot, left_click, type, key, scroll, zoom...
+    {"type": "bash_20250124", "name": "bash"},
+    {"type": "text_editor_20250728", "name": "str_replace_based_edit_tool"},
+]
+
 def agent_loop(task):
     messages = [{"role": "user", "content": task}]
     while True:
-        response = anthropic.messages.create(
-            model="claude-sonnet-4-5",
-            tools=[
-                {"type": "computer_20250124", "name": "computer", ...},
-                {"type": "bash_20250124", "name": "bash"},
-                {"type": "text_editor_20250124", "name": "text_editor"}
-            ],
+        response = client.messages.create(  # бета-заголовок не нужен
+            model="claude-sonnet-5-5",
+            max_tokens=4096,
+            tools=TOOLS,
             messages=messages,
-            betas=["computer-use-2025-01-24"]
         )
+        messages.append({"role": "assistant", "content": response.content})
 
-        if response.stop_reason == "end_turn":
-            return  # задача готова
+        if response.stop_reason != "tool_use":
+            return response  # задача готова (или модель остановилась)
 
-        for block in response.content:
+        results = []
+        for block in response.content:  # действий за ход может быть несколько, выполняй по порядку
             if block.type == "tool_use":
-                result = execute_tool(block.name, block.input)
-                messages.append({...})  # добавить результат в контекст</code></pre>
+                output = execute_tool(block.name, block.input)  # left_click, type, bash...
+                result = {"type": "tool_result", "tool_use_id": block.id, "content": output}
+                if getattr(block, "toolset_name", None) == "computer":
+                    result["toolset_name"] = "computer"  # обязательно для действий computer
+                results.append(result)
+        messages.append({"role": "user", "content": results})  # все результаты одним сообщением</code></pre>
 
-<p>Каждое действие — отдельный API-запрос. Claude видит скриншот (как картинку в multimodal-входе), решает действие, ты выполняешь его на реальной/виртуальной машине, шлёшь результат назад.</p>
+<p>Каждый ход агента — отдельный API-запрос. Claude видит скриншот (как картинку в multimodal-входе), решает действие, ты выполняешь его на реальной/виртуальной машине, шлёшь результат назад. За один ход Claude может вернуть сразу несколько действий (batch action, например клик, ввод текста и скриншот): выполняй их по порядку и верни все результаты одним сообщением, в каждом <code>"toolset_name": "computer"</code>.</p>
+
+<p>У claude-sonnet-5-5 на Claude API и Google Cloud computer use работает только через <code>computer_toolset_20260801</code>, без бета-заголовка. Старые версии <code>computer_20250124</code> и <code>computer_20251124</code> эта модель там отклонит с ошибкой 400. Имя действия теперь лежит в <code>block.name</code> (а не в <code>input["action"]</code>), размеры экрана в описании инструмента не передаются. Скриншот уменьшай сам до лимитов модели (до 2576 px по длинной стороне): API не сжимает его за тебя и отклонит слишком большую картинку.</p>
 
 <h2>4. Безопасность — это критично</h2>
 
@@ -211,8 +226,9 @@ docker run \
 
 <h3>Стоимость</h3>
 <ul>
-<li>Каждый screenshot — это картинка ~1.6 мегапикселя на вход.</li>
-<li>Стоимость одного шага: ~$0.005–0.05 в зависимости от длины контекста.</li>
+<li>Каждый screenshot — картинка на вход: стоит ⌈ширина/28⌉ × ⌈высота/28⌉ токенов, то есть 1280×720 ≈ 1 200 токенов, 1920×1080 ≈ 2 700.</li>
+<li>Сам набор инструментов computer добавляет к каждому запросу около 4 500 входных токенов (их выгодно кэшировать).</li>
+<li>Стоимость одного шага: ~$0.005–0.05 в зависимости от длины контекста и от того, включён ли кэш (при цене входа $2.00 за 1M токенов).</li>
 <li>Часовая работа агента: $1–5.</li>
 </ul>
 
@@ -264,9 +280,9 @@ docker run \
 <h2>10. Глоссарий</h2>
 <ul>
 <li><strong>Computer Use</strong> — возможность Claude управлять компьютером через скриншоты + действия.</li>
-<li><strong>computer tool</strong> — встроенный API-tool для скриншотов, мыши, клавиатуры.</li>
+<li><strong>computer toolset</strong> (<code>computer_toolset_20260801</code>) — встроенный набор из 17 инструментов для скриншотов, мыши, клавиатуры.</li>
 <li><strong>bash tool</strong> — встроенный для shell-команд.</li>
-<li><strong>text_editor tool</strong> — для прямого редактирования файлов.</li>
+<li><strong>text editor tool</strong> (<code>str_replace_based_edit_tool</code>) — для прямого редактирования файлов.</li>
 <li><strong>Agent loop</strong> — цикл «скриншот → действие → новый скриншот».</li>
 <li><strong>Reference implementation</strong> — Docker-образ Anthropic с готовой средой для Computer Use.</li>
 <li><strong>Human-in-the-loop</strong> — обязательное согласование критичных действий.</li>
@@ -314,7 +330,7 @@ docker run \
 <h2>12. Проверь себя</h2>
 
 <p><strong>1. Какие три инструмента доступны Claude в Computer Use?</strong><br>
-computer (скриншот, мышь, клавиатура), bash (shell), text_editor (файлы).</p>
+computer (набор действий: скриншот, мышь, клавиатура), bash (shell), text editor / <code>str_replace_based_edit_tool</code> (файлы).</p>
 
 <p><strong>2. Как работает agent loop?</strong><br>
 Claude делает скриншот → решает действие → выполняет → новый скриншот → повторяет пока задача не готова.</p>

@@ -18616,9 +18616,9 @@ registerLesson("c4", `
 
 <p>Это <strong>API-фича</strong> Claude (не доступная пока в claude.ai как фича для пользователя), которая даёт модели три инструмента:</p>
 <ol>
-<li><strong>computer</strong> — делать скриншоты, двигать мышь, кликать, набирать текст.</li>
+<li><strong>computer</strong> — набор (toolset) из 17 действий: скриншот, клики, движение мыши, набор текста, клавиши, прокрутка, zoom.</li>
 <li><strong>bash</strong> — выполнять команды в shell.</li>
-<li><strong>text_editor</strong> — читать и редактировать файлы напрямую.</li>
+<li><strong>text editor</strong> (<code>str_replace_based_edit_tool</code>) — читать и редактировать файлы напрямую.</li>
 </ol>
 
 <p>В цикле:</p>
@@ -18628,7 +18628,8 @@ Claude делает screenshot
      ↓
 Видит экран → решает что делать
      ↓
-Вызывает action: «click(345, 200)» или «type("hello")»
+Вызывает действие: «left_click(345, 200)» или «type("hello")»,
+иногда несколько подряд за один ход
      ↓
 Действие выполняется на машине
      ↓
@@ -18678,30 +18679,44 @@ Claude делает новый screenshot
 
 <p>Computer Use — это не магия. Это просто <strong>API loop</strong>:</p>
 
-<pre><code># Псевдокод
+<pre><code># Псевдокод: execute_tool() ты пишешь сам, под свою машину
+import anthropic
+
+client = anthropic.Anthropic()
+
+TOOLS = [
+    {"type": "computer_toolset_20260801"},  # 17 действий: screenshot, left_click, type, key, scroll, zoom...
+    {"type": "bash_20250124", "name": "bash"},
+    {"type": "text_editor_20250728", "name": "str_replace_based_edit_tool"},
+]
+
 def agent_loop(task):
     messages = [{"role": "user", "content": task}]
     while True:
-        response = anthropic.messages.create(
-            model="claude-sonnet-4-5",
-            tools=[
-                {"type": "computer_20250124", "name": "computer", ...},
-                {"type": "bash_20250124", "name": "bash"},
-                {"type": "text_editor_20250124", "name": "text_editor"}
-            ],
+        response = client.messages.create(  # бета-заголовок не нужен
+            model="⟦claude.smart⟧",
+            max_tokens=4096,
+            tools=TOOLS,
             messages=messages,
-            betas=["computer-use-2025-01-24"]
         )
+        messages.append({"role": "assistant", "content": response.content})
 
-        if response.stop_reason == "end_turn":
-            return  # задача готова
+        if response.stop_reason != "tool_use":
+            return response  # задача готова (или модель остановилась)
 
-        for block in response.content:
+        results = []
+        for block in response.content:  # действий за ход может быть несколько, выполняй по порядку
             if block.type == "tool_use":
-                result = execute_tool(block.name, block.input)
-                messages.append({...})  # добавить результат в контекст</code></pre>
+                output = execute_tool(block.name, block.input)  # left_click, type, bash...
+                result = {"type": "tool_result", "tool_use_id": block.id, "content": output}
+                if getattr(block, "toolset_name", None) == "computer":
+                    result["toolset_name"] = "computer"  # обязательно для действий computer
+                results.append(result)
+        messages.append({"role": "user", "content": results})  # все результаты одним сообщением</code></pre>
 
-<p>Каждое действие — отдельный API-запрос. Claude видит скриншот (как картинку в multimodal-входе), решает действие, ты выполняешь его на реальной/виртуальной машине, шлёшь результат назад.</p>
+<p>Каждый ход агента — отдельный API-запрос. Claude видит скриншот (как картинку в multimodal-входе), решает действие, ты выполняешь его на реальной/виртуальной машине, шлёшь результат назад. За один ход Claude может вернуть сразу несколько действий (batch action, например клик, ввод текста и скриншот): выполняй их по порядку и верни все результаты одним сообщением, в каждом <code>"toolset_name": "computer"</code>.</p>
+
+<p>У ⟦claude.smart⟧ на Claude API и Google Cloud computer use работает только через <code>computer_toolset_20260801</code>, без бета-заголовка. Старые версии <code>computer_20250124</code> и <code>computer_20251124</code> эта модель там отклонит с ошибкой 400. Имя действия теперь лежит в <code>block.name</code> (а не в <code>input["action"]</code>), размеры экрана в описании инструмента не передаются. Скриншот уменьшай сам до лимитов модели (до 2576 px по длинной стороне): API не сжимает его за тебя и отклонит слишком большую картинку.</p>
 
 <h2>4. Безопасность — это критично</h2>
 
@@ -18766,8 +18781,9 @@ docker run \\
 
 <h3>Стоимость</h3>
 <ul>
-<li>Каждый screenshot — это картинка ~1.6 мегапикселя на вход.</li>
-<li>Стоимость одного шага: ~$0.005–0.05 в зависимости от длины контекста.</li>
+<li>Каждый screenshot — картинка на вход: стоит ⌈ширина/28⌉ × ⌈высота/28⌉ токенов, то есть 1280×720 ≈ 1 200 токенов, 1920×1080 ≈ 2 700.</li>
+<li>Сам набор инструментов computer добавляет к каждому запросу около 4 500 входных токенов (их выгодно кэшировать).</li>
+<li>Стоимость одного шага: ~$0.005–0.05 в зависимости от длины контекста и от того, включён ли кэш (при цене входа $⟦claude.smart.in⟧ за 1M токенов).</li>
 <li>Часовая работа агента: $1–5.</li>
 </ul>
 
@@ -18819,9 +18835,9 @@ docker run \\
 <h2>10. Глоссарий</h2>
 <ul>
 <li><strong>Computer Use</strong> — возможность Claude управлять компьютером через скриншоты + действия.</li>
-<li><strong>computer tool</strong> — встроенный API-tool для скриншотов, мыши, клавиатуры.</li>
+<li><strong>computer toolset</strong> (<code>computer_toolset_20260801</code>) — встроенный набор из 17 инструментов для скриншотов, мыши, клавиатуры.</li>
 <li><strong>bash tool</strong> — встроенный для shell-команд.</li>
-<li><strong>text_editor tool</strong> — для прямого редактирования файлов.</li>
+<li><strong>text editor tool</strong> (<code>str_replace_based_edit_tool</code>) — для прямого редактирования файлов.</li>
 <li><strong>Agent loop</strong> — цикл «скриншот → действие → новый скриншот».</li>
 <li><strong>Reference implementation</strong> — Docker-образ Anthropic с готовой средой для Computer Use.</li>
 <li><strong>Human-in-the-loop</strong> — обязательное согласование критичных действий.</li>
@@ -18869,7 +18885,7 @@ docker run \\
 <h2>12. Проверь себя</h2>
 
 <p><strong>1. Какие три инструмента доступны Claude в Computer Use?</strong><br>
-computer (скриншот, мышь, клавиатура), bash (shell), text_editor (файлы).</p>
+computer (набор действий: скриншот, мышь, клавиатура), bash (shell), text editor / <code>str_replace_based_edit_tool</code> (файлы).</p>
 
 <p><strong>2. Как работает agent loop?</strong><br>
 Claude делает скриншот → решает действие → выполняет → новый скриншот → повторяет пока задача не готова.</p>
@@ -19224,26 +19240,28 @@ registerLesson("c6", `
 
 <h2>1. Как работает</h2>
 
+<p>Цены во всех примерах урока: модель ⟦claude.smart⟧, обычный input $⟦claude.smart.in⟧ за 1M токенов, output $⟦claude.smart.out⟧ за 1M. Производные посчитаны от базы $2.00/M (прайс Anthropic на 05.10.2026): запись в кэш на 5 минут ×1.25 = $2.50/M, на 1 час ×2 = $4.00/M, чтение из кэша ×0.1 = $0.20/M.</p>
+
 <p>Без кэширования (обычный поток):</p>
 <pre><code>Запрос 1: [system prompt 5000т] + [user "вопрос 1" 50т]
-  → input: 5050 × $3/M = $0.0152
+  → input: 5050 × $⟦claude.smart.in⟧/M = $0.0101
 
 Запрос 2: [system prompt 5000т] + [user "вопрос 2" 50т]
-  → input: 5050 × $3/M = $0.0152
+  → input: 5050 × $⟦claude.smart.in⟧/M = $0.0101
   (платим за system prompt снова и снова)</code></pre>
 
 <p>С кэшированием:</p>
 <pre><code>Запрос 1: [system prompt CACHED 5000т] + [user 50т]
-  → cache write: 5000 × $3.75/M = $0.01875 (+25%)
-  → input: 50 × $3/M = $0.00015
-  = $0.019 (чуть дороже)
+  → cache write: 5000 × $2.50/M = $0.0125 (+25%)
+  → input: 50 × $⟦claude.smart.in⟧/M = $0.0001
+  = $0.0126 (чуть дороже)
 
 Запрос 2: [system prompt CACHED 5000т] + [user 50т]
-  → cache read: 5000 × $0.30/M = $0.0015 (10% от обычной цены!)
-  → input: 50 × $3/M = $0.00015
-  = $0.00165 (в 9 раз дешевле)</code></pre>
+  → cache read: 5000 × $0.20/M = $0.001 (10% от обычной цены!)
+  → input: 50 × $⟦claude.smart.in⟧/M = $0.0001
+  = $0.0011 (в 9 раз дешевле)</code></pre>
 
-<p>Чем больше повторов — тем больше экономия. После 10 запросов экономия ~85%. После 100 — ~89%.</p>
+<p>Чем больше повторов — тем больше экономия. После 10 запросов экономия ~78%. После 100 — ~88%.</p>
 
 <h2>2. Когда выгодно использовать</h2>
 
@@ -19262,27 +19280,28 @@ registerLesson("c6", `
 <li>Один запрос — не повторишь, не сэкономишь</li>
 </ul>
 
-<p>Минимальный размер для кэширования: <strong>1024 токена</strong> (для Sonnet/Opus) или <strong>2048</strong> (для Haiku).</p>
+<p>Минимальный размер для кэширования: <strong>512 токенов</strong> (для Sonnet 5.5 и Opus 5.5) или <strong>4096</strong> (для Haiku 4.5).</p>
 
 <h2>3. Цены: запись vs чтение</h2>
 
 <table>
-<tr><th>Операция</th><th>Sonnet 4.5</th><th>Opus 4</th><th>Haiku</th></tr>
-<tr><td>Обычный input</td><td>$3.00/M</td><td>$15.00/M</td><td>$0.80/M</td></tr>
-<tr><td>Cache <strong>write</strong> (+25%)</td><td>$3.75/M</td><td>$18.75/M</td><td>$1.00/M</td></tr>
-<tr><td>Cache <strong>read</strong> (-90%)</td><td>$0.30/M</td><td>$1.50/M</td><td>$0.08/M</td></tr>
+<tr><th>Операция</th><th>Sonnet 5.5</th><th>Opus 5.5</th><th>Haiku 4.5</th></tr>
+<tr><td>Обычный input</td><td>$⟦claude.smart.in⟧/M</td><td>$⟦claude.top.in⟧/M</td><td>$⟦claude.fast.in⟧/M</td></tr>
+<tr><td>Cache <strong>write</strong> 5 минут (+25%)</td><td>$2.50/M</td><td>$5.00/M</td><td>$1.25/M</td></tr>
+<tr><td>Cache <strong>write</strong> 1 час (×2)</td><td>$4.00/M</td><td>$8.00/M</td><td>$2.00/M</td></tr>
+<tr><td>Cache <strong>read</strong></td><td>$0.20/M (−90%)</td><td>$0.20/M (−95%)</td><td>$0.10/M (−90%)</td></tr>
 </table>
 
-<p><strong>Cache write</strong> чуть дороже обычного input (+25%). <strong>Cache read</strong> — в 10 раз дешевле. Поэтому кэш окупается уже на 2-м запросе.</p>
+<p><strong>Cache write</strong> чуть дороже обычного input (+25%). <strong>Cache read</strong> — в 10 раз дешевле (у Opus 5.5 в 20 раз). Поэтому кэш окупается уже на 2-м запросе.</p>
 
-<p class="callout"><strong>Цены в таблице — ориентир.</strong> Anthropic периодически их пересматривает, а названия моделей обновляются. Актуальный прайс всегда здесь: <a href="https://www.anthropic.com/pricing" target="_blank">anthropic.com/pricing</a>. Важна не конкретная цифра, а соотношение: write ≈ +25%, read ≈ −90%.</p>
+<p class="callout"><strong>Цены в таблице — ориентир.</strong> Anthropic периодически их пересматривает, а названия моделей обновляются. Актуальный прайс всегда здесь: <a href="https://www.anthropic.com/pricing" target="_blank">anthropic.com/pricing</a>. Важна не конкретная цифра, а соотношение: write ≈ +25%, read ≈ −90% (у Opus 5.5 −95%).</p>
 
 <h2>4. Время жизни кэша</h2>
 
 <p>Два режима:</p>
 <ul>
 <li><strong>5 минут</strong> (по умолчанию) — без доплаты</li>
-<li><strong>1 час</strong> (extended cache, beta) — двойная цена за cache write, но всё ещё дешевле обычной</li>
+<li><strong>1 час</strong> (extended cache) — запись в кэш вдвое дороже обычного input (×2 вместо ×1.25), окупается со второго чтения</li>
 </ul>
 
 <p>5 минут — для интерактивных сессий (чат, диалог). 1 час — для batch-обработки, когда несколько запросов с большой паузой.</p>
@@ -19300,7 +19319,7 @@ client = Anthropic()
 system_prompt = "..." * 5000  # длинный, стабильный
 
 response = client.messages.create(
-    model="claude-sonnet-4-5",
+    model="⟦claude.smart⟧",
     max_tokens=1024,
     system=[
         {
@@ -19359,24 +19378,24 @@ print(response.usage)
 <h3>Чат-бот поддержки</h3>
 <p>System prompt 3000 токенов + few-shot 4000 токенов. Каждый ответ ~500 токенов output.</p>
 <ul>
-<li>Без кэша: 7500 × $3 + 500 × $15 = $0.030 за ответ</li>
-<li>С кэшем (после первого): 7500 × $0.30 + 500 × $15 = $0.010 за ответ</li>
-<li>Экономия: <strong>~67% на input части</strong></li>
+<li>Без кэша: 7500 × $⟦claude.smart.in⟧/M + 500 × $⟦claude.smart.out⟧/M = $0.020 за ответ</li>
+<li>С кэшем (после первого): 7500 × $0.20/M + 500 × $⟦claude.smart.out⟧/M = $0.0065 за ответ</li>
+<li>Экономия: <strong>~68% на весь ответ</strong> (input-часть дешевле в 10 раз)</li>
 </ul>
 
 <h3>RAG-бот над книгой</h3>
 <p>Книга 80 000 токенов. Юзер задаёт 10 вопросов в сессии.</p>
 <ul>
-<li>Без кэша: 10 × 80 000 × $3 = <strong>$2.40 за сессию</strong></li>
-<li>С кэшем: $0.30 (cache write) + 9 × 80 000 × $0.30 = <strong>$0.52 за сессию</strong></li>
-<li>Экономия: <strong>78%</strong></li>
+<li>Без кэша: 10 × 80 000 × $⟦claude.smart.in⟧/M = <strong>$1.60 за сессию</strong></li>
+<li>С кэшем: $0.20 (cache write: 80 000 × $2.50/M) + 9 × 80 000 × $0.20/M = <strong>$0.34 за сессию</strong></li>
+<li>Экономия: <strong>~78.5%</strong></li>
 </ul>
 
 <h3>Code agent</h3>
 <p>Контекст 50 000 токенов кода. 20 итераций агента в задаче.</p>
 <ul>
-<li>Без кэша: 20 × 50 000 × $3 = $3.00 на задачу</li>
-<li>С кэшем: 1 × $0.19 + 19 × $0.015 = $0.47</li>
+<li>Без кэша: 20 × 50 000 × $⟦claude.smart.in⟧/M = $2.00 на задачу</li>
+<li>С кэшем: 1 × $0.125 + 19 × $0.01 = $0.315</li>
 <li>Экономия: <strong>84%</strong></li>
 </ul>
 
@@ -19384,7 +19403,7 @@ print(response.usage)
 
 <h3>Cache не сработает если</h3>
 <ul>
-<li>Минимальный размер не достигнут (1024 токена для Sonnet)</li>
+<li>Минимальный размер не достигнут (512 токенов для Sonnet 5.5)</li>
 <li>Кэш истёк (более 5 минут / 1 часа простоя)</li>
 <li>В кэшируемой части хоть один символ изменился</li>
 <li>Модель сменилась — у каждой модели свой кэш</li>
@@ -19406,7 +19425,7 @@ print(response.usage)
 <li><strong>Cache read</strong> — последующие запросы, читающие из кэша (-90%)</li>
 <li><strong>Cache breakpoint</strong> — место в промпте, где заканчивается кэшируемая часть</li>
 <li><strong>Ephemeral cache</strong> — стандартный 5-минутный кэш</li>
-<li><strong>Extended cache</strong> — 1-часовой кэш (beta, дороже)</li>
+<li><strong>Extended cache</strong> — 1-часовой кэш (запись ×2, дороже)</li>
 <li><strong>cache_control</strong> — параметр в API для указания кэша</li>
 </ul>
 
@@ -19437,16 +19456,16 @@ print(response.usage)
 <h2>11. Проверь себя</h2>
 
 <p><strong>1. Цена cache read?</strong><br>
-В 10 раз дешевле обычного input (например, $0.30/M для Sonnet вместо $3.00/M).</p>
+В 10 раз дешевле обычного input (например, $0.20/M для Sonnet 5.5 вместо $⟦claude.smart.in⟧/M). У Opus 5.5 в 20 раз.</p>
 
 <p><strong>2. Цена cache write?</strong><br>
-На 25% дороже обычного input ($3.75/M для Sonnet). Окупается со второго запроса.</p>
+На 25% дороже обычного input ($2.50/M для Sonnet 5.5). Окупается со второго запроса.</p>
 
 <p><strong>3. Минимальный размер для кэширования?</strong><br>
-1024 токена для Sonnet/Opus, 2048 для Haiku.</p>
+512 токенов для Sonnet 5.5 и Opus 5.5, 4096 для Haiku 4.5.</p>
 
 <p><strong>4. Время жизни стандартного кэша?</strong><br>
-5 минут с последнего обращения. Можно расширить до 1 часа в beta.</p>
+5 минут с последнего обращения. Можно расширить до 1 часа (запись в кэш ×2 от обычного input).</p>
 
 <p><strong>5. Что кэшировать?</strong><br>
 Стабильные части: system prompt, few-shot примеры, большие документы в контексте, историю диалога до текущего хода.</p>
@@ -19470,8 +19489,8 @@ print(response.usage)
 <ol>
 <li><strong>Cache read — в 10 раз дешевле</strong> обычного input. Это много.</li>
 <li><strong>Окупается со 2-го запроса.</strong> Cache write +25%.</li>
-<li><strong>Минимум 1024 токена</strong> для кэширования.</li>
-<li><strong>5 минут</strong> жизни кэша — стандарт. 1 час — beta.</li>
+<li><strong>Минимум 512 токенов</strong> для кэширования (Sonnet 5.5).</li>
+<li><strong>5 минут</strong> жизни кэша — стандарт. 1 час — за доплату при записи (×2).</li>
 <li><strong>До 4 breakpoint'ов</strong> в одном запросе — multi-level caching.</li>
 <li><strong>Кэшируй:</strong> system prompt, few-shot, большие документы, историю.</li>
 <li><strong>Не кэшируй:</strong> короткие промпты, одноразовые запросы, динамические части.</li>
