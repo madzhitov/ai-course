@@ -899,3 +899,16 @@ body.v6 .lesson-content .v6-page .v6-lsheet .lesson-view a:not(.v6b):not(.v6t) {
 @media (min-width:1241px) and (max-width:1360px) { .v6h-nav { gap:20px; } .v6h-right .v6-link { margin-right:2px; font-size:15px; } .v6h-in { gap:16px; } }
 
 .v6h-brand { flex:none; }
+/* главная: полоса «где вы остановились» и отличия в постоянном блоке */
+.v6-resume { margin-top:32px; background:var(--surface-dark); color:var(--on-dark); border-radius:24px; padding:16px 20px 16px 24px; display:flex; align-items:center; justify-content:space-between; gap:12px 20px; flex-wrap:wrap; }
+.v6-resume-t { display:flex; flex-direction:column; gap:4px; min-width:0; }
+.v6-resume .v6-meta { color:var(--on-dark-2); }
+.v6-resume b { font-family:var(--font-display); font-weight:800; font-size:20px; line-height:1.25; }
+.v6-resume .v6b.is-soft { background:var(--surface-dark-2); color:var(--on-dark); }
+.v6-usp { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:28px; }
+.v6-usp div { background:var(--surface); border-radius:20px; padding:16px 18px; display:flex; flex-direction:column; gap:6px; }
+.v6-usp b { font-family:var(--font-display); font-weight:800; font-size:17px; line-height:1.25; }
+.v6-usp span { font-size:15px; line-height:1.45; color:var(--text-2); }
+@media (max-width:900px) { .v6-usp { grid-template-columns:1fr; } }
+body.v6 .lesson-content .v6-page h1.v6-d.v6-home-h1 { font-size:clamp(38px,3.7vw,56px) !important; line-height:1.02 !important; }
+.v6-hero .v6b.is-soft { background:var(--surface); }

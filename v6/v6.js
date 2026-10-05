@@ -294,56 +294,42 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       track('home-state', { state: st });
       const r = resume();
       const lArg = lessonArg(r.id);
-      // меняется только верхний блок; ниже — одна и та же структура для всех (решение Руслана 05.10)
-      let top = '';
-      if (st === 'A') {
-        top = `<div class="v6-hero"><div>
-            <span class="v6-eyebrow">Артефакты, а не сертификаты <span>от пользователя к создателю</span></span>
-            <h1 class="v6-d">Что нужно сделать сегодня?</h1>
-            <p class="v6-lead">Бесплатные короткие юниты по ИИ и диджиталу. Одна задача — один готовый результат.</p>
-            ${askForm('v6-ask-a')}${chips()}
-            <p style="margin-top:20px"><button class="v6-quiet" onclick="openLesson(1)">Не знаю, с чего начать → общий старт, урок 1</button></p>
-          </div><div class="v6-who"><h2>Кто вы?</h2>${whoRows(true)}<button class="v6-quiet" onclick="V6.open('roles')">Все роли: маркетолог, специалист, владелец бизнеса →</button></div></div>`;
-      } else if (st === 'B' || st === 'E') {
-        const left = [1, 2, 3, 4, 5].filter((n) => !done(n)).length;
-        const inStart = typeof r.id === 'number' && r.id <= 5;
+      // Главная одинакова для всех (решение Руслана 05.10): постоянный блок «что это и чем отличается»,
+      // а «где вы остановились» — тонкой полосой над ним, только у тех, кто уже начинал
+      let strip = '';
+      const bar = (label, title, btn) => `<div class="v6-resume"><span class="v6-resume-t"><span class="v6-meta">${label}</span><b>${title}</b></span><span class="v6-btns">${btn}</span></div>`;
+      if (st === 'B' || st === 'E') {
         const awayWeeks = prevVisit ? Math.floor((Date.now() - new Date(prevVisit).getTime()) / 6048e5) : 0;
-        const news = st === 'E' ? (CHANGELOG || []).filter((c) => c.date > String(prevVisit).slice(0, 10)).slice(0, 4) : [];
-        top = `<div class="v6-hero">
-            <div class="v6-dark"><span class="v6-meta">${st === 'E' ? `Вас не было ${awayWeeks} ${awayWeeks === 1 ? 'неделю' : awayWeeks < 5 ? 'недели' : 'недель'} · где вы остановились` : 'С возвращением · продолжить'}</span>
-              <h2 class="v6-h2" style="margin:16px 0 !important">${e(resumeLabel(r))}</h2>
-              ${inStart ? `<p>общий старт · ${left === 1 ? 'до развилки один урок' : `до развилки ${left} ${pluralUrok(left)}`}</p>` : ''}
-              <button class="v6b is-accent" style="margin-top:16px" onclick="openLesson(${lArg})">Продолжить урок</button></div>
-            <div>${st === 'E' && news.length ? `<h2 class="v6-h3" style="font-family:var(--font-display);font-weight:800;font-size:var(--fs-h4)">Пока вас не было, кое-что изменилось</h2><ul class="v6-rows v6-news" style="margin-top:12px">${news.map((c) => `<li><span class="n">${e(fmtDateRu(c.date))}</span><span style="grid-column:span 2">${e(stripEmoji(c.title))}</span></li>`).join('')}</ul>`
-              : `<span class="v6-meta">Или что-то другое сегодня</span><h2 class="v6-h3" style="font-family:var(--font-display);font-weight:800;font-size:var(--fs-h4);margin-top:8px">Есть задача прямо сейчас?</h2>${askForm('v6-ask-b')}${chips()}`}</div>
-          </div>`;
+        strip = bar(st === 'E' ? `Вас не было ${awayWeeks} ${awayWeeks === 1 ? 'неделю' : awayWeeks < 5 ? 'недели' : 'недель'} · где вы остановились` : 'С возвращением · где вы остановились', e(resumeLabel(r)),
+          `<button class="v6b is-accent is-sm" onclick="openLesson(${lArg})">Продолжить урок</button>`);
       } else if (st === 'C') {
-        top = `<div style="padding-top:56px"><span class="v6-eyebrow">Общий старт пройден · уроки 1–5</span>
-            <h1 class="v6-d" style="margin-top:24px !important">Развилка. Куда дальше?</h1>
-            <p class="v6-lead">База есть. Теперь выберите дорогу — её можно сменить в любой момент, пройденное не потеряется.</p>
-            <div class="v6-grid3" style="margin-top:40px">
-              <div class="v6-task"><span class="v6-meta">Основной путь</span><h3>Создаю на ИИ</h3><p>Дальше по основному пути: урок 6, первое приложение через API.</p><span class="v6t">Уровень 1 → Веха: ${e(D.paths.main.levels[0].milestone.title)}</span><button class="v6b is-sm" onclick="V6.fork('creator')">Идти</button></div>
-              <div class="v6-task"><span class="v6-meta">Путь роли · новое</span><h3>Продаю онлайн</h3><p>Путь «От селлера к бренду»: отзывы, карточки, экономика по каналам.</p><span class="v6t">${Object.values(D.tasks).filter((t) => t.group === 'seller' && t.status !== 'soon').length} задач</span><button class="v6b is-sm" onclick="V6.fork('seller')">Идти</button></div>
-              <div class="v6-task"><span class="v6-meta">Другие роли</span><h3>Другая роль</h3><p>Для себя, продакт, проджект, маркетолог, специалист, владелец бизнеса.</p><span class="v6t">уроки роли</span><button class="v6b is-sm" onclick="V6.fork('other')">Выбрать</button></div>
-            </div>
-            <button class="v6-note" style="margin-top:20px" onclick="aleshaToggle()"><span class="v6-ava">А</span><span>Не уверены? Расскажите, чем занимаетесь, и я подскажу дорогу.</span></button></div>`;
-      } else { // D
+        strip = bar('Общий старт пройден · уроки 1–5', 'Куда дальше? Дорогу можно сменить в любой момент',
+          `<button class="v6b is-accent is-sm" onclick="V6.fork('creator')">Создаю на ИИ</button><button class="v6b is-soft is-sm" onclick="V6.fork('seller')">Продаю онлайн</button><button class="v6b is-soft is-sm" onclick="V6.fork('other')">Другая роль</button>`);
+      } else if (st === 'D') {
         const rr = role(ls.get(KEY.role)) || role('creator');
-        let next = '', doneList = '';
         if (rr.id === 'seller') {
           const t = nextSellerTask();
-          next = t ? `<span class="v6-meta">Следующая задача для вашего магазина · ${e(t.direction.title)}${taskMins(t.id) ? ' · ' + taskMins(t.id) : ''}</span><h2 class="v6-h2" style="margin:16px 0 !important">${e(t.title)}</h2><button class="v6b is-accent" onclick="V6.openTask('${e(t.id)}','home')">Начать</button>`
-            : '<span class="v6-meta">Все готовые задачи роли сделаны</span><h2 class="v6-h2" style="margin:16px 0 !important">Новые задачи появятся здесь</h2>';
-          const doneT = Object.values(D.tasks).filter((x) => x.group === 'seller' && taskDone(x.id));
-          doneList = doneT.length ? `<h2 class="v6-h3" style="font-family:var(--font-display);font-weight:800;font-size:var(--fs-h4)">Сделано вами</h2><ul class="v6-steps" style="margin-top:8px">${doneT.map((x) => `<li class="is-done"><a onclick="V6.openTask('${e(x.id)}','home')"><span class="dot">✓</span><span>${e(x.title)}</span></a></li>`).join('')}</ul><p class="v6-meta">Прогресс хранится только в этом браузере.</p>` : '';
+          strip = t ? bar(`Ваша роль: ${e(rr.title)} · следующая задача${taskMins(t.id) ? ' · ' + taskMins(t.id) : ''}`, e(t.title), `<button class="v6b is-accent is-sm" onclick="V6.openTask('${e(t.id)}','home')">Начать</button><button class="v6b is-soft is-sm" onclick="V6.open('roles')">Сменить роль</button>`)
+            : bar(`Ваша роль: ${e(rr.title)}`, 'Все готовые задачи роли сделаны', `<button class="v6b is-soft is-sm" onclick="V6.open('notebook')">Тетрадь</button>`);
         } else {
           const nl = byNoCode(rr.lessons || []).map(lessonOf).find((l) => l && l.content && !done(l.id));
-          next = nl ? `<span class="v6-meta">Следующий шаг · ${e(rr.title)}</span><h2 class="v6-h2" style="margin:16px 0 !important">${e(resumeLabel(nl))}</h2><button class="v6b is-accent" onclick="openLesson(${lessonArg(nl.id)})">Начать</button>`
-            : `<span class="v6-meta">${e(rr.title)}</span><h2 class="v6-h2" style="margin:16px 0 !important">Готовые уроки роли пройдены</h2>`;
+          strip = nl ? bar(`Ваша роль: ${e(rr.title)} · следующий шаг`, e(resumeLabel(nl)), `<button class="v6b is-accent is-sm" onclick="openLesson(${lessonArg(nl.id)})">Начать</button><button class="v6b is-soft is-sm" onclick="V6.open('roles')">Сменить роль</button>`)
+            : bar(`Ваша роль: ${e(rr.title)}`, 'Готовые уроки роли пройдены', `<button class="v6b is-soft is-sm" onclick="V6.open('roles')">Другие роли</button>`);
         }
-        top = `<div style="padding-top:40px"><p class="v6-meta">${e(rr.title)} · <button class="v6-quiet" onclick="V6.open('roles')">сменить роль</button></p>
-            <div class="v6-hero" style="padding-top:8px"><div class="v6-dark">${next}</div><div>${askForm('v6-ask-d')}<div style="margin-top:28px">${doneList}</div></div></div></div>`;
       }
+      const nFw = D.fw.length, nUnits = D.units.filter(hasSteps).length;
+      const top = `${strip}<div class="v6-hero"><div>
+          <span class="v6-eyebrow">Артефакты, а не сертификаты <span>бесплатно, на русском</span></span>
+          <h1 class="v6-d v6-home-h1">Методы для бизнеса и&nbsp;для&nbsp;себя. С&nbsp;ИИ за&nbsp;час</h1>
+          <p class="v6-lead">База знаний, где каждое знание сразу превращается в дело. ${nFw} ${plural(nFw, 'метод', 'метода', 'методов')} из книг и исследований: юнит-экономика, JTBD, RFM, OKR и другие. Выберите задачу, пройдите её по шагам с готовым промптом и ИИ-наставником и унесите готовую вещь: таблицу, текст, план, бота.</p>
+          <div class="v6-usp">
+            <div><b>Методы из первоисточников</b><span>Не пересказы, а книги и исследования. В карточке метода калькулятор или готовый запрос.</span></div>
+            <div><b>Задача, а не курс</b><span>${nUnits} ${plural(nUnits, 'задача', 'задачи', 'задач')} по шагам, до часа каждая. Проверка по чек-листу, результат остаётся у вас.</span></div>
+            <div><b>Работает в России</b><span>Первыми идут сервисы без VPN. Бесплатно и без регистрации.</span></div>
+          </div>
+          <span class="v6-btns" style="margin-top:28px"><button class="v6b is-accent v6-btn-lg" onclick="V6.open('tasks')">Выбрать задачу</button><button class="v6b is-soft v6-btn-lg" onclick="V6.open('knowledge')">Все методы</button></span>
+          <div style="margin-top:28px">${askForm('v6-ask-a')}${chips()}</div>
+        </div><div class="v6-who"><h2>Кто вы?</h2>${whoRows(true)}<button class="v6-quiet" onclick="V6.open('roles')">Все роли: маркетолог, специалист, владелец бизнеса →</button></div></div>`;
       document.getElementById('v6-home').innerHTML = top + pathsBlock() + oftenBlock() + newsBlock() + companies();
     }).catch(() => fail('v6-home'));
     return el;
