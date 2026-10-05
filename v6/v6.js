@@ -1095,6 +1095,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     const st = unitState(id), n = u.steps.length, i = Math.min(st.step || 0, n - 1), s = u.steps[i];
     const fin = st.step >= n;
     const fws = (u.basedOn || []).map(fwById).filter(Boolean);
+    const kit = D.resources.filter((r) => resReady(r) && ((r.units || []).includes(u.id) || (u.resources || []).includes(r.id)));
     const stepsNav = u.steps.map((x, k) => { const dn = fin || k < i, cur = !fin && k === i;
       return `<a class="v6-lstep${cur ? ' is-now' : ''}" href="#" onclick="V6.unitGo('${e(id)}', ${k}); return false;"><span class="v6-dotc${dn ? ' is-done' : cur ? ' is-now' : ''}">${dn ? '✓' : ''}</span><span>${e(x.title)}</span></a>`; }).join('');
     const prompt = s.prompt ? `<div class="v6-uprompt"><div class="v6-uprompt-h"><span class="v6-pcard-label">Промпт</span><button class="v6b is-sm is-soft" onclick="V6.copyText('v6-up-${i}', this)">Скопировать</button></div><pre id="v6-up-${i}">${e(s.prompt)}</pre></div>` : '';
@@ -1115,7 +1116,8 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       <section class="v6-uhead">${u.review ? '<span class="v6-eyebrow">Черновик на согласовании</span>' : ''}<h1 class="v6-d">${e(u.title)}</h1><p class="v6-phero-lead">${e(u.result || '')}</p>
         <span class="v6-tags">${[u.minutes ? '≈ ' + u.minutes + ' мин' : '', u.level || '', ...(u.tools || []), u.noVpn ? 'без VPN' : ''].filter(Boolean).map((x) => `<span class="v6t is-grey">${e(x)}</span>`).join('')}${(u.needs || []).length ? `<span class="v6t">понадобится: ${e(u.needs.join(', '))}</span>` : ''}</span></section>
       <div class="v6-ugrid"><aside class="v6-lside"><span class="v6-lside-t">Шаги</span><nav class="v6-lsteps">${stepsNav}</nav>
-          ${fws.length ? `<span class="v6-lside-l" style="padding-top:16px">Опирается на</span>${fws.map((c) => `<a class="v6-lstep" href="#fw-${e(c.id)}" onclick="V6.openFw('${e(c.id)}','unit'); return false;"><span>${e(c.title)}</span></a>`).join('')}` : ''}</aside>
+          ${fws.length ? `<span class="v6-lside-l" style="padding-top:16px">Опирается на</span>${fws.map((c) => `<a class="v6-lstep" href="#fw-${e(c.id)}" onclick="V6.openFw('${e(c.id)}','unit'); return false;"><span>${e(c.title)}</span></a>`).join('')}` : ''}
+          ${kit.length ? `<span class="v6-lside-l" style="padding-top:16px">Из набора продавца</span>${kit.map((r) => `<a class="v6-lstep" href="#res-${e(r.id)}" onclick="V6.openRes('${e(r.id)}','unit'); return false;"><span>${e(r.title)}</span></a>`).join('')}` : ''}</aside>
         <div>${card}</div></div>
       ${fin ? '' : `<div class="v6-lbar"><div class="v6c v6-lbar-in"><span class="v6-lbar-l">Шаг ${i + 1} из ${n}</span><span class="v6-lbar-r">${i > 0 ? `<button class="v6b is-soft v6-btn-lg" onclick="V6.unitGo('${e(id)}', ${i - 1})">Назад</button>` : ''}<button class="v6b v6-btn-lg" onclick="V6.unitGo('${e(id)}', ${i + 1})">${i + 1 < n ? 'Готово, дальше' : 'Готово'}</button></span></div></div>`}`;
   }
