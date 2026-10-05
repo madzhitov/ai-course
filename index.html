@@ -123,74 +123,7 @@
   --shadow-lg: none;
 }
 
-[data-theme="dark"] {
-  /* ===== Палитра ХВОЯ, тёмная ===== */
-  --hvoya-bg: #13140f;
-  --hvoya-panel: #191b14;
-  --hvoya-card: #1c1f17;
-  --hvoya-line: #2a2c22;
-  --hvoya-ink: #eaece2;
-  --hvoya-muted: #9aa08c;
-  --hvoya-faint: #585c4c;
-  --hvoya-accent: #5fae86;
-  --hvoya-accent-soft: #12251c;
-  --hvoya-accent-mid: #2c5742;
 
-  --bg: var(--hvoya-bg);
-  --panel: var(--hvoya-panel);
-  --card: var(--hvoya-card);
-  --line: var(--hvoya-line);
-  --ink: var(--hvoya-ink);
-  --muted: var(--hvoya-muted);
-  --faint: var(--hvoya-faint);
-  --accent-mid: var(--hvoya-accent-mid);
-
-  --bg-sidebar: var(--hvoya-panel);
-  --bg-card: var(--hvoya-panel);
-  --bg-code: var(--hvoya-card);
-  --bg-elevated: var(--hvoya-card);
-  --bg-soft: var(--hvoya-card);
-  --text: var(--hvoya-ink);
-  --text-muted: var(--hvoya-muted);
-  --text-soft: var(--hvoya-faint);
-  --border: var(--hvoya-line);
-  --border-soft: var(--hvoya-line);
-  --border-strong: var(--hvoya-faint);
-
-  --accent: var(--hvoya-accent);
-  --accent-hover: #6fc096;
-  --accent-soft: var(--hvoya-accent-soft);
-  --accent-text: #13140f;
-
-  --link: var(--hvoya-accent);
-  --link-soft: var(--hvoya-accent-soft);
-  --link-border: var(--hvoya-accent-mid);
-
-  --cat-prompts: #1e3a8a;       --cat-prompts-text: #93c5fd;
-  --cat-agents: #581c87;        --cat-agents-text: #d8b4fe;
-  --cat-claude: #4c1d95;        --cat-claude-text: #c4b5fd;
-  --cat-projects: #14532d;      --cat-projects-text: #86efac;
-  --cat-industry: #78350f;      --cat-industry-text: #fcd34d;
-  --cat-vibe: #831843;          --cat-vibe-text: #f9a8d4;
-  --cat-rag: #831843;           --cat-rag-text: #fda4af;
-  --cat-ml: #7c2d12;            --cat-ml-text: #fdba74;
-  --cat-nlp: #134e4a;           --cat-nlp-text: #5eead4;
-  --cat-safety: #7f1d1d;        --cat-safety-text: #fca5a5;
-  --cat-api: #312e81;           --cat-api-text: #a5b4fc;
-  --cat-fundamentals: #831843;  --cat-fundamentals-text: #f9a8d4;
-
-  --status-complete: #14532d;   --status-complete-text: #86efac;
-  --status-ongoing: #1e3a8a;    --status-ongoing-text: #93c5fd;
-  --status-draft: #27272a;      --status-draft-text: #a1a1aa;
-
-  --success: #4ade80;           --success-soft: #14532d;
-  --warning: #fb923c;           --warning-soft: #78350f;
-  --danger: #f87171;            --danger-soft: #7f1d1d;
-
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
-  --shadow: 0 4px 12px rgba(0,0,0,0.4);
-  --shadow-lg: 0 10px 30px rgba(0,0,0,0.5);
-}
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -242,7 +175,7 @@ body {
   -webkit-backdrop-filter: blur(12px);
 }
 
-[data-theme="dark"] .top-nav { background: rgba(10, 10, 11, 0.85); }
+
 
 .top-nav-logo {
   font-weight: 700;
@@ -1635,10 +1568,7 @@ main {
 .lesson-content pre:hover .copy-btn { opacity: 1; }
 .lesson-content pre .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
 .lesson-content pre .copy-btn.copied { color: var(--success, #16a34a); border-color: var(--success, #16a34a); }
-[data-theme="dark"] .lesson-content pre .copy-btn {
-  background: rgba(0,0,0,0.5);
-  border-color: rgba(255,255,255,0.15);
-}
+
 
 /* ============================================
    Alesha — AI-тьютор виджет (sticky right-rail)
@@ -1654,11 +1584,7 @@ main {
   z-index: 50;
 }
 .alesha-widget.is-lesson { display: flex; }
-[data-theme="dark"] .alesha-widget {
-  background: #18181b;
-  border-color: rgba(167, 139, 250, 0.25);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-}
+
 
 /* Алёша: плавающий пузырь внизу-справа на ВСЕХ экранах (десктоп = как мобилка).
    Свёрнуто — кружок «А»; по клику раскрывается вверх в панель. */
@@ -1702,8 +1628,8 @@ main {
 }
 .alesha-widget.is-open .alesha-collapse-icon::before { content: '✕'; font-size: 1rem; font-weight: 600; }
 .alesha-widget.is-open .alesha-collapse-icon:hover { background: rgba(0,0,0,0.15); }
-[data-theme="dark"] .alesha-widget.is-open { background: #18181b; }
-[data-theme="dark"] .alesha-widget.is-open .alesha-collapse-icon { background: rgba(255,255,255,0.1); color: #fff; }
+
+
 
 /* Collapse button on desktop — small minimize icon top-right of widget */
 .alesha-min-btn {
@@ -1873,7 +1799,7 @@ main {
   display: flex;
   flex-direction: column;
 }
-[data-theme="dark"] .search-overlay-panel { background: #18181b; }
+
 .search-overlay-input {
   width: 100%;
   padding: 1.1rem 1.25rem;
@@ -1928,10 +1854,7 @@ main {
   padding: 0 2px;
   border-radius: 2px;
 }
-[data-theme="dark"] .search-result-snippet mark {
-  background: rgba(255, 215, 0, 0.22);
-  color: #fef08a;
-}
+
 .search-empty, .search-loading {
   padding: 2rem 1.25rem;
   text-align: center;
@@ -2093,10 +2016,7 @@ main {
   background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(236, 72, 153, 0.08));
   border: 1px solid rgba(124, 58, 237, 0.2);
 }
-[data-theme="dark"] .alesha-announce {
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.18), rgba(236, 72, 153, 0.12));
-  border-color: rgba(167, 139, 250, 0.3);
-}
+
 .alesha-announce .alesha-logo { flex-shrink: 0; }
 .alesha-announce-body { flex: 1; min-width: 0; }
 .alesha-announce-eyebrow {
@@ -2160,7 +2080,7 @@ main {
   line-height: 1.5;
   font-style: italic;
 }
-[data-theme="dark"] .diagram { background: rgba(124, 58, 237, 0.08); border-color: rgba(167, 139, 250, 0.18); }
+
 
 .resume-banner {
   display: flex;
@@ -2376,8 +2296,8 @@ main {
   text-decoration: underline;
   font-weight: 600;
 }
-[data-theme="dark"] .callout a { color: #c4b5fd; }
-[data-theme="dark"] .callout-info { background: rgba(124, 58, 237, 0.18); }
+
+
 
 .lesson-actions {
   display: flex;
@@ -2851,7 +2771,7 @@ main {
 
 /* === Callouts (info/warning/etc.) === */
 .callout-info { background: var(--link-soft) !important; border: 1px solid var(--link-border) !important; border-radius: 10px !important; color: var(--text); }
-[data-theme="dark"] .callout-info { background: var(--link-soft) !important; }
+
 .callout { border-left: none !important; padding: 14px 18px !important; }
 .callout-success { background: rgba(34, 197, 94, 0.08) !important; border: 1px solid rgba(34, 197, 94, 0.25) !important; }
 .callout-warning { background: rgba(245, 158, 11, 0.08) !important; border: 1px solid rgba(245, 158, 11, 0.25) !important; }
@@ -2868,14 +2788,14 @@ main {
 
 /* === Alesha announce on home → editorial === */
 .alesha-announce { background: var(--bg-card) !important; border: 1px solid var(--border) !important; border-radius: 14px !important; }
-[data-theme="dark"] .alesha-announce { background: var(--bg-card) !important; border-color: var(--border) !important; }
+
 .alesha-announce-eyebrow { color: var(--text-muted) !important; }
 .alesha-announce-btn { background: var(--text) !important; color: var(--bg) !important; }
 .alesha-announce-btn:hover { background: var(--accent-hover) !important; box-shadow: none !important; }
 
 /* === Alesha logo → editorial (monochrome, не gradient) === */
 .alesha-logo { background: var(--text) !important; color: var(--bg) !important; }
-[data-theme="dark"] .alesha-logo { background: var(--text) !important; color: var(--bg) !important; }
+
 
 /* === Alesha widget — editorial (пузырь внизу-справа на ВСЕХ экранах) === */
 .alesha-widget.is-lesson { background: var(--text) !important; border: none !important; border-radius: 50% !important; box-shadow: 0 6px 20px rgba(0,0,0,0.22) !important; }
@@ -2913,7 +2833,7 @@ main {
 
 /* === SVG diagrams === */
 .diagram { background: var(--bg-soft) !important; border: 1px solid var(--border) !important; }
-[data-theme="dark"] .diagram { background: var(--bg-soft) !important; border-color: var(--border) !important; }
+
 
 /* === About page progress block === */
 .about-progress-block { background: var(--bg-soft) !important; border: 1px solid var(--border) !important; border-radius: 10px; }
@@ -3467,7 +3387,7 @@ main {
   border: 1px solid var(--border);
   border-radius: 14px;
 }
-[data-theme="dark"] .sandbox { background: var(--bg-soft); }
+
 .sandbox-loading {
   text-align: center;
   color: var(--text-muted);
@@ -3588,7 +3508,7 @@ main {
   overflow: hidden;
   position: relative;
 }
-[data-theme="dark"] .sb-bar-track { background: var(--bg); }
+
 .sb-bar-fill {
   height: 100%;
   background: var(--text);
@@ -3630,7 +3550,7 @@ main {
   margin-bottom: 1rem;
   border-left: 3px solid var(--text);
 }
-[data-theme="dark"] .sb-prompt { background: var(--bg); }
+
 
 /* === Phase headings in About ("Что ты узнаешь") === */
 .phase-h3 {
@@ -3940,7 +3860,7 @@ code, pre, kbd, samp,
 #lesson-content .art-meta a { color:var(--muted); cursor:pointer; text-decoration:underline; text-decoration-color:var(--line); }
 #lesson-content .art-empty { font-size:15px; color:var(--muted); margin:26px 0 8px; }
 #lesson-content .art-submit { display:inline-block; margin-top:6px; padding:10px 16px; border-radius:10px; background:var(--accent); color:#fff; font-weight:600; font-size:14px; text-decoration:none; }
-html[data-theme="dark"] #lesson-content .art-submit { color:#0f1a14; }
+
 .art-nudge { display:flex; align-items:center; gap:10px; margin:28px 0 0; font-size:14px; color:var(--muted); line-height:1.5; }
 .art-nudge a { color:var(--accent); cursor:pointer; text-decoration:none; font-weight:600; }
 .art-nudge a:hover { text-decoration:underline; }
@@ -3963,7 +3883,7 @@ html[data-theme="dark"] #lesson-content .art-submit { color:#0f1a14; }
 .tile .em { line-height:1; margin-bottom:10px; color:var(--accent); }
 .tile .em svg { width:24px; height:24px; display:block; }
 .t-vibe .em { color:var(--bg); }
-html[data-theme="dark"] .t-vibe .em { color:var(--ink); }
+
 .tile .cnt { font-size:12px; font-weight:600; margin-top:auto; padding-top:12px; color:var(--muted); }
 .tile .subs { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
 .tile .subs span { font-size:12.5px; padding:7px 10px; border-radius:9px; background:var(--panel); color:var(--accent); border:1px solid var(--line); transition:.12s; white-space:nowrap; }
@@ -4005,15 +3925,12 @@ html[data-theme="dark"] .t-vibe .em { color:var(--ink); }
 .t-claude { background:var(--accent-soft); }
 .t-vibe { background:var(--ink); color:var(--bg); }
 .t-vibe .sub, .t-vibe .cnt { color:color-mix(in srgb, var(--bg) 80%, transparent); }
-html[data-theme="dark"] .tile.tint-cur { color:#0f1a14; }
-html[data-theme="dark"] .tile.tint-cur .num { background:rgba(0,0,0,.18); color:#0f1a14; }
-html[data-theme="dark"] .tile.tint-cur .sub,
-html[data-theme="dark"] .tile.tint-cur .bignum span,
-html[data-theme="dark"] .tile.tint-cur .here { color:rgba(15,26,20,.8); }
-html[data-theme="dark"] .tile.tint-cur .here .alesha-logo { background:#0f1a14 !important; color:var(--accent) !important; }
-html[data-theme="dark"] .t-vibe { background:#000; color:var(--ink); }
-html[data-theme="dark"] .t-vibe .sub,
-html[data-theme="dark"] .t-vibe .cnt { color:color-mix(in srgb, var(--ink) 65%, transparent); }
+
+
+
+
+
+
 /* режим маршрута */
 .board.routing .tile[data-r]:not(.on) { opacity:.28; }
 .board.routing .tile.on { opacity:1; box-shadow:0 0 0 2px var(--accent); }

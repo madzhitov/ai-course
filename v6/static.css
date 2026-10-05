@@ -40,7 +40,7 @@ body { background:#F3F4F7 !important; color:#16161A; font-family:'Golos Text','P
   #lesson-content { padding:20px 12px 56px !important; }
   #lesson-content .lesson-view { padding:28px 20px; border-radius:28px; }
 }
-@media (max-width:420px) { .v6s-in { gap:12px; } .v6s-nav { gap:12px; } .v6s-nav a { font-size:14px; } .v6s-h .v6s-logo img { content:url(/v6/brand/mark.svg); width:28px !important; height:28px !important; } }
+@media (max-width:420px) { .v6s-in { gap:12px; } .v6s-nav { gap:12px; } .v6s-nav a { font-size:14px; } .v6s-h .v6s-logo img { content:url(brand/mark.svg); width:28px !important; height:28px !important; } }
 /* старая раскладка «Тропы» (колонка меню слева) на статических страницах не нужна */
 body { display:block !important; grid-template-columns:none !important; }
 .v6s-h { display:block; width:100%; position:relative; z-index:2; }
