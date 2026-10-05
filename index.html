@@ -4475,6 +4475,24 @@ function fillFacts(html) {
 }
 // FACTS:end
 
+// Тексты уроков на проде лежат отдельно: split_lessons.js при деплое выносит их в lessons-content/<id>.html,
+// а здесь оставляет метку LESSON_LAZY. В исходнике меток нет — всё работает как раньше.
+const LESSON_LAZY = '⟪lazy⟫';
+const LESSONS_V = '';
+const lessonLoads = {};
+function lessonIsLazy(l) { return !!l && l.content === LESSON_LAZY; }
+function loadLessonContent(id) {
+  const l = findLesson(id);
+  if (!lessonIsLazy(l)) return Promise.resolve(l);
+  if (!lessonLoads[id]) {
+    lessonLoads[id] = fetch(`lessons-content/${id}.html${LESSONS_V ? '?v=' + LESSONS_V : ''}`)
+      .then(r => (r.ok ? r.text() : Promise.reject(new Error('lesson ' + id + ' ' + r.status))))
+      .then(t => { registerLesson(id, t); return l; })
+      .catch(err => { delete lessonLoads[id]; throw err; });
+  }
+  return lessonLoads[id];
+}
+
 function registerLesson(id, htmlContent) {
   const lesson = LESSONS.find(l => l.id === id) || TRACK_LESSONS.find(l => l.id === id);
   if (lesson) {
@@ -34912,6 +34930,18 @@ function renderLesson(id) {
     renderWelcome();
     return;
   }
+  if (lessonIsLazy(lesson)) {
+    // текст урока ещё не загружен: показываем заглушку, после загрузки рисуем заново (через window.renderLesson — его оборачивает v6)
+    container.innerHTML = `<div class="lesson-view"><h1>${esc(lesson.title)}</h1><p class="lesson-loading">Загружаем урок…</p></div>`;
+    loadLessonContent(id)
+      .then(() => { if (String(currentLessonId) === String(id)) window.renderLesson(id); })
+      .catch(() => {
+        if (String(currentLessonId) !== String(id)) return;
+        const lv = container.querySelector('.lesson-loading');
+        if (lv) lv.innerHTML = `Не получилось загрузить урок. <button class="nav-btn" onclick="renderLesson(${typeof id === 'number' ? id : "'" + id + "'"})">Попробовать ещё раз</button>`;
+      });
+    return;
+  }
 
   const completed = isCompleted(id);
   // Навигация: для главного пути — по номерам, для треков — по списку трека
@@ -35066,8 +35096,20 @@ function renderLesson(id) {
 let searchIndex = null;
 let searchActiveIdx = -1;
 
+let searchTexts = null, searchTextsLoading = false;
+function loadSearchTexts() {
+  if (searchTextsLoading) return;
+  searchTextsLoading = true;
+  fetch(`lessons-content/search.json${LESSONS_V ? '?v=' + LESSONS_V : ''}`)
+    .then(r => (r.ok ? r.json() : {}))
+    .catch(() => ({}))
+    .then(d => { searchTexts = d || {}; });
+}
+
 function buildSearchIndex() {
   if (typeof MiniSearch === 'undefined') return null;
+  // на проде тексты уроков лежат отдельно: для поиска — готовый search.json, грузится при первом поиске
+  if (allLessons().some(lessonIsLazy) && !searchTexts) { loadSearchTexts(); return null; }
   const idx = new MiniSearch({
     fields: ['title', 'text'],
     storeFields: ['id', 'title', 'phase', 'track', 'text'],
@@ -35076,9 +35118,13 @@ function buildSearchIndex() {
   const docs = allLessons()
     .filter(l => l.content)
     .map(l => {
-      const tmp = document.createElement('div');
-      tmp.innerHTML = l.content;
-      const text = tmp.innerText.replace(/\s+/g, ' ').trim();
+      let text;
+      if (lessonIsLazy(l)) text = searchTexts[l.id] || '';
+      else {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = l.content;
+        text = tmp.innerText.replace(/\s+/g, ' ').trim();
+      }
       return { id: l.id, title: l.title, phase: l.phase, track: l.track, text };
     });
   idx.addAll(docs);
