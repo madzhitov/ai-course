@@ -1026,3 +1026,32 @@ body.v6 .lesson-content .v6-page a.v6-chip2:hover { background:var(--accent-tint
   .v6-co-art { grid-row:auto; }
   .v6-art.v6-sec-art { width:100%; order:-1; }
 }
+
+/* схема главного пути: рельс вместо картинки (05.10) */
+.v6-scheme { height:auto; border:0; background:none; display:block; padding:8px 0 0; text-align:left; }
+.v6-rail { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:20px; position:relative; }
+.v6-rail::before { content:''; position:absolute; left:10px; right:10px; top:10px; height:2px; background:#D3D5DC; }
+.v6-rail-n { position:relative; display:flex; flex-direction:column; gap:6px; padding-top:36px; font-size:15px; line-height:1.4; }
+.v6-rail-n b { font-family:var(--font-display); font-weight:800; font-size:18px; color:var(--text-1, #16161A); }
+.v6-rail-d { position:absolute; top:0; left:0; width:22px; height:22px; border-radius:50%; background:#fff; border:2px solid #C9CCD4; box-sizing:border-box; display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--text-3); }
+.v6-rail-n.is-done .v6-rail-d { background:#E3E8F2; border-color:#E3E8F2; }
+.v6-rail-n.is-now .v6-rail-d { background:#1F2F5C; border-color:#1F2F5C; box-shadow:0 0 0 6px rgba(31,47,92,.14); }
+.v6-rail-n.is-now .v6-meta { color:#1F2F5C; font-weight:600; }
+.v6-rail-n:not(.is-now):not(.is-done) b { color:var(--text-2); }
+.v6-rail-m, .v6-rail-br { color:var(--text-2); }
+.v6-rail-br { font-size:14px; color:var(--text-3); }
+.v6-rail-br a, .v6-rail-n.is-world b a { color:inherit; text-decoration:underline; text-underline-offset:3px; text-decoration-color:#C9CCD4; }
+.v6-rail-n.is-world { border:2px solid #16161A; border-radius:20px; padding:36px 16px 16px; margin-top:-8px; background:#fff; }
+.v6-rail-n.is-world .v6-rail-d { top:12px; left:16px; border-radius:6px; border-color:#16161A; }
+@media (max-width:720px) {
+  .v6-rail { grid-template-columns:1fr; gap:22px; }
+  .v6-rail::before { left:10px; right:auto; top:10px; bottom:10px; width:2px; height:auto; }
+  .v6-rail-n { padding:0 0 0 38px; }
+  .v6-rail-n.is-world { padding:14px 16px 16px 46px; margin:0; }
+  .v6-rail-n.is-world .v6-rail-d { top:16px; left:14px; }
+}
+.v6-pmain > .v6-scheme { grid-column:1 / -1; padding-top:32px; border-top:1px solid #E6E8EE; margin-top:8px; }
+@media (min-width:1000px) { .v6-rail { grid-template-columns:repeat(6, minmax(0, 1fr)); } }
+.v6-pmain:has(> .v6-scheme) { grid-template-columns:1fr; }
+.v6-show:empty { min-height:520px; }
+@media (max-width:900px) { .v6-show:empty { min-height:0; } }
