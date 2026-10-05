@@ -889,3 +889,4 @@ body.v6 .lesson-content .v6-page .v6-draft-l:hover { color:var(--accent); }
   #v6-fwp .v6-dotrow { padding:1.5mm 0 !important; min-height:0 !important; }
   #v6-fwp .v6-fwsteps > div { padding:2mm 0 !important; }
 }
+body.v6 .lesson-content .v6-legacy-view .sub-lead { font-size:20px !important; line-height:1.5 !important; color:var(--text-2) !important; margin:0 0 16px !important; }

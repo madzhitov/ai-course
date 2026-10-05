@@ -904,7 +904,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
             <section class="v6-box"><h2>Шаги</h2><div class="v6-fwsteps">${(c.steps || []).map((x, i) => `<div><span class="n">${i + 1}</span><span><b>${e(x.title)}</b><span>${e(x.text)}</span></span></div>`).join('')}</div></section>
             ${exec}
             <div class="v6-fw2">${c.example ? `<section class="v6-box"><h2>Пример</h2><span><span class="v6t is-grey">${c.example.illustrative ? 'условный пример · ' : ''}${e(c.example.industry || '')}</span></span><p class="v6-fw-ex">${e(c.example.text)}</p></section>` : ''}${(c.mistakes || []).length ? `<section class="v6-box"><h2>Частые ошибки</h2>${dots(c.mistakes, 'is-ink')}</section>` : ''}</div>
-            ${g ? `<section class="v6-gate"><div class="v6-gate-l"><span class="v6-gate-e"><span class="v6-ava">А</span>Калитка · Алёша сверит по рубрике</span><span class="v6-gate-t">${e(g.task)}</span>${rubricBox('gate:' + c.id, `Калитка: ${c.title}`, g.task, g.rubric || [])}<span class="v6-gate-n">Результат попадёт в тетрадь. В «Сделали другие» — только если согласитесь.</span></div>
+            ${g ? `<section class="v6-gate"><div class="v6-gate-l"><span class="v6-gate-e"><span class="v6-ava">А</span>Калитка · Алёша сверит по рубрике</span><span class="v6-gate-t">${e(g.task)}</span>${rubricBox('gate:' + c.id, `Калитка: ${c.title}`, g.task, g.rubric || [])}<span class="v6-gate-n">Результат попадёт в тетрадь. В «Что собрали» только с вашего согласия.</span></div>
               <div class="v6-gate-r"><span class="v6-gate-rh">Рубрика</span>${(g.rubric || []).map((x) => `<span><span class="v6-mile-dot">${x.must ? '●' : '○'}</span><span>${e(x.criterion)}${x.must ? '' : ' <i>· по желанию</i>'}</span></span>`).join('')}</div></section>` : ''}
           </div>`;
         } else {
@@ -1070,7 +1070,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         <label><span class="v6-meta">Ссылка на результат, если есть</span><input type="url" name="link" maxlength="500" placeholder="https://"></label>
         <label><span class="v6-meta">Почта или Telegram, чтобы автор мог ответить</span><input type="text" name="contact" maxlength="200" required autocomplete="email" placeholder="name@mail.ru или @name"></label>
         <label class="v6-showf-hp" aria-hidden="true">Не заполняйте<input type="text" name="hp" tabindex="-1" autocomplete="off"></label>
-        <label class="v6-showf-ok"><input type="checkbox" name="publish"><span>Можно показать в «Сделали другие»</span></label>
+        <label class="v6-showf-ok"><input type="checkbox" name="publish"><span>Можно показать в «Что собрали»</span></label>
         <span class="v6-btns"><button class="v6b" type="submit">Отправить</button><a class="v6-quiet" href="https://t.me/madzhitov" target="_blank" rel="noopener">или написать в Telegram</a></span>
         <p class="v6-meta v6-showf-msg" role="status">Контакт нужен только для ответа.</p></form>`;
     const ta = box.querySelector('textarea'); if (ta) ta.focus();
@@ -1104,7 +1104,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       if (st.result === 'yes') return `<div class="v6-ucard"><span class="v6-pcard-label">Готово</span><h2 class="v6-ucard-t">Получилось. Записано в тетрадь</h2><p>${e(u.result || '')}</p>
           <label class="v6-lnote"><span class="v6-lnote-h"><b>Что вышло</b><span class="v6-meta">в тетрадь</span></span><textarea placeholder="Что получилось, что поправили, что пригодится в следующий раз" oninput="V6.unitNote('${e(id)}', this)">${e(st.note || '')}</textarea></label>
           <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="V6.showForm('${e(id)}', this)">Показать результат</button><button class="v6b is-soft v6-btn-lg" onclick="V6.open('notebook')">Тетрадь</button><button class="v6b is-soft v6-btn-lg" onclick="V6.openRole('${e(t.group)}','unit')">Другие задачи</button></span>
-          <div id="v6-show"></div><p class="v6-meta">Пришлите работу автору. С вашего согласия она попадёт в «Сделали другие».</p>${tgOfferBox()}</div>`;
+          <div id="v6-show"></div><p class="v6-meta">Пришлите работу автору. С вашего согласия она попадёт в «Что собрали».</p>${tgOfferBox()}</div>`;
       if (st.result === 'almost') return `<div class="v6-ucard"><span class="v6-pcard-label">Почти</span><h2 class="v6-ucard-t">Частые причины</h2><ul class="v6-ualmost">${(u.almost || []).map((a) => `<li>${e(a)}</li>`).join('')}</ul>
           <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="V6.unitGo('${e(id)}', 0)">Ещё раз</button><button class="v6b is-soft v6-btn-lg" onclick="V6.unitHelp('${e(id)}')">Спросить Алёшу</button><button class="v6b is-soft v6-btn-lg" onclick="V6.unitResult('${e(id)}','yes')">Теперь получилось</button></span></div>`;
       return `<div class="v6-ucard"><span class="v6-pcard-label">Шаг ${n} из ${n} пройден</span><h2 class="v6-ucard-t">Получилось?</h2><p>${e(u.result || '')}</p>
