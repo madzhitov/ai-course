@@ -1014,3 +1014,15 @@ body.v6 .lesson-content .v6-page a.v6-chip2:hover { background:var(--accent-tint
 .v6-ask input::placeholder { color:var(--text-3); }
 .v6-ask .v6b { height:56px; padding:0 26px; border-radius:16px; font-size:18px; }
 @media (max-width:720px) { .v6-ask { flex-direction:column; } .v6-ask .v6b { width:100%; } }
+
+/* иллюстрации 05.10: «Для компаний» в тёмном блоке, «Тетрадь», обложка урока, который пишется */
+.v6-companies.has-art { grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); align-items:center; row-gap:24px; padding:48px 56px; }
+.v6-co-art { grid-row:1 / span 2; }
+.v6-co-art img { width:100%; aspect-ratio:3 / 2; object-fit:cover; border-radius:24px; display:block; }
+.v6-art.v6-sec-art { width:360px; height:auto; aspect-ratio:3 / 2; margin:0; border-radius:32px; }
+.v6-draft-art img { width:100%; max-width:360px; aspect-ratio:3 / 2; object-fit:cover; border-radius:24px; display:block; margin:0 0 20px; }
+@media (max-width:720px) {
+  .v6-companies.has-art { grid-template-columns:1fr; padding:28px 24px; }
+  .v6-co-art { grid-row:auto; }
+  .v6-art.v6-sec-art { width:100%; order:-1; }
+}

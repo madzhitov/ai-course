@@ -42,7 +42,8 @@
   const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
   // иллюстрации v2.1 (3D, фон #F3F4F7) — WebP; ещё не перерисованные — старые SVG (v6-brief/illustrations/handoff-2026-10-04)
   const ART_WEBP = new Set(['icon-roli', 'icon-zadachi', 'icon-puti', 'icon-znaniya', 'icon-kompanii', 'paths-hero', 'knowledge', 'task', 'fw-card',
-    'main-path', 'seller-path', 'product-path', 'marketing-path', 'role-seller', 'role-creator', 'role-self', 'role-product', 'role-project', 'role-marketing', 'role-specialist']);
+    'main-path', 'seller-path', 'product-path', 'marketing-path', 'role-seller', 'role-creator', 'role-self', 'role-product', 'role-project', 'role-marketing', 'role-specialist', 'role-owner',
+    'trail-projects', 'trail-everyday', 'trail-industry', 'trail-claude', 'trail-vibe', 'companies', 'notebook', 'lesson']);
   const artSrc = (name) => `v6/art/${name}.${ART_WEBP.has(name) ? 'webp' : 'svg'}`;
   const art = (name, cls) => `<div class="v6-art${cls ? ' ' + cls : ''}" aria-hidden="true"><img src="${artSrc(name)}" alt="" loading="lazy"></div>`;
 
@@ -1015,7 +1016,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         view.querySelectorAll('.lesson-meta, .draft-notice, .v6-ltags').forEach((x) => x.remove());
         const ready = ids.slice(0, Math.max(pos, 0)).map(findLesson).filter((l) => l && l.content).pop();
         const draft = `<div class="v6-ltags"><span class="v6t">пишется</span></div>
-          <div class="v6-draft"><p>Этот урок ещё пишется. Он появится здесь же, по этому адресу.</p>
+          <div class="v6-draft"><div class="v6-draft-art" aria-hidden="true"><img src="${artSrc('lesson')}" alt="" loading="lazy"></div><p>Этот урок ещё пишется. Он появится здесь же, по этому адресу.</p>
             ${ready ? `<div class="v6-draft-row"><span class="v6-meta">Последний готовый</span><a class="v6-draft-l" href="#lesson-${e(ready.id)}" onclick="openLesson(${lessonArgOf(ready)}); return false;">${e(resumeLabel(ready))}</a></div>` : ''}
             <div class="v6-draft-row"><span class="v6-meta">Узнать о выходе</span><span class="v6-btns"><button class="v6b is-soft" onclick="openStaticPage('changelog')">Что нового</button><a class="v6b is-soft" href="https://t.me/artefakty_ai" target="_blank" rel="noopener" onclick="umTrack('tg-click', { from: 'draft' })">Канал @artefakty_ai</a></span></div></div>`;
         const hh = view.querySelector('h1');
@@ -1233,7 +1234,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     load().then(() => {
       const r = resume();
       const pill = (f, t) => `<button type="button" class="v6-pill" data-nbf="${f}" aria-pressed="${NB.f === f}" onclick="V6.nbFilter('${f}', this)">${t}</button>`;
-      document.getElementById('v6-nb').innerHTML = `<section class="v6-sechero"><div><h1 class="v6-d">Тетрадь</h1><p class="v6-lead">История вашего обучения: пройденные уроки, сделанные задачи и заметки.</p></div></section>
+      document.getElementById('v6-nb').innerHTML = `<section class="v6-sechero"><div><h1 class="v6-d">Тетрадь</h1><p class="v6-lead">История вашего обучения: пройденные уроки, сделанные задачи и заметки.</p></div><div class="v6-art v6-sec-art" aria-hidden="true"><img src="${artSrc('notebook')}" alt=""></div></section>
         <div class="v6-nbgrid"><div><div class="v6-kfilters" style="margin:32px 0 24px"><label class="v6-nbsearch"><span class="v6-sr">Поиск по тетради</span><input type="search" placeholder="Поиск по заметкам" value="${e(NB.q)}" oninput="V6.nbSearch(this)"></label><div class="v6-pills">${pill('all', 'Всё')}${pill('lesson', 'Уроки')}${pill('unit', 'Задачи')}${pill('check', 'Вехи и калитки')}${pill('alesha', 'С ответом Алёши')}</div></div><div id="v6-nblist"></div></div>
           <aside class="v6-side" style="padding-top:32px">${r && r.id != null ? `<div class="v6-neigh"><span class="v6-meta">Продолжить</span><a class="v6-neigh-i" href="#" onclick="openLesson(${lessonArg(r.id)}); return false;"><span>${e(r.title || '')}</span><span class="m">→</span></a></div>` : ''}
             <div class="v6-tdoor"><b>Тетрадь только в этом браузере</b><span>Очистка браузера сотрёт записи. Скачайте файл, чтобы не потерять; сохранение через Telegram появится скоро.</span>
@@ -1399,7 +1400,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         <section class="v6-psec"><div class="v6-card v6-co-safe"><span class="v6-meta">Безопасность</span><h2 class="v6-h3">Правила использования ИИ в компании</h2>
           <p>Что можно отправлять в модели, а что нельзя, какие инструменты разрешить и как проверять ответы.</p>
           <span class="v6-tags">${l3 && l3.content ? `<a class="v6t" href="#lesson-3" onclick="openLesson(3); return false;">Урок для сотрудников · бесплатно</a>` : ''}<span class="v6t is-grey">Правила под вашу компанию · в обучении</span></span></div></section>
-        <section class="v6-sec"><div class="v6-dark v6-companies"><div><span class="v6-meta" style="font-size:17px;color:#C9CACF">Обсудить задачу</span><h2 class="v6-h2" style="margin-top:16px !important">Что хотите изменить в работе команды?</h2></div>
+        <section class="v6-sec"><div class="v6-dark v6-companies has-art"><div class="v6-co-art" aria-hidden="true"><img src="${artSrc('companies')}" alt="" loading="lazy"></div><div><span class="v6-meta" style="font-size:17px;color:#C9CACF">Обсудить задачу</span><h2 class="v6-h2" style="margin-top:16px !important">Что хотите изменить в работе команды?</h2></div>
           <div><p>Расскажите на сайте агентства: какой отдел, какие задачи и что сейчас мешает. Ответим и предложим формат.</p>${go('bottom', 'Перейти на madzhitov.ru', 'is-accent')}</div></div></section>`;
     }).catch(() => fail('v6-co'));
   }
