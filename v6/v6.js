@@ -12,7 +12,8 @@
   const COMPANIES_URL = 'https://madzhitov.ru';
   // ?v=<хеш> из собственного src (ставит stamp_assets.sh): тот же ключ сбрасывает кеш данных
   const VQ = ((document.currentScript && document.currentScript.src.match(/[?&]v=([0-9a-f]+)/)) || [])[1];
-  const dataUrl = (f) => 'v6/data/' + f + (VQ ? '?v=' + VQ : '');
+  // на проде (DATA_JS из index.html) — сжимаемые копии *.json.js, см. split_lessons.js
+  const dataUrl = (f) => 'v6/data/' + f + (typeof DATA_JS !== 'undefined' && DATA_JS ? '.js' : '') + (VQ ? '?v=' + VQ : '');
   const CHEV = '<svg class="v6-chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>';
 
   const ls = {

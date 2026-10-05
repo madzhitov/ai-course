@@ -34,8 +34,8 @@
 <!-- Шрифты v6: самохостинг, Google Fonts в РФ блокируется -->
 <link rel="preload" href="v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="v6/fonts/montserrat-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="v6/fonts/fonts.css?v=612be770">
-<link rel="stylesheet" href="v6/v6.css?v=612be770">
+<link rel="stylesheet" href="v6/fonts/fonts.css?v=f7fc6f0a">
+<link rel="stylesheet" href="v6/v6.css?v=f7fc6f0a">
 
 <!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js">
@@ -4130,7 +4130,7 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
-<script src="v6/v6.js?v=612be770"></script>
+<script src="v6/v6.js?v=f7fc6f0a"></script>
 
 <!-- Alesha — persistent AI tutor widget -->
 <div class="alesha-widget" id="alesha-widget" data-lesson-title="" data-lesson-id="">
@@ -4479,6 +4479,8 @@ function fillFacts(html) {
 // а здесь оставляет метку LESSON_LAZY. В исходнике меток нет — всё работает как раньше.
 const LESSON_LAZY = '⟪lazy⟫';
 const LESSONS_V = '';
+// Beget не сжимает .json, а .js сжимает: на проде split_lessons.js кладёт копии *.json.js и ставит здесь true
+const DATA_JS = false;
 const lessonLoads = {};
 function lessonIsLazy(l) { return !!l && l.content === LESSON_LAZY; }
 function loadLessonContent(id) {
@@ -35100,7 +35102,7 @@ let searchTexts = null, searchTextsLoading = false;
 function loadSearchTexts() {
   if (searchTextsLoading) return;
   searchTextsLoading = true;
-  fetch(`lessons-content/search.json${LESSONS_V ? '?v=' + LESSONS_V : ''}`)
+  fetch(`lessons-content/search.json${DATA_JS ? '.js' : ''}${LESSONS_V ? '?v=' + LESSONS_V : ''}`)
     .then(r => (r.ok ? r.json() : {}))
     .catch(() => ({}))
     .then(d => { searchTexts = d || {}; });
