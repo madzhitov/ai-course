@@ -166,7 +166,7 @@
         <div><p class="v6f-h">Помощь</p><ul>${a("openStaticPage('faq')", 'FAQ')}${a('V6.openDict()', 'Словарь')}<li><a href="/tools/neyroseti-bez-vpn/">Нейросети без VPN</a></li></ul></div>
       </div>
       <div class="v6f-bottom"><span>Собирает <a href="https://madzhitov.ru" target="_blank" rel="noopener">Руслан Маджитов</a> · <a href="https://t.me/artefakty_ai" target="_blank" rel="noopener" onclick="umTrack('tg-click', { from: 'footer' })">@artefakty_ai</a></span>
-      <a href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'footer' })">Для компаний →</a></div>`;
+      <a href="#companies" onclick="V6.open('companies'); return false;">Для компаний →</a></div>`;
   }
 
   // ---------- подбор задачи (поиск, без вызова модели) ----------
@@ -284,7 +284,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
   }
 
   const companies = () => `<section class="v6-sec"><div class="v6-dark v6-companies"><div><span class="v6-meta" style="font-size:17px;color:#C9CACF">Для компаний</span><h2 class="v6-h2" style="margin-top:16px !important">ИИ для вашей команды</h2></div>
-      <div><p>Сотрудники учатся бесплатно по ролям. Агентство подключается, когда нужно обучение с ведущим или внедрение под ключ.</p><a class="v6b is-accent" href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'home' })">Обсудить задачу</a></div></div></section>`;
+      <div><p>Сотрудники учатся бесплатно по ролям. Агентство подключается, когда нужно обучение с ведущим или внедрение под ключ.</p><button class="v6b is-accent" onclick="V6.open('companies')">Форматы для команд</button></div></div></section>`;
 
   function home() {
     setPage(true, null);
@@ -962,11 +962,22 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       const h1 = view.querySelector('h1');
       const crumbs = `<nav class="v6-crumbs v6-lcrumbs" aria-label="Где вы"><a onclick="V6.open('paths')">Пути</a><span>/</span><a onclick="${typeof L.id === 'number' ? "V6.openMainPath('lesson')" : `openSection('${e(L.track)}')`}">${e(g.title)}</a><span>/</span><span>${typeof L.id === 'number' ? 'Урок ' + L.id : 'Урок ' + (pos + 1)}</span></nav>`;
       if (h1) h1.insertAdjacentHTML('beforebegin', crumbs); else view.insertAdjacentHTML('afterbegin', crumbs);
+      // урок ещё пишется (LessonDraft.dc.html): вместо старой заглушки — пометка, последний готовый, как узнать о выходе
+      if (!L.content) {
+        view.querySelectorAll('.lesson-meta, .draft-notice, .v6-ltags').forEach((x) => x.remove());
+        const ready = ids.slice(0, Math.max(pos, 0)).map(findLesson).filter((l) => l && l.content).pop();
+        const draft = `<div class="v6-ltags"><span class="v6t">пишется</span></div>
+          <div class="v6-draft"><p>Этот урок ещё пишется. Он появится здесь же, по этому адресу.</p>
+            ${ready ? `<div class="v6-draft-row"><span class="v6-meta">Последний готовый</span><a class="v6-draft-l" href="#lesson-${e(ready.id)}" onclick="openLesson(${lessonArgOf(ready)}); return false;">${e(resumeLabel(ready))}</a></div>` : ''}
+            <div class="v6-draft-row"><span class="v6-meta">Узнать о выходе</span><span class="v6-btns"><button class="v6b is-soft" onclick="openStaticPage('changelog')">Что нового</button><a class="v6b is-soft" href="https://t.me/artefakty_ai" target="_blank" rel="noopener" onclick="umTrack('tg-click', { from: 'draft' })">Канал @artefakty_ai</a></span></div></div>`;
+        const hh = view.querySelector('h1');
+        if (hh) hh.insertAdjacentHTML('afterend', draft); else view.insertAdjacentHTML('beforeend', draft);
+      }
       const step = (x, i) => { const l = findLesson(x); if (!l) return ''; const cur = String(x) === String(L.id), dn = done(x);
         const inner = `<span class="v6-dotc${dn ? ' is-done' : cur ? ' is-now' : ''}">${dn ? '✓' : ''}</span><span>${typeof x === 'number' ? x + '. ' : (i + 1) + '. '}${e(shortLessonLabel(l.title))}${l.content ? '' : ' <i>пишется</i>'}</span>`;
         return l.content && !cur ? `<a class="v6-lstep" href="#lesson-${e(x)}" onclick="openLesson(${lessonArgOf(l)}); return false;">${inner}</a>` : `<span class="v6-lstep${cur ? ' is-now' : ' is-off'}"${cur ? ' aria-current="step"' : ''}>${inner}</span>`; };
       const dots = ids.length <= 14 ? `<span class="v6-ldots" aria-hidden="true">${ids.map((x) => `<i class="${done(x) ? 'is-done' : String(x) === String(L.id) ? 'is-now' : ''}"></i>`).join('')}</span>` : '';
-      const nextBtn = next ? (isDone ? `<button class="v6b v6-btn-lg" onclick="openLesson(${lessonArgOf(next)})">Дальше</button>` : `<button class="v6b v6-btn-lg" onclick="V6.lessonDone(${lessonArgOf(L)}, ${lessonArgOf(next)})">Урок пройден, дальше</button>`)
+      const nextBtn = !L.content ? (next ? `<button class="v6b v6-btn-lg" onclick="openLesson(${lessonArgOf(next)})">Дальше</button>` : '') : next ? (isDone ? `<button class="v6b v6-btn-lg" onclick="openLesson(${lessonArgOf(next)})">Дальше</button>` : `<button class="v6b v6-btn-lg" onclick="V6.lessonDone(${lessonArgOf(L)}, ${lessonArgOf(next)})">Урок пройден, дальше</button>`)
         : (isDone ? '<span class="v6t">Урок пройден ✓</span>' : `<button class="v6b v6-btn-lg" onclick="V6.lessonDone(${lessonArgOf(L)})">Урок пройден</button>`);
       const wrap = document.createElement('div');
       wrap.className = 'v6-page v6-lesson';
@@ -1313,7 +1324,35 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
   }
 
   // ---------- маршрутизация ----------
-  const PAGES = { roles: rolesPage, tasks: tasksPage, paths: pathsPage, knowledge: knowledgePage, notebook: notebookPage };
+  // ---------- Для компаний (Companies.dc.html). Заявки пока ведём на сайт агентства (решение Руслана 05.10), форма — позже ----------
+  function companiesPage() {
+    shell('<div class="v6c" id="v6-co"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
+    load().then(() => {
+      const go = (from, label, cls) => `<a class="v6b ${cls || ''}" href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'companies-${from}' })">${label}</a>`;
+      const depts = [['Маркетплейсы и e-commerce', 'seller'], ['Маркетинг', 'marketing'], ['Продукт', 'product'], ['Проекты', 'project'], ['HR, финансы, юристы', 'specialist'], ['Руководство', 'owner']];
+      const l3 = lessonOf(3);
+      document.getElementById('v6-co').innerHTML = `<section class="v6-phero"><div class="v6-phero-text"><span class="v6-eyebrow">Для компаний</span><h1 class="v6-d">ИИ для вашей команды</h1>
+          <p class="v6-phero-lead">Сотрудники учатся на платформе бесплатно, каждый по своей роли. Мы подключаемся, когда нужно быстрее, глубже или под ваши процессы.</p>
+          <span class="v6-btns" style="margin-top:28px">${go('hero', 'Обсудить задачу', 'is-accent v6-btn-lg')}</span></div>${art('icon-kompanii', 'v6-phero-art')}</section>
+        <section class="v6-psec"><div class="v6-sec-head"><div><h2 class="v6-psec-h">Три формата</h2><p class="v6-meta">Обучение с ведущим и внедрение: услуги агентства madzhitov.ru.</p></div></div>
+          <div class="v6-grid3">
+            <div class="v6-task"><span class="v6-meta">Бесплатно</span><h3>Своими силами</h3><p>Отправьте команде ссылку на роль или путь. Каждый проходит юниты сам и уносит результат.</p>
+              <ul class="v6-co-list"><li>Роли по отделам</li><li>Общий старт для всех</li><li>Без регистрации</li></ul><button class="v6b is-soft is-sm" onclick="V6.open('roles')">Подобрать роли</button></div>
+            <div class="v6-task"><span class="v6-meta">Агентство</span><h3>Обучение с ведущим</h3><p>Юниты роли и встречи с ведущим. В конце у отдела есть план применения ИИ.</p>
+              <ul class="v6-co-list"><li>Состав группы, длительность и стоимость обсуждаем под команду</li></ul>${go('training', 'Обсудить обучение', 'is-sm')}</div>
+            <div class="v6-task"><span class="v6-meta">Агентство</span><h3>Внедрение под ключ</h3><p>Автоматизации и отчёты под ваши процессы, когда учиться некогда.</p>
+              <ul class="v6-co-list"><li>Сводный отчёт по каналам</li><li>Автоответы и заявки</li><li>Сроки и цена после разговора</li></ul>${go('implementation', 'Обсудить внедрение', 'is-sm')}</div>
+          </div></section>
+        <section class="v6-psec"><h2 class="v6-psec-h">Для каких отделов</h2>
+          <div class="v6-grid2" style="margin-top:28px">${depts.map(([t, r]) => `<button type="button" class="v6-role-row has-thumb" onclick="V6.openRole('${r}','companies')">${roleThumb(r)}<span><b>${e(t)}</b><small>роль «${e(roleName(r))}»</small></span>${CHEV}</button>`).join('')}</div></section>
+        <section class="v6-psec"><div class="v6-card v6-co-safe"><span class="v6-meta">Безопасность</span><h2 class="v6-h3">Правила использования ИИ в компании</h2>
+          <p>Что можно отправлять в модели, а что нельзя, какие инструменты разрешить и как проверять ответы.</p>
+          <span class="v6-tags">${l3 && l3.content ? `<a class="v6t" href="#lesson-3" onclick="openLesson(3); return false;">Урок для сотрудников · бесплатно</a>` : ''}<span class="v6t is-grey">Правила под вашу компанию · в обучении</span></span></div></section>
+        <section class="v6-sec"><div class="v6-dark v6-companies"><div><span class="v6-meta" style="font-size:17px;color:#C9CACF">Обсудить задачу</span><h2 class="v6-h2" style="margin-top:16px !important">Что хотите изменить в работе команды?</h2></div>
+          <div><p>Расскажите на сайте агентства: какой отдел, какие задачи и что сейчас мешает. Ответим и предложим формат.</p>${go('bottom', 'Перейти на madzhitov.ru', 'is-accent')}</div></div></section>`;
+    }).catch(() => fail('v6-co'));
+  }
+  const PAGES = { roles: rolesPage, tasks: tasksPage, paths: pathsPage, knowledge: knowledgePage, notebook: notebookPage, companies: companiesPage };
   function open(name) {
     if (name === 'home') { openStaticPage('home'); return; }
     if (name === 'knowledge') { KT = 'fw'; KTERM = ''; }

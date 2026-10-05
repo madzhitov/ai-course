@@ -833,3 +833,23 @@ body.v6 .lesson-content .v6-term:focus-visible { outline:3px solid var(--accent)
 .v6-termtip a { color:#fff; text-decoration:underline; text-underline-offset:3px; }
 .v6-termtip-go { margin-top:6px; font-weight:600; }
 body.v6 .lesson-content .v6-page h2.v6-fwhead-t { font-size:28px !important; }
+/* урок ещё пишется */
+.v6-draft { background:var(--ground); border-radius:28px; padding:28px 32px; display:flex; flex-direction:column; gap:20px; margin-top:8px; }
+.v6-draft p { margin:0; font-size:18px; }
+.v6-draft-row { display:flex; flex-direction:column; gap:8px; }
+body.v6 .lesson-content .v6-page .v6-draft-l { font-family:var(--font-display); font-weight:800; font-size:20px; color:var(--ink); text-decoration:none; }
+body.v6 .lesson-content .v6-page .v6-draft-l:hover { color:var(--accent); }
+/* Для компаний */
+.v6-co-list { margin:4px 0 8px; padding-left:20px; color:var(--text-2); font-size:16px; line-height:1.6; }
+.v6-co-safe { display:flex; flex-direction:column; gap:12px; }
+.v6-co-safe p { margin:0; color:var(--text-2); }
+.v6-draft .v6b.is-soft { background:var(--surface) !important; }
+/* крупный заголовок героя: на широком экране не переносим по слогам («Ва-шей»), на узком переносы нужны */
+@media (min-width:900px) { .v6-phero h1.v6-d { hyphens:manual !important; -webkit-hyphens:manual !important; } }
+@media (min-width:900px) { body.v6 .lesson-content .v6-lsheet h1 { hyphens:manual !important; -webkit-hyphens:manual !important; overflow-wrap:break-word; } }
+/* телефон: длинные теги, термины и список задач не распирают страницу */
+.v6-co-safe .v6t { white-space:normal; height:auto; min-height:36px; padding-top:6px; padding-bottom:6px; }
+.v6-termrow { min-width:0; overflow-wrap:anywhere; }
+.v6-kf { min-width:0; max-width:100%; }
+.v6-select { width:100%; text-overflow:ellipsis; }
+.v6-termrow .v6t { white-space:normal; height:auto; min-height:36px; padding-top:6px; padding-bottom:6px; max-width:100%; box-sizing:border-box; }
