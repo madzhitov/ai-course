@@ -853,3 +853,39 @@ body.v6 .lesson-content .v6-page .v6-draft-l:hover { color:var(--accent); }
 .v6-kf { min-width:0; max-width:100%; }
 .v6-select { width:100%; text-overflow:ellipsis; }
 .v6-termrow .v6t { white-space:normal; height:auto; min-height:36px; padding-top:6px; padding-bottom:6px; max-width:100%; box-sizing:border-box; }
+
+/* печать карточки метода на A4 */
+.v6-fwprint-qr { display:none; }
+@media print {
+  @page { size:A4; margin:14mm 14mm 16mm; }
+  body.v6 .v6-page { font-size:10.5pt; line-height:1.45; color:#000; }
+  body.v6 .v6c { max-width:none !important; padding:0 !important; }
+  #v6-fwp .v6-phero-art, #v6-fwp .v6-art, #v6-fwp .v6-rub, #v6-fwp .v6-calc-in, #v6-fwp .v6-calc-bar, #v6-fwp .v6-calc-leg, #v6-fwp .v6-calc-top,
+  #v6-fwp .v6-exec button, #v6-fwp .v6-doorbox, #v6-fwp .v6-tsec, #v6-fwp .v6-gate-n { display:none !important; }
+  #v6-fwp .v6-phero { display:block !important; padding:0 0 6mm !important; min-height:0 !important; }
+  body.v6 .lesson-content #v6-fwp h1.v6-d { font-size:24pt !important; line-height:1.05 !important; }
+  #v6-fwp .v6-phero-lead { font-size:12pt !important; margin-top:3mm !important; }
+  #v6-fwp .v6-box, #v6-fwp .v6-exec, #v6-fwp .v6-gate { break-inside:avoid; background:#fff !important; color:#000 !important; box-shadow:none !important; border:1px solid #D5D7DE !important; border-radius:10px !important; padding:4mm 5mm !important; margin:0 0 4mm !important; }
+  #v6-fwp .v6-gate * { color:#000 !important; }
+  #v6-fwp .v6-fw2 { display:grid !important; grid-template-columns:1fr 1fr !important; gap:4mm !important; }
+  body.v6 .lesson-content #v6-fwp h2 { font-size:13pt !important; margin:0 0 2mm !important; }
+  #v6-fwp .v6-prompt { background:#F3F4F7 !important; color:#000 !important; white-space:pre-wrap !important; font-size:8.5pt !important; padding:3mm !important; }
+  #v6-fwp .v6-t, #v6-fwp .v6t { border:1px solid #D5D7DE !important; background:#fff !important; color:#000 !important; }
+  #v6-fwp a { color:#000 !important; text-decoration:none !important; }
+  .v6-fwprint-qr { display:flex !important; gap:5mm; align-items:center; break-inside:avoid; border-top:1px solid #D5D7DE; padding-top:4mm; margin-top:2mm; }
+  .v6-fwprint-qr svg { width:26mm; height:26mm; flex:none; }
+  .v6-fwprint-qr div { display:flex; flex-direction:column; gap:1mm; font-size:10pt; }
+  .v6-fwprint-url { font-family:'JetBrains Mono',monospace; font-size:9pt; }
+}
+@media print {
+  body.v6 #v6-fwp { zoom:0.62; }
+  #v6-fwp .v6-box { break-inside:auto !important; }
+  #v6-fwp .v6-fwsteps > div, #v6-fwp .v6-dotrow { break-inside:avoid; }
+  #v6-fwp .v6-gate-r { background:#fff !important; border:1px solid #D5D7DE !important; color:#000 !important; }
+  #v6-fwp .v6-gate { display:grid !important; grid-template-columns:1fr 1fr !important; gap:6mm !important; }
+}
+@media print { #v6-fwp .v6-fwlinks { display:none !important; } .v6-fwprint-src { color:#444; font-size:9pt; } }
+@media print {
+  #v6-fwp .v6-dotrow { padding:1.5mm 0 !important; min-height:0 !important; }
+  #v6-fwp .v6-fwsteps > div { padding:2mm 0 !important; }
+}

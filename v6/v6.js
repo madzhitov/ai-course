@@ -852,6 +852,27 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     const ok = () => { btn.textContent = 'Скопировано'; setTimeout(() => { btn.textContent = 'Скопировать'; }, 1600); };
     try { navigator.clipboard.writeText(t).then(ok, () => {}); } catch (_) {}
   }
+  // печать карточки на A4 (этап 4): печатная вёрстка в v6.css (@media print), QR — на итоговый адрес карточки
+  const SITE_URL = 'https://ai.madzhitov.ru';
+  let qrLib = null;
+  function fwPrint() {
+    const c = fwCur, box = document.getElementById('v6-fwp');
+    if (!c || !box) return;
+    track('fw-print', { fw: c.id });
+    const url = `${SITE_URL}/#fw-${c.id}`;
+    const put = (svg) => {
+      let q = box.querySelector('.v6-fwprint-qr');
+      if (!q) { q = document.createElement('div'); q.className = 'v6-fwprint-qr'; box.appendChild(q); }
+      const src = (c.sources || []).filter((u) => /^https?:\/\//.test(u)).map((u) => u.replace(/^https?:\/\/(www\.)?/, '').split('/')[0]);
+      q.innerHTML = `${svg || ''}<div><b>Карточка онлайн</b><span>${e([{ calculator: 'Калькулятор', prompt: 'Заготовка запроса' }[(c.executor || {}).kind], c.gate ? 'калитка с Алёшей' : ''].filter(Boolean).join(' и ') || 'Шаги, пример и ошибки')}</span><span class="v6-fwprint-url">${e(url.replace(/^https:\/\//, ''))}</span>${src.length ? `<span class="v6-fwprint-src">Источники: ${e([...new Set(src)].join(', '))}${c.checked && c.checked.date ? ` · сверено ${e(c.checked.date.split('-').reverse().join('.'))}` : ''}</span>` : ''}</div>`;
+      setTimeout(() => window.print(), 50);
+    };
+    if (!qrLib) {
+      qrLib = new Promise((ok, no) => { const sc = document.createElement('script'); sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js'; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc); });
+    }
+    qrLib.then(() => { const qr = qrcode(0, 'M'); qr.addData(url); qr.make(); put(qr.createSvgTag({ cellSize: 3, margin: 0, scalable: true })); })
+      .catch(() => { qrLib = null; put(''); });
+  }
   function openFw(id, from) {
     go('fw-' + id, () => {
       shell('<div class="v6c" id="v6-fwp"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
@@ -869,7 +890,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         const near = D.fw.filter((x) => x.id !== c.id && x.task && x.task === c.task).sort(fwSort).slice(0, 3);
         const hero = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.open('knowledge')">Знания</a><span>/</span><a onclick="V6.open('knowledge')">Фреймворки</a><span>/</span><span>${e(c.title)}</span></nav>
           <section class="v6-phero v6-thero"><div class="v6-phero-text"><span class="v6-tags">${c.label ? `<span class="v6t${c.label === 'авторский' ? '' : ' is-grey'}">${e(c.label)}</span>` : ''}${(c.roles || []).map((r) => `<span class="v6t is-grey">${e(roleName(r))}</span>`).join('')}${c.source && c.source.author ? `<span class="v6t is-grey">${e(c.source.author)}</span>` : ''}</span>
-            <h1 class="v6-d">${e(c.title)}</h1><p class="v6-phero-lead">${e(c.solves)}.</p>${req.length ? `<span class="v6-fw-req">Сначала: ${req.map(fwLink).join(', ')}</span>` : ''}</div>${art('fw-card', 'v6-phero-art v6-sp-art')}</section>`;
+            <h1 class="v6-d">${e(c.title)}</h1><p class="v6-phero-lead">${e(c.solves)}.</p>${req.length ? `<span class="v6-fw-req">Сначала: ${req.map(fwLink).join(', ')}</span>` : ''}${c.full ? `<span class="v6-btns v6-noprint" style="margin-top:20px"><button class="v6b is-soft" onclick="V6.fwPrint()">Распечатать на A4</button></span>` : ''}</div>${art('fw-card', 'v6-phero-art v6-sp-art')}</section>`;
         let body = '';
         if (c.full) {
           const ex = c.executor || {};
@@ -898,7 +919,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
           (c.sources || []).filter((u) => /^https?:\/\//.test(u)).length ? ['Источники', c.sources.filter((u) => /^https?:\/\//.test(u)).map((u) => `<a href="${e(u)}" target="_blank" rel="noopener">${e(u.replace(/^https?:\/\/(www\.)?/, '').split('/')[0])}</a>`).join(', ') + (c.checked && c.checked.date ? ` <span class="v6-meta">· сверено ${e(c.checked.date.split('-').reverse().join('.'))}</span>` : '')] : null,
         ].filter(Boolean);
         box.innerHTML = hero + body + `<div class="v6-fwbody">
-          ${links.length ? `<section class="v6-box"><h2>Связи</h2><div class="v6-links">${links.map(([k, v]) => `<div><span>${k}</span><span>${v}</span></div>`).join('')}</div></section>` : ''}
+          ${links.length ? `<section class="v6-box v6-fwlinks"><h2>Связи</h2><div class="v6-links">${links.map(([k, v]) => `<div><span>${k}</span><span>${v}</span></div>`).join('')}</div></section>` : ''}
           ${!c.full && near.length ? `<section class="v6-tsec" style="padding-bottom:0"><h2 class="v6-h2">Рядом в этом направлении</h2>${fwGrid(near, 'fw')}</section>` : ''}
           ${c.agencyDoor ? `<div class="v6-doorbox"><span>${e(c.agencyDoor)}</span><a class="v6b is-soft v6-btn-lg" href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'fw' })">Узнать</a></div>` : ''}
         </div>`;
@@ -1462,5 +1483,5 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     });
   }
 
-  window.V6 = { install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, openKnowledge, openDict, ktab, ksearch, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
+  window.V6 = { install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, fwPrint, openKnowledge, openDict, ktab, ksearch, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
 })();
