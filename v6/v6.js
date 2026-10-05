@@ -318,6 +318,34 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
   }
   function showTab(id) { hxTab = id; const el = document.getElementById('v6-show'); if (el) { el.innerHTML = showcase(); const b = el.querySelector('.v6-tab[aria-pressed="true"]'); if (b) b.focus(); } track('home-show', { tab: id }); }
 
+
+  // ---------- главная v2: «Приносите задачу» и «Кто вы?» (задания ролей — из данных) ----------
+  function howBlock() {
+    const n = D.units.filter(hasSteps).length;
+    const card = (ico, t, p, acc) => `<div class="v6-how-c"><span class="v6-how-i${acc ? ' is-acc' : ''}" aria-hidden="true">${ico}</span><h3>${t}</h3><p>${p}</p></div>`;
+    return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Приносите задачу.<br>Уносите готовую&nbsp;вещь.</h2><p>Каждая задача собрана заранее. Думать, с чего начать, не нужно: всё уже лежит внутри.</p></div>
+      <div class="v6-how">
+        ${card('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 7h14M5 12h10M5 17h7"/></svg>', 'Готовый промпт', 'Написан под задачу, а не «в общем». Копируете, подставляете своё.')}
+        ${card('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 10h16M10 10v10"/></svg>', 'Шаблон', 'Где нужно: таблица, калькулятор или документ. Результат остаётся у вас.')}
+        ${card('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>', 'Чек-лист', 'Три-пять пунктов, по которым видно, что вышло хорошо.')}
+        ${card('А', 'Сверка с Алёшей', 'Застряли или получилось почти: Алёша подскажет, что поправить. На Вехах сверит работу по рубрике.', true)}
+      </div>
+      <p class="v6-how-f"><button class="v6b is-soft" onclick="V6.open('tasks')">Все ${n} ${plural(n, 'задание', 'задания', 'заданий')}</button><span class="v6-meta">обычно до часа</span></p></section>`;
+  }
+  function whoBlock2() {
+    const feat = ((HX && HX.tabs) || []).map((t) => t.unit);
+    const roles = [['seller', 'Маркетплейсы и свои каналы'], ['creator', 'Боты, приложения, агенты'], ['self', 'Еда, дети, поездки, документы'], ['product', 'Исследования, приоритеты, документация']];
+    const cards = roles.map(([id, sub]) => {
+      const r = role(id); if (!r) return '';
+      const us = r.taskGroup ? D.units.filter((u) => hasSteps(u) && D.tasks[u.task] && D.tasks[u.task].group === r.taskGroup) : [];
+      us.sort((a, b) => ((feat.indexOf(b.id) >= 0) - (feat.indexOf(a.id) >= 0)) || (feat.indexOf(a.id) - feat.indexOf(b.id)));
+      const rows = us.slice(0, 3).map((u) => `<a class="v6-who2-t" href="#unit-${e(u.id)}" onclick="V6.openUnit('${e(u.id)}','home-role'); return false;"><span>${e(D.tasks[u.task].title)}</span><span class="v6-meta">${u.minutes ? u.minutes + ' мин' : ''}</span></a>`).join('');
+      return `<article class="v6-who2-c"><a class="v6-who2-h" href="#role-${id}" onclick="V6.openRole('${id}','home'); return false;">${ART_WEBP.has('role-' + id) ? `<span class="v6-who2-img"><img src="${artSrc('role-' + id)}" alt="" loading="lazy"></span>` : ''}<b>${e(id === 'product' ? 'Продакт или проджект' : r.title)}</b><span class="v6-meta">${e(sub)}</span></a>
+        <div class="v6-who2-l">${rows || '<span class="v6-meta">Задачи собираются</span>'}</div></article>`;
+    }).join('');
+    return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Кто вы?</h2><p>Выберите роль, и сначала покажем задачи, которые нужны именно вам.</p></div>
+      <div class="v6-who2">${cards}</div><p class="v6-how-f"><button class="v6-link" onclick="V6.open('roles')">Все роли: маркетолог, специалист, владелец бизнеса →</button></p></section>`;
+  }
   function home() {
     setPage(true, null);
     const el = shell('<div class="v6c" id="v6-home"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
@@ -360,7 +388,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         </div>
         <div class="v6-show" id="v6-show">${showcase()}</div>
       </section>`;
-      document.getElementById('v6-home').innerHTML = top + pathsBlock() + oftenBlock() + newsBlock() + companies();
+      document.getElementById('v6-home').innerHTML = top + howBlock() + whoBlock2() + pathsBlock() + oftenBlock() + newsBlock() + companies();
     }).catch(() => fail('v6-home'));
     return el;
   }
