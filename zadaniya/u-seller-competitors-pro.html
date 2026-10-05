@@ -13,8 +13,8 @@
 <meta property="og:site_name" content="Артефакты">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://ai.madzhitov.ru/zadaniya/u-seller-competitors-pro.html">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="../v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../v6/fonts/fonts.css?v=0e1f3d7b">
 <link rel="stylesheet" href="../tropa-lesson.css">
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
@@ -34,7 +34,6 @@
   .st-term p { margin:4px 0 0; }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Ежедневный дайджест о конкурентах на почту","description":"Ежедневный дайджест о конкурентах на почту. Скрипт, который раз в день проверяет блоги, открытые сообщества ВКонтакте и страницы сайтов конкурентов и присылает на почту 3-5 пунктов по каждому: что нов","url":"https://ai.madzhitov.ru/zadaniya/u-seller-competitors-pro.html","inLanguage":"ru","totalTime":"PT120M","tool":[{"@type":"HowToTool","name":"Python"},{"@type":"HowToTool","name":"YandexGPT API (Yandex AI Studio)"},{"@type":"HowToTool","name":"VK API"},{"@type":"HowToTool","name":"Яндекс Почта"}],"step":[{"@type":"HowToStep","position":1,"name":"Получите ключи","text":"Сделайте по уроку p5 разделы «Шаг 0» (пароль приложения для почты), «Шаг 1» (ключ YandexGPT) и, если нужен ВКонтакте, «Шаг 2». Ключи сохраните в файл secrets.sh по разделу «Шаг 4»: не вставляйте их в чат и не пишите в код."},{"@type":"HowToStep","position":2,"name":"Соберите код из урока","text":"Поставьте зависимости по разделу «Шаг 3». Код в уроке p5, разделы «Шаг 5» - «Шаг 12»: соберите блоки по порядку в один файл main.py. Блок Telegram из раздела «Шаг 11» добавляйте, только если Telegram работает у вас и у тех, кто читает дайджест."},{"@type":"HowToStep","position":3,"name":"Впишите конкурентов","text":"Замените примеры в SOURCES на своих конкурентов. Для блога укажите адрес ленты RSS, для сообщества ВКонтакте короткий адрес после vk.com/, для страницы без RSS адрес и CSS-селектор блока с ценами или новинками. Карточки на маркетплейсах сюда не добавляйте: для них есть разбор без кода."},{"@type":"HowToStep","position":4,"name":"Запустите вручную","text":"Выполните две команды из раздела «Шаг 13»: . ./secrets.sh и python3 main.py. В первый раз по каждому источнику разбираются 3 последние записи, страницы только запоминаются. Запустите второй раз: скрипт должен ответить «Нового нет, письмо не отправляю»."},{"@type":"HowToStep","position":5,"name":"Проверьте и поставьте на расписание","text":"Прочитайте письмо и пройдитесь по списку. Если всё в порядке, настройте ежедневный запуск по разделу «Шаг 14»: cron на своём компьютере или сервере либо GitHub Actions, если GitHub у вас открывается."}]}</script>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../v6/static.css?v=43fcca59">
 </head>
 <body>
