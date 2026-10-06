@@ -1114,3 +1114,17 @@ a.v6-bs-l:hover { background:#E3E8F2; }
   .v6-bs-checkw { padding:22px; }
   .v6-bs-st > summary { padding:18px; gap:14px; }
 }
+
+/* «Для компаний»: внедрение системы бренда (пакеты из Stage, без цен) */
+.v6-copk { list-style:none; margin:28px 0 0; padding:0; display:flex; flex-direction:column; gap:10px; }
+.v6-copk-i { display:grid; grid-template-columns:auto minmax(0, 1fr) 200px; gap:22px; align-items:start; background:var(--surface, #fff); border-radius:24px; padding:22px 24px; }
+.v6-copk-i.is-free { background:#E3E8F2; }
+.v6-copk-n { width:36px; height:36px; border-radius:50%; background:#F3F4F7; display:flex; align-items:center; justify-content:center; font-weight:700; }
+.v6-copk-i.is-free .v6-copk-n { background:#1F2F5C; color:#fff; }
+.v6-copk-b b { font-family:var(--font-display); font-weight:800; font-size:20px; }
+.v6-copk-b p { margin:6px 0 0; color:var(--text-2); max-width:640px; }
+.v6-copk-b .v6-copk-r { color:var(--text-1, #16161A); font-weight:500; }
+.v6-copk-m { display:flex; flex-direction:column; gap:6px; align-items:flex-start; }
+.v6-copk-m small { color:var(--text-3); font-size:13px; line-height:1.4; }
+.v6-copk-m .v6b { margin-top:6px; }
+@media (max-width:760px) { .v6-copk-i { grid-template-columns:auto minmax(0, 1fr); } .v6-copk-m { grid-column:2; } }

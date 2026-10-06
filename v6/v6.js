@@ -1398,7 +1398,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
   // ---------- Для компаний (Companies.dc.html). Заявки пока ведём на сайт агентства (решение Руслана 05.10), форма — позже ----------
   function companiesPage() {
     shell('<div class="v6c" id="v6-co"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
-    load().then(() => {
+    Promise.all([load(), loadBS()]).then(() => {
       const go = (from, label, cls) => `<a class="v6b ${cls || ''}" href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'companies-${from}' })">${label}</a>`;
       const depts = [['Маркетплейсы и e-commerce', 'seller'], ['Маркетинг', 'marketing'], ['Продукт', 'product'], ['Проекты', 'project'], ['HR, финансы, юристы', 'specialist'], ['Руководство', 'owner']];
       const l3 = lessonOf(3);
@@ -1412,8 +1412,13 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
             <div class="v6-task"><span class="v6-meta">Агентство</span><h3>Обучение с ведущим</h3><p>Задания роли и встречи с ведущим. В конце у отдела есть план применения ИИ.</p>
               <ul class="v6-co-list"><li>Состав группы, длительность и стоимость обсуждаем под команду</li></ul>${go('training', 'Обсудить обучение', 'is-sm')}</div>
             <div class="v6-task"><span class="v6-meta">Агентство</span><h3>Внедрение под ключ</h3><p>Автоматизации и отчёты под ваши процессы, когда учиться некогда.</p>
-              <ul class="v6-co-list"><li>Сводный отчёт по каналам</li><li>Автоответы и заявки</li><li>Сроки и цена после разговора</li></ul>${go('implementation', 'Обсудить внедрение', 'is-sm')}</div>
+              <ul class="v6-co-list"><li>Сводный отчёт по каналам</li><li>Автоответы и заявки</li><li><a href="#co-system" onclick="document.getElementById('co-system').scrollIntoView({ behavior: 'smooth' }); return false;">Аудит и внедрение системы бренда ↓</a></li><li>Сроки и цена после разговора</li></ul>${go('implementation', 'Обсудить внедрение', 'is-sm')}</div>
           </div></section>
+        <section class="v6-psec" id="co-system"><div class="v6-sec-head"><div><h2 class="v6-psec-h">${e(BS.packages.title)}</h2><p class="v6-meta">${e(BS.packages.lead)}</p></div></div>
+          <ol class="v6-copk">
+            <li class="v6-copk-i is-free"><span class="v6-copk-n">0</span><div class="v6-copk-b"><b>Диагностика стадии</b><p>Пять стадий бренда, 13 вопросов, три самых слабых места и первые дела. Сами, за 3 минуты.</p></div><div class="v6-copk-m"><span class="v6-meta">бесплатно</span><a class="v6b is-soft is-sm" href="#brand-stages" onclick="V6.open('brand-stages'); return false;">Пройти</a></div></li>
+            ${BS.packages.items.map((x, n) => `<li class="v6-copk-i"><span class="v6-copk-n">${n + 1}</span><div class="v6-copk-b"><b>${e(x.name)}</b><p>${e(x.text)}</p><p class="v6-copk-r">${e(x.result)}</p></div><div class="v6-copk-m"><span class="v6-meta">${e(x.time)}</span><small>${e(x.data)}</small>${go('system-' + x.id, 'Обсудить', 'is-sm')}</div></li>`).join('')}
+          </ol></section>
         <section class="v6-psec"><h2 class="v6-psec-h">Для каких отделов</h2>
           <div class="v6-grid2" style="margin-top:28px">${depts.map(([t, r]) => `<button type="button" class="v6-role-row has-thumb" onclick="V6.openRole('${r}','companies')">${roleThumb(r)}<span><b>${e(t)}</b><small>роль «${e(roleName(r))}»</small></span>${CHEV}</button>`).join('')}</div></section>
         <section class="v6-psec"><div class="v6-card v6-co-safe"><span class="v6-meta">Безопасность</span><h2 class="v6-h3">Правила использования ИИ в компании</h2>
@@ -1432,7 +1437,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     if (l.kind === 'unit') { const u = unitById(l.ref); return u ? a(`V6.openUnit('${e(u.id)}','brand-stages')`, u.title, `задание · ${u.minutes} мин`, 'unit-' + e(u.id)) : ''; }
     if (l.kind === 'task') { const t = D.tasks[l.ref]; if (!t) return ''; return taskReady(t.id) ? a(`V6.openTask('${e(t.id)}','brand-stages')`, t.title, `задача${taskMins(t.id) ? ' · ' + taskMins(t.id) : ''}`, 'task-' + e(t.id)) : `<span class="v6-bs-l is-soon"><span>${e(t.title)}</span><span class="m">скоро</span></span>`; }
     if (l.kind === 'fw') { const c = fwById(l.ref); return c ? a(`V6.openFw('${e(c.id)}','brand-stages')`, c.title, 'метод', 'fw-' + e(c.id)) : ''; }
-    if (l.kind === 'service') return a("V6.open('companies')", 'Внедрение с нами', 'для компаний', 'companies');
+    if (l.kind === 'service') return a('V6.coSystem()', 'Внедрение с нами', 'для компаний', 'companies');
     return '';
   }
   function bsStage(s, here) {
@@ -1470,6 +1475,11 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       <h3 class="v6-h3">Самые слабые места</h3>
       ${weak.length ? `<ul class="v6-bs-weak">${weak.map((x) => { const st = stOf(x.q.stage); return `<li><b>${e(x.q.area)}</b><span>${e(x.q.fix)}</span>${st ? `<button type="button" class="v6-link" onclick="V6.bsGo('${e(st.id)}')">Что делать: стадия «${e(st.name)}» →</button>` : ''}</li>`; }).join('')}</ul>` : '<p>Явных провалов нет. Точную глубину покажет аудит на ваших данных.</p>'}
       <span class="v6-btns"><button type="button" class="v6b is-accent" onclick="V6.bsGo('${e(S[BSC.rev].id)}')">К делам стадии «${e(S[BSC.rev].name)}»</button><button type="button" class="v6b is-soft" onclick="V6.bsReset()">Пройти заново</button></span>`;
+  }
+  function coSystem() {
+    open('companies');
+    let n = 0;
+    const t = setInterval(() => { const el = document.getElementById('co-system'); if (el || ++n > 40) { clearInterval(t); if (el) setTimeout(() => window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 90, behavior: 'instant' }), 300); } }, 50);
   }
   function bsGo(id) {
     const d = document.getElementById('bs-' + id);
@@ -1515,7 +1525,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
           <div class="v6-bs-cont">${m.contours.map((x) => `<div class="v6-bs-c"><span class="v6-meta">${e(x.kind)}</span><b>${e(x.name)}</b><p>${e(x.text)}</p><small>${x.tracks.map(e).join(' · ')}</small></div>`).join('')}</div>
           <p class="v6-meta" style="margin-top:28px">Основа метода: ${m.sources.map((x) => `${e(x.author)}, ${e(x.title)}`).join('; ')}.</p></section>
         <section class="v6-sec"><div class="v6-dark v6-dark-row"><div><span class="v6-meta">Аудит и внедрение</span><h2 class="v6-h2" style="margin-top:12px !important">Разобрать бренд на ваших данных</h2><p style="margin-top:12px">Аудит по шести контурам, план на 90 дней и внедрение вместе с вашей командой.</p></div>
-          <button type="button" class="v6b is-white v6-btn-lg" onclick="V6.open('companies')">Для компаний →</button></div></section>`;
+          <button type="button" class="v6b is-white v6-btn-lg" onclick="V6.coSystem()">Как это устроено →</button></div></section>`;
       bsCheck();
     }).catch(() => fail('v6-bs'));
   }
@@ -1634,5 +1644,5 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     });
   }
 
-  window.V6 = { bsRev, bsAns, bsBack, bsReset, bsGo, install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, fwPrint, showTab, openKnowledge, openDict, ktab, ksearch, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
+  window.V6 = { coSystem, bsRev, bsAns, bsBack, bsReset, bsGo, install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, fwPrint, showTab, openKnowledge, openDict, ktab, ksearch, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
 })();
