@@ -17,8 +17,7 @@
       },
       {
        "id": "seller.channels.next-channel",
-       "title": "Решить, куда выходить следующим",
-       "status": "soon"
+       "title": "Решить, куда выходить следующим"
       }
      ],
      "description": "Где продавать и сколько стоит каждый канал"
@@ -41,8 +40,7 @@
       },
       {
        "id": "seller.assortment.matrix",
-       "title": "Собрать ассортиментную матрицу и ценовую лестницу",
-       "status": "new"
+       "title": "Собрать ассортиментную матрицу и ценовую лестницу"
       }
      ],
      "description": "Что продавать и с кем вы конкурируете"
@@ -89,6 +87,10 @@
        "id": "seller.promo.site-traffic",
        "title": "Трафик на свой сайт",
        "status": "soon"
+      },
+      {
+       "id": "seller.promo.attribution",
+       "title": "Понять, какие каналы находят покупателя, а какие закрывают"
       }
      ],
      "description": "Реклама на площадке и трафик на сайт"
@@ -109,6 +111,14 @@
        "id": "seller.customers.questions",
        "title": "Автоответы на вопросы покупателей",
        "status": "soon"
+      },
+      {
+       "id": "seller.customers.single-base",
+       "title": "Собрать покупателей из всех каналов в одну базу"
+      },
+      {
+       "id": "seller.customers.retention",
+       "title": "Настроить письма удержания без давления"
       }
      ],
      "description": "Отзывы, своя база, повторные продажи"

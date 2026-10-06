@@ -19,8 +19,8 @@
      "text": "Сайт на шаблоне за неделю или витрина на маркетплейсе, один способ оплаты, Яндекс Метрика с первого дня. Рабочее лучше идеального.",
      "links": [
       {
-       "kind": "task",
-       "ref": "seller.channels.next-channel"
+       "kind": "unit",
+       "ref": "u-seller-next-channel"
       }
      ]
     },
@@ -35,6 +35,10 @@
       {
        "kind": "unit",
        "ref": "u-marketing-positioning"
+      },
+      {
+       "kind": "unit",
+       "ref": "u-seller-assortment-matrix"
       }
      ]
     },
@@ -104,12 +108,12 @@
      "text": "Новинки по полной цене на свой сайт, базовые модели и туда, и на маркетплейс, лимитированные серии только у себя.",
      "links": [
       {
-       "kind": "fw",
-       "ref": "assortment-matrix"
+       "kind": "unit",
+       "ref": "u-seller-assortment-matrix"
       },
       {
-       "kind": "task",
-       "ref": "seller.assortment.matrix"
+       "kind": "fw",
+       "ref": "assortment-matrix"
       }
      ]
     },
@@ -179,9 +183,13 @@
      ]
     },
     {
-     "title": "Видеть, кто на самом деле приводит клиента",
+     "title": "Видеть, какие каналы находят клиента, а какие закрывают покупку",
      "text": "Первое и последнее касание, а не только тот канал, что оказался последним в цепочке.",
      "links": [
+      {
+       "kind": "unit",
+       "ref": "u-seller-attribution"
+      },
       {
        "kind": "fw",
        "ref": "mmm"
@@ -189,6 +197,10 @@
       {
        "kind": "fw",
        "ref": "incrementality"
+      },
+      {
+       "kind": "service",
+       "ref": "implementation"
       }
      ]
     },
@@ -221,8 +233,16 @@
      "text": "Убрать дубли, свести покупателя по телефону и почте в одну запись. Без этого не работают ни сегменты, ни расчёт ценности клиента, ни автоматические письма.",
      "links": [
       {
+       "kind": "unit",
+       "ref": "u-seller-single-base"
+      },
+      {
        "kind": "fw",
        "ref": "rfm"
+      },
+      {
+       "kind": "service",
+       "ref": "implementation"
       }
      ]
     },
@@ -262,6 +282,10 @@
      "text": "Онлайн, офлайн, маркетплейсы: один профиль и одно хранилище, которому верят все отделы.",
      "links": [
       {
+       "kind": "unit",
+       "ref": "u-seller-single-base"
+      },
+      {
        "kind": "service",
        "ref": "implementation"
       }
@@ -285,6 +309,10 @@
      "title": "Удержание без давления",
      "text": "Лимит писем: два-три в месяц активным покупателям, одно тем, кто давно не покупал. Приветственная цепочка и письма тем, кто уснул. Спокойный тон без срочности.",
      "links": [
+      {
+       "kind": "unit",
+       "ref": "u-seller-retention-calendar"
+      },
       {
        "kind": "unit",
        "ref": "u-seller-repeat"

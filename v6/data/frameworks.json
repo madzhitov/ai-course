@@ -646,7 +646,10 @@
     "cohorts"
    ],
    "lessons": [],
-   "units": [],
+   "units": [
+    "u-seller-retention-calendar",
+    "u-seller-single-base"
+   ],
    "agencyDoor": null,
    "sources": [
     "https://en.wikipedia.org/wiki/RFM_(market_research)"
@@ -3198,7 +3201,8 @@
    ],
    "lessons": [],
    "units": [
-    "u-unit-economics-channels"
+    "u-unit-economics-channels",
+    "u-seller-next-channel"
    ],
    "agencyDoor": "Сводный отчёт по каналам, который собирается сам: услуга агентства (пример: Бертольд)",
    "updated": "2026-10-04",
@@ -3391,7 +3395,9 @@
     "assortment-matrix"
    ],
    "lessons": [],
-   "units": [],
+   "units": [
+    "u-seller-next-channel"
+   ],
    "agencyDoor": null,
    "sources": [
     "https://en.wikipedia.org/wiki/Contribution_margin",
@@ -3845,7 +3851,9 @@
     "unit-economics-sku"
    ],
    "lessons": [],
-   "units": [],
+   "units": [
+    "u-seller-assortment-matrix"
+   ],
    "agencyDoor": null,
    "sources": [
     "https://en.wikipedia.org/wiki/ABC_analysis",

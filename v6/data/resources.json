@@ -1391,7 +1391,9 @@
    "basedOn": [
     "abc-xyz"
    ],
-   "units": [],
+   "units": [
+    "u-seller-assortment-matrix"
+   ],
    "minutes": 20,
    "status": "ready",
    "content": {
