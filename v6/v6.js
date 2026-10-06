@@ -314,6 +314,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       <div class="v6-learn-row">
         ${small('Путь продакта', 'исследование, приоритеты, метрики, управление работой', "V6.openProductPath('home')")}
         ${small('Путь маркетолога', 'аудитория, воронка, контент, измерение эффекта', "V6.openMarketingPath('home')")}
+        <a class="v6-learn-s is-ready" href="#brand-stages" onclick="V6.open('brand-stages'); return false;"><span><b>Стадии бренда</b><span class="v6-meta">пять стадий, ловушки и первые дела, диагностика за 3 минуты</span></span><span class="v6-meta">открыть →</span></a>
       </div>
       ${trails ? `<p class="v6-roleline" style="margin-top:20px"><span>Тропинки рядом с путём:</span>${trails}</p>` : ''}</section>`;
   }
@@ -848,6 +849,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
             <div class="v6-kf"><span class="v6-meta">Индустрия</span><div class="v6-pills">${pill('ind', '', 'Любая')}${IND.map(([v, t]) => pill('ind', v, t)).join('')}</div></div>
             <div class="v6-kf"><span class="v6-meta">Метка</span><div class="v6-pills">${pill('label', '', 'Все')}${['база', 'тренд', 'авторский'].map((l) => pill('label', l, l)).join('')}</div></div></div>
           ${start ? `<a class="v6-next v6-dark" style="margin:32px 0 0" href="#fw-${start.id}" onclick="V6.openFw('${start.id}','knowledge'); return false;"><span class="v6-next-in"><span class="v6-next-l">Начните с этого · для всех ролей</span><span class="v6-next-t">${e(start.title)}</span><span class="v6-next-p">Без него не работает ни один промпт в заданиях. Пять минут, и первый ответ ИИ становится рабочим.</span></span><span class="v6b is-accent v6-btn-xl">Открыть</span></a>` : ''}
+          <a class="v6-learn-s is-ready" style="margin-top:12px" href="#brand-stages" onclick="V6.open('brand-stages'); return false;"><span><b>Стадии бренда</b><span class="v6-meta">метод для бренда: пять стадий, ловушки, первые дела и диагностика</span></span><span class="v6-meta">открыть →</span></a>
           <div id="v6-fwlist"></div>
           ${preview.length ? `<section class="v6-psec"><div class="v6-sec-head"><div><h2 class="v6-psec-h">Словарь мира</h2><p class="v6-meta">${DICT.terms.length} ${plural(DICT.terms.length, 'термин', 'термина', 'терминов')}${DICT.terms.some((t) => t.en) ? ' · с английским оригиналом' : ''}</p></div><button class="v6-link" onclick="V6.ktab('dict')">Весь словарь →</button></div><div class="v6-termgrid">${preview.map(termRow).join('')}</div></section>` : ''}`;
       } else if (KT === 'dict') {

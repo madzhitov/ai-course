@@ -1128,3 +1128,6 @@ a.v6-bs-l:hover { background:#E3E8F2; }
 .v6-copk-m small { color:var(--text-3); font-size:13px; line-height:1.4; }
 .v6-copk-m .v6b { margin-top:6px; }
 @media (max-width:760px) { .v6-copk-i { grid-template-columns:auto minmax(0, 1fr); } .v6-copk-m { grid-column:2; } }
+.v6-learn-row { grid-template-columns:repeat(3, minmax(0, 1fr)); }
+.v6-learn-s.is-ready > .v6-meta:last-child { color:#1F2F5C; font-weight:600; white-space:nowrap; }
+@media (max-width:900px) { .v6-learn-row { grid-template-columns:1fr; } }
