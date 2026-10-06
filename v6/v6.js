@@ -275,10 +275,10 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     const card = (ico, t, p, acc) => `<div class="v6-how-c"><span class="v6-how-i${acc ? ' is-acc' : ''}" aria-hidden="true">${ico}</span><h3>${t}</h3><p>${p}</p></div>`;
     return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Приносите задачу.<br>Уносите готовую&nbsp;вещь.</h2><p>Каждая задача собрана заранее. Думать, с чего начать, не нужно: всё уже лежит внутри.</p></div>
       <div class="v6-how">
-        ${card('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 7h14M5 12h10M5 17h7"/></svg>', 'Готовый промпт', 'Написан под задачу, а не «в общем». Копируете, подставляете своё.')}
+        ${card('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 7h14M5 12h10M5 17h7"/></svg>', 'Готовый промпт', 'Написан под одну задачу. Копируете и подставляете своё.')}
         ${card('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 10h16M10 10v10"/></svg>', 'Шаблон', 'Где нужно: таблица, калькулятор или документ. Результат остаётся у вас.')}
         ${card('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>', 'Чек-лист', 'Три-пять пунктов, по которым видно, что вышло хорошо.')}
-        ${card('А', 'Сверка с Алёшей', 'Застряли или получилось почти: Алёша подскажет, что поправить. На Вехах сверит работу по рубрике.', true)}
+        ${card('А', 'Сверка с Алёшей', 'Если застряли или вышло почти, Алёша подскажет, что поправить. На Вехах сверит работу по рубрике.', true)}
       </div>
       <p class="v6-how-f"><button class="v6b is-soft" onclick="V6.open('tasks')">Все ${n} ${plural(n, 'задание', 'задания', 'заданий')}</button><span class="v6-meta">обычно до часа</span></p></section>`;
   }
@@ -293,7 +293,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       return `<article class="v6-who2-c"><a class="v6-who2-h" href="#role-${id}" onclick="V6.openRole('${id}','home'); return false;">${ART_WEBP.has('role-' + id) ? `<span class="v6-who2-img"><img src="${artSrc('role-' + id)}" alt="" loading="lazy"></span>` : ''}<b>${e(id === 'product' ? 'Продакт или проджект' : r.title)}</b><span class="v6-meta">${e(sub)}</span></a>
         <div class="v6-who2-l">${rows || '<span class="v6-meta">Задачи собираются</span>'}</div></article>`;
     }).join('');
-    return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Кто вы?</h2><p>Выберите роль, и сначала покажем задачи, которые нужны именно вам.</p></div>
+    return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Кто вы?</h2><p>Выберите роль: первыми покажем её задачи.</p></div>
       <div class="v6-who2">${cards}</div><p class="v6-how-f"><button class="v6-link" onclick="V6.open('roles')">Все роли: маркетолог, специалист, владелец бизнеса →</button></p></section>`;
   }
 
@@ -322,7 +322,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     const pick = ['unit-economics-sku', 'jtbd', 'rfm', 'okr'].map(fwById).filter(Boolean);
     const show = pick.length === 4 ? pick : D.fw.filter((c) => c.full).slice(0, 4);
     return `<section class="v6-sec v6-meth2"><div><h2 class="v6-h2">${n} ${plural(n, 'метод', 'метода', 'методов')} под капотом</h2>
-        <p>Под каждой задачей лежит метод из книги или исследования, не пересказ. Захотите разобраться, почему так, откройте его карточку: там калькулятор или готовый запрос.</p>
+        <p>Под задачами лежат методы из книг и исследований. Захотите разобраться, почему задача устроена именно так, откройте карточку метода.</p>
         <button class="v6-link" onclick="V6.open('knowledge')">Все методы и словарь мира →</button></div>
       <div class="v6-meth2-c">${show.map((c) => `<a class="v6-chip2" href="#fw-${e(c.id)}" onclick="V6.openFw('${e(c.id)}','home'); return false;">${e(c.title)}</a>`).join('')}<span class="v6-chip2 is-more">и ещё ${n - show.length}</span></div></section>`;
   }
@@ -339,7 +339,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         <div class="v6-hero2-l">
           <span class="v6-badge"><b>Бесплатно</b> · на русском · сервисы без VPN</span>
           <h1 class="v6-d v6-home-h1">Готовые решения для&nbsp;работы и&nbsp;для&nbsp;себя.</h1>
-          <p class="v6-hero2-lead">Выберите задачу, подставьте свои данные и через час заберите результат: таблицу, текст, план или бота. Промпт и чек-лист уже внутри, где нужно, есть шаблон.</p>
+          <p class="v6-hero2-lead">Выберите задачу, подставьте свои данные и через час заберите результат: таблицу, текст, план или бота. Промпт и чек-лист уже внутри, где нужно, есть и шаблон.</p>
           <form class="v6-hask" onsubmit="return V6.ask(this)" role="search"><label for="v6-hask-in">Какая у вас задача?</label>
             <span class="v6-hask-row"><input id="v6-hask-in" type="text" placeholder="например, ответить на 40 отзывов" autocomplete="off"><button class="v6b is-accent" type="submit">Подобрать</button></span></form><div class="v6-results" hidden aria-live="polite"></div>
           <p class="v6-roleline"><span>Или начните с роли:</span>${[['seller', 'продаю онлайн'], ['creator', 'создаю на ИИ'], ['self', 'для себя'], ['product', 'продакт или проджект']].map(([id, t]) => `<a href="#role-${id}" onclick="V6.openRole('${id}','home'); return false;">${t}</a>`).join('')}</p>
