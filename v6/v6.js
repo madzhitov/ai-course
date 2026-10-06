@@ -344,7 +344,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
           <form class="v6-hask" onsubmit="return V6.ask(this)" role="search"><label for="v6-hask-in">Какая у вас задача?</label>
             <span class="v6-hask-row"><input id="v6-hask-in" type="text" placeholder="например, ответить на 40 отзывов" autocomplete="off"><button class="v6b is-accent" type="submit">Подобрать</button></span></form><div class="v6-results" hidden aria-live="polite"></div>
           <p class="v6-roleline"><span>Или начните с роли:</span>${[['seller', 'продаю онлайн'], ['creator', 'создаю на ИИ'], ['self', 'для себя'], ['product', 'продакт или проджект']].map(([id, t]) => `<a href="#role-${id}" onclick="V6.openRole('${id}','home'); return false;">${t}</a>`).join('')}</p>
-          <div class="v6-hlearn"><span><b>Или учиться по порядку</b><span class="v6-meta">${[...LESSONS, ...TRACK_LESSONS].filter((l) => l.content).length} уроков: от первых промптов до своих приложений на ИИ</span></span><span class="v6-btns"><button type="button" class="v6b is-soft is-sm" onclick="openLesson(1)">Начать с урока 1</button><button type="button" class="v6b is-soft is-sm" onclick="V6.open('paths')">Все пути</button></span></div>
+          <div class="v6-hlearn"><span><b>Или учиться по порядку</b><span class="v6-meta">${[...LESSONS, ...TRACK_LESSONS].filter((l) => l.content).length} уроков с практикой</span></span><span class="v6-btns"><button type="button" class="v6b is-soft is-sm" onclick="openLesson(1)">Начать с урока 1</button><button type="button" class="v6b is-soft is-sm" onclick="V6.open('paths')">Все пути</button></span></div>
         </div>
         <div class="v6-show" id="v6-show"></div>
       </section><div id="v6-home-rest"></div></div>`);

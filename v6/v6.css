@@ -1136,3 +1136,13 @@ a.v6-bs-l:hover { background:#E3E8F2; }
 .v6-hlearn { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-top:22px; padding:16px 18px; border-radius:20px; background:var(--surface, #fff); }
 .v6-hlearn > span:first-child { display:flex; flex-direction:column; gap:2px; }
 .v6-hlearn b { font-size:16px; }
+
+/* первый экран плотнее, чтобы вход в обучение помещался на экране 900 px */
+@media (min-width:901px) {
+  body.v6 .lesson-content .v6-page .v6-hero2 { padding-top:28px; }
+  body.v6 .lesson-content .v6-page .v6-hero2-l { gap:16px; }
+  body.v6 .lesson-content .v6-page h1.v6-d.v6-home-h1 { font-size:clamp(40px, 4.5vw, 62px) !important; }
+  .v6-hlearn { flex-wrap:nowrap; margin-top:2px; padding:12px 14px 12px 18px; }
+  .v6-hlearn .v6-btns { flex-wrap:nowrap; flex-shrink:0; }
+}
+@media (min-width:901px) { .v6-hlearn > span:first-child { min-width:0; } .v6-hlearn .v6-meta { font-size:14px; } }
