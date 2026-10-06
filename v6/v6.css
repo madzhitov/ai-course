@@ -1164,3 +1164,4 @@ body.v6 .lesson-content .v6-page a.v6-tool:hover { box-shadow:0 0 0 2px #E3E8F2;
 @media (max-width:900px) { .v6-tools { grid-template-columns:repeat(2, minmax(0, 1fr)); } }
 @media (max-width:600px) { .v6-tools { grid-template-columns:1fr; } }
 .v6-uhead > .v6-eyebrow { align-self:flex-start; }
+body.v6 .lesson-content .v6-page .v6-gate-t { hyphens:manual !important; -webkit-hyphens:manual !important; }

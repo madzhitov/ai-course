@@ -278,7 +278,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         ${card('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 7h14M5 12h10M5 17h7"/></svg>', 'Готовый промпт', 'Написан под одну задачу. Копируете и подставляете своё.')}
         ${card('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 10h16M10 10v10"/></svg>', 'Шаблон', 'Где нужно: таблица, калькулятор или документ. Результат остаётся у вас.')}
         ${card('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>', 'Чек-лист', 'Три-пять пунктов, по которым видно, что вышло хорошо.')}
-        ${card('А', 'Сверка с Алёшей', 'Если застряли или вышло почти, Алёша подскажет, что поправить. На Вехах сверит работу по рубрике.', true)}
+        ${card('А', 'Сверка с Алёшей', 'Если застряли или вышло почти, Алёша подскажет, что поправить. На Вехах проверит работу по критериям.', true)}
       </div>
       <p class="v6-how-f"><button class="v6b is-soft" onclick="V6.open('tasks')">Все ${n} ${plural(n, 'задание', 'задания', 'заданий')}</button><span class="v6-meta">обычно до часа</span></p></section>`;
   }
@@ -661,7 +661,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
           const m = st.milestone;
           return `<section class="v6-stage"><div class="v6-stage-head"><div><span class="v6-pcard-label">Этап ${st.n} · ${label}</span><h2 class="v6-pmain-h">${e(st.title)} <span class="v6-stage-pr">— ${e(st.promise)}</span></h2></div><span class="v6-pcard-label">${req} ${plural(req, 'шаг', 'шага', 'шагов')}${opt ? ` · ${opt} по желанию` : ''}</span></div>
             <div class="v6-steps-list">${st.steps.map(step).join('')}</div>
-            ${m ? `<div class="v6-mile"><div class="v6-mile-l"><span class="v6-mile-e">Веха этапа ${st.n} · Алёша сверит по рубрике</span><span class="v6-mile-t">${e(m.title)}</span><span class="v6-mile-g">${e(m.gives || '')}</span><span><a class="v6-mile-b" href="#veha-seller-${st.n}" onclick="V6.openVeha(${st.n},'path'); return false;">Собрать ${e(m.title.charAt(0).toLowerCase() + m.title.slice(1))}</a>${(jget(KEY.checks)['veha:seller-' + st.n] || {}).verdict ? ` <span class="v6-mile-soon">Алёша · ${e(jget(KEY.checks)['veha:seller-' + st.n].verdict)}</span>` : ''}</span></div>
+            ${m ? `<div class="v6-mile"><div class="v6-mile-l"><span class="v6-mile-e">Веха этапа ${st.n} · Алёша проверит по критериям</span><span class="v6-mile-t">${e(m.title)}</span><span class="v6-mile-g">${e(m.gives || '')}</span><span><a class="v6-mile-b" href="#veha-seller-${st.n}" onclick="V6.openVeha(${st.n},'path'); return false;">Собрать ${e(m.title.charAt(0).toLowerCase() + m.title.slice(1))}</a>${(jget(KEY.checks)['veha:seller-' + st.n] || {}).verdict ? ` <span class="v6-mile-soon">Алёша · ${e(jget(KEY.checks)['veha:seller-' + st.n].verdict)}</span>` : ''}</span></div>
               <div class="v6-mile-r">${(m.rubric || []).map((c) => `<span><span class="v6-mile-dot">${c.must ? '●' : '○'}</span>${e(c.criterion)}</span>`).join('')}</div>${door(st)}</div>` : ''}</section>`;
         };
         const groups = [['Шаблоны', ['template']], ['Чек-листы', ['checklist']], ['Калькуляторы', ['calculator']], ['Инструменты', ['tool']], ['Промпты', ['prompt-set']]]
@@ -945,7 +945,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       let q = box.querySelector('.v6-fwprint-qr');
       if (!q) { q = document.createElement('div'); q.className = 'v6-fwprint-qr'; box.appendChild(q); }
       const src = (c.sources || []).filter((u) => /^https?:\/\//.test(u)).map((u) => u.replace(/^https?:\/\/(www\.)?/, '').split('/')[0]);
-      q.innerHTML = `${svg || ''}<div><b>Карточка онлайн</b><span>${e([{ calculator: 'Калькулятор', prompt: 'Заготовка запроса' }[(c.executor || {}).kind], c.gate ? 'калитка с Алёшей' : ''].filter(Boolean).join(' и ') || 'Шаги, пример и ошибки')}</span><span class="v6-fwprint-url">${e(url.replace(/^https:\/\//, ''))}</span>${src.length ? `<span class="v6-fwprint-src">Источники: ${e([...new Set(src)].join(', '))}${c.checked && c.checked.date ? ` · сверено ${e(c.checked.date.split('-').reverse().join('.'))}` : ''}</span>` : ''}</div>`;
+      q.innerHTML = `${svg || ''}<div><b>Карточка онлайн</b><span>${e([{ calculator: 'Калькулятор', prompt: 'Заготовка запроса' }[(c.executor || {}).kind], c.gate ? 'проверка вашего примера по критериям' : ''].filter(Boolean).join(' и ') || 'Шаги, пример и ошибки')}</span><span class="v6-fwprint-url">${e(url.replace(/^https:\/\//, ''))}</span>${src.length ? `<span class="v6-fwprint-src">Источники: ${e([...new Set(src)].join(', '))}${c.checked && c.checked.date ? ` · сверено ${e(c.checked.date.split('-').reverse().join('.'))}` : ''}</span>` : ''}</div>`;
       setTimeout(() => window.print(), 50);
     };
     if (!qrLib) {
@@ -985,11 +985,11 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
             <section class="v6-box"><h2>Шаги</h2><div class="v6-fwsteps">${(c.steps || []).map((x, i) => `<div><span class="n">${i + 1}</span><span><b>${e(x.title)}</b><span>${e(x.text)}</span></span></div>`).join('')}</div></section>
             ${exec}
             <div class="v6-fw2">${c.example ? `<section class="v6-box"><h2>Пример</h2><span><span class="v6t is-grey">${c.example.illustrative ? 'условный пример · ' : ''}${e(c.example.industry || '')}</span></span><p class="v6-fw-ex">${e(c.example.text)}</p></section>` : ''}${(c.mistakes || []).length ? `<section class="v6-box"><h2>Частые ошибки</h2>${dots(c.mistakes, 'is-ink')}</section>` : ''}</div>
-            ${g ? `<section class="v6-gate"><div class="v6-gate-l"><span class="v6-gate-e"><span class="v6-ava">А</span>Калитка · Алёша сверит по рубрике</span><span class="v6-gate-t">${e(g.task)}</span>${rubricBox('gate:' + c.id, `Калитка: ${c.title}`, g.task, g.rubric || [])}<span class="v6-gate-n">Результат попадёт в тетрадь. В «Что собрали» только с вашего согласия.</span></div>
-              <div class="v6-gate-r"><span class="v6-gate-rh">Рубрика</span>${(g.rubric || []).map((x) => `<span><span class="v6-mile-dot">${x.must ? '●' : '○'}</span><span>${e(x.criterion)}${x.must ? '' : ' <i>· по желанию</i>'}</span></span>`).join('')}</div></section>` : ''}
+            ${g ? `<section class="v6-gate"><div class="v6-gate-l"><span class="v6-gate-e"><span class="v6-ava">А</span>Практика · Алёша проверит ваш пример по критериям</span><span class="v6-gate-t">${e(g.task)}</span>${rubricBox('gate:' + c.id, `Практика: ${c.title}`, g.task, g.rubric || [])}<span class="v6-gate-n">Результат попадёт в тетрадь. В «Что собрали» только с вашего согласия.</span></div>
+              <div class="v6-gate-r"><span class="v6-gate-rh">Критерии</span>${(g.rubric || []).map((x) => `<span><span class="v6-mile-dot">${x.must ? '●' : '○'}</span><span>${e(x.criterion)}${x.must ? '' : ' <i>· по желанию</i>'}</span></span>`).join('')}</div></section>` : ''}
           </div>`;
         } else {
-          body = `<div class="v6-fwbody"><section class="v6-box v6-fwsoon"><h2>Карточка пишется</h2><p>Здесь появятся шаги, пример, частые ошибки, ИИ-исполнитель${c.executorHint && EXEC.includes(c.executorHint) ? ` (${e(c.executorHint)})` : ''} и калитка с рубрикой. Пока — что известно.</p>
+          body = `<div class="v6-fwbody"><section class="v6-box v6-fwsoon"><h2>Карточка пишется</h2><p>Здесь появятся шаги, пример, частые ошибки, ИИ-исполнитель${c.executorHint && EXEC.includes(c.executorHint) ? ` (${e(c.executorHint)})` : ''} и практика с проверкой. Пока то, что известно.</p>
             <div class="v6-links">${c.source && c.source.author ? `<div><span>Источник</span><span>${e(c.source.author)}${c.source.book ? ', ' + e(c.source.book) : ''}</span></div>` : ''}<div><span>Раздел</span><span>${e(GROUP_T[c.group] || c.group)}</span></div>${c.label ? `<div><span>Метка</span><span>${e(c.label)}</span></div>` : ''}</div></section></div>`;
         }
         const links = [
@@ -1234,7 +1234,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       out.push({ type: 'unit', id: k, title: u.title, label: { yes: 'Задание · получилось', almost: 'Задание · почти', no: 'Задание · нужна помощь' }[units[k].result], date: units[k].date, text: units[k].note || '', open: `V6.openUnit('${k}','notebook')` }); });
     const checks = jget(KEY.checks);
     Object.keys(checks).forEach((k) => { const c = checks[k]; const [kind, ref] = k.split(':');
-      out.push({ type: 'check', id: k, title: (c.title || '').replace(/^(Веха|Калитка): /, ''), label: (kind === 'veha' ? 'Веха' : 'Калитка') + (c.verdict ? ` · Алёша: ${c.verdict}` : ' · без проверки'), date: c.date, text: c.text || '', reply: c.reply || '',
+      out.push({ type: 'check', id: k, title: (c.title || '').replace(/^(Веха|Калитка|Практика): /, ''), label: (kind === 'veha' ? 'Веха' : 'Проверка') + (c.verdict ? ` · Алёша: ${c.verdict}` : ' · без проверки'), date: c.date, text: c.text || '', reply: c.reply || '',
         open: kind === 'veha' ? `V6.openVeha(${ref.split('-').pop()},'notebook')` : `V6.openFw('${ref}','notebook')` }); });
     return out.sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
   }
@@ -1288,7 +1288,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       const r = resume();
       const pill = (f, t) => `<button type="button" class="v6-pill" data-nbf="${f}" aria-pressed="${NB.f === f}" onclick="V6.nbFilter('${f}', this)">${t}</button>`;
       document.getElementById('v6-nb').innerHTML = `<section class="v6-sechero"><div><h1 class="v6-d">Тетрадь</h1><p class="v6-lead">История вашего обучения: пройденные уроки, сделанные задачи и заметки.</p></div><div class="v6-art v6-sec-art" aria-hidden="true"><img src="${artSrc('notebook')}" alt=""></div></section>
-        <div class="v6-nbgrid"><div><div class="v6-kfilters" style="margin:32px 0 24px"><label class="v6-nbsearch"><span class="v6-sr">Поиск по тетради</span><input type="search" placeholder="Поиск по заметкам" value="${e(NB.q)}" oninput="V6.nbSearch(this)"></label><div class="v6-pills">${pill('all', 'Всё')}${pill('lesson', 'Уроки')}${pill('unit', 'Задачи')}${pill('check', 'Вехи и калитки')}${pill('alesha', 'С ответом Алёши')}</div></div><div id="v6-nblist"></div></div>
+        <div class="v6-nbgrid"><div><div class="v6-kfilters" style="margin:32px 0 24px"><label class="v6-nbsearch"><span class="v6-sr">Поиск по тетради</span><input type="search" placeholder="Поиск по заметкам" value="${e(NB.q)}" oninput="V6.nbSearch(this)"></label><div class="v6-pills">${pill('all', 'Всё')}${pill('lesson', 'Уроки')}${pill('unit', 'Задачи')}${pill('check', 'Вехи и проверки')}${pill('alesha', 'С ответом Алёши')}</div></div><div id="v6-nblist"></div></div>
           <aside class="v6-side" style="padding-top:32px">${r && r.id != null ? `<div class="v6-neigh"><span class="v6-meta">Продолжить</span><a class="v6-neigh-i" href="#" onclick="openLesson(${lessonArg(r.id)}); return false;"><span>${e(r.title || '')}</span><span class="m">→</span></a></div>` : ''}
             <div class="v6-tdoor"><b>Тетрадь только в этом браузере</b><span>Очистка браузера сотрёт записи. Скачайте файл, чтобы не потерять; сохранение через Telegram появится скоро.</span>
               <span class="v6-btns"><button class="v6b is-white is-sm" onclick="V6.nbExport()">Скачать как файл</button><label class="v6b is-sm v6-nbload">Загрузить из файла<input type="file" accept="application/json,.json" onchange="V6.nbImport(this)" hidden></label></span>
@@ -1323,7 +1323,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     const text = box.querySelector('textarea').value.trim();
     if (!text) { box.querySelector('textarea').focus(); return; }
     rubricStore(key, { text });
-    btn.disabled = true; out.innerHTML = '<span class="v6-meta">Алёша сверяет по рубрике…</span>';
+    btn.disabled = true; out.innerHTML = '<span class="v6-meta">Алёша проверяет по критериям…</span>';
     const must = r.rubric.filter((c) => c.must).map((c) => '• ' + c.criterion).join('\n');
     const opt = r.rubric.filter((c) => !c.must).map((c) => '• ' + c.criterion).join('\n');
     const context = `Сверка работы ученика по рубрике.\nЗадание: ${r.task}\nОбязательные критерии:\n${must}${opt ? `\nПо желанию:\n${opt}` : ''}`;
@@ -1351,8 +1351,8 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         const m = st.milestone; track('veha-open', { stage: n, from: from || 'link' });
         document.getElementById('v6-veha').innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.open('paths')">Обучение</a><span>/</span><a onclick="V6.openSellerPath('veha')">${e(sp.title)}</a><span>/</span><span>Веха этапа ${e(n)}</span></nav>
           <section class="v6-uhead"><span class="v6-eyebrow">Веха этапа ${e(n)} · ${e(st.title)}</span><h1 class="v6-d">${e(m.title)}</h1><p class="v6-phero-lead">${e(m.gives || '')}</p></section>
-          <div class="v6-ugrid"><aside class="v6-lside"><span class="v6-lside-t">Рубрика</span>${(m.rubric || []).map((c) => `<span class="v6-lstep"><span class="v6-mile-dot">${c.must ? '●' : '○'}</span><span>${e(c.criterion)}${c.must ? '' : ' <i>по желанию</i>'}</span></span>`).join('')}<span class="v6-lside-f">● обязательно · ○ по желанию</span></aside>
-            <div class="v6-ucard"><span class="v6-pcard-label">Соберите и покажите</span><h2 class="v6-ucard-t">${e(m.title)}</h2><p>Соберите документ по шагам этапа: ${st.steps.filter((x) => !x.optional).map((x) => x.title).join(', ')}. Вставьте его сюда, и Алёша сверит по рубрике.</p>
+          <div class="v6-ugrid"><aside class="v6-lside"><span class="v6-lside-t">Критерии</span>${(m.rubric || []).map((c) => `<span class="v6-lstep"><span class="v6-mile-dot">${c.must ? '●' : '○'}</span><span>${e(c.criterion)}${c.must ? '' : ' <i>по желанию</i>'}</span></span>`).join('')}<span class="v6-lside-f">● обязательно · ○ по желанию</span></aside>
+            <div class="v6-ucard"><span class="v6-pcard-label">Соберите и покажите</span><h2 class="v6-ucard-t">${e(m.title)}</h2><p>Соберите документ по шагам этапа: ${st.steps.filter((x) => !x.optional).map((x) => x.title).join(', ')}. Вставьте его сюда, и Алёша проверит по критериям.</p>
               ${rubricBox('veha:seller-' + n, `Веха: ${m.title}`, m.gives || m.title, m.rubric || [])}
               ${m.agencyDoor ? `<p class="v6-meta">${e(m.agencyDoor)} · <a href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'veha' })">Узнать</a></p>` : ''}</div></div>`;
       }).catch(() => fail('v6-veha'));
