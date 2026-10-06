@@ -1182,3 +1182,4 @@ body.v6 .lesson-content .v6-page .v6-gate-t { hyphens:manual !important; -webkit
 /* пока страница грузит данные, подвал не должен мелькать на первом экране и потом прыгать вниз (CLS) */
 body.v6 .lesson-content .v6-page { min-height:100vh; }
 .v6-copk-i.is-free .v6-meta { color:var(--text-2); }
+body.v6 .lesson-content .v6-page .v6-calc-page a, body.v6 .lesson-content .v6-page .v6-tools-lead a { color:var(--text-2); text-decoration:underline; text-underline-offset:3px; }
