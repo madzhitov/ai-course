@@ -8241,6 +8241,7 @@ registerLesson(11, `
 // ============================================================
 registerLesson(12, `
 
+
 <h1>Урок 12. Безопасность ИИ-приложений</h1>
 
 <div class="lesson-meta">
@@ -8260,18 +8261,18 @@ registerLesson(12, `
 </ul>
 
 <h2>1. OWASP Top 10 for LLM Applications</h2>
-<p>В 2023 OWASP выпустил топ-10 угроз именно для LLM, в 2025 обновил список. Ключевые по редакции 2025:</p>
+<p>В 2023 OWASP выпустил топ-10 угроз именно для LLM, актуальная редакция вышла 3 августа 2026. Ключевые по ней:</p>
 <ol>
 <li><strong>LLM01: Prompt Injection.</strong> Главный риск.</li>
 <li><strong>LLM02: Sensitive Information Disclosure.</strong> Утечка персональных данных и внутреннего контекста в ответы.</li>
-<li><strong>LLM03: Supply Chain.</strong> Зависимости (open-source модели, эмбеддинги).</li>
-<li><strong>LLM04: Data and Model Poisoning.</strong> Кто-то отравил данные обучения или дообучения.</li>
-<li><strong>LLM05: Improper Output Handling.</strong> Модель сгенерировала JavaScript → сайт исполнил → XSS.</li>
-<li><strong>LLM06: Excessive Agency.</strong> Агент с правом писать в БД получил инъекцию.</li>
-<li><strong>LLM07: System Prompt Leakage.</strong> Системный промпт с секретами или правилами утёк к пользователю.</li>
-<li><strong>LLM08: Vector and Embedding Weaknesses.</strong> Уязвимости RAG и векторных баз.</li>
-<li><strong>LLM09: Misinformation.</strong> Юристы копи-пастят галлюцинации в иск.</li>
-<li><strong>LLM10: Unbounded Consumption.</strong> Пользователь шлёт огромные промпты = разоряет тебя.</li>
+<li><strong>LLM03: Excessive Agency.</strong> Агент с правом писать в БД получил инъекцию.</li>
+<li><strong>LLM04: Supply Chain.</strong> Зависимости (open-source модели, эмбеддинги, пакеты инструментов).</li>
+<li><strong>LLM05: Data and Model Poisoning.</strong> Кто-то отравил данные обучения или дообучения.</li>
+<li><strong>LLM06: Unbounded Consumption.</strong> Пользователь шлёт огромные промпты = разоряет тебя.</li>
+<li><strong>LLM07: Misinformation.</strong> Юристы копи-пастят галлюцинации в иск.</li>
+<li><strong>LLM08: Hidden Context Exposure.</strong> Утечка скрытого контекста: системного промпта, служебных инструкций.</li>
+<li><strong>LLM09: Vector and Embedding Weaknesses.</strong> Уязвимости RAG и векторных баз.</li>
+<li><strong>LLM10: Improper Output Handling.</strong> Модель сгенерировала JavaScript → сайт исполнил → XSS.</li>
 </ol>
 
 <h2>2. Prompt Injection — главная атака</h2>
@@ -8438,6 +8439,7 @@ Direct — атакующий пишет напрямую в чат. Indirect �
 <strong>📌 Закрепление:</strong> Фаза 1 завершена. Ты прошёл от «что такое LLM» до «как защитить LLM-приложение в проде». Дальше — Фаза 2: строить агентов и системы, которые работают сами.
 </div>
 
+
 `);
 
 
@@ -8445,6 +8447,7 @@ Direct — атакующий пишет напрямую в чат. Indirect �
 // Урок 13
 // ============================================================
 registerLesson(13, `
+
 <h1>Урок 13. Function Calling — ИИ вызывает твои функции</h1>
 
 <div class="lesson-meta">
@@ -8465,7 +8468,7 @@ registerLesson(13, `
 <h2>1. Проблема, которую решает Function Calling</h2>
 <p>Представь: ты хочешь сделать бота для HR-отдела. Бот принимает резюме и должен занести данные в CRM: имя, должность, опыт, зарплатные ожидания.</p>
 <p>До Function Calling GPT-4 вернёт <code>{"name": "Алексей", "experience": 5}</code>, Claude вернёт <code>{"full_name": "Иванов Алексей", "years": "5 лет"}</code>, Mistral добавит пояснительный текст вокруг JSON. Три модели — три разных ключа, разные типы данных. Твой код упадёт с ошибкой.</p>
-<p>После Function Calling ты один раз описываешь схему — и все модели возвращают строго её.</p>
+<p>После Function Calling ты один раз описываешь схему, и модели возвращают аргументы по ней. Строгое соответствие API гарантирует, если включить строгий режим (у OpenAI это <code>strict: true</code>).</p>
 
 <h2>2. Ментальная модель: LLM — диспетчер, а не исполнитель</h2>
 <div class="callout callout-warning">
@@ -8516,20 +8519,20 @@ registerLesson(13, `
 <tr><th></th><th>Промпт «верни JSON»</th><th>Function Calling</th></tr>
 <tr><td>Формат</td><td>Может плавать</td><td>Строго по схеме</td></tr>
 <tr><td>Тип данных</td><td>Строки везде</td><td>string, integer, boolean, array</td></tr>
-<tr><td>required поля</td><td>Модель может пропустить</td><td>API гарантирует схему</td></tr>
+<tr><td>required поля</td><td>Модель может пропустить</td><td>API гарантирует схему в строгом режиме (strict)</td></tr>
 <tr><td>Несколько инструментов</td><td>Нельзя</td><td>Можно передать список</td></tr>
 <tr><td>Интеграция в агентный цикл</td><td>Сложно</td><td>Нативно</td></tr>
 </table>
 
 <h2>5. Важные нюансы</h2>
 <h3>Function Calling ≠ Tool Use (но это одно и то же)</h3>
-<p>OpenAI называет это <strong>Function Calling</strong> (старое API) и <strong>Tool Use</strong> (новое). Anthropic (Claude) называет это <strong>Tool Use</strong>. Принцип идентичный — просто разные названия в документации.</p>
+<p>OpenAI называет это <strong>Function Calling</strong>, или tool calling (в старом API параметр назывался <code>functions</code>, в новом <code>tools</code>). Anthropic (Claude) называет это <strong>Tool Use</strong>. Принцип идентичный — просто разные названия в документации.</p>
 
 <h3>Безопасность: не доверяй аргументам слепо</h3>
 <p>LLM передаёт тебе аргументы для функции — но она может ошибиться или быть обманута через prompt injection. Всегда валидируй аргументы перед выполнением, особенно если функция делает что-то необратимое.</p>
 
 <h3>Один запрос может потребовать несколько функций</h3>
-<p>«Найди курсы по Python и запиши меня на лучший» — это два действия. Современные LLM умеют вызывать несколько функций подряд (parallel tool calls).</p>
+<p>«Найди курсы по Python и запиши меня на лучший» — это два действия. Современные LLM умеют вызывать несколько функций: по очереди, шаг за шагом, или сразу несколько в одном ответе (parallel tool calls).</p>
 
 <h2>6. Практика: бот с двумя инструментами</h2>
 <pre><code>pip install openai</code></pre>
@@ -8616,6 +8619,7 @@ print(run_agent("Проверь погоду в Питере и если дож�
 <li>Что такое Tool Use и как оно связано с Function Calling?</li>
 <li>Почему нельзя слепо доверять аргументам, которые LLM передаёт в функцию?</li>
 </ol>
+
 `);
 
 
@@ -8623,6 +8627,7 @@ print(run_agent("Проверь погоду в Питере и если дож�
 // Урок 14
 // ============================================================
 registerLesson(14, `
+
 <h1>Урок 14. RAG и векторные базы данных</h1>
 
 <div class="lesson-meta">
@@ -8662,7 +8667,7 @@ registerLesson(14, `
 <li><strong>Контекстное окно ограничено.</strong> Нашёл документ — но передать его целиком нельзя.</li>
 <li><strong>Стоимость.</strong> Чем больше токенов — тем дороже.</li>
 </ul>
-<p>Стандарт: <strong>500–600 слов с перекрытием 50–100 слов</strong> между чанками — чтобы не потерять смысл на границах. Лучше делить по абзацам или разделам, а не механически.</p>
+<p>Частая отправная точка: <strong>500–600 слов с перекрытием 50–100 слов</strong> между чанками — чтобы не потерять смысл на границах. Лучше делить по абзацам или разделам, а не механически.</p>
 
 <h2>4. Векторная база данных</h2>
 <p>Обычные БД плохо подходят: они ищут по точным значениям, но не умеют «найти ближайших соседей в многомерном пространстве». Векторная БД — специализированное хранилище именно для такого поиска.</p>
@@ -8681,7 +8686,7 @@ registerLesson(14, `
 <li>= 0 → не связаны (угол 90°)</li>
 <li>= -1 → противоположны</li>
 </ul>
-<p>Почему угол, а не расстояние? Длина вектора зависит от длины текста, угол — только от <strong>направления</strong>, то есть от смысла.</p>
+<p>Почему угол, а не расстояние? Смысл закодирован в <strong>направлении</strong> вектора. У многих моделей (например, у эмбеддингов OpenAI) векторы нормированы к длине 1, так что длина вообще не зависит от текста, а косинусное сходство совпадает со скалярным произведением.</p>
 
 <h2>6. Полный RAG-конвейер</h2>
 <h3>Этап 1: Индексирование</h3>
@@ -8783,12 +8788,14 @@ while True:
 <li>Почему нужно использовать одну embedding-модель для индексации и поиска?</li>
 <li>Чем RAG отличается от fine-tuning? Когда что выбирать?</li>
 </ol>
+
 `);
 
 // ============================================================
 // Урок 15 — Жизненный цикл GenAI-приложения
 // ============================================================
 registerLesson(15, `
+
 <h1>Урок 15. Жизненный цикл GenAI-приложения</h1>
 
 <div class="lesson-meta">
@@ -8841,7 +8848,7 @@ registerLesson(15, `
 
 <p>Что важно на этом этапе:</p>
 <ul>
-<li>Используй <strong>самую сильную модель</strong> (GPT-4o, Claude Sonnet) — потом оптимизируем</li>
+<li>Используй <strong>самую сильную модель</strong> (например, ⟦openai.top⟧ или ⟦claude.top⟧), потом оптимизируем</li>
 <li>Пиши <strong>гибкий промпт</strong>, не вылизывай</li>
 <li>Тестируй на <strong>10–20 реальных кейсах</strong>, не на 1000</li>
 <li>Не строй <strong>сложную инфру</strong> — пусть это будет Python-скрипт или Streamlit</li>
@@ -8872,7 +8879,7 @@ registerLesson(15, `
 <ol>
 <li><strong>Точные совпадения</strong> — для structured output (JSON-схема правильная? всё на месте?)</li>
 <li><strong>Регулярки / правила</strong> — содержит ли ответ нужную ссылку, не содержит ли запрещённых слов</li>
-<li><strong>LLM-as-judge</strong> — вторая модель (GPT-4) оценивает ответ первой по критериям</li>
+<li><strong>LLM-as-judge</strong>: вторая модель (обычно сильная) оценивает ответ первой по критериям</li>
 <li><strong>Human review</strong> — самое дорогое, но иногда необходимое</li>
 </ol>
 
@@ -8881,7 +8888,7 @@ registerLesson(15, `
 <h3>Инструменты для eval</h3>
 <ul>
 <li><strong><a href="https://www.promptfoo.dev" target="_blank">Promptfoo</a></strong> — CLI и YAML конфиги, регрессионные тесты для промптов. Самый практичный для старта.</li>
-<li><strong><a href="https://inspect.aisi.org.uk" target="_blank">Inspect</a></strong> — от UK AI Safety Institute, упор на безопасность.</li>
+<li><strong><a href="https://inspect.aisi.org.uk" target="_blank">Inspect</a></strong>: от UK AI Security Institute, упор на безопасность.</li>
 <li><strong><a href="https://www.langfuse.com" target="_blank">Langfuse</a></strong> — observability + eval в одном.</li>
 <li><strong>Свой скрипт</strong> — 100 строк Python с pytest. Часто этого хватает.</li>
 </ul>
@@ -8893,7 +8900,7 @@ registerLesson(15, `
 <table>
 <tr><th>Способ</th><th>Когда подходит</th><th>Минусы</th></tr>
 <tr><td><strong>Streamlit Cloud</strong></td><td>Внутренние инструменты, демо для друзей</td><td>Не для большой нагрузки</td></tr>
-<tr><td><strong>Vercel / Netlify</strong></td><td>Frontend + serverless backend</td><td>Лимиты длинных запросов (10 сек)</td></tr>
+<tr><td><strong>Vercel / Netlify</strong></td><td>Frontend + serverless backend</td><td>Лимит длительности функции: на Netlify 60 сек, на Vercel Hobby до 300 сек</td></tr>
 <tr><td><strong>Railway / Render / Fly.io</strong></td><td>Long-running апи, простой деплой</td><td>$5–20/мес</td></tr>
 <tr><td><strong>AWS / GCP / Azure</strong></td><td>Серьёзный масштаб</td><td>Сложно, дорого, много возможностей напортачить</td></tr>
 </table>
@@ -8944,7 +8951,7 @@ registerLesson(15, `
 <h3>Инструменты</h3>
 <ul>
 <li><strong><a href="https://www.langfuse.com" target="_blank">Langfuse</a></strong> — best free-tier для AI-observability, open source</li>
-<li><strong><a href="https://www.helicone.ai" target="_blank">Helicone</a></strong> — прокси перед OpenAI/Anthropic, логирует всё</li>
+<li><strong><a href="https://www.helicone.ai" target="_blank">Helicone</a></strong>: прокси перед OpenAI/Anthropic, логирует всё (в 2026 году Helicone купила Mintlify, сервис работает в режиме поддержки без новых функций)</li>
 <li><strong><a href="https://posthog.com" target="_blank">PostHog</a></strong> — продуктовая аналитика + AI-фичи</li>
 <li><strong>Sentry</strong> — ошибки и performance</li>
 </ul>
@@ -8968,7 +8975,7 @@ registerLesson(15, `
 <p>Без eval-сета вы реактивно носитесь за каждой жалобой, ломая то, что работало.</p>
 
 <h3>Версии моделей</h3>
-<p>OpenAI обновляет <code>gpt-4o</code> без предупреждения. Ваш протестированный промпт может начать вести себя иначе. <strong>Используйте версии:</strong> <code>gpt-4o-2024-11-20</code> вместо просто <code>gpt-4o</code>.</p>
+<p>OpenAI может переключить алиас <code>gpt-4o</code> на новый снапшот модели. Ваш протестированный промпт может начать вести себя иначе. <strong>Используйте версии:</strong> <code>gpt-4o-2024-11-20</code> вместо просто <code>gpt-4o</code>.</p>
 
 <h3>Стоимость без лимитов</h3>
 <p>Одного бага достаточно: пользователь зацикливается на «попробуй ещё раз», вы платите $500 за день. <strong>Хард-лимиты на пользователя обязательны.</strong></p>
@@ -9070,12 +9077,14 @@ Langfuse — open source, бесплатный self-hosted или generous free 
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> следующий шаг — превратить твой pet-проект в «настоящее» приложение. Eval-сет + хотя бы базовый мониторинг + cost limits. После этого имеешь право назвать его «production-ready».
 </div>
+
 `);
 
 // ============================================================
 // Урок 16 — Что такое ИИ-агенты
 // ============================================================
 registerLesson(16, `
+
 <h1>Урок 16. Что такое ИИ-агенты</h1>
 
 <div class="lesson-meta">
@@ -9085,7 +9094,7 @@ registerLesson(16, `
 </div>
 
 <h2>Зачем тебе этот урок</h2>
-<p>2024–2026 — это годы агентов. Slack-боты, code-агенты типа Cursor и Cline, browser-агенты типа Operator, корпоративные copilots — везде агенты. Если ты строишь AI-приложения, ты неизбежно перейдёшь от «один промпт — один ответ» к «много шагов, инструменты, цикл».</p>
+<p>2024–2026 — это годы агентов. Slack-боты, code-агенты типа Cursor и Cline, browser-агенты типа Browser-Use, корпоративные copilots — везде агенты. Если ты строишь AI-приложения, ты неизбежно перейдёшь от «один промпт — один ответ» к «много шагов, инструменты, цикл».</p>
 <p>Но между «модным словом» и реально полезным агентом — пропасть. Большинство сегодняшних «агентов» — это просто чат-боты с громким названием. Этот урок — про то, что такое настоящий агент и когда он действительно даёт ценность.</p>
 
 <h2>1. Определение и анатомия</h2>
@@ -9164,14 +9173,14 @@ Final Answer: Средняя температура в столицах G7 — �
 
 <h3>Coding-агенты</h3>
 <ul>
-<li><strong>Cursor / Cline / Continue</strong> — IDE-плагины. Получают «реализуй фичу X». Читают код, пишут, запускают тесты, чинят ошибки. Используют инструменты read_file, write_file, run_terminal.</li>
-<li><strong>Devin / GitHub Copilot Workspace</strong> — полностью автономные. Дай задачу — он делает PR.</li>
+<li><strong>Cursor / Cline</strong>: агенты в редакторе кода (Cursor является отдельным редактором, Cline расширением для VS Code). Получают «реализуй фичу X». Читают код, пишут, запускают тесты, чинят ошибки. Используют инструменты read_file, write_file, run_terminal.</li>
+<li><strong>Devin / GitHub Copilot cloud agent</strong>: полностью автономные. Дай задачу — он делает PR.</li>
 <li><strong>Claude Code</strong> — CLI-агент от Anthropic. Про него отдельный урок c5.</li>
 </ul>
 
 <h3>Browser-агенты</h3>
 <ul>
-<li><strong>OpenAI Operator</strong> — Claude управляет браузером для пользователя (бронирование, шопинг)</li>
+<li><strong>Браузерные агенты</strong> (например, Claude in Chrome или открытый Browser Use): ИИ управляет браузером для пользователя (бронирование, сравнение тарифов)</li>
 <li><strong>Browser-Use / Skyvern</strong> — open-source аналоги</li>
 <li><strong>Anthropic Computer Use</strong> — про него урок c4</li>
 </ul>
@@ -9195,7 +9204,7 @@ Final Answer: Средняя температура в столицах G7 — �
 <tr><th>Фреймворк</th><th>Сильные стороны</th><th>Для кого</th></tr>
 <tr><td><strong>LangChain / LangGraph</strong></td><td>Самый зрелый, огромная экосистема, поддержка всех моделей</td><td>Все, кто пишет на Python; командные проекты</td></tr>
 <tr><td><strong>LlamaIndex</strong></td><td>Лучший для RAG-агентов</td><td>Когда данных много, нужен умный retrieval</td></tr>
-<tr><td><strong>AutoGen (Microsoft)</strong></td><td>Мульти-агентные сценарии «из коробки»</td><td>Сложные сценарии с несколькими ролями</td></tr>
+<tr><td><strong>AutoGen (Microsoft)</strong></td><td>Мульти-агентные сценарии «из коробки»; сейчас в режиме поддержки, новым проектам Microsoft советует Agent Framework</td><td>Сложные сценарии с несколькими ролями</td></tr>
 <tr><td><strong>CrewAI</strong></td><td>Декларативное описание «команды агентов»</td><td>Простые мульти-агентные сценарии</td></tr>
 <tr><td><strong>Pydantic AI</strong></td><td>Сильная типизация, простой API, новый</td><td>Type-safe Python, маленькие проекты</td></tr>
 <tr><td><strong>Anthropic SDK</strong></td><td>Прямой Anthropic API + computer use + tools — без обёрток</td><td>Когда нужен контроль над каждой деталью</td></tr>
@@ -9378,12 +9387,14 @@ LangChain/LangGraph, AutoGen, Pydantic AI, CrewAI, LlamaIndex — любые и�
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> идея агентов выглядит магически — но за магией стоит простой цикл «LLM в while-loop с инструментами». В следующем уроке разберём фреймворки, которые этот цикл оборачивают в удобный интерфейс.
 </div>
+
 `);
 
 // ============================================================
 // Урок 17
 // ============================================================
 registerLesson(17, `
+
 <h1>Урок 17. Обзор агентских фреймворков</h1>
 
 <div class="lesson-meta">
@@ -9402,8 +9413,8 @@ registerLesson(17, `
 <tr><td><strong>LangChain</strong></td><td>Универсальный, для прототипов</td><td>Быстро собрать что угодно</td></tr>
 <tr><td><strong>LangGraph</strong></td><td>State machine для агентов</td><td>Сложная логика, продакшен</td></tr>
 <tr><td><strong>LlamaIndex</strong></td><td>RAG-first, дальше агенты</td><td>Данные → ответы по ним</td></tr>
-<tr><td><strong>Microsoft Semantic Kernel</strong></td><td>.NET/Python, enterprise-friendly</td><td>Корпоративный .NET-мир</td></tr>
-<tr><td><strong>Microsoft AutoGen / Agent Framework</strong></td><td>Multi-agent collaboration</td><td>Несколько агентов разных ролей</td></tr>
+<tr><td><strong>Microsoft Semantic Kernel</strong></td><td>.NET/Python, enterprise-friendly; преемник: Microsoft Agent Framework</td><td>Корпоративный .NET-мир</td></tr>
+<tr><td><strong>Microsoft AutoGen / Agent Framework</strong></td><td>Multi-agent collaboration; AutoGen в режиме поддержки, новые проекты Microsoft советует начинать на Agent Framework</td><td>Несколько агентов разных ролей</td></tr>
 <tr><td><strong>CrewAI</strong></td><td>Multi-agent с роль-плеем</td><td>Декларативное описание команды</td></tr>
 <tr><td><strong>OpenAI Agents SDK + Responses API</strong></td><td>Родной для OpenAI</td><td>Агенты на моделях OpenAI со встроенными инструментами</td></tr>
 <tr><td><strong>Anthropic SDK + tools</strong></td><td>Минимальный, нативный</td><td>Когда хочется просто, без обвязок</td></tr>
@@ -9412,22 +9423,22 @@ registerLesson(17, `
 </table>
 
 <h2>2. LangChain — главный швейцарский нож</h2>
-<p>LangChain — самый известный. Идея: всё AI-приложение собирается из <strong>Runnables</strong> (компонентов), соединённых через <code>|</code> (pipe). Это даёт быстрый старт и обширную экосистему интеграций.</p>
+<p>LangChain самый известный. Исходная идея: AI-приложение собирается из <strong>Runnables</strong> (компонентов), соединённых через <code>|</code> (pipe). С версии 1.0 центр фреймворка составляет функция <code>create_agent</code>, которая работает на рантайме LangGraph, а старые цепочки вынесены в пакет <code>langchain-classic</code>. Это даёт быстрый старт и обширную экосистему интеграций.</p>
 <p><strong>Плюсы:</strong></p>
 <ul>
-<li>500+ интеграций (vectorstores, LLM, tools).</li>
+<li>1000+ интеграций (vectorstores, LLM, tools).</li>
 <li>Большое сообщество, тонны примеров.</li>
 <li>Быстрый прототип за день.</li>
 </ul>
 <p><strong>Минусы:</strong></p>
 <ul>
-<li>Часто меняет API — миграции болезненные.</li>
+<li>Исторически часто менял API, миграции были болезненными. С версии 1.0 команда обещает не ломать API до 2.0.</li>
 <li>Абстракции «протекают»: легко собрать, сложно отдебажить.</li>
 <li>Для серьёзного прода часто переписывают в LangGraph или с нуля.</li>
 </ul>
 
 <h2>3. LangGraph — для продакшена</h2>
-<p>Создатели LangChain признали ограничения и в 2023 выпустили LangGraph. Это <strong>state machine</strong> для агентов: ты описываешь узлы (что делать) и переходы (когда). Каждый шаг сохраняется в state — можно остановить/возобновить.</p>
+<p>Создатели LangChain признали ограничения и в начале 2024 выпустили LangGraph. Это <strong>state machine</strong> для агентов: ты описываешь узлы (что делать) и переходы (когда). Каждый шаг сохраняется в state — можно остановить/возобновить.</p>
 <p><strong>Когда выбирать LangGraph:</strong></p>
 <ul>
 <li>Сложная логика: «если задача X → ветка A, иначе → ветка B».</li>
@@ -9452,8 +9463,8 @@ registerLesson(17, `
 
 <h2>6. CrewAI — декларативный multi-agent</h2>
 <p>CrewAI делает то же, что AutoGen, но с более простым декларативным API. Описываешь «команду» (Crew), её агентов и задачи на YAML или Python:</p>
-<pre><code>researcher = Agent(role="Researcher", goal="Find facts about X", tools=[search_tool])
-writer = Agent(role="Writer", goal="Write blog post", tools=[])
+<pre><code>researcher = Agent(role="Researcher", goal="Find facts about X", backstory="Experienced analyst", tools=[search_tool])
+writer = Agent(role="Writer", goal="Write blog post", backstory="Tech blogger", tools=[])
 crew = Crew(agents=[researcher, writer], tasks=[...])
 crew.kickoff()</code></pre>
 <p>Хорош для быстрых прототипов multi-agent сценариев.</p>
@@ -9465,15 +9476,18 @@ crew.kickoff()</code></pre>
 <p><strong>Минусы:</strong> привязка к OpenAI.</p>
 
 <h2>8. Минималистский подход — Anthropic SDK + tools</h2>
-<p>Anthropic в своём <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank">блог-посте 2024 «Building effective agents»</a> явно сказал: <em>«В большинстве случаев вам не нужен фреймворк. Простой while-loop с tools достаточен.»</em></p>
+<p>Anthropic в своём <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank">блог-посте 2024 «Building effective agents»</a> советует начинать с прямых вызовов API: многие паттерны укладываются в несколько строк кода, а фреймворки добавляют слои абстракции, которые прячут промпты и ответы и усложняют отладку.</p>
 <p>Реальный код агента на Anthropic SDK — ~50 строк Python:</p>
 <pre><code>while True:
-    response = client.messages.create(model=..., messages=messages, tools=tools)
+    response = client.messages.create(model=..., max_tokens=1024, messages=messages, tools=tools)
     if response.stop_reason == "end_turn": break
+    messages.append({"role": "assistant", "content": response.content})
+    results = []
     for block in response.content:
         if block.type == "tool_use":
             result = execute_tool(block.name, block.input)
-            messages.append({"role": "tool", "content": result})</code></pre>
+            results.append({"type": "tool_result", "tool_use_id": block.id, "content": result})
+    messages.append({"role": "user", "content": results})</code></pre>
 <p>Это работает. Для 70% задач достаточно. И ты понимаешь каждую строку.</p>
 
 <h2>9. Когда фреймворк нужен, а когда нет</h2>
@@ -9491,7 +9505,7 @@ crew.kickoff()</code></pre>
 <ul>
 <li><strong>LangSmith</strong> (для LangChain/LangGraph).</li>
 <li><strong>Langfuse</strong> (open-source, для любого фреймворка).</li>
-<li><strong>Helicone</strong> (proxy-based, минимальная интеграция).</li>
+<li><strong>Helicone</strong> (proxy-based, минимальная интеграция; после покупки Mintlify в 2026 году в режиме поддержки, без новых функций).</li>
 <li><strong>Phoenix от Arize</strong> (открытый стандарт OpenTelemetry).</li>
 </ul>
 <p>Что должно записываться: каждый промпт, каждый ответ, каждый tool call, токены, латентность, ошибки.</p>
@@ -9502,7 +9516,7 @@ crew.kickoff()</code></pre>
 <li><strong>«Фреймворк говорит, что это просто»</strong> — пока всё работает. На производстве абстракции мешают дебагу.</li>
 <li><strong>Vendor lock-in</strong> на уровне промптов. LangChain переписывает твои промпты внутри.</li>
 <li><strong>Зависимости</strong>. LangChain тащит десятки транзитивных пакетов. Конфликты версий бывают часто.</li>
-<li><strong>Версия фреймворка ≠ версия документации.</strong> 80% Stack Overflow-ответов устарели.</li>
+<li><strong>Версия фреймворка ≠ версия документации.</strong> Многие ответы на Stack Overflow написаны под старые версии.</li>
 <li><strong>Не стартуй сразу с multi-agent.</strong> 90% задач решаются одним хорошим агентом.</li>
 </ul>
 </div>
@@ -9542,6 +9556,7 @@ crew.kickoff()</code></pre>
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> читай официальные доки только последних версий и блог-посты Anthropic/OpenAI про «как мы строим агентов». Туториалы 2023 года часто устарели.
 </div>
+
 `);
 
 
@@ -9549,6 +9564,7 @@ crew.kickoff()</code></pre>
 // Урок 18
 // ============================================================
 registerLesson(18, `
+
 <h1>Урок 18. Паттерны проектирования агентов</h1>
 
 <div class="lesson-meta">
@@ -9605,7 +9621,7 @@ registerLesson(18, `
 
 <h3>ReAct (Reasoning + Acting)</h3>
 <p>Базовый паттерн агента. LLM на каждом шаге пишет: «думаю: ... → действие: tool X с параметрами Y». Tool возвращает результат. Цикл продолжается, пока LLM не скажет «Готово».</p>
-<p>Все современные LLM с tools = реализация ReAct под капотом.</p>
+<p>Агентный цикл современных LLM с tools по сути продолжает идею ReAct.</p>
 <p><strong>Когда хорошо:</strong> однонаправленные задачи с 2–10 шагами.</p>
 
 <h3>Plan-and-Execute</h3>
@@ -9712,6 +9728,7 @@ registerLesson(18, `
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> прочитай <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank">«Building effective agents» от Anthropic</a> — это лучший один пост 2024 про практическое проектирование агентов.
 </div>
+
 `);
 
 
@@ -9719,6 +9736,7 @@ registerLesson(18, `
 // Урок 19
 // ============================================================
 registerLesson(19, `
+
 <h1>Урок 19. Использование инструментов агентами</h1>
 
 <div class="lesson-meta">
@@ -9728,7 +9746,7 @@ registerLesson(19, `
 </div>
 
 <h2>Зачем тебе этот урок</h2>
-<p>Function calling (Урок 13) — это «как технически вызвать tool». Этот урок — «как спроектировать tools для агента так, чтобы он реально работал». 80% багов агентов в проде — это не модель, а плохо спроектированные инструменты.</p>
+<p>Function calling (Урок 13) — это «как технически вызвать tool». Этот урок — «как спроектировать tools для агента так, чтобы он реально работал». Многие баги агентов в проде — это не модель, а плохо спроектированные инструменты.</p>
 <p>К концу урока ты сможешь:</p>
 <ul>
 <li>Решать, какие операции выносить в tools, а какие оставлять модели.</li>
@@ -9831,7 +9849,7 @@ registerLesson(19, `
 </ul>
 
 <h2>9. Streaming и параллельные tool calls</h2>
-<p>Современные модели (Claude 3.5+, GPT-4o) умеют:</p>
+<p>Современные модели Claude и GPT умеют:</p>
 <ul>
 <li><strong>Параллельные tool calls</strong> — модель за один шаг вызывает 3–5 tools одновременно. Если три запроса независимы — это в 3 раза быстрее.</li>
 <li><strong>Streaming с tool use</strong> — модель может стримить размышление, потом вызвать tool, потом стримить дальше.</li>
@@ -9850,7 +9868,7 @@ registerLesson(19, `
 </div>
 
 <h2>11. MCP — стандарт для tools (упоминание)</h2>
-<p>В 2024 Anthropic выпустили <strong>Model Context Protocol</strong> — открытый стандарт описания tools. Любой MCP-сервер можно подключить к Claude, Cursor, Zed, ChatGPT GPTs (через переходники).</p>
+<p>В 2024 Anthropic выпустили <strong>Model Context Protocol</strong> — открытый стандарт описания tools. Любой MCP-сервер можно подключить к Claude, Cursor, Zed и к ChatGPT (напрямую, в режиме разработчика, без переходников).</p>
 <p>Подробнее — Урок 28 «Агентские протоколы (MCP)» и мини-проект p3 «Свой MCP-сервер».</p>
 
 <h2>12. Глоссарий</h2>
@@ -9890,8 +9908,9 @@ registerLesson(19, `
 </ol>
 
 <div class="callout callout-info">
-<strong>📌 Закрепление:</strong> прочитай <a href="https://docs.anthropic.com/en/docs/tool-use" target="_blank">Tool use best practices от Anthropic</a> — это твой стандарт-документ при проектировании tools.
+<strong>📌 Закрепление:</strong> прочитай <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools" target="_blank">Tool use best practices от Anthropic</a> — это твой стандарт-документ при проектировании tools.
 </div>
+
 `);
 
 
@@ -9899,6 +9918,7 @@ registerLesson(19, `
 // Урок 20
 // ============================================================
 registerLesson(20, `
+
 <h1>Урок 20. Agentic RAG</h1>
 
 <div class="lesson-meta">
@@ -9930,7 +9950,7 @@ registerLesson(20, `
 
 <h2>2. Когда обычный RAG не справится</h2>
 <ul>
-<li><strong>Multi-hop вопросы.</strong> «Кто CEO компании, которая купила Figma в 2022?» — два связанных факта.</li>
+<li><strong>Multi-hop вопросы.</strong> «Кто основал компанию, которая купила Instagram в 2012?» — два связанных факта.</li>
 <li><strong>Сравнения.</strong> «Чем наша цена отличается от рыночной».</li>
 <li><strong>Агрегация.</strong> «Сколько у нас контрактов с штрафом больше $10k».</li>
 <li><strong>Условные запросы.</strong> «Если есть упоминание X — найди связанное Y».</li>
@@ -10017,7 +10037,7 @@ Original question: [вопрос пользователя]
 
 <h2>10. Инструменты для реализации</h2>
 <ul>
-<li><strong>LangGraph</strong> — лучший фреймворк для agentic RAG (state machine, retries, чекпоинты).</li>
+<li><strong>LangGraph</strong>: популярный фреймворк для agentic RAG (state machine, retries, чекпоинты).</li>
 <li><strong>LlamaIndex</strong> — встроенные query engines для multi-step.</li>
 <li><strong>Haystack</strong> — pipeline-based, тоже хорошо.</li>
 <li><strong>С нуля на Anthropic SDK</strong> — для понимания, 100–200 строк.</li>
@@ -10029,7 +10049,7 @@ Original question: [вопрос пользователя]
 <li><strong>Бесконечные циклы.</strong> Модель «никогда не уверена» → бесконечно ищет. Ставь max_iterations=5–8.</li>
 <li><strong>Каскадирующие ошибки.</strong> Плохой первый поиск → плохое решение «искать дальше». 5 шагов × 80% точности = 33% итоговой.</li>
 <li><strong>Дороговизна.</strong> Каждый шаг = LLM call + retrieve. Логируй стоимость на запрос.</li>
-<li><strong>Halucination мерджа.</strong> При сведении нескольких источников модель может выдумать связи, которых нет. В промпте: «Указывай источник для каждого утверждения».</li>
+<li><strong>Hallucination мерджа.</strong> При сведении нескольких источников модель может выдумать связи, которых нет. В промпте: «Указывай источник для каждого утверждения».</li>
 <li><strong>Промптовая инъекция в retrieved data.</strong> Если в одном из документов спрятана инструкция «игнорируй предыдущие правила» — модель послушается. Защита: явно отделять данные XML-тегами + ругаться на инструкции внутри них.</li>
 </ul>
 </div>
@@ -10070,6 +10090,7 @@ Original question: [вопрос пользователя]
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> agentic RAG — не «всегда лучше», а «когда оправдано». Большинство юзкейсов решаются классическим. Используй мощь только тогда, когда она нужна.
 </div>
+
 `);
 
 
@@ -10077,6 +10098,7 @@ Original question: [вопрос пользователя]
 // Урок 21
 // ============================================================
 registerLesson(21, `
+
 <h1>Урок 21. Доверие и безопасность агентов</h1>
 
 <div class="lesson-meta">
@@ -10104,7 +10126,7 @@ registerLesson(21, `
 <tr><td><strong>Data leakage</strong></td><td>Агент в ответе раскрывает чужие данные / системный промпт</td></tr>
 <tr><td><strong>Cost explosion</strong></td><td>Бесконечный цикл / большой контекст = $$$ за ночь</td></tr>
 <tr><td><strong>Reliability drift</strong></td><td>Модель обновили — поведение изменилось</td></tr>
-<tr><td><strong>Tool poisoning</strong></td><td>Внешний сервис вернул что-то неожиданное, агент не справился</td></tr>
+<tr><td><strong>Tool poisoning</strong></td><td>В описание внешнего tool (например, MCP-сервера) спрятаны вредные инструкции, агент их выполняет</td></tr>
 </table>
 
 <h2>2. Принцип Least Privilege в агентах</h2>
@@ -10157,7 +10179,7 @@ registerLesson(21, `
 <li><strong>Wasm</strong> sandbox (Pyodide для Python, WasmEdge).</li>
 <li><strong>Managed services:</strong> E2B, Modal, AWS Lambda с тайм-лимитом.</li>
 </ul>
-<p>OpenAI Code Interpreter и Claude Computer Use используют sandbox под капотом.</p>
+<p>OpenAI Code Interpreter и инструмент code execution в Claude API выполняют код в песочнице на стороне провайдера. А Claude Computer Use работает в окружении, которое поднимаешь ты сам, и изолировать его (например, в Docker) нужно тебе самому.</p>
 
 <h2>6. Cost limits — обязательно</h2>
 <p>Агент может зациклиться. Запрос пользователя 1 = $50 на API. Защита:</p>
@@ -10165,7 +10187,7 @@ registerLesson(21, `
 <li><strong>Per-request budget:</strong> «не больше 20 LLM calls и 10 tool calls на сессию».</li>
 <li><strong>Per-user daily budget:</strong> «не больше $1/день на пользователя».</li>
 <li><strong>Global rate limit:</strong> «не больше 100 запросов/мин со всей системы».</li>
-<li><strong>Anthropic / OpenAI dashboard limits:</strong> жёсткий потолок на месяц, ниже которого ключ блокируется.</li>
+<li><strong>Anthropic / OpenAI dashboard limits:</strong> жёсткий месячный потолок расходов (на организацию, workspace или проект), после достижения которого API перестаёт принимать запросы.</li>
 </ul>
 
 <h2>7. Output validation</h2>
@@ -10188,7 +10210,7 @@ registerLesson(21, `
 <li>Финальный output, отдан пользователю.</li>
 <li>Любые отмены и confirmations.</li>
 </ul>
-<p><strong>Инструменты:</strong> Langfuse, Helicone, Phoenix (Arize), LangSmith. Все имеют free tier.</p>
+<p><strong>Инструменты:</strong> Langfuse, Phoenix (Arize), LangSmith, Helicone (с марта 2026 в режиме поддержки, без новых функций). Все имеют free tier.</p>
 
 <h2>9. Evaluation: как мерить безопасность</h2>
 <p>Раз в неделю — прогоняй агента через тест-сет вредных промптов:</p>
@@ -10200,7 +10222,7 @@ registerLesson(21, `
 <li>5 попыток вытащить чужие данные.</li>
 </ul>
 <p>Считай % успешных атак. Цель: 0%. Тренд должен быть down, не up.</p>
-<p><strong>Готовые наборы:</strong> garak, PyRIT, OWASP LLM Top 10 testcases.</p>
+<p><strong>Готовые наборы:</strong> garak, PyRIT, promptfoo (есть пресет атак по OWASP LLM Top 10).</p>
 
 <h2>10. Что делать при инциденте</h2>
 <ol>
@@ -10228,13 +10250,13 @@ registerLesson(21, `
 <p>Регуляторика 2025+:</p>
 <ul>
 <li><strong>EU AI Act</strong> — высокорисковые категории (юр., мед., финансы, найм) требуют документации, audit, прозрачности.</li>
-<li><strong>GDPR / 152-ФЗ</strong> — если агент обрабатывает ПД, нужно согласие + право на пояснение AI-решений.</li>
+<li><strong>GDPR / 152-ФЗ</strong>: если агент обрабатывает ПД, нужно законное основание (в РФ чаще всего согласие). Решение, принятое только автоматически и затрагивающее права человека, по 152-ФЗ (ст. 16) требует письменного согласия, разъяснения порядка и права на возражение. Отправка ПД в зарубежный API считается трансграничной передачей, и до её начала нужно уведомить Роскомнадзор (ст. 12).</li>
 <li><strong>SOC2</strong> — для B2B SaaS, аудит безопасности.</li>
 <li><strong>NIST AI RMF</strong> — фреймворк управления рисками AI (рекомендованный).</li>
 </ul>
 
 <h2>13. Глоссарий</h2>
-<div class="glossary-term"><h3>Excessive agency</h3><p>Агенту даны слишком широкие права. №8 в OWASP Top 10 for LLM.</p></div>
+<div class="glossary-term"><h3>Excessive agency</h3><p>Агенту даны слишком широкие права. №3 в OWASP Top 10 for LLM (редакция 2026 года).</p></div>
 <div class="glossary-term"><h3>Indirect prompt injection</h3><p>Инструкция спрятана в данных, которые агент читает. Опаснее direct.</p></div>
 <div class="glossary-term"><h3>Human-in-the-loop (HITL)</h3><p>Человек подтверждает критичные действия агента.</p></div>
 <div class="glossary-term"><h3>Sandbox</h3><p>Изолированная среда исполнения кода без доступа к хост-системе.</p></div>
@@ -10252,7 +10274,7 @@ registerLesson(21, `
 </ol>
 
 <h2>15. Проверь себя</h2>
-<p><strong>1. Что такое excessive agency?</strong><br>Агенту дано больше прав, чем нужно. №8 в OWASP Top 10 for LLM.</p>
+<p><strong>1. Что такое excessive agency?</strong><br>Агенту дано больше прав, чем нужно. №3 в OWASP Top 10 for LLM (редакция 2026 года).</p>
 <p><strong>2. Чем indirect injection опаснее direct?</strong><br>Спрятана в данных, которые агент читает (email, документ, API ответ). Пользователь не видит, как агент атакован.</p>
 <p><strong>3. Какие действия всегда должны быть через HITL?</strong><br>Необратимые: деньги, удаление данных, внешние коммуникации, чувствительные данные.</p>
 <p><strong>4. Почему нельзя выполнять сгенерированный код на хосте?</strong><br>Модель может сгенерировать вредоносный код (намеренно или из-за инъекции). Sandbox (Docker, V8 isolate, Wasm) обязателен.</p>
@@ -10267,7 +10289,7 @@ registerLesson(21, `
 <li>Sandbox для code execution — обязателен.</li>
 <li>Cost limits на трёх уровнях: per-request, per-user, global.</li>
 <li>Output validation на каждый критичный путь.</li>
-<li>Audit log + Langfuse/Helicone/Phoenix.</li>
+<li>Audit log + Langfuse/Phoenix/LangSmith.</li>
 <li>Eval раз в неделю на тест-сете атак.</li>
 <li>Kill switch — однокнопочный.</li>
 </ol>
@@ -10275,6 +10297,7 @@ registerLesson(21, `
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> агент без защит — это не «MVP», это бомба замедленного действия. Защиты — first-class требование, не «потом».
 </div>
+
 `);
 
 
@@ -10282,6 +10305,7 @@ registerLesson(21, `
 // Урок 22
 // ============================================================
 registerLesson(22, `
+
 <h1>Урок 22. Планирование задач агентом</h1>
 
 <div class="lesson-meta">
@@ -10339,7 +10363,7 @@ registerLesson(22, `
 
 <h2>4. Executor — выполнение шагов</h2>
 <p>Берёт план, выполняет шаги в правильном порядке.</p>
-<pre><code>def execute(plan):
+<pre><code>async def execute(plan):
     while not all_done(plan):
         ready = get_ready_steps(plan)  # все depends_on done
         # параллельно — независимые шаги
@@ -10384,9 +10408,9 @@ registerLesson(22, `
 <h2>8. Tree-of-Thoughts: альтернатива</h2>
 <p>Иногда нужно не «один план», а «несколько вариантов плана». Tree-of-Thoughts (ToT):</p>
 <ol>
-<li>Модель генерирует 3–5 альтернативных планов.</li>
-<li>Каждый оценивается (другой моделью или эвристикой).</li>
-<li>Лучший — выполняется.</li>
+<li>На каждом шаге модель генерирует несколько (3–5) вариантов следующего хода.</li>
+<li>Каждый вариант оценивается (обычно той же моделью или эвристикой).</li>
+<li>Перспективные ветки развиваются дальше, тупиковые отбрасываются, с возможностью вернуться назад.</li>
 </ol>
 <p>Дорого, но даёт лучшее качество на тонких задачах (математика, сложный код).</p>
 
@@ -10454,10 +10478,12 @@ registerLesson(22, `
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> хороший план = половина работы агента. Учись писать промпты для планировщика — это отдельный навык, не такой как для executor'а.
 </div>
+
 `);
 
 
 registerLesson(23, `
+
 <h1>Урок 23. Мульти-агентные системы</h1>
 
 <div class="lesson-meta">
@@ -10527,7 +10553,7 @@ registerLesson(23, `
 <p>Плюс: похоже на то, как работают живые команды (перевод звонка нужному человеку). Минус: нужно аккуратно передавать контекст, иначе новый агент «не в курсе» разговора.</p>
 
 <h2>3. Group chat паттерн (AutoGen)</h2>
-<p>В AutoGen несколько агентов сидят в общем чате и по очереди высказываются, как в групповой переписке. Отдельный агент-менеджер (group chat manager) решает, кто говорит следующим — на основе того, что уже написано в чате.</p>
+<p>В AutoGen (с октября 2025 он в режиме поддержки, а для новых проектов Microsoft советует его преемника, Microsoft Agent Framework) несколько агентов сидят в общем чате и по очереди высказываются, как в групповой переписке. Отдельный агент-менеджер (group chat manager) решает, кто говорит следующим — на основе того, что уже написано в чате.</p>
 <pre><code>Чат:
 [Пользователь]: Напиши код парсера CSV и проверь его на баги.
 [Менеджер]: следующий — Coder
@@ -10695,6 +10721,7 @@ print(final_answer)</code></pre>
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> мульти-агентность — это инструмент для конкретной проблемы (конфликт ролей, права доступа, параллелизм), а не архитектура по умолчанию — если один агент справляется, не усложняй.
 </div>
+
 
 `);
 
@@ -37234,6 +37261,18 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-10-06",
+    title: "Фактчек уроков 13–24",
+    tag: "fix",
+    items: [
+      "Урок 16: исправлена грубая ошибка про браузерного агента Operator, обновлены инструменты для кода (Copilot cloud agent, AutoGen в режиме поддержки)",
+      "Урок 17: рабочий код агентного цикла для Claude API, вместо выдуманной цитаты пересказ статьи Anthropic, LangChain 1.0",
+      "Урок 21: Computer Use не даёт песочницу, номер Excessive Agency по OWASP 2026, 152-ФЗ и лимиты расходов",
+      "Урок 12: список угроз по актуальной редакции OWASP Top 10 for LLM 2026",
+      "Уроки 13, 14, 15, 18, 19, 20, 22, 23: строгий режим схемы, лимиты Vercel и Netlify, пример с Figma, Tree-of-Thoughts, мелкие уточнения"
+    ]
+  },
   {
     date: "2026-10-06",
     title: "Фактчек уроков 1–12",
