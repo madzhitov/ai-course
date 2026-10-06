@@ -1178,3 +1178,7 @@ body.v6 .lesson-content .v6-page .v6-gate-t { hyphens:manual !important; -webkit
 .v6-calc-fx { border-top:1px solid #DDE1EA; padding-top:12px; }
 .v6-calc-fx ul { margin:6px 0 0; padding-left:18px; display:flex; flex-direction:column; gap:4px; }
 .v6-calc-fx li { font-size:15px; color:var(--text-2); }
+
+/* пока страница грузит данные, подвал не должен мелькать на первом экране и потом прыгать вниз (CLS) */
+body.v6 .lesson-content .v6-page { min-height:100vh; }
+.v6-copk-i.is-free .v6-meta { color:var(--text-2); }

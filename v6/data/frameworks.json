@@ -852,7 +852,8 @@
    "updated": "2026-10-04",
    "terms": [],
    "units": [
-    "u-marketing-channel"
+    "u-marketing-channel",
+    "u-marketing-ltv-cac"
    ],
    "agencyDoor": null,
    "full": true,
@@ -2172,7 +2173,9 @@
     "i14",
     "i11"
    ],
-   "units": [],
+   "units": [
+    "u-product-rice"
+   ],
    "agencyDoor": null,
    "sources": [
     "https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/"
@@ -3011,7 +3014,9 @@
     "stock-turnover"
    ],
    "lessons": [],
-   "units": [],
+   "units": [
+    "u-seller-pnl"
+   ],
    "agencyDoor": null,
    "sources": [
     "https://en.wikipedia.org/wiki/Contribution_margin",
@@ -3218,7 +3223,8 @@
    "lessons": [],
    "units": [
     "u-unit-economics-channels",
-    "u-seller-next-channel"
+    "u-seller-next-channel",
+    "u-seller-ads-budget"
    ],
    "agencyDoor": "Сводный отчёт по каналам, который собирается сам: услуга агентства (пример: Бертольд)",
    "updated": "2026-10-04",
@@ -3634,7 +3640,9 @@
     "ecom-pnl"
    ],
    "lessons": [],
-   "units": [],
+   "units": [
+    "u-seller-ads-budget"
+   ],
    "agencyDoor": null,
    "sources": [
     "https://ads.vk.ru/insights/chto-takoe-drr",
@@ -3774,7 +3782,9 @@
     "unit-economics-sku"
    ],
    "lessons": [],
-   "units": [],
+   "units": [
+    "u-seller-funnel"
+   ],
    "agencyDoor": null,
    "sources": [
     "https://seller.wildberries.ru/instructions/ru/ru/material/sellers-analytics",

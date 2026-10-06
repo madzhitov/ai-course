@@ -63,8 +63,7 @@
       },
       {
        "id": "seller.listing.funnel",
-       "title": "Найти, где карточка теряет покупателей",
-       "status": "new"
+       "title": "Найти, где карточка теряет покупателей"
       }
      ],
      "description": "Одно описание для всех каналов"
@@ -75,8 +74,7 @@
      "tasks": [
       {
        "id": "seller.promo.ads-threshold",
-       "title": "Понять, сколько можно тратить на рекламу",
-       "status": "new"
+       "title": "Понять, сколько можно тратить на рекламу"
       },
       {
        "id": "seller.promo.marketplace-ads",
@@ -144,8 +142,7 @@
       },
       {
        "id": "seller.money.pnl",
-       "title": "Собрать P&L магазина или кабинета",
-       "status": "new"
+       "title": "Собрать P&L магазина или кабинета"
       }
      ],
      "description": "Сводный P&L по всем каналам"

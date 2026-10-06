@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сколько можно платить за клиента — Артефакты</title>
+<meta name="description" content="Сколько можно платить за клиента. LTV за выбранный срок, CAC по каналам за тот же период, их отношение и предел стоимости клиента с запасом на постоянные расходы По шагам, с готовым промптом, около 40">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Сколько можно платить за клиента">
+<meta property="og:description" content="Сколько можно платить за клиента. LTV за выбранный срок, CAC по каналам за тот же период, их отношение и предел стоимости клиента с запасом на постоянные расходы По шагам, с готовым промптом, около 40">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:url" content="https://ai.madzhitov.ru/zadaniya/u-marketing-ltv-cac.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/zadaniya/u-marketing-ltv-cac.html">
+<link rel="preload" href="../v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../v6/fonts/fonts.css?v=0e1f3d7b">
+<link rel="stylesheet" href="../tropa-lesson.css">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+  .st-calc-res { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap:10px; }
+  .st-calc-r { background:#F3F4F7; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); }
+  .st-calc-r b { font-size:24px; line-height:1.15; font-weight:800; color:#16161A; }
+  .st-calc-r.is-main b { font-size:36px; }
+  .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
+  .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Сколько можно платить за клиента","description":"Сколько можно платить за клиента. LTV за выбранный срок, CAC по каналам за тот же период, их отношение и предел стоимости клиента с запасом на постоянные расходы По шагам, с готовым промптом, около 40","url":"https://ai.madzhitov.ru/zadaniya/u-marketing-ltv-cac.html","inLanguage":"ru","totalTime":"PT40M","tool":[{"@type":"HowToTool","name":"калькулятор LTV / CAC"},{"@type":"HowToTool","name":"таблица или CRM"},{"@type":"HowToTool","name":"Алиса AI"},{"@type":"HowToTool","name":"GigaChat"},{"@type":"HowToTool","name":"любой чат-ИИ"}],"step":[{"@type":"HowToStep","position":1,"name":"Выберите срок и клиента","text":"Клиент: тот, кто купил хотя бы раз. Срок, за который считаете LTV, например 12 месяцев: так же считает таблица «План проверки канала». Всегда пишите срок рядом с результатом: LTV за год и LTV за всё время сильно отличаются."},{"@type":"HowToStep","position":2,"name":"Посчитайте LTV","text":"Откройте калькулятор LTV / CAC. Средний чек: выручка / число покупок за срок. Маржа: доля, что остаётся после себестоимости, а не выручка и не чистая прибыль. Число покупок на клиента за срок. Калькулятор покажет LTV по марже в рублях. Число покупок на клиента: все покупки за срок / число клиентов, которые покупали за этот срок."},{"@type":"HowToStep","position":3,"name":"Посчитайте CAC по каналам","text":"CAC канала: все расходы на привлечение в этом канале за период (реклама, скидки новичкам, зарплаты и подрядчики по привлечению) / число новых клиентов из него за тот же период. Если можно, считайте по каналам отдельно: они приводят разных клиентов."},{"@type":"HowToStep","position":4,"name":"Сравните и найдите предел","text":"Введите CAC в калькулятор и посмотрите LTV / CAC. Ориентир «больше 3» Дэвид Скок приводил для подписочного софта, для магазина или школы он не проверялся. Предел CAC: LTV минус запас на аренду, зарплаты и прибыль. Посчитайте его в таблице «План проверки канала» на листе «Клиент»: средний чек, себестоимость, покупок за год и запас в процентах дадут «Порог стоимости клиента»."},{"@type":"HowToStep","position":5,"name":"Запишите решение","text":"Для каждого канала: в пределах, на грани или выше предела, и что делаете. Через квартал пересчитайте: LTV и CAC меняются."}]}</script>
+<link rel="stylesheet" href="../v6/static.css?v=43fcca59">
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../#roles">Роли</a><a href="../#tasks">Задачи</a><a href="../#paths">Обучение</a><a href="../#knowledge">Знания</a></nav></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../zadaniya/">Задания по шагам</a></div>
+    <h1>Сколько можно платить за клиента</h1>
+    <p class="lead">LTV за выбранный срок, CAC по каналам за тот же период, их отношение и предел стоимости клиента с запасом на постоянные расходы</p>
+    <p class="st-meta">около 40 мин · с нуля · без VPN · задача «Понять, сколько можно платить за клиента»</p>
+    <p class="st-meta">Черновик на согласовании: текст может уточняться.</p>
+    <h2>Чем делать</h2><p>калькулятор LTV / CAC, таблица или CRM, Алиса AI, GigaChat, любой чат-ИИ</p>
+    <h2>Что подготовить</h2><ul class="st-list"><li>Данные кассы или CRM: выручка, число покупок, число клиентов за срок</li><li>Расходы на привлечение по каналам за тот же период и число новых клиентов</li></ul>
+    <h2>Шаги</h2>
+    <h3>1. Выберите срок и клиента</h3><p>Клиент: тот, кто купил хотя бы раз. Срок, за который считаете LTV, например 12 месяцев: так же считает таблица «План проверки канала». Всегда пишите срок рядом с результатом: LTV за год и LTV за всё время сильно отличаются.</p>
+    <h3>2. Посчитайте LTV</h3><p>Откройте калькулятор LTV / CAC. Средний чек: выручка / число покупок за срок. Маржа: доля, что остаётся после себестоимости, а не выручка и не чистая прибыль. Число покупок на клиента за срок. Калькулятор покажет LTV по марже в рублях. Число покупок на клиента: все покупки за срок / число клиентов, которые покупали за этот срок.</p>
+    <h3>3. Посчитайте CAC по каналам</h3><p>CAC канала: все расходы на привлечение в этом канале за период (реклама, скидки новичкам, зарплаты и подрядчики по привлечению) / число новых клиентов из него за тот же период. Если можно, считайте по каналам отдельно: они приводят разных клиентов.</p><div class="st-prompt">Помоги разложить мои расходы на привлечение по каналам и посчитать CAC.<br>Расходы за [период]: [перечислите статьи и суммы, к какому каналу относятся].<br>Новые клиенты за тот же период по каналам: [числа].<br>Сделай таблицу: канал, все расходы на привлечение, новые клиенты, CAC. Отдельно отметь расходы, которые я, возможно, забыл(а): зарплаты, подрядчики, скидки новичкам.<br>Не придумывай цифры. Если расход нельзя отнести к каналу, оставь его отдельной строкой.</div>
+    <h3>4. Сравните и найдите предел</h3><p>Введите CAC в калькулятор и посмотрите LTV / CAC. Ориентир «больше 3» Дэвид Скок приводил для подписочного софта, для магазина или школы он не проверялся. Предел CAC: LTV минус запас на аренду, зарплаты и прибыль. Посчитайте его в таблице «План проверки канала» на листе «Клиент»: средний чек, себестоимость, покупок за год и запас в процентах дадут «Порог стоимости клиента».</p>
+    <h3>5. Запишите решение</h3><p>Для каждого канала: в пределах, на грани или выше предела, и что делаете. Через квартал пересчитайте: LTV и CAC меняются.</p><ul class="st-list"><li>LTV посчитан по марже, а не по выручке, срок записан</li><li>CAC включает зарплаты, подрядчиков и скидки новичкам</li><li>Расходы и новые клиенты взяты за один и тот же период</li><li>CAC посчитан по каналам, где это возможно</li><li>Порог 3 не принят за закон: проверен запас на постоянные расходы</li></ul>
+    <h2>Если получилось почти</h2><ul class="st-list"><li>LTV получился огромным. Проверьте, что считаете по марже и за срок, а не по выручке за всё время</li><li>CAC подозрительно низкий. Скорее всего, в него не вошли зарплаты и подрядчики</li><li>Один канал выглядит плохо по CAC, но его клиенты покупают чаще. Посчитайте LTV для клиентов этого канала отдельно</li></ul>
+    <h2>Пригодится из набора продавца</h2><ul class="st-list"><li><a href="../#res-r-channel-plan">План проверки канала</a>: Сколько приносит клиент, порог остановки и стоимость клиента по неделям</li></ul>
+    <h2>Опирается на методы</h2><p><a href="../metody/ltv-cac.html">LTV / CAC</a></p>
+    
+    <div class="pp-open"><a href="../#unit-u-marketing-ltv-cac">Пройти с отметками шагов и записью в тетрадь →</a></div>
+  </div>
+</main>
+</body>
+</html>

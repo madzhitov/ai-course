@@ -1499,12 +1499,12 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     const c = BS.check, Q = c.questions, S = BS.stages;
     const opt = (t, on) => `<button type="button" class="v6b is-soft" onclick="${on}">${t}</button>`;
     if (BSC.rev === null) {
-      box.innerHTML = `<p class="v6-meta">Шаг 1 из 14</p><h3 class="v6-h3">Какая годовая выручка бренда?</h3><div class="v6-bs-opts">${S.map((x, i) => opt(`${e(x.name)} <small>${e(x.revenue)}</small>`, `V6.bsRev(${i})`)).join('')}</div>`;
+      box.innerHTML = `<p class="v6-meta">Шаг 1 из 14</p><h2 class="v6-h3">Какая годовая выручка бренда?</h2><div class="v6-bs-opts">${S.map((x, i) => opt(`${e(x.name)} <small>${e(x.revenue)}</small>`, `V6.bsRev(${i})`)).join('')}</div>`;
       return;
     }
     if (BSC.i < Q.length) {
       const q = Q[BSC.i];
-      box.innerHTML = `<p class="v6-meta">Шаг ${BSC.i + 2} из 14 · ${e(q.area)}</p><h3 class="v6-h3">${e(q.q)}</h3>
+      box.innerHTML = `<p class="v6-meta">Шаг ${BSC.i + 2} из 14 · ${e(q.area)}</p><h2 class="v6-h3">${e(q.q)}</h2>
         <div class="v6-bs-opts">${[['Да', 2], ['Частично', 1], ['Нет', 0]].concat(q.na ? [['Не применимо', -1]] : []).map(([t, v]) => opt(t, `V6.bsAns(${v})`)).join('')}</div>
         <button type="button" class="v6-link" onclick="V6.bsBack()">← назад</button>`;
       return;
@@ -1517,7 +1517,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     const stOf = (id) => S.find((x) => x.id === id);
     box.innerHTML = `<div class="v6-bs-res"><div><span class="v6-meta">Стадия по выручке</span><b>${e(S[BSC.rev].name)}</b><small>${e(S[BSC.rev].revenue)}</small></div><div><span class="v6-meta">Готовность процессов</span><b>${e(S[r].name)}</b><small>${pct}% по 13 направлениям</small></div></div>
       <div class="v6-bs-gap${gap === c.gaps.behind ? ' is-risk' : ''}"><b>${e(gap.label)}</b><p>${e(gap.text)}</p></div>
-      <h3 class="v6-h3">Самые слабые места</h3>
+      <h2 class="v6-h3">Самые слабые места</h2>
       ${weak.length ? `<ul class="v6-bs-weak">${weak.map((x) => { const st = stOf(x.q.stage); return `<li><b>${e(x.q.area)}</b><span>${e(x.q.fix)}</span>${st ? `<button type="button" class="v6-link" onclick="V6.bsGo('${e(st.id)}')">Что делать: стадия «${e(st.name)}» →</button>` : ''}</li>`; }).join('')}</ul>` : '<p>Явных провалов нет. Точную глубину покажет аудит на ваших данных.</p>'}
       <span class="v6-btns"><button type="button" class="v6b is-accent" onclick="V6.bsGo('${e(S[BSC.rev].id)}')">К делам стадии «${e(S[BSC.rev].name)}»</button><button type="button" class="v6b is-soft" onclick="V6.bsReset()">Пройти заново</button></span>`;
   }
