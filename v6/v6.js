@@ -1199,7 +1199,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       <div class="v6-ugrid"><aside class="v6-lside"><span class="v6-lside-t">Шаги</span><nav class="v6-lsteps">${stepsNav}</nav>
           ${fws.length ? `<span class="v6-lside-l" style="padding-top:16px">Опирается на</span>${fws.map((c) => `<a class="v6-lstep" href="#fw-${e(c.id)}" onclick="V6.openFw('${e(c.id)}','unit'); return false;"><span>${e(c.title)}</span></a>`).join('')}` : ''}
           ${u.fromLesson && lessonOf(u.fromLesson) && lessonOf(u.fromLesson).content ? `<span class="v6-lside-l" style="padding-top:16px">Почему это работает</span><a class="v6-lstep" href="#lesson-${e(u.fromLesson)}" onclick="openLesson(${lessonArg(u.fromLesson)}); return false;"><span>Урок: ${e(lessonOf(u.fromLesson).title.split(':')[0])}</span></a>` : ''}
-          ${kit.length ? `<span class="v6-lside-l" style="padding-top:16px">Из набора продавца</span>${kit.map((r) => `<a class="v6-lstep" href="#res-${e(r.id)}" onclick="V6.openRes('${e(r.id)}','unit'); return false;"><span>${e(r.title)}</span></a>`).join('')}` : ''}</aside>
+          ${kit.length ? `<span class="v6-lside-l" style="padding-top:16px">Инструменты к заданию</span>${kit.map((r) => `<a class="v6-lstep" href="#res-${e(r.id)}" onclick="V6.openRes('${e(r.id)}','unit'); return false;"><span>${e(r.title)}</span></a>`).join('')}` : ''}</aside>
         <div>${card}</div></div>
       ${fin ? '' : `<div class="v6-lbar"><div class="v6c v6-lbar-in"><span class="v6-lbar-l">Шаг ${i + 1} из ${n}</span><span class="v6-lbar-r">${i > 0 ? `<button class="v6b is-soft v6-btn-lg" onclick="V6.unitGo('${e(id)}', ${i - 1})">Назад</button>` : ''}<button class="v6b v6-btn-lg" onclick="V6.unitGo('${e(id)}', ${i + 1})">${i + 1 < n ? 'Готово, дальше' : 'Готово'}</button></span></div></div>`}`;
   }
@@ -1388,7 +1388,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         track('res-open', { res: id, from: from || 'link' });
         const c = r.content || {};
         const fws = (r.basedOn || []).map(fwById).filter(Boolean);
-        const crumbsTo = from === 'tools' ? `<a onclick="V6.open('knowledge')">Знания</a><span>/</span><a onclick="V6.ktab('tools')">Инструменты</a>` : `<a onclick="V6.openSellerPath('res')">От селлера к бренду</a><span>/</span><a onclick="V6.openSellerPath('res')">Набор продавца</a>`;
+        const crumbsTo = !['path', 'res', 'kit'].includes(from) ? `<a onclick="V6.open('knowledge')">Знания</a><span>/</span><a onclick="V6.ktab('tools')">Инструменты</a>` : `<a onclick="V6.openSellerPath('res')">От селлера к бренду</a><span>/</span><a onclick="V6.openSellerPath('res')">Набор продавца</a>`;
         const head = `<nav class="v6-crumbs" aria-label="Где вы">${crumbsTo}<span>/</span><span>${e(r.title)}</span></nav>
           <section class="v6-uhead"><span class="v6-eyebrow">${e(RES_KIND[r.kind] || r.kind)}</span><h1 class="v6-d">${e(r.title)}</h1><p class="v6-phero-lead">${e(c.intro || r.gives || '')}</p>
             ${fws.length ? `<span class="v6-tags">${fws.map((f) => `<a class="v6t is-grey" href="#fw-${e(f.id)}" onclick="V6.openFw('${e(f.id)}','res'); return false;">метод · ${e(f.title)}</a>`).join('')}</span>` : ''}</section>`;
