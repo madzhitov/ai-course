@@ -510,7 +510,10 @@
    ],
    "updated": "2026-10-04",
    "terms": [],
-   "units": [],
+   "units": [
+    "u-marketing-offer",
+    "u-product-interview"
+   ],
    "agencyDoor": null,
    "full": true,
    "checked": {
@@ -829,7 +832,9 @@
    ],
    "updated": "2026-10-04",
    "terms": [],
-   "units": [],
+   "units": [
+    "u-marketing-channel"
+   ],
    "agencyDoor": null,
    "full": true,
    "checked": {
