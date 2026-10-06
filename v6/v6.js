@@ -1520,10 +1520,10 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         <section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Пять стадий</h2></div><div class="v6-bs-list" id="v6-bs-list">${BS.stages.map((s) => bsStage(s, s.id === here)).join('')}</div></section>
         <section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Как устроен метод</h2><p>Диагностику вы делаете сами на этой странице. Аудит на ваших данных и внедрение мы делаем вместе с командой.</p></div></div>
           <div class="v6-bs-layers">${m.layers.map((x, i) => `<div class="v6-card"><span class="v6-meta">0${i + 1}</span><b>${e(x.name)}</b><p>${e(x.text)}</p></div>`).join('')}</div>
-          <h3 class="v6-h3" style="margin-top:40px">Что измеряем: ${m.tracks.length} направлений</h3>
+          <h3 class="v6-h3 v6-bs-sub">Что измеряем: ${m.tracks.length} направлений</h3>
           <p class="v6-meta">Зрелость не одно число. Продукт может быть на стадии роста, а данные ещё на запуске. Диагностика смотрит эти направления снаружи, аудит на ваших данных.</p>
           <span class="v6-tags" style="margin-top:12px">${m.tracks.map((t) => `<span class="v6t is-grey">${e(t)}</span>`).join('')}</span>
-          <h3 class="v6-h3" style="margin-top:40px">Что чиним: шесть контуров</h3>
+          <h3 class="v6-h3 v6-bs-sub">Что чиним: шесть контуров</h3>
           <p class="v6-meta">Порядок не случайный: сначала данные, на них стоит всё остальное.</p>
           <div class="v6-bs-cont">${m.contours.map((x) => `<div class="v6-bs-c"><span class="v6-meta">${e(x.kind)}</span><b>${e(x.name)}</b><p>${e(x.text)}</p><small>${x.tracks.map(e).join(' · ')}</small></div>`).join('')}</div>
           <p class="v6-meta" style="margin-top:28px">Основа метода: ${m.sources.map((x) => `${e(x.author)}, ${e(x.title)}`).join('; ')}.</p></section>

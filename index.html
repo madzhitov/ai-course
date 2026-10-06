@@ -34,8 +34,8 @@
 <!-- Шрифты v6: самохостинг, Google Fonts в РФ блокируется -->
 <link rel="preload" href="v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="v6/fonts/montserrat-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="v6/fonts/fonts.css?v=bb3c2d89">
-<link rel="stylesheet" href="v6/v6.css?v=bb3c2d89">
+<link rel="stylesheet" href="v6/fonts/fonts.css?v=e5e423c4">
+<link rel="stylesheet" href="v6/v6.css?v=e5e423c4">
 
 <!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js">
@@ -4130,7 +4130,7 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
   </div>
 </div>
 <script defer src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
-<script src="v6/v6.js?v=bb3c2d89"></script>
+<script src="v6/v6.js?v=e5e423c4"></script>
 
 <!-- Alesha — persistent AI tutor widget -->
 <div class="alesha-widget" id="alesha-widget" data-lesson-title="" data-lesson-id="">
@@ -38332,7 +38332,7 @@ function renderAbout() {
     <p class="about-quiet">Готово ${written} из ${total} уроков, плюс задачи по ролям, карточки методов, словарь и набор шаблонов. Платформа дописывается: где готово, то и проходите.</p>
 
     <div class="callout callout-info about-author">
-      «Артефакты» собирает и обновляет <a href="https://madzhitov.ru" target="_blank" rel="noopener"><strong>Руслан Маджитов</strong></a>. Здесь то, что он сам делает в работе: ИИ в продажах, маркетинге и продуктах, агенты, Claude, автоматизации. Вопросы и предложения: <a href="https://t.me/madzhitov" target="_blank" rel="noopener">@madzhitov</a> в Telegram.
+      «Артефакты» собирает и обновляет <a href="https://madzhitov.ru" target="_blank" rel="noopener"><strong>Руслан Маджитов</strong></a>. Двадцать лет в российском e‑commerce и ритейле: операционный директор и CMO, потом консультант и агентство. Работал с Mixit, HomeMe, Ангстремом, СберЕаптекой. Здесь то, что он сам делает в работе: ИИ в продажах, маркетинге и продуктах, агенты, Claude, автоматизации. Вопросы и предложения: <a href="https://t.me/madzhitov" target="_blank" rel="noopener">@madzhitov</a> в Telegram.
     </div>
 
     <a href="https://t.me/artefakty_ai" target="_blank" rel="noopener" onclick="umTrack('tg-click', { from: 'about' })" style="display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: inherit; margin-bottom: 2rem;">
@@ -38357,7 +38357,8 @@ function renderAbout() {
       <li><strong><a href="#unit-u-seller-reviews" onclick="V6.openUnit('u-seller-reviews','about'); return false;">Задания по шагам</a>.</strong> Как сделать задачу за час: шаги, готовый промпт, проверка по чек-листу. В конце вопрос «Получилось?», и если почти, то частые причины и как поправить. Пример: «Ответы на отзывы пачкой».</li>
       <li><strong><a href="#knowledge" onclick="V6.open('knowledge'); return false;">Методы</a>.</strong> Каким методом думать о задаче: юнит-экономика, RFM, воронка, JTBD. В карточке калькулятор или заготовка запроса.</li>
       <li><strong><a href="#knowledge-lessons" onclick="V6.ktab('lessons'); return false;">Уроки</a>.</strong> Почему это работает. Для тех, кто хочет понимать, а не только делать.</li>
-      <li><strong><a href="#paths" onclick="V6.open('paths'); return false;">Пути</a>.</strong> В каком порядке: главный путь для всех и пути ролей, у продавца это «От селлера к бренду».</li>
+      <li><strong><a href="#paths" onclick="V6.open('paths'); return false;">Обучение</a>.</strong> В каком порядке: главный путь для всех и пути ролей, у продавца это «От селлера к бренду».</li>
+      <li><strong><a href="#brand-stages" onclick="V6.open('brand-stages'); return false;">Стадии бренда</a>.</strong> Где ваш бренд: пять стадий от запуска до зрелости, диагностика за 3 минуты и первые дела для каждой стадии.</li>
       <li><strong><a href="#notebook" onclick="V6.open('notebook'); return false;">Тетрадь</a>.</strong> Что вы уже сделали: результаты задач и заметки к урокам.</li>
       <li><strong><a href="#" onclick="umTrack('alyosha-open', { from: 'about' }); aleshaToggle(); return false;">Алёша</a>.</strong> ИИ-наставник: объяснит урок на вашем примере и сверит работу по рубрике.</li>
     </ul>
@@ -38377,6 +38378,7 @@ function renderAbout() {
     </ul>
 
     <h2>Откуда содержание</h2>
+    <p>Задачи, пути продавца и «Стадии бренда» собраны из авторского опыта: двадцать лет запусков и перезапусков онлайн-продаж в российском e‑commerce и ритейле, в штате, на интериме и советником. Что делать и в каком порядке, взято из работы с брендами и продавцами. Примеры в заданиях условные, чтобы не раскрывать данные клиентов.</p>
     <p>Основа уроков главного пути: четыре открытых курса Microsoft на лицензии MIT (generative-ai-for-beginners, ai-agents-for-beginners, AI-For-Beginners, ML-For-Beginners). Они переработаны в один путь, дополнены примерами на русском и актуальными моделями.</p>
     <p>Карточки методов собраны по первоисточникам: книгам, статьям и документации. У каждой полной карточки есть дата сверки. Модели и цены в уроках подставляются из справочника, его проверяют каждую неделю, чтобы уроки не устаревали.</p>
     <p>Код сайта открыт на <a href="https://github.com/madzhitov/ai-course" target="_blank" rel="noopener">GitHub</a> под лицензией MIT.</p>

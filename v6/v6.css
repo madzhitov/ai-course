@@ -1146,3 +1146,6 @@ a.v6-bs-l:hover { background:#E3E8F2; }
   .v6-hlearn .v6-btns { flex-wrap:nowrap; flex-shrink:0; }
 }
 @media (min-width:901px) { .v6-hlearn > span:first-child { min-width:0; } .v6-hlearn .v6-meta { font-size:14px; } }
+/* подзаголовки метода на «Стадиях бренда»: общее правило обнуляет margin у заголовков, поэтому отступ здесь с !important */
+body.v6 .lesson-content .v6-page h3.v6-bs-sub { margin:64px 0 8px !important; }
+body.v6 .lesson-content .v6-page .v6-bs-layers + h3.v6-bs-sub { margin-top:56px !important; }
