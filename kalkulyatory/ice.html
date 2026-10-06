@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Калькулятор ICE для гипотез роста — Артефакты</title>
+<meta name="description" content="Быстрая оценка гипотез по влиянию, уверенности и простоте: ICE-балл и как им пользоваться.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Калькулятор ICE для гипотез роста">
+<meta property="og:description" content="Быстрая оценка гипотез по влиянию, уверенности и простоте: ICE-балл и как им пользоваться.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:url" content="https://ai.madzhitov.ru/kalkulyatory/ice.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/kalkulyatory/ice.html">
+<link rel="preload" href="../v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../v6/fonts/fonts.css?v=0e1f3d7b">
+<link rel="stylesheet" href="../tropa-lesson.css">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Калькулятор ICE для гипотез роста","url":"https://ai.madzhitov.ru/kalkulyatory/ice.html","inLanguage":"ru","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"RUB"},"author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
+<link rel="stylesheet" href="../v6/static.css?v=43fcca59">
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../#roles">Роли</a><a href="../#tasks">Задачи</a><a href="../#paths">Обучение</a><a href="../#knowledge">Знания</a></nav></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> / <a href="../kalkulyatory/">Калькуляторы</a></div>
+    <h1>Калькулятор ICE для гипотез роста</h1><p class="lead">Быстро отсортировать десятки гипотез роста и выбрать, какие проверять первыми</p>
+<div class="st-calc" id="calc"><div class="st-calc-in"><label>Impact: насколько сдвинет метрику<span><input inputmode="decimal" data-in="impact" value="7" aria-label="Impact: насколько сдвинет метрику"><i>баллов (1–10)</i></span></label><label>Confidence: насколько уверены в результате<span><input inputmode="decimal" data-in="confidence" value="8" aria-label="Confidence: насколько уверены в результате"><i>баллов (1–10)</i></span></label><label>Ease: насколько легко проверить<span><input inputmode="decimal" data-in="ease" value="9" aria-label="Ease: насколько легко проверить"><i>баллов (1–10)</i></span></label></div><div class="st-calc-out"><span>ICE-балл гипотезы</span><b class="st-calc-n">—</b></div><p class="st-calc-f">ICE = (Impact + Confidence + Ease) / 3, как в книге «Hacking Growth». Каждая оценка от 1 до 10, итог тоже от 1 до 10; чем выше, тем раньше проверять. Встречается и произведение трёх оценок (так считает, например, Итамар Гилад): оно сильнее наказывает гипотезы с одной низкой оценкой. Выберите один способ и не смешивайте их в одном списке.</p></div>
+<p class="st-meta">Считается в браузере, числа никуда не отправляются.</p>
+<h2>Как считать</h2><ol class="st-list"><li><b>Выпишите гипотезы одним форматом.</b> Для каждой: что делаем, для кого, какую метрику сдвинет. Расплывчатое «улучшить сайт» оценить невозможно.</li><li><b>Договоритесь о шкалах.</b> Что для вас 10 и что 1 по каждому из трёх критериев. Оценки идут от 1 до 10. Impact: насколько сдвинет выбранную метрику. Confidence: насколько вы уверены, что получится. Ease: насколько просто и быстро проверить.</li><li><b>Оцените Impact.</b> Каждую гипотезу по общему для всех шкале, в идеале командой, а не в одиночку.</li><li><b>Оцените Confidence честно.</b> Высокая оценка нужна тем гипотезам, за которыми есть данные, предыдущий тест или опыт. Догадка получает низкий балл.</li><li><b>Оцените Ease.</b> Чем меньше времени и людей нужно, чтобы запустить проверку, тем выше балл. Это не про то, насколько хочется.</li><li><b>Посчитайте и отсортируйте.</b> В книге «Hacking Growth» три оценки усредняют: (Impact + Confidence + Ease) / 3. Затем отсортируйте гипотезы по убыванию. Вручную или в калькуляторе ниже.</li><li><b>Возьмите верхние и пересчитайте после теста.</b> В работу идут гипотезы сверху списка. После теста пересмотрите Confidence у похожих идей: вы узнали новое.</li></ol>
+<h2>Пример</h2><p>Интернет-магазин одежды выбирает, какую гипотезу роста продаж проверить первой. Письмо о забытой корзине: Impact 7, Confidence 8, Ease 9, итого (7 + 8 + 9) / 3 = 8,0. Для сравнения: таблица размеров прямо в карточке товара (6, 6, 8, итого 6,7) и коллаборация с блогером (9, 3, 3, итого 5,0). Коллаборация обещает больше всего, но уверенности нет, и запустить её сложно, поэтому она последняя. Первым идёт письмо о забытой корзине: уверенность высокая, проверить можно за неделю.</p>
+<h2>Частые ошибки</h2><ul class="st-list"><li>Оценивать в одиночку и подгонять баллы под желаемую гипотезу</li><li>Ставить высокий Confidence без данных или прошлых тестов</li><li>Менять шкалу от гипотезы к гипотезе или смешивать в одном списке произведения и средние</li><li>Считать итог точным числом: это подсказка для порядка, а не измерение</li><li>Не пересчитывать Confidence после теста</li></ul>
+<h2>Дальше</h2><ul class="st-list"><li>Карточка метода: <a href="../metody/ice.html">ICE</a></li><li><a href="../kalkulyatory/">Все калькуляторы</a> · <a href="../instrumenty/">таблицы и чек-листы</a></li></ul>
+<script>(function(){var X={"inputs":[{"id":"impact","kind":"number"},{"id":"confidence","kind":"number"},{"id":"ease","kind":"number"}],"expr":"(impact + confidence + ease) / 3","result":{"label":"ICE-балл гипотезы","unit":"баллов","digits":1}};var box=document.getElementById('calc');function num(id){var el=box.querySelector('[data-in="'+id+'"]');var v=parseFloat(String(el&&el.value||'0').replace(/\s/g,'').replace(',','.'));return isFinite(v)?v:0;}function run(){var v={};X.inputs.forEach(function(i){v[i.id]=num(i.id);});var out=box.querySelector('.st-calc-n');if(X.expr){var ids=Object.keys(v);var names=X.expr.match(/[A-Za-z_]\w*/g)||[];var r=NaN;if(/^[\w\s+\-*\/().]+$/.test(X.expr)&&names.every(function(n){return ids.indexOf(n)>-1;})){try{r=Function.apply(null,ids.concat('return ('+X.expr+');')).apply(null,ids.map(function(k){return v[k];}));}catch(e){}}var d=X.result&&X.result.digits!=null?X.result.digits:1;out.textContent=isFinite(r)?r.toLocaleString('ru-RU',{maximumFractionDigits:d})+(X.result&&X.result.unit?' '+X.result.unit:''):'—';return;}var price=v[X.inputs[0].id];var spent=X.inputs.slice(1).reduce(function(n,i){return n+(i.kind==='percent'?price*v[i.id]/100:v[i.id]);},0);var left=price-spent;out.textContent=Math.round(left).toLocaleString('ru-RU')+' ₽ · '+(price?Math.round(left/price*100):0)+'%';}box.addEventListener('input',run);run();})();</script>
+    <div class="pp-open"><a href="../#fw-ice">Открыть в интерактивной версии →</a></div>
+  </div>
+</main>
+</body>
+</html>

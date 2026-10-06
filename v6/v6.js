@@ -885,7 +885,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       } else if (KT === 'dict') {
         body = `<div class="v6-kf"><span class="v6-meta">Область</span><div class="v6-pills">${pill('area', '', 'Все')}${DICT.areas.filter((a) => DICT.terms.some((t) => t.area === a.id)).map((a) => pill('area', a.id, e(a.title))).join('')}</div></div><div id="v6-dictlist"></div>`;
       } else if (KT === 'tools') {
-        body = `<p class="v6-tools-lead">Таблицы с формулами, калькуляторы и чек-листы, которые можно забрать и пользоваться. У каждой вещи видно, к какому заданию она относится.</p><div id="v6-toollist"></div>`;
+        body = `<p class="v6-tools-lead">Таблицы с формулами, калькуляторы и чек-листы, которые можно забрать и пользоваться. У каждой вещи видно, к какому заданию она относится. <a href="kalkulyatory/">Все калькуляторы на отдельных страницах</a>.</p><div id="v6-toollist"></div>`;
       } else {
         body = `<p class="v6-meta" style="margin:0 0 8px">Все уроки по главному пути и Тропинкам. Отметка «пройден» хранится в этом браузере.</p><div id="v6-lessonlist"></div>`;
       }
