@@ -32,6 +32,22 @@
   .st-term b { font-size:18px; }
   .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
   .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+  .st-calc-res { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap:10px; }
+  .st-calc-r { background:#F3F4F7; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); }
+  .st-calc-r b { font-size:24px; line-height:1.15; font-weight:800; color:#16161A; }
+  .st-calc-r.is-main b { font-size:36px; }
+  .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
+  .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Ассортиментная матрица и ценовая лестница","description":"Ассортиментная матрица и ценовая лестница. Таблица ассортимента: роль каждого товара, ступени цены от входной до премиальной, вклад в маржу и стабильность спроса. Плюс три решения: что пополнять в пер","url":"https://ai.madzhitov.ru/zadaniya/u-seller-assortment-matrix.html","inLanguage":"ru","totalTime":"PT50M","tool":[{"@type":"HowToTool","name":"Google Таблицы или Excel"},{"@type":"HowToTool","name":"Алиса AI"},{"@type":"HowToTool","name":"GigaChat"},{"@type":"HowToTool","name":"любой чат-ИИ"}],"step":[{"@type":"HowToStep","position":1,"name":"Выгрузите продажи по товарам","text":"Из кабинетов и своей системы: товар, штуки по месяцам, выручка или маржинальный доход за период. Новинки, которые продаются меньше полугода, и сезонные товары пометьте отдельно: их нельзя сравнивать с остальными напрямую."},{"@type":"HowToStep","position":2,"name":"Разложите товары по вкладу и стабильности","text":"Заполните шаблон «Ассортиментная матрица» из набора продавца или отправьте таблицу в чат с промптом. Названия товаров можно заменить артикулами. Если считаете по марже, впишите маржинальный доход в колонку «Выручка за период». В шаблоне 6 месяцев: возьмите последние шесть."},{"@type":"HowToStep","position":3,"name":"Назначьте роли и ступени цены","text":"У каждого товара своя работа. Входной приводит новых покупателей и даёт попробовать бренд. Основной зарабатывает. Премиальный поднимает средний чек и показывает, на что бренд способен. Расставьте товары по трём ступеням цены и посмотрите на разрывы между ними. В шаблоне роли названы подробнее: «Трафик» это входной, «Имидж» премиальный, «Дополнение» идёт к основному."},{"@type":"HowToStep","position":4,"name":"Сверьтесь с деньгами","text":"Роль не оправдывает убыток. Если входной товар продаётся в минус, это стоимость привлечения покупателя: сравните её с тем, что этот покупатель потом приносит. Если повторных покупок не видно, держите убыточный входной товар как временный эксперимент с датой пересмотра. Товары группы C без роли и с убытком первые кандидаты на вывод."},{"@type":"HowToStep","position":5,"name":"Примите три решения","text":"Запишите: какие товары пополнять в первую очередь (обычно A и X), какие вывести или перестать допроизводить, какой ступени или роли не хватает. Решения проверяйте на своих цифрах, а не на выводах модели."}]}</script>
 <link rel="stylesheet" href="../v6/static.css?v=43fcca59">

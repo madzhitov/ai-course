@@ -1168,3 +1168,13 @@ body.v6 .lesson-content .v6-page .v6-gate-t { hyphens:manual !important; -webkit
 /* калькуляторы: подписи разной длины, поле ввода прижато к низу ячейки, все поля в ряду на одной линии */
 .v6-calc-in label { justify-content:space-between; }
 .v6-calc-in label > span { flex:none; }
+
+/* калькулятор: несколько результатов и заметный блок формул */
+.v6-calc-res { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap:12px; }
+.v6-calc-r { display:flex; flex-direction:column; gap:4px; background:var(--surface, #fff); border-radius:18px; padding:14px 16px; }
+.v6-calc-r span { font-size:15px; color:var(--text-2); }
+.v6-calc-r b { font-family:var(--font-display); font-weight:800; font-size:26px; letter-spacing:-0.02em; color:var(--ink); }
+.v6-calc-r.is-main b { font-size:40px; }
+.v6-calc-fx { border-top:1px solid #DDE1EA; padding-top:12px; }
+.v6-calc-fx ul { margin:6px 0 0; padding-left:18px; display:flex; flex-direction:column; gap:4px; }
+.v6-calc-fx li { font-size:15px; color:var(--text-2); }

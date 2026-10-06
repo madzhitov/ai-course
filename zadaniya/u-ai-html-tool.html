@@ -32,6 +32,22 @@
   .st-term b { font-size:18px; }
   .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
   .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+  .st-calc-res { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap:10px; }
+  .st-calc-r { background:#F3F4F7; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); }
+  .st-calc-r b { font-size:24px; line-height:1.15; font-weight:800; color:#16161A; }
+  .st-calc-r.is-main b { font-size:36px; }
+  .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
+  .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Калькулятор под свою задачу","description":"Калькулятор под свою задачу. Маленький калькулятор в одном файле: открывается в браузере, считает вашу задачу и проверен на примерах, которые вы посчитали сами По шагам, с готовым промптом, около 40 м","url":"https://ai.madzhitov.ru/zadaniya/u-ai-html-tool.html","inLanguage":"ru","totalTime":"PT40M","tool":[{"@type":"HowToTool","name":"GigaChat"},{"@type":"HowToTool","name":"Алиса AI"},{"@type":"HowToTool","name":"любой чат-ИИ"}],"step":[{"@type":"HowToStep","position":1,"name":"Опишите расчёт и посчитайте пример","text":"Запишите, что вводится, что получается и по какой формуле. Посчитайте два примера руками или в таблице: по ним вы проверите калькулятор. Без своих примеров не поймёте, правильно ли он считает."},{"@type":"HowToStep","position":2,"name":"Попросите файл","text":"Отправьте промпт в чат-ИИ. Нужен один файл, который работает без интернета и никуда не отправляет то, что вы вводите."},{"@type":"HowToStep","position":3,"name":"Сохраните и откройте","text":"Скопируйте код от \u003c!DOCTYPE html> до \u003c/html>, без строк с ```. Если в конце нет \u003c/html>, напишите в чат «продолжи». На Windows: откройте Блокнот, вставьте, «Сохранить как», тип «Все файлы», имя calc.html, кодировка UTF-8, сохраните на рабочий стол. Чтобы видеть расширения файлов, в Проводнике Windows 11 включите «Вид» → «Показать» → «Расширения имён файлов». На Mac: откройте TextEdit, в меню «Формат» выберите «Создать простой текст», вставьте и сохраните как calc.html. Если TextEdit спросит про расширение, выберите .html. Откройте файл двойным щелчком: он запустится в браузере."},{"@type":"HowToStep","position":4,"name":"Проверьте на своих примерах","text":"Введите оба примера из первого шага. Ответ должен совпасть до рубля. Потом попробуйте ошибиться нарочно: оставьте поле пустым, введите букву, ноль, отрицательное число."},{"@type":"HowToStep","position":5,"name":"Попросите исправить","text":"Если что-то не так, опишите в том же чате, что ввели, что ожидали и что получили. Просите весь файл заново, а не кусок: так проще ничего не сломать при вставке."},{"@type":"HowToStep","position":6,"name":"Решите, можно ли пользоваться","text":"Калькулятор живёт у вас на компьютере. Его можно отправить коллеге файлом, лучше через мессенджер: почта часто режет вложения .html. Скажите, что это за файл. Перед этим пройдитесь по списку."}]}</script>
 <link rel="stylesheet" href="../v6/static.css?v=43fcca59">

@@ -911,10 +911,20 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     if (!/^[\w\s+\-*\/().]+$/.test(expr) || names.some((n) => !ids.includes(n))) return NaN;
     try { return Function(...ids, `return (${expr});`)(...ids.map((k) => v[k])); } catch (_) { return NaN; }
   }
+  // блок результата калькулятора: несколько результатов (executor.results) или один; формулы отдельным заметным списком
+  function calcOut(ex) {
+    const fx = (list) => list.length ? `<div class="v6-calc-fx"><span class="v6-meta">${list.length > 1 ? 'Формулы' : 'Формула'}</span><ul>${list.map((t) => `<li>${e(t)}</li>`).join('')}</ul></div>` : '';
+    if ((ex.results || []).length) return `<div class="v6-calc-out"><div class="v6-calc-res">${ex.results.map((r, i) => `<div class="v6-calc-r${i === 0 ? ' is-main' : ''}"><span>${e(r.label)}</span><b class="v6-calc-v" data-r="${i}"></b></div>`).join('')}</div>${fx(ex.results.map((r) => r.formula).filter(Boolean))}</div>`;
+    return `<div class="v6-calc-out"><div class="v6-calc-top"><span>${e(ex.expr ? (ex.result || {}).label || 'Результат' : 'Остаётся с одной продажи')}</span><span class="v6-calc-n"></span></div>${ex.expr ? '' : '<div class="v6-calc-bar"></div><div class="v6-calc-leg"></div>'}${fx(ex.formula ? [ex.formula] : [])}</div>`;
+  }
   function calc() {
     const c = fwCur, box = document.getElementById('v6-calc');
     if (!c || !box) return;
     const v = {}; c.executor.inputs.forEach((i) => { v[i.id] = parseFloat(String((box.querySelector(`[data-in="${i.id}"]`) || {}).value || '0').replace(/\s/g, '').replace(',', '.')) || 0; });
+    if ((c.executor.results || []).length) {
+      c.executor.results.forEach((res, i) => { const r = evalExpr(res.expr, v), el = box.querySelector(`[data-r="${i}"]`); if (el) el.textContent = Number.isFinite(r) ? `${r.toLocaleString('ru-RU', { maximumFractionDigits: res.digits ?? 1 })}${res.unit ? ' ' + res.unit : ''}` : '—'; });
+      return;
+    }
     if (c.executor.expr) {
       const r = evalExpr(c.executor.expr, v), res = c.executor.result || {};
       box.querySelector('.v6-calc-n').textContent = Number.isFinite(r) ? `${r.toLocaleString('ru-RU', { maximumFractionDigits: res.digits ?? 1 })}${res.unit ? ' ' + res.unit : ''}` : '—';
@@ -977,7 +987,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
           const ex = c.executor || {};
           const exec = ex.kind === 'calculator' && ex.inputs && ex.inputs.length > 0 ? `<section class="v6-exec" aria-label="Калькулятор"><div class="v6-exec-h"><h2>Посчитайте свой случай</h2><span class="v6t">калькулятор</span></div>
               <div id="v6-calc"><div class="v6-calc-in">${ex.inputs.map((i) => `<label>${e(i.label)}<span><input type="text" inputmode="decimal" data-in="${e(i.id)}" value="" placeholder="0" oninput="V6.calc()"><i>${e(i.unit || '')}</i></span></label>`).join('')}</div>
-              <div class="v6-calc-out"><div class="v6-calc-top"><span>${e(ex.expr ? (ex.result || {}).label || 'Результат' : 'Остаётся с одной продажи')}</span><span class="v6-calc-n"></span></div>${ex.expr ? '' : '<div class="v6-calc-bar"></div><div class="v6-calc-leg"></div>'}<p class="v6-meta" style="margin:0">${e(ex.formula || '')}</p></div></div></section>`
+              ${calcOut(ex)}</div></section>`
             : ex.kind === 'prompt' ? `<section class="v6-exec" aria-label="Готовый запрос"><div class="v6-exec-h"><h2>Заготовка запроса</h2><span class="v6t">готовый запрос${ex.noVpn ? ' · без VPN' : ''}</span></div><pre class="v6-prompt" id="v6-prompt">${e(ex.prompt || '')}</pre><span><button class="v6b v6-btn-lg" onclick="V6.copyPrompt(this)">Скопировать</button></span></section>` : '';
           const g = c.gate;
           body = `<div class="v6-fwbody">
@@ -1403,7 +1413,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
           const ex = c.executor;
           main = `<section class="v6-exec"><div class="v6-exec-h"><h2>Посчитайте свой случай</h2><span class="v6t">калькулятор</span></div>
             <div id="v6-calc"><div class="v6-calc-in">${ex.inputs.map((i) => `<label>${e(i.label)}<span><input type="text" inputmode="decimal" data-in="${e(i.id)}" value="" placeholder="0" oninput="V6.calc()"><i>${e(i.unit || '')}</i></span></label>`).join('')}</div>
-            <div class="v6-calc-out"><div class="v6-calc-top"><span>${e((ex.result || {}).label || 'Результат')}</span><span class="v6-calc-n"></span></div><p class="v6-meta" style="margin:0">${e(ex.formula || '')}</p></div></div></section>
+            ${calcOut(ex)}</div></section>
             ${c.example ? `<div class="v6-box"><h2>Пример</h2><p class="v6-fw-ex">${e(c.example)}</p></div>` : ''}`;
         } else if (id === 'r-funnel-tool' && c.inputs) {
           const pp = c.periods || ['Сейчас', 'Прошлый период'];

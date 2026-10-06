@@ -773,7 +773,23 @@
      "margin": 60,
      "purchases": 12,
      "cac": 900
-    }
+    },
+    "results": [
+     {
+      "label": "LTV / CAC",
+      "expr": "(avg_check * margin / 100 * purchases) / cac",
+      "unit": "раз",
+      "digits": 1,
+      "formula": "LTV / CAC = LTV / стоимость привлечения клиента"
+     },
+     {
+      "label": "LTV по марже",
+      "expr": "avg_check * margin / 100 * purchases",
+      "unit": "₽",
+      "digits": 0,
+      "formula": "LTV = средний чек × маржинальность × число покупок"
+     }
+    ]
    },
    "example": {
     "industry": "кофейня",
@@ -3342,7 +3358,23 @@
      "cogs": 300000,
      "ads": 100000,
      "returns": 40000
-    }
+    },
+    "results": [
+     {
+      "label": "Доля маржинального дохода",
+      "expr": "(revenue - fees - revenue * tax / 100 - cogs - ads - returns) / revenue * 100",
+      "unit": "%",
+      "digits": 0,
+      "formula": "Доля = маржинальный доход / выручка × 100%"
+     },
+     {
+      "label": "Маржинальный доход канала",
+      "expr": "revenue - fees - revenue * tax / 100 - cogs - ads - returns",
+      "unit": "₽",
+      "digits": 0,
+      "formula": "Маржинальный доход = выручка − сборы − выручка × налог − себестоимость − реклама − потери"
+     }
+    ]
    },
    "example": {
     "industry": "канал на маркетплейсе",
@@ -3520,7 +3552,37 @@
      "revenue": 300000,
      "cm": 30,
      "ads": 60000
-    }
+    },
+    "results": [
+     {
+      "label": "ДРР",
+      "expr": "ads / revenue * 100",
+      "unit": "%",
+      "digits": 1,
+      "formula": "ДРР = рекламные расходы / выручка × 100%"
+     },
+     {
+      "label": "ROMI от маржинального дохода",
+      "expr": "(revenue * cm / 100 - ads) / ads * 100",
+      "unit": "%",
+      "digits": 0,
+      "formula": "ROMI = (выручка × маржинальная доля − реклама) / реклама × 100%"
+     },
+     {
+      "label": "Предельный ДРР",
+      "expr": "cm",
+      "unit": "%",
+      "digits": 1,
+      "formula": "Предельный ДРР = маржинальная доля до рекламы. Выше него реклама съедает весь маржинальный доход"
+     },
+     {
+      "label": "Остаётся после рекламы",
+      "expr": "revenue * cm / 100 - ads",
+      "unit": "₽",
+      "digits": 0,
+      "formula": "Маржинальный доход после рекламы = выручка × маржинальная доля − реклама"
+     }
+    ]
    },
    "example": {
     "industry": "товар на маркетплейсе",
@@ -4007,7 +4069,23 @@
      "stock": 600,
      "sold": 300,
      "days": 30
-    }
+    },
+    "results": [
+     {
+      "label": "Остатка хватит на",
+      "expr": "stock / (sold / days)",
+      "unit": "дней",
+      "digits": 0,
+      "formula": "Дней запаса = остаток / (продано за период / дней в периоде)"
+     },
+     {
+      "label": "Продаж в день",
+      "expr": "sold / days",
+      "unit": "шт.",
+      "digits": 1,
+      "formula": "Продаж в день = продано за период / дней в периоде"
+     }
+    ]
    },
    "example": {
     "industry": "платье на маркетплейсе",

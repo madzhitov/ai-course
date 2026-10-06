@@ -32,6 +32,22 @@
   .st-term b { font-size:18px; }
   .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
   .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+  .st-calc-res { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap:10px; }
+  .st-calc-r { background:#F3F4F7; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); }
+  .st-calc-r b { font-size:24px; line-height:1.15; font-weight:800; color:#16161A; }
+  .st-calc-r.is-main b { font-size:36px; }
+  .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
+  .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Оффер из четырёх частей","description":"Оффер из четырёх частей. Оффер, который отвечает на четыре вопроса клиента: что я получу, что мне сделать, чем рискую, почему сейчас. Три варианта под разные возражения и проверка на трёх людях из ваш","url":"https://ai.madzhitov.ru/zadaniya/u-marketing-offer.html","inLanguage":"ru","totalTime":"PT40M","tool":[{"@type":"HowToTool","name":"Алиса AI"},{"@type":"HowToTool","name":"GigaChat"},{"@type":"HowToTool","name":"любой чат-ИИ"}],"step":[{"@type":"HowToStep","position":1,"name":"Отделите постоянное от сиюминутного","text":"Ценностное предложение постоянно: какую пользу, кому и вместо чего даёт продукт. А оффер описывает предложение здесь и сейчас, его меняют часто. Запишите ценностное предложение одной строкой. Частая ошибка: вместо него вывесить скидку. Скидка кончится, а причина покупать так и не появится."},{"@type":"HowToStep","position":2,"name":"Соберите факты для оффера","text":"Выпишите, что вы точно можете дать и на каких условиях, и два-три возражения клиента. Условия оффера становятся обещанием клиенту: пишите только то, что сможете выполнить. В рекламе условия ещё и по закону должны быть правдивыми и полными: что будет после бесплатного периода, сколько стоит, как отменить."},{"@type":"HowToStep","position":3,"name":"Получите три варианта","text":"Отправьте промпт с фактами. Каждый вариант должен закрывать своё возражение."},{"@type":"HowToStep","position":4,"name":"Прочитайте глазами клиента","text":"В том же чате попросите модель прочитать варианты как ваш клиент. Модель не заменит живого человека, но найдёт непонятное и места, где оффер звучит как уловка."},{"@type":"HowToStep","position":5,"name":"Проверьте на трёх людях","text":"Выберите два варианта и отправьте каждому из трёх человек с одной строкой: «Проверяю текст, нужен ваш взгляд за минуту». Больше ничего не объясняйте. Спросите одно: «что вам здесь предлагают?». Запишите ответы дословно. Если пересказ не совпадает с задуманным, перепишите ту часть, которую поняли не так. Ответы придут не сразу: к шагу 6 вернитесь, когда соберёте все три."},{"@type":"HowToStep","position":6,"name":"Выберите оффер","text":"Оставьте вариант, который люди пересказали точнее всего. Перед тем как ставить его на сайт или в рекламу, пройдитесь по списку."}]}</script>
 <link rel="stylesheet" href="../v6/static.css?v=43fcca59">
