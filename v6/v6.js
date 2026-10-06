@@ -1473,7 +1473,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     const gap = BSC.rev - r >= 2 ? c.gaps.behind : BSC.rev - r <= -1 ? c.gaps.ahead : c.gaps.sync;
     const weak = BSC.ans.map((v, i) => ({ v, q: Q[i] })).filter((x) => x.v >= 0 && x.v < 2).sort((a, b) => a.v - b.v).slice(0, 3);
     const stOf = (id) => S.find((x) => x.id === id);
-    box.innerHTML = `<div class="v6-bs-res"><div><span class="v6-meta">Стадия по выручке</span><b>${e(S[BSC.rev].name)}</b><small>${e(S[BSC.rev].revenue)}</small></div><div><span class="v6-meta">Готовность процессов</span><b>${e(S[r].name)}</b><small>${pct}% по 13 вопросам</small></div></div>
+    box.innerHTML = `<div class="v6-bs-res"><div><span class="v6-meta">Стадия по выручке</span><b>${e(S[BSC.rev].name)}</b><small>${e(S[BSC.rev].revenue)}</small></div><div><span class="v6-meta">Готовность процессов</span><b>${e(S[r].name)}</b><small>${pct}% по 13 направлениям</small></div></div>
       <div class="v6-bs-gap${gap === c.gaps.behind ? ' is-risk' : ''}"><b>${e(gap.label)}</b><p>${e(gap.text)}</p></div>
       <h3 class="v6-h3">Самые слабые места</h3>
       ${weak.length ? `<ul class="v6-bs-weak">${weak.map((x) => { const st = stOf(x.q.stage); return `<li><b>${e(x.q.area)}</b><span>${e(x.q.fix)}</span>${st ? `<button type="button" class="v6-link" onclick="V6.bsGo('${e(st.id)}')">Что делать: стадия «${e(st.name)}» →</button>` : ''}</li>`; }).join('')}</ul>` : '<p>Явных провалов нет. Точную глубину покажет аудит на ваших данных.</p>'}
@@ -1520,8 +1520,8 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         <section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Пять стадий</h2></div><div class="v6-bs-list" id="v6-bs-list">${BS.stages.map((s) => bsStage(s, s.id === here)).join('')}</div></section>
         <section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Как устроен метод</h2><p>Диагностику вы делаете сами на этой странице. Аудит на ваших данных и внедрение мы делаем вместе с командой.</p></div></div>
           <div class="v6-bs-layers">${m.layers.map((x, i) => `<div class="v6-card"><span class="v6-meta">0${i + 1}</span><b>${e(x.name)}</b><p>${e(x.text)}</p></div>`).join('')}</div>
-          <h3 class="v6-h3" style="margin-top:40px">Что измеряет аудит: ${m.tracks.length} направлений</h3>
-          <p class="v6-meta">Зрелость не одно число. Продукт может быть на стадии роста, а данные ещё на запуске.</p>
+          <h3 class="v6-h3" style="margin-top:40px">Что измеряем: ${m.tracks.length} направлений</h3>
+          <p class="v6-meta">Зрелость не одно число. Продукт может быть на стадии роста, а данные ещё на запуске. Диагностика смотрит эти направления снаружи, аудит на ваших данных.</p>
           <span class="v6-tags" style="margin-top:12px">${m.tracks.map((t) => `<span class="v6t is-grey">${e(t)}</span>`).join('')}</span>
           <h3 class="v6-h3" style="margin-top:40px">Что чиним: шесть контуров</h3>
           <p class="v6-meta">Порядок не случайный: сначала данные, на них стоит всё остальное.</p>
