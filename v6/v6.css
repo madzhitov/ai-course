@@ -1131,3 +1131,8 @@ a.v6-bs-l:hover { background:#E3E8F2; }
 .v6-learn-row { grid-template-columns:repeat(3, minmax(0, 1fr)); }
 .v6-learn-s.is-ready > .v6-meta:last-child { color:#1F2F5C; font-weight:600; white-space:nowrap; }
 @media (max-width:900px) { .v6-learn-row { grid-template-columns:1fr; } }
+
+/* главная: второй вход в обучение в первом экране */
+.v6-hlearn { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-top:22px; padding:16px 18px; border-radius:20px; background:var(--surface, #fff); }
+.v6-hlearn > span:first-child { display:flex; flex-direction:column; gap:2px; }
+.v6-hlearn b { font-size:16px; }
