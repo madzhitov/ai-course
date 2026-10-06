@@ -1149,3 +1149,18 @@ a.v6-bs-l:hover { background:#E3E8F2; }
 /* подзаголовки метода на «Стадиях бренда»: общее правило обнуляет margin у заголовков, поэтому отступ здесь с !important */
 body.v6 .lesson-content .v6-page h3.v6-bs-sub { margin:64px 0 8px !important; }
 body.v6 .lesson-content .v6-page .v6-bs-layers + h3.v6-bs-sub { margin-top:56px !important; }
+
+/* Знания → Инструменты */
+.v6-tools-lead { margin:0 0 8px; color:var(--text-2); font-size:17px; max-width:720px; }
+.v6-toolg { margin-top:36px; }
+body.v6 .lesson-content .v6-page .v6-toolg h2.v6-h3 { margin:0 0 14px !important; display:flex; align-items:baseline; gap:10px; }
+.v6-tools { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:12px; }
+body.v6 .lesson-content .v6-page a.v6-tool { display:flex; flex-direction:column; gap:6px; background:var(--surface, #fff); border-radius:20px; padding:18px 20px; color:inherit; text-decoration:none; }
+body.v6 .lesson-content .v6-page a.v6-tool:hover { box-shadow:0 0 0 2px #E3E8F2; }
+.v6-tool b { font-family:var(--font-display); font-weight:800; font-size:18px; line-height:1.2; }
+.v6-tool p { margin:0; color:var(--text-2); font-size:15px; }
+.v6-tool small { color:var(--text-3); font-size:13px; margin-top:auto; }
+.v6-meth2-tools { margin:14px 0 4px; }
+@media (max-width:900px) { .v6-tools { grid-template-columns:repeat(2, minmax(0, 1fr)); } }
+@media (max-width:600px) { .v6-tools { grid-template-columns:1fr; } }
+.v6-uhead > .v6-eyebrow { align-self:flex-start; }

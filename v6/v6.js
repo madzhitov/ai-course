@@ -166,7 +166,7 @@
     f.innerHTML = `<div class="v6f-in">
         <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 895 740" class="v6f-mark" aria-hidden="true" focusable="false"><g transform="translate(0 700) scale(1 -1)" fill="currentColor"><path d="M7.2 0 L319.3 700 L479.5 700 L792.1 0 L622.9 0 L366.1 617.6 L430.4 617.6 L173.6 0 Z"/><path d="M163.9 149.8 L206.4 272.7 L855 272.7 L800 149.8 Z"/></g></svg>
 <div class="v6f-word">Артефакты,<br>а не сертификаты.</div></div>
-        <div><p class="v6f-h">Платформа</p><ul>${a("V6.open('roles')", 'Роли')}${a("V6.open('tasks')", 'Задачи')}${a("V6.open('paths')", 'Пути')}${a("V6.open('knowledge')", 'Знания')}</ul></div>
+        <div><p class="v6f-h">Платформа</p><ul>${a("V6.open('roles')", 'Роли')}${a("V6.open('tasks')", 'Задачи')}${a("V6.open('paths')", 'Обучение')}${a("V6.open('knowledge')", 'Знания')}${a("V6.ktab('tools')", 'Инструменты')}</ul></div>
         <div><p class="v6f-h">О проекте</p><ul>${a("openStaticPage('about')", 'Что это')}${a("openStaticPage('howto')", 'Как заниматься')}${a("openStaticPage('changelog')", 'Что нового')}${a("openStaticPage('resources')", 'Источники')}</ul></div>
         <div><p class="v6f-h">Помощь</p><ul>${a("openStaticPage('faq')", 'FAQ')}${a('V6.openDict()', 'Словарь')}<li><a href="/tools/neyroseti-bez-vpn/">Нейросети без VPN</a></li></ul></div>
       </div>
@@ -324,6 +324,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     const show = pick.length === 4 ? pick : D.fw.filter((c) => c.full).slice(0, 4);
     return `<section class="v6-sec v6-meth2"><div><h2 class="v6-h2">${n} ${plural(n, 'метод', 'метода', 'методов')} под капотом</h2>
         <p>Под задачами лежат методы из книг и исследований. Захотите разобраться, почему задача устроена именно так, откройте карточку метода.</p>
+        <p class="v6-meth2-tools">И ${toolCount()} ${plural(toolCount(), 'инструмент', 'инструмента', 'инструментов')}, которые можно забрать сразу: таблицы с формулами, калькуляторы, чек-листы. <button class="v6-link" onclick="V6.ktab('tools')">Инструменты →</button></p>
         <button class="v6-link" onclick="V6.open('knowledge')">Все методы и словарь мира →</button></div>
       <div class="v6-meth2-c">${show.map((c) => `<a class="v6-chip2" href="#fw-${e(c.id)}" onclick="V6.openFw('${e(c.id)}','home'); return false;">${e(c.title)}</a>`).join('')}<span class="v6-chip2 is-more">и ещё ${n - show.length}</span></div></section>`;
   }
@@ -723,8 +724,8 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     if (k === 'area') { dictList(); return; }
     fwList();
   }
-  function ksearch(v) { KQ = v.trim(); if (KT === 'fw') fwList(); else if (KT === 'dict') dictList(); else lessonList(); }
-  function ktab(t) { KT = t; KTERM = ''; go(t === 'dict' ? 'dictionary' : t === 'lessons' ? 'knowledge-lessons' : 'knowledge', knowledgePage, 'knowledge'); }
+  function ksearch(v) { KQ = v.trim(); if (KT === 'fw') fwList(); else if (KT === 'dict') dictList(); else if (KT === 'tools') toolList(); else lessonList(); }
+  function ktab(t) { KT = t; KTERM = ''; go(t === 'dict' ? 'dictionary' : t === 'lessons' ? 'knowledge-lessons' : t === 'tools' ? 'knowledge-tools' : 'knowledge', knowledgePage, 'knowledge'); }
   function openKnowledge(rid) { KF.role = rid || ''; KF.label = ''; KT = 'fw'; open('knowledge'); }
   function openDict(termId) { KT = 'dict'; KTERM = termId || ''; KF.area = ''; go(termId ? 'term-' + termId : 'dictionary', knowledgePage, 'knowledge'); }
 
@@ -833,6 +834,34 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     window.addEventListener('scroll', termHide, { passive: true });
   }
 
+  // ---------- Инструменты: таблицы, калькуляторы, чек-листы из набора продавца + калькуляторы методов + сервисы ИИ ----------
+  const RES_FMT = { 'google-sheets': 'таблица Excel, скачать', docx: 'документ Word, скачать', pdf: 'на сайте, можно распечатать', web: 'на сайте' };
+  function toolItems() {
+    const roleTag = (rs) => (rs || []).map((r) => (r === 'all' ? 'для всех' : 'для роли «' + roleName(r) + '»')).join(', ');
+    const unitOf = (r) => (r.units || []).map(unitById).filter(Boolean)[0];
+    const res = D.resources.filter((r) => !/^framework:/.test(r.link || ''));
+    const fwCalc = D.fw.filter((c) => (c.executor || {}).kind === 'calculator');
+    const R = (r) => ({ title: r.title, gives: r.gives || '', meta: RES_FMT[r.format] || '', role: roleTag(r.roles), unit: unitOf(r), on: `V6.openRes('${e(r.id)}','tools')`, hash: 'res-' + e(r.id) });
+    return [
+      { id: 'calc', title: 'Калькуляторы', items: [...res.filter((r) => r.kind === 'calculator').map(R), ...fwCalc.map((c) => ({ title: c.title, gives: c.solves || '', meta: 'калькулятор в карточке метода', role: roleTag(c.roles), on: `V6.openFw('${e(c.id)}','tools')`, hash: 'fw-' + e(c.id) }))] },
+      { id: 'tables', title: 'Таблицы и шаблоны', items: res.filter((r) => r.kind === 'template').map(R) },
+      { id: 'checklists', title: 'Чек-листы', items: res.filter((r) => r.kind === 'checklist').map(R) },
+      { id: 'web', title: 'Инструменты на сайте и промпты', items: res.filter((r) => r.kind === 'tool' || r.kind === 'prompt-set').map(R) },
+      { id: 'ai', title: 'Сервисы ИИ', items: [{ title: 'Нейросети без VPN', gives: 'Живой список: какие нейросети работают из России, что бесплатно и для каких задач', meta: 'на сайте, обновляется', role: 'для всех', href: '/tools/neyroseti-bez-vpn/' }] }
+    ];
+  }
+  const toolCount = () => toolItems().reduce((n, g) => n + g.items.length, 0);
+  function toolList() {
+    const box = document.getElementById('v6-toollist');
+    if (!box) return;
+    const q = norm(KQ || '');
+    const card = (x) => {
+      const inner = `<span class="v6-meta">${e(x.meta)}</span><b>${e(x.title)}</b><p>${e(x.gives)}</p><small>${e(x.role)}${x.unit ? ` · к заданию «${e(x.unit.title)}»` : ''}</small>`;
+      return x.href ? `<a class="v6-tool" href="${x.href}">${inner}</a>` : `<a class="v6-tool" href="#${x.hash}" onclick="${x.on}; return false;">${inner}</a>`;
+    };
+    const groups = toolItems().map((g) => ({ ...g, items: g.items.filter((x) => !q || norm(x.title + ' ' + x.gives).includes(q)) })).filter((g) => g.items.length);
+    box.innerHTML = groups.length ? groups.map((g) => `<section class="v6-toolg"><h2 class="v6-h3">${e(g.title)} <span class="v6-meta">${g.items.length}</span></h2><div class="v6-tools">${g.items.map(card).join('')}</div></section>`).join('') : '<p class="v6-meta">Ничего не нашлось. Попробуйте другое слово.</p>';
+  }
   function knowledgePage() {
     shell('<div class="v6c" id="v6-kn"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
     Promise.all([load(), loadDict()]).then(() => {
@@ -855,18 +884,20 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
           ${preview.length ? `<section class="v6-psec"><div class="v6-sec-head"><div><h2 class="v6-psec-h">Словарь мира</h2><p class="v6-meta">${DICT.terms.length} ${plural(DICT.terms.length, 'термин', 'термина', 'терминов')}${DICT.terms.some((t) => t.en) ? ' · с английским оригиналом' : ''}</p></div><button class="v6-link" onclick="V6.ktab('dict')">Весь словарь →</button></div><div class="v6-termgrid">${preview.map(termRow).join('')}</div></section>` : ''}`;
       } else if (KT === 'dict') {
         body = `<div class="v6-kf"><span class="v6-meta">Область</span><div class="v6-pills">${pill('area', '', 'Все')}${DICT.areas.filter((a) => DICT.terms.some((t) => t.area === a.id)).map((a) => pill('area', a.id, e(a.title))).join('')}</div></div><div id="v6-dictlist"></div>`;
+      } else if (KT === 'tools') {
+        body = `<p class="v6-tools-lead">Таблицы с формулами, калькуляторы и чек-листы, которые можно забрать и пользоваться. У каждой вещи видно, к какому заданию она относится.</p><div id="v6-toollist"></div>`;
       } else {
         body = `<p class="v6-meta" style="margin:0 0 8px">Все уроки по главному пути и Тропинкам. Отметка «пройден» хранится в этом браузере.</p><div id="v6-lessonlist"></div>`;
       }
-      document.getElementById('v6-kn').innerHTML = `<section class="v6-phero"><div class="v6-phero-text"><span class="v6-eyebrow">Знания</span><h1 class="v6-d">Методы, слова и уроки</h1><p class="v6-phero-lead">Фреймворки — каким методом думать о задаче. Словарь — что значит слово. Уроки — почему это работает.</p></div>${art('knowledge', 'v6-phero-art')}</section>
+      document.getElementById('v6-kn').innerHTML = `<section class="v6-phero"><div class="v6-phero-text"><span class="v6-eyebrow">Знания</span><h1 class="v6-d">Методы, слова и уроки</h1><p class="v6-phero-lead">Фреймворки: каким методом думать о задаче. Словарь: что значит слово. Уроки: почему это работает. Инструменты: что забрать и пользоваться.</p></div>${art('knowledge', 'v6-phero-art')}</section>
         <section class="v6-psec"><form class="v6-ksearch" role="search" onsubmit="return false"><label class="v6-sr" for="v6-kq">Поиск по знаниям</label><input id="v6-kq" type="search" placeholder="Поиск по знаниям: метод, слово, урок" value="${e(KQ)}" oninput="V6.ksearch(this.value)"></form>
-          <div class="v6-ktabs" role="tablist" aria-label="Разделы знаний">${tab('fw', 'Фреймворки', D.fw.length)}${tab('dict', 'Словарь мира', DICT.terms.length)}${tab('lessons', 'Уроки', nLessons)}</div>
+          <div class="v6-ktabs" role="tablist" aria-label="Разделы знаний">${tab('fw', 'Фреймворки', D.fw.length)}${tab('dict', 'Словарь мира', DICT.terms.length)}${tab('lessons', 'Уроки', nLessons)}${tab('tools', 'Инструменты', toolCount())}</div>
           <div class="v6-kbody">${body}</div></section>
         <section class="v6-psec"><h2 class="v6-psec-h">Ещё в Знаниях</h2><div class="v6-grid2" style="margin-top:28px">
           <div class="v6-task"><h3>Источники</h3><p>Курсы, книги и документация, на которых стоят уроки.</p><button class="v6b is-soft is-sm" onclick="openStaticPage('resources')">Открыть</button></div>
           <div class="v6-task"><h3>Нейросети без VPN</h3><p>Живой список: что работает из России, что бесплатно.</p><a class="v6b is-soft is-sm" href="/tools/neyroseti-bez-vpn/">Открыть</a></div>
         </div></section>`;
-      if (KT === 'fw') fwList(); else if (KT === 'dict') dictList(); else lessonList();
+      if (KT === 'fw') fwList(); else if (KT === 'dict') dictList(); else if (KT === 'tools') toolList(); else lessonList();
     }).catch(() => fail('v6-kn'));
   }
 
@@ -1357,7 +1388,8 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         track('res-open', { res: id, from: from || 'link' });
         const c = r.content || {};
         const fws = (r.basedOn || []).map(fwById).filter(Boolean);
-        const head = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.openSellerPath('res')">От селлера к бренду</a><span>/</span><a onclick="V6.openSellerPath('res')">Набор продавца</a><span>/</span><span>${e(r.title)}</span></nav>
+        const crumbsTo = from === 'tools' ? `<a onclick="V6.open('knowledge')">Знания</a><span>/</span><a onclick="V6.ktab('tools')">Инструменты</a>` : `<a onclick="V6.openSellerPath('res')">От селлера к бренду</a><span>/</span><a onclick="V6.openSellerPath('res')">Набор продавца</a>`;
+        const head = `<nav class="v6-crumbs" aria-label="Где вы">${crumbsTo}<span>/</span><span>${e(r.title)}</span></nav>
           <section class="v6-uhead"><span class="v6-eyebrow">${e(RES_KIND[r.kind] || r.kind)}</span><h1 class="v6-d">${e(r.title)}</h1><p class="v6-phero-lead">${e(c.intro || r.gives || '')}</p>
             ${fws.length ? `<span class="v6-tags">${fws.map((f) => `<a class="v6t is-grey" href="#fw-${e(f.id)}" onclick="V6.openFw('${e(f.id)}','res'); return false;">метод · ${e(f.title)}</a>`).join('')}</span>` : ''}</section>`;
         if (!resReady(r)) { box.innerHTML = head + '<div class="v6-ucard"><h2 class="v6-ucard-t">Скоро</h2><p>Эта вещь готовится.</p></div>'; return; }
@@ -1542,6 +1574,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     if (PAGES[hash]) { open(hash); return true; }
     if (hash === 'dictionary' || hash === 'glossary') { openDict(); return true; }
     if (hash === 'knowledge-lessons') { KT = 'lessons'; go(hash, knowledgePage, 'knowledge'); return true; }
+    if (hash === 'knowledge-tools' || hash === 'tools' || hash === 'instrumenty') { KT = 'tools'; KTERM = ''; go('knowledge-tools', knowledgePage, 'knowledge'); return true; }
     let t = hash.match(/^(?:term|glossary)-(.+)$/); if (t) { openDict(t[1]); return true; }
     let m = hash.match(/^role-([a-z]+)$/); if (m) { openRole(m[1], 'link'); return true; }
     m = hash.match(/^task-([a-z0-9.-]+)$/); if (m) { openTask(m[1], 'link'); return true; }
