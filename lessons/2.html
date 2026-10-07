@@ -45,6 +45,7 @@
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 2</span></div>
 
+
 <h1>Урок 2. Семейства LLM: GPT, Claude, Gemini, Llama, Mistral</h1>
 
 <div class="lesson-meta">
@@ -136,16 +137,18 @@
 <ul>
 <li>Haiku/Flash/4o-mini: <strong>80–150 tok/s</strong> — почти мгновенно.</li>
 <li>Sonnet/4o: <strong>40–80 tok/s</strong> — комфортно.</li>
-<li>Opus/o1: <strong>15–40 tok/s</strong> — заметно тормозит.</li>
+<li>Opus и топовые GPT: <strong>15–40 tok/s</strong> — заметно тормозит.</li>
 <li>Reasoning модели: первые <strong>5–60 секунд</strong> на «thinking».</li>
 </ul>
 
 <h3>5. Цена (за миллион токенов)</h3>
 <table>
 <tr><th>Модель</th><th>Input</th><th>Output</th></tr>
-<tr><td>GPT-4o</td><td>$2.50</td><td>$10.00</td></tr>
-<tr><td>GPT-4o-mini</td><td>$0.15</td><td>$0.60</td></tr>
-<tr><td>o1</td><td>$15.00</td><td>$60.00</td></tr>
+<tr><td>gpt-6-astra</td><td>$10.00</td><td>$50.00</td></tr>
+<tr><td>gpt-6.1-sol</td><td>$2.00</td><td>$10.00</td></tr>
+<tr><td>gpt-6-luna</td><td>$0.10</td><td>$0.50</td></tr>
+<tr><td>gpt-4o</td><td>$2.50</td><td>$10.00</td></tr>
+<tr><td>gpt-4o-mini</td><td>$0.15</td><td>$0.60</td></tr>
 <tr><td>claude-opus-5-5</td><td>$4.00</td><td>$20.00</td></tr>
 <tr><td>claude-sonnet-5-5</td><td>$2.00</td><td>$10.00</td></tr>
 <tr><td>claude-haiku-4-5</td><td>$1.00</td><td>$5.00</td></tr>
@@ -179,9 +182,9 @@
 <ul>
 <li><strong>Chat models</strong> — то, что ты привык называть LLM. GPT-4o, Claude Sonnet.</li>
 <li><strong>Embedding models</strong> — превращают текст в числовой вектор. text-embedding-3, BGE-M3.</li>
-<li><strong>Image models</strong> — DALL·E 3, Stable Diffusion XL, Flux.1.</li>
+<li><strong>Image models</strong>: GPT Image, Nano Banana (Gemini), FLUX.2, Stable Diffusion.</li>
 <li><strong>Audio models</strong> — STT (Whisper, Deepgram) и TTS (ElevenLabs).</li>
-<li><strong>Reasoning models</strong> — со встроенным Chain-of-Thought (CoT, пошаговое рассуждение). o1, o3, DeepSeek-R1, Gemini 2.0 Thinking.</li>
+<li><strong>Reasoning models</strong>: со встроенным Chain-of-Thought (CoT, пошаговое рассуждение). Первыми были o1, o3 и DeepSeek-R1, сейчас рассуждение встроено в основные модели: gpt-6.1-sol, claude-sonnet-5-5, DeepSeek в режиме размышлений.</li>
 <li><strong>Specialised:</strong> code (CodeLlama, Qwen-Coder), math.</li>
 </ul>
 
@@ -315,7 +318,7 @@
 
 <h2>9. Проверь себя</h2>
 
-<p><strong>1. Чем reasoning model (o1) отличается от обычной (4o)?</strong><br>
+<p><strong>1. Чем reasoning-модель отличается от обычной?</strong><br>
 Перед финальным ответом генерирует длинный «черновик мышления» (CoT). Резко повышает качество на сложных задачах, но медленнее и дороже.</p>
 
 <p><strong>2. У меня 1 миллион токенов входа. Какие модели подходят?</strong><br>
@@ -359,6 +362,7 @@
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> в <code>progress.md</code> запиши свою «матрицу выбора» — 5 строк «тип задачи → модель → почему».
 </div>
+
 
 
     <div class="pp-open"><a href="../#lesson-2">Открыть интерактивную версию (с Алёшей) →</a></div>

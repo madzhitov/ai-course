@@ -34,8 +34,8 @@
 <!-- Шрифты v6: самохостинг, Google Fonts в РФ блокируется -->
 <link rel="preload" href="v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="v6/fonts/montserrat-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="v6/fonts/fonts.css?v=36966d5e">
-<link rel="stylesheet" href="v6/v6.css?v=36966d5e">
+<link rel="stylesheet" href="v6/fonts/fonts.css?v=fbe8bf1c">
+<link rel="stylesheet" href="v6/v6.css?v=fbe8bf1c">
 
 <!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js">
@@ -4130,7 +4130,7 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
   </div>
 </div>
 <script defer src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
-<script src="v6/v6.js?v=36966d5e"></script>
+<script src="v6/v6.js?v=fbe8bf1c"></script>
 
 <!-- Alesha — persistent AI tutor widget -->
 <div class="alesha-widget" id="alesha-widget" data-lesson-title="" data-lesson-id="">
@@ -4444,7 +4444,8 @@ const LESSONS = [
 // FACTS:start — справочник: модели и цены, которые стареют.
 // В уроке пишется ⟦ключ⟧, registerLesson подставляет значение (build_pages.js берёт этот же блок).
 // Сменилась модель — правка здесь, одна на все уроки. Проверки: check_facts.py (validate, шаг 8)
-// и check_models.py (раз в неделю). Сверено 04.10.2026 (факт-чекинг уроков 1–5): platform.claude.com/docs/en/about-claude/models/overview,
+// и check_models.py (раз в неделю). Сверено 07.10.2026 (после фактчека всех уроков): platform.claude.com/docs/en/about-claude/models/overview,
+// platform.claude.com/docs/en/about-claude/model-deprecations, developers.openai.com/api/docs/deprecations,
 // developers.openai.com/api/docs/pricing. Цены — $ за 1M токенов.
 const FACTS = {
   'claude.smart': 'claude-sonnet-5-5',
@@ -4463,6 +4464,8 @@ const FACTS = {
   'openai.main.in': '2.50',
   'openai.main.out': '10.00',
   'openai.top': 'gpt-6-astra',
+  'openai.top.in': '10.00',
+  'openai.top.out': '50.00',
   'openai.mid': 'gpt-6.1-sol',
   'openai.mid.in': '2.00',
   'openai.mid.out': '10.00',
@@ -5000,6 +5003,7 @@ BPE-токенизаторы обучены на английском. Русс�
 // ============================================================
 registerLesson(2, `
 
+
 <h1>Урок 2. Семейства LLM: GPT, Claude, Gemini, Llama, Mistral</h1>
 
 <div class="lesson-meta">
@@ -5091,16 +5095,18 @@ registerLesson(2, `
 <ul>
 <li>Haiku/Flash/4o-mini: <strong>80–150 tok/s</strong> — почти мгновенно.</li>
 <li>Sonnet/4o: <strong>40–80 tok/s</strong> — комфортно.</li>
-<li>Opus/o1: <strong>15–40 tok/s</strong> — заметно тормозит.</li>
+<li>Opus и топовые GPT: <strong>15–40 tok/s</strong> — заметно тормозит.</li>
 <li>Reasoning модели: первые <strong>5–60 секунд</strong> на «thinking».</li>
 </ul>
 
 <h3>5. Цена (за миллион токенов)</h3>
 <table>
 <tr><th>Модель</th><th>Input</th><th>Output</th></tr>
-<tr><td>GPT-4o</td><td>$2.50</td><td>$10.00</td></tr>
-<tr><td>GPT-4o-mini</td><td>$0.15</td><td>$0.60</td></tr>
-<tr><td>o1</td><td>$15.00</td><td>$60.00</td></tr>
+<tr><td>⟦openai.top⟧</td><td>$⟦openai.top.in⟧</td><td>$⟦openai.top.out⟧</td></tr>
+<tr><td>⟦openai.mid⟧</td><td>$⟦openai.mid.in⟧</td><td>$⟦openai.mid.out⟧</td></tr>
+<tr><td>⟦openai.lite⟧</td><td>$⟦openai.lite.in⟧</td><td>$⟦openai.lite.out⟧</td></tr>
+<tr><td>⟦openai.main⟧</td><td>$⟦openai.main.in⟧</td><td>$⟦openai.main.out⟧</td></tr>
+<tr><td>⟦openai.mini⟧</td><td>$⟦openai.mini.in⟧</td><td>$⟦openai.mini.out⟧</td></tr>
 <tr><td>⟦claude.top⟧</td><td>$⟦claude.top.in⟧</td><td>$⟦claude.top.out⟧</td></tr>
 <tr><td>⟦claude.smart⟧</td><td>$⟦claude.smart.in⟧</td><td>$⟦claude.smart.out⟧</td></tr>
 <tr><td>⟦claude.fast⟧</td><td>$⟦claude.fast.in⟧</td><td>$⟦claude.fast.out⟧</td></tr>
@@ -5134,9 +5140,9 @@ registerLesson(2, `
 <ul>
 <li><strong>Chat models</strong> — то, что ты привык называть LLM. GPT-4o, Claude Sonnet.</li>
 <li><strong>Embedding models</strong> — превращают текст в числовой вектор. text-embedding-3, BGE-M3.</li>
-<li><strong>Image models</strong> — DALL·E 3, Stable Diffusion XL, Flux.1.</li>
+<li><strong>Image models</strong>: GPT Image, Nano Banana (Gemini), FLUX.2, Stable Diffusion.</li>
 <li><strong>Audio models</strong> — STT (Whisper, Deepgram) и TTS (ElevenLabs).</li>
-<li><strong>Reasoning models</strong> — со встроенным Chain-of-Thought (CoT, пошаговое рассуждение). o1, o3, DeepSeek-R1, Gemini 2.0 Thinking.</li>
+<li><strong>Reasoning models</strong>: со встроенным Chain-of-Thought (CoT, пошаговое рассуждение). Первыми были o1, o3 и DeepSeek-R1, сейчас рассуждение встроено в основные модели: ⟦openai.mid⟧, ⟦claude.smart⟧, DeepSeek в режиме размышлений.</li>
 <li><strong>Specialised:</strong> code (CodeLlama, Qwen-Coder), math.</li>
 </ul>
 
@@ -5270,7 +5276,7 @@ registerLesson(2, `
 
 <h2>9. Проверь себя</h2>
 
-<p><strong>1. Чем reasoning model (o1) отличается от обычной (4o)?</strong><br>
+<p><strong>1. Чем reasoning-модель отличается от обычной?</strong><br>
 Перед финальным ответом генерирует длинный «черновик мышления» (CoT). Резко повышает качество на сложных задачах, но медленнее и дороже.</p>
 
 <p><strong>2. У меня 1 миллион токенов входа. Какие модели подходят?</strong><br>
@@ -5314,6 +5320,7 @@ registerLesson(2, `
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> в <code>progress.md</code> запиши свою «матрицу выбора» — 5 строк «тип задачи → модель → почему».
 </div>
+
 
 `);
 
@@ -37431,6 +37438,15 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-10-07",
+    title: "Справочник моделей сверен перед отключениями 23 октября",
+    tag: "update",
+    items: [
+      "Урок 2: таблица цен OpenAI на ключах справочника, вместо o1 (отключают 23.10) актуальные GPT-6, обновлены списки моделей картинок и рассуждающих моделей",
+      "Словарь: термин «рассуждающая модель» обновлён"
+    ]
+  },
   {
     date: "2026-10-07",
     title: "Уроки v3 и e11 перестроены под доступное из России",
