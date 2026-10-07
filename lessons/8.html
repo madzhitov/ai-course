@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 8</span></div>
+
 <h1>Урок 8. Поиск с эмбеддингами (semantic search)</h1>
 
 <div class="lesson-meta">
@@ -94,7 +95,7 @@
 <li><strong>OpenAI:</strong> text-embedding-3-small/large.</li>
 <li><strong>Open-source:</strong> BGE, E5, Sentence Transformers, BERT.</li>
 <li><strong>Cohere:</strong> embed-multilingual-v3.</li>
-<li><strong>Google:</strong> text-embedding-005.</li>
+<li><strong>Google:</strong> gemini-embedding-2.</li>
 </ul>
 
 <p>Под капотом это нейросеть-трансформер, которая пропускает текст через свои слои и выдаёт вектор. Принцип: текст подаётся на вход, выход последнего слоя усредняется и нормализуется.</p>
@@ -322,7 +323,7 @@ print(search("есть ли у меня вакансии или офферы?"))
 <p>Реально:</p>
 <ul>
 <li>Эмбеддинг 1000 заметок по 200 токенов = 200k токенов = <strong>$0.004</strong>. Копейки.</li>
-<li>Эмбеддинг целой Wikipedia (~3 миллиарда токенов) = <strong>$60</strong>.</li>
+<li>Эмбеддинг всей английской Wikipedia (около 5 млрд слов, это порядка 6–7 млрд токенов) = примерно <strong>$120–140</strong>.</li>
 </ul>
 
 <p>Однажды эмбеддишь — потом только запросы. Запрос — 1 эмбеддинг = ~50 токенов = $0.000001. Очень дёшево.</p>
@@ -482,6 +483,7 @@ BGE-M3, multilingual-e5-large — обе через <code>sentence-transformers<
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> у тебя теперь есть рабочий поисковик по своим заметкам. Это база для урока 14, где мы превратим его в полноценный RAG (модель будет генерировать ответы на основе найденных кусков). Сохрани <code>indexer.py</code> и <code>search.py</code>.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-8">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

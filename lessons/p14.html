@@ -45,6 +45,7 @@
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P14</span></div>
 
+
 <h1>Проект «За 1 час»: Локальный AI на Ollama — всё на твоём ноутбуке, без облака</h1>
 
 <div class="lesson-meta">
@@ -76,21 +77,21 @@
 
 <p>Проверь, что сервер живой:</p>
 <pre><code class="language-bash">curl http://localhost:11434/api/version
-# {"version":"0.3.x"}</code></pre>
+# {"version":"0.40.0"}  (у тебя может быть новее)</code></pre>
 
 <h2>Шаг 2. Скачиваем модель</h2>
 <p>Ollama использует команду <code>pull</code> по аналогии с docker.</p>
 
 <pre><code class="language-bash">ollama pull llama3.1:8b</code></pre>
 
-<p>Это качает ~4.7 GB. После — сразу можно говорить:</p>
+<p>Это качает ~4.9 GB. После — сразу можно говорить:</p>
 <pre><code class="language-bash">ollama run llama3.1:8b
 &gt;&gt;&gt; Привет, кто ты?
 Я — Llama, ассистент от Meta...
 &gt;&gt;&gt; /bye</code></pre>
 
 <h3>Какую модель выбрать под железо</h3>
-<p>Ориентир по RAM (а на Mac — по объединённой памяти):</p>
+<p>Ориентир по RAM (а на Mac по объединённой памяти). Ниже проверенные семейства, они по-прежнему есть в библиотеке Ollama. Из более новых посмотри <code>qwen3</code> (<code>qwen3:4b</code>, <code>qwen3:8b</code>, <code>qwen3:14b</code>) и <code>gemma3</code> (<code>gemma3:4b</code>, <code>gemma3:12b</code>): похожие размеры, свежее поколение.</p>
 <ul>
 <li><strong>8 GB:</strong> <code>llama3.2:3b</code>, <code>qwen2.5:3b</code>, <code>gemma2:2b</code>. Маленькие, но удивительно разумные для саммари и простых задач.</li>
 <li><strong>16 GB:</strong> <code>llama3.1:8b</code>, <code>qwen2.5:7b</code>, <code>mistral:7b</code>, <code>gemma2:9b</code>. Базовый разумный диапазон.</li>
@@ -121,7 +122,7 @@ ollama list   # покажет всё скачанное</code></pre>
 }'</code></pre>
 
 <h2>Шаг 4. Питон-клиент</h2>
-<p>Есть официальный <code>ollama-python</code>, но он тонкая обёртка над requests. Покажу оба варианта.</p>
+<p>Есть официальный <code>ollama-python</code>, но он тонкая обёртка над HTTP API (внутри httpx). Покажу оба варианта.</p>
 
 <p>Файл <code>ollama_client.py</code>:</p>
 <pre><code class="language-python">import requests
@@ -228,11 +229,11 @@ for model in ["llama3.2:3b", "llama3.1:8b", "qwen2.5:7b"]:
 <tr><td style="padding:6px;">Перевод RU↔EN</td><td style="padding:6px;">Адекватно, идиомы хромают</td><td style="padding:6px;">Заметно лучше</td></tr>
 <tr><td style="padding:6px;">Сложный код / архитектурные вопросы</td><td style="padding:6px;">Слабо</td><td style="padding:6px;">Сильно лучше</td></tr>
 <tr><td style="padding:6px;">Структурный JSON-output</td><td style="padding:6px;">Может ломать схему</td><td style="padding:6px;">Стабильно</td></tr>
-<tr><td style="padding:6px;">Длинный контекст (50k+)</td><td style="padding:6px;">Часто не помещается</td><td style="padding:6px;">200k без вопросов</td></tr>
+<tr><td style="padding:6px;">Длинный контекст (50k+)</td><td style="padding:6px;">Часто не помещается</td><td style="padding:6px;">до 1M токенов у актуальных моделей</td></tr>
 <tr><td style="padding:6px;">Творческая русская проза</td><td style="padding:6px;">Сухо, но читаемо</td><td style="padding:6px;">Живее</td></tr>
 </table>
 
-<p>Грубо: локальная 7-8B модель — это уровень GPT-3.5 двухлетней давности с поправкой на свежесть. Для простых внутренних задач — за глаза. Для сложного — упирается.</p>
+<p>Грубо: локальная 7-8B модель — это уровень GPT-3.5 образца 2023 года с поправкой на свежесть. Для простых внутренних задач — за глаза. Для сложного — упирается.</p>
 
 <h2>Шаг 7. Use cases: где локальный AI реально нужен</h2>
 <ul>
@@ -271,7 +272,7 @@ print(resp.choices[0].message.content)
 <h3>Локальный RAG без облака</h3>
 <p>В уроке 8 разбирался RAG, который ходил в облако за эмбеддингами и за LLM. Полностью локальный аналог:</p>
 <ul>
-<li>Эмбеддинги: <code>ollama pull nomic-embed-text</code>, далее <code>POST /api/embeddings</code>.</li>
+<li>Эмбеддинги: <code>ollama pull nomic-embed-text</code>, далее <code>POST /api/embed</code>.</li>
 <li>Векторное хранилище: <code>chromadb</code> или <code>faiss</code> — оба ставятся через pip, работают локально.</li>
 <li>Генерация ответа: тот же <code>llama3.1:8b</code> через <code>/api/chat</code>.</li>
 </ul>
@@ -306,19 +307,19 @@ ollama run code-critic
 <li><strong>Ollama как backend для голосового агента из p11:</strong> заменяешь Anthropic SDK на <code>ollama.chat()</code> — получаешь полностью офлайн ассистента.</li>
 <li><strong>Самостоятельный JSON-output:</strong> у Ollama есть параметр <code>"format": "json"</code> — модель форсированно выдаёт валидный JSON. Полезно для пайплайнов.</li>
 <li><strong>Доступ с другого устройства:</strong> измени переменную <code>OLLAMA_HOST=0.0.0.0:11434</code> — и ноут становится LLM-сервером для всей домашней сети. Только осторожнее с firewall — без аутентификации.</li>
-<li><strong>Локальный CodeLlama для VS Code:</strong> Continue + <code>codellama:7b-instruct</code> = автодополнение, не уходящее в облако.</li>
+<li><strong>Локальное автодополнение в VS Code:</strong> Continue + <code>qwen2.5-coder:1.5b-base</code> (её для автодополнения рекомендует документация Continue) = подсказки кода, не уходящие в облако.</li>
 <li><strong>GUI: Open WebUI:</strong> docker-контейнер с ChatGPT-подобным интерфейсом поверх Ollama. Несколько пользователей, история, RAG из коробки.</li>
 <li><strong>Дообучение под себя:</strong> через <code>unsloth</code> и LoRA можно тюнить локальные модели под свои данные на одной 24GB видеокарте. Это уже отдельная история, но дверь открыта.</li>
 </ul>
 
 <h2>Подводные камни</h2>
 <ul>
-<li><strong>Не дотягивает до фронтиров.</strong> Локальные 7-8B не заменят Claude Sonnet или GPT-4. Для сложного reasoning — облако.</li>
-<li><strong>Контекстное окно меньше.</strong> По умолчанию у llama3.1 — 8k токенов (хотя теоретически поддерживает 128k). Чтобы расширить — <code>PARAMETER num_ctx 32768</code> в Modelfile, и потребление RAM растёт квадратично.</li>
+<li><strong>Не дотягивает до фронтиров.</strong> Локальные 7-8B не заменят Claude Sonnet или топовые модели OpenAI. Для сложного reasoning — облако.</li>
+<li><strong>Контекстное окно меньше.</strong> Ollama выбирает окно по объёму видеопамяти: меньше 24 GB это 4k токенов, 24–48 GB это 32k, от 48 GB это 256k (сама llama3.1 поддерживает до 128k). Чтобы расширить, пропиши <code>PARAMETER num_ctx 32768</code> в Modelfile или задай переменную <code>OLLAMA_CONTEXT_LENGTH</code>. Потребление памяти растёт с длиной окна примерно линейно (KV-кеш), так что большое окно на слабом ноуте быстро упирается в RAM.</li>
 <li><strong>Греет ноут.</strong> Большая модель на полную грузит CPU/GPU. На MacBook Air ощутимо тёплый корпус и вентилятор (которого там, формально, нет). Заметно ест батарею.</li>
 <li><strong>Качество русского.</strong> Llama 3.1 знает русский, но иногда мешает с английским в одном предложении. Qwen2.5 русский знает увереннее.</li>
 <li><strong>Первый вызов медленный.</strong> Модель грузится в память ~3-10 сек. После — быстро. Через 5 минут idle — выгружается, придётся грузить снова. Лечится <code>OLLAMA_KEEP_ALIVE=24h</code>.</li>
-<li><strong>Структурированный output.</strong> Модели меньше 30B плохо держат JSON-schema. Если нужен жёсткий формат — облако или хитрая постобработка.</li>
+<li><strong>Структурированный output.</strong> Маленькие модели без ограничений легко ломают схему. Передай JSON-schema в параметр <code>format</code> (structured outputs в Ollama): структура ответа будет соблюдена, но смысл полей всё равно проверяй.</li>
 <li><strong>Тулинг отстаёт.</strong> Tool use в локальных моделях работает заметно хуже Claude. Если строишь агента с десятком инструментов — облако пока надёжнее.</li>
 </ul>
 
@@ -337,6 +338,7 @@ ollama run code-critic
 <div class="callout callout-success">
 <strong>Совет:</strong> поставь Ollama прямо сейчас, даже если планируешь работать с облаком. Иметь под рукой бесплатную модель на 24 t/s — это базовая гигиена инженера 2026 года. Когда упрётся в лимиты облачного API в неудобный момент — поблагодаришь себя.
 </div>
+
 
 
     <div class="pp-open"><a href="../#lesson-p14">Открыть интерактивную версию (с Алёшей) →</a></div>

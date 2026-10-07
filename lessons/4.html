@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 4</span></div>
+
 <h1>Урок 4. Основы промпт-инжиниринга</h1>
 
 <div class="lesson-meta">
@@ -266,7 +267,7 @@
 <h2>7. Параметры генерации: temperature, top_p, max_tokens</h2>
 
 <div class="callout callout-info">
-<strong>Важно:</strong> temperature, top_p и top_k есть не у всех моделей. У Claude все модели новее Opus 4.6 (в том числе Sonnet 5.5 и Opus 5.5) принимают только значения по умолчанию, на остальное API отвечает ошибкой 400. У reasoning-моделей OpenAI temperature и top_p нужно убрать из запроса, если reasoning effort не none. Для моделей Gemini 3.x Google советует не трогать эти параметры, иначе возможны зацикливания и падение качества. У таких моделей ответ настраивают инструкциями, примерами и параметром effort / reasoning effort. Ручки ниже работают на более старых и открытых моделях. Перед экспериментом проверь документацию своей модели.
+<strong>Важно:</strong> temperature, top_p и top_k есть не у всех моделей. У Claude все модели начиная с Opus 4.7 (в том числе Sonnet 5.5 и Opus 5.5) принимают только значения по умолчанию, на остальное API отвечает ошибкой 400. У reasoning-моделей OpenAI temperature и top_p нужно убрать из запроса, если reasoning effort не none. Для моделей Gemini 3.x Google советует не трогать эти параметры, иначе возможны зацикливания и падение качества. У таких моделей ответ настраивают инструкциями, примерами и параметром effort / reasoning effort. Ручки ниже работают на более старых и открытых моделях. Перед экспериментом проверь документацию своей модели.
 </div>
 
 <h3>Temperature (у OpenAI и Gemini 0–2, у Claude 0–1)</h3>
@@ -460,6 +461,7 @@ Few-shot = промпт с 2–5 примерами вход→выход. Ну�
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> заведи файл <code>prompts.md</code> рядом с этим курсом. Туда складывай все рабочие шаблоны промптов с пометкой «когда использовать». Через месяц у тебя будет ценная библиотека.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-4">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

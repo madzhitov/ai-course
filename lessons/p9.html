@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P9</span></div>
+
 <h1>Проект «За 1 час»: Семантический поиск по своему Telegram-каналу или чату</h1>
 
 <div class="lesson-meta">
@@ -64,7 +65,7 @@
 </ul>
 
 <h2>Шаг 1. Экспорт чата (5 мин)</h2>
-<p>Telegram Desktop → Settings → Advanced → Export Telegram data → выбери чат → формат JSON. Получишь <code>result.json</code>.</p>
+<p>Telegram Desktop → открой нужный чат или канал → меню «⋮» → Export chat history → формат JSON. Получишь <code>result.json</code>. (Settings → Advanced → Export Telegram data выгружает весь аккаунт по типам чатов, а не один выбранный чат.)</p>
 
 <h2>Шаг 2. Парсинг</h2>
 <pre><code>import json
@@ -111,7 +112,8 @@ for i in range(0, len(messages), 100):
 search("оптимизация баз данных")</code></pre>
 
 <h2>Шаг 5. TG-бот для поиска</h2>
-<pre><code>from aiogram import Bot, Dispatcher, types
+<pre><code>import os
+from aiogram import Bot, Dispatcher, types
 import asyncio
 
 bot = Bot(token=os.environ["TG_BOT_TOKEN"])
@@ -124,8 +126,8 @@ async def handle(message: types.Message):
     reply = ""
     for i, doc in enumerate(r["documents"][0]):
         meta = r["metadatas"][0][i]
-        reply += f"**{meta['date']}** ({meta['from']}):\n{doc[:300]}\n\n"
-    await message.answer(reply, parse_mode="Markdown")
+        reply += f"{meta['date']} ({meta['from']}):\n{doc[:300]}\n\n"
+    await message.answer(reply or "Ничего не нашёл")  # без parse_mode: _ и * в сообщениях ломают Markdown
 
 asyncio.run(dp.start_polling(bot))</code></pre>
 
@@ -140,6 +142,7 @@ asyncio.run(dp.start_polling(bot))</code></pre>
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> личная Wikipedia из твоих чатов. Особенно полезно для рабочих чатов с архивом обсуждений.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-p9">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

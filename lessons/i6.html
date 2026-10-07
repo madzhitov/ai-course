@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Индустрия</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">I6</span></div>
+
 <h1>Урок i6. ИИ для фэшн-бренда и шоурума</h1>
 
 <div class="lesson-meta">
@@ -72,14 +73,14 @@ wearing [конкретное описание одежды: силуэт, тк�
 [стиль фотографии: editorial / lookbook / e-commerce], [камера/объектив],
 shot on [film/digital], [настроение]</code></pre>
 
-<p>Пример рабочего промпта для Midjourney v6:</p>
+<p>Пример рабочего промпта для Midjourney V8:</p>
 
 <pre><code>full-body editorial fashion photograph of a 25-year-old woman with
 shoulder-length dark hair, wearing an oversized cream wool coat with
 wide lapels, dark brown wide-leg trousers, square-toe leather boots,
 standing in a minimalist concrete gallery, hands in pockets, slight
 contrapposto, soft north-facing window light, shot on Hasselblad 80mm,
-muted natural color palette, calm and confident mood --ar 4:5 --style raw</code></pre>
+muted natural color palette, calm and confident mood --ar 4:5 --raw</code></pre>
 
 <p>Что важно держать в голове:</p>
 
@@ -90,7 +91,7 @@ muted natural color palette, calm and confident mood --ar 4:5 --style raw</code>
 <li><strong>Фон — простой.</strong> Бетон, белая стена, окно — выигрывает у «парижская улица», потому что одежда читается чище.</li>
 </ul>
 
-<p>Для серии лукбука держи seed/style reference, чтобы лица не менялись от кадра к кадру. В Midjourney это <code>--cref &lt;ссылка на исходник&gt;</code> и <code>--sref &lt;ссылка&gt;</code>. Во Flux — image-to-image с низкой denoise.</p>
+<p>Для серии лукбука держи референсы, чтобы лица не менялись от кадра к кадру. В Midjourney стиль держит <code>--sref &lt;ссылка&gt;</code>, а лицо и фигуру Omni Reference <code>--oref &lt;ссылка на исходник&gt;</code>: он пока работает в V7 (для V8 его доучивают). Старый <code>--cref</code> был параметром V6. Во Flux — image-to-image с низкой denoise.</p>
 
 <h2>2. Описания товаров</h2>
 
@@ -223,7 +224,7 @@ linen tablecloth, top-down view, editorial styling</code></pre>
 <h2>6. Подводные камни</h2>
 
 <h3>Legal на AI-моделей</h3>
-<p>Использовать AI-сгенерированных моделей в коммерческом контексте можно, но с оговорками. Лицензии Midjourney (платная подписка) разрешают коммерческое использование. У Flux — зависит от версии (Flux Pro через fal.ai/Replicate — да, локальный Schnell — да). У Kandinsky — да, по условиям сервиса.</p>
+<p>Использовать AI-сгенерированных моделей в коммерческом контексте можно, но с оговорками. Лицензии Midjourney (платная подписка) разрешают коммерческое использование, но компании с выручкой больше $1 млн в год должны быть на тарифе Pro или Mega. У Flux — зависит от версии (Flux Pro через fal.ai/Replicate — да, локальный Schnell — да). У Kandinsky — да, по условиям сервиса.</p>
 
 <p>Что НЕ окей даже технически и юридически: генерировать конкретное узнаваемое лицо реального человека (актриса, инфлюенсер) и использовать его на упаковке/рекламе. Это уже не AI-вопрос, это право на изображение.</p>
 
@@ -240,16 +241,16 @@ linen tablecloth, top-down view, editorial styling</code></pre>
 <ul>
 <li>AI-описания с «качеством и стилем». Лучше короче и грубее, чем шаблонно.</li>
 <li>Несоответствие AI-визуала и реального товара. Если на лукбуке ткань выглядит как шёлк, а в реальности — креп, клиенты возвращают и пишут отзывы.</li>
-<li>Шесть лиц в одном лукбуке. Используй <code>--cref</code> и поддерживай одну-две «модели» через сезон.</li>
+<li>Шесть лиц в одном лукбуке. Используй <code>--oref</code> (Omni Reference, Midjourney V7) и поддерживай одну-две «модели» через сезон.</li>
 </ul>
 
 <h2>7. Глоссарий</h2>
 
 <dl>
-<dt>Image generation</dt><dd>Генерация изображений по текстовому описанию. Midjourney, Flux, Kandinsky, DALL-E — основные движки.</dd>
+<dt>Image generation</dt><dd>Генерация изображений по текстовому описанию. Midjourney, Flux, Kandinsky, GPT Image (ChatGPT), Nano Banana (Gemini): основные движки.</dd>
 <dt>Prompt</dt><dd>Текстовый запрос к модели. В image generation — структурированное описание сцены, в LLM — задача с контекстом.</dd>
 <dt>Style reference / --sref</dt><dd>Передать модели изображение как пример стиля, чтобы новые генерации были «в том же визуальном языке». Ключевой инструмент для серии лукбука.</dd>
-<dt>Character reference / --cref</dt><dd>То же самое, но для лица/фигуры. Чтобы модель в кадре оставалась той же между генерациями.</dd>
+<dt>Omni reference / --oref</dt><dd>То же самое, но для лица/фигуры: чтобы модель в кадре оставалась той же между генерациями. В Midjourney заменил --cref из V6, пока работает в V7.</dd>
 <dt>Brand voice (бренд-тон)</dt><dd>Набор правил, как бренд говорит: словарь, ритм, эмоция, что можно и что нельзя. Формализуется один раз и используется как системный промпт.</dd>
 <dt>Mood board</dt><dd>Подборка референсов (фото, ткани, цвета, шрифты), задающая визуальное направление коллекции. ИИ помогает кластеризовать собранное в подборке.</dd>
 <dt>Capsule / капсула</dt><dd>Маленькая коллекция, 8-15 артикулов, объединённых концепцией. Удобный формат для AI-инструментов: тестируешь подход на одной капсуле, потом масштабируешь.</dd>
@@ -292,9 +293,10 @@ linen tablecloth, top-down view, editorial styling</code></pre>
 <li>ИИ закрывает черновики, варианты, скучные форматы. Прод-съёмка и финальный визуал кампании — пока человек.</li>
 <li>Промпт для фэшн-визуала держится на трёх вещах: фактура ткани конкретными словами, освещение конкретными словами, поза конкретными словами.</li>
 <li>Бренд-тон извлекается один раз из 5-10 своих текстов и потом используется как системный промпт во всех запросах.</li>
-<li>Серию лукбука держит <code>--cref</code> / <code>--sref</code> — без этого лица скачут от кадра к кадру.</li>
+<li>Серию лукбука держат <code>--oref</code> / <code>--sref</code>: без этого лица скачут от кадра к кадру.</li>
 <li>Палитру визуализируй до закупки тканей. Описание визуализируй до выкладки на маркетплейс. ИИ — это дешёвый тест перед дорогим решением.</li>
 </ol>
+
 
 
     <div class="pp-open"><a href="../#lesson-i6">Открыть интерактивную версию (с Алёшей) →</a></div>

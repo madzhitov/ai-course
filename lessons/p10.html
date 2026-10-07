@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P10</span></div>
+
 <h1>Проект «За 1 час»: Авто-ревьюер pull request'ов на GitHub</h1>
 
 <div class="lesson-meta">
@@ -53,7 +54,7 @@
 </div>
 
 <h2>Зачем</h2>
-<p>Качество кода + скорость ревью. AI-ревью не заменяет человека, но ловит 60–80% типичных проблем за минуты — и человек ревьюит уже отфильтрованный код.</p>
+<p>Качество кода + скорость ревью. AI-ревью не заменяет человека, но за минуты ловит заметную часть типичных проблем — и человек ревьюит уже отфильтрованный код.</p>
 
 <h2>Архитектура</h2>
 <pre><code>PR opened/updated → GitHub Action triggered →
@@ -77,9 +78,12 @@ REPO = os.environ["GITHUB_REPOSITORY"]
 GH_TOKEN = os.environ["GITHUB_TOKEN"]
 AN_KEY = os.environ["ANTHROPIC_API_KEY"]
 
-def gh(method, path, **kw):
-    return requests.request(method, f"https://api.github.com{path}",
-      headers={"Authorization": f"Bearer {GH_TOKEN}", "Accept": "application/vnd.github+json"}, **kw)
+def gh(method, path, headers=None, **kw):
+    h = {"Authorization": f"Bearer {GH_TOKEN}", "Accept": "application/vnd.github+json"}
+    h.update(headers or {})
+    r = requests.request(method, f"https://api.github.com{path}", headers=h, **kw)
+    r.raise_for_status()
+    return r
 
 # Получаем дифф PR
 diff = gh("GET", f"/repos/{REPO}/pulls/{PR_NUM}",
@@ -139,6 +143,9 @@ on:
   pull_request:
     types: [opened, synchronize]
 
+permissions:
+  contents: read
+  pull-requests: write
 jobs:
   review:
     runs-on: ubuntu-latest
@@ -176,7 +183,7 @@ jobs:
 <div class="callout callout-warning">
 <ul>
 <li>Не доверяй финальный approve AI — должен быть человек.</li>
-<li>Не передавай в Claude приватные/чувствительные репо без enterprise-договора (или используй self-hosted Sonnet через AWS Bedrock).</li>
+<li>Прежде чем отправлять в Claude приватные/чувствительные репо, сверься с политикой компании. По умолчанию Anthropic не обучает модели на данных из API. Если код должен оставаться в твоём облачном контуре, Claude доступен через AWS Bedrock или Google Cloud Vertex AI (это управляемые сервисы, а не self-hosted).</li>
 <li>Не игнорируй усталость ревьюеров — если AI генерирует слишком много шума, выключай.</li>
 </ul>
 </div>
@@ -184,6 +191,7 @@ jobs:
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> AI-ревью — это «как иметь второго senior'a в команде, который доступен 24/7 за $5/мес». Не заменяет человека, но усиливает.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-p10">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

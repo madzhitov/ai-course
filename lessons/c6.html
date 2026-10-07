@@ -44,12 +44,13 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Claude Deep Dive</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">C6</span></div>
+
 <h1>Prompt Caching — экономим 90% на длинных контекстах</h1>
 
 <div class="lesson-meta">
   <span><strong>Цель:</strong> освоить prompt caching Anthropic для серьёзной экономии денег</span>
   <span><strong>Время:</strong> ~35 минут</span>
-  <span><strong>Источник:</strong> docs.claude.com/build-with-claude/prompt-caching</span>
+  <span><strong>Источник:</strong> platform.claude.com/docs/en/build-with-claude/prompt-caching</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -231,9 +232,9 @@ print(response.usage)
 <p>Cache write дороже обычного на 25%. Если ты делаешь только 1 запрос — не экономишь. Окупается со 2-го.</p>
 
 <h3>Безопасность контекста</h3>
-<p>Каждый клиент API имеет свой кэш — между разными аккаунтами он не пересекается. Но внутри своего проекта будь осторожен: если в кэше есть пользовательские данные клиента А, другой клиент Б к ним доступа не получит, но в логах твоего бэкенда они есть.</p>
+<p>Кэш изолирован на уровне workspace: его не делят ни разные организации, ни даже разные workspace одной организации (на Bedrock и Google Cloud изоляция по организации). Но внутри своего проекта будь осторожен: если в кэше есть пользовательские данные клиента А, другой клиент Б к ним доступа не получит, но в логах твоего бэкенда они есть.</p>
 
-<h3>Не путать с PromptShield</h3>
+<h3>У других провайдеров свой кэш</h3>
 <p>В разных провайдерах разные системы. У OpenAI есть свой prompt caching (с 2024), но цена и поведение отличаются. Урок про Anthropic — для OpenAI смотри их доки.</p>
 
 <h2>9. Глоссарий</h2>
@@ -317,6 +318,7 @@ print(response.usage)
 <div class="callout callout-success">
 <strong>💰 Закрепление:</strong> для серьёзных AI-приложений с тысячами запросов в день prompt caching — это разница между $500/мес и $80/мес. Включи где можешь. Просто проверь в логах, что кэш реально срабатывает.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-c6">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

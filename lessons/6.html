@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 6</span></div>
+
 <h1>Урок 6. Первое приложение — генерация текста через API</h1>
 
 <div class="lesson-meta">
@@ -90,31 +91,31 @@
 
 <h3>OpenAI</h3>
 <ol>
-<li>Зайди на <a href="https://platform.openai.com" target="_blank">platform.openai.com</a> (это <strong>не</strong> тот же что chat.openai.com — отдельный аккаунт для разработчиков).</li>
+<li>Зайди на <a href="https://platform.openai.com" target="_blank">platform.openai.com</a> (это <strong>не</strong> то же, что chatgpt.com: логин общий, но оплата API отдельная от подписки ChatGPT).</li>
 <li>Зарегистрируйся или войди.</li>
 <li>Пополни баланс: Billing → Add to credit balance. Минимум $5. Этого хватит на тысячи запросов.</li>
 <li>Создай ключ: API keys → Create new secret key. Скопируй и сохрани в надёжное место — показывается один раз.</li>
-<li>Поставь ограничения: Settings → Limits → Monthly budget. Например, $20/мес. Это страховка от случайного слива денег.</li>
+<li>Поставь ограничения: Settings → Limits, например $20/мес. Проверь, блокирует ли лимит запросы или только присылает уведомление. Надёжная страховка: небольшой баланс без автопополнения.</li>
 </ol>
 
 <h3>Anthropic (Claude)</h3>
 <ol>
-<li>Зайди на <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>.</li>
+<li>Зайди на <a href="https://platform.claude.com" target="_blank">platform.claude.com</a>.</li>
 <li>Аналогично: пополни баланс, создай ключ, поставь лимиты.</li>
 </ol>
 
 <h3>Альтернативы для России</h3>
 <ul>
 <li><strong>Yandex GPT</strong> — yandex.cloud, оплата с российской карты.</li>
-<li><strong>GigaChat</strong> от Сбера — sberbank.ru, требуется регистрация юрлица для API.</li>
-<li><strong>OpenRouter</strong> — единый API к десяткам моделей, может работать через российские карты.</li>
+<li><strong>GigaChat</strong> от Сбера: developers.sber.ru, API доступен и физлицам, есть бесплатный лимит.</li>
+<li><strong>OpenRouter</strong>: единый API к десяткам моделей, но российские карты он не принимает, а доступ из РФ ограничен.</li>
 <li><strong>Прокси-провайдеры</strong> (есть, но не все легальны — на свой риск).</li>
 </ul>
 
 <h2>3. Подготовка окружения</h2>
 
 <h3>Установка Python (если нет)</h3>
-<p>Понадобится Python 3.8+. Проверь:</p>
+<p>Понадобится Python 3.10+. Проверь:</p>
 <pre><code>python3 --version</code></pre>
 <p>Если нет или версия старая — поставь через python.org или (на Mac) <code>brew install python</code>.</p>
 
@@ -445,7 +446,7 @@ def process_one(text):
 
 with ThreadPoolExecutor(max_workers=10) as ex:
     results = list(ex.map(process_one, texts))</code></pre>
-<p>10x ускорение. Но осторожно с rate limits — у OpenAI обычно 5000 req/min.</p>
+<p>10x ускорение. Но осторожно с rate limits: на старте (Tier 1) у gpt-4o-mini лимит 500 req/min.</p>
 
 <h3>Структурированный вывод (JSON mode)</h3>
 <p>Если ответ должен парситься программно:</p>
@@ -539,7 +540,7 @@ data = json.loads(response.choices[0].message.content)
 <code>response_format={"type": "json_object"}</code> + явная инструкция в system prompt + temperature=0 + try/except json.loads на стороне кода.</p>
 
 <p><strong>9. Когда retry, а когда нет?</strong><br>
-Retry на временные ошибки: rate limit, network timeout, 5xx. Не retry на логические: невалидный запрос (400), кончились деньги (402), неверный ключ (401).</p>
+Retry на временные ошибки: rate limit, network timeout, 5xx. Не retry на логические: невалидный запрос (400), кончились деньги (у OpenAI это 429 с кодом credit_balance_exhausted), неверный ключ (401).</p>
 
 <p><strong>10. Чем отличаются <code>frequency_penalty</code> и <code>presence_penalty</code>?</strong><br>
 <code>frequency_penalty</code> штрафует за частоту повторений конкретного токена. <code>presence_penalty</code> — за сам факт упоминания темы. Оба от -2 до 2, по умолчанию 0.</p>
@@ -559,6 +560,7 @@ Retry на временные ошибки: rate limit, network timeout, 5xx. Н
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> создай папку <code>my-ai-app/</code> с venv и .env. Это будет твоя лаборатория на следующие уроки. Все скрипты из уроков 7, 8 будут в ней.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-6">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

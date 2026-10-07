@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P13</span></div>
+
 <h1>Проект «За 1 час»: Browser-расширение «AI рядом с текстом»</h1>
 
 <div class="lesson-meta">
@@ -262,7 +263,7 @@ async function callClaude(prompt) {
       "content-type": "application/json",
       "x-api-key": apiKey,
       "anthropic-version": "2023-06-01",
-      // нужно для вызова из расширения, иначе 403
+      // нужно для вызова из расширения, иначе 401
       "anthropic-dangerous-direct-browser-access": "true"
     },
     body: JSON.stringify({
@@ -282,7 +283,7 @@ async function callClaude(prompt) {
 }
 </code></pre>
 
-<p>Обрати внимание на хедер <code>anthropic-dangerous-direct-browser-access</code>. Без него Anthropic API отвечает 403 при прямом вызове из браузера. Они защищаются от того, что ты случайно встроишь ключ в публичный сайт. Для расширения, где ключ хранится в локальном storage пользователя — окей.</p>
+<p>Обрати внимание на хедер <code>anthropic-dangerous-direct-browser-access</code>. Без него Anthropic API отвечает ошибкой 401 с текстом «CORS requests must set 'anthropic-dangerous-direct-browser-access' header» при прямом вызове из браузера. Они защищаются от того, что ты случайно встроишь ключ в публичный сайт. Для расширения, где ключ хранится в локальном storage пользователя — окей.</p>
 
 <h2>Шаг 5. Content script — попап на странице</h2>
 <p>Content script вставляется в каждую вкладку. Его задача — нарисовать модальное окно с ответом. Никаких iframe'ов, чтобы не ломать вёрстку чужих сайтов — просто div поверх с высоким z-index.</p>
@@ -429,17 +430,17 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) =&gt; {
 <li><strong>История запросов:</strong> сохраняй в <code>chrome.storage.local</code> последние 50 запросов с ответами. Отдельная страница options.html, чтобы посмотреть.</li>
 <li><strong>Свои промпты:</strong> страница опций, где пользователь добавляет кастомные пункты меню («перевести как маркетолог», «упростить для бабушки»).</li>
 <li><strong>«Найти источники»:</strong> промпт «дай 3 ключевых утверждения из текста и предположи, какие источники их подтвердят/опровергнут». Дальше можно подключить web search через MCP.</li>
-<li><strong>Локальная модель:</strong> вместо Anthropic — Ollama на localhost:11434 (см. p14). Получается полностью офлайн расширение.</li>
+<li><strong>Локальная модель:</strong> вместо Anthropic можно ходить в Ollama на localhost:11434 (см. p14). Получается полностью офлайн расширение. Два условия: добавь <code>http://localhost:11434/*</code> в <code>host_permissions</code> и запусти Ollama с <code>OLLAMA_ORIGINS=chrome-extension://*</code>, иначе сервер отклонит запросы с адреса расширения.</li>
 </ul>
 
 <h2>Подводные камни</h2>
 <ul>
-<li><strong>403 от Anthropic.</strong> Забыт хедер <code>anthropic-dangerous-direct-browser-access</code> или ключ просрочен.</li>
+<li><strong>401 от Anthropic.</strong> Забыт хедер <code>anthropic-dangerous-direct-browser-access</code> или ключ просрочен.</li>
 <li><strong>Контекстное меню не появляется.</strong> Проверь, что в manifest есть <code>"contextMenus"</code> в permissions и в коде <code>contexts: ["selection"]</code>.</li>
 <li><strong>Попап ломается на странице.</strong> Сайты с агрессивным CSS могут перебить стили — добавь <code>!important</code> к ключевым правилам или вынеси попап в Shadow DOM.</li>
 <li><strong>Service worker «засыпает».</strong> В MV3 он останавливается через ~30 сек простоя. Не держи там состояние — всё хранение через <code>chrome.storage</code>.</li>
 <li><strong>CSP сайтов.</strong> Content Security Policy у некоторых сайтов блокирует inline-стили. Поэтому отдельный <code>content.css</code>, а не <code>style=""</code>.</li>
-<li><strong>Ключ виден на диске.</strong> Chrome шифрует <code>chrome.storage</code>, но root-доступ к машине = доступ к ключу. Не давай расширение коллегам с своим ключом.</li>
+<li><strong>Ключ виден на диске.</strong> <code>chrome.storage</code> не шифруется: данные лежат в профиле браузера открытым текстом, и любой, у кого есть доступ к твоей учётной записи на машине, прочитает ключ. Не давай расширение коллегам с своим ключом.</li>
 <li><strong>Анивирусы.</strong> «Чужое» неподписанное расширение иногда вызывает у IT-отдела вопросы. Для команды лучше публиковать через Chrome Web Store (одноразово $5, потом релизы бесплатно).</li>
 </ul>
 
@@ -455,6 +456,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) =&gt; {
 <div class="callout callout-success">
 <strong>Идея:</strong> сделай расширение под свою конкретную работу. Чтец длинных PDF? Кнопка «выжимка раздела». Покупаешь криптовалюту? «Объяснить смарт-контракт». Готовишься к экзамену? «Сделай флэш-карточки из выделенного». Расширения — это идеальный формат для гипер-нишевых инструментов «для себя одного».
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-p13">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

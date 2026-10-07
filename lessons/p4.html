@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P4</span></div>
+
 <h1>Проект «За 1 час»: Анализ счетов и чеков через Claude Vision</h1>
 
 <div class="lesson-meta">
@@ -58,7 +59,7 @@
 <h2>Что узнаешь</h2>
 <ul>
 <li>Multimodal Claude API (vision).</li>
-<li>Structured output (JSON-mode).</li>
+<li>Structured output: JSON по инструкции в промпте (для гарантированного JSON в API Claude есть Structured Outputs, параметр <code>output_config.format</code>).</li>
 <li>Google Sheets API.</li>
 <li>Простой web-UI на Streamlit для загрузки.</li>
 </ul>
@@ -67,7 +68,7 @@
 <pre><code>Streamlit upload → Claude Sonnet (vision + JSON) → Google Sheets append</code></pre>
 
 <h2>Шаг 1. Установка</h2>
-<pre><code>pip install anthropic streamlit gspread oauth2client</code></pre>
+<pre><code>pip install anthropic streamlit gspread</code></pre>
 
 <h2>Шаг 2. Промпт для распознавания</h2>
 <pre><code>EXTRACT_PROMPT = """
@@ -90,13 +91,15 @@ client = anthropic.Anthropic()
 
 def analyze_receipt(image_bytes):
     img64 = base64.b64encode(image_bytes).decode()
+    # тип должен совпадать с реальным форматом файла, иначе API вернёт ошибку 400
+    media_type = "image/png" if image_bytes[:8] == b"\x89PNG\r\n\x1a\n" else "image/jpeg"
     msg = client.messages.create(
       model="claude-sonnet-5-5",
       max_tokens=1024,
       messages=[{
         "role": "user",
         "content": [
-          {"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": img64}},
+          {"type": "image", "source": {"type": "base64", "media_type": media_type, "data": img64}},
           {"type": "text", "text": EXTRACT_PROMPT}
         ]
       }]
@@ -139,6 +142,7 @@ if uploaded:
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> Claude Vision + JSON-mode = быстрый OCR-pipeline для любых документов. Накладные, чеки, паспорта, формы — один паттерн.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-p4">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

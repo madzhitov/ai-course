@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 2. Строитель</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 20</span></div>
+
 <h1>Урок 20. Agentic RAG</h1>
 
 <div class="lesson-meta">
@@ -75,7 +76,7 @@
 
 <h2>2. Когда обычный RAG не справится</h2>
 <ul>
-<li><strong>Multi-hop вопросы.</strong> «Кто CEO компании, которая купила Figma в 2022?» — два связанных факта.</li>
+<li><strong>Multi-hop вопросы.</strong> «Кто основал компанию, которая купила Instagram в 2012?» — два связанных факта.</li>
 <li><strong>Сравнения.</strong> «Чем наша цена отличается от рыночной».</li>
 <li><strong>Агрегация.</strong> «Сколько у нас контрактов с штрафом больше $10k».</li>
 <li><strong>Условные запросы.</strong> «Если есть упоминание X — найди связанное Y».</li>
@@ -162,7 +163,7 @@ Original question: [вопрос пользователя]
 
 <h2>10. Инструменты для реализации</h2>
 <ul>
-<li><strong>LangGraph</strong> — лучший фреймворк для agentic RAG (state machine, retries, чекпоинты).</li>
+<li><strong>LangGraph</strong>: популярный фреймворк для agentic RAG (state machine, retries, чекпоинты).</li>
 <li><strong>LlamaIndex</strong> — встроенные query engines для multi-step.</li>
 <li><strong>Haystack</strong> — pipeline-based, тоже хорошо.</li>
 <li><strong>С нуля на Anthropic SDK</strong> — для понимания, 100–200 строк.</li>
@@ -174,7 +175,7 @@ Original question: [вопрос пользователя]
 <li><strong>Бесконечные циклы.</strong> Модель «никогда не уверена» → бесконечно ищет. Ставь max_iterations=5–8.</li>
 <li><strong>Каскадирующие ошибки.</strong> Плохой первый поиск → плохое решение «искать дальше». 5 шагов × 80% точности = 33% итоговой.</li>
 <li><strong>Дороговизна.</strong> Каждый шаг = LLM call + retrieve. Логируй стоимость на запрос.</li>
-<li><strong>Halucination мерджа.</strong> При сведении нескольких источников модель может выдумать связи, которых нет. В промпте: «Указывай источник для каждого утверждения».</li>
+<li><strong>Hallucination мерджа.</strong> При сведении нескольких источников модель может выдумать связи, которых нет. В промпте: «Указывай источник для каждого утверждения».</li>
 <li><strong>Промптовая инъекция в retrieved data.</strong> Если в одном из документов спрятана инструкция «игнорируй предыдущие правила» — модель послушается. Защита: явно отделять данные XML-тегами + ругаться на инструкции внутри них.</li>
 </ul>
 </div>
@@ -215,6 +216,7 @@ Original question: [вопрос пользователя]
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> agentic RAG — не «всегда лучше», а «когда оправдано». Большинство юзкейсов решаются классическим. Используй мощь только тогда, когда она нужна.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-20">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

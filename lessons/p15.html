@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P15</span></div>
+
 <h1>Проект «За 1 час»: Личный AI-секретарь — автоответы на email + дневной чек-ин</h1>
 
 <div class="lesson-meta">
@@ -87,7 +88,7 @@ fetch_inbox.py
 
 <p>Никогда не вбивай основной пароль от почты в скрипт. Все нормальные провайдеры дают «application-specific password» — отдельный пароль для скриптов, который можно отозвать в любой момент.</p>
 
-<p><strong>Gmail:</strong> myaccount.google.com → Безопасность → 2-Step Verification → App passwords → создать. Получишь 16-символьную строку.</p>
+<p><strong>Gmail:</strong> включи двухэтапную аутентификацию, затем открой myaccount.google.com/apppasswords и создай пароль. Получишь 16-символьную строку. Пункта не будет, если вход настроен только через ключи безопасности, включена Дополнительная защита или это рабочий/учебный аккаунт.</p>
 <p><strong>Yandex:</strong> id.yandex.ru → Безопасность → Пароли приложений → «Почта». Дальше IMAP-настройки.</p>
 
 <p>Создай проект:</p>
@@ -219,7 +220,9 @@ def classify_batch(emails):
 
 <p>Это самая магическая часть. Скрипт кладёт сгенерированный черновик прямо в почтовый клиент — открываешь утром почту, видишь готовые драфты, проверяешь, кликаешь «Отправить».</p>
 
-<pre><code class="language-python">from email.message import EmailMessage
+<pre><code class="language-python"># файл drafts.py
+import os
+from email.message import EmailMessage
 from imap_tools import MailBox
 
 def save_draft(to_addr, subject, body):
@@ -230,25 +233,20 @@ def save_draft(to_addr, subject, body):
     msg["Subject"] = f"Re: {subject}" if not subject.lower().startswith("re:") else subject
     msg.set_content(body)
 
-    # имя папки черновиков зависит от провайдера
-    drafts_folder = guess_drafts_folder()
-
     with MailBox(os.getenv("IMAP_HOST")).login(
         os.getenv("IMAP_USER"), os.getenv("IMAP_PASS")
     ) as mailbox:
+        drafts_folder = find_drafts_folder(mailbox)
         mailbox.append(msg.as_bytes(), drafts_folder)
 
 
-def guess_drafts_folder():
-    """У разных провайдеров папка называется по-разному."""
-    host = os.getenv("IMAP_HOST", "")
-    if "gmail" in host:
-        return "[Gmail]/Drafts"
-    if "yandex" in host:
-        return "Drafts"
-    if "mail.ru" in host:
-        return "Черновики"
-    return "Drafts"  # дефолт по стандарту
+def find_drafts_folder(mailbox):
+    """Имя папки черновиков зависит от провайдера и языка интерфейса
+    (у русскоязычного Gmail это [Gmail]/Черновики). Ищем по флагу Drafts."""
+    for folder in mailbox.folder.list():
+        if any(flag.endswith("Drafts") for flag in folder.flags):
+            return folder.name
+    return "Drafts"  # дефолт, если сервер не помечает папки флагами
 </code></pre>
 
 <p>Если не знаешь, как называется папка — выведи список:</p>
@@ -259,8 +257,11 @@ def guess_drafts_folder():
 
 <h2>Шаг 5: дневной чек-ин в Telegram</h2>
 
-<pre><code class="language-python">import asyncio
+<pre><code class="language-python"># файл telegram_brief.py
+import asyncio
+import os
 from telegram import Bot
+from telegram.helpers import escape_markdown
 
 async def send_brief(stats, urgent_items, template_count):
     bot = Bot(token=os.getenv("TG_BOT_TOKEN"))
@@ -277,8 +278,9 @@ async def send_brief(stats, urgent_items, template_count):
     if urgent_items:
         lines.append("\n*Что важно сегодня:*")
         for item in urgent_items[:5]:
-            lines.append(f"• _{item['from']}_: {item['subject']}")
-            lines.append(f"  └ {item['reason']}")
+            # в адресах и темах часто есть _ и *, без экранирования Telegram отклонит сообщение
+            lines.append(f"• {escape_markdown(item['from'])}: {escape_markdown(item['subject'])}")
+            lines.append(f"  └ {escape_markdown(item['reason'])}")
 
     await bot.send_message(
         chat_id=os.getenv("TG_CHAT_ID"),
@@ -377,7 +379,7 @@ if __name__ == "__main__":
 <li><strong>Приватность.</strong> Ты отправляешь содержимое писем в Anthropic. Если в почте врачебная тайна, NDA, банковские данные — подумай, готов ли ты к этому. Anthropic не тренирует на API-данных, но это всё равно твой выбор. На корпоративную почту я бы такое не ставил без согласования с безопасностью.</li>
 <li><strong>AI промахнётся.</strong> Иногда «важное от клиента» уйдёт в FYI. Поэтому скрипт никогда не удаляет, не архивирует и не отправляет письма сам — только классифицирует и готовит драфты. Все деструктивные действия — за тобой.</li>
 <li><strong>Длинные треды.</strong> Если в одном письме висит переписка на 50 круток — обрезка до 1500 символов отрежет историю. Можешь брать <code>msg.text[:5000]</code>, но следи за стоимостью токенов. Для сотни писем в день — копейки, для тысячи — уже заметно.</li>
-<li><strong>Папка «Черновики» в Gmail.</strong> Называется <code>[Gmail]/Drafts</code>, в кавычках с пробелом перед /. Если опечатаешься — IMAP молча создаст одноимённую папку, и в почтовом клиенте драфты не появятся. Проверяй через <code>mailbox.folder.list()</code>.</li>
+<li><strong>Папка «Черновики» в Gmail.</strong> Имя зависит от языка интерфейса: <code>[Gmail]/Drafts</code> в английском, <code>[Gmail]/Черновики</code> в русском. Если имя неверное, сервер вернёт ошибку (по стандарту IMAP при APPEND папка сама не создаётся), и imap-tools выбросит исключение. Поэтому в коде выше папка ищется по флагу Drafts; проверить вручную можно через <code>mailbox.folder.list()</code>.</li>
 <li><strong>HTML-письма.</strong> <code>msg.text</code> у некоторых рассылок пустой, всё в <code>msg.html</code>. В коде выше — фолбэк <code>msg.text or msg.html</code>, но HTML с тегами засоряет модели контекст. Можно подключить <code>html2text</code> для очистки.</li>
 </ul>
 
@@ -390,6 +392,7 @@ if __name__ == "__main__":
 <div class="callout callout-info" style="margin-top: 1.5rem;">
 <strong>Без VPN и подписок:</strong> полностью локальная версия — без западных API, без подписок, ничего не уходит в облако — <a href="#lesson-p21" onclick="openLesson('p21'); return false;">урок p21</a> (AI-секретарь на Ollama).
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-p15">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

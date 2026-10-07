@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Claude Deep Dive</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">C3</span></div>
+
 <h1>MCP — Model Context Protocol</h1>
 
 <div class="lesson-meta">
@@ -114,7 +115,7 @@
 <p>Транспорты:</p>
 <ul>
 <li><strong>stdio</strong> — сервер запускается как локальный процесс, общение через stdin/stdout. Самый частый вариант.</li>
-<li><strong>HTTP+SSE</strong> — для удалённых серверов.</li>
+<li><strong>Streamable HTTP</strong>: для удалённых серверов. Старый транспорт HTTP+SSE устарел и в актуальной спецификации не описан.</li>
 </ul>
 
 <h2>3. Что MCP-сервер может предоставлять</h2>
@@ -145,21 +146,17 @@
 
 <h2>4. Реальные серверы — что доступно сейчас</h2>
 
-<p>Anthropic поддерживает каталог официальных серверов на <a href="https://github.com/modelcontextprotocol/servers" target="_blank">github.com/modelcontextprotocol/servers</a>:</p>
+<p>В репозитории <a href="https://github.com/modelcontextprotocol/servers" target="_blank">github.com/modelcontextprotocol/servers</a> сейчас семь эталонных (reference) серверов. Остальные, включая github, postgres, sqlite, brave-search, slack, puppeteer, gdrive и sentry, перенесены в архив (servers-archived) и не поддерживаются. Готовые серверы от самих сервисов ищи в официальном реестре <a href="https://registry.modelcontextprotocol.io" target="_blank">registry.modelcontextprotocol.io</a>.</p>
 
 <table>
 <tr><th>Сервер</th><th>Что умеет</th></tr>
 <tr><td>filesystem</td><td>Читать/писать файлы в указанных директориях</td></tr>
-<tr><td>github</td><td>Полный доступ к GitHub API: репо, issue, PR, комменты</td></tr>
 <tr><td>git</td><td>Работа с git репозиториями локально</td></tr>
-<tr><td>postgres</td><td>SQL-запросы к Postgres</td></tr>
-<tr><td>sqlite</td><td>SQL-запросы к SQLite файлам</td></tr>
-<tr><td>brave-search</td><td>Веб-поиск через Brave</td></tr>
-<tr><td>slack</td><td>Чтение каналов, отправка сообщений</td></tr>
 <tr><td>memory</td><td>Долговременная knowledge graph память</td></tr>
-<tr><td>puppeteer</td><td>Управление браузером для скрапинга/тестов</td></tr>
 <tr><td>fetch</td><td>HTTP-запросы для веб-данных</td></tr>
-<tr><td>everart, gdrive, sentry, sequentialthinking, time...</td><td>И ещё десятки</td></tr>
+<tr><td>sequentialthinking</td><td>Пошаговое рассуждение через инструмент</td></tr>
+<tr><td>time</td><td>Время и конвертация часовых поясов</td></tr>
+<tr><td>everything</td><td>Тестовый сервер со всеми возможностями протокола</td></tr>
 </table>
 
 <p>Плюс community-серверы — на <a href="https://www.pulsemcp.com" target="_blank">pulsemcp.com</a> их сейчас 1000+. Notion, Linear, Stripe, Discord, Spotify, Telegram, ChromaDB, Pinecone — всё есть.</p>
@@ -204,7 +201,7 @@
 <li>«Создай файл <code>plan.md</code> с планом на неделю».</li>
 </ul>
 
-<p>Claude будет вызывать <code>read_file</code>, <code>list_files</code>, <code>write_file</code>. Каждый вызов он спросит у тебя «можно?» — это safety-фича, не пропусти.</p>
+<p>Claude будет вызывать <code>read_text_file</code>, <code>list_directory</code>, <code>write_file</code>. Каждый вызов он спросит у тебя «можно?» — это safety-фича, не пропусти.</p>
 
 <h2>6. Подключение нескольких серверов одновременно</h2>
 
@@ -217,15 +214,15 @@
       "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/me/Documents"]
     },
     "github": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"],
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_..."
       }
     },
-    "sqlite": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sqlite", "/Users/me/notes.db"]
+    "fetch": {
+      "command": "uvx",
+      "args": ["mcp-server-fetch"]
     },
     "memory": {
       "command": "npx",
@@ -238,7 +235,7 @@
 <ul>
 <li>Читать твои файлы.</li>
 <li>Создавать issue в GitHub.</li>
-<li>Запрашивать SQL.</li>
+<li>Загружать веб-страницы.</li>
 <li>Помнить факты между сессиями.</li>
 </ul>
 
@@ -316,34 +313,16 @@ console.error("Weather server running on stdio");</code></pre>
 <h3>Python</h3>
 <pre><code>pip install mcp</code></pre>
 
-<pre><code>from mcp.server import Server
-from mcp.server.stdio import stdio_server
-import asyncio
+<pre><code>from mcp.server import MCPServer
 
-server = Server("weather-server")
+mcp = MCPServer("weather-server")
 
-@server.list_tools()
-async def list_tools():
-    return [{
-        "name": "get_weather",
-        "description": "Получить погоду",
-        "inputSchema": {
-            "type": "object",
-            "properties": {"city": {"type": "string"}},
-            "required": ["city"]
-        }
-    }]
+@mcp.tool()
+def get_weather(city: str) -> str:
+    """Получить погоду"""
+    return f"В {city}: +18°C, облачно"
 
-@server.call_tool()
-async def call_tool(name, arguments):
-    if name == "get_weather":
-        return [{"type": "text", "text": f"В {arguments['city']}: +18°C, облачно"}]
-
-async def main():
-    async with stdio_server() as (read, write):
-        await server.run(read, write, server.create_initialization_options())
-
-asyncio.run(main())</code></pre>
+mcp.run()  # по умолчанию транспорт stdio</code></pre>
 
 <h2>8. MCP vs Function Calling — в чём разница</h2>
 
@@ -356,7 +335,7 @@ asyncio.run(main())</code></pre>
 <tr><td>Стандартизация</td><td>Каждый делает по-своему</td><td>Единый протокол</td></tr>
 <tr><td>Изоляция</td><td>Функции в том же процессе что и LLM-логика</td><td>Сервер — отдельный процесс с правами</td></tr>
 <tr><td>Динамическая загрузка</td><td>Нужно перезапускать приложение</td><td>Можно подключать/отключать без рестарта</td></tr>
-<tr><td>Безопасность</td><td>Полагается на код приложения</td><td>Sandbox-исполнение в отдельном процессе</td></tr>
+<tr><td>Безопасность</td><td>Полагается на код приложения</td><td>Отдельный процесс, но не песочница: сервер работает с правами твоего пользователя</td></tr>
 </table>
 
 <p>Function calling — для случаев «у меня одно приложение, я контролирую всё». MCP — когда «я хочу подключить много инструментов многим клиентам».</p>
@@ -376,7 +355,7 @@ asyncio.run(main())</code></pre>
 ~/Library/Logs/Claude/mcp-server-XXX.log</code></pre>
 
 <h3>Версионирование</h3>
-<p>Серверы развиваются. Если обновился MCP-протокол, старый сервер может не работать. Пинай версию: <code>@modelcontextprotocol/server-filesystem@latest</code>.</p>
+<p>Серверы развиваются. Если обновился MCP-протокол, старый сервер может не работать. Закрепляй версию: <code>@modelcontextprotocol/server-filesystem@2026.8.31</code> (номер возьми из npm) и обновляй осознанно.</p>
 
 <h3>Не все клиенты одинаково умеют</h3>
 <ul>
@@ -387,7 +366,7 @@ asyncio.run(main())</code></pre>
 
 <h2>10. Глоссарий</h2>
 <ul>
-<li><strong>MCP (Model Context Protocol)</strong> — открытый протокол Anthropic для подключения LLM к данным/инструментам.</li>
+<li><strong>MCP (Model Context Protocol)</strong>: открытый протокол, созданный Anthropic (с декабря 2025 развивается в Agentic AI Foundation при Linux Foundation), для подключения LLM к данным/инструментам.</li>
 <li><strong>MCP-сервер</strong> — программа, предоставляющая tools/resources через MCP.</li>
 <li><strong>MCP-клиент</strong> — приложение, использующее MCP-серверы.</li>
 <li><strong>Tools</strong> — функции, которые LLM может вызывать через сервер.</li>
@@ -395,7 +374,7 @@ asyncio.run(main())</code></pre>
 <li><strong>Prompts</strong> — шаблоны промптов от сервера.</li>
 <li><strong>JSON-RPC</strong> — формат сообщений между клиентом и сервером.</li>
 <li><strong>stdio transport</strong> — сервер как локальный процесс, общение через stdin/stdout.</li>
-<li><strong>SSE transport</strong> — Server-Sent Events для удалённых серверов.</li>
+<li><strong>Streamable HTTP transport</strong>: транспорт для удалённых серверов (заменил устаревший HTTP+SSE).</li>
 <li><strong>Capabilities</strong> — что сервер умеет (tools / resources / prompts).</li>
 </ul>
 
@@ -406,7 +385,7 @@ asyncio.run(main())</code></pre>
 <li>Установи Claude Desktop.</li>
 <li>Открой <code>claude_desktop_config.json</code>, добавь filesystem-сервер с путём к одной из своих папок.</li>
 <li>Перезапусти Claude Desktop.</li>
-<li>Кликни на иконку 🔨 в чате — увидишь список tools (read_file, list_files, write_file и др.).</li>
+<li>Кликни на иконку 🔨 в чате — увидишь список tools (read_text_file, list_directory, write_file и др.).</li>
 <li>Попроси Claude рассказать, какие файлы у тебя есть, и предложить идеи структуры.</li>
 </ol>
 
@@ -447,13 +426,13 @@ Tools — действия (функции, которые LLM может выз
 Отредактировать <code>claude_desktop_config.json</code>, добавить запись в <code>mcpServers</code>, перезапустить Claude Desktop.</p>
 
 <p><strong>5. Чем MCP лучше function calling?</strong><br>
-Один сервер — много клиентов. Стандартизация. Изоляция в отдельном процессе. Безопасность через sandbox.</p>
+Один сервер — много клиентов. Стандартизация. Изоляция в отдельном процессе (но это не песочница: сервер работает с твоими правами).</p>
 
 <p><strong>6. Главные риски безопасности?</strong><br>
 Серверы работают с правами пользователя. Подключай только доверенные. Минимизируй scope (конкретные папки, токены с минимальными правами).</p>
 
 <p><strong>7. Какой transport использовать?</strong><br>
-stdio — для локальных серверов (90% случаев). SSE — для удалённых.</p>
+stdio для локальных серверов, Streamable HTTP для удалённых (старый HTTP+SSE устарел).</p>
 
 <p><strong>8. Где смотреть логи если сервер упал?</strong><br>
 Mac: <code>~/Library/Logs/Claude/mcp.log</code> и <code>mcp-server-XXX.log</code>.</p>
@@ -469,7 +448,7 @@ TypeScript SDK <code>@modelcontextprotocol/sdk</code> или Python <code>mcp</c
 <li><strong>MCP — это «USB-C для ИИ»</strong>: один протокол → много клиентов и серверов.</li>
 <li><strong>Сервер</strong> = программа с tools/resources. <strong>Клиент</strong> = ИИ-приложение.</li>
 <li><strong>Claude Desktop</strong> поддерживает MCP из коробки — самый простой вход.</li>
-<li><strong>Каталог серверов</strong>: filesystem, github, postgres, slack, memory, brave-search и сотни других.</li>
+<li><strong>Каталог серверов</strong>: эталонные filesystem, git, memory, fetch и тысячи серверов от сервисов в официальном реестре MCP.</li>
 <li><strong>Свой сервер пишется за 30 минут</strong> на TS/Python.</li>
 <li><strong>Безопасность критична</strong>: серверы работают с правами пользователя.</li>
 <li><strong>MCP — это будущее</strong> агентских инструментов; в 2026 это станет стандартом для ИИ-IDE и десктоп-агентов.</li>
@@ -478,6 +457,7 @@ TypeScript SDK <code>@modelcontextprotocol/sdk</code> или Python <code>mcp</c
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> подключи Claude Desktop хотя бы к filesystem-серверу до перехода к следующему уроку. Без этого механика MCP останется абстрактной.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-c3">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

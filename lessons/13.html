@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 2. Строитель</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 13</span></div>
+
 <h1>Урок 13. Function Calling — ИИ вызывает твои функции</h1>
 
 <div class="lesson-meta">
@@ -64,7 +65,7 @@
 <h2>1. Проблема, которую решает Function Calling</h2>
 <p>Представь: ты хочешь сделать бота для HR-отдела. Бот принимает резюме и должен занести данные в CRM: имя, должность, опыт, зарплатные ожидания.</p>
 <p>До Function Calling GPT-4 вернёт <code>{"name": "Алексей", "experience": 5}</code>, Claude вернёт <code>{"full_name": "Иванов Алексей", "years": "5 лет"}</code>, Mistral добавит пояснительный текст вокруг JSON. Три модели — три разных ключа, разные типы данных. Твой код упадёт с ошибкой.</p>
-<p>После Function Calling ты один раз описываешь схему — и все модели возвращают строго её.</p>
+<p>После Function Calling ты один раз описываешь схему, и модели возвращают аргументы по ней. Строгое соответствие API гарантирует, если включить строгий режим (у OpenAI это <code>strict: true</code>).</p>
 
 <h2>2. Ментальная модель: LLM — диспетчер, а не исполнитель</h2>
 <div class="callout callout-warning">
@@ -115,20 +116,20 @@
 <tr><th></th><th>Промпт «верни JSON»</th><th>Function Calling</th></tr>
 <tr><td>Формат</td><td>Может плавать</td><td>Строго по схеме</td></tr>
 <tr><td>Тип данных</td><td>Строки везде</td><td>string, integer, boolean, array</td></tr>
-<tr><td>required поля</td><td>Модель может пропустить</td><td>API гарантирует схему</td></tr>
+<tr><td>required поля</td><td>Модель может пропустить</td><td>API гарантирует схему в строгом режиме (strict)</td></tr>
 <tr><td>Несколько инструментов</td><td>Нельзя</td><td>Можно передать список</td></tr>
 <tr><td>Интеграция в агентный цикл</td><td>Сложно</td><td>Нативно</td></tr>
 </table>
 
 <h2>5. Важные нюансы</h2>
 <h3>Function Calling ≠ Tool Use (но это одно и то же)</h3>
-<p>OpenAI называет это <strong>Function Calling</strong> (старое API) и <strong>Tool Use</strong> (новое). Anthropic (Claude) называет это <strong>Tool Use</strong>. Принцип идентичный — просто разные названия в документации.</p>
+<p>OpenAI называет это <strong>Function Calling</strong>, или tool calling (в старом API параметр назывался <code>functions</code>, в новом <code>tools</code>). Anthropic (Claude) называет это <strong>Tool Use</strong>. Принцип идентичный — просто разные названия в документации.</p>
 
 <h3>Безопасность: не доверяй аргументам слепо</h3>
 <p>LLM передаёт тебе аргументы для функции — но она может ошибиться или быть обманута через prompt injection. Всегда валидируй аргументы перед выполнением, особенно если функция делает что-то необратимое.</p>
 
 <h3>Один запрос может потребовать несколько функций</h3>
-<p>«Найди курсы по Python и запиши меня на лучший» — это два действия. Современные LLM умеют вызывать несколько функций подряд (parallel tool calls).</p>
+<p>«Найди курсы по Python и запиши меня на лучший» — это два действия. Современные LLM умеют вызывать несколько функций: по очереди, шаг за шагом, или сразу несколько в одном ответе (parallel tool calls).</p>
 
 <h2>6. Практика: бот с двумя инструментами</h2>
 <pre><code>pip install openai</code></pre>
@@ -215,6 +216,7 @@ print(run_agent("Проверь погоду в Питере и если дож�
 <li>Что такое Tool Use и как оно связано с Function Calling?</li>
 <li>Почему нельзя слепо доверять аргументам, которые LLM передаёт в функцию?</li>
 </ol>
+
 
     <div class="pp-open"><a href="../#lesson-13">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

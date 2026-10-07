@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 3. Практик</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 35</span></div>
+
 <h1>Урок 35. Знакомство с PyTorch / TensorFlow</h1>
 
 <div class="lesson-meta">
@@ -217,10 +218,10 @@ torch.save(model.state_dict(), "xor.pt")</code></pre>
 <tr><th></th><th>PyTorch</th><th>TensorFlow / Keras</th></tr>
 <tr><td>Стиль</td><td>Обычный код Python, граф строится по ходу</td><td>Раньше граф объявляли заранее, теперь тоже по ходу</td></tr>
 <tr><td>Уровень</td><td>Цикл обучения пишешь сам</td><td>Keras: <code>model.fit()</code> в одну строку</td></tr>
-<tr><td>Где силён</td><td>Исследования, Hugging Face</td><td>Продакшн: сервинг, мобильные, браузер</td></tr>
+<tr><td>Где силён</td><td>Исследования, Hugging Face</td><td>Продакшн: сервинг, браузер; мобильный инференс ушёл в отдельный LiteRT (бывший TF Lite)</td></tr>
 </table>
 <p><strong>Почему в курсе PyTorch.</strong> Подавляющее большинство свежих статей, репозиториев и предобученных моделей выходит с кодом на PyTorch, а чужой код читаешь чаще, чем пишешь свой.</p>
-<p><strong>Где встретишь TensorFlow.</strong> В компаниях со стеком, собранным несколько лет назад; в мобильном и браузерном инференсе; вокруг инфраструктуры Google. Keras теперь работает поверх нескольких движков, так что «Keras» больше не равно «TensorFlow». Религиозной войны нет: понятия те же, выучив один — второй читаешь за вечер.</p>
+<p><strong>Где встретишь TensorFlow.</strong> В компаниях со стеком, собранным несколько лет назад; в браузерном инференсе; вокруг инфраструктуры Google. Новых возможностей в TensorFlow больше не ждут: с версии 2.21 (март 2026) Google развивает его только в части исправлений безопасности, багов и обновлений зависимостей, а для новых проектов в генеративном ИИ советует Keras 3, JAX и PyTorch. Keras теперь работает поверх нескольких движков, так что «Keras» больше не равно «TensorFlow». Религиозной войны нет: понятия те же, выучив один — второй читаешь за вечер.</p>
 
 <h2>12. Где это запускать</h2>
 <ul>
@@ -237,7 +238,7 @@ torch.save(model.state_dict(), "xor.pt")</code></pre>
 <li><strong>Забыл zero_grad.</strong> Градиенты накапливаются, шаг растёт, loss уходит в разнос или в NaN. Частая ошибка.</li>
 <li><strong>Данные и модель на разных устройствах.</strong> «Expected all tensors to be on the same device» — забыл <code>.to(device)</code>, проверяй батчи внутри цикла.</li>
 <li><strong>Копишь loss как tensor.</strong> <code>total += loss</code> тащит весь граф и ест память — только <code>loss.item()</code>.</li>
-<li><strong>Формы не совпали, но broadcasting сработал.</strong> Предсказание (N, 1) и ответы (N,) молча дадут матрицу N на N и неверный loss. Проверяй <code>.shape</code>.</li>
+<li><strong>Формы не совпали, но broadcasting сработал.</strong> Предсказание (N, 1) и ответы (N,) дадут матрицу N на N и неверный loss без ошибки: <code>nn.MSELoss</code> выдаст лишь предупреждение, а формула, написанная руками, промолчит совсем. Проверяй <code>.shape</code>.</li>
 </ul>
 </div>
 
@@ -283,6 +284,7 @@ torch.save(model.state_dict(), "xor.pt")</code></pre>
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> ты не «перешёл на PyTorch» — ты просто перестал писать backward руками. Всё, что ты вывел в Уроке 34, спрятано за <code>loss.backward()</code>. Поэтому, когда сеть в Уроке 37 откажется учиться, ты будешь понимать, где искать.
 </div>
+
 
 
     <div class="pp-open"><a href="../#lesson-35">Открыть интерактивную версию (с Алёшей) →</a></div>

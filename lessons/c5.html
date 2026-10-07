@@ -44,12 +44,13 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Claude Deep Dive</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">C5</span></div>
+
 <h1>Claude Code — CLI для разработчиков</h1>
 
 <div class="lesson-meta">
   <span><strong>Цель:</strong> освоить Claude Code как ежедневный инструмент разработчика</span>
   <span><strong>Время:</strong> ~60 минут</span>
-  <span><strong>Источник:</strong> docs.claude.com/claude-code</span>
+  <span><strong>Источник:</strong> code.claude.com/docs</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -65,15 +66,16 @@
 <li>Читает и пишет файлы, запускает команды в терминале, ищет по коду</li>
 <li>Держит контекст всего проекта (через <code>CLAUDE.md</code>)</li>
 <li>Использует Claude Sonnet / Opus / Haiku как «мозг»</li>
-<li>Работает <strong>по подписке Claude Pro/Max ИЛИ по API-ключу</strong> (об этом ниже)</li>
+<li>Работает <strong>по подписке Claude Pro/Max (а также Team/Enterprise) ИЛИ по API-ключу</strong> (об этом ниже); на бесплатном тарифе claude.ai Claude Code недоступен</li>
 </ul>
 
 <p>В отличие от Cursor или Copilot, Claude Code <strong>не привязан к редактору</strong>. Ты в любом терминале, в любом проекте, на любой машине. Есть и расширения для VS Code / JetBrains, но ядро — терминал.</p>
 
 <h2>2. Установка и старт за 5 минут</h2>
 
-<pre><code># 1. Установка (нужен Node.js 18+)
-npm install -g @anthropic-ai/claude-code
+<pre><code># 1. Установка (macOS, Linux, WSL; Node.js не нужен)
+curl -fsSL https://claude.ai/install.sh | bash
+# Windows PowerShell: irm https://claude.ai/install.ps1 | iex
 
 # 2. Запуск в проекте
 cd ~/your-project
@@ -156,9 +158,9 @@ SaaS для управления подписками. B2B, средний би�
 <li><code>/clear</code> — очистить контекст (новая задача с нуля)</li>
 <li><code>/compact</code> — сжать историю, сохранив суть (когда контекст разросся)</li>
 <li><code>/model</code> — переключить модель (Sonnet ↔ Opus ↔ Haiku)</li>
-<li><code>/agents</code> — управление субагентами (см. ниже)</li>
+<li><code>/agents</code>: подсказка, как создавать и править субагентов (см. ниже)</li>
 <li><code>/mcp</code> — статус подключённых MCP-серверов</li>
-<li><code>/cost</code> — расход за сессию (если на API)</li>
+<li><code>/usage</code> (он же <code>/cost</code>): расход за сессию и лимиты подписки</li>
 <li><code>/help</code> — полная справка</li>
 </ul>
 
@@ -178,7 +180,7 @@ description: Code review текущей ветки с фокусом на без
 
 <p>Теперь набираешь <code>/review</code> — и шаблон запускается.</p>
 
-<p><strong>Skills</strong> — более мощный механизм: папка с <code>SKILL.md</code> и вспомогательными файлами/скриптами, которую Claude подхватывает <strong>сам</strong>, когда задача подходит под описание. В отличие от команды (её надо вызвать вручную через <code>/</code>), Skill активируется автоматически. Подробно — в <strong>уроке c9 «Claude Skills»</strong>. Claude Code читает Skills из <code>.claude/skills/</code>.</p>
+<p><strong>Skills</strong> — более мощный механизм: папка с <code>SKILL.md</code> и вспомогательными файлами/скриптами, которую Claude подхватывает <strong>сам</strong>, когда задача подходит под описание. Skill Claude подхватывает сам, но его можно вызвать и вручную через <code>/имя-навыка</code>. Кастомные команды теперь слиты со Skills: файлы в <code>.claude/commands/</code> продолжают работать, но для новых шаблонов документация рекомендует Skills. Подробно — в <strong>уроке c9 «Claude Skills»</strong>. Claude Code читает Skills из <code>.claude/skills/</code>.</p>
 
 <h2>7. Субагенты — параллельная работа</h2>
 
@@ -189,7 +191,7 @@ description: Code review текущей ветки с фокусом на без
 <li><strong>Специализация:</strong> агент-ревьюер, агент-тестировщик, агент-исследователь со своими инструкциями</li>
 </ul>
 
-<p>Свои субагенты описываются в <code>.claude/agents/</code> — markdown-файл с ролью, инструментами и системным промптом. Управление — через <code>/agents</code>. Пример: агент <code>code-reviewer</code>, который Claude вызывает после каждого крупного изменения.</p>
+<p>Свои субагенты описываются в <code>.claude/agents/</code> — markdown-файл с ролью, инструментами и системным промптом. Создать или поправить субагента можно, попросив об этом Claude или отредактировав файл в <code>.claude/agents/</code>. Пример: агент <code>code-reviewer</code>, который Claude вызывает после каждого крупного изменения.</p>
 
 <h2>8. Hooks — автоматизация по событиям</h2>
 
@@ -211,7 +213,7 @@ description: Code review текущей ветки с фокусом на без
 <p>Claude Code сохраняет состояние перед изменениями. Двойной <code>Esc</code> — откатиться назад по диалогу и по файлам, если агент пошёл не туда. Безопасная сеть: всегда можно вернуться.</p>
 
 <h3>Память</h3>
-<p>Быстрая команда <code>#</code> в начале сообщения — добавить факт в память (в <code>CLAUDE.md</code>). Например: <code># всегда используй pytest, не unittest</code> — и это запомнится для будущих сессий.</p>
+<p>Команда <code>/memory</code> открывает файлы <code>CLAUDE.md</code> для правки и показывает авто-память: заметки, которые Claude Code сам ведёт по твоим поправкам. Чтобы правило запомнилось надолго, допиши его в <code>CLAUDE.md</code> (например, «всегда используй pytest, не unittest») или попроси Claude сделать это.</p>
 
 <h3>Возобновление сессий</h3>
 <p><code>claude --continue</code> продолжает последнюю сессию, <code>claude --resume</code> — выбрать из истории. Контекст и история сохраняются между запусками.</p>
@@ -246,7 +248,7 @@ claude -p "Просуммируй изменения в этой ветке и �
 <p>Два пути оплаты:</p>
 <ul>
 <li><strong>Подписка Claude Pro/Max</strong> — фиксированная цена в месяц, не считаешь токены. Max-тариф рассчитан на плотную ежедневную работу. Для большинства разработчиков — самый предсказуемый вариант.</li>
-<li><strong>API (pay-per-token)</strong> — Sonnet ~$3/$15 за M входных/выходных токенов, Opus дороже, Haiku дешевле. Типичная сессия 30 минут — несколько долларов. Удобно для CI и эпизодического использования.</li>
+<li><strong>API (pay-per-token)</strong> — Sonnet ~$2.00/$10.00 за M входных/выходных токенов, Opus ($4.00/$20.00) дороже, Haiku ($1.00/$5.00) дешевле. Типичная сессия 30 минут — несколько долларов. Удобно для CI и эпизодического использования.</li>
 </ul>
 
 <p class="callout"><strong>Цены и тарифы меняются.</strong> Актуальное — на <a href="https://www.anthropic.com/pricing" target="_blank">anthropic.com/pricing</a>. Совет: на API включи <strong>prompt caching</strong> (урок c6) — на длинных контекстах экономит до 90%.</p>
@@ -255,7 +257,7 @@ claude -p "Просуммируй изменения в этой ветке и �
 
 <table>
 <tr><th>Тул</th><th>Сильно</th><th>Слабо</th></tr>
-<tr><td><strong>Claude Code</strong></td><td>Сложные многофайловые задачи, агентский подход, автоматизация (hooks, CI, субагенты)</td><td>Нет визуального UI «из коробки» (есть расширения IDE)</td></tr>
+<tr><td><strong>Claude Code</strong></td><td>Сложные многофайловые задачи, агентский подход, автоматизация (hooks, CI, субагенты)</td><td>Основной интерфейс терминальный; для визуальной работы есть расширения IDE, приложение Claude Desktop и веб-версия</td></tr>
 <tr><td><strong>Cursor</strong></td><td>Отличный UX, быстрые правки и фичи прямо в редакторе</td><td>Слабее на очень крупных агентских задачах</td></tr>
 <tr><td><strong>Copilot</strong></td><td>Автокомплит на лету, дёшево</td><td>Не агент — не понимает большую задачу целиком</td></tr>
 </table>
@@ -310,7 +312,7 @@ claude -p "Просуммируй изменения в этой ветке и �
 Подписка Claude Pro/Max (фиксированная цена) ИЛИ API-ключ (pay-per-token). Подписка предсказуемее для ежедневной работы.</p>
 
 <p><strong>7. Чем кастомная команда отличается от Skill?</strong><br>
-Команду вызываешь вручную через <code>/</code>. Skill Claude подхватывает сам, когда задача подходит под описание. Подробнее про Skills — урок c9.</p>
+Команду вызываешь вручную через <code>/</code>. Skill Claude подхватывает сам, когда задача подходит под описание, но его можно вызвать и вручную через <code>/имя</code>; в актуальных версиях команды и Skills объединены. Подробнее про Skills — урок c9.</p>
 
 <p><strong>8. Зачем подключать MCP к Claude Code?</strong><br>
 Чтобы агент работал не только с кодом, а со всей инфраструктурой: БД, Notion, Linear, браузер, Sentry. См. урок c3.</p>
@@ -329,6 +331,7 @@ claude -p "Просуммируй изменения в этой ветке и �
 <li><strong>Plan mode для крупных задач.</strong> Сначала план и согласование, потом код — экономит часы переделок.</li>
 <li><strong>Подписка или API.</strong> Pro/Max — предсказуемая цена для ежедневной работы; API — для CI и эпизодов, с prompt caching (c6).</li>
 </ol>
+
 
 
     <div class="pp-open"><a href="../#lesson-c5">Открыть интерактивную версию (с Алёшей) →</a></div>

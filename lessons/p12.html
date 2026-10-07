@@ -45,6 +45,7 @@
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P12</span></div>
 
+
 <h1>Проект «За 1 час»: Свой Claude Skill — упаковываем рутину в навык</h1>
 
 <div class="lesson-meta">
@@ -123,10 +124,10 @@ description: |
 
 1. Спроси у пользователя GitHub username, если его нет в контексте сессии
    и не получается узнать через `gh api user --jq .login`.
-2. Запусти `bash scripts/fetch_prs.sh &lt;USERNAME&gt; &lt;DAYS&gt;`.
+2. Запусти `bash ${CLAUDE_SKILL_DIR}/scripts/fetch_prs.sh &lt;USERNAME&gt; &lt;DAYS&gt;`.
    Он печатает JSON-массив PR со всеми нужными полями.
 3. Раздели PR по статусу: merged / open / closed-without-merge.
-4. Возьми шаблон `templates/report.md`, подставь данные и верни
+4. Возьми шаблон `${CLAUDE_SKILL_DIR}/templates/report.md`, подставь данные и верни
    пользователю готовый markdown. Не сокращай, не добавляй своих
    разделов поверх шаблона.
 
@@ -135,7 +136,7 @@ description: |
 - Заголовок с диапазоном дат.
 - Краткое резюме (1-2 предложения, что было главным).
 - Списки PR по статусам с ссылками.
-- В каждой строке: `#номер · название · репозиторий · +добавлено / −удалено`.
+- В каждой строке: `#номер · название · репозиторий`.
 
 ## Не делай
 
@@ -166,8 +167,8 @@ fi
 SINCE=$(date -u -v-"${DAYS}"d '+%Y-%m-%d' 2&gt;/dev/null \
   || date -u -d "-${DAYS} days" '+%Y-%m-%d')
 
-# gh search возвращает только метаданные. Чтобы получить diff stats,
-# отдельно дергаем каждый PR через gh pr view.
+# gh search возвращает только метаданные, без diff stats.
+# Для +/− строк понадобился бы отдельный gh pr view на каждый PR.
 
 gh search prs \
   --author "$USERNAME" \
@@ -222,10 +223,10 @@ gh search prs \
 <p>Claude знает, что <code>{{...}}</code> — это плейсхолдеры, и заполнит их сам. Никаких jinja или mustache не нужно.</p>
 
 <h2>Шаг 5. Регистрируем Skill</h2>
-<p><strong>Claude Code:</strong> Skills из <code>~/.claude/skills/</code> подхватываются автоматически при старте новой сессии. Перезапусти CLI — и можно проверять.</p>
-<p><strong>Claude Desktop:</strong> Settings → Features → Skills → нажми «Refresh skills» или перезапусти приложение. Skill должен появиться в списке с твоим <code>name</code> и <code>description</code>.</p>
+<p><strong>Claude Code:</strong> Skills из <code>~/.claude/skills/</code> подхватываются автоматически, правки видны прямо в текущей сессии. Если папки <code>~/.claude/skills/</code> не было на момент запуска, выполни <code>/reload-skills</code> или открой новую сессию.</p>
+<p><strong>Claude Desktop и claude.ai:</strong> локальную папку <code>~/.claude/skills/</code> они не читают. Запакуй папку <code>weekly-pr-report</code> в ZIP и загрузи: Customize → Skills → «+» → Create skill → Upload a skill. Учти: скрипту нужен <code>gh</code> с твоей авторизацией на GitHub, поэтому этот Skill рассчитан прежде всего на Claude Code.</p>
 
-<p>Чтобы убедиться, что Skill виден, попроси в чате: «какие Skills у тебя сейчас доступны?». В ответе должен фигурировать <code>weekly-pr-report</code>.</p>
+<p>Чтобы убедиться, что Skill виден, в Claude Code набери <code>/skills</code>: в списке должен быть <code>weekly-pr-report</code>.</p>
 
 <h2>Запуск и проверка</h2>
 <p>В новом чате просто пиши:</p>
@@ -235,7 +236,7 @@ github username — madzhitov</code></pre>
 <p>Claude должен:</p>
 <ol>
 <li>Вспомнить Skill (видно по фразе вроде «использую weekly-pr-report»).</li>
-<li>Вызвать <code>bash scripts/fetch_prs.sh madzhitov 7</code>.</li>
+<li>Вызвать <code>fetch_prs.sh madzhitov 7</code> из папки Skill.</li>
 <li>Дождаться JSON, отсортировать по статусам.</li>
 <li>Заполнить шаблон и отдать готовый markdown.</li>
 </ol>
@@ -248,7 +249,7 @@ github username — madzhitov</code></pre>
 <li>Перезапусти Claude Desktop / новую сессию Claude Code.</li>
 <li>Проверь, что <code>description</code> содержит ключевые слова из твоего запроса.</li>
 <li>Попроси явно: «используй Skill weekly-pr-report».</li>
-<li>Загляни в логи. В Claude Desktop — Help → Open Logs. В Claude Code — ставь флаг <code>--debug</code>, видно, какие Skills загрузились.</li>
+<li>Проверь, что Skill загружен. В Claude Desktop: включён ли он в Customize → Skills. В Claude Code: команда <code>/skills</code>, а ошибки разбора покажет запуск с флагом <code>--debug</code>.</li>
 </ol>
 
 <h2>Расширения</h2>
@@ -262,7 +263,7 @@ github username — madzhitov</code></pre>
 
 <h2>Подводные камни</h2>
 <ul>
-<li><strong>Длинный SKILL.md.</strong> Если файл &gt;200 строк — Claude съест много токенов на каждом запуске и может проигнорировать часть инструкций. Дроби на несколько Skills.</li>
+<li><strong>Длинный SKILL.md.</strong> Тело Skill целиком попадает в контекст при каждом срабатывании. Официальная рекомендация: держать SKILL.md короче 500 строк, а подробности выносить в отдельные файлы рядом (Claude читает их по ссылке, когда нужно). Если Skill разросся, дроби его.</li>
 <li><strong>Двусмысленный description.</strong> «Помогает с отчётами» — слишком общо, сработает на всё подряд. «Отчёт по PR за неделю» — точно.</li>
 <li><strong>Пути в скриптах.</strong> Когда Claude вызывает <code>bash scripts/fetch_prs.sh</code>, рабочая директория — та, где он сейчас находится, а не папка Skill. Если скрипту нужны соседние файлы — используй <code>$(dirname "$0")</code>.</li>
 <li><strong>Зависимости.</strong> Skill ожидает, что <code>gh</code> и <code>jq</code> установлены. Если делишься Skill с командой — добавь раздел «Prerequisites» в SKILL.md и проверку наличия в начале скрипта.</li>
@@ -283,6 +284,7 @@ github username — madzhitov</code></pre>
 <div class="callout callout-success">
 <strong>Совет:</strong> заведи проект <code>my-skills</code> на git и храни Skills там. Симлинки в <code>~/.claude/skills/</code> + бэкап + версионирование. На новой машине — клонировал и работаешь.
 </div>
+
 
 
     <div class="pp-open"><a href="../#lesson-p12">Открыть интерактивную версию (с Алёшей) →</a></div>

@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 2. Строитель</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 17</span></div>
+
 <h1>Урок 17. Обзор агентских фреймворков</h1>
 
 <div class="lesson-meta">
@@ -62,8 +63,8 @@
 <tr><td><strong>LangChain</strong></td><td>Универсальный, для прототипов</td><td>Быстро собрать что угодно</td></tr>
 <tr><td><strong>LangGraph</strong></td><td>State machine для агентов</td><td>Сложная логика, продакшен</td></tr>
 <tr><td><strong>LlamaIndex</strong></td><td>RAG-first, дальше агенты</td><td>Данные → ответы по ним</td></tr>
-<tr><td><strong>Microsoft Semantic Kernel</strong></td><td>.NET/Python, enterprise-friendly</td><td>Корпоративный .NET-мир</td></tr>
-<tr><td><strong>Microsoft AutoGen / Agent Framework</strong></td><td>Multi-agent collaboration</td><td>Несколько агентов разных ролей</td></tr>
+<tr><td><strong>Microsoft Semantic Kernel</strong></td><td>.NET/Python, enterprise-friendly; преемник: Microsoft Agent Framework</td><td>Корпоративный .NET-мир</td></tr>
+<tr><td><strong>Microsoft AutoGen / Agent Framework</strong></td><td>Multi-agent collaboration; AutoGen в режиме поддержки, новые проекты Microsoft советует начинать на Agent Framework</td><td>Несколько агентов разных ролей</td></tr>
 <tr><td><strong>CrewAI</strong></td><td>Multi-agent с роль-плеем</td><td>Декларативное описание команды</td></tr>
 <tr><td><strong>OpenAI Agents SDK + Responses API</strong></td><td>Родной для OpenAI</td><td>Агенты на моделях OpenAI со встроенными инструментами</td></tr>
 <tr><td><strong>Anthropic SDK + tools</strong></td><td>Минимальный, нативный</td><td>Когда хочется просто, без обвязок</td></tr>
@@ -72,22 +73,22 @@
 </table>
 
 <h2>2. LangChain — главный швейцарский нож</h2>
-<p>LangChain — самый известный. Идея: всё AI-приложение собирается из <strong>Runnables</strong> (компонентов), соединённых через <code>|</code> (pipe). Это даёт быстрый старт и обширную экосистему интеграций.</p>
+<p>LangChain самый известный. Исходная идея: AI-приложение собирается из <strong>Runnables</strong> (компонентов), соединённых через <code>|</code> (pipe). С версии 1.0 центр фреймворка составляет функция <code>create_agent</code>, которая работает на рантайме LangGraph, а старые цепочки вынесены в пакет <code>langchain-classic</code>. Это даёт быстрый старт и обширную экосистему интеграций.</p>
 <p><strong>Плюсы:</strong></p>
 <ul>
-<li>500+ интеграций (vectorstores, LLM, tools).</li>
+<li>1000+ интеграций (vectorstores, LLM, tools).</li>
 <li>Большое сообщество, тонны примеров.</li>
 <li>Быстрый прототип за день.</li>
 </ul>
 <p><strong>Минусы:</strong></p>
 <ul>
-<li>Часто меняет API — миграции болезненные.</li>
+<li>Исторически часто менял API, миграции были болезненными. С версии 1.0 команда обещает не ломать API до 2.0.</li>
 <li>Абстракции «протекают»: легко собрать, сложно отдебажить.</li>
 <li>Для серьёзного прода часто переписывают в LangGraph или с нуля.</li>
 </ul>
 
 <h2>3. LangGraph — для продакшена</h2>
-<p>Создатели LangChain признали ограничения и в 2023 выпустили LangGraph. Это <strong>state machine</strong> для агентов: ты описываешь узлы (что делать) и переходы (когда). Каждый шаг сохраняется в state — можно остановить/возобновить.</p>
+<p>Создатели LangChain признали ограничения и в начале 2024 выпустили LangGraph. Это <strong>state machine</strong> для агентов: ты описываешь узлы (что делать) и переходы (когда). Каждый шаг сохраняется в state — можно остановить/возобновить.</p>
 <p><strong>Когда выбирать LangGraph:</strong></p>
 <ul>
 <li>Сложная логика: «если задача X → ветка A, иначе → ветка B».</li>
@@ -112,8 +113,8 @@
 
 <h2>6. CrewAI — декларативный multi-agent</h2>
 <p>CrewAI делает то же, что AutoGen, но с более простым декларативным API. Описываешь «команду» (Crew), её агентов и задачи на YAML или Python:</p>
-<pre><code>researcher = Agent(role="Researcher", goal="Find facts about X", tools=[search_tool])
-writer = Agent(role="Writer", goal="Write blog post", tools=[])
+<pre><code>researcher = Agent(role="Researcher", goal="Find facts about X", backstory="Experienced analyst", tools=[search_tool])
+writer = Agent(role="Writer", goal="Write blog post", backstory="Tech blogger", tools=[])
 crew = Crew(agents=[researcher, writer], tasks=[...])
 crew.kickoff()</code></pre>
 <p>Хорош для быстрых прототипов multi-agent сценариев.</p>
@@ -125,15 +126,18 @@ crew.kickoff()</code></pre>
 <p><strong>Минусы:</strong> привязка к OpenAI.</p>
 
 <h2>8. Минималистский подход — Anthropic SDK + tools</h2>
-<p>Anthropic в своём <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank">блог-посте 2024 «Building effective agents»</a> явно сказал: <em>«В большинстве случаев вам не нужен фреймворк. Простой while-loop с tools достаточен.»</em></p>
+<p>Anthropic в своём <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank">блог-посте 2024 «Building effective agents»</a> советует начинать с прямых вызовов API: многие паттерны укладываются в несколько строк кода, а фреймворки добавляют слои абстракции, которые прячут промпты и ответы и усложняют отладку.</p>
 <p>Реальный код агента на Anthropic SDK — ~50 строк Python:</p>
 <pre><code>while True:
-    response = client.messages.create(model=..., messages=messages, tools=tools)
+    response = client.messages.create(model=..., max_tokens=1024, messages=messages, tools=tools)
     if response.stop_reason == "end_turn": break
+    messages.append({"role": "assistant", "content": response.content})
+    results = []
     for block in response.content:
         if block.type == "tool_use":
             result = execute_tool(block.name, block.input)
-            messages.append({"role": "tool", "content": result})</code></pre>
+            results.append({"type": "tool_result", "tool_use_id": block.id, "content": result})
+    messages.append({"role": "user", "content": results})</code></pre>
 <p>Это работает. Для 70% задач достаточно. И ты понимаешь каждую строку.</p>
 
 <h2>9. Когда фреймворк нужен, а когда нет</h2>
@@ -151,7 +155,7 @@ crew.kickoff()</code></pre>
 <ul>
 <li><strong>LangSmith</strong> (для LangChain/LangGraph).</li>
 <li><strong>Langfuse</strong> (open-source, для любого фреймворка).</li>
-<li><strong>Helicone</strong> (proxy-based, минимальная интеграция).</li>
+<li><strong>Helicone</strong> (proxy-based, минимальная интеграция; после покупки Mintlify в 2026 году в режиме поддержки, без новых функций).</li>
 <li><strong>Phoenix от Arize</strong> (открытый стандарт OpenTelemetry).</li>
 </ul>
 <p>Что должно записываться: каждый промпт, каждый ответ, каждый tool call, токены, латентность, ошибки.</p>
@@ -162,7 +166,7 @@ crew.kickoff()</code></pre>
 <li><strong>«Фреймворк говорит, что это просто»</strong> — пока всё работает. На производстве абстракции мешают дебагу.</li>
 <li><strong>Vendor lock-in</strong> на уровне промптов. LangChain переписывает твои промпты внутри.</li>
 <li><strong>Зависимости</strong>. LangChain тащит десятки транзитивных пакетов. Конфликты версий бывают часто.</li>
-<li><strong>Версия фреймворка ≠ версия документации.</strong> 80% Stack Overflow-ответов устарели.</li>
+<li><strong>Версия фреймворка ≠ версия документации.</strong> Многие ответы на Stack Overflow написаны под старые версии.</li>
 <li><strong>Не стартуй сразу с multi-agent.</strong> 90% задач решаются одним хорошим агентом.</li>
 </ul>
 </div>
@@ -202,6 +206,7 @@ crew.kickoff()</code></pre>
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> читай официальные доки только последних версий и блог-посты Anthropic/OpenAI про «как мы строим агентов». Туториалы 2023 года часто устарели.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-17">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

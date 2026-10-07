@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P11</span></div>
+
 <h1>Проект «За 1 час»: Голосовой AI-ассистент — Whisper + Claude + TTS на твоём железе</h1>
 
 <div class="lesson-meta">
@@ -82,14 +83,15 @@
 python3 -m venv venv
 source venv/bin/activate   # на Windows: venv\Scripts\activate
 
-pip install faster-whisper==1.0.3 \
-            sounddevice==0.4.7 \
-            numpy==1.26.4 \
-            anthropic==0.39.0 \
-            edge-tts==6.1.12 \
-            soundfile==0.12.1</code></pre>
+pip install faster-whisper \
+            sounddevice \
+            numpy \
+            anthropic \
+            edge-tts \
+            soundfile
+# проверено 07.10.2026: faster-whisper 1.2.1, anthropic 1.11.0, edge-tts 7.2.8</code></pre>
 
-<p>На macOS дополнительно может понадобиться <code>brew install portaudio ffmpeg</code> (для sounddevice и для edge-tts соответственно). На Ubuntu — <code>sudo apt install portaudio19-dev ffmpeg</code>. На Windows <code>ffmpeg</code> скачивается отдельно и кладётся в PATH.</p>
+<p>На macOS и Windows библиотека PortAudio уже входит в пакет sounddevice, ставить ничего не нужно. На Ubuntu поставь <code>sudo apt install libportaudio2</code>. ffmpeg для этого проекта не нужен: edge-tts сам отдаёт готовый MP3.</p>
 
 <p>Создай <code>.env</code> и положи туда ключ:</p>
 <pre><code class="language-bash">ANTHROPIC_API_KEY=sk-ant-...</code></pre>
@@ -162,7 +164,7 @@ import numpy as np
 # инициализация ~3 сек, после неё inference 0.5-2 сек на 10 сек речи.
 _model = WhisperModel(
     "small",                  # tiny / base / small / medium / large-v3
-    device="cpu",             # на Mac M1+ можно "auto", оно подхватит Metal
+    device="cpu",             # CTranslate2 не умеет Metal: на Mac всегда CPU, GPU только NVIDIA (CUDA)
     compute_type="int8"       # для CPU самый быстрый, на GPU - "float16"
 )
 
@@ -404,7 +406,7 @@ else:
 <h2>Расширения</h2>
 <ul>
 <li><strong>Streaming TTS:</strong> начинать проигрывать ответ Claude не дожидаясь конца генерации. У Anthropic SDK есть стрим, у edge-tts тоже — можно резать ответ по предложениям и говорить по мере поступления. Сократит latency до 1.5 сек.</li>
-<li><strong>Wake word:</strong> чтобы не жать Enter, используй <code>pvporcupine</code> от Picovoice (бесплатно для личного, английский «Alexa» / «Hey Siri» есть из коробки). Свой wake word — за бабки.</li>
+<li><strong>Wake word:</strong> чтобы не жать Enter, используй <code>pvporcupine</code> от Picovoice (английские «Alexa» / «Hey Siri» есть из коробки, а условия доступа проверь на picovoice.ai: по сообщениям пользователей, ключи бесплатного тарифа отключены после 30 июня 2026 года) или открытую библиотеку <code>openwakeword</code>.</li>
 <li><strong>VAD вместо Enter:</strong> <code>webrtcvad</code> или <code>silero-vad</code> определяет конец фразы по тишине 0.8 сек — пишешь автоматически.</li>
 <li><strong>История между сессиями:</strong> сохраняй <code>brain.history</code> в SQLite — ассистент будет помнить, о чём вы говорили вчера.</li>
 <li><strong>Подключение MCP:</strong> через Claude SDK ассистент может ходить в твой календарь, файлы, GitHub — см. урок c8.</li>
@@ -413,7 +415,7 @@ else:
 
 <h2>Подводные камни</h2>
 <ul>
-<li><strong>Latency на CPU.</strong> Модель <code>small</code> на старом ноуте (i5 2018) может транскрибировать 10 сек речи 4-5 сек. Бери <code>tiny</code> или ставь Ollama-backed Whisper на M-серии.</li>
+<li><strong>Latency на CPU.</strong> Модель <code>small</code> на старом ноуте (i5 2018) может транскрибировать 10 сек речи 4-5 сек. Бери <code>tiny</code>, а на Mac с M-чипом попробуй <code>mlx-whisper</code> или whisper.cpp: они используют GPU Apple.</li>
 <li><strong>Whisper и русский.</strong> На <code>tiny</code> русский разваливается, путает падежи и имена. Минимум <code>small</code>, лучше <code>medium</code>. Названия брендов, имена коллег — почти всегда мимо, лечится словарём подсказок через <code>initial_prompt</code>.</li>
 <li><strong>Микрофон не пишет.</strong> macOS — выдай разрешение Terminal или твоему IDE в Privacy & Security → Microphone. Linux — проверь <code>arecord -l</code>, что устройство есть. Windows — иногда помогает выбрать конкретное устройство через <code>sd.default.device = (input_id, output_id)</code>.</li>
 <li><strong>Edge-tts отваливается.</strong> Иногда возвращает пустой MP3 (rate limit / блокировка по региону). Обернул <code>speak</code> в try/except — на ошибке использую <code>say</code> на маке и <code>espeak</code> на linux как fallback.</li>
@@ -433,6 +435,7 @@ else:
 <div class="callout callout-success">
 <strong>Лайфхак:</strong> положи запуск ассистента на горячую клавишу через Raycast / AutoHotkey / sxhkd. Получишь персональную «Сири», вызываемую за 0.2 секунды.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-p11">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

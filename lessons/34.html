@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 3. Практик</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 34</span></div>
+
 <h1>Урок 34. Свой framework для нейросетей на NumPy</h1>
 
 <div class="lesson-meta">
@@ -193,13 +194,13 @@ for epoch in range(2000):
         print(f"Epoch {epoch}, loss: {loss:.4f}")
 
 print("Predictions:", net.forward(X).round(2))</code></pre>
-<p>Запусти. Через 1000 эпох loss упадёт до ~0.001, predictions станут [[0],[1],[1],[0]]. Ты обучил нейросеть.</p>
+<p>Запусти. К 2000-й эпохе loss обычно опускается примерно до 0.005, predictions после округления станут [[0],[1],[1],[0]]. Примерно в каждом третьем запуске сеть с 4 нейронами ReLU застревает (loss держится около 0.13–0.25): перезапусти или возьми <code>Linear(2, 8)</code> и <code>Linear(8, 1)</code>. Ты обучил нейросеть.</p>
 
 <h2>7. Что мы только что сделали</h2>
 <ul>
 <li>Написали <strong>forward pass</strong> через слои.</li>
 <li>Реализовали <strong>backpropagation</strong> через chain rule.</li>
-<li>Сделали <strong>SGD optimizer</strong> (Stochastic Gradient Descent в простейшей форме).</li>
+<li>Сделали <strong>SGD optimizer</strong> в простейшей форме: тот же шаг <code>w -= lr * grad</code>, только по всему датасету сразу, без случайных батчей (строго говоря, это обычный градиентный спуск).</li>
 <li>Использовали <strong>He initialization</strong> для весов.</li>
 <li>Решили <strong>XOR</strong> — задачу, которая убила перцептроны 1969 года.</li>
 </ul>
@@ -262,8 +263,9 @@ print("Predictions:", net.forward(X).round(2))</code></pre>
 </ol>
 
 <div class="callout callout-info">
-<strong>📌 Закрепление:</strong> если запустил свой framework и обучил XOR — поздравляю, ты понимаешь больше, чем 90% людей, работающих с ML. Дальше — PyTorch (Урок 35), но идеи те же.
+<strong>📌 Закрепление:</strong> если запустил свой framework и обучил XOR — поздравляю, ты понимаешь backprop глубже многих, кто работает с ML. Дальше — PyTorch (Урок 35), но идеи те же.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-34">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

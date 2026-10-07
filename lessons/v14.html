@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">V14</span></div>
+
 <h1>Справочник: от кода к продукту</h1>
 
 <div class="lesson-meta">
@@ -75,10 +76,10 @@ Vercel (CI/CD pipeline)
 <h3>Preview Deployments</h3>
 <p>Vercel создаёт отдельный URL для каждой ветки и каждого pull request. Ты можешь запушить экспериментальную ветку, получить уникальный URL, показать клиенту для проверки и слить в main только когда всё ок.</p>
 <h3>Домены</h3>
-<p>Vercel даёт бесплатный домен (<code>project.vercel.app</code>). Для продакшена подключаешь свой: в DNS-настройках домена указываешь CNAME-запись на Vercel, в Vercel Dashboard добавляешь домен. SSL (HTTPS) настраивается автоматически.</p>
+<p>Vercel даёт бесплатный домен (<code>project.vercel.app</code>). Для продакшена подключаешь свой: в Vercel Dashboard добавляешь домен, а в DNS-настройках домена указываешь запись, которую покажет Vercel: A-запись для корневого домена (mysite.com) или CNAME для поддомена (www.mysite.com). SSL (HTTPS) настраивается автоматически.</p>
 <h3>Serverless vs Server</h3>
 <p><strong>Serverless</strong> (Vercel, AWS Lambda) — код запускается по запросу. Нет постоянного сервера. Платишь за использование. Масштабируется автоматически. Идеально для сайтов и API.</p>
-<p><strong>Server</strong> (VPS, Dedicated) — постоянно работающий сервер. Нужен для WebSocket, фоновых задач, тяжёлых вычислений. Примеры: DigitalOcean, Hetzner.</p>
+<p><strong>Server</strong> (VPS, Dedicated) — постоянно работающий сервер. Нужен для WebSocket, фоновых задач, тяжёлых вычислений. Примеры: DigitalOcean, Hetzner (Hetzner с 2024 года не обслуживает клиентов с российским адресом; в России VPS дают Timeweb Cloud, Selectel и другие местные провайдеры).</p>
 <p>Для большинства проектов serverless — оптимальный выбор.</p>
 <div class="callout callout-info"><h3>🏋️ Практика</h3>
 <ol>
@@ -107,7 +108,7 @@ Expo компилирует
 <p>Различия от веба:
 - Вместо HTML-тегов (<code>&lt;div&gt;</code>, <code>&lt;p&gt;</code>) — React Native компоненты (<code>&lt;View&gt;</code>, <code>&lt;Text&gt;</code>)
 - Вместо CSS — StyleSheet или NativeWind (Tailwind для мобайла)
-- Навигация через React Navigation, а не URL-роутинг
+- Навигация через Expo Router: маршруты задаются файлами в папке app, как в Next.js (под капотом React Navigation)
 - Доступ к камере, микрофону, уведомлениям через Expo SDK</p>
 <pre><code class="language-jsx">// Веб (React)
 &lt;div className=&quot;p-4 bg-white rounded&quot;&gt;
@@ -126,7 +127,7 @@ Expo компилирует
 <li>Установи Expo: <code>npx create-expo-app my-mobile-app</code></li>
 <li>Запусти: <code>cd my-mobile-app &amp;&amp; npx expo start</code></li>
 <li>Скачай Expo Go на телефон, отсканируй QR-код — увидишь приложение на своём устройстве</li>
-<li>Измени текст в <code>app/(tabs)/index.tsx</code>, сохрани — приложение обновится мгновенно</li>
+<li>Измени текст в <code>src/app/index.tsx</code>, сохрани, и приложение обновится мгновенно</li>
 </ol>
 </div><hr />
 <h2>15. Полная архитектура — как всё связано</h2>
@@ -153,7 +154,7 @@ Expo компилирует
 </code></pre>
 <p><strong>Supabase</strong> — хранит пользователей, товары, заказы; авторизация; файлы (фотографии); realtime-обновления.</p>
 <p><strong>CMS (Sanity, Strapi, Contentful)</strong> — редактор контента. Маркетолог пишет статьи через удобный интерфейс, Next.js подтягивает контент на сайт.</p>
-<p><strong>Платежи (Stripe, ЮKassa)</strong> — обработка оплаты. Webhook уведомляет сервер об успешной оплате.</p>
+<p><strong>Платежи (Stripe, ЮKassa)</strong>: обработка оплаты. Webhook уведомляет сервер об успешной оплате. Stripe не работает с пользователями из России, поэтому для российского магазина это ЮKassa или другой российский эквайринг.</p>
 <p><strong>Telegram-бот</strong> — уведомления менеджерам о новых заказах.</p>
 <p><strong>Email (Resend, SendGrid)</strong> — подтверждение заказа, восстановление пароля.</p>
 <h3>Типовой SaaS-дашборд</h3>
@@ -162,7 +163,7 @@ Expo компилирует
                     Браузер
                          │
               ┌──────────┴──────────┐
-              │   Next.js + v0.dev  │  ← UI генерируется через AI
+              │   Next.js + v0.app  │  ← UI генерируется через AI
               └──────────┬──────────┘
                          │
         ┌────────────────┼────────────────┐
@@ -197,6 +198,7 @@ Expo компилирует
 <div class="callout callout-info">
 <strong>📌 Что дальше:</strong> следующий модуль справочника — <strong>v15 (Продвинутые темы)</strong>. Можно пройти подряд, можно вернуться к ката-урокам (v1–v10) и применять теорию на практике.
 </div>
+
 
 
     <div class="pp-open"><a href="../#lesson-v14">Открыть интерактивную версию (с Алёшей) →</a></div>

@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">V11</span></div>
+
 <h1>Справочник: основы веба</h1>
 
 <div class="lesson-meta">
@@ -130,7 +131,7 @@
 </code></pre>
 <p>Один раз написал ProductCard — используешь на странице каталога 50 раз с разными данными.</p>
 <h3>SPA vs SSR vs SSG</h3>
-<p><strong>SPA (Single Page Application)</strong> — весь сайт загружается одним файлом, переходы между страницами без перезагрузки. Быстро работает, но Google плохо индексирует. Обычный React.</p>
+<p><strong>SPA (Single Page Application)</strong> — весь сайт загружается одним файлом, переходы между страницами без перезагрузки. Быстро работает, но с SEO хуже: Google умеет выполнять JavaScript, но индексирует такие страницы медленнее и не так надёжно, а многие другие роботы видят пустую страницу. Обычный React.</p>
 <p><strong>SSR (Server-Side Rendering)</strong> — сервер генерирует HTML для каждого запроса. Google видит готовую страницу. Медленнее первая загрузка, но лучше для SEO. Next.js умеет это.</p>
 <p><strong>SSG (Static Site Generation)</strong> — HTML генерируется один раз при сборке, а не при каждом запросе. Самый быстрый вариант для контента, который редко меняется. Идеально для блогов, лендингов, документации.</p>
 <p>Next.js позволяет комбинировать все три подхода на одном сайте: каталог — SSR (данные актуальные), блог — SSG (контент статичный), личный кабинет — SPA (не нужен SEO).</p>
@@ -178,7 +179,7 @@
 <ul>
 <li><strong>Next.js</strong> работает поверх Node.js</li>
 <li><strong>npm</strong> — это часть Node.js</li>
-<li><strong>Claude Code</strong> установлен через npm, работает на Node.js</li>
+<li><strong>Claude Code</strong> можно поставить через npm, но основной способ сейчас другой: нативный установщик, которому Node.js не нужен</li>
 <li><strong>Vercel</strong> запускает твой код в Node.js runtime</li>
 <li>Любой серверный JavaScript — это Node.js</li>
 </ul>
@@ -244,12 +245,12 @@ export async function POST(request: Request) {
 <li><strong>Express.js</strong> — минималистичный бэкенд-фреймворк для Node.js. Старый, но популярен</li>
 <li><strong>Nuxt.js</strong> — аналог Next.js, но для Vue вместо React</li>
 <li><strong>SvelteKit</strong> — аналог Next.js для Svelte. Модный, лаконичный</li>
-<li><strong>Remix</strong> — альтернатива Next.js от создателей React Router</li>
+<li><strong>React Router</strong> (режим framework, бывший Remix) — альтернатива Next.js от той же команды. Remix 2 влили в React Router 7, а новый Remix 3 развивается как отдельный проект</li>
 <li><strong>Astro</strong> — для контентных сайтов, супер-быстрый</li>
 </ul>
 <div class="callout callout-info"><h3>🏋️ Практика</h3>
 <ol>
-<li>Создай проект: <code>npx create-next-app@latest my-first-app --typescript --tailwind --app</code></li>
+<li>Создай проект: <code>npx create-next-app@latest my-first-app --typescript --tailwind --app --src-dir</code></li>
 <li>Зайди в папку: <code>cd my-first-app</code></li>
 <li>Запусти: <code>npm run dev</code></li>
 <li>Открой в браузере http://localhost:3000 — ты увидишь работающий сайт</li>
@@ -259,6 +260,7 @@ export async function POST(request: Request) {
 <div class="callout callout-info">
 <strong>📌 Что дальше:</strong> следующий модуль справочника — <strong>v12 (Данные и API)</strong>. Можно пройти подряд, можно вернуться к ката-урокам (v1–v10) и применять теорию на практике.
 </div>
+
 
 
     <div class="pp-open"><a href="../#lesson-v11">Открыть интерактивную версию (с Алёшей) →</a></div>

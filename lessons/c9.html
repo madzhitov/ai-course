@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Claude Deep Dive</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">C9</span></div>
+
 <h1>Claude Skills — пре-настроенные навыки</h1>
 
 <div class="lesson-meta">
@@ -65,7 +66,7 @@
 <p>Skill — это <strong>именованный модуль возможностей</strong> с описанием «когда меня использовать». Claude видит список доступных Skills и сам решает, когда вызвать. Каждый Skill — это упакованные:</p>
 <ul>
 <li>Инструкции (system-prompt'ы под задачу),</li>
-<li>Tools (часто Computer Use или Code Execution),</li>
+<li>Скрипты и вспомогательные файлы, которые Claude запускает в среде выполнения кода (Code Execution),</li>
 <li>Опционально — внешние ресурсы или файлы.</li>
 </ul>
 <p>Звучит как функция или плагин — да, по идее. Но в отличие от MCP-сервера, Skill <strong>не требует своего сервера</strong>. Он живёт внутри Claude как пресет.</p>
@@ -110,14 +111,10 @@
 <li>Применяй стили, шрифты, заголовки.</li>
 </ul>
 
-<h3>🖼 Image/Vision skills</h3>
-<ul>
-<li>Анализ изображений с extraction в структурированный JSON.</li>
-<li>Обрезка, ресайз, конвертация.</li>
-</ul>
+<p>Это и есть весь набор готовых Skills от Anthropic: Excel (xlsx), PowerPoint (pptx), Word (docx) и PDF (pdf). Отдельного Image/Vision skill нет: картинки Claude понимает сам, без Skill.</p>
 
 <h2>4. Как использовать Skill в Claude Desktop</h2>
-<p>Если у тебя Claude Pro/Team:</p>
+<p>Skills есть на всех тарифах claude.ai (Free, Pro, Max, Team, Enterprise), в вебе и в приложении:</p>
 <ol>
 <li>Открой чат с Claude.</li>
 <li>Прикрепи файл (или вставь путь).</li>
@@ -130,50 +127,44 @@
 <p>Для разработчиков Skills доступны через Claude API. Пример включения Excel skill:</p>
 <pre><code>response = client.messages.create(
   model="claude-sonnet-5-5",
-  max_tokens=4000,
+  max_tokens=4096,
+  container={
+    "skills": [{"type": "anthropic", "skill_id": "xlsx", "version": "latest"}]
+  },
+  tools=[{"type": "code_execution_20250825", "name": "code_execution"}],
   messages=[{"role": "user", "content": "Проанализируй прикреплённый Excel"}],
-  tools=[{
-    "type": "skill",
-    "name": "excel"
-  }],
-  attachments=[...]
 )</code></pre>
 <p>Можно подключать несколько Skills одновременно. Claude сам решит, какой использовать в каком моменте.</p>
 
 <h2>6. Свои собственные Skills</h2>
-<p>Anthropic дал возможность писать собственные Skills (пока beta). Skill = это:</p>
+<p>Anthropic дал возможность писать собственные Skills. Skill = это папка, в которой:</p>
 <ul>
 <li><strong>SKILL.md</strong> — описание навыка для Claude (когда вызывать, что делать).</li>
-<li><strong>Инструменты</strong> — обычно Code Execution или MCP-серверы.</li>
+<li><strong>Скрипты и ресурсы</strong> (необязательно): Python/bash-скрипты, шаблоны, справочные файлы, которые Claude откроет по необходимости.</li>
 <li><strong>Опционально — примеры</strong> или базы знаний.</li>
 </ul>
 <p>Пример SKILL.md для собственного Skill «расчёт unit-экономики»:</p>
-<pre><code>name: unit-economics
-description: |
-  Использовать когда пользователь приносит данные по продукту/сервису
-  и хочет посчитать CAC, LTV, payback period.
-  НЕ использовать для генеральной финансовой аналитики.
+<pre><code>---
+name: unit-economics
+description: Считает CAC, LTV и payback period по данным о продукте или сервисе. Использовать, когда пользователь приносит такие данные и просит юнит-экономику. Не использовать для общей финансовой аналитики.
+---
 
-instructions: |
-  1. Запроси CAC, среднюю выручку с клиента, churn rate.
-  2. Если не хватает данных — спроси у пользователя.
-  3. Посчитай через Code Execution, выведи в таблице.
-  4. Дай интерпретацию: где red flag, где здорово.
+# Юнит-экономика
 
-tools:
-  - code_execution</code></pre>
-<p>Положил в Anthropic Skills catalog (или загрузил локально) — Claude знает, как использовать.</p>
+1. Запроси CAC, среднюю выручку с клиента, churn rate.
+2. Если не хватает данных: спроси у пользователя.
+3. Посчитай кодом (Python), выведи в таблице.
+4. Дай интерпретацию: где red flag, где здорово.</code></pre>
+<p>Упаковал папку со SKILL.md в zip и загрузил в настройках claude.ai, положил в <code>.claude/skills/</code> для Claude Code или загрузил через Skills API: Claude знает, как использовать.</p>
 
 <h2>7. Сценарии «купи Skill готовый» (Skills marketplace)</h2>
-<p>Anthropic запустил <strong>Skills catalog</strong> — там community-skills, готовые под конкретные домены:</p>
+<p>В claude.ai есть <strong>Skills Directory</strong> с готовыми навыками от партнёров (Notion, Figma, Atlassian и других), а Anthropic публикует открытые Skills в репозитории <a href="https://github.com/anthropics/skills" target="_blank">github.com/anthropics/skills</a>. Примеры того, что удобно оформлять в Skill:</p>
 <ul>
-<li>Legal — анализ договоров по типу контракта</li>
-<li>Medical — структурирование симптомов в SOAP-ноту</li>
-<li>Finance — построение финмодели стартапа</li>
-<li>Design — макеты в формате Figma JSON</li>
-<li>Education — генерация структурированных учебных планов</li>
+<li>Legal: анализ договоров по типу контракта</li>
+<li>Finance: построение финмодели стартапа</li>
+<li>Education: генерация структурированных учебных планов</li>
 </ul>
-<p>Большинство бесплатны. Топовые могут стать платными в будущем.</p>
+<p>Ставь Skills только из доверенных источников: Skill может заставить Claude выполнить код.</p>
 
 <h2>8. Skills vs MCP — когда что</h2>
 <table>
@@ -189,11 +180,11 @@ tools:
 <h2>9. Тонкости и подводные камни</h2>
 <div class="callout callout-warning">
 <ul>
-<li><strong>Skills не панацея.</strong> Если задача шире готового Skill — он не справится, потребует fallback на Computer Use.</li>
-<li><strong>Платформа важна.</strong> Excel/PowerPoint skills работают в Claude Desktop. В Claude.ai (веб) функционал ограниченнее.</li>
+<li><strong>Skills не панацея.</strong> Если задача шире готового Skill, он не справится: понадобится свой Skill, MCP-сервер или другие инструменты.</li>
+<li><strong>Платформа важна.</strong> Готовые документные Skills работают в claude.ai и через API, но не в Claude Code; свои Skills между claude.ai, API и Claude Code не синхронизируются, их надо добавлять в каждом месте отдельно.</li>
 <li><strong>Безопасность.</strong> Свои Skills могут содержать инструкции, которые модель будет применять «слепо». Принцип least privilege.</li>
 <li><strong>Версионирование.</strong> Skills эволюционируют — следи за обновлениями Anthropic.</li>
-<li><strong>Cost.</strong> Skill часто использует Code Execution или Computer Use под капотом — это дополнительные токены и время.</li>
+<li><strong>Cost.</strong> Skill использует Code Execution под капотом: это дополнительные токены и время (в API ещё и оплата времени контейнера сверх бесплатного лимита).</li>
 </ul>
 </div>
 
@@ -207,30 +198,31 @@ tools:
 <ol>
 <li>Если у тебя Claude Pro/Team — открой Claude Desktop, прикрепи любой Excel-файл и спроси: «Сделай сводную таблицу по N столбцу».</li>
 <li>Попробуй сложить .pptx из текстового описания: «Создай презентацию на 5 слайдов про X».</li>
-<li>Открой <a href="https://docs.claude.com/en/docs/build-with-claude/skills" target="_blank">официальные доки Skills</a>.</li>
+<li>Открой <a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview" target="_blank">официальные доки Skills</a>.</li>
 <li>Идея на «следующий шаг»: напиши SKILL.md под одну рутину из своей работы.</li>
 <li>В <code>progress.md</code> запиши: какой Skill сэкономил бы тебе больше всего времени.</li>
 </ol>
 
 <h2>12. Проверь себя</h2>
 <p><strong>1. Чем Skill отличается от MCP-сервера?</strong><br>Skill — готовый «навык», упакованный с инструкциями. MCP — стандарт сервера для подключения внешних систем. Skill живёт внутри Claude; MCP — отдельный сервис.</p>
-<p><strong>2. Что в первой партии Skills от Anthropic?</strong><br>Excel, PDF, PowerPoint, Word, Image/Vision — работа с типовыми форматами офисных документов.</p>
+<p><strong>2. Что в первой партии Skills от Anthropic?</strong><br>Excel, PDF, PowerPoint, Word: работа с типовыми форматами офисных документов.</p>
 <p><strong>3. Когда писать свой Skill, а когда брать готовый?</strong><br>Готовый — если задача типовая (формат файла). Свой — если есть уникальная бизнес-логика.</p>
-<p><strong>4. Что такое Skills marketplace?</strong><br>Каталог готовых Skills от Anthropic и сообщества по доменам (legal, medical, finance...).</p>
+<p><strong>4. Где взять готовые Skills?</strong><br>Встроенные документные Skills Anthropic (xlsx, pptx, docx, pdf), Skills Directory в claude.ai с навыками партнёров (Notion, Figma, Atlassian…) и открытый репозиторий github.com/anthropics/skills.</p>
 
 <h2>13. Что должно остаться в голове</h2>
 <ol>
 <li>Skill = упакованный «навык» Claude с инструкциями и tools. Готовый или свой.</li>
 <li>Skills ≠ MCP. Skill — готовая способность. MCP — протокол подключения.</li>
-<li>Первая партия: Excel, PDF, PowerPoint, Word, Image — типовые офисные форматы.</li>
-<li>Свой Skill = SKILL.md + tools (часто Code Execution).</li>
-<li>Skills catalog — каталог community-skills от Anthropic и сообщества.</li>
+<li>Готовые Skills Anthropic: Excel, PDF, PowerPoint, Word: типовые офисные форматы.</li>
+<li>Свой Skill = папка со SKILL.md (шапка name + description и инструкции), плюс опционально скрипты и файлы.</li>
+<li>Skills Directory в claude.ai: навыки от партнёров; открытые Skills Anthropic: на github.com/anthropics/skills.</li>
 <li>Можно комбинировать: Skill для логики + MCP для данных.</li>
 </ol>
 
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> Skills сильно меняют что значит «работать с Claude». Если ты ещё не пробовал — открой Claude Desktop и просто кинь Excel-файл с вопросом. Увидишь как меняется опыт.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-c9">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

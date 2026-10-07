@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P19</span></div>
+
 <h1>Проект «За 1 час»: TG-бот для саммари чатов на GigaChat (РФ-стек)</h1>
 
 <div class="lesson-meta">
@@ -58,13 +59,13 @@
 <p>Полностью рабочий Telegram-бот, который:</p>
 <ul>
 <li>Принимает любое длинное сообщение или пачку пересланных подряд;</li>
-<li>Склеивает их в один текст, режет на чанки (контекст у GigaChat скромный — 8192 токена);</li>
+<li>Склеивает их в один текст, режет на чанки по ~12 000 символов, чтобы каждый кусок суммировался отдельно;</li>
 <li>Отдаёт каждый чанк в GigaChat Lite/Pro, получает мини-саммари, потом сшивает в один TL;DR;</li>
 <li>Команды: <code>/start</code>, <code>/summary</code>, <code>/stats</code>;</li>
-<li>Работает на любом российском VPS — Yandex Cloud, Selectel, или прямо локально через ngrok.</li>
+<li>Работает на любом российском VPS (Yandex Cloud, Selectel) или прямо на ноутбуке: бот работает через polling, ngrok не нужен.</li>
 </ul>
 
-<p>Это РФ-аналог проекта <strong>p1</strong> (там Claude). Разница принципиальная: оплата с любой РФ-карты, никакого VPN, не блокируется. Бесплатный тир — 1 миллион токенов в месяц для физлица. Для пет-проекта этого хватит на годы.</p>
+<p>Это РФ-аналог проекта <strong>p1</strong> (там Claude). Разница принципиальная: оплата с любой РФ-карты, никакого VPN, не блокируется. Во Freemium-режиме физлицо получает 365 млн бесплатных токенов на 12 месяцев, из них 250 млн на модели Lite. Для пет-проекта этого хватит с большим запасом.</p>
 
 <h2>Требования</h2>
 
@@ -99,17 +100,17 @@
 <ol>
 <li>Идёшь на <a href="https://developers.sber.ru" target="_blank">developers.sber.ru</a>, нажимаешь «Войти» — заходишь через Сбер ID. Если у тебя есть Сбербанк Онлайн — учётка уже есть.</li>
 <li>В шапке выбираешь <strong>GigaChat API</strong> → подключить.</li>
-<li>Выбираешь тариф <strong>Freemium</strong> (для физлиц). Это и есть тот самый 1М токенов в месяц.</li>
+<li>Выбираешь тариф <strong>Freemium</strong> (для физлиц). Это и есть бесплатные токены на 12 месяцев.</li>
 <li>Принимаешь оферту. Если попросит подтвердить телефон — подтверждаешь.</li>
 <li>После активации в личном кабинете появится раздел <strong>«Мои проекты»</strong>. Создай проект (название любое, например «summary-bot»).</li>
-<li>В проекте нажимаешь <strong>«Сгенерировать новый Client Secret»</strong> — копируешь <code>Authorization Key</code>. Это base64-строка вида <code>NzE4Yzg3ZDAt...:OWY1ZGY5...</code>. Сохрани сразу в надёжное место — повторно показать его нельзя, только перевыпустить.</li>
+<li>В проекте открываешь раздел <strong>«Настройки API»</strong> и нажимаешь <strong>«Получить ключ»</strong>, копируешь <code>Authorization Key</code>. Это base64-строка вида <code>NzE4Yzg3ZDAtYzFiOS00...</code>. Сохрани сразу в надёжное место: повторно показать его нельзя, только перевыпустить кнопкой «Получить новый ключ».</li>
 </ol>
 
 <p>Этот <code>Authorization Key</code> — не сам access token. Это пара client_id:client_secret в base64. Каждые 30 минут SDK будет менять его на короткоживущий access token через OAuth2. Это нормальный flow, SDK всё делает сам.</p>
 
 <h2>Шаг 2: SSL-сертификат Минцифры — почему это вообще проблема</h2>
 
-<p>API GigaChat живёт на домене <code>gigachat.devices.sberbank.ru</code>, и сертификат там подписан российским корневым центром (Минцифры). В системные хранилища macOS/Linux/Windows этот корень по умолчанию не входит — поэтому Python ругается:</p>
+<p>API GigaChat живёт на домене <code>api.giga.chat</code> (старый <code>gigachat.devices.sberbank.ru</code> пока тоже отвечает), и сертификат там подписан российским корневым центром (Минцифры). В системные хранилища macOS/Linux/Windows этот корень по умолчанию не входит — поэтому Python ругается:</p>
 
 <pre><code>SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed</code></pre>
 
@@ -117,7 +118,7 @@
 
 <p><strong>Для экспериментов (быстро):</strong> просто отключаешь проверку. SDK поддерживает флаг <code>verify_ssl_certs=False</code>. Для пет-проекта на своём ноуте — нормально.</p>
 
-<p><strong>Для прода:</strong> качаешь корневой сертификат Минцифры и добавляешь в trust store. Файл лежит на сайте Минцифры — <a href="https://www.gosuslugi.ru/crt" target="_blank">gosuslugi.ru/crt</a> (раздел «Корневой сертификат Минцифры»). Скачиваешь <code>russian_trusted_root_ca.cer</code>, кладёшь рядом с проектом и в SDK передаёшь <code>ca_bundle_file="russian_trusted_root_ca.cer"</code>.</p>
+<p><strong>Для прода:</strong> качаешь корневой сертификат Минцифры и добавляешь в trust store. Файл лежит на сайте Минцифры — <a href="https://www.gosuslugi.ru/crt" target="_blank">gosuslugi.ru/crt</a> (раздел «Корневой сертификат Минцифры»). Скачиваешь корневой сертификат в формате PEM (<code>russian_trusted_root_ca_pem.crt</code>, так он назван в документации GigaChat), кладёшь рядом с проектом и в SDK передаёшь <code>ca_bundle_file="russian_trusted_root_ca_pem.crt"</code>.</p>
 
 <p>На macOS можно ещё добавить в системный keychain, но проще через файл — переносимо.</p>
 
@@ -134,12 +135,12 @@
 
 <pre><code>mkdir gigachat-summary-bot && cd gigachat-summary-bot
 python3 -m venv venv && source venv/bin/activate
-pip install python-telegram-bot==21.6 gigachat==0.1.36 python-dotenv==1.0.1</code></pre>
+pip install python-telegram-bot==22.8 gigachat==0.2.3 python-dotenv==1.2.4</code></pre>
 
 <p>Создаём <code>.env</code>:</p>
 
 <pre><code>TG_TOKEN=1234567:AABBccDD...
-GIGACHAT_AUTH_KEY=NzE4Yzg3ZDAt...:OWY1ZGY5...
+GIGACHAT_AUTH_KEY=NzE4Yzg3ZDAtYzFiOS00...
 GIGACHAT_SCOPE=GIGACHAT_API_PERS</code></pre>
 
 <p><code>GIGACHAT_API_PERS</code> — это scope для физлиц на тарифе Freemium. Для юрлиц будет <code>GIGACHAT_API_CORP</code>, но нам не нужно.</p>
@@ -178,7 +179,7 @@ def summarize_chunk(text: str) -> str:
     with GigaChat(
         credentials=os.getenv("GIGACHAT_AUTH_KEY"),
         scope=os.getenv("GIGACHAT_SCOPE", "GIGACHAT_API_PERS"),
-        model="GigaChat",  # Lite — бесплатный. Pro — платный.
+        model="GigaChat",  # GigaChat 2 Lite. Во Freemium есть токены и на Pro/Max
         verify_ssl_certs=False,  # для прода — ca_bundle_file=...
     ) as giga:
         payload = Chat(
@@ -224,7 +225,7 @@ def merge_summaries(parts: list[str]) -> str:
 
 <h2>Шаг 6: Разбиваем длинный текст на чанки</h2>
 
-<p>У <code>GigaChat</code> (Lite) контекст — 8192 токена. Это примерно 20–25 тысяч символов на русском. Если переписка длиннее — упрёмся. Простое решение: режем по <code>~12000</code> символов с небольшим overlap, чтобы не разорвать мысль на границе.</p>
+<p>У <code>GigaChat</code> (GigaChat 2 Lite) контекст 128 000 токенов, так что в лимит обычная переписка не упрётся. Мы всё равно режем длинный текст по <code>~12000</code> символов с небольшим overlap, чтобы не разорвать мысль на границе: так каждый кусок суммируется отдельно, а потом части сшиваются.</p>
 
 <p>Файл <code>chunker.py</code>:</p>
 
@@ -363,11 +364,13 @@ def main():
     if not token:
         raise SystemExit("TG_TOKEN не задан в .env")
 
-    app = Application.builder().token(token).build()
+    # concurrent_updates(True): иначе PTB обрабатывает апдейты строго по очереди,
+    # и пока on_text спит BUFFER_WAIT_SEC, следующие пересланные сообщения ждут
+    app = Application.builder().token(token).concurrent_updates(True).build()
     app.add_handler(CommandHandler("start", cmd_start))
     app.add_handler(CommandHandler("stats", cmd_stats))
     app.add_handler(CommandHandler("summary", cmd_summary))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, on_text))
+    app.add_handler(MessageHandler((filters.TEXT | filters.CAPTION) & ~filters.COMMAND, on_text))
 
     log.info("Bot started, polling...")
     app.run_polling(allowed_updates=Update.ALL_TYPES)
@@ -383,13 +386,13 @@ if __name__ == "__main__":
 
 <p>В консоли увидишь <code>Bot started, polling...</code>. Идёшь в Telegram, находишь своего бота, шлёшь <code>/start</code>. Потом — открываешь любой групповой чат, выделяешь 10–15 сообщений (зажимаешь, потом «Forward»), пересылаешь боту. Через 2 секунды после последнего сообщения он начинает работать и через 5–10 секунд (зависит от длины) присылает структурированный TL;DR.</p>
 
-<p>У меня на проверке: переписка из рабочего чата на ~40 сообщений (≈18 тыс. символов) — саммари 4 пункта по темам, 2 решения, 1 вопрос ко мне. Заняло около 6 секунд. Стоимость — около 4000 токенов, то есть бесплатно в рамках месячного тира.</p>
+<p>У меня на проверке: переписка из рабочего чата на ~40 сообщений (≈18 тыс. символов) — саммари 4 пункта по темам, 2 решения, 1 вопрос ко мне. Заняло около 6 секунд. Стоимость: около 4000 токенов, то есть бесплатно в рамках Freemium.</p>
 
 <h2>Деплой: куда поставить</h2>
 
-<p><strong>Локально через ngrok</strong> — для теста сойдёт, но бот живёт, пока ноут включён.</p>
+<p><strong>Локально</strong>: для теста сойдёт, ngrok не нужен (polling сам ходит в Telegram), но бот живёт, пока ноут включён.</p>
 
-<p><strong>Yandex Cloud Compute Cloud</strong> — самый предсказуемый вариант для РФ. Виртуалка <code>2 vCPU / 1 Gb / 10 Gb HDD</code> — около 350 ₽/мес. Поставил Python, склонировал репу, <code>systemd</code>-юнит, и забыл.</p>
+<p><strong>Yandex Cloud Compute Cloud</strong> — самый предсказуемый вариант для РФ. Виртуалка <code>2 vCPU (20%) / 1 Gb / 10 Gb HDD</code> обойдётся примерно в 1000 ₽/мес только за vCPU и память, плюс диск и публичный IP; точную сумму покажет калькулятор Yandex Cloud. Поставил Python, склонировал репу, <code>systemd</code>-юнит, и забыл.</p>
 
 <p><strong>Selectel</strong> — то же самое, тарифы примерно те же, но интерфейс чуть проще.</p>
 
@@ -422,16 +425,16 @@ sudo journalctl -u summary-bot -f</code></pre>
 <li><strong>Классификация важности.</strong> Перед саммари просишь GigaChat поставить тег: <code>срочно</code> / <code>обсудить</code> / <code>фон</code>. Полезно для рабочих чатов — за 5 секунд понимаешь, надо ли вообще читать.</li>
 <li><strong>Перевод.</strong> Если пересылают переписку на английском — GigaChat нормально с ней справляется, а можно явно попросить «суммируй и переведи на русский».</li>
 <li><strong>Личный дайджест по утрам.</strong> Юзер привязывает чат, бот в 9:00 присылает саммари за вчера. Это уже требует БД (хранить последний обработанный <code>message_id</code>), но архитектурно — то же самое.</li>
-<li><strong>Голос.</strong> GigaChat умеет в распознавание речи (SaluteSpeech). Пересылаешь голосовое — бот сначала транскрибирует, потом суммирует. Полезно для длинных голосовых от любителей наговаривать пять минут вместо двух строк.</li>
+<li><strong>Голос.</strong> Для распознавания речи у Сбера есть отдельный API SaluteSpeech. Пересылаешь голосовое — бот сначала транскрибирует, потом суммирует. Полезно для длинных голосовых от любителей наговаривать пять минут вместо двух строк.</li>
 </ul>
 
 <h2>Подводные камни</h2>
 
 <ul>
 <li><strong>SSL.</strong> Если запустил с <code>verify_ssl_certs=False</code> — это нормально для теста, но в проде поставь корневой сертификат Минцифры через <code>ca_bundle_file=...</code>. Иначе MITM теоретически возможен.</li>
-<li><strong>Контекст 8k токенов.</strong> Это мало по меркам современных моделей. Без chunking длинный чат тебе никто не суммаризирует — поэтому split_text обязателен.</li>
+<li><strong>Контекст.</strong> У GigaChat 2 Lite он 128 000 токенов, но очень длинный чат всё равно лучше резать: split_text держит каждый запрос в разумном размере.</li>
 <li><strong>Авторизация раз в 30 минут.</strong> SDK сам обновляет access token, но если бот висит долго без активности — первый запрос после простоя может занять чуть дольше (идёт за новым токеном). Лучше не пугаться, просто добавь логирование.</li>
-<li><strong>Rate limit.</strong> Freemium — 1М токенов в месяц и не более 1 запроса в секунду. Если запустишь массовую обработку чанков параллельно — словишь 429. Делай последовательно (как у меня в коде), или ставь <code>asyncio.Semaphore(1)</code>.</li>
+<li><strong>Rate limit.</strong> Во Freemium генерация текста идёт в одном потоке. Если запустишь массовую обработку чанков параллельно — словишь 429. Делай последовательно (как у меня в коде), или ставь <code>asyncio.Semaphore(1)</code>.</li>
 <li><strong>Сообщения с медиа.</strong> Если пересылаешь сообщение с фото и подписью, в <code>message.text</code> подписи не будет — она в <code>message.caption</code>. У меня в коде это учтено (<code>or update.message.caption</code>), но изображения как таковые этот бот не понимает.</li>
 <li><strong>Утечка ключа.</strong> <code>Authorization Key</code> от GigaChat — это фактически логин+пароль к твоему лимиту. Никогда не коммить в репо, никогда не присылай скриншотом. Утёк — сразу перевыпускай в личном кабинете.</li>
 </ul>
@@ -445,6 +448,7 @@ sudo journalctl -u summary-bot -f</code></pre>
 <div class="callout callout-success">
 <strong>Готово!</strong> Дальше — добавь к боту команду <code>/tldr</code> с укороченным форматом и запусти на Yandex Cloud. Через неделю использования сам поймёшь, какие ещё команды тебе нужны лично. Это самый честный способ развивать пет-проект — собственным трением.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-p19">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

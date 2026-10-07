@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P1</span></div>
+
 <h1>Проект «За 1 час»: Telegram-бот для саммари длинных переписок</h1>
 
 <div class="lesson-meta">
@@ -77,7 +78,7 @@
 <ol>
 <li>В Telegram найди <code>@BotFather</code>.</li>
 <li><code>/newbot</code> → имя для отображения (например, «Summary Bot»).</li>
-<li>Username — должен оканчиваться на <code>_bot</code> (например, <code>my_summary_bot</code>).</li>
+<li>Username должен оканчиваться на <code>bot</code> (например, <code>my_summary_bot</code> или <code>MySummaryBot</code>).</li>
 <li>Получишь токен вида <code>1234567:AABBccDDeeFFgg</code>. Сохрани в <code>.env</code>.</li>
 </ol>
 
@@ -152,7 +153,7 @@ async def summarize(message: Message):
     )
 
     summary = response.choices[0].message.content
-    await message.answer(summary, parse_mode="Markdown")
+    await message.answer(summary)  # без parse_mode: звёздочки и подчёркивания из ответа модели ломают Markdown
 
 
 async def main():
@@ -241,14 +242,14 @@ async def summarize(message: Message):
 <li>Залогинься на <a href="https://railway.app" target="_blank">railway.app</a> через GitHub.</li>
 <li>New Project → Deploy from GitHub repo (нужно сначала закоммитить).</li>
 <li>Variables: добавь <code>TG_TOKEN</code> и <code>OPENAI_API_KEY</code>.</li>
-<li>Готово. $5 free credit на старт, потом ~$1–3/мес.</li>
+<li>Готово. На старте пробный период: разово $5 на 30 дней. Дальше бесплатный план даёт $1 кредита в месяц (на бота 24/7 может не хватить), тариф Hobby стоит $5/мес, и в них входит $5 на ресурсы.</li>
 </ol>
 
 <h3>Вариант 2: Render free tier</h3>
 <p>Бесплатно, но засыпает после 15 минут без активности — для бота не очень.</p>
 
 <h3>Вариант 3: Дешёвый VPS</h3>
-<p>Hetzner CX11 = €4/мес, поднимаешь как systemd-сервис. Самый предсказуемый вариант.</p>
+<p>Самый маленький облачный сервер Hetzner стоит несколько евро в месяц (тариф CX11 больше не продаётся, актуальные тарифы и цены смотри на hetzner.com/cloud). Поднимаешь бота как systemd-сервис. Самый предсказуемый вариант.</p>
 
 <h2>Что дальше — варианты развития</h2>
 
@@ -272,8 +273,9 @@ async def summarize(message: Message):
 </ol>
 
 <div class="callout callout-info" style="margin-top: 1.5rem;">
-<strong>Без VPN и подписок:</strong> тот же бот, но на GigaChat — бесплатно до 1М токенов в месяц, оплата с российской карты, без VPN. Полный код — <a href="#lesson-p19" onclick="openLesson('p19'); return false;">урок p19</a>.
+<strong>Без VPN и подписок:</strong> тот же бот, но на GigaChat: у физлиц есть бесплатный Freemium-режим (лимиты на developers.sber.ru), работает из России без VPN. С 1 сентября 2026 года новые клиенты оплачивают модели на платформе cloud.ru. Полный код — <a href="#lesson-p19" onclick="openLesson('p19'); return false;">урок p19</a>.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-p1">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

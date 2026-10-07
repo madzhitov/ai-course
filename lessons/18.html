@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 2. Строитель</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 18</span></div>
+
 <h1>Урок 18. Паттерны проектирования агентов</h1>
 
 <div class="lesson-meta">
@@ -100,7 +101,7 @@
 
 <h3>ReAct (Reasoning + Acting)</h3>
 <p>Базовый паттерн агента. LLM на каждом шаге пишет: «думаю: ... → действие: tool X с параметрами Y». Tool возвращает результат. Цикл продолжается, пока LLM не скажет «Готово».</p>
-<p>Все современные LLM с tools = реализация ReAct под капотом.</p>
+<p>Агентный цикл современных LLM с tools по сути продолжает идею ReAct.</p>
 <p><strong>Когда хорошо:</strong> однонаправленные задачи с 2–10 шагами.</p>
 
 <h3>Plan-and-Execute</h3>
@@ -207,6 +208,7 @@
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> прочитай <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank">«Building effective agents» от Anthropic</a> — это лучший один пост 2024 про практическое проектирование агентов.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-18">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

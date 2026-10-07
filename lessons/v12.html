@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">V12</span></div>
+
 <h1>Справочник: данные и API</h1>
 
 <div class="lesson-meta">
@@ -135,10 +136,10 @@ WHERE categories.slug = 'shoes';
 <pre><code class="language-typescript">// Получить все товары категории «Обувь»
 const { data } = await supabase
   .from('products')
-  .select('name, price, categories(name)')
+  .select('name, price, categories!inner(name)')
   .eq('categories.slug', 'shoes');
 </code></pre>
-<p>Supabase автоматически генерирует REST API для каждой таблицы. Создал таблицу — API готов. Плюс авторизация, хранилище файлов, realtime-подписки — всё в одной коробке.</p>
+<p>Supabase автоматически генерирует REST API для таблиц. Важно: в проектах, созданных с конца мая 2026, новая таблица сама в API не попадает, её нужно открыть явно (выдать права командой GRANT), а с 30 октября 2026 это правило действует и для новых таблиц в старых проектах. Плюс авторизация, хранилище файлов, realtime-подписки: всё в одной коробке.</p>
 <h3>ORM — прослойка между кодом и базой</h3>
 <p>ORM (Object-Relational Mapping) позволяет работать с базой как с объектами в коде, без написания SQL.</p>
 <p><strong>Prisma</strong> (самый популярный для TypeScript):</p>
@@ -167,7 +168,7 @@ ALTER TABLE products ADD COLUMN discount INTEGER DEFAULT 0;
 <p>Миграции позволяют: откатить изменения, синхронизировать базу между разработчиками, деплоить изменения схемы вместе с кодом.</p>
 <div class="callout callout-info"><h3>🏋️ Практика</h3>
 <ol>
-<li>Зарегистрируйся на app.supabase.com (бесплатно)</li>
+<li>Зарегистрируйся на supabase.com/dashboard (бесплатно)</li>
 <li>Создай новый проект</li>
 <li>Зайди в Table Editor, создай таблицу <code>products</code> с полями: id, name (text), price (int4)</li>
 <li>Добавь 3-5 товаров вручную через интерфейс</li>
@@ -233,10 +234,10 @@ ALTER TABLE products ADD COLUMN discount INTEGER DEFAULT 0;
 <li>Сервер проверяет токен и понимает, кто делает запрос</li>
 </ol>
 <h3>JWT-токен</h3>
-<p>JWT — это зашифрованная строка из трёх частей:</p>
+<p>JWT — это закодированная (но не зашифрованная!) строка из трёх частей. Прочитать её содержимое может любой, подпись защищает только от подделки:</p>
 <pre><code>eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMjN9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 </code></pre>
-<p>Внутри (если расшифровать среднюю часть):</p>
+<p>Внутри (если декодировать среднюю часть; в примере выше для краткости только user_id):</p>
 <pre><code class="language-json">{
   &quot;user_id&quot;: 123,
   &quot;email&quot;: &quot;user@example.com&quot;,
@@ -266,27 +267,28 @@ CREATE POLICY &quot;Users see own orders&quot;
 -- Админ видит все заказы
 CREATE POLICY &quot;Admins see all orders&quot;
   ON orders FOR SELECT
-  USING (auth.jwt() -&gt;&gt; 'role' = 'admin');
+  USING ((auth.jwt() -&gt; 'app_metadata' -&gt;&gt; 'role') = 'admin');
 </code></pre>
 <p>Даже если в коде баг — база не отдаст чужие данные. Второй рубеж обороны.</p>
 <h3>Готовые решения (не пиши авторизацию с нуля)</h3>
 <ul>
 <li><strong>Supabase Auth</strong> — встроено в Supabase, поддерживает email, OAuth, magic links</li>
 <li><strong>Clerk</strong> — красивые готовые компоненты для входа/регистрации</li>
-<li><strong>NextAuth (Auth.js)</strong> — библиотека для Next.js, гибкая</li>
+<li><strong>NextAuth (Auth.js)</strong>: библиотека для Next.js, гибкая. С сентября 2025 её поддерживает команда Better Auth, новые функции не развиваются, для новых проектов они советуют Better Auth</li>
 <li><strong>Firebase Auth</strong> — от Google, простая интеграция</li>
 </ul>
 <div class="callout callout-info"><h3>🏋️ Практика</h3>
 <ol>
-<li>В своём проекте Supabase зайди в Authentication → Settings</li>
+<li>В своём проекте Supabase зайди в Authentication → Sign In / Providers</li>
 <li>Включи Email provider (включён по умолчанию)</li>
 <li>Попробуй создать пользователя через Authentication → Users → Add User</li>
-<li>Зайди на jwt.io, вставь любой JWT-токен — увидишь его содержимое в расшифрованном виде</li>
+<li>Зайди на jwt.io, вставь любой JWT-токен — увидишь его содержимое в декодированном виде (не вставляй туда боевые токены)</li>
 </ol>
 </div><hr />
 <div class="callout callout-info">
 <strong>📌 Что дальше:</strong> следующий модуль справочника — <strong>v13 (Инструменты разработчика)</strong>. Можно пройти подряд, можно вернуться к ката-урокам (v1–v10) и применять теорию на практике.
 </div>
+
 
 
     <div class="pp-open"><a href="../#lesson-v12">Открыть интерактивную версию (с Алёшей) →</a></div>

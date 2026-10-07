@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 2. Строитель</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 15</span></div>
+
 <h1>Урок 15. Жизненный цикл GenAI-приложения</h1>
 
 <div class="lesson-meta">
@@ -96,7 +97,7 @@
 
 <p>Что важно на этом этапе:</p>
 <ul>
-<li>Используй <strong>самую сильную модель</strong> (GPT-4o, Claude Sonnet) — потом оптимизируем</li>
+<li>Используй <strong>самую сильную модель</strong> (например, gpt-6-astra или claude-opus-5-5), потом оптимизируем</li>
 <li>Пиши <strong>гибкий промпт</strong>, не вылизывай</li>
 <li>Тестируй на <strong>10–20 реальных кейсах</strong>, не на 1000</li>
 <li>Не строй <strong>сложную инфру</strong> — пусть это будет Python-скрипт или Streamlit</li>
@@ -127,7 +128,7 @@
 <ol>
 <li><strong>Точные совпадения</strong> — для structured output (JSON-схема правильная? всё на месте?)</li>
 <li><strong>Регулярки / правила</strong> — содержит ли ответ нужную ссылку, не содержит ли запрещённых слов</li>
-<li><strong>LLM-as-judge</strong> — вторая модель (GPT-4) оценивает ответ первой по критериям</li>
+<li><strong>LLM-as-judge</strong>: вторая модель (обычно сильная) оценивает ответ первой по критериям</li>
 <li><strong>Human review</strong> — самое дорогое, но иногда необходимое</li>
 </ol>
 
@@ -136,7 +137,7 @@
 <h3>Инструменты для eval</h3>
 <ul>
 <li><strong><a href="https://www.promptfoo.dev" target="_blank">Promptfoo</a></strong> — CLI и YAML конфиги, регрессионные тесты для промптов. Самый практичный для старта.</li>
-<li><strong><a href="https://inspect.aisi.org.uk" target="_blank">Inspect</a></strong> — от UK AI Safety Institute, упор на безопасность.</li>
+<li><strong><a href="https://inspect.aisi.org.uk" target="_blank">Inspect</a></strong>: от UK AI Security Institute, упор на безопасность.</li>
 <li><strong><a href="https://www.langfuse.com" target="_blank">Langfuse</a></strong> — observability + eval в одном.</li>
 <li><strong>Свой скрипт</strong> — 100 строк Python с pytest. Часто этого хватает.</li>
 </ul>
@@ -148,7 +149,7 @@
 <table>
 <tr><th>Способ</th><th>Когда подходит</th><th>Минусы</th></tr>
 <tr><td><strong>Streamlit Cloud</strong></td><td>Внутренние инструменты, демо для друзей</td><td>Не для большой нагрузки</td></tr>
-<tr><td><strong>Vercel / Netlify</strong></td><td>Frontend + serverless backend</td><td>Лимиты длинных запросов (10 сек)</td></tr>
+<tr><td><strong>Vercel / Netlify</strong></td><td>Frontend + serverless backend</td><td>Лимит длительности функции: на Netlify 60 сек, на Vercel Hobby до 300 сек</td></tr>
 <tr><td><strong>Railway / Render / Fly.io</strong></td><td>Long-running апи, простой деплой</td><td>$5–20/мес</td></tr>
 <tr><td><strong>AWS / GCP / Azure</strong></td><td>Серьёзный масштаб</td><td>Сложно, дорого, много возможностей напортачить</td></tr>
 </table>
@@ -199,7 +200,7 @@
 <h3>Инструменты</h3>
 <ul>
 <li><strong><a href="https://www.langfuse.com" target="_blank">Langfuse</a></strong> — best free-tier для AI-observability, open source</li>
-<li><strong><a href="https://www.helicone.ai" target="_blank">Helicone</a></strong> — прокси перед OpenAI/Anthropic, логирует всё</li>
+<li><strong><a href="https://www.helicone.ai" target="_blank">Helicone</a></strong>: прокси перед OpenAI/Anthropic, логирует всё (в 2026 году Helicone купила Mintlify, сервис работает в режиме поддержки без новых функций)</li>
 <li><strong><a href="https://posthog.com" target="_blank">PostHog</a></strong> — продуктовая аналитика + AI-фичи</li>
 <li><strong>Sentry</strong> — ошибки и performance</li>
 </ul>
@@ -223,7 +224,7 @@
 <p>Без eval-сета вы реактивно носитесь за каждой жалобой, ломая то, что работало.</p>
 
 <h3>Версии моделей</h3>
-<p>OpenAI обновляет <code>gpt-4o</code> без предупреждения. Ваш протестированный промпт может начать вести себя иначе. <strong>Используйте версии:</strong> <code>gpt-4o-2024-11-20</code> вместо просто <code>gpt-4o</code>.</p>
+<p>OpenAI может переключить алиас <code>gpt-4o</code> на новый снапшот модели. Ваш протестированный промпт может начать вести себя иначе. <strong>Используйте версии:</strong> <code>gpt-4o-2024-11-20</code> вместо просто <code>gpt-4o</code>.</p>
 
 <h3>Стоимость без лимитов</h3>
 <p>Одного бага достаточно: пользователь зацикливается на «попробуй ещё раз», вы платите $500 за день. <strong>Хард-лимиты на пользователя обязательны.</strong></p>
@@ -325,6 +326,7 @@ Langfuse — open source, бесплатный self-hosted или generous free 
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> следующий шаг — превратить твой pet-проект в «настоящее» приложение. Eval-сет + хотя бы базовый мониторинг + cost limits. После этого имеешь право назвать его «production-ready».
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-15">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

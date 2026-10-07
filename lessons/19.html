@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 2. Строитель</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 19</span></div>
+
 <h1>Урок 19. Использование инструментов агентами</h1>
 
 <div class="lesson-meta">
@@ -53,7 +54,7 @@
 </div>
 
 <h2>Зачем тебе этот урок</h2>
-<p>Function calling (Урок 13) — это «как технически вызвать tool». Этот урок — «как спроектировать tools для агента так, чтобы он реально работал». 80% багов агентов в проде — это не модель, а плохо спроектированные инструменты.</p>
+<p>Function calling (Урок 13) — это «как технически вызвать tool». Этот урок — «как спроектировать tools для агента так, чтобы он реально работал». Многие баги агентов в проде — это не модель, а плохо спроектированные инструменты.</p>
 <p>К концу урока ты сможешь:</p>
 <ul>
 <li>Решать, какие операции выносить в tools, а какие оставлять модели.</li>
@@ -156,7 +157,7 @@
 </ul>
 
 <h2>9. Streaming и параллельные tool calls</h2>
-<p>Современные модели (Claude 3.5+, GPT-4o) умеют:</p>
+<p>Современные модели Claude и GPT умеют:</p>
 <ul>
 <li><strong>Параллельные tool calls</strong> — модель за один шаг вызывает 3–5 tools одновременно. Если три запроса независимы — это в 3 раза быстрее.</li>
 <li><strong>Streaming с tool use</strong> — модель может стримить размышление, потом вызвать tool, потом стримить дальше.</li>
@@ -175,7 +176,7 @@
 </div>
 
 <h2>11. MCP — стандарт для tools (упоминание)</h2>
-<p>В 2024 Anthropic выпустили <strong>Model Context Protocol</strong> — открытый стандарт описания tools. Любой MCP-сервер можно подключить к Claude, Cursor, Zed, ChatGPT GPTs (через переходники).</p>
+<p>В 2024 Anthropic выпустили <strong>Model Context Protocol</strong> — открытый стандарт описания tools. Любой MCP-сервер можно подключить к Claude, Cursor, Zed и к ChatGPT (напрямую, в режиме разработчика, без переходников).</p>
 <p>Подробнее — Урок 28 «Агентские протоколы (MCP)» и мини-проект p3 «Свой MCP-сервер».</p>
 
 <h2>12. Глоссарий</h2>
@@ -215,8 +216,9 @@
 </ol>
 
 <div class="callout callout-info">
-<strong>📌 Закрепление:</strong> прочитай <a href="https://docs.anthropic.com/en/docs/tool-use" target="_blank">Tool use best practices от Anthropic</a> — это твой стандарт-документ при проектировании tools.
+<strong>📌 Закрепление:</strong> прочитай <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools" target="_blank">Tool use best practices от Anthropic</a> — это твой стандарт-документ при проектировании tools.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-19">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

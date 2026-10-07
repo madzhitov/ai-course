@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P8</span></div>
+
 <h1>Проект «За 1 час»: Анти-спам — AI классифицирует входящие письма и отвечает на простые</h1>
 
 <div class="lesson-meta">
@@ -53,7 +54,7 @@
 </div>
 
 <h2>Зачем</h2>
-<p>В среднем 50% входящих писем не требуют твоего внимания (рассылки, автоматические уведомления, типовые запросы). ИИ их сортирует, отвечает на простые, эскалирует важные.</p>
+<p>Заметная часть входящих писем не требует твоего внимания (рассылки, автоматические уведомления, типовые запросы). ИИ их сортирует, отвечает на простые, эскалирует важные.</p>
 
 <h2>Архитектура</h2>
 <pre><code>Gmail watch → новое письмо → Claude classify →
@@ -94,7 +95,7 @@ Body: {email["body"][:2000]}
 - promo: коммерческие предложения.
 - routine_question: типовой вопрос с шаблонным ответом.
 - personal: личные письма знакомых, требует ответа.
-- important: bzz-критичные (контракты, выставление счетов, дедлайны).
+- important: бизнес-критичные (контракты, выставление счетов, дедлайны).
 
 Возвращай только JSON.'''}]
     )
@@ -122,6 +123,10 @@ def auto_reply(service, msg, text):
     m.set_content(text)
     m["To"] = msg["from"]
     m["Subject"] = "Re: " + msg["subject"]
+    # чтобы ответ попал в ту же цепочку, Gmail требует эти заголовки
+    # (extract_email_data должна вернуть и Message-ID исходного письма)
+    m["In-Reply-To"] = msg["message_id"]
+    m["References"] = msg["message_id"]
     raw = base64.urlsafe_b64encode(m.as_bytes()).decode()
     service.users().messages().send(userId="me",
       body={"raw": raw, "threadId": msg["thread_id"]}).execute()</code></pre>
@@ -171,6 +176,7 @@ def auto_reply(service, msg, text):
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> 30+ часов в год возвращаешь себе только на сортировке.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-p8">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

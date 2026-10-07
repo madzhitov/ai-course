@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Мини-проект</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">P7</span></div>
+
 <h1>Проект «За 1 час»: AI-помощник для встреч — транскрипция + summary + задачи в Notion</h1>
 
 <div class="lesson-meta">
@@ -71,7 +72,7 @@ def transcribe(audio_path):
           model="whisper-1", file=f, response_format="verbose_json", language="ru"
         )
     return r.text  # для длинных встреч лучше r.segments с таймкодами</code></pre>
-<p>Whisper API стоит $0.006/мин. Часовая встреча = $0.36.</p>
+<p>Whisper API стоит $0.006/мин. Часовая встреча = $0.36. Но файл для API должен быть не больше 25 МБ: час записи в MP3 128 кбит/с весит около 57 МБ. Перед отправкой сожми запись (например, <code>ffmpeg -i in.mp3 -ac 1 -b:a 32k out.mp3</code>, час выйдет около 14 МБ) или порежь на части.</p>
 
 <h2>Шаг 3. Саммари через Claude</h2>
 <pre><code>import anthropic, json
@@ -104,7 +105,8 @@ def analyze(transcript):
     return json.loads(msg.content[0].text)</code></pre>
 
 <h2>Шаг 4. Сохранение в Notion</h2>
-<pre><code>from notion_client import Client
+<pre><code>import os
+from notion_client import Client
 notion = Client(auth=os.environ["NOTION_TOKEN"])
 DATABASE_ID = "..."  # ID базы со встречами
 
@@ -154,8 +156,9 @@ if __name__ == "__main__":
 </div>
 
 <div class="callout callout-info" style="margin-top: 1.5rem;">
-<strong>Без VPN и подписок:</strong> Whisper запускается локально через <code>faster-whisper</code> (см. <a href="#lesson-p11" onclick="openLesson('p11'); return false;">p11</a>). Для саммари — GigaChat (бесплатно 1М токенов/мес) или локальный Ollama. Обзор стека — <a href="#lesson-e11" onclick="openLesson('e11'); return false;">e11</a>.
+<strong>Без VPN и подписок:</strong> Whisper запускается локально через <code>faster-whisper</code> (см. <a href="#lesson-p11" onclick="openLesson('p11'); return false;">p11</a>). Для саммари: GigaChat (у физлиц есть бесплатный Freemium-режим, лимиты на developers.sber.ru) или локальный Ollama. Обзор стека — <a href="#lesson-e11" onclick="openLesson('e11'); return false;">e11</a>.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-p7">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

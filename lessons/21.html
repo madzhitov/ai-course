@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 2. Строитель</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">Урок 21</span></div>
+
 <h1>Урок 21. Доверие и безопасность агентов</h1>
 
 <div class="lesson-meta">
@@ -71,7 +72,7 @@
 <tr><td><strong>Data leakage</strong></td><td>Агент в ответе раскрывает чужие данные / системный промпт</td></tr>
 <tr><td><strong>Cost explosion</strong></td><td>Бесконечный цикл / большой контекст = $$$ за ночь</td></tr>
 <tr><td><strong>Reliability drift</strong></td><td>Модель обновили — поведение изменилось</td></tr>
-<tr><td><strong>Tool poisoning</strong></td><td>Внешний сервис вернул что-то неожиданное, агент не справился</td></tr>
+<tr><td><strong>Tool poisoning</strong></td><td>В описание внешнего tool (например, MCP-сервера) спрятаны вредные инструкции, агент их выполняет</td></tr>
 </table>
 
 <h2>2. Принцип Least Privilege в агентах</h2>
@@ -124,7 +125,7 @@
 <li><strong>Wasm</strong> sandbox (Pyodide для Python, WasmEdge).</li>
 <li><strong>Managed services:</strong> E2B, Modal, AWS Lambda с тайм-лимитом.</li>
 </ul>
-<p>OpenAI Code Interpreter и Claude Computer Use используют sandbox под капотом.</p>
+<p>OpenAI Code Interpreter и инструмент code execution в Claude API выполняют код в песочнице на стороне провайдера. А Claude Computer Use работает в окружении, которое поднимаешь ты сам, и изолировать его (например, в Docker) нужно тебе самому.</p>
 
 <h2>6. Cost limits — обязательно</h2>
 <p>Агент может зациклиться. Запрос пользователя 1 = $50 на API. Защита:</p>
@@ -132,7 +133,7 @@
 <li><strong>Per-request budget:</strong> «не больше 20 LLM calls и 10 tool calls на сессию».</li>
 <li><strong>Per-user daily budget:</strong> «не больше $1/день на пользователя».</li>
 <li><strong>Global rate limit:</strong> «не больше 100 запросов/мин со всей системы».</li>
-<li><strong>Anthropic / OpenAI dashboard limits:</strong> жёсткий потолок на месяц, ниже которого ключ блокируется.</li>
+<li><strong>Anthropic / OpenAI dashboard limits:</strong> жёсткий месячный потолок расходов (на организацию, workspace или проект), после достижения которого API перестаёт принимать запросы.</li>
 </ul>
 
 <h2>7. Output validation</h2>
@@ -155,7 +156,7 @@
 <li>Финальный output, отдан пользователю.</li>
 <li>Любые отмены и confirmations.</li>
 </ul>
-<p><strong>Инструменты:</strong> Langfuse, Helicone, Phoenix (Arize), LangSmith. Все имеют free tier.</p>
+<p><strong>Инструменты:</strong> Langfuse, Phoenix (Arize), LangSmith, Helicone (с марта 2026 в режиме поддержки, без новых функций). Все имеют free tier.</p>
 
 <h2>9. Evaluation: как мерить безопасность</h2>
 <p>Раз в неделю — прогоняй агента через тест-сет вредных промптов:</p>
@@ -167,7 +168,7 @@
 <li>5 попыток вытащить чужие данные.</li>
 </ul>
 <p>Считай % успешных атак. Цель: 0%. Тренд должен быть down, не up.</p>
-<p><strong>Готовые наборы:</strong> garak, PyRIT, OWASP LLM Top 10 testcases.</p>
+<p><strong>Готовые наборы:</strong> garak, PyRIT, promptfoo (есть пресет атак по OWASP LLM Top 10).</p>
 
 <h2>10. Что делать при инциденте</h2>
 <ol>
@@ -195,13 +196,13 @@
 <p>Регуляторика 2025+:</p>
 <ul>
 <li><strong>EU AI Act</strong> — высокорисковые категории (юр., мед., финансы, найм) требуют документации, audit, прозрачности.</li>
-<li><strong>GDPR / 152-ФЗ</strong> — если агент обрабатывает ПД, нужно согласие + право на пояснение AI-решений.</li>
+<li><strong>GDPR / 152-ФЗ</strong>: если агент обрабатывает ПД, нужно законное основание (в РФ чаще всего согласие). Решение, принятое только автоматически и затрагивающее права человека, по 152-ФЗ (ст. 16) требует письменного согласия, разъяснения порядка и права на возражение. Отправка ПД в зарубежный API считается трансграничной передачей, и до её начала нужно уведомить Роскомнадзор (ст. 12).</li>
 <li><strong>SOC2</strong> — для B2B SaaS, аудит безопасности.</li>
 <li><strong>NIST AI RMF</strong> — фреймворк управления рисками AI (рекомендованный).</li>
 </ul>
 
 <h2>13. Глоссарий</h2>
-<div class="glossary-term"><h3>Excessive agency</h3><p>Агенту даны слишком широкие права. №8 в OWASP Top 10 for LLM.</p></div>
+<div class="glossary-term"><h3>Excessive agency</h3><p>Агенту даны слишком широкие права. №3 в OWASP Top 10 for LLM (редакция 2026 года).</p></div>
 <div class="glossary-term"><h3>Indirect prompt injection</h3><p>Инструкция спрятана в данных, которые агент читает. Опаснее direct.</p></div>
 <div class="glossary-term"><h3>Human-in-the-loop (HITL)</h3><p>Человек подтверждает критичные действия агента.</p></div>
 <div class="glossary-term"><h3>Sandbox</h3><p>Изолированная среда исполнения кода без доступа к хост-системе.</p></div>
@@ -219,7 +220,7 @@
 </ol>
 
 <h2>15. Проверь себя</h2>
-<p><strong>1. Что такое excessive agency?</strong><br>Агенту дано больше прав, чем нужно. №8 в OWASP Top 10 for LLM.</p>
+<p><strong>1. Что такое excessive agency?</strong><br>Агенту дано больше прав, чем нужно. №3 в OWASP Top 10 for LLM (редакция 2026 года).</p>
 <p><strong>2. Чем indirect injection опаснее direct?</strong><br>Спрятана в данных, которые агент читает (email, документ, API ответ). Пользователь не видит, как агент атакован.</p>
 <p><strong>3. Какие действия всегда должны быть через HITL?</strong><br>Необратимые: деньги, удаление данных, внешние коммуникации, чувствительные данные.</p>
 <p><strong>4. Почему нельзя выполнять сгенерированный код на хосте?</strong><br>Модель может сгенерировать вредоносный код (намеренно или из-за инъекции). Sandbox (Docker, V8 isolate, Wasm) обязателен.</p>
@@ -234,7 +235,7 @@
 <li>Sandbox для code execution — обязателен.</li>
 <li>Cost limits на трёх уровнях: per-request, per-user, global.</li>
 <li>Output validation на каждый критичный путь.</li>
-<li>Audit log + Langfuse/Helicone/Phoenix.</li>
+<li>Audit log + Langfuse/Phoenix/LangSmith.</li>
 <li>Eval раз в неделю на тест-сете атак.</li>
 <li>Kill switch — однокнопочный.</li>
 </ol>
@@ -242,6 +243,7 @@
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> агент без защит — это не «MVP», это бомба замедленного действия. Защиты — first-class требование, не «потом».
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-21">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

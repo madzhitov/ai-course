@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Индустрия</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">I4</span></div>
+
 <h1>ИИ для разработчиков: вне Cursor и Copilot</h1>
 
 <div class="lesson-meta">
@@ -61,10 +62,10 @@
 <tr><td>Терминальные агенты</td><td>Claude Code, Aider, OpenHands, Codex CLI</td><td>Многошаговые правки в репозитории</td></tr>
 <tr><td>Code review</td><td>CodeRabbit, GitHub Copilot Reviews</td><td>Авто-комменты на PR</td></tr>
 <tr><td>Документация</td><td>Mintlify, ReadMe AI</td><td>Из кода — в доки</td></tr>
-<tr><td>Поиск по коду</td><td>Sourcegraph Cody, Cursor @-mentions</td><td>Семантический поиск</td></tr>
+<tr><td>Поиск по коду</td><td>Sourcegraph (Cody остался только в Enterprise), Cursor @-mentions</td><td>Семантический поиск</td></tr>
 <tr><td>Дебаг и логи</td><td>Honeycomb AI, Datadog Bits</td><td>Объяснение алертов</td></tr>
-<tr><td>Тесты</td><td>Codium AI, Cursor</td><td>Генерация тестов и покрытия</td></tr>
-<tr><td>Миграции</td><td>Bloop, Cody, Claude Code</td><td>Большие рефакторинги</td></tr>
+<tr><td>Тесты</td><td>Qodo (бывший CodiumAI), Cursor</td><td>Генерация тестов и покрытия</td></tr>
+<tr><td>Миграции</td><td>Claude Code, Codex CLI, Aider</td><td>Большие рефакторинги</td></tr>
 </table>
 
 <h2>2. Терминальные агенты — следующий уровень</h2>
@@ -138,7 +139,7 @@ claude
 
 <h2>7. Навигация в большом коде</h2>
 <p>Зашёл в новый проект, 200k строк. Раньше — неделя на onboarding. Сейчас:</p>
-<pre><code>Sourcegraph Cody / Cursor с @codebase:
+<pre><code>Sourcegraph / Cursor / Claude Code (агент сам ищет по репозиторию):
 
 &gt; Где в коде реализована логика отмены подписки?
 &gt; Какие сервисы зависят от модуля payments?
@@ -177,8 +178,8 @@ claude
 <div class="callout callout-warning">
 <ul>
 <li><strong>Cursor vs Copilot:</strong> Cursor лучше для агентских задач, Copilot — для inline-автодополнения.</li>
-<li><strong>Claude Sonnet 4.5</strong> — топ для серьёзного кода в 2026 (лидер SWE-Bench Verified). GPT-5 — для широты и скорости. Haiku 4.5 / GPT-5 mini — для дешёвого автодополнения.</li>
-<li><strong>Большие репо.</strong> Inline-инструменты с @codebase работают через embeddings, могут пропустить релевантные файлы. Проверяй.</li>
+<li><strong>Модели для кода:</strong> claude-opus-5-5 и claude-sonnet-5-5 сильны на серьёзном коде, gpt-6.1-sol хорош для широты и скорости, claude-haiku-4-5 / gpt-6-luna для дешёвого автодополнения. Лидеры бенчмарков меняются, свежие результаты сверяй на SWE-bench.</li>
+<li><strong>Большие репо.</strong> Инструменты ищут по коду по-разному (embeddings, grep, чтение файлов агентом) и могут пропустить релевантные файлы. Проверяй.</li>
 <li><strong>Open-source альтернативы:</strong> Continue.dev (бесплатный заменитель Cursor), Aider (open-source аналог Claude Code).</li>
 </ul>
 </div>
@@ -217,6 +218,7 @@ claude
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> разработчики 2026 без AI-инструментов — это разработчики 2010 без Git. Не уметь — карьерный риск.
 </div>
+
 
     <div class="pp-open"><a href="../#lesson-i4">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

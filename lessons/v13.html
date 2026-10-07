@@ -44,6 +44,7 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Фаза 1. Пользователь</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">V13</span></div>
+
 <h1>Справочник: инструменты разработчика</h1>
 
 <div class="lesson-meta">
@@ -93,7 +94,7 @@ git merge feature/catalog          # Слить изменения
 <li>В терминале в папке проекта: <code>git init</code> → <code>git add .</code> → <code>git commit -m "First commit"</code></li>
 <li>Создай репозиторий на GitHub, скопируй URL</li>
 <li><code>git remote add origin https://github.com/username/repo.git</code></li>
-<li><code>git push -u origin main</code></li>
+<li><code>git branch -M main</code> → <code>git push -u origin main</code></li>
 <li>Открой GitHub — твой код там</li>
 </ol>
 </div><hr />
@@ -118,11 +119,11 @@ npm run build               # Собрать проект для продакш�
     &quot;dev&quot;: &quot;next dev&quot;,
     &quot;build&quot;: &quot;next build&quot;,
     &quot;start&quot;: &quot;next start&quot;,
-    &quot;lint&quot;: &quot;next lint&quot;
+    &quot;lint&quot;: &quot;eslint&quot;
   },
   &quot;dependencies&quot;: {
-    &quot;next&quot;: &quot;^14.0.0&quot;,
-    &quot;react&quot;: &quot;^18.2.0&quot;,
+    &quot;next&quot;: &quot;^16.4.0&quot;,
+    &quot;react&quot;: &quot;^19.3.0&quot;,
     &quot;@supabase/supabase-js&quot;: &quot;^2.38.0&quot;
   },
   &quot;devDependencies&quot;: {
@@ -156,8 +157,8 @@ npm run build               # Собрать проект для продакш�
 <h3>Пример .env.local</h3>
 <pre><code class="language-env"># База данных
 SUPABASE_URL=https://xxxxx.supabase.co
-SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+SUPABASE_SECRET_KEY=sb_secret_...
 
 # AI
 ANTHROPIC_API_KEY=sk-ant-api03-...
@@ -186,7 +187,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 <h3>Где хранить для продакшена</h3>
 <ul>
 <li><strong>Vercel</strong> — Dashboard → Settings → Environment Variables</li>
-<li><strong>GitHub Actions</strong> — Settings → Secrets</li>
+<li><strong>GitHub Actions</strong>: Settings → Secrets and variables → Actions</li>
 <li><strong>Supabase</strong> — Edge Functions → Secrets</li>
 </ul>
 <div class="callout callout-info"><h3>🏋️ Практика</h3>
@@ -251,6 +252,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 <div class="callout callout-info">
 <strong>📌 Что дальше:</strong> следующий модуль справочника — <strong>v14 (От кода к продукту)</strong>. Можно пройти подряд, можно вернуться к ката-урокам (v1–v10) и применять теорию на практике.
 </div>
+
 
 
     <div class="pp-open"><a href="../#lesson-v13">Открыть интерактивную версию (с Алёшей) →</a></div>
