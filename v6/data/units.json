@@ -153,7 +153,6 @@
    ],
    "fromLesson": "e6",
    "status": "from-lesson",
-   "review": true,
    "resources": [
     "r-listing-checklist"
    ]
@@ -224,8 +223,7 @@
     "answer-check"
    ],
    "fromLesson": "p20",
-   "status": "from-lesson",
-   "review": true
+   "status": "from-lesson"
   },
   {
    "id": "u-seller-competitors",
@@ -285,8 +283,7 @@
     "answer-check"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-seller-competitors-pro",
@@ -351,8 +348,7 @@
     "answer-check"
    ],
    "fromLesson": "p5",
-   "status": "from-lesson",
-   "review": true
+   "status": "from-lesson"
   },
   {
    "id": "u-unit-economics-channels",
@@ -436,8 +432,7 @@
     "r-ue-table"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-unit-economics-exports",
@@ -518,8 +513,7 @@
    ],
    "resources": [],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-seller-pains",
@@ -602,8 +596,7 @@
     "r-competitor-reviews-tool"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-seller-keywords",
@@ -683,8 +676,7 @@
    ],
    "resources": [],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-seller-social",
@@ -747,7 +739,6 @@
    ],
    "fromLesson": "e7",
    "status": "from-lesson",
-   "review": true,
    "resources": [
     "r-content-plan",
     "r-social-prompts"
@@ -833,8 +824,7 @@
     "r-customer-base"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-seller-stock",
@@ -919,8 +909,7 @@
     "r-supply-checklist"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-seller-weekly",
@@ -1005,8 +994,7 @@
    ],
    "fromLesson": null,
    "status": "ready",
-   "agencyDoor": "Отчёт, который собирается сам: услуга агентства (пример: Бертольд)",
-   "review": true
+   "agencyDoor": "Отчёт, который собирается сам: услуга агентства (пример: Бертольд)"
   },
   {
    "id": "u-product-one-page",
@@ -1092,8 +1080,7 @@
     "hard-reviewer"
    ],
    "fromLesson": "i14",
-   "status": "from-lesson",
-   "review": true
+   "status": "from-lesson"
   },
   {
    "id": "u-product-north-star",
@@ -1172,8 +1159,7 @@
     "cohorts"
    ],
    "fromLesson": "i14",
-   "status": "from-lesson",
-   "review": true
+   "status": "from-lesson"
   },
   {
    "id": "u-project-raci",
@@ -1256,8 +1242,7 @@
     "raci-daci"
    ],
    "fromLesson": "i15",
-   "status": "from-lesson",
-   "review": true
+   "status": "from-lesson"
   },
   {
    "id": "u-project-premortem",
@@ -1336,8 +1321,7 @@
     "own-draft"
    ],
    "fromLesson": "i12",
-   "status": "from-lesson",
-   "review": true
+   "status": "from-lesson"
   },
   {
    "id": "u-marketing-segment",
@@ -1398,8 +1382,7 @@
     "jtbd"
    ],
    "fromLesson": "i13",
-   "status": "from-lesson",
-   "review": true
+   "status": "from-lesson"
   },
   {
    "id": "u-marketing-positioning",
@@ -1467,8 +1450,7 @@
     "positioning-dunford"
    ],
    "fromLesson": "i13",
-   "status": "from-lesson",
-   "review": true
+   "status": "from-lesson"
   },
   {
    "id": "u-marketing-funnel",
@@ -1527,8 +1509,7 @@
    ],
    "basedOn": [],
    "fromLesson": "i13",
-   "status": "from-lesson",
-   "review": true
+   "status": "from-lesson"
   },
   {
    "id": "u-self-resume",
@@ -1608,8 +1589,7 @@
     "answer-check"
    ],
    "fromLesson": "e5",
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-self-contract",
@@ -1688,8 +1668,7 @@
     "answer-check"
    ],
    "fromLesson": "e10",
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-ai-answer-check",
@@ -1768,8 +1747,7 @@
     "hard-reviewer"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-ai-decision",
@@ -1849,8 +1827,7 @@
     "pre-mortem"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-ai-hard-letter",
@@ -1929,8 +1906,7 @@
     "voice"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-ai-html-tool",
@@ -2008,8 +1984,7 @@
     "ephemeral-html"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-ai-learn-plan",
@@ -2088,8 +2063,7 @@
     "socratic"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-ai-routine-brief",
@@ -2168,8 +2142,7 @@
     "goal-acceptance-criteria"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-marketing-channel",
@@ -2248,8 +2221,7 @@
     "ltv-cac"
    ],
    "fromLesson": "i13",
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-marketing-offer",
@@ -2330,8 +2302,7 @@
     "jtbd"
    ],
    "fromLesson": "i13",
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-product-interview",
@@ -2410,8 +2381,7 @@
     "jtbd"
    ],
    "fromLesson": "i14",
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-seller-assortment-matrix",
@@ -2487,8 +2457,7 @@
    "status": "ready",
    "resources": [
     "r-assortment-matrix"
-   ],
-   "review": true
+   ]
   },
   {
    "id": "u-seller-attribution",
@@ -2560,8 +2529,7 @@
     "incrementality"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-seller-next-channel",
@@ -2633,8 +2601,7 @@
     "unit-economics-sku"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-seller-retention-calendar",
@@ -2707,8 +2674,7 @@
     "incrementality"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-seller-single-base",
@@ -2781,8 +2747,7 @@
     "rfm"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-marketing-ltv-cac",
@@ -2858,8 +2823,7 @@
     "r-channel-plan"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-product-rice",
@@ -2935,8 +2899,7 @@
     "r-rice-table"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-seller-ads-budget",
@@ -3014,8 +2977,7 @@
     "r-ads-checklist"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-seller-funnel",
@@ -3092,8 +3054,7 @@
     "r-listing-checklist"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   },
   {
    "id": "u-seller-pnl",
@@ -3168,8 +3129,7 @@
     "r-pnl-store"
    ],
    "fromLesson": null,
-   "status": "ready",
-   "review": true
+   "status": "ready"
   }
  ]
 }
