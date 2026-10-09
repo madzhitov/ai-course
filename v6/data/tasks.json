@@ -78,13 +78,11 @@
       },
       {
        "id": "seller.promo.marketplace-ads",
-       "title": "Внутренняя реклама маркетплейса",
-       "status": "soon"
+       "title": "Внутренняя реклама маркетплейса"
       },
       {
        "id": "seller.promo.site-traffic",
-       "title": "Трафик на свой сайт",
-       "status": "soon"
+       "title": "Трафик на свой сайт"
       },
       {
        "id": "seller.promo.attribution",
@@ -107,8 +105,7 @@
       },
       {
        "id": "seller.customers.questions",
-       "title": "Автоответы на вопросы покупателей",
-       "status": "soon"
+       "title": "Автоответы на вопросы покупателей"
       },
       {
        "id": "seller.customers.single-base",

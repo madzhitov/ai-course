@@ -697,7 +697,8 @@
     ]
    },
    "tasks": [
-    "marketing.measure.ltv-cac"
+    "marketing.measure.ltv-cac",
+    "seller.promo.site-traffic"
    ],
    "industries": [
     "any"
@@ -853,7 +854,8 @@
    "terms": [],
    "units": [
     "u-marketing-channel",
-    "u-marketing-ltv-cac"
+    "u-marketing-ltv-cac",
+    "u-seller-site-traffic"
    ],
    "agencyDoor": null,
    "full": true,
@@ -3066,7 +3068,9 @@
    "tasks": [
     "seller.channels.unit-economics",
     "seller.money.pnl",
-    "seller.promo.ads-threshold"
+    "seller.promo.ads-threshold",
+    "seller.promo.marketplace-ads",
+    "seller.promo.site-traffic"
    ],
    "industries": [
     "marketplaces",
@@ -3224,7 +3228,9 @@
    "units": [
     "u-unit-economics-channels",
     "u-seller-next-channel",
-    "u-seller-ads-budget"
+    "u-seller-ads-budget",
+    "u-seller-marketplace-ads",
+    "u-seller-site-traffic"
    ],
    "agencyDoor": "Сводный отчёт по каналам, который собирается сам: услуга агентства (пример: Бертольд)",
    "updated": "2026-10-04",
@@ -3641,7 +3647,8 @@
    ],
    "lessons": [],
    "units": [
-    "u-seller-ads-budget"
+    "u-seller-ads-budget",
+    "u-seller-marketplace-ads"
    ],
    "agencyDoor": null,
    "sources": [
@@ -4358,7 +4365,8 @@
    "tasks": [
     "ai.think",
     "ai.write",
-    "ai.delegate"
+    "ai.delegate",
+    "seller.customers.questions"
    ],
    "industries": [
     "any"
@@ -4443,7 +4451,8 @@
    "units": [
     "u-seller-reviews",
     "u-seller-description",
-    "u-ai-routine-brief"
+    "u-ai-routine-brief",
+    "u-seller-questions"
    ],
    "agencyDoor": null,
    "updated": "2026-10-04",
