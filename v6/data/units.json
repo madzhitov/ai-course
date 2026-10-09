@@ -3207,8 +3207,7 @@
    "resources": [
     "r-ads-threshold",
     "r-ads-checklist"
-   ],
-   "review": true
+   ]
   },
   {
    "id": "u-seller-site-traffic",
@@ -3289,8 +3288,7 @@
    "status": "ready",
    "resources": [
     "r-channel-plan"
-   ],
-   "review": true
+   ]
   },
   {
    "id": "u-seller-questions",
@@ -3365,8 +3363,7 @@
    "status": "ready",
    "resources": [
     "r-brand-voice"
-   ],
-   "review": true
+   ]
   }
  ]
 }
