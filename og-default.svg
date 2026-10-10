@@ -1,11 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="#f4f1ea"/>
-  <rect x="46" y="46" width="1108" height="538" rx="28" fill="#fffdf8" stroke="#e0d9c9" stroke-width="2"/>
-  <circle cx="122" cy="138" r="11" fill="#2f6b50"/>
-  <text x="150" y="148" fill="#6f675b" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="600">Бесплатный курс по AI · на русском</text>
-  <text x="116" y="300" fill="#23201a" font-family="Georgia, Times, serif" font-size="118" font-weight="700" letter-spacing="-2">Артефакты<tspan fill="#2f6b50">.</tspan></text>
-  <text x="120" y="364" fill="#6f675b" font-family="Georgia, Times, serif" font-size="42" font-weight="600">От пользователя к создателю</text>
-  <text x="120" y="466" fill="#23201a" font-family="Helvetica, Arial, sans-serif" font-size="36" font-weight="600">От первых промптов до своих AI-приложений</text>
-  <text x="120" y="512" fill="#6f675b" font-family="Helvetica, Arial, sans-serif" font-size="26">128 уроков · AI-наставник в каждом · артефакты, а не сертификаты</text>
-  <text x="120" y="556" fill="#aaa18f" font-family="Helvetica, Arial, sans-serif" font-size="22">ai.madzhitov.ru</text>
+  <rect width="1200" height="630" fill="#F3F4F7"/>
+  <rect x="46" y="46" width="1108" height="538" rx="28" fill="#FFFFFF" stroke="#E6E7EC" stroke-width="2"/>
+  <circle cx="122" cy="132" r="10" fill="#1F2F5C"/>
+  <text x="148" y="141" fill="#1F2F5C" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="26" font-weight="600">Бесплатно · без VPN · на русском</text>
+  <text x="114" y="292" fill="#16161A" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="112" font-weight="700" letter-spacing="-3">Артефакты</text>
+  <text x="118" y="370" fill="#16161A" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="44" font-weight="500">Готовые решения для работы и для себя</text>
+  <text x="118" y="430" fill="#5A5B63" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="27">Задача, ваши данные, час работы с ИИ, готовый результат</text>
+  <line x1="118" y1="486" x2="1082" y2="486" stroke="#E6E7EC" stroke-width="2"/>
+  <text x="118" y="536" fill="#5A5B63" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="24">44 задания по шагам · калькуляторы · 128 уроков</text>
+  <text x="1082" y="536" fill="#1F2F5C" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="24" font-weight="600" text-anchor="end">ai.madzhitov.ru</text>
 </svg>
