@@ -2751,13 +2751,15 @@
     "product"
    ],
    "tasks": [
-    "product.discovery.weekly"
+    "product.discovery.weekly",
+    "product.discovery.value"
    ],
    "basedOn": [
     "continuous-discovery"
    ],
    "units": [
-    "u-product-interview"
+    "u-product-interview",
+    "u-product-value"
    ],
    "minutes": 10,
    "status": "ready",
@@ -2915,13 +2917,15 @@
     "project"
    ],
    "tasks": [
-    "product.prioritize.compare"
+    "product.prioritize.compare",
+    "product.prioritize.slice"
    ],
    "basedOn": [
     "rice"
    ],
    "units": [
-    "u-product-rice"
+    "u-product-rice",
+    "u-product-slice"
    ],
    "minutes": 10,
    "status": "ready",

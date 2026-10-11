@@ -413,7 +413,9 @@
     ]
    },
    "tasks": [
-    "marketing.audience.why-buy"
+    "marketing.audience.why-buy",
+    "product.discovery.pmf",
+    "product.discovery.value"
    ],
    "industries": [
     "any"
@@ -512,7 +514,9 @@
    "terms": [],
    "units": [
     "u-marketing-offer",
-    "u-product-interview"
+    "u-product-interview",
+    "u-product-pmf",
+    "u-product-value"
    ],
    "agencyDoor": null,
    "full": true,
@@ -1318,7 +1322,9 @@
    },
    "tasks": [
     "product.metrics.north-star",
-    "product.metrics"
+    "product.metrics",
+    "product.manage.okr",
+    "product.metrics.retention"
    ],
    "industries": [
     "any"
@@ -1411,7 +1417,10 @@
    "lessons": [
     "i14"
    ],
-   "units": [],
+   "units": [
+    "u-product-okr",
+    "u-product-cohorts"
+   ],
    "agencyDoor": null,
    "sources": [
     "https://info.amplitude.com/rs/138-CDN-550/images/Amplitude-The-North-Star-Playbook.pdf",
@@ -1718,7 +1727,8 @@
    },
    "tasks": [
     "product.discovery.one-page",
-    "product.discovery"
+    "product.discovery",
+    "product.discovery.pmf"
    ],
    "industries": [
     "any"
@@ -1807,7 +1817,9 @@
     "opportunity-solution-tree"
    ],
    "lessons": [],
-   "units": [],
+   "units": [
+    "u-product-pmf"
+   ],
    "agencyDoor": null,
    "sources": [
     "https://bmtoolbox.net/tools/lean-canvas/",
@@ -2044,7 +2056,8 @@
    },
    "tasks": [
     "product.prioritize.compare",
-    "product.prioritize.release"
+    "product.prioritize.release",
+    "product.prioritize.slice"
    ],
    "industries": [
     "any"
@@ -2176,7 +2189,8 @@
     "i11"
    ],
    "units": [
-    "u-product-rice"
+    "u-product-rice",
+    "u-product-slice"
    ],
    "agencyDoor": null,
    "sources": [
@@ -2257,7 +2271,8 @@
    },
    "tasks": [
     "product.prioritize.delight",
-    "product.prioritize.release"
+    "product.prioritize.release",
+    "product.prioritize.slice"
    ],
    "industries": [
     "any"
@@ -2346,7 +2361,9 @@
     "impact-mapping"
    ],
    "lessons": [],
-   "units": [],
+   "units": [
+    "u-product-slice"
+   ],
    "agencyDoor": null,
    "sources": [
     "https://en.wikipedia.org/wiki/Kano_model",
@@ -2782,7 +2799,9 @@
     "pre-mortem"
    ],
    "lessons": [],
-   "units": [],
+   "units": [
+    "u-product-okr"
+   ],
    "agencyDoor": null,
    "sources": [
     "https://www.whatmatters.com/faqs/okr-meaning-definition-example",

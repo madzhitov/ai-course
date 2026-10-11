@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Удержание по когортам в таблице — Артефакты</title>
+<meta name="description" content="Удержание по когортам в таблице. Таблица удержания по месячным когортам, кривая удержания и вывод: выходит ли она на плато, какие когорты держатся лучше и что с ними было иначе По шагам, с готовым про">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Удержание по когортам в таблице">
+<meta property="og:description" content="Удержание по когортам в таблице. Таблица удержания по месячным когортам, кривая удержания и вывод: выходит ли она на плато, какие когорты держатся лучше и что с ними было иначе По шагам, с готовым про">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:url" content="https://ai.madzhitov.ru/zadaniya/u-product-cohorts.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/zadaniya/u-product-cohorts.html">
+<link rel="preload" href="../v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../v6/fonts/fonts.css?v=0e1f3d7b">
+<link rel="stylesheet" href="../tropa-lesson.css?v=2c00ca74">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+  .st-calc-res { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap:10px; }
+  .st-calc-r { background:#F3F4F7; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); }
+  .st-calc-r b { font-size:24px; line-height:1.15; font-weight:800; color:#16161A; }
+  .st-calc-r.is-main b { font-size:36px; }
+  .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
+  .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Удержание по когортам в таблице","description":"Удержание по когортам в таблице. Таблица удержания по месячным когортам, кривая удержания и вывод: выходит ли она на плато, какие когорты держатся лучше и что с ними было иначе По шагам, с готовым про","url":"https://ai.madzhitov.ru/zadaniya/u-product-cohorts.html","inLanguage":"ru","totalTime":"PT50M","tool":[{"@type":"HowToTool","name":"Excel или Google Таблицы"},{"@type":"HowToTool","name":"GigaChat"},{"@type":"HowToTool","name":"Алиса AI"},{"@type":"HowToTool","name":"DeepSeek или Qwen Chat"}],"step":[{"@type":"HowToStep","position":1,"name":"Решите, что значит «вернулся»","text":"Удержание считается по действию, ради которого существует продукт: для магазина это повторный заказ, для сервиса это вход и работа, для подписки это оплата. Просто визит на сайт обычно не подходит."},{"@type":"HowToStep","position":2,"name":"Подготовьте выгрузку","text":"Нужны две колонки: id клиента и дата действия, одна строка на одно действие. Берите выгрузку с начала работы продукта или добавьте колонку с датой регистрации: иначе клиенты, которые пришли раньше начала выгрузки, попадут в первую когорту как новые. Личные данные (имена, телефоны, почты) уберите: для расчёта нужен только id. В чат ИИ отправляйте не саму таблицу, а её описание и 5-10 строк примера с выдуманными id и датами: настоящий id клиента вместе с датами остаётся персональными данными, а часть чат-ИИ из списка хранит переписку за рубежом."},{"@type":"HowToStep","position":3,"name":"Постройте таблицу когорт","text":"Когорта: все, кто впервые совершил действие в одном месяце. Для каждой когорты считаете, какая доля вернулась через 1, 2, 3 месяца. Попросите ИИ дать пошаговую инструкцию для вашей программы."},{"@type":"HowToStep","position":4,"name":"Прочитайте таблицу","text":"Смотрите две вещи. Первая: выходит ли кривая на плато. Если доля вернувшихся падает, а потом держится примерно на одном уровне, у продукта есть ядро постоянных клиентов. Если падает к нулю, люди пробуют и уходят. Вторая: какие когорты лучше соседних и что с ними было иначе."},{"@type":"HowToStep","position":5,"name":"Проверьте вывод","text":"Прежде чем делиться выводом, пройдитесь по списку."}]}</script>
+<link rel="stylesheet" href="../v6/static.css?v=43fcca59">
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../#roles">Роли</a><a href="../#tasks">Задачи</a><a href="../#paths">Обучение</a><a href="../#knowledge">Знания</a></nav></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../zadaniya/">Задания по шагам</a></div>
+    <h1>Удержание по когортам в таблице</h1>
+    <p class="lead">Таблица удержания по месячным когортам, кривая удержания и вывод: выходит ли она на плато, какие когорты держатся лучше и что с ними было иначе</p>
+    <p class="st-meta">около 50 мин · с нуля · без VPN · задача «Увидеть удержание по когортам»</p>
+    <p class="st-meta">Черновик на согласовании: текст может уточняться.</p>
+    <h2>Чем делать</h2><p>Excel или Google Таблицы, GigaChat, Алиса AI, DeepSeek или Qwen Chat</p>
+    <h2>Что подготовить</h2><ul class="st-list"><li>Выгрузка действий клиентов с начала работы продукта (или за 6-12 месяцев плюс дата регистрации каждого): id клиента и даты действий</li><li>Решение, какое действие считать «вернулся»: повторный заказ, вход, оплата</li></ul>
+    <h2>Шаги</h2>
+    <h3>1. Решите, что значит «вернулся»</h3><p>Удержание считается по действию, ради которого существует продукт: для магазина это повторный заказ, для сервиса это вход и работа, для подписки это оплата. Просто визит на сайт обычно не подходит.</p>
+    <h3>2. Подготовьте выгрузку</h3><p>Нужны две колонки: id клиента и дата действия, одна строка на одно действие. Берите выгрузку с начала работы продукта или добавьте колонку с датой регистрации: иначе клиенты, которые пришли раньше начала выгрузки, попадут в первую когорту как новые. Личные данные (имена, телефоны, почты) уберите: для расчёта нужен только id. В чат ИИ отправляйте не саму таблицу, а её описание и 5-10 строк примера с выдуманными id и датами: настоящий id клиента вместе с датами остаётся персональными данными, а часть чат-ИИ из списка хранит переписку за рубежом.</p>
+    <h3>3. Постройте таблицу когорт</h3><p>Когорта: все, кто впервые совершил действие в одном месяце. Для каждой когорты считаете, какая доля вернулась через 1, 2, 3 месяца. Попросите ИИ дать пошаговую инструкцию для вашей программы.</p><div class="st-prompt">Помоги построить таблицу удержания по когортам в [Excel для Windows / Excel для Mac / Google Таблицах].<br>Данные: лист с колонками client_id и date (одна строка на действие), период [с какого по какой месяц].<br>«Вернулся» = [ваше действие].<br>Напиши по шагам:<br>1. как найти месяц первого действия каждого клиента (когорту);<br>2. как посчитать номер месяца жизни для каждого действия (0, 1, 2…);<br>3. как сводной таблицей получить число уникальных клиентов по когорте и месяцу жизни;<br>4. как перевести в доли от размера когорты.<br>Дай точные формулы для моей программы. Не придумывай мои данные.<br>Если данных не хватает, сначала задай мне до трёх вопросов.</div><ul class="st-list"><li>Строки: когорты по месяцу первого действия</li><li>Столбцы: месяц жизни 0, 1, 2…</li><li>Значения: доля от размера когорты, а не количество</li></ul>
+    <h3>4. Прочитайте таблицу</h3><p>Смотрите две вещи. Первая: выходит ли кривая на плато. Если доля вернувшихся падает, а потом держится примерно на одном уровне, у продукта есть ядро постоянных клиентов. Если падает к нулю, люди пробуют и уходят. Вторая: какие когорты лучше соседних и что с ними было иначе.</p><div class="st-prompt">Вот таблица удержания по месячным когортам (доли от размера когорты):<br>[вставьте таблицу]<br>Что происходило по месяцам (запуски, акции, изменения цены, сбои): [список].<br>Ответь:<br>1. выходит ли удержание на плато и с какого месяца, на каком уровне;<br>2. какие когорты держатся заметно лучше или хуже соседних;<br>3. с какими событиями из моего списка это может быть связано (это гипотезы, не выводы);<br>4. какие одна-две проверки помогут отличить причину от совпадения.<br>Не считай заново и не придумывай события, которых нет в списке.<br>Если данных не хватает, сначала задай мне до трёх вопросов.</div>
+    <h3>5. Проверьте вывод</h3><p>Прежде чем делиться выводом, пройдитесь по списку.</p><ul class="st-list"><li>Последние когорты не сравниваются с ранними по месяцам, которых у них ещё не было</li><li>Маленькие когорты (несколько десятков клиентов) не дают уверенных выводов: отмечено</li><li>Причины изменений записаны как гипотезы с проверкой, а не как факты</li><li>Вывод про плато подкреплён числами из таблицы</li></ul>
+    <h2>Если получилось почти</h2><ul class="st-list"><li>Таблица выглядит как лестница с пустым правым нижним углом. Так и должно быть: у свежих когорт ещё не наступили дальние месяцы</li><li>Удержание в месяце 0 больше 100% или доли скачут. Скорее всего, считаете действия, а не уникальных клиентов. В Google Таблицах выберите в сводной COUNTUNIQUE; в Excel для Windows отметьте «Добавить эти данные в модель данных» и выберите «Число различных элементов»; в Excel для Mac сначала удалите повторы пар «клиент + месяц жизни»</li><li>Кривая не выходит на плато. Это не ошибка расчёта, а сигнал: выясните у ушедших, зачем приходили и чего не получили, прежде чем привлекать новых</li></ul>
+    
+    <h2>Опирается на методы</h2><p>Когортный анализ, <a href="../metody/north-star.html">North Star Metric</a></p>
+    
+    <div class="pp-open"><a href="../#unit-u-product-cohorts">Пройти с отметками шагов и записью в тетрадь →</a></div>
+  </div>
+</main>
+</body>
+</html>

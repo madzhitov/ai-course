@@ -498,7 +498,10 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
             ${meta.length ? `<div class="v6-tags">${meta.map((m) => `<span class="v6t">${e(m)}</span>`).join('')}</div>` : ''}
             ${ready ? `<span><button class="v6b v6-btn-lg ${i ? 'is-soft' : ''}" onclick="${hasSteps(u) ? `V6.openUnit('${e(u.id)}','task')` : `openLesson(${lessonArg(u.fromLesson)})`}">${(unitState(u.id).result === 'yes') ? 'Открыть ещё раз' : 'Начать'}</button></span>` : ''}</article>`;
         };
-        box.innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.chooseRole('seller','task')">Продаю онлайн</a><span>/</span><a onclick="V6.chooseRole('seller','task')">${e(t.direction.title)}</a><span>/</span><span>Задача</span></nav>
+        // Крошки по группе задачи: раньше здесь всегда стоял «Продаю онлайн», и у задач продакта и маркетолога путь был неверный.
+        const roleLabel = { seller: 'Продаю онлайн', product: 'Продакт', marketing: 'Маркетолог', self: 'Для себя' }[t.group];
+        const back = roleLabel ? `V6.chooseRole('${e(t.group)}','task')` : `V6.open('tasks')`;
+        box.innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="${back}">${e(roleLabel || 'Задачи')}</a><span>/</span><a onclick="${back}">${e(t.direction.title)}</a><span>/</span><span>Задача</span></nav>
           <section class="v6-phero v6-thero"><div class="v6-phero-text"><h1 class="v6-d">${e(t.title)}</h1>
             ${result ? `<div class="v6-gets"><span class="v6-pcard-label">Что получите</span><span>${e(result)}</span></div>` : `<div class="v6-gets"><span class="v6-pcard-label">Что получите</span><span>${t.status === 'soon' ? 'Задача готовится: скоро здесь появятся способы её решить.' : 'Описание результата появится вместе со способом.'}</span></div>`}</div>
             ${art('task', 'v6-phero-art v6-sp-art')}</section>
