@@ -1252,3 +1252,5 @@ body.v6 .lesson-content .v6-page .v6-author-t a { color:var(--accent); font-weig
 .v6-more-img img.is-fit { object-fit:contain; object-position:center; }
 /* пока данные главной грузятся, футер не должен мелькать на первом экране и потом уезжать (CLS) */
 .js #v6-home-rest:empty { min-height:100vh; }
+/* старые ссылки разделов в шапке — только метки для подсветки (setActiveTopNav); старый CSS включал их display:flex !important, и Tab попадал в шесть пустых ссылок */
+.v6h .top-nav-links { display:none !important; }

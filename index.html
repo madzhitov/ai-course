@@ -36,8 +36,8 @@
 <!-- Шрифты v6: самохостинг, Google Fonts в РФ блокируется -->
 <link rel="preload" href="v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="v6/fonts/montserrat-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="v6/fonts/fonts.css?v=8bc3d81c">
-<link rel="stylesheet" href="v6/v6.css?v=8bc3d81c">
+<link rel="stylesheet" href="v6/fonts/fonts.css?v=c0c7445f">
+<link rel="stylesheet" href="v6/v6.css?v=c0c7445f">
 
 <!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js">
@@ -4098,12 +4098,12 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
     <div class="v6-menu-sub"><a href="#about" onclick="V6.closeMenu(); openStaticPage('about'); return false;">Что это</a><a href="#companies" onclick="V6.closeMenu(); V6.open('companies'); return false;">Для компаний</a><button type="button" class="v6-menu-item" onclick="V6.closeMenu(); umTrack('alyosha-open', { from: 'menu' }); aleshaToggle()">Спросить Алёшу</button></div>
   </div>
   <nav class="top-nav-links" aria-hidden="true" style="display:none">
-    <a data-section="main" onclick="openSection('main'); return false;"></a>
-    <a data-section="everyday" onclick="openSection('everyday'); return false;"></a>
-    <a data-section="claude" onclick="openSection('claude'); return false;"></a>
-    <a data-section="projects" onclick="openSection('projects'); return false;"></a>
-    <a data-section="industry" onclick="openSection('industry'); return false;"></a>
-    <a data-section="vibe" onclick="openSection('vibe'); return false;"></a>
+    <span data-section="main"></span>
+    <span data-section="everyday"></span>
+    <span data-section="claude"></span>
+    <span data-section="projects"></span>
+    <span data-section="industry"></span>
+    <span data-section="vibe"></span>
   </nav>
 </header>
 
@@ -4155,7 +4155,7 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
   </div>
 </div>
 <script defer src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
-<script id="v6-js" src="v6/v6.js?v=8bc3d81c"></script>
+<script id="v6-js" src="v6/v6.js?v=c0c7445f"></script>
 
 <!-- Alesha — persistent AI tutor widget -->
 <div class="alesha-widget" id="alesha-widget" data-lesson-title="" data-lesson-id="">
@@ -36356,7 +36356,7 @@ function setActiveStaticLink(name) {
 }
 
 function setActiveTopNav(section) {
-  document.querySelectorAll('.top-nav-links a').forEach(a => {
+  document.querySelectorAll('.top-nav-links [data-section]').forEach(a => {
     a.classList.toggle('section-active', a.dataset.section === section);
   });
 }
@@ -37465,6 +37465,14 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-10-12",
+    title: "Клавиатура больше не проваливается в пустые ссылки в шапке",
+    tag: "fix",
+    items: [
+      "Под шапкой висела невидимая полоска со старыми ссылками разделов: при переходе по Tab фокус уходил в шесть пустых ссылок. Убрали"
+    ]
+  },
   {
     date: "2026-10-12",
     title: "Главная быстрее открывается на телефоне",
