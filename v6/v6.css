@@ -1251,4 +1251,4 @@ body.v6 .lesson-content .v6-page .v6-author-t a { color:var(--accent); font-weig
 @media (max-width:900px) { .v6-more { grid-template-columns:1fr; } .v6-author { grid-template-columns:1fr; } .v6-author-img { width:280px; } }
 .v6-more-img img.is-fit { object-fit:contain; object-position:center; }
 /* пока данные главной грузятся, футер не должен мелькать на первом экране и потом уезжать (CLS) */
-#v6-home-rest:empty { min-height:100vh; }
+.js #v6-home-rest:empty { min-height:100vh; }

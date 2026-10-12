@@ -457,7 +457,19 @@ ${rv.trim() || '[вставьте отзывы]'}`;
   function home() {
     setPage(true, null);
     // первый экран рисуется сразу, без ожидания данных: быстрее первая отрисовка и нет сдвига вёрстки
-    const el = shell(`<div class="v6c" id="v6-home"><div id="v6-strip"></div><section class="v6-hero2">
+    // Первый заход: первый экран уже нарисован из HTML (#v6-prehero в index.html, та же разметка, что ниже).
+    // Не пересоздаём его: иначе браузер засчитает заголовок как новую, позднюю отрисовку (LCP на телефоне).
+    // Меняете разметку первого экрана здесь — поменяйте и в index.html.
+    const pre = document.getElementById('v6-prehero');
+    let el;
+    if (pre && pre.parentNode && pre.parentNode.id === 'lesson-content') {
+      el = pre.parentNode;
+      [...el.children].forEach((n) => { if (n !== pre) n.remove(); });
+      pre.removeAttribute('id');
+      document.documentElement.classList.remove('not-home'); // неизвестный адрес (#что-то) тоже открывает главную
+      const pn = document.getElementById('v6-pre-n');
+      if (pn) pn.textContent = `${[...LESSONS, ...TRACK_LESSONS].filter((l) => l.content).length} уроков с практикой`;
+    } else el = shell(`<div class="v6c" id="v6-home"><div id="v6-strip"></div><section class="v6-hero2">
         <div class="v6-hero2-l">
           <span class="v6-badge"><b>Бесплатно</b> · на русском · сервисы без VPN</span>
           <h1 class="v6-d v6-home-h1">Готовые решения для&nbsp;работы и&nbsp;для&nbsp;себя.</h1>

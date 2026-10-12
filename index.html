@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Артефакты: готовые решения с ИИ для работы и для себя</title>
-<script id="js-flag">document.documentElement.classList.add("js")</script>
-<style id="seo-fallback-css">.js #seo-fallback{display:none}#seo-fallback{max-width:760px;margin:40px auto;padding:0 20px;font:17px/1.55 system-ui,sans-serif}</style>
+<script id="js-flag">document.documentElement.classList.add("js");if(location.hash&&!/^#(home)?$/.test(location.hash))document.documentElement.classList.add("not-home")</script>
+<style id="seo-fallback-css">.js #seo-fallback,.not-home #v6-prehero{display:none}.js #v6-prehero #v6-home-rest:empty{min-height:100vh}#seo-fallback{max-width:760px;margin:40px auto;padding:0 20px;font:17px/1.55 system-ui,sans-serif}</style>
 <meta name="description" content="Выберите задачу, подставьте свои данные и через час заберите результат: таблицу, текст или план. Задания, методы, калькуляторы, уроки. Бесплатно, без VPN.">
 <meta name="keywords" content="ИИ, AI, искусственный интеллект, нейросети, ChatGPT, Claude, LLM, машинное обучение, промпт-инжиниринг, агенты, курс, обучение, бесплатно, на русском">
 <meta name="author" content="Руслан Маджитов">
@@ -36,8 +36,8 @@
 <!-- Шрифты v6: самохостинг, Google Fonts в РФ блокируется -->
 <link rel="preload" href="v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="v6/fonts/montserrat-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="v6/fonts/fonts.css?v=41090283">
-<link rel="stylesheet" href="v6/v6.css?v=41090283">
+<link rel="stylesheet" href="v6/fonts/fonts.css?v=8bc3d81c">
+<link rel="stylesheet" href="v6/v6.css?v=8bc3d81c">
 
 <!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js">
@@ -4075,8 +4075,9 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 
 </style>
 </head>
-<body>
-<script id="v6-boot">/* каркас v6 сразу, до v6.js: иначе main сначала рисуется со старым отступом под меню и съезжает (CLS) */document.body.classList.add("v6")</script>
+<!-- class="v6" сразу в разметке: иначе main сначала рисуется со старым отступом под меню и съезжает (CLS), а без JS первый экран без стилей v6 -->
+<body class="v6">
+<script id="v6-boot">/* урок стартует в старом каркасе и включает v6 сам, когда догрузит данные: с ранним v6 был бы лишний рывок */if(/^#lesson-/.test(location.hash))document.body.classList.remove("v6")</script>
 
 <!-- ТРОПА F2: двухстрочная мачта по эталону. Старые секц-ссылки скрыты
      (data-section нужны setActiveTopNav); видимая навигация — в .h-nav. -->
@@ -4120,9 +4121,18 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 </aside>
 
 <main>
-  <div class="lesson-content" id="lesson-content"><!-- Статичная версия для поисковиков и браузеров без JS: приложение заменяет её при первом рендере, а у кого JS работает, она скрыта с самого начала (класс js в head) --><div id="seo-fallback">
-<h1>Готовые решения для работы и для себя</h1>
-<p>Выберите задачу, подставьте свои данные и через час заберите результат: таблицу, текст, план или бота. Промпт и чек-лист уже внутри. Бесплатно, без VPN, на русском.</p>
+  <div class="lesson-content" id="lesson-content"><!-- Первый экран главной прямо в HTML: виден до загрузки скриптов (скорость на телефоне), приложение заменяет его такой же разметкой. На других адресах скрыт (класс not-home в head). Число уроков проставляет build_pages.js --><div class="v6-page" id="v6-prehero"><div class="v6c" id="v6-home"><div id="v6-strip"></div><section class="v6-hero2">
+        <div class="v6-hero2-l">
+          <span class="v6-badge"><b>Бесплатно</b> · на русском · сервисы без VPN</span>
+          <h1 class="v6-d v6-home-h1">Готовые решения для&nbsp;работы и&nbsp;для&nbsp;себя.</h1>
+          <p class="v6-hero2-lead">Выберите задачу, подставьте свои данные и через час заберите результат: таблицу, текст, план или бота. Промпт и чек-лист уже внутри, где нужно, есть и шаблон.</p>
+          <form class="v6-hask" onsubmit="return window.V6 ? V6.ask(this) : false" role="search"><label for="v6-hask-in">Какая у вас задача?</label>
+            <span class="v6-hask-row"><input id="v6-hask-in" type="text" placeholder="например, ответить на 40 отзывов" autocomplete="off"><button class="v6b is-accent" type="submit">Подобрать</button></span></form><div class="v6-results" hidden aria-live="polite"></div>
+          <p class="v6-roleline"><span>Или начните с роли:</span><a href="#role-seller" onclick="V6.openRole('seller','home'); return false;">продаю онлайн</a><a href="#role-creator" onclick="V6.openRole('creator','home'); return false;">создаю на ИИ</a><a href="#role-self" onclick="V6.openRole('self','home'); return false;">для себя</a><a href="#role-product" onclick="V6.openRole('product','home'); return false;">продакт или проджект</a></p>
+          <div class="v6-hlearn"><span><b>Или учиться по порядку</b><span class="v6-meta" id="v6-pre-n">128 уроков с практикой</span></span><span class="v6-btns"><button type="button" class="v6b is-soft is-sm" onclick="openLesson(1)">Начать с урока 1</button><button type="button" class="v6b is-soft is-sm" onclick="V6.open('paths')">Все пути</button></span></div>
+        </div>
+        <div class="v6-show" id="v6-show"></div>
+      </section><div id="v6-home-rest"></div></div></div><!-- Ссылки по разделам для поисковиков и браузеров без JS: у кого JS работает, они скрыты с самого начала (класс js в head) --><div id="seo-fallback">
 <ul>
 <li><a href="zadaniya/">Задания по шагам</a>: для продавцов на маркетплейсах, маркетологов, продактов и для себя</li>
 <li><a href="metody/">Методы</a>: юнит-экономика, ДРР и ROMI, RFM, JTBD, RICE и другие, с примерами</li>
@@ -4145,7 +4155,7 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
   </div>
 </div>
 <script defer src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
-<script src="v6/v6.js?v=41090283"></script>
+<script id="v6-js" src="v6/v6.js?v=8bc3d81c"></script>
 
 <!-- Alesha — persistent AI tutor widget -->
 <div class="alesha-widget" id="alesha-widget" data-lesson-title="" data-lesson-id="">
@@ -37457,6 +37467,15 @@ function fmtDate(isoDate) {
 const CHANGELOG = [
   {
     date: "2026-10-12",
+    title: "Главная быстрее открывается на телефоне",
+    tag: "update",
+    items: [
+      "Первый экран главной теперь приходит готовым вместе со страницей и виден сразу, не дожидаясь скриптов",
+      "Заголовок на телефоне появляется примерно на секунду раньше"
+    ]
+  },
+  {
+    date: "2026-10-12",
     title: "Новые картинки для ссылок на Артефакты",
     tag: "update",
     items: [
@@ -39049,6 +39068,9 @@ function filterLessons(query) {
 }
 
 // Init (v6: тёмной темы нет — решение 05.10.2026, сайт всегда светлый)
+function appInit() {
+if (appInit.done) return;
+appInit.done = true;
 if (window.V6) V6.install();
 buildNav();
 updateProgressUI();
@@ -39080,6 +39102,8 @@ if (hashMatch) {
   // По умолчанию — Home
   openStaticPage('home');
 }
+}
+appInit();
 
 // Трекинг первого посещения (welcome event)
 if (!localStorage.getItem('first_visit')) {
