@@ -246,27 +246,93 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     if (t.task && D.tasks[t.task]) return `V6.openTask('${e(t.task)}','home-show')`;
     return t.lesson ? `openLesson(${lessonArg(t.lesson)})` : "V6.open('tasks')";
   }
+  // панели «Вы уносите»: у элементов --at — момент появления в цикле витрины (мс)
+  const at = (ms) => ` data-at="${ms}"`;
   function showPanel(t) {
-    if (t.type === 'bars') return `<div class="v6-bars">${t.rows.map((r) => `<div class="v6-bar${r.negative ? ' is-neg' : ''}"><span class="v6-bar-h"><b>${e(r.name)}</b><b class="v6-bar-v">${e(r.value)}</b></span><span class="v6-bar-t"><i style="width:${Number(r.pct) || 0}%"></i></span></div>`).join('')}
-        ${t.alesha ? `<p class="v6-show-al"><span class="v6-ava is-sq">А</span><span>${e(t.alesha)}</span></p>` : ''}</div>`;
-    if (t.type === 'reviews') return `<div class="v6-show-list">${t.items.map((x) => `<div class="v6-show-item"><span class="v6-show-q"><span class="v6-stars" aria-label="оценка ${x.stars} из 5">${'★'.repeat(x.stars)}${'☆'.repeat(5 - x.stars)}</span><span>«${e(x.quote)}»</span></span><p>${e(x.answer)}</p></div>`).join('')}<p class="v6-meta">${e(t.note || '')}</p></div>`;
-    if (t.type === 'resume') return `<div class="v6-show-list"><div class="v6-show-item"><span class="v6-show-q"><b>${e(t.name)}</b><span>${e(t.role)}</span>${t.pill ? `<span class="v6-pill-s">${e(t.pill)}</span>` : ''}</span><ul>${t.points.map((x) => `<li>${e(x)}</li>`).join('')}</ul></div><p class="v6-meta">${e(t.note || '')}</p></div>`;
-    if (t.type === 'contract') return `<div class="v6-show-list"><p class="v6-meta" style="margin:0">${e(t.doc || '')}</p>${t.items.map((x) => `<div class="v6-show-item"><span class="v6-show-q"><b>${e(x.where)}</b><span>${e(x.risk)}</span></span><p>${e(x.ask)}</p></div>`).join('')}<p class="v6-meta">${e(t.note || '')}</p></div>`;
+    if (t.type === 'bars') return `<div class="v6-bars">${t.rows.map((r, k) => `<div class="v6-bar${r.negative ? ' is-neg' : ''}"${at(3000 + k * 250)}><span class="v6-bar-h"><b>${e(r.name)}</b><b class="v6-bar-v">${e(r.value)}</b></span><span class="v6-bar-t"><i style="--w:${Number(r.pct) || 0}%"></i></span></div>`).join('')}</div>`;
+    if (t.type === 'reviews') return `<div class="v6-show-list">${t.items.map((x, k) => `<div class="v6-show-item"${at(3000 + k * 600)}><span class="v6-show-q"><span class="v6-stars" aria-label="оценка ${x.stars} из 5">${'★'.repeat(x.stars)}${'☆'.repeat(5 - x.stars)}</span><span>«${e(x.quote)}»</span></span><p>${e(x.answer)}</p></div>`).join('')}<p class="v6-meta"${at(4400)}>${e(t.note || '')}</p></div>`;
+    if (t.type === 'resume') return `<div class="v6-show-list"><div class="v6-show-item"${at(3000)}><span class="v6-show-q"><b>${e(t.name)}</b><span>${e(t.role)}</span>${t.pill ? `<span class="v6-pill-s">${e(t.pill)}</span>` : ''}</span><ul>${t.points.map((x, k) => `<li${at(3400 + k * 500)}>${e(x)}</li>`).join('')}</ul></div><p class="v6-meta"${at(4400)}>${e(t.note || '')}</p></div>`;
+    if (t.type === 'contract') return `<div class="v6-show-list"><p class="v6-meta" style="margin:0"${at(3000)}>${e(t.doc || '')}</p>${t.items.map((x, k) => `<div class="v6-show-item"${at(3300 + k * 600)}><span class="v6-show-q"><b>${e(x.where)}</b><span>${e(x.risk)}</span></span><p>${e(x.ask)}</p></div>`).join('')}<p class="v6-meta"${at(4400)}>${e(t.note || '')}</p></div>`;
     return '';
+  }
+  // ---------- витрина первого экрана: «Вы приносите → Собираем → Вы уносите», 4 задачи по кругу (ТЗ главной v2, этап 1) ----------
+  // Разметка всех задач строится один раз и лежит стопкой в одной ячейке сетки: высота витрины = самой высокой задаче, не прыгает.
+  // Каждый тик меняет только атрибуты и классы, кнопки вкладок не пересоздаются (фокус не теряется).
+  const VX_CYCLE = 8200, VX_TICK = 100;
+  const vx = { i: 0, t: 0, paused: false, seen: true, timer: null, reduced: false };
+  function vxPane(t, k) {
+    const u = t.unit && unitById(t.unit);
+    const time = u && u.minutes ? `${u.minutes} мин` : '';
+    return `<div class="v6-vx-pane" data-k="${k}"${k ? ' aria-hidden="true"' : ''}>
+        <div class="v6-vx-in"><span class="v6-meta">Вы приносите</span>${(t.input || []).map((s, j) => `<span${at(150 + j * 450)}>${e(s)}</span>`).join('')}</div>
+        <div class="v6-vx-bar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg><span class="v6-vx-bar-t">Ждём ваши данные</span></div>
+        <div class="v6-vx-out"><div class="v6-show-top"><span class="v6-meta">Вы уносите</span><span class="v6-pill-s">пример${time ? ' · ' + time : ''}</span></div>
+          <p class="v6-show-take">${e(t.take)}</p>${showPanel(t)}
+          ${t.alesha ? `<p class="v6-show-al"><span class="v6-ava is-sq">А</span><span class="v6-vx-alw"><span class="v6-vx-ghost" aria-hidden="true">${e(t.alesha)}</span><span class="v6-vx-al" data-text="${e(t.alesha)}">${e(t.alesha)}</span></span></p>` : ''}</div>
+        <div class="v6-vx-foot"><button class="v6b is-accent v6-btn-lg" onclick="${showOpen(t)}">Открыть задачу →</button><span class="v6-meta v6-vx-hint">наведите, чтобы остановить</span></div>
+      </div>`;
   }
   function showcase() {
     const tabs = (HX && HX.tabs) || [];
     if (!tabs.length) return '';
-    const t = tabs.find((x) => x.id === hxTab) || tabs[0];
-    const u = t.unit && unitById(t.unit);
-    const time = u && u.minutes ? `${u.minutes} мин` : '';
-    return `<div class="v6-tabs" role="group" aria-label="Примеры задач">${tabs.map((x) => `<button type="button" class="v6-tab" aria-pressed="${x.id === t.id}" onclick="V6.showTab('${e(x.id)}')">${e(x.label)}</button>`).join('')}</div>
-      <div class="v6-show-top"><span class="v6-meta">Вы уносите</span><span class="v6-pill-s">пример${time ? ' · ' + time : ''}</span></div>
-      <p class="v6-show-take">${e(t.take)}</p>
-      ${showPanel(t)}
-      <span><button class="v6b is-accent v6-btn-lg" onclick="${showOpen(t)}">Открыть задачу →</button></span>`;
+    return `<div class="v6-tabs" role="group" aria-label="Примеры задач">${tabs.map((x, k) => `<button type="button" class="v6-tab v6-vx-tab" aria-pressed="${!k}" onclick="V6.showTab(${k})"><span>${e(x.label)}</span><i class="v6-vx-prog" aria-hidden="true"></i></button>`).join('')}</div>
+      <div class="v6-vx-stack">${tabs.map(vxPane).join('')}</div>`;
   }
-  function showTab(id) { hxTab = id; const el = document.getElementById('v6-show'); if (el) { el.innerHTML = showcase(); const b = el.querySelector('.v6-tab[aria-pressed="true"]'); if (b) b.focus(); } track('home-show', { tab: id }); }
+  function vxApply() {
+    const root = document.getElementById('v6-show');
+    if (!root) return;
+    const t = vx.t, panes = root.querySelectorAll('.v6-vx-pane'), tabs = root.querySelectorAll('.v6-vx-tab');
+    tabs.forEach((b, k) => { b.setAttribute('aria-pressed', String(k === vx.i)); b.querySelector('.v6-vx-prog').style.width = k === vx.i && !vx.reduced ? `${Math.min(100, t / VX_CYCLE * 100)}%` : '0'; });
+    panes.forEach((p, k) => {
+      const cur = k === vx.i;
+      p.classList.toggle('is-cur', cur);
+      if (cur) p.removeAttribute('aria-hidden'); else p.setAttribute('aria-hidden', 'true');
+      if (!cur) return;
+      const ph = t < 1700 ? 'in' : t < 2900 ? 'proc' : 'done';
+      p.dataset.ph = ph;
+      p.querySelectorAll('[data-at]').forEach((x) => x.classList.toggle('is-on', t >= Number(x.dataset.at)));
+      const tk = HX.tabs[k];
+      p.querySelector('.v6-vx-bar-t').textContent = ph === 'in' ? 'Ждём ваши данные' : `${ph === 'proc' ? 'Собираем' : 'Собрано'}: ${tk.process || ''}`;
+      const al = p.querySelector('.v6-vx-al');
+      if (al) {
+        al.closest('.v6-show-al').classList.toggle('is-on', t >= 4600);
+        const full = al.dataset.text, n = Math.floor((t - 4700) / 1000 * 50);
+        al.textContent = n >= full.length ? full : n > 0 ? full.slice(0, n) + '▍' : '';
+      }
+      const hint = p.querySelector('.v6-vx-hint');
+      hint.textContent = vx.reduced ? 'выберите задачу вкладкой' : vx.paused ? 'на паузе, пока курсор здесь' : 'наведите, чтобы остановить';
+    });
+  }
+  function vxStart() {
+    const root = document.getElementById('v6-show');
+    if (!root || !HX || !HX.tabs.length) return;
+    clearInterval(vx.timer);
+    vx.reduced = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+    vx.i = Math.max(0, HX.tabs.findIndex((x) => x.id === hxTab));
+    vx.t = vx.reduced ? VX_CYCLE - 1 : 0;
+    vx.paused = false;
+    root.classList.toggle('is-reduced', vx.reduced);
+    root.addEventListener('mouseenter', () => { vx.paused = true; vxApply(); });
+    root.addEventListener('mouseleave', () => { vx.paused = root.contains(document.activeElement); vxApply(); });
+    root.addEventListener('focusin', () => { vx.paused = true; vxApply(); });
+    root.addEventListener('focusout', (ev) => { if (!root.contains(ev.relatedTarget) && !root.matches(':hover')) { vx.paused = false; vxApply(); } });
+    if ('IntersectionObserver' in window) new IntersectionObserver((en) => { vx.seen = en[0].isIntersecting; }).observe(root);
+    vxApply();
+    if (vx.reduced) return;
+    vx.timer = setInterval(() => {
+      if (!root.isConnected) { clearInterval(vx.timer); return; } // ушли с главной
+      if (vx.paused || !vx.seen || document.hidden) return;
+      vx.t += VX_TICK;
+      if (vx.t >= VX_CYCLE) { vx.t = 0; vx.i = (vx.i + 1) % HX.tabs.length; }
+      vxApply();
+    }, VX_TICK);
+  }
+  function showTab(k) {
+    vx.i = Number(k) || 0; vx.t = vx.reduced ? VX_CYCLE - 1 : 0;
+    hxTab = HX.tabs[vx.i].id;
+    vxApply();
+    track('home-show', { tab: hxTab });
+  }
 
 
   // ---------- «Попробуйте, пока читаете»: промпт собирается в браузере, отзывы никуда не отправляются (решение Руслана 12.10: без сервера) ----------
@@ -415,7 +481,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       const box = (id) => document.getElementById(id);
       if (!box('v6-home-rest')) return;
       box('v6-strip').innerHTML = strip;
-      box('v6-show').innerHTML = showcase();
+      box('v6-show').innerHTML = showcase(); vxStart();
       box('v6-home-rest').innerHTML = tryBlock() + howBlock() + whoBlock2() + learnBlock() + methodsBlock2() + newsCo();
     }).catch(() => fail('v6-home'));
     return el;
