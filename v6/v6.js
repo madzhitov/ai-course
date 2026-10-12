@@ -398,6 +398,26 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       <div class="v6-who2">${cards}</div><p class="v6-how-f"><button class="v6-link" onclick="V6.open('roles')">Все роли: маркетолог, специалист, владелец бизнеса →</button></p></section>`;
   }
 
+  // ---------- главная v2, этап 3: «Больше, чем задача» и «Кто это собирает» (тексты из CONTENT.md ТЗ) ----------
+  function moreBlock() {
+    const card = (href, ext, img, alt, label, title, text, go, on) => `<a class="v6-more-c" href="${href}"${ext ? ' target="_blank" rel="noopener"' : ''}${on ? ` onclick="${on}; return false;"` : ''}>
+        <span class="v6-more-img"><img src="v6/art/${img}"${img.includes('brand') ? ' class="is-fit"' : ''} alt="${alt}" loading="lazy" width="960" height="540"></span>
+        <span class="v6-more-b"><span class="v6-meta">${label}</span><b>${title}</b><span>${text}</span><span class="v6-learn-go">${go}</span></span></a>`;
+    return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Больше, чем задача</h2><p>Две вещи, собранные тем же способом, только крупнее. Одна подскажет, с чего начать. Другая будет считать за вас каждый день.</p></div>
+      <div class="v6-more">
+        ${card('#brand-stages', false, 'home-brand-stages.webp', 'Первый экран диагностики «Стадии бренда»: вопрос о годовой выручке и пять стадий на выбор', 'бесплатно, для владельца и команды бренда', 'Стадии бренда', 'Тринадцать вопросов, около трёх минут. Покажет, на какой из пяти стадий бренд и какие из 13 направлений отстают. К большинству первых дел уже есть задания. Всё считается в браузере, ответы никуда не уходят.', 'Пройти диагностику →', "V6.open('brand-stages')")}
+        ${card('https://birdtold.ru/demo', true, 'home-birdtold-demo.webp', 'Экран сервиса «Птичка напела»: выручка за неделю и утренние сообщения о том, где теряются деньги', 'продукт агентства madzhitov.ru', 'Птичка напела', 'В задаче вы считаете маржу руками за 45 минут. Птичка делает это каждое утро сама и пишет, где утекают деньги: брендовый трафик падает третий день, предзаказы приняты, но не оплачены, пальто торгуется в минус.', 'Посмотреть демо ↗', '')}
+      </div></section>`;
+  }
+  function authorBlock() {
+    return `<section class="v6-sec v6-author"><img class="v6-author-img" src="v6/art/home-author.png" alt="Руслан Маджитов, портрет из точек" loading="lazy" width="520" height="520">
+      <div class="v6-author-t"><h2 class="v6-h2">Кто это собирает</h2>
+        <p>Меня зовут Руслан Маджитов. Двадцать лет делаю e-commerce и маркетинг, последние годы вместе с ИИ. Артефакты: то, что я сам делаю каждую неделю, разложенное по шагам так, чтобы получилось и у вас.</p>
+        <h3>Почему бесплатно</h3>
+        <p>Задачи и диагностику вы делаете сами, бесплатно. Когда нужно разобрать бренд на своих данных и внедрить, мы делаем это вместе с вашей командой. За это и платят.</p>
+        <p><a href="https://t.me/artefakty_ai" target="_blank" rel="noopener">Канал Артефактов: @artefakty_ai</a></p></div></section>`;
+  }
+
   // ---------- главная v2, этап 3: обучение (пути, уроки), методы, «Что нового» и компании ----------
   function learnBlock() {
     const nLessons = [...LESSONS, ...TRACK_LESSONS].filter((l) => l.content).length;
@@ -415,7 +435,6 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       <div class="v6-learn-row">
         ${small('Путь продакта', 'исследование, приоритеты, метрики, управление работой', "V6.openProductPath('home')")}
         ${small('Путь маркетолога', 'аудитория, воронка, контент, измерение эффекта', "V6.openMarketingPath('home')")}
-        <a class="v6-learn-s is-ready" href="#brand-stages" onclick="V6.open('brand-stages'); return false;"><span><b>Стадии бренда</b><span class="v6-meta">пять стадий, ловушки и первые дела, диагностика за 3 минуты</span></span><span class="v6-meta">открыть →</span></a>
       </div>
       ${trails ? `<p class="v6-roleline" style="margin-top:20px"><span>Тропинки рядом с путём:</span>${trails}</p>` : ''}</section>`;
   }
@@ -482,7 +501,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       if (!box('v6-home-rest')) return;
       box('v6-strip').innerHTML = strip;
       box('v6-show').innerHTML = showcase(); vxStart();
-      box('v6-home-rest').innerHTML = tryBlock() + howBlock() + whoBlock2() + learnBlock() + methodsBlock2() + newsCo();
+      box('v6-home-rest').innerHTML = tryBlock() + howBlock() + whoBlock2() + learnBlock() + moreBlock() + methodsBlock2() + authorBlock() + newsCo();
     }).catch(() => fail('v6-home'));
     return el;
   }
