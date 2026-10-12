@@ -269,6 +269,41 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
   function showTab(id) { hxTab = id; const el = document.getElementById('v6-show'); if (el) { el.innerHTML = showcase(); const b = el.querySelector('.v6-tab[aria-pressed="true"]'); if (b) b.focus(); } track('home-show', { tab: id }); }
 
 
+  // ---------- «Попробуйте, пока читаете»: промпт собирается в браузере, отзывы никуда не отправляются (решение Руслана 12.10: без сервера) ----------
+  const TRY_EX = '★2 размер маломерит, вернула\n★1 пришло без пуговицы!!!\n★4 всё ок, но доставка 9 дней';
+  const tryPrompt = (rv) => `Ты отвечаешь покупателям от имени продавца на маркетплейсе. Тон: тепло, коротко, по делу.
+Ниже отзывы покупателей. На каждый напиши ответ в одно-два предложения:
+поблагодари, ответь по сути отзыва, начинай ответы по-разному.
+Не обещай скидок, компенсаций и подарков. Не придумывай фактов о товаре, которых нет в отзыве.
+Оформи так: сначала отзыв, под ним ответ.
+
+Отзывы:
+${rv.trim() || '[вставьте отзывы]'}`;
+  function tryBlock() {
+    const out = (href, t, k) => `<a class="v6b is-soft is-sm" href="${href}" target="_blank" rel="noopener" onclick="V6.tryGo('${k}')">${t} ↗</a>`;
+    return `<section class="v6-sec v6-try"><div class="v6-try-l">
+        <h2 class="v6-h2">Попробуйте, пока читаете</h2>
+        <p>Вставьте пару отзывов с маркетплейса. Справа соберётся промпт: скопируйте его в ГигаЧат или Алису, ответы придут там. Отзывы остаются в вашем браузере.</p>
+        <label for="v6-try-in">Ваши отзывы</label>
+        <textarea id="v6-try-in" rows="5" oninput="V6.tryUpd()">${e(TRY_EX)}</textarea>
+      </div>
+      <div class="v6-try-r"><span class="v6-meta">Промпт</span>
+        <pre class="v6-try-p" id="v6-try-p">${e(tryPrompt(TRY_EX))}</pre>
+        <span class="v6-btns"><button type="button" class="v6b is-accent is-sm" onclick="V6.tryCopy(this)">Скопировать промпт</button>${out('https://giga.chat/', 'ГигаЧат', 'giga')}${out('https://alice.yandex.ru/', 'Алиса', 'alice')}</span>
+        <p class="v6-try-f">Это кусочек задачи «Ответить на отзывы пачкой». Целиком она даёт 20 ответов в одном тоне и чек-лист, по которому их проверить. <a href="#unit-u-seller-reviews" onclick="V6.openUnit('u-seller-reviews','home-try'); return false;">Открыть задачу целиком</a></p>
+      </div></section>`;
+  }
+  function tryUpd() { const i = document.getElementById('v6-try-in'), p = document.getElementById('v6-try-p'); if (i && p) p.textContent = tryPrompt(i.value); }
+  function tryCopy(btn) {
+    const p = document.getElementById('v6-try-p');
+    const ok = () => { btn.textContent = 'Скопировано'; setTimeout(() => { btn.textContent = 'Скопировать промпт'; }, 1600); };
+    // буфер недоступен (старый браузер, нет фокуса): выделяем промпт, чтобы скопировать руками
+    const pick = () => { const r = document.createRange(); r.selectNodeContents(p); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); btn.textContent = 'Выделено, скопируйте'; setTimeout(() => { btn.textContent = 'Скопировать промпт'; }, 2400); };
+    try { navigator.clipboard.writeText(p.textContent).then(ok, pick); } catch (_) { pick(); }
+    track('home-try', { act: 'copy' });
+  }
+  const tryGo = (k) => track('home-try', { act: k });
+
   // ---------- главная v2: «Приносите задачу» и «Кто вы?» (задания ролей — из данных) ----------
   function howBlock() {
     const n = D.units.filter(hasSteps).length;
@@ -381,7 +416,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       if (!box('v6-home-rest')) return;
       box('v6-strip').innerHTML = strip;
       box('v6-show').innerHTML = showcase();
-      box('v6-home-rest').innerHTML = howBlock() + whoBlock2() + learnBlock() + methodsBlock2() + newsCo();
+      box('v6-home-rest').innerHTML = tryBlock() + howBlock() + whoBlock2() + learnBlock() + methodsBlock2() + newsCo();
     }).catch(() => fail('v6-home'));
     return el;
   }
@@ -1696,5 +1731,5 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     });
   }
 
-  window.V6 = { coSystem, bsRev, bsAns, bsBack, bsReset, bsGo, install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, fwPrint, showTab, openKnowledge, openDict, ktab, ksearch, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
+  window.V6 = { coSystem, bsRev, bsAns, bsBack, bsReset, bsGo, install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, fwPrint, showTab, tryUpd, tryCopy, tryGo, openKnowledge, openDict, ktab, ksearch, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
 })();

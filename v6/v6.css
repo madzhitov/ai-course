@@ -1183,3 +1183,18 @@ body.v6 .lesson-content .v6-page .v6-gate-t { hyphens:manual !important; -webkit
 body.v6 .lesson-content .v6-page { min-height:100vh; }
 .v6-copk-i.is-free .v6-meta { color:var(--text-2); }
 body.v6 .lesson-content .v6-page .v6-calc-page a, body.v6 .lesson-content .v6-page .v6-tools-lead a { color:var(--text-2); text-decoration:underline; text-underline-offset:3px; }
+/* главная: «Попробуйте, пока читаете» — промпт собирается в браузере */
+.v6-try { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:32px 56px; align-items:start; }
+.v6-try-l { display:flex; flex-direction:column; gap:14px; min-width:0; }
+body.v6 .lesson-content .v6-page .v6-try-l h2 { margin:0 !important; }
+.v6-try-l p { margin:0 0 6px; font-size:19px; line-height:1.5; color:var(--text-2); max-width:480px; }
+.v6-try-l label { font-size:14px; font-weight:600; }
+.v6-try-l textarea { width:100%; box-sizing:border-box; min-height:150px; resize:vertical; border:0; border-radius:18px; background:var(--surface); padding:16px 18px; font:inherit; font-size:16px; line-height:1.55; color:var(--ink); }
+.v6-try-l textarea:focus { outline:3px solid var(--accent); outline-offset:2px; }
+.v6-try-r { background:var(--surface); border-radius:32px; padding:clamp(20px,3vw,30px); display:flex; flex-direction:column; gap:14px; min-width:0; box-sizing:border-box; }
+body.v6 .lesson-content .v6-page pre.v6-try-p { margin:0 !important; background:var(--ground); border-radius:18px; padding:16px 18px; font-family:ui-monospace, "SF Mono", Menlo, monospace; font-size:14px; line-height:1.6; color:var(--ink); white-space:pre-wrap; overflow-wrap:anywhere; }
+.v6-try-r .v6-btns { display:flex; flex-wrap:wrap; gap:8px; }
+.v6-try-f { margin:0; font-size:15px; line-height:1.5; color:var(--text-2); }
+body.v6 .lesson-content .v6-page .v6-try-f a { color:var(--accent); font-weight:600; text-decoration:underline; text-underline-offset:4px; }
+@media (max-width:900px) { .v6-try { grid-template-columns:1fr; } }
+.v6-try-r .v6b.is-sm { padding:0 16px; font-size:15px; }
