@@ -3437,8 +3437,7 @@
    ],
    "fromLesson": null,
    "status": "ready",
-   "resources": [],
-   "review": true
+   "resources": []
   },
   {
    "id": "u-product-cohorts",
@@ -3506,8 +3505,7 @@
    ],
    "fromLesson": null,
    "status": "ready",
-   "resources": [],
-   "review": true
+   "resources": []
   },
   {
    "id": "u-product-pmf",
@@ -3577,8 +3575,7 @@
    ],
    "fromLesson": null,
    "status": "ready",
-   "resources": [],
-   "review": true
+   "resources": []
   },
   {
    "id": "u-product-slice",
@@ -3649,8 +3646,7 @@
    "status": "ready",
    "resources": [
     "r-rice-table"
-   ],
-   "review": true
+   ]
   },
   {
    "id": "u-product-value",
@@ -3720,8 +3716,7 @@
    "status": "ready",
    "resources": [
     "r-interview-notes"
-   ],
-   "review": true
+   ]
   }
  ]
 }

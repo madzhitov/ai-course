@@ -1207,14 +1207,12 @@ body.v6 .lesson-content .v6-page .v6-try-f a { color:var(--accent); font-weight:
 .v6-vx-pane.is-cur { visibility:visible; }
 .v6-vx-in { background:var(--ground); border-radius:20px; padding:14px 16px; display:flex; flex-direction:column; gap:6px; transition:opacity .3s; }
 .v6-vx-in > span:not(.v6-meta) { font-size:15px; line-height:1.4; color:var(--text-2); }
-.v6-vx-pane[data-ph="done"] .v6-vx-in { opacity:.6; }
 .v6-vx-bar { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:14px; font-size:14px; font-weight:600; background:#F7F8FA; color:var(--text-3); transition:background .3s, color .3s; }
 .v6-vx-bar svg { flex:0 0 18px; }
 .v6-vx-pane[data-ph="proc"] .v6-vx-bar { background:var(--accent); color:#fff; }
 .v6-vx-pane[data-ph="done"] .v6-vx-bar { background:#EEF0F6; color:var(--accent); }
 .v6-vx-out { display:flex; flex-direction:column; gap:12px; }
-body.v6 .lesson-content .v6-page .v6-vx-out .v6-show-take { font-size:22px; opacity:.25; transition:opacity .3s; }
-body.v6 .lesson-content .v6-page .v6-vx-pane[data-ph="done"] .v6-vx-out .v6-show-take { opacity:1; }
+body.v6 .lesson-content .v6-page .v6-vx-out .v6-show-take { font-size:22px; }
 .v6-vx-pane [data-at] { opacity:0; transform:translateY(6px); transition:opacity .35s, transform .35s; }
 .v6-vx-pane [data-at].is-on { opacity:1; transform:none; }
 .v6-vx-pane .v6-bar-t i { width:0; transition:width 1.1s cubic-bezier(.2,.7,.3,1); }
@@ -1252,3 +1250,5 @@ body.v6 .lesson-content .v6-page .v6-author-t p { margin:0; font-size:18px; line
 body.v6 .lesson-content .v6-page .v6-author-t a { color:var(--accent); font-weight:600; text-decoration:underline; text-underline-offset:4px; }
 @media (max-width:900px) { .v6-more { grid-template-columns:1fr; } .v6-author { grid-template-columns:1fr; } .v6-author-img { width:280px; } }
 .v6-more-img img.is-fit { object-fit:contain; object-position:center; }
+/* пока данные главной грузятся, футер не должен мелькать на первом экране и потом уезжать (CLS) */
+#v6-home-rest:empty { min-height:100vh; }

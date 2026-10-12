@@ -17,7 +17,7 @@
 <meta property="og:locale" content="ru_RU">
 <meta property="og:site_name" content="Артефакты">
 <meta property="og:url" content="https://ai.madzhitov.ru/">
-<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png?v=77a5422d">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 
@@ -25,19 +25,19 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Артефакты: готовые решения с ИИ для работы и для себя">
 <meta name="twitter:description" content="Выберите задачу, подставьте свои данные и через час заберите результат: таблицу, текст или план. Задания, методы, калькуляторы, уроки. Бесплатно, без VPN.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og-default.png">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og-default.png?v=77a5422d">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Артефакты","alternateName":"ai.madzhitov.ru","description":"Выберите задачу, подставьте свои данные и через час заберите результат: таблицу, текст или план. Задания, методы, калькуляторы, уроки. Бесплатно, без VPN.","url":"https://ai.madzhitov.ru/","inLanguage":"ru","image":"https://ai.madzhitov.ru/og-default.png","publisher":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Артефакты","alternateName":"ai.madzhitov.ru","description":"Выберите задачу, подставьте свои данные и через час заберите результат: таблицу, текст или план. Задания, методы, калькуляторы, уроки. Бесплатно, без VPN.","url":"https://ai.madzhitov.ru/","inLanguage":"ru","image":"https://ai.madzhitov.ru/og-default.png?v=77a5422d","publisher":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 
 <link rel="icon" href="v6/brand/favicon.svg" type="image/svg+xml">
 
 <!-- Шрифты v6: самохостинг, Google Fonts в РФ блокируется -->
 <link rel="preload" href="v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="v6/fonts/montserrat-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="v6/fonts/fonts.css?v=31480237">
-<link rel="stylesheet" href="v6/v6.css?v=31480237">
+<link rel="stylesheet" href="v6/fonts/fonts.css?v=41090283">
+<link rel="stylesheet" href="v6/v6.css?v=41090283">
 
 <!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js">
@@ -4076,6 +4076,7 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 </style>
 </head>
 <body>
+<script id="v6-boot">/* каркас v6 сразу, до v6.js: иначе main сначала рисуется со старым отступом под меню и съезжает (CLS) */document.body.classList.add("v6")</script>
 
 <!-- ТРОПА F2: двухстрочная мачта по эталону. Старые секц-ссылки скрыты
      (data-section нужны setActiveTopNav); видимая навигация — в .h-nav. -->
@@ -4144,7 +4145,7 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
   </div>
 </div>
 <script defer src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
-<script src="v6/v6.js?v=31480237"></script>
+<script src="v6/v6.js?v=41090283"></script>
 
 <!-- Alesha — persistent AI tutor widget -->
 <div class="alesha-widget" id="alesha-widget" data-lesson-title="" data-lesson-id="">
@@ -37454,6 +37455,33 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-10-12",
+    title: "Новые картинки для ссылок на Артефакты",
+    tag: "update",
+    items: [
+      "Когда вы делитесь ссылкой на урок или инструмент, превью теперь в стиле нового сайта, а не старой «Тропы»",
+      "У картинок новые адреса, поэтому мессенджеры и соцсети подтянут свежие превью, а не покажут старые из кеша",
+      "Длинные названия уроков на картинке больше не обрезаются"
+    ]
+  },
+  {
+    date: "2026-10-12",
+    title: "Главная читается лучше и не дёргается при загрузке",
+    tag: "fix",
+    items: [
+      "В витрине текст больше не бледнеет во время анимации: его можно прочитать в любой момент",
+      "Главная при загрузке больше не съезжает вбок: сразу рисуется в новом каркасе"
+    ]
+  },
+  {
+    date: "2026-10-12",
+    title: "Пять заданий для продактов больше не черновики",
+    tag: "update",
+    items: [
+      "Сняли пометку «черновик» с заданий: цели и ключевые результаты на квартал, удержание по когортам, проверка, нужен ли продукт рынку, карта пользовательского пути и нарезка на релизы, боли и выгоды клиента против того, что даёт продукт"
+    ]
+  },
   {
     date: "2026-10-12",
     title: "На главной: Стадии бренда, Птичка и кто собирает Артефакты",
