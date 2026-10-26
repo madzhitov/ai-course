@@ -73,7 +73,7 @@ llm = anthropic.Anthropic()
 
 def classify(email):
     msg = llm.messages.create(
-      model="claude-haiku-4-5",  # дёшево
+      model="claude-haiku-5-5",  # дёшево
       max_tokens=400,
       messages=[{"role": "user", "content": f'''Письмо:
 From: {email["from"]}

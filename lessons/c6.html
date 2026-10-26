@@ -44,7 +44,6 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Claude Deep Dive</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">C6</span></div>
-
 <h1>Prompt Caching — экономим 90% на длинных контекстах</h1>
 
 <div class="lesson-meta">
@@ -99,16 +98,16 @@
 <li>Один запрос — не повторишь, не сэкономишь</li>
 </ul>
 
-<p>Минимальный размер для кэширования: <strong>512 токенов</strong> (для Sonnet 5.5 и Opus 5.5) или <strong>4096</strong> (для Haiku 4.5).</p>
+<p>Минимальный размер для кэширования: <strong>512 токенов</strong> для Sonnet 5.5, Opus 5.5 и Haiku 5.5. У старой Haiku 4.5 было 4096.</p>
 
 <h2>3. Цены: запись vs чтение</h2>
 
 <table>
-<tr><th>Операция</th><th>Sonnet 5.5</th><th>Opus 5.5</th><th>Haiku 4.5</th></tr>
-<tr><td>Обычный input</td><td>$2.00/M</td><td>$4.00/M</td><td>$1.00/M</td></tr>
-<tr><td>Cache <strong>write</strong> 5 минут (+25%)</td><td>$2.50/M</td><td>$5.00/M</td><td>$1.25/M</td></tr>
-<tr><td>Cache <strong>write</strong> 1 час (×2)</td><td>$4.00/M</td><td>$8.00/M</td><td>$2.00/M</td></tr>
-<tr><td>Cache <strong>read</strong></td><td>$0.20/M (−90%)</td><td>$0.20/M (−95%)</td><td>$0.10/M (−90%)</td></tr>
+<tr><th>Операция</th><th>Sonnet 5.5</th><th>Opus 5.5</th><th>Haiku 5.5</th></tr>
+<tr><td>Обычный input</td><td>$2.00/M</td><td>$4.00/M</td><td>$0.10/M</td></tr>
+<tr><td>Cache <strong>write</strong> 5 минут (+25%)</td><td>$2.50/M</td><td>$5.00/M</td><td>$0.125/M</td></tr>
+<tr><td>Cache <strong>write</strong> 1 час (×2)</td><td>$4.00/M</td><td>$8.00/M</td><td>$0.20/M</td></tr>
+<tr><td>Cache <strong>read</strong></td><td>$0.20/M (−90%)</td><td>$0.20/M (−95%)</td><td>$0.01/M (−90%)</td></tr>
 </table>
 
 <p><strong>Cache write</strong> чуть дороже обычного input (+25%). <strong>Cache read</strong> — в 10 раз дешевле (у Opus 5.5 в 20 раз). Поэтому кэш окупается уже на 2-м запросе.</p>
@@ -281,7 +280,7 @@ print(response.usage)
 На 25% дороже обычного input ($2.50/M для Sonnet 5.5). Окупается со второго запроса.</p>
 
 <p><strong>3. Минимальный размер для кэширования?</strong><br>
-512 токенов для Sonnet 5.5 и Opus 5.5, 4096 для Haiku 4.5.</p>
+512 токенов для Sonnet 5.5, Opus 5.5 и Haiku 5.5.</p>
 
 <p><strong>4. Время жизни стандартного кэша?</strong><br>
 5 минут с последнего обращения. Можно расширить до 1 часа (запись в кэш ×2 от обычного input).</p>
@@ -318,7 +317,6 @@ print(response.usage)
 <div class="callout callout-success">
 <strong>💰 Закрепление:</strong> для серьёзных AI-приложений с тысячами запросов в день prompt caching — это разница между $500/мес и $80/мес. Включи где можешь. Просто проверь в логах, что кэш реально срабатывает.
 </div>
-
 
     <div class="pp-open"><a href="../#lesson-c6">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

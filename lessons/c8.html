@@ -44,7 +44,6 @@
   <div class="lesson-view">
     <a class="pp-home" href="../">← Артефакты</a>
     <div class="lcrumb"><span class="lcrumb-ph">Claude Deep Dive</span><span class="lcrumb-sep">·</span><span class="lcrumb-step">C8</span></div>
-
 <h1>Claude vs GPT vs Gemini: когда что</h1>
 
 <div class="lesson-meta">
@@ -66,7 +65,7 @@
 <tr><td><strong>Креатив</strong></td><td>★★★★</td><td>★★★★★: гибче</td><td>★★★: суше</td></tr>
 <tr><td><strong>Точность фактов</strong></td><td>★★★★: реже галлюцинирует</td><td>★★★★</td><td>★★★★: особенно с поиском Google</td></tr>
 <tr><td><strong>Multimodal</strong></td><td>Текст + картинки + PDF</td><td>Текст + картинки + аудио (отдельные realtime-модели)</td><td>Текст, картинки, видео, аудио, PDF</td></tr>
-<tr><td><strong>Длинный контекст</strong></td><td>1M у claude-opus-5-5 и claude-sonnet-5-5 (200k у claude-haiku-4-5)</td><td>~1M (1,05M) у gpt-6-astra, gpt-6.1-sol, gpt-6-luna</td><td>~1M (Gemini 3.1 Pro)</td></tr>
+<tr><td><strong>Длинный контекст</strong></td><td>1M у claude-opus-5-5, claude-sonnet-5-5 и claude-haiku-5-5</td><td>~1M (1,05M) у gpt-6-astra, gpt-6.1-sol, gpt-6-luna</td><td>~1M (Gemini 3.1 Pro)</td></tr>
 <tr><td><strong>Цена $/1M tokens (input)</strong></td><td>$2.00 (claude-sonnet-5-5) / $4.00 (claude-opus-5-5)</td><td>$2.00 (gpt-6.1-sol)</td><td>$2 (Gemini 3.1 Pro Preview, промпты до 200k)</td></tr>
 </table>
 
@@ -76,7 +75,7 @@
 <tr><td>Длинный документ → суммаризация / Q&amp;A</td><td><strong>Claude</strong></td><td>Лучше держит 100k+ контекст, реже теряет середину</td></tr>
 <tr><td>Тяжёлый код / refactor / архитектура</td><td><strong>claude-opus-5-5 или claude-sonnet-5-5</strong></td><td>Стабильнее в больших файлах; свежие результаты сверяй на SWE-Bench</td></tr>
 <tr><td>Агентный код (Cursor, Claude Code)</td><td><strong>claude-opus-5-5 / claude-sonnet-5-5</strong></td><td>Рассчитаны на долгие автономные задачи, не разваливаются на длинных цепочках</td></tr>
-<tr><td>Быстрая итерация по коду в IDE</td><td><strong>claude-haiku-4-5 / gpt-6-luna</strong></td><td>Скорость + цена</td></tr>
+<tr><td>Быстрая итерация по коду в IDE</td><td><strong>claude-haiku-5-5 / gpt-6-luna</strong></td><td>Скорость + цена</td></tr>
 <tr><td>Картинки → описание / OCR</td><td><strong>Сравни gpt-6.1-sol, Gemini 3.1 Pro и claude-sonnet-5-5 на своих сканах</strong></td><td>Лидер по сложному layout меняется от версии к версии</td></tr>
 <tr><td>Видео-анализ</td><td><strong>Gemini 3.1 Pro</strong></td><td>Из трёх нативно принимает видео во входе</td></tr>
 <tr><td>Творческий текст / диалоги</td><td><strong>gpt-6.1-sol / claude-opus-5-5</strong></td><td>GPT: разнообразие и гибкость, Claude: структура и стиль</td></tr>
@@ -110,15 +109,15 @@
 <p><strong>Практическое следствие:</strong> для серьёзной работы с длинными документами Claude — оптимум.</p>
 
 <h2>5. Цены и стратегия</h2>
-<p>Цены flagship-моделей заметно снизились: например, вход топового Claude Opus подешевел с $15 (Opus 4.1) до $4.00 (claude-opus-5-5) за 1M токенов. Реальная экономика на 1M запросов в день (средний запрос 10k input + 1k output, цены на 06.10.2026):</p>
+<p>Цены flagship-моделей заметно снизились: например, вход топового Claude Opus подешевел с $15 (Opus 4.1) до $4.00 (claude-opus-5-5) за 1M токенов. Реальная экономика на 1M запросов в день (средний запрос 10k input + 1k output, цены на 26.10.2026):</p>
 <ul>
 <li>claude-sonnet-5-5 ($2.00/$10.00): ~$30 000/день</li>
 <li>gpt-6.1-sol ($2.00/$10.00): ~$30 000/день</li>
 <li>Gemini 3.1 Pro Preview ($2/$12): ~$32 000/день</li>
-<li>Дешёвые модели: gpt-6-luna ($0.10/$0.50) ~$1 500/день, claude-haiku-4-5 ($1.00/$5.00) ~$15 000/день</li>
+<li>Дешёвые модели: gpt-6-luna ($0.10/$0.50) ~$1 500/день, claude-haiku-5-5 ($0.10/$0.50) ~$1 500/день</li>
 <li>Prompt caching снижает повторяющийся input ещё в 10×</li>
 </ul>
-<p><strong>Двухмодельная стратегия:</strong> 80–90% запросов на «дешёвую» модель (claude-haiku-4-5 / gpt-6-luna / Gemini Flash), 10–20% сложных на flagship (claude-sonnet-5-5 / gpt-6.1-sol / Gemini 3.1 Pro). Простой роутер по эвристике (длина, ключевые слова, наличие кода) экономит 70–90% бюджета без потери качества там, где это видно пользователю.</p>
+<p><strong>Двухмодельная стратегия:</strong> 80–90% запросов на «дешёвую» модель (claude-haiku-5-5 / gpt-6-luna / Gemini Flash), 10–20% сложных на flagship (claude-sonnet-5-5 / gpt-6.1-sol / Gemini 3.1 Pro). Простой роутер по эвристике (длина, ключевые слова, наличие кода) экономит 70–90% бюджета без потери качества там, где это видно пользователю.</p>
 
 <h2>6. Tools / Function Calling</h2>
 <ul>
@@ -181,7 +180,6 @@
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> ветка Claude Deep Dive почти полна. После Skills (Урок c9) у тебя будет полная картина: Artifacts, Projects, MCP, Computer Use, Claude Code, prompt caching, Constitutional AI, сравнение с конкурентами и Skills.
 </div>
-
 
     <div class="pp-open"><a href="../#lesson-c8">Открыть интерактивную версию (с Алёшей) →</a></div>
   </div>

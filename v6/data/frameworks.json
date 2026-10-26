@@ -273,7 +273,9 @@
    ],
    "updated": "2026-10-04",
    "terms": [],
-   "units": [],
+   "units": [
+    "u-marketing-copy"
+   ],
    "agencyDoor": null,
    "full": true,
    "checked": {
@@ -516,7 +518,8 @@
     "u-marketing-offer",
     "u-product-interview",
     "u-product-pmf",
-    "u-product-value"
+    "u-product-value",
+    "u-marketing-why-buy"
    ],
    "agencyDoor": null,
    "full": true,
@@ -1041,7 +1044,9 @@
    ],
    "updated": "2026-10-04",
    "terms": [],
-   "units": [],
+   "units": [
+    "u-marketing-hypotheses"
+   ],
    "agencyDoor": null,
    "full": true,
    "checked": {
@@ -1115,7 +1120,8 @@
     ]
    },
    "tasks": [
-    "marketing.audience.positioning"
+    "marketing.audience.positioning",
+    "marketing.message.house"
    ],
    "industries": [
     "b2b",
@@ -1216,7 +1222,9 @@
    ],
    "updated": "2026-10-04",
    "terms": [],
-   "units": [],
+   "units": [
+    "u-marketing-message-house"
+   ],
    "agencyDoor": null,
    "full": true,
    "checked": {
@@ -1252,7 +1260,13 @@
     "date": "2026-10-04",
     "verdict": "ok",
     "confidence": "medium"
-   }
+   },
+   "units": [
+    "u-marketing-message-house"
+   ],
+   "tasks": [
+    "marketing.message.house"
+   ]
   },
   {
    "id": "storybrand",
@@ -1283,7 +1297,13 @@
     "date": "2026-10-04",
     "verdict": "fix",
     "confidence": "medium"
-   }
+   },
+   "units": [
+    "u-marketing-copy"
+   ],
+   "tasks": [
+    "marketing.message.copy"
+   ]
   },
   {
    "id": "north-star",
@@ -1591,7 +1611,13 @@
     "date": "2026-10-04",
     "verdict": "ok",
     "confidence": "high"
-   }
+   },
+   "units": [
+    "u-marketing-entry-points"
+   ],
+   "tasks": [
+    "marketing.audience.entry-points"
+   ]
   },
   {
    "id": "rule-95-5",
@@ -1623,7 +1649,13 @@
     "date": "2026-10-04",
     "verdict": "fix",
     "confidence": "high"
-   }
+   },
+   "units": [
+    "u-marketing-entry-points"
+   ],
+   "tasks": [
+    "marketing.audience.entry-points"
+   ]
   },
   {
    "id": "incrementality",
@@ -2057,7 +2089,8 @@
    "tasks": [
     "product.prioritize.compare",
     "product.prioritize.release",
-    "product.prioritize.slice"
+    "product.prioritize.slice",
+    "marketing.growth.hypotheses"
    ],
    "industries": [
     "any"
@@ -2190,7 +2223,8 @@
    ],
    "units": [
     "u-product-rice",
-    "u-product-slice"
+    "u-product-slice",
+    "u-marketing-hypotheses"
    ],
    "agencyDoor": null,
    "sources": [
@@ -4705,7 +4739,13 @@
     "date": "2026-10-04",
     "verdict": "ok",
     "confidence": "high"
-   }
+   },
+   "units": [
+    "u-marketing-copy"
+   ],
+   "tasks": [
+    "marketing.message.copy"
+   ]
   },
   {
    "id": "own-draft",
@@ -4953,7 +4993,15 @@
     "date": "2026-10-04",
     "verdict": "ok",
     "confidence": "high"
-   }
+   },
+   "units": [
+    "u-marketing-why-buy",
+    "u-marketing-message-house"
+   ],
+   "tasks": [
+    "marketing.audience.why-buy",
+    "marketing.message.house"
+   ]
   },
   {
    "id": "five-roles",

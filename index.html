@@ -17,7 +17,7 @@
 <meta property="og:locale" content="ru_RU">
 <meta property="og:site_name" content="Артефакты">
 <meta property="og:url" content="https://ai.madzhitov.ru/">
-<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png?v=77a5422d">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png?v=fcefa072">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 
@@ -25,19 +25,19 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Артефакты: готовые решения с ИИ для работы и для себя">
 <meta name="twitter:description" content="Выберите задачу, подставьте свои данные и через час заберите результат: таблицу, текст или план. Задания, методы, калькуляторы, уроки. Бесплатно, без VPN.">
-<meta name="twitter:image" content="https://ai.madzhitov.ru/og-default.png?v=77a5422d">
+<meta name="twitter:image" content="https://ai.madzhitov.ru/og-default.png?v=fcefa072">
 
 <link rel="canonical" href="https://ai.madzhitov.ru/">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Артефакты","alternateName":"ai.madzhitov.ru","description":"Выберите задачу, подставьте свои данные и через час заберите результат: таблицу, текст или план. Задания, методы, калькуляторы, уроки. Бесплатно, без VPN.","url":"https://ai.madzhitov.ru/","inLanguage":"ru","image":"https://ai.madzhitov.ru/og-default.png?v=77a5422d","publisher":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Артефакты","alternateName":"ai.madzhitov.ru","description":"Выберите задачу, подставьте свои данные и через час заберите результат: таблицу, текст или план. Задания, методы, калькуляторы, уроки. Бесплатно, без VPN.","url":"https://ai.madzhitov.ru/","inLanguage":"ru","image":"https://ai.madzhitov.ru/og-default.png?v=fcefa072","publisher":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"}}</script>
 
 <link rel="icon" href="v6/brand/favicon.svg" type="image/svg+xml">
 
 <!-- Шрифты v6: самохостинг, Google Fonts в РФ блокируется -->
 <link rel="preload" href="v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="v6/fonts/montserrat-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="v6/fonts/fonts.css?v=c0c7445f">
-<link rel="stylesheet" href="v6/v6.css?v=c0c7445f">
+<link rel="stylesheet" href="v6/fonts/fonts.css?v=a0b32481">
+<link rel="stylesheet" href="v6/v6.css?v=a0b32481">
 
 <!-- GoatCounter Analytics. Дашборд: https://mltply.goatcounter.com -->
 <script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js">
@@ -4155,7 +4155,7 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
   </div>
 </div>
 <script defer src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
-<script id="v6-js" src="v6/v6.js?v=c0c7445f"></script>
+<script id="v6-js" src="v6/v6.js?v=a0b32481"></script>
 
 <!-- Alesha — persistent AI tutor widget -->
 <div class="alesha-widget" id="alesha-widget" data-lesson-title="" data-lesson-id="">
@@ -4476,9 +4476,9 @@ const FACTS = {
   'claude.smart': 'claude-sonnet-5-5',
   'claude.smart.in': '2.00',
   'claude.smart.out': '10.00',
-  'claude.fast': 'claude-haiku-4-5',
-  'claude.fast.in': '1.00',
-  'claude.fast.out': '5.00',
+  'claude.fast': 'claude-haiku-5-5',
+  'claude.fast.in': '0.10',
+  'claude.fast.out': '0.50',
   'claude.top': 'claude-opus-5-5',
   'claude.top.in': '4.00',
   'claude.top.out': '20.00',
@@ -4798,7 +4798,7 @@ registerLesson(1, `
 </ul>
 
 <h3>Контекстное окно</h3>
-<p>Сколько токенов модель видит за раз. Сейчас у больших моделей обычно около 1 млн токенов (⟦claude.smart⟧, семейство GPT-6), у компактной ⟦claude.fast⟧ 200k, у ⟦openai.main⟧ 128k. Цифры меняются часто: актуальные смотри в документации.</p>
+<p>Сколько токенов модель видит за раз. Сейчас у новых моделей обычно около 1 млн токенов (⟦claude.smart⟧, даже компактная ⟦claude.fast⟧, семейство GPT-6), у старой ⟦openai.main⟧ 128k. Цифры меняются часто: актуальные смотри в документации.</p>
 <p><strong>Lost in the middle:</strong> модель <strong>лучше всего помнит начало и конец</strong> контекста, и <strong>хуже середину</strong>. Размещай главное на краях.</p>
 
 <figure class="diagram">
@@ -5027,8 +5027,6 @@ BPE-токенизаторы обучены на английском. Русс�
 // Урок 2
 // ============================================================
 registerLesson(2, `
-
-
 <h1>Урок 2. Семейства LLM: GPT, Claude, Gemini, Llama, Mistral</h1>
 
 <div class="lesson-meta">
@@ -5104,8 +5102,7 @@ registerLesson(2, `
 <tr><th>Модель</th><th>Контекст</th></tr>
 <tr><td>GPT-3.5 (старая)</td><td>16k</td></tr>
 <tr><td>GPT-4o</td><td>128k</td></tr>
-<tr><td>⟦claude.smart⟧ / ⟦claude.top⟧</td><td>1M</td></tr>
-<tr><td>⟦claude.fast⟧</td><td>200k</td></tr>
+<tr><td>⟦claude.smart⟧ / ⟦claude.top⟧ / ⟦claude.fast⟧</td><td>1M</td></tr>
 <tr><td>Llama 3.1</td><td>128k</td></tr>
 <tr><td>Gemini 3.8 Flash</td><td>1M (миллион)</td></tr>
 <tr><td>DeepSeek-V3</td><td>128k</td></tr>
@@ -5142,6 +5139,7 @@ registerLesson(2, `
 </table>
 <p>Цена Gemini 3.8 Flash действует до 31 декабря 2026, с 1 января 2027 она станет $1.50 / $7.50.</p>
 <p>У DeepSeek цена зависит от времени суток, вне пиковых часов вдвое дешевле.</p>
+<p>Цена ⟦claude.fast⟧ указана для запросов до 100 тыс. токенов. Запрос длиннее стоит в пять раз дороже.</p>
 <p>У моделей с открытыми весами нет единой цены, её задаёт тот, кто их хостит. Сравнивай тарифы нескольких провайдеров.</p>
 
 <p><strong>Реальный пример:</strong> промпт 1000 токенов + ответ 500. GPT-4o = $0.0075 (~70 коп). GPT-4o-mini = $0.00045 (~4 коп). Разница примерно в 17 раз на массовых задачах.</p>
@@ -5345,8 +5343,6 @@ registerLesson(2, `
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> в <code>progress.md</code> запиши свою «матрицу выбора» — 5 строк «тип задачи → модель → почему».
 </div>
-
-
 `);
 
 // ============================================================
@@ -5585,7 +5581,6 @@ ToS-блокировка, 152-ФЗ нарушения, риски для кли�
 // Урок 4
 // ============================================================
 registerLesson(4, `
-
 <h1>Урок 4. Основы промпт-инжиниринга</h1>
 
 <div class="lesson-meta">
@@ -5808,7 +5803,7 @@ registerLesson(4, `
 <h2>7. Параметры генерации: temperature, top_p, max_tokens</h2>
 
 <div class="callout callout-info">
-<strong>Важно:</strong> temperature, top_p и top_k есть не у всех моделей. У Claude все модели начиная с Opus 4.7 (в том числе Sonnet 5.5 и Opus 5.5) принимают только значения по умолчанию, на остальное API отвечает ошибкой 400. У reasoning-моделей OpenAI temperature и top_p нужно убрать из запроса, если reasoning effort не none. Для моделей Gemini 3.x Google советует не трогать эти параметры, иначе возможны зацикливания и падение качества. У таких моделей ответ настраивают инструкциями, примерами и параметром effort / reasoning effort. Ручки ниже работают на более старых и открытых моделях. Перед экспериментом проверь документацию своей модели.
+<strong>Важно:</strong> temperature, top_p и top_k есть не у всех моделей. У Claude все модели начиная с Opus 4.7 (в том числе Sonnet 5.5, Opus 5.5 и Haiku 5.5) принимают только значения по умолчанию, на остальное API отвечает ошибкой 400. У reasoning-моделей OpenAI temperature и top_p нужно убрать из запроса, если reasoning effort не none. Для моделей Gemini 3.x Google советует не трогать эти параметры, иначе возможны зацикливания и падение качества. У таких моделей ответ настраивают инструкциями, примерами и параметром effort / reasoning effort. Ручки ниже работают на более старых и открытых моделях. Перед экспериментом проверь документацию своей модели.
 </div>
 
 <h3>Temperature (у OpenAI и Gemini 0–2, у Claude 0–1)</h3>
@@ -5939,7 +5934,7 @@ registerLesson(4, `
 </ol>
 
 <h3>Упражнение 3. Эксперимент с temperature (15 минут)</h3>
-<p>Если есть API: возьми один промпт «Напиши слоган для X». Прогони 5 раз с разными temperature: 0, 0.3, 0.7, 1.0, 1.5. Запиши, как меняется характер ответов. Выполни на модели, где temperature можно менять: например ⟦openai.mini⟧, ⟦claude.fast⟧ или открытая модель через Ollama.</p>
+<p>Если есть API: возьми один промпт «Напиши слоган для X». Прогони 5 раз с разными temperature: 0, 0.3, 0.7, 1.0, 1.5. Запиши, как меняется характер ответов. Выполни на модели, где temperature можно менять: например ⟦openai.mini⟧ или открытая модель через Ollama.</p>
 
 <h3>Упражнение 4. Шаблон под себя (10 минут)</h3>
 <p>Составь свой шаблон промпта под твою основную задачу (рерайт писем, ревью кода, генерация постов — что чаще делаешь). Сохрани в <code>prompts.md</code> в виде:</p>
@@ -6002,7 +5997,6 @@ Few-shot = промпт с 2–5 примерами вход→выход. Ну�
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> заведи файл <code>prompts.md</code> рядом с этим курсом. Туда складывай все рабочие шаблоны промптов с пометкой «когда использовать». Через месяц у тебя будет ценная библиотека.
 </div>
-
 `);
 
 // ============================================================
@@ -19358,7 +19352,6 @@ claude -p "Просуммируй изменения в этой ветке и �
 // CLAUDE DEEP DIVE — Урок c6: Prompt Caching
 // ============================================================
 registerLesson("c6", `
-
 <h1>Prompt Caching — экономим 90% на длинных контекстах</h1>
 
 <div class="lesson-meta">
@@ -19413,16 +19406,16 @@ registerLesson("c6", `
 <li>Один запрос — не повторишь, не сэкономишь</li>
 </ul>
 
-<p>Минимальный размер для кэширования: <strong>512 токенов</strong> (для Sonnet 5.5 и Opus 5.5) или <strong>4096</strong> (для Haiku 4.5).</p>
+<p>Минимальный размер для кэширования: <strong>512 токенов</strong> для Sonnet 5.5, Opus 5.5 и Haiku 5.5. У старой Haiku 4.5 было 4096.</p>
 
 <h2>3. Цены: запись vs чтение</h2>
 
 <table>
-<tr><th>Операция</th><th>Sonnet 5.5</th><th>Opus 5.5</th><th>Haiku 4.5</th></tr>
+<tr><th>Операция</th><th>Sonnet 5.5</th><th>Opus 5.5</th><th>Haiku 5.5</th></tr>
 <tr><td>Обычный input</td><td>$⟦claude.smart.in⟧/M</td><td>$⟦claude.top.in⟧/M</td><td>$⟦claude.fast.in⟧/M</td></tr>
-<tr><td>Cache <strong>write</strong> 5 минут (+25%)</td><td>$2.50/M</td><td>$5.00/M</td><td>$1.25/M</td></tr>
-<tr><td>Cache <strong>write</strong> 1 час (×2)</td><td>$4.00/M</td><td>$8.00/M</td><td>$2.00/M</td></tr>
-<tr><td>Cache <strong>read</strong></td><td>$0.20/M (−90%)</td><td>$0.20/M (−95%)</td><td>$0.10/M (−90%)</td></tr>
+<tr><td>Cache <strong>write</strong> 5 минут (+25%)</td><td>$2.50/M</td><td>$5.00/M</td><td>$0.125/M</td></tr>
+<tr><td>Cache <strong>write</strong> 1 час (×2)</td><td>$4.00/M</td><td>$8.00/M</td><td>$0.20/M</td></tr>
+<tr><td>Cache <strong>read</strong></td><td>$0.20/M (−90%)</td><td>$0.20/M (−95%)</td><td>$0.01/M (−90%)</td></tr>
 </table>
 
 <p><strong>Cache write</strong> чуть дороже обычного input (+25%). <strong>Cache read</strong> — в 10 раз дешевле (у Opus 5.5 в 20 раз). Поэтому кэш окупается уже на 2-м запросе.</p>
@@ -19595,7 +19588,7 @@ print(response.usage)
 На 25% дороже обычного input ($2.50/M для Sonnet 5.5). Окупается со второго запроса.</p>
 
 <p><strong>3. Минимальный размер для кэширования?</strong><br>
-512 токенов для Sonnet 5.5 и Opus 5.5, 4096 для Haiku 4.5.</p>
+512 токенов для Sonnet 5.5, Opus 5.5 и Haiku 5.5.</p>
 
 <p><strong>4. Время жизни стандартного кэша?</strong><br>
 5 минут с последнего обращения. Можно расширить до 1 часа (запись в кэш ×2 от обычного input).</p>
@@ -19632,7 +19625,6 @@ print(response.usage)
 <div class="callout callout-success">
 <strong>💰 Закрепление:</strong> для серьёзных AI-приложений с тысячами запросов в день prompt caching — это разница между $500/мес и $80/мес. Включи где можешь. Просто проверь в логах, что кэш реально срабатывает.
 </div>
-
 `);
 
 // ============================================================
@@ -19773,7 +19765,6 @@ registerLesson("c7", `
 // CLAUDE DEEP DIVE — Урок c8
 // ============================================================
 registerLesson("c8", `
-
 <h1>Claude vs GPT vs Gemini: когда что</h1>
 
 <div class="lesson-meta">
@@ -19795,7 +19786,7 @@ registerLesson("c8", `
 <tr><td><strong>Креатив</strong></td><td>★★★★</td><td>★★★★★: гибче</td><td>★★★: суше</td></tr>
 <tr><td><strong>Точность фактов</strong></td><td>★★★★: реже галлюцинирует</td><td>★★★★</td><td>★★★★: особенно с поиском Google</td></tr>
 <tr><td><strong>Multimodal</strong></td><td>Текст + картинки + PDF</td><td>Текст + картинки + аудио (отдельные realtime-модели)</td><td>Текст, картинки, видео, аудио, PDF</td></tr>
-<tr><td><strong>Длинный контекст</strong></td><td>1M у ⟦claude.top⟧ и ⟦claude.smart⟧ (200k у ⟦claude.fast⟧)</td><td>~1M (1,05M) у ⟦openai.top⟧, ⟦openai.mid⟧, ⟦openai.lite⟧</td><td>~1M (Gemini 3.1 Pro)</td></tr>
+<tr><td><strong>Длинный контекст</strong></td><td>1M у ⟦claude.top⟧, ⟦claude.smart⟧ и ⟦claude.fast⟧</td><td>~1M (1,05M) у ⟦openai.top⟧, ⟦openai.mid⟧, ⟦openai.lite⟧</td><td>~1M (Gemini 3.1 Pro)</td></tr>
 <tr><td><strong>Цена $/1M tokens (input)</strong></td><td>$⟦claude.smart.in⟧ (⟦claude.smart⟧) / $⟦claude.top.in⟧ (⟦claude.top⟧)</td><td>$⟦openai.mid.in⟧ (⟦openai.mid⟧)</td><td>$2 (Gemini 3.1 Pro Preview, промпты до 200k)</td></tr>
 </table>
 
@@ -19839,12 +19830,12 @@ registerLesson("c8", `
 <p><strong>Практическое следствие:</strong> для серьёзной работы с длинными документами Claude — оптимум.</p>
 
 <h2>5. Цены и стратегия</h2>
-<p>Цены flagship-моделей заметно снизились: например, вход топового Claude Opus подешевел с $15 (Opus 4.1) до $⟦claude.top.in⟧ (⟦claude.top⟧) за 1M токенов. Реальная экономика на 1M запросов в день (средний запрос 10k input + 1k output, цены на 06.10.2026):</p>
+<p>Цены flagship-моделей заметно снизились: например, вход топового Claude Opus подешевел с $15 (Opus 4.1) до $⟦claude.top.in⟧ (⟦claude.top⟧) за 1M токенов. Реальная экономика на 1M запросов в день (средний запрос 10k input + 1k output, цены на 26.10.2026):</p>
 <ul>
 <li>⟦claude.smart⟧ ($⟦claude.smart.in⟧/$⟦claude.smart.out⟧): ~$30 000/день</li>
 <li>⟦openai.mid⟧ ($⟦openai.mid.in⟧/$⟦openai.mid.out⟧): ~$30 000/день</li>
 <li>Gemini 3.1 Pro Preview ($2/$12): ~$32 000/день</li>
-<li>Дешёвые модели: ⟦openai.lite⟧ ($⟦openai.lite.in⟧/$⟦openai.lite.out⟧) ~$1 500/день, ⟦claude.fast⟧ ($⟦claude.fast.in⟧/$⟦claude.fast.out⟧) ~$15 000/день</li>
+<li>Дешёвые модели: ⟦openai.lite⟧ ($⟦openai.lite.in⟧/$⟦openai.lite.out⟧) ~$1 500/день, ⟦claude.fast⟧ ($⟦claude.fast.in⟧/$⟦claude.fast.out⟧) ~$1 500/день</li>
 <li>Prompt caching снижает повторяющийся input ещё в 10×</li>
 </ul>
 <p><strong>Двухмодельная стратегия:</strong> 80–90% запросов на «дешёвую» модель (⟦claude.fast⟧ / ⟦openai.lite⟧ / Gemini Flash), 10–20% сложных на flagship (⟦claude.smart⟧ / ⟦openai.mid⟧ / Gemini 3.1 Pro). Простой роутер по эвристике (длина, ключевые слова, наличие кода) экономит 70–90% бюджета без потери качества там, где это видно пользователю.</p>
@@ -19910,7 +19901,6 @@ registerLesson("c8", `
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> ветка Claude Deep Dive почти полна. После Skills (Урок c9) у тебя будет полная картина: Artifacts, Projects, MCP, Computer Use, Claude Code, prompt caching, Constitutional AI, сравнение с конкурентами и Skills.
 </div>
-
 `);
 
 
@@ -27095,7 +27085,6 @@ if __name__ == "__main__":
 
 
 registerLesson("p18", `
-
 <h1>Проект «За 1 час»: Генератор Anki-карточек из PDF учебника</h1>
 
 <div class="lesson-meta">
@@ -27428,7 +27417,7 @@ if __name__ == "__main__":
 <li><strong>Сканированный PDF.</strong> Если PDF — это фотки страниц, а не текстовый — <code>pdfplumber</code> ничего не извлечёт. Прогони сначала через OCR (например, <code>ocrmypdf</code> — обёртка над Tesseract: <code>ocrmypdf in.pdf out.pdf -l rus</code>). Качество OCR на русском вузовском учебнике обычно норм.</li>
 <li><strong>Школа vs вуз.</strong> Школьные учебники — структурированные, главы чёткие, карточки получаются хорошо. Вузовские монографии — часто без чёткой структуры, эвристика главу не находит, фолбэк на чанки даёт «карточки по случайным кускам». Качество ниже.</li>
 <li><strong>Галлюцинации.</strong> Иногда Claude подмешивает факты, которых в тексте нет (особенно если глава короткая — модель «дополняет» из общих знаний). Промпт явно запрещает, но не на 100%. Перед серьёзным использованием — спот-чек 30 карточек на достоверность.</li>
-<li><strong>Стоимость.</strong> Учебник 200 страниц = ~20 глав = ~20 запросов к API = ~$0.6. Дёшево для разовой задачи, но за серию учебников быстро набегает. На <code>⟦claude.fast⟧</code> примерно вдвое дешевле, но качество карточек заметно хуже — лучше платить за Sonnet.</li>
+<li><strong>Стоимость.</strong> Учебник 200 страниц = ~20 глав = ~20 запросов к API = ~$0.6. Дёшево для разовой задачи, но за серию учебников быстро набегает. На <code>⟦claude.fast⟧</code> примерно в двадцать раз дешевле. Проверь на одной главе, устраивает ли качество карточек; если нет, плати за Sonnet.</li>
 <li><strong>Один и тот же deck_id перезапишет.</strong> Если в коде захардкодишь ID и сгенерируешь две версии — вторая при импорте сольётся в первую. Поэтому в коде <code>random.randrange</code> при каждом запуске даёт новый ID. Если нужно обновлять одну колоду — сохраняй ID и используй один и тот же.</li>
 <li><strong>Авторское право.</strong> Если учебник — твой личный, для собственного обучения — всё ОК. Если ты массово генерируешь колоды по чужим учебникам и распространяешь — это уже серая зона по авторскому праву.</li>
 <li><strong>Карточки не равно знание.</strong> Самая частая ошибка — сгенерировал 500 карточек, поставил на повторение, через месяц забросил. Лучше 100 хорошо проработанных карточек, чем 500 механических. Прорежай.</li>
@@ -27439,7 +27428,6 @@ if __name__ == "__main__":
 <p>Я делал колоды для подготовки к собеседованиям (System Design, алгоритмы) — 30 минут на главу из <em>Designing Data-Intensive Applications</em> вместо двух дней ручного выписывания. Точность карточек ~85%, остальное правлю на лету. На жену делал колоду по фармакологии для её повышения квалификации — 4 учебника за вечер.</p>
 
 <p>Главная мысль: Anki давно перестала быть «инструментом для медиков-задротов». Это рабочая память для любой профессии, где много фактического материала. Но создание карточек руками — барьер, на котором отваливается 90% людей. Этот скрипт убирает барьер. А дальше — пользоваться или забить — уже не задача инструмента.</p>
-
 `);
 
 
@@ -37465,6 +37453,28 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-10-26",
+    title: "Пять заданий для маркетолога",
+    tag: "new",
+    items: [
+      "Зачем покупают на самом деле: интервью с покупателями и формулировка работы",
+      "Ситуации покупки, в которых о вас должны вспомнить",
+      "Дом сообщения: главное, три опоры и доказательства",
+      "Продающий текст под одно действие",
+      "Гипотезы роста по ICE: что проверять в этом месяце"
+    ]
+  },
+  {
+    date: "2026-10-26",
+    title: "Claude Haiku 5.5 вместо Haiku 4.5",
+    tag: "update",
+    items: [
+      "Быстрая модель Claude в уроках теперь Haiku 5.5: в десять раз дешевле, с контекстом в миллион токенов",
+      "Обновлены расчёты и таблицы в уроках 1, 2, 4, c6, c8 и p18: цены, кэширование, контекст, параметры генерации",
+      "Алёша работает на Haiku 5.5: отвечает быстрее и больше не обрывает ответ на полуслове"
+    ]
+  },
   {
     date: "2026-10-12",
     title: "Клавиатура больше не проваливается в пустые ссылки в шапке",

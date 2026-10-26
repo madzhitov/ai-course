@@ -267,7 +267,7 @@ async function callClaude(prompt) {
       "anthropic-dangerous-direct-browser-access": "true"
     },
     body: JSON.stringify({
-      model: "claude-haiku-4-5",   // быстро и дёшево для inline
+      model: "claude-haiku-5-5",   // быстро и дёшево для inline
       max_tokens: 600,
       messages: [{ role: "user", content: prompt }]
     })
