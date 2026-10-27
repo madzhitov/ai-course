@@ -1,11 +1,11 @@
 {
   "title": "Какие нейросети работают в России без VPN",
-  "checked": "2026-09-27",
+  "checked": "2026-10-26",
   "description": "Живой список нейросетей, которые открываются из России без VPN: для текста, картинок, видео, музыки, презентаций и кода. Что бесплатно и что можно оплатить российской картой. Сверяем раз в месяц.",
-  "lead": "Сервисы уходят и приходят, поэтому сверяем список раз в месяц: по официальным страницам и свежим новостям, у каждого сервиса есть источники. Зарубежные сайты у отдельных провайдеров могут грузиться нестабильно. А российские сервисы с апреля 2026 могут не пускать с включённым VPN — для них его лучше выключить.",
-  "blocked_lead": "Эти сервисы Россию не обслуживают: закрыли её сами компании, а у ChatGPT с сентября 2026 соединение к тому же обрывается внутри российских сетей.",
+  "lead": "Сервисы уходят и приходят, поэтому сверяем список раз в месяц: по официальным страницам и свежим новостям, у каждого сервиса есть источники. Зарубежные сайты у отдельных провайдеров могут грузиться нестабильно. А российские сервисы с апреля 2026 могут не пускать с включённым VPN: для них его лучше выключить.",
+  "blocked_lead": "Эти сервисы Россию не обслуживают: закрыли её сами компании.",
   "resellers": "В поиске много сервисов, которые продают доступ к ChatGPT, Claude и Gemini за рубли. Это нарушает правила самих компаний, а твоя переписка, аккаунт и деньги остаются у посредника. Многие статьи «нейросети без VPN» написаны такими посредниками. Здесь их нет.",
-  "faq_blocked": "Компании, которые их делают, не обслуживают Россию: её нет в их списках поддерживаемых стран. У ChatGPT с 6 сентября 2026 соединение к тому же обрывается внутри российских сетей.",
+  "faq_blocked": "Компании, которые их делают, не обслуживают Россию: её нет в их списках поддерживаемых стран.",
   "task_order": ["текст", "поиск", "документы", "код", "картинки", "видео", "музыка", "озвучка", "презентации"],
   "services": [
     {
@@ -25,13 +25,13 @@
       "name": "ГигаЧат", "url": "https://giga.chat/", "company": "Сбер", "country": "Россия",
       "tasks": ["текст", "поиск", "документы", "код", "картинки", "видео", "презентации"],
       "vpn": "yes", "vpn_note": "",
-      "free": "Бесплатно, с дневными лимитами. Картинки Kandinsky 6.0 — без лимита, видео — с дневным лимитом. Презентации до 10 слайдов со скачиванием в PPTX.",
+      "free": "Бесплатно, с дневными лимитами. Картинки Kandinsky 6.0 без лимита. Видео со звуком (речь, музыка, шумы) на Kandinsky 6.0 Video: до 5 секунд, до Full HD, с дневным лимитом. Презентации до 10 слайдов со скачиванием в PPTX.",
       "free_yes": true, "pay": "n/a",
       "russian": "Полностью на русском, модель заточена под русский.",
       "sources": [
-        {"url": "https://vc.ru/aihub/2844298-gigachat-besplatno-kak-poluchit-dostup", "date": "2026-04-01", "what": "для физлиц чат бесплатный, вход по Сбер ID"},
-        {"url": "https://www.rbc.ru/rbcfreenews/69f05af09a7947e6b38ed5ef", "date": "2026-04-28", "what": "Kandinsky 6.0 в ГигаЧате бесплатно и без лимита генераций"},
-        {"url": "https://sber.pro/publication/5-neirosetei-dlya-sozdaniya-prezentatsii-ot-teksta-k-gotovim-slaidam/", "date": "2026-02-24", "what": "презентации до 10 слайдов, экспорт PPTX и PDF"}
+        {"url": "https://t-j.ru/news/kandinsky-6-sound/", "date": "2026-10-06", "what": "Kandinsky 6.0 Video со звуком бесплатно в ГигаЧате, до 5 секунд, SD/HD/Full HD"},
+        {"url": "https://www.iphones.ru/iNotes/v-gigachate-poyavilas-besplatnaya-generaciya-video-so-zvukom-v-full-hd", "date": "2026-10-06", "what": "бесплатная генерация видео со звуком в Full HD"},
+        {"url": "https://ppc.world/news/gigachat-ot-sbera-nauchilsya-sozdavat-video-so-zvukom-v-full-hd-besplatno/", "date": "2026-10-06", "what": "ГигаЧат научился делать видео со звуком"}
       ]
     },
     {
@@ -137,12 +137,13 @@
       "name": "Ideogram", "url": "https://ideogram.ai/", "company": "Ideogram AI", "country": "Канада",
       "tasks": ["картинки"],
       "vpn": "yes", "vpn_note": "",
-      "free": "Немного медленных генераций бесплатно, картинки публичные. Plus — от $15/мес.",
+      "free": "30 бесплатных кредитов в неделю, только при входе через Google, Apple или Microsoft. При регистрации по почте бесплатных кредитов нет. Картинки на бесплатном тарифе публичные. Plus от $15/мес при оплате за год ($20 помесячно).",
       "free_yes": true, "pay": "no",
       "russian": "Интерфейс английский. Короткие русские надписи на картинках выходят лучше длинных.",
       "sources": [
-        {"url": "https://www.jivo.ru/blog/ai/nejroset-ideogram-ai.html", "date": "2026-07-31", "what": "открывается из России напрямую"},
-        {"url": "https://runet.news/news/74067", "date": "2026-07-23", "what": "работает без VPN, российские карты не принимаются"}
+        {"url": "https://docs.ideogram.ai/plans-and-pricing/available-plans", "date": "2026-10-15", "what": "официально: Free 30 кредитов в неделю, только для входа через Google/Apple/Microsoft, аккаунты с почтой и паролем кредитов не получают; картинки публичные; Plus $15/мес за год, $20 помесячно"},
+        {"url": "https://pricingsaas.com/companies/ideogram/diffs/2026W43", "date": "2026-10-19", "what": "трекер цен: в таблице тарифов колонку Free заменили на Pay as you go"},
+        {"url": "https://itunes.apple.com/lookup?id=6476790495&country=ru", "date": "2026-10", "what": "приложение Ideogram в российском App Store, обновлено 24.10.2026"}
       ]
     },
     {
@@ -197,11 +198,12 @@
       "name": "PixVerse", "url": "https://pixverse.ai/", "company": "AIsphere", "country": "Китай",
       "tasks": ["видео"],
       "vpn": "yes", "vpn_note": "",
-      "free": "60 кредитов в день — примерно 2 коротких ролика.",
+      "free": "30 кредитов в день и 60 при регистрации. Ролики до 540p, с водяным знаком: примерно 1 короткий ролик в день.",
       "free_yes": true, "pay": "no",
       "russian": "Есть русская версия сайта, простые русские запросы понимает.",
       "sources": [
-        {"url": "https://practicum.yandex.ru/blog/neyroset-pixverse-kak-polzovatsya/", "date": "2026-03-27", "what": "VPN не требуется, 60 кредитов в день"}
+        {"url": "https://pixverse.ai/en/blog/best-free-ai-video-generator", "date": "2026-10-23", "what": "официальный блог: Basic 60 стартовых и 30 ежедневных кредитов, до 540p, экспорт без водяного знака только на платных"},
+        {"url": "https://magichour.ai/blog/pixverse-pricing", "date": "2026-10", "what": "Basic 60 стартовых и 30 ежедневных кредитов; 5-секундный ролик стоит десятки кредитов"}
       ]
     },
     {
@@ -228,14 +230,17 @@
       ]
     },
     {
-      "name": "Yandex SpeechKit", "url": "https://yandex.cloud/ru/services/speechkit", "company": "Яндекс", "country": "Россия",
+      "name": "Yandex SpeechKit", "url": "https://aistudio.yandex.ru/ru/ai-speech", "company": "Яндекс", "country": "Россия",
       "tasks": ["озвучка"],
       "vpn": "yes", "vpn_note": "",
-      "free": "Бесплатного тарифа нет: при подключении — грант от 4000 ₽ на 60 дней, дальше оплата за символы. Работает через консоль Yandex Cloud, новичку неудобно.",
+      "free": "Бесплатного тарифа нет. Стартовый грант новым клиентам Yandex Cloud сейчас не выдают, оплата сразу за символы. Сервис входит в Yandex AI Studio, новичку неудобно.",
       "free_yes": false, "pay": "yes",
       "russian": "Много русских голосов.",
       "sources": [
-        {"url": "https://yandex.cloud/ru/docs/getting-started/usage-grant", "date": "2026-09", "what": "официально: стартовый грант от 4000 ₽ на 60 дней"}
+        {"url": "https://yandex.cloud/ru/docs/getting-started/usage-grant", "date": "2026-10", "what": "официальная справка: «Пробный период и стартовый грант для новых клиентов недоступны»"},
+        {"url": "https://yandex.cloud/ru/docs/billing/quickstart/", "date": "2026-10", "what": "официально: новые клиенты начинают в платном потреблении"},
+        {"url": "https://yandex.cloud/ru/services/speechkit", "date": "2026-10", "what": "страница сервиса перенаправляет (301) на aistudio.yandex.ru/ru/ai-speech"},
+        {"url": "https://www.vedomosti.ru/technology/news/2026/10/23/1239733-yandeks-vosstanovil", "date": "2026-10-23", "what": "после атак на ЦОДы Yandex AI Studio возобновил работу"}
       ]
     },
     {
@@ -263,19 +268,22 @@
     {
       "name": "ChatGPT и Codex", "url": "https://chatgpt.com/", "company": "OpenAI", "country": "США",
       "tasks": ["текст"], "vpn": "no",
-      "vpn_note": "OpenAI не обслуживает Россию; с 6 сентября 2026 соединение с chatgpt.com к тому же обрывается внутри российских сетей.",
+      "vpn_note": "OpenAI не обслуживает Россию: её нет в списке стран компании. 6 сентября 2026 chatgpt.com почти сутки не открывался и внутри российских сетей, 7 сентября доступ к домену вернулся, а ограничение самой OpenAI осталось.",
       "free": "", "free_yes": false, "pay": "no", "russian": "",
       "sources": [
-        {"url": "https://developers.openai.com/api/docs/supported-countries", "date": "2026-09", "what": "России нет в списке стран OpenAI"},
-        {"url": "https://hi-tech.mail.ru/news/154888-smi-govoryat-o-blokirovke-chatgpt-v-rossii-chto-nuzhno-znat/", "date": "2026-09-07", "what": "соединение с chatgpt.com рвётся с 6–7 сентября"}
+        {"url": "https://developers.openai.com/api/docs/supported-countries", "date": "2026-10", "what": "России нет в списке стран OpenAI"},
+        {"url": "https://ppc.world/news/dostup-k-domenu-chatgptcom-vosstanovili/", "date": "2026-09-07", "what": "chatgpt.com не открывался 6 сентября, 7 сентября снова открывается"}
       ]
     },
     {
       "name": "Claude и Claude Code", "url": "https://claude.ai/", "company": "Anthropic", "country": "США",
       "tasks": ["текст"], "vpn": "no",
-      "vpn_note": "России нет в списке поддерживаемых стран Anthropic.",
+      "vpn_note": "России нет в списке поддерживаемых стран Anthropic. В мае и октябре 2026 компания массово блокировала аккаунты пользователей из России.",
       "free": "", "free_yes": false, "pay": "no", "russian": "",
-      "sources": [{"url": "https://www.anthropic.com/supported-countries", "date": "2026-09", "what": "России нет в списке стран"}]
+      "sources": [
+        {"url": "https://www.anthropic.com/supported-countries", "date": "2026-10", "what": "России нет в списке стран"},
+        {"url": "https://novayagazeta.eu/articles/2026/10/02/polzovateli-claude-iz-rossii-i-gonkonga-pozhalovalis-na-blokirovki-akkauntov-posle-podkliucheniia-cherez-vpn-news", "date": "2026-10-02", "what": "с 1 октября 2026 россияне получают письма о блокировке аккаунтов Claude"}
+      ]
     },
     {
       "name": "Google Gemini, Flow и Veo", "url": "https://gemini.google.com/", "company": "Google", "country": "США",
