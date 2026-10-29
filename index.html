@@ -2279,6 +2279,7 @@ main {
 }
 
 .lesson-meta strong { color: var(--text); }
+.lesson-source, #lesson-content .lesson-view > p.lesson-source, .lesson-content p.lesson-source { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border, #E6E7EC); font-size: 15px; line-height: 1.5; color: var(--text-muted, #5A5B63); }
 
 .callout {
   padding: 1rem 1.25rem;
@@ -4548,7 +4549,6 @@ registerLesson(1, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> построить правильную ментальную модель LLM</span>
   <span><strong>Время:</strong> ~50 минут</span>
-  <span><strong>Источник:</strong> generative-ai-for-beginners/01</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -5021,6 +5021,9 @@ BPE-токенизаторы обучены на английском. Русс�
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> напиши в <code>progress.md</code> от первого лица 3–5 предложений в формате «До этого урока я думал X, теперь понимаю Y».
 </div>
+
+<p class="lesson-source">Источники: открытый курс Microsoft «Generative AI for Beginners», урок 1</p>
+
 `);
 
 // ============================================================
@@ -5032,7 +5035,6 @@ registerLesson(2, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> научиться выбирать LLM под задачу</span>
   <span><strong>Время:</strong> ~45 минут</span>
-  <span><strong>Источник:</strong> generative-ai-for-beginners/02</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -5343,6 +5345,9 @@ registerLesson(2, `
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> в <code>progress.md</code> запиши свою «матрицу выбора» — 5 строк «тип задачи → модель → почему».
 </div>
+
+<p class="lesson-source">Источники: открытый курс Microsoft «Generative AI for Beginners», урок 2</p>
+
 `);
 
 // ============================================================
@@ -5355,7 +5360,6 @@ registerLesson(3, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> увидеть риски GenAI и систематически их снижать</span>
   <span><strong>Время:</strong> ~50 минут</span>
-  <span><strong>Источник:</strong> generative-ai-for-beginners/03</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -5575,6 +5579,8 @@ ToS-блокировка, 152-ФЗ нарушения, риски для кли�
 <strong>📌 Закрепление:</strong> добавь в <code>progress.md</code>: 10-пунктовый список «никогда не делаю», принципы Responsible AI на одной идее, главный риск и план его смягчения.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «Generative AI for Beginners», урок 3</p>
+
 `);
 
 // ============================================================
@@ -5586,7 +5592,6 @@ registerLesson(4, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> писать промпты, которые стабильно дают нужный результат</span>
   <span><strong>Время:</strong> ~50 минут</span>
-  <span><strong>Источник:</strong> generative-ai-for-beginners/04</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -5997,6 +6002,9 @@ Few-shot = промпт с 2–5 примерами вход→выход. Ну�
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> заведи файл <code>prompts.md</code> рядом с этим курсом. Туда складывай все рабочие шаблоны промптов с пометкой «когда использовать». Через месяц у тебя будет ценная библиотека.
 </div>
+
+<p class="lesson-source">Источники: открытый курс Microsoft «Generative AI for Beginners», урок 4</p>
+
 `);
 
 // ============================================================
@@ -6008,7 +6016,6 @@ registerLesson(5, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> выжимать из модели сложные многошаговые рассуждения</span>
   <span><strong>Время:</strong> ~50 минут</span>
-  <span><strong>Источник:</strong> generative-ai-for-beginners/05</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -6347,6 +6354,9 @@ ReAct + tool use. Модель рассуждает, вызывает поиск
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> в <code>progress.md</code> запиши «таблицу принятия решений»: для каждой из своих 5 типичных задач — какая техника подходит лучше. Возвращайся и обновляй после практики.
 </div>
+
+<p class="lesson-source">Источники: открытый курс Microsoft «Generative AI for Beginners», урок 5</p>
+
 `);
 
 // ============================================================
@@ -6359,7 +6369,6 @@ registerLesson(6, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> перейти от чата в браузере к программному вызову LLM</span>
   <span><strong>Время:</strong> ~60 минут</span>
-  <span><strong>Источник:</strong> generative-ai-for-beginners/06</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -6870,6 +6879,8 @@ Retry на временные ошибки: rate limit, network timeout, 5xx. Н
 <strong>📌 Закрепление:</strong> создай папку <code>my-ai-app/</code> с venv и .env. Это будет твоя лаборатория на следующие уроки. Все скрипты из уроков 7, 8 будут в ней.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «Generative AI for Beginners», урок 6</p>
+
 `);
 
 // ============================================================
@@ -6882,7 +6893,6 @@ registerLesson(7, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> сделать чат-бот, который помнит контекст разговора</span>
   <span><strong>Время:</strong> ~60 минут</span>
-  <span><strong>Источник:</strong> generative-ai-for-beginners/07</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -7340,6 +7350,8 @@ Moderation API на входе и/или выходе. Чёткий system promp
 <strong>📌 Закрепление:</strong> в <code>my-ai-app/</code> у тебя теперь рабочий чат-бот. Это база для всех будущих проектов — RAG-бот, агент, ассистент. Сохрани шаблон — пригодится.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «Generative AI for Beginners», урок 7</p>
+
 `);
 
 // ============================================================
@@ -7352,7 +7364,6 @@ registerLesson(8, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять как ИИ ищет «по смыслу» и сделать свой semantic-поисковик</span>
   <span><strong>Время:</strong> ~60 минут</span>
-  <span><strong>Источник:</strong> generative-ai-for-beginners/08</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -7786,6 +7797,8 @@ BGE-M3, multilingual-e5-large — обе через <code>sentence-transformers<
 <strong>📌 Закрепление:</strong> у тебя теперь есть рабочий поисковик по своим заметкам. Это база для урока 14, где мы превратим его в полноценный RAG (модель будет генерировать ответы на основе найденных кусков). Сохрани <code>indexer.py</code> и <code>search.py</code>.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «Generative AI for Beginners», урок 8</p>
+
 `);
 
 
@@ -7799,7 +7812,6 @@ registerLesson(9, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> уверенно генерировать качественные картинки и понимать, какая модель под какую задачу</span>
   <span><strong>Время:</strong> ~45 минут</span>
-  <span><strong>Источник:</strong> generative-ai-for-beginners/09</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -7947,6 +7959,8 @@ GPT Image точнее следует промпту и понимает рус�
 <strong>📌 Закрепление:</strong> сделай одну обложку для своего следующего поста/статьи через AI и опубликуй. Если получится — добавь в портфолио.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «Generative AI for Beginners», урок 9</p>
+
 `);
 
 
@@ -7960,7 +7974,6 @@ registerLesson(10, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> собрать рабочее AI-приложение без кода и понимать, где это правильный путь, а где нет</span>
   <span><strong>Время:</strong> ~50 минут</span>
-  <span><strong>Источник:</strong> generative-ai-for-beginners/10</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -8089,6 +8102,8 @@ HTTP-эндпоинт. Внешняя система отправляет на �
 <strong>📌 Закрепление:</strong> возьми одну рутину из своей недели (что делаешь руками регулярно) — и сделай low-code сценарий, который это автоматизирует. Это даст тебе живой кейс «AI экономит мне N часов в неделю».
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «Generative AI for Beginners», урок 10</p>
+
 `);
 
 
@@ -8102,7 +8117,6 @@ registerLesson(11, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, почему ChatGPT-стиль UX работает, и применить эти паттерны к своему AI-приложению</span>
   <span><strong>Время:</strong> ~45 минут</span>
-  <span><strong>Источник:</strong> generative-ai-for-beginners/12 + собственная практика</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -8259,6 +8273,8 @@ registerLesson(11, `
 <strong>📌 Закрепление:</strong> прокликай ChatGPT и Claude. Зафиксируй, какие 5 UX-приёмов тебе понравились больше всего — и применяй их в своих приложениях.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «Generative AI for Beginners», урок 12; собственная практика</p>
+
 `);
 
 
@@ -8273,7 +8289,6 @@ registerLesson(12, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, какие атаки бывают на LLM-приложения, и как от них защищаться</span>
   <span><strong>Время:</strong> ~55 минут</span>
-  <span><strong>Источник:</strong> generative-ai-for-beginners/13 + OWASP Top 10 for LLMs</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -8465,6 +8480,7 @@ Direct — атакующий пишет напрямую в чат. Indirect �
 <strong>📌 Закрепление:</strong> Фаза 1 завершена. Ты прошёл от «что такое LLM» до «как защитить LLM-приложение в проде». Дальше — Фаза 2: строить агентов и системы, которые работают сами.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «Generative AI for Beginners», урок 13; OWASP Top 10 for LLMs</p>
 
 `);
 
@@ -8479,7 +8495,6 @@ registerLesson(13, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять как работает Function Calling и почему это строительный блок агентов</span>
   <span><strong>Время:</strong> ~45 минут</span>
-  <span><strong>Источник:</strong> generative-ai-for-beginners/11</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -8646,6 +8661,8 @@ print(run_agent("Проверь погоду в Питере и если дож�
 <li>Почему нельзя слепо доверять аргументам, которые LLM передаёт в функцию?</li>
 </ol>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «Generative AI for Beginners», урок 11</p>
+
 `);
 
 
@@ -8659,7 +8676,6 @@ registerLesson(14, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять как работает RAG и собрать поисковик по своим документам</span>
   <span><strong>Время:</strong> ~55 минут</span>
-  <span><strong>Источник:</strong> generative-ai-for-beginners/15</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -8815,6 +8831,8 @@ while True:
 <li>Чем RAG отличается от fine-tuning? Когда что выбирать?</li>
 </ol>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «Generative AI for Beginners», урок 15</p>
+
 `);
 
 // ============================================================
@@ -8827,7 +8845,6 @@ registerLesson(15, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, как довести AI-приложение от прототипа до прода и держать его живым</span>
   <span><strong>Время:</strong> ~50 минут</span>
-  <span><strong>Источник:</strong> generative-ai-for-beginners/14, опыт практики</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -9104,6 +9121,8 @@ Langfuse — open source, бесплатный self-hosted или generous free 
 <strong>📌 Закрепление:</strong> следующий шаг — превратить твой pet-проект в «настоящее» приложение. Eval-сет + хотя бы базовый мониторинг + cost limits. После этого имеешь право назвать его «production-ready».
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «Generative AI for Beginners», урок 14, опыт практики</p>
+
 `);
 
 // ============================================================
@@ -9116,7 +9135,6 @@ registerLesson(16, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, что такое агент, чем он отличается от чат-бота и когда он нужен</span>
   <span><strong>Время:</strong> ~45 минут</span>
-  <span><strong>Источник:</strong> ai-agents-for-beginners/01, anthropic.com/news, lilianweng.github.io</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -9414,6 +9432,8 @@ LangChain/LangGraph, AutoGen, Pydantic AI, CrewAI, LlamaIndex — любые и�
 <strong>📌 Закрепление:</strong> идея агентов выглядит магически — но за магией стоит простой цикл «LLM в while-loop с инструментами». В следующем уроке разберём фреймворки, которые этот цикл оборачивают в удобный интерфейс.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI Agents for Beginners», урок 1, anthropic.com/news, lilianweng.github.io</p>
+
 `);
 
 // ============================================================
@@ -9426,7 +9446,6 @@ registerLesson(17, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> разобраться в зоопарке фреймворков для агентов и выбрать подходящий</span>
   <span><strong>Время:</strong> ~55 минут</span>
-  <span><strong>Источник:</strong> ai-agents-for-beginners/02 + актуальная экосистема 2025–2026</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -9583,6 +9602,8 @@ crew.kickoff()</code></pre>
 <strong>📌 Закрепление:</strong> читай официальные доки только последних версий и блог-посты Anthropic/OpenAI про «как мы строим агентов». Туториалы 2023 года часто устарели.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI Agents for Beginners», урок 2; актуальная экосистема 2025–2026</p>
+
 `);
 
 
@@ -9596,7 +9617,6 @@ registerLesson(18, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> освоить базовые паттерны проектирования агентов и понимать, какой применять в каком случае</span>
   <span><strong>Время:</strong> ~60 минут</span>
-  <span><strong>Источник:</strong> ai-agents-for-beginners/04 + Anthropic «Building effective agents»</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -9755,6 +9775,8 @@ registerLesson(18, `
 <strong>📌 Закрепление:</strong> прочитай <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank">«Building effective agents» от Anthropic</a> — это лучший один пост 2024 про практическое проектирование агентов.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI Agents for Beginners», урок 4; Anthropic «Building effective agents»</p>
+
 `);
 
 
@@ -9768,7 +9790,6 @@ registerLesson(19, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> проектировать tools для агентов так, чтобы они работали стабильно и были безопасны</span>
   <span><strong>Время:</strong> ~60 минут</span>
-  <span><strong>Источник:</strong> ai-agents-for-beginners/04 + Anthropic «Tool use best practices»</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -9937,6 +9958,8 @@ registerLesson(19, `
 <strong>📌 Закрепление:</strong> прочитай <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools" target="_blank">Tool use best practices от Anthropic</a> — это твой стандарт-документ при проектировании tools.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI Agents for Beginners», урок 4; Anthropic «Tool use best practices»</p>
+
 `);
 
 
@@ -9950,7 +9973,6 @@ registerLesson(20, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, как RAG превращается в агентский паттерн, и когда это нужно</span>
   <span><strong>Время:</strong> ~55 минут</span>
-  <span><strong>Источник:</strong> ai-agents-for-beginners/05</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -10117,6 +10139,8 @@ Original question: [вопрос пользователя]
 <strong>📌 Закрепление:</strong> agentic RAG — не «всегда лучше», а «когда оправдано». Большинство юзкейсов решаются классическим. Используй мощь только тогда, когда она нужна.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI Agents for Beginners», урок 5</p>
+
 `);
 
 
@@ -10130,7 +10154,6 @@ registerLesson(21, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> запустить агента в продакшен, не разорившись и не подставив пользователей</span>
   <span><strong>Время:</strong> ~65 минут</span>
-  <span><strong>Источник:</strong> ai-agents-for-beginners/06 + OWASP Top 10 for LLM Apps</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -10324,6 +10347,8 @@ registerLesson(21, `
 <strong>📌 Закрепление:</strong> агент без защит — это не «MVP», это бомба замедленного действия. Защиты — first-class требование, не «потом».
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI Agents for Beginners», урок 6; OWASP Top 10 for LLM Apps</p>
+
 `);
 
 
@@ -10337,7 +10362,6 @@ registerLesson(22, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> научить агента делать сложные многошаговые задачи через явное планирование</span>
   <span><strong>Время:</strong> ~55 минут</span>
-  <span><strong>Источник:</strong> ai-agents-for-beginners/07</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -10505,6 +10529,8 @@ registerLesson(22, `
 <strong>📌 Закрепление:</strong> хороший план = половина работы агента. Учись писать промпты для планировщика — это отдельный навык, не такой как для executor'а.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI Agents for Beginners», урок 7</p>
+
 `);
 
 
@@ -10515,7 +10541,6 @@ registerLesson(23, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> научиться проектировать системы из нескольких агентов и выбирать правильную топологию их взаимодействия</span>
   <span><strong>Время:</strong> ~70 минут</span>
-  <span><strong>Источник:</strong> ai-agents-for-beginners/08 + доки AutoGen, CrewAI, LangGraph</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -10748,6 +10773,7 @@ print(final_answer)</code></pre>
 <strong>📌 Закрепление:</strong> мульти-агентность — это инструмент для конкретной проблемы (конфликт ролей, права доступа, параллелизм), а не архитектура по умолчанию — если один агент справляется, не усложняй.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI Agents for Beginners», урок 8; доки AutoGen, CrewAI, LangGraph</p>
 
 `);
 
@@ -10758,7 +10784,6 @@ registerLesson(24, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> научить агента оценивать собственный план и результат, а не только слепо выполнять</span>
   <span><strong>Время:</strong> ~50 минут</span>
-  <span><strong>Источник:</strong> ai-agents-for-beginners/09 + статья Reflexion</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -10935,6 +10960,8 @@ result = reflect_loop("Функция сортировки словарей по
 <strong>📌 Закрепление:</strong> рефлексия — это не «спросить модель, всё ли хорошо» и поверить ответу. Это структурированный проход с конкретным критерием проверки — и там, где можно, внешняя проверка всегда лучше самооценки.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI Agents for Beginners», урок 9; статья Reflexion</p>
+
 `);
 
 
@@ -10944,7 +10971,6 @@ registerLesson(25, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> управлять контекстом как бюджетом: сжимать историю без потери решений и строить память, которая копит пользу, а не мусор</span>
   <span><strong>Время:</strong> ~60 минут</span>
-  <span><strong>Источник:</strong> Anthropic engineering blog (context engineering) + доки LangChain memory</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -11100,6 +11126,8 @@ def run_session(task):
 
 <div class="callout callout-info"><strong>📌 Закрепление:</strong> открой свой самый длинный чат с любой моделью и найди сообщение, после которого ответы перестали держать нить, — вот твой личный context rot. Потом объясни кому-нибудь за две минуты, почему «скормим модели вообще всё» — плохой план и что такое компакция. Получилось без подглядывания — урок усвоен.</div>
 
+<p class="lesson-source">Источники: Anthropic engineering blog (context engineering); доки LangChain memory</p>
+
 `);
 
 
@@ -11109,7 +11137,6 @@ registerLesson(26, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, что такое Microsoft Agent Framework, чем он отличается от Semantic Kernel и AutoGen, и когда его стоит выбирать</span>
   <span><strong>Время:</strong> ~55 минут</span>
-  <span><strong>Источник:</strong> Microsoft Learn / agent-framework docs</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -11222,6 +11249,8 @@ async def main():
 
 <div class="callout callout-info"><strong>📌 Закрепление:</strong> объясни кому-нибудь за две минуты, почему у Microsoft было два фреймворка для агентов и что изменилось, когда они слились в один. Если сможешь без запинки назвать, что Agent Framework взял от Semantic Kernel, а что — от AutoGen, урок усвоен.</div>
 
+<p class="lesson-source">Источники: Microsoft Learn / agent-framework docs</p>
+
 `);
 
 
@@ -11231,7 +11260,6 @@ registerLesson(27, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, как агент видит и управляет браузером, и когда это оправдано, а когда опасно</span>
   <span><strong>Время:</strong> ~60 минут</span>
-  <span><strong>Источник:</strong> доки browser-use + Playwright</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -11387,6 +11415,8 @@ asyncio.run(main())</code></pre>
 <strong>📌 Закрепление:</strong> браузер для агента — это не магическая кнопка «сделай как человек», а недоверенная среда, где страница может атаковать агента спрятанной инструкцией. Прежде чем дать агенту руки в браузере, дай ему whitelist, изолированный профиль и человека на критичных решениях.
 </div>
 
+<p class="lesson-source">Источники: доки browser-use; Playwright</p>
+
 `);
 
 
@@ -11396,7 +11426,6 @@ registerLesson(28, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, зачем агентской экосистеме открытые протоколы, и разобраться в архитектуре MCP и A2A</span>
   <span><strong>Время:</strong> ~50 минут</span>
-  <span><strong>Источник:</strong> спецификация MCP (modelcontextprotocol.io) + спецификация A2A</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -11506,6 +11535,7 @@ if __name__ == "__main__":
 
 <div class="callout callout-info"><strong>📌 Закрепление:</strong> MCP и A2A — не альтернатива тому, что ты уже умеешь после уроков 13, 19 и 23, а способ сделать это переносимым между моделями, приложениями и командами. Практика подключения MCP в Claude — в уроке c3 тропинки Claude Deep Dive.</div>
 
+<p class="lesson-source">Источники: спецификация MCP (modelcontextprotocol.io); спецификация A2A</p>
 
 `);
 
@@ -11515,7 +11545,6 @@ registerLesson(29, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> научиться запускать AI-агента в реальную эксплуатацию — с наблюдаемостью, оценкой качества, версионированием и планом на случай сбоя</span>
   <span><strong>Время:</strong> ~70 минут</span>
-  <span><strong>Источник:</strong> практики AgentOps + уроки 15 и 21 курса</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -11695,6 +11724,8 @@ registerLesson(29, `
 
 <div class="callout callout-info"><strong>📌 Закрепление:</strong> Агент в продакшене — это не «промпт, который работает», а система с наблюдаемостью, тест-сетом, версионированием, бюджетом и планом на сбой. Каждый из этих пяти элементов ты можешь добавлять постепенно — но перед первым реальным пользователем должны быть готовы хотя бы трейсинг, минимальный регрессионный тест-сет и kill switch. Остальное достраивается по ходу эксплуатации, опираясь на то, что реально показывают метрики из раздела 10.</div>
 
+<p class="lesson-source">Источники: практики AgentOps; уроки 15 и 21 курса</p>
+
 `);
 
 
@@ -11703,7 +11734,6 @@ registerLesson(30, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> собрать все знания фазы в один рабочий чек-лист и проверить себя перед Фазой 3</span>
   <span><strong>Время:</strong> ~30 минут</span>
-  <span><strong>Источник:</strong> уроки 13–29 этого курса</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -11827,6 +11857,8 @@ registerLesson(30, `
 
 <div class="callout callout-info"><strong>📌 Закрепление:</strong> по туториалу строят копию чужого агента, осознанно — ответ на свою задачу. Разница в порядке вопросов: сначала «нужен ли здесь агент?», потом «какие права ему не нужны?», в конце «как я его остановлю?». Когда этот порядок стал рефлексом — Фаза 2 сделала своё дело.</div>
 
+<p class="lesson-source">Источники: уроки 13–29 этого курса</p>
+
 `);
 
 
@@ -11840,7 +11872,6 @@ registerLesson(31, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, где сейчас находится ИИ и как мы сюда пришли — без воды и без хайпа</span>
   <span><strong>Время:</strong> ~45 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners/01–02 + Russell &amp; Norvig «AIMA»</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -11952,6 +11983,8 @@ registerLesson(31, `
 <strong>📌 Закрепление:</strong> поиграй на playground.tensorflow.org минут 15. Увидеть как нейросеть учится спирали — лучше тысячи слов теории.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners», уроки 1–2; Russell &amp; Norvig «AIMA»</p>
+
 `);
 
 
@@ -11965,7 +11998,6 @@ registerLesson(32, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, чем был старый ИИ и почему knowledge graphs живут и сейчас</span>
   <span><strong>Время:</strong> ~50 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners/03</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -12112,6 +12144,8 @@ WHERE {
 <strong>📌 Закрепление:</strong> поиграйся с Wikidata Query Service 15 минут. Это даёт понимание, что такое «структурированные знания» лучше любых статей.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners», урок 3</p>
+
 `);
 
 
@@ -12125,7 +12159,6 @@ registerLesson(33, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять простейшую нейросеть так, чтобы дальше понять все остальные</span>
   <span><strong>Время:</strong> ~60 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners/04 + Goodfellow «Deep Learning» гл. 6</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -12282,6 +12315,8 @@ print([p.predict(x) for x in X])  # [0, 0, 0, 1] — выучил AND</code></pr
 <strong>📌 Закрепление:</strong> запусти простой Python из этого урока и поиграй с playground.tensorflow.org. После этого следующий урок — про обучение более серьёзных сетей — будет понятен.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners», урок 4; Goodfellow «Deep Learning» гл. 6</p>
+
 `);
 
 
@@ -12295,7 +12330,6 @@ registerLesson(34, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> построить мини-PyTorch с нуля и понять backprop изнутри</span>
   <span><strong>Время:</strong> ~90 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners/06 + Karpathy «Neural Networks Zero to Hero»</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -12511,6 +12545,8 @@ print("Predictions:", net.forward(X).round(2))</code></pre>
 <strong>📌 Закрепление:</strong> если запустил свой framework и обучил XOR — поздравляю, ты понимаешь backprop глубже многих, кто работает с ML. Дальше — PyTorch (Урок 35), но идеи те же.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners», урок 6; Karpathy «Neural Networks Zero to Hero»</p>
+
 `);
 
 
@@ -12521,7 +12557,6 @@ registerLesson(35, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> пересобрать сеть из Урока 34 на настоящем фреймворке и понять, что он делает за тебя</span>
   <span><strong>Время:</strong> ~70 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners + документация PyTorch</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -12756,6 +12791,7 @@ torch.save(model.state_dict(), "xor.pt")</code></pre>
 <strong>📌 Закрепление:</strong> ты не «перешёл на PyTorch» — ты просто перестал писать backward руками. Всё, что ты вывел в Уроке 34, спрятано за <code>loss.backward()</code>. Поэтому, когда сеть в Уроке 37 откажется учиться, ты будешь понимать, где искать.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners»; документация PyTorch</p>
 
 `);
 
@@ -12766,7 +12802,6 @@ registerLesson(36, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, чем изображение является для компьютера, и научиться готовить его для модели</span>
   <span><strong>Время:</strong> ~50 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners + документация OpenCV</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -12944,6 +12979,8 @@ print("Разные:", not torch.equal(train_aug(img), train_aug(img)))</code></
 <strong>📌 Закрепление:</strong> открой свою фотографию в Python и напечатай её форму, тип и диапазон значений. Пока изображение не стало для тебя тензором чисел, свёртки в Уроке 37 будут магией; после — просто ещё одним слоем.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners»; документация OpenCV</p>
+
 `);
 
 
@@ -12954,7 +12991,6 @@ registerLesson(37, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, как работает свёртка, и собрать свою CNN на PyTorch</span>
   <span><strong>Время:</strong> ~70 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners + Stanford CS231n</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -13175,6 +13211,7 @@ for epoch in range(10):
 <strong>📌 Закрепление:</strong> обучи сеть из раздела 10 и посчитай её параметры — осмысленная архитектура важнее размера модели. А ранние слои, которые у всех сетей выходят почти одинаковыми, — готовый мостик в Урок 38: их не нужно учить заново, их можно взять.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners»; Stanford CS231n</p>
 
 `);
 
@@ -13185,7 +13222,6 @@ registerLesson(38, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> решать свою задачу компьютерного зрения на сотне картинок — не обучая сеть с нуля</span>
   <span><strong>Время:</strong> ~60 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners + документация torchvision</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -13413,6 +13449,8 @@ train_stage("fine")</code></pre>
 <strong>📌 Закрепление:</strong> обучи классификатор на своих фотографиях и сравни с Уроком 37 — те же полчаса работы, результат несопоставим. А сделал ты всего лишь одно: заменил последний слой и заморозил остальные.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners»; документация torchvision</p>
+
 `);
 
 
@@ -13423,7 +13461,6 @@ registerLesson(39, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять обучение без учителя в нейросетях и идею латентного пространства</span>
   <span><strong>Время:</strong> ~55 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners + Goodfellow «Deep Learning» гл. 14</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -13620,6 +13657,7 @@ print("Fashion:", recon_error(next(iter(fashion_dl))[0]).mean().item())  # вы�
 <strong>📌 Закрепление:</strong> нарисуй карту латентного пространства из двух чисел и раскрась точки по меткам. Сеть разложила цифры по кучкам, не увидев ни одной метки — и дальше, в эмбеддингах и генеративных моделях, это будет уже не магия.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners»; Goodfellow «Deep Learning» гл. 14</p>
 
 `);
 
@@ -13631,7 +13669,6 @@ registerLesson(40, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, откуда берётся резкость в генерации, и обучить свой GAN на MNIST</span>
   <span><strong>Время:</strong> ~70 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners + статья Goodfellow et al. «Generative Adversarial Nets»</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -13850,6 +13887,8 @@ for epoch in range(30):
 <strong>📌 Закрепление:</strong> обучение GAN — это не «минимизируй одно число», а поиск равновесия двух противников. Пока обе loss болтаются рядом и картинки медленно улучшаются — всё идёт правильно, даже если график выглядит некрасиво.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners»; статья Goodfellow et al. «Generative Adversarial Nets»</p>
+
 `);
 
 
@@ -13860,7 +13899,6 @@ registerLesson(41, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> находить объекты рамками и понимать, чем меряется качество детекции</span>
   <span><strong>Время:</strong> ~60 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners + документация Ultralytics YOLO</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -14061,6 +14099,7 @@ metrics = model.val()          # mAP на валидации</code></pre>
 <strong>📌 Закрепление:</strong> запусти готовую модель на своей фотографии и покрути два порога — confidence и IoU в NMS. Когда увидишь, как одни и те же веса превращаются из «находит всё подряд» в «пропускает половину», ты поймёшь детекцию лучше, чем из любого объяснения.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners»; документация Ultralytics YOLO</p>
 
 `);
 
@@ -14072,7 +14111,6 @@ registerLesson(42, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> получать не рамку вокруг объекта, а его точный контур — класс для каждого пикселя</span>
   <span><strong>Время:</strong> ~60 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners + статья Ronneberger et al. «U-Net»</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -14278,6 +14316,7 @@ print("IoU:", round(inter_sum / union_sum, 4))</code></pre>
 <strong>📌 Закрепление:</strong> обучи <code>TinyUNet</code> и посчитай на одном прогоне и pixel accuracy, и IoU. Разрыв между этими числами — главный урок сегментации: правильная метрика важнее правильной архитектуры. Блок зрения закрыт, дальше текст.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners»; статья Ronneberger et al. «U-Net»</p>
 
 `);
 
@@ -14289,7 +14328,6 @@ registerLesson(43, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> научиться превращать текст в числа — мешок слов и TF-IDF — и собрать на них рабочий классификатор</span>
   <span><strong>Время:</strong> ~50 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners + документация scikit-learn</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -14525,6 +14563,7 @@ for text in ["центральный банк изменил ключевую с
 <strong>📌 Закрепление:</strong> посчитай TF-IDF руками на трёх своих предложениях и сверь с <code>TfidfVectorizer</code> — после этого формула перестанет быть магией навсегда. А ортогональность «врача» и «доктора» из раздела 10 — прямой мостик в урок 44: там слова наконец получат свойства, а не только имена.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners»; документация scikit-learn</p>
 
 `);
 
@@ -14536,7 +14575,6 @@ registerLesson(44, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, откуда берутся векторы слов и почему близость векторов означает близость смыслов</span>
   <span><strong>Время:</strong> ~60 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners + статья Mikolov et al. «Efficient Estimation of Word Representations in Vector Space»</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -14785,6 +14823,8 @@ print(pre.most_similar("ключ", topn=10))   # смыслы перемешан
 <strong>📌 Закрепление:</strong> посмотри соседей слова «ключ» в готовых векторах для русского. В одном списке окажутся и «замок», и «родник» — модель не выбирает смысл, она их усредняет. Держи эту картинку в голове: она объясняет, зачем дальше понадобились трансформеры.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners»; статья Mikolov et al. «Efficient Estimation of Word Representations in Vector Space»</p>
+
 `);
 
 
@@ -14794,7 +14834,6 @@ registerLesson(45, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, как задача «предскажи следующий токен» превращается в модель, которая пишет текст</span>
   <span><strong>Время:</strong> ~55 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners + Jurafsky &amp; Martin «Speech and Language Processing»</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -15041,6 +15080,8 @@ print(generate("Однажды ", temp=1.6))</code></pre>
 <strong>📌 Закрепление:</strong> обучи модель из раздела 10 на своём тексте и покрути температуру от 0.2 до 1.8 — своими глазами увидишь, как одна и та же выученная статистика превращается то в сухое повторение, то в бессвязицу. Всё остальное в курсе — про то, чем заполнить середину схемы «эмбеддинги → сеть → softmax»: рекуррентные сети в Уроке 46, внимание в Уроке 47, трансформеры в Уроке 48, большие модели в Уроке 50. Постановка задачи при этом не изменится ни разу.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners»; Jurafsky &amp; Martin «Speech and Language Processing»</p>
+
 `);
 
 
@@ -15051,7 +15092,6 @@ registerLesson(46, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, как сеть держит в памяти последовательность — и почему этой памяти в итоге не хватило</span>
   <span><strong>Время:</strong> ~70 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners + Hochreiter &amp; Schmidhuber «Long Short-Term Memory»</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -15289,6 +15329,7 @@ for epoch in range(5):
 <strong>📌 Закрепление:</strong> обучи классификатор из раздела 11, а потом специально убери обрезку градиента и подними learning rate — увидишь NaN своими глазами и запомнишь эту болезнь навсегда. И держи в голове раздел 12: три слабости рекуррентных сетей — это не приговор архитектуре, а список задач, которые решают следующие два урока.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners»; Hochreiter &amp; Schmidhuber «Long Short-Term Memory»</p>
 
 `);
 
@@ -15300,7 +15341,6 @@ registerLesson(47, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять схему encoder-decoder и механизм внимания — и собрать свой seq2seq с вниманием на PyTorch</span>
   <span><strong>Время:</strong> ~70 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners + Bahdanau et al. «Neural Machine Translation by Jointly Learning to Align and Translate»</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -15581,6 +15621,7 @@ print(attn[0].round(decimals=2))                 # матрица выравни
 <strong>📌 Закрепление:</strong> собери сеть из раздела 11 и посмотри на матрицу выравнивания своими глазами — момент, когда антидиагональ проступает сама, стоит потраченного часа. А потом задай себе вопрос из раздела 12: если внимание за один шаг дотягивается куда угодно, зачем вообще рекуррентность? Ответ — Урок 48.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners»; Bahdanau et al. «Neural Machine Translation by Jointly Learning to Align and Translate»</p>
 
 `);
 
@@ -15592,7 +15633,6 @@ registerLesson(48, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> разобрать трансформер по деталям и собрать его блок руками на PyTorch</span>
   <span><strong>Время:</strong> ~90 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners + Vaswani et al. «Attention Is All You Need»</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -15935,6 +15975,7 @@ print(weights[0, 0].round(decimals=2))         # нижнетреугольна�
 <strong>📌 Закрепление:</strong> запусти код из раздела 13 и своими руками сломай его двумя способами — убери позиционное кодирование и убери residual-связи. Каждое из двух «украшений» на деле держит конструкцию. Когда почувствуешь блок как единое целое, дальше будет прикладной Урок 49, а за ним останется один шаг: понять, что происходит, когда таких блоков сотня, а текста на обучении — интернет. Это Урок 50.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners»; Vaswani et al. «Attention Is All You Need»</p>
 
 `);
 
@@ -15945,7 +15986,6 @@ registerLesson(49, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> вытаскивать из текста сущности с границами и типами и понимать, чем меряется качество</span>
   <span><strong>Время:</strong> ~50 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners + документация spaCy и Natasha</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -16180,6 +16220,9 @@ print(f"мягких попаданий: {soft} из {len(gold)}")
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> прогони один свой настоящий текст тремя способами — готовой моделью, регуляркой и LLM — и посчитай F1 каждого одним и тем же кодом. Когда увидишь на своих данных, что регулярка выигрывает у сети на номерах, а сеть у LLM на границах, ты перестанешь выбирать инструмент по моде и начнёшь выбирать по задаче.
 </div>
+
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners»; документация spaCy и Natasha</p>
+
 `);
 
 
@@ -16190,7 +16233,6 @@ registerLesson(50, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, как из стека блоков трансформера получается собеседник — и чем за это заплачено</span>
   <span><strong>Время:</strong> ~70 минут</span>
-  <span><strong>Источник:</strong> AI-For-Beginners + статьи про масштабирование и обучение с обратной связью</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -16387,6 +16429,7 @@ registerLesson(50, `
 <strong>📌 Закрепление:</strong> вся Фаза 3 сводится к одной мысли — собеседника нет, есть очень хорошо обученное предсказание следующего кусочка текста, поверх которого двумя этапами дообучения надстроены манеры. Понимая это, ты перестаёшь спорить с моделью и начинаешь проектировать вокруг неё: давать источник, давать инструменты, следить за окном и не путать уверенный тон со знанием. Дальше — вниз, в Урок 51, к фундаменту, на котором всё это стоит.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «AI for Beginners»; статьи про масштабирование и обучение с обратной связью</p>
 
 `);
 
@@ -16398,7 +16441,6 @@ registerLesson(51, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, чем классическое машинное обучение отличается от глубокого, какие задачи оно решает и почему на таблицах до сих пор выигрывают деревья, а не нейросети</span>
   <span><strong>Время:</strong> ~45 минут</span>
-  <span><strong>Источник:</strong> ML-For-Beginners + Sculley et al. «Hidden Technical Debt in Machine Learning Systems» + Grinsztajn et al. «Why do tree-based models still outperform deep learning on tabular data?»</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -16585,6 +16627,7 @@ print(net.score(X_te, y_te))     # R² ≈ 0.799, учится около 4 се
 <strong>📌 Закрепление:</strong> прежде чем браться за любую ML-задачу, запиши T, E и P одной строкой каждое. Если P не формулируется, модель строить рано.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «ML for Beginners»; Sculley et al. «Hidden Technical Debt in Machine Learning Systems»; Grinsztajn et al. «Why do tree-based models still outperform deep learning on tabular data?»</p>
 
 `);
 
@@ -16595,7 +16638,6 @@ registerLesson(52, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> узнать, откуда взялся каждый метод Фазы 4, и увидеть закономерности, которые история машинного обучения повторяет раз за разом</span>
   <span><strong>Время:</strong> ~40 минут</span>
-  <span><strong>Источник:</strong> ML-For-Beginners + Breiman «Statistical Modeling: The Two Cultures» + оригинальные статьи авторов методов</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -16738,6 +16780,8 @@ print(iris.frame.groupby("target").mean().round(2))</code></pre>
 <strong>📌 Закрепление:</strong> когда в следующих уроках встретишь новый метод, вспомни его строку из таблицы в разделе 7. Задача, которую он решал при рождении, подскажет, где он силён сейчас.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «ML for Beginners»; Breiman «Statistical Modeling: The Two Cultures»; оригинальные статьи авторов методов</p>
+
 `);
 
 
@@ -16748,7 +16792,6 @@ registerLesson(53, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, как предвзятость попадает в модель, научиться её измерять и увидеть, почему справедливость нельзя вычислить — её можно только выбрать</span>
   <span><strong>Время:</strong> ~50 минут</span>
-  <span><strong>Источник:</strong> ML-For-Beginners + Suresh &amp; Guttag «A Framework for Understanding Sources of Harm» + Chouldechova «Fair prediction with disparate impact»</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -16956,6 +16999,7 @@ audit(full)</code></pre>
 <strong>📌 Закрепление:</strong> перед запуском любой модели, которая решает про людей, ответь письменно на три вопроса: какие группы могут пострадать, какую метрику справедливости мы выбираем, кто будет смотреть на неё после запуска.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «ML for Beginners»; Suresh &amp; Guttag «A Framework for Understanding Sources of Harm»; Chouldechova «Fair prediction with disparate impact»</p>
 
 `);
 
@@ -16966,7 +17010,6 @@ registerLesson(54, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> научиться честно оценивать модель: правильно делить данные, выбирать метрику под цену ошибки, пользоваться кросс-валидацией и ловить утечки данных</span>
   <span><strong>Время:</strong> ~60 минут</span>
-  <span><strong>Источник:</strong> ML-For-Beginners + Hastie, Tibshirani, Friedman «The Elements of Statistical Learning», раздел 7.10 + документация scikit-learn</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -17259,6 +17302,8 @@ print(confusion_matrix(y_test, test_pred))
 <strong>📌 Закрепление:</strong> повтори эксперимент с 5000 шумовыми признаками. Увидеть своими глазами 100% точности на данных без единой закономерности — лучшая прививка от утечек на всю карьеру.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «ML for Beginners»; Hastie, Tibshirani, Friedman «The Elements of Statistical Learning», раздел 7.10; документация scikit-learn</p>
+
 `);
 
 
@@ -17268,7 +17313,6 @@ registerLesson(55, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> освоить pandas для работы с таблицами и scikit-learn для моделей, пройти полный цикл регрессии от загрузки данных до сохранённой модели</span>
   <span><strong>Время:</strong> ~55 минут</span>
-  <span><strong>Источник:</strong> ML-For-Beginners + документация pandas и scikit-learn</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -17507,6 +17551,8 @@ print(np.allclose(loaded.predict(X_test[:5]), models["Бустинг"].predict(X
 <strong>📌 Закрепление:</strong> у любой новой таблицы первым делом делай <code>info()</code>, <code>describe()</code> и сравнивай медиану с максимумом. Две минуты — и ты знаешь про данные то, что модель спрятала бы от тебя навсегда.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «ML for Beginners»; документация pandas и scikit-learn</p>
+
 `);
 
 
@@ -17516,7 +17562,6 @@ registerLesson(56, `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> научиться превращать грязную таблицу в данные для модели: убирать утечки, работать с пропусками, выбросами и категориями, придумывать признаки и собирать всё в один пайплайн</span>
   <span><strong>Время:</strong> ~60 минут</span>
-  <span><strong>Источник:</strong> ML-For-Beginners + документация scikit-learn (Pipeline, ColumnTransformer, impute)</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -17808,6 +17853,8 @@ print(evaluate(["age", "fare", "boat_flag"], ["sex", "pclass"], leaky))
 <strong>📌 Закрепление:</strong> в уроке 58 обучим на этих же данных логистическую регрессию и разберём её изнутри. Сохрани свой лучший набор признаков из практики — сравним.
 </div>
 
+<p class="lesson-source">Источники: открытый курс Microsoft «ML for Beginners»; документация scikit-learn (Pipeline, ColumnTransformer, impute)</p>
+
 `);
 
 
@@ -17821,7 +17868,6 @@ registerLesson("c1", `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> освоить главную фичу Claude для разработчиков и не-разработчиков</span>
   <span><strong>Время:</strong> ~40 минут</span>
-  <span><strong>Источник:</strong> docs.claude.com, anthropic.com/news</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -18029,6 +18075,8 @@ Backend-код, мульти-файл проекты, тяжёлые завис�
 <strong>📌 Закрепление:</strong> большинство людей используют Claude как ChatGPT — это теряет 40% его силы. Artifacts превращает чат в IDE для не-программистов и в быстрый прототайп-инструмент для разработчиков. Сделай это привычкой: «нужно что-то быстрое» → claude.ai → Artifact.
 </div>
 
+<p class="lesson-source">Источники: docs.claude.com, anthropic.com/news</p>
+
 `);
 
 // ============================================================
@@ -18041,7 +18089,6 @@ registerLesson("c2", `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, когда Projects лучше обычного чата и как их грамотно использовать</span>
   <span><strong>Время:</strong> ~35 минут</span>
-  <span><strong>Источник:</strong> docs.claude.com, claude.com/news</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -18295,6 +18342,8 @@ Project — контейнер для связанных чатов с общи�
 <strong>📌 Закрепление:</strong> Projects превращают Claude из «универсального ассистента» в «персонализированного коллегу» по конкретной задаче. Если ты используешь Claude больше 30 минут в день и платишь за Pro — обязательно осваивай.
 </div>
 
+<p class="lesson-source">Источники: docs.claude.com, claude.com/news</p>
+
 `);
 
 // ============================================================
@@ -18307,7 +18356,6 @@ registerLesson("c3", `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, что такое MCP и зачем он меняет правила игры с агентами</span>
   <span><strong>Время:</strong> ~50 минут</span>
-  <span><strong>Источник:</strong> modelcontextprotocol.io, anthropic.com/news</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -18715,6 +18763,8 @@ TypeScript SDK <code>@modelcontextprotocol/sdk</code> или Python <code>mcp</c
 <strong>📌 Закрепление:</strong> подключи Claude Desktop хотя бы к filesystem-серверу до перехода к следующему уроку. Без этого механика MCP останется абстрактной.
 </div>
 
+<p class="lesson-source">Источники: modelcontextprotocol.io, anthropic.com/news</p>
+
 `);
 
 // ============================================================
@@ -18727,7 +18777,6 @@ registerLesson("c4", `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять Computer Use — что это, когда полезно, как использовать</span>
   <span><strong>Время:</strong> ~50 минут</span>
-  <span><strong>Источник:</strong> platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool, anthropic.com/news</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -19051,6 +19100,8 @@ Playwright — быстрее, надёжнее, дешевле для повт�
 <strong>📌 Закрепление:</strong> Computer Use радикально расширяет, что может ИИ. Но он не заменяет узкоспециализированные инструменты — он их дополняет. Думай о Computer Use как о «когда у меня нет API и нет времени писать интеграцию».
 </div>
 
+<p class="lesson-source">Источники: platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool, anthropic.com/news</p>
+
 `);
 
 // ============================================================
@@ -19063,7 +19114,6 @@ registerLesson("c5", `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> освоить Claude Code как ежедневный инструмент разработчика</span>
   <span><strong>Время:</strong> ~60 минут</span>
-  <span><strong>Источник:</strong> code.claude.com/docs</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -19345,6 +19395,7 @@ claude -p "Просуммируй изменения в этой ветке и �
 <li><strong>Подписка или API.</strong> Pro/Max — предсказуемая цена для ежедневной работы; API — для CI и эпизодов, с prompt caching (c6).</li>
 </ol>
 
+<p class="lesson-source">Источники: code.claude.com/docs</p>
 
 `);
 
@@ -19357,7 +19408,6 @@ registerLesson("c6", `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> освоить prompt caching Anthropic для серьёзной экономии денег</span>
   <span><strong>Время:</strong> ~35 минут</span>
-  <span><strong>Источник:</strong> platform.claude.com/docs/en/build-with-claude/prompt-caching</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -19625,6 +19675,9 @@ print(response.usage)
 <div class="callout callout-success">
 <strong>💰 Закрепление:</strong> для серьёзных AI-приложений с тысячами запросов в день prompt caching — это разница между $500/мес и $80/мес. Включи где можешь. Просто проверь в логах, что кэш реально срабатывает.
 </div>
+
+<p class="lesson-source">Источники: platform.claude.com/docs/en/build-with-claude/prompt-caching</p>
+
 `);
 
 // ============================================================
@@ -19637,7 +19690,6 @@ registerLesson("c7", `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понять, чем подход Anthropic к безопасности отличается, и как это влияет на работу с Claude</span>
   <span><strong>Время:</strong> ~40 минут</span>
-  <span><strong>Источник:</strong> Anthropic «Constitutional AI» (2022), «Claude's Constitution» (2023), новая конституция Claude (январь 2026)</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -19758,6 +19810,8 @@ registerLesson("c7", `
 <strong>📌 Закрепление:</strong> прочитай реальную <a href="https://www.anthropic.com/constitution" target="_blank">Claude's Constitution</a> — это меняет восприятие модели с «магической коробки» на «инженерное решение».
 </div>
 
+<p class="lesson-source">Источники: Anthropic «Constitutional AI» (2022), «Claude's Constitution» (2023), новая конституция Claude (январь 2026)</p>
+
 `);
 
 
@@ -19770,7 +19824,6 @@ registerLesson("c8", `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> понимать сильные стороны каждой топ-модели и выбирать под задачу</span>
   <span><strong>Время:</strong> ~35 минут</span>
-  <span><strong>Источник:</strong> Anthropic, OpenAI, Google docs + practical use 2025–2026</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -19901,6 +19954,9 @@ registerLesson("c8", `
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> ветка Claude Deep Dive почти полна. После Skills (Урок c9) у тебя будет полная картина: Artifacts, Projects, MCP, Computer Use, Claude Code, prompt caching, Constitutional AI, сравнение с конкурентами и Skills.
 </div>
+
+<p class="lesson-source">Источники: Anthropic, OpenAI, Google docs; practical use 2025–2026</p>
+
 `);
 
 
@@ -19914,7 +19970,6 @@ registerLesson("c9", `
 <div class="lesson-meta">
   <span><strong>Цель:</strong> освоить Claude Skills — модульные «навыки», которые превращают Claude в специализированного помощника под конкретный домен</span>
   <span><strong>Время:</strong> ~40 минут</span>
-  <span><strong>Источник:</strong> Anthropic «Introducing Skills» (октябрь 2025)</span>
 </div>
 
 <h2>Зачем тебе этот урок</h2>
@@ -20086,6 +20141,8 @@ description: Считает CAC, LTV и payback period по данным о пр
 <div class="callout callout-info">
 <strong>📌 Закрепление:</strong> Skills сильно меняют что значит «работать с Claude». Если ты ещё не пробовал — открой Claude Desktop и просто кинь Excel-файл с вопросом. Увидишь как меняется опыт.
 </div>
+
+<p class="lesson-source">Источники: Anthropic «Introducing Skills» (октябрь 2025)</p>
 
 `);
 

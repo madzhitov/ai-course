@@ -71,6 +71,8 @@
     return loading;
   }
   const role = (id) => D.roles.find((r) => r.id === id);
+  // У группы «ИИ-практика» своей роли нет: её задания живут в роли «Для себя»
+  const groupRole = (g) => (role(g) ? g : g === 'ai' ? 'self' : '');
   const unitsOf = (taskId) => D.units.filter((u) => u.task === taskId);
   // задача «сделана» в 1а = пройден урок-основа хотя бы одного способа (юниты появятся на этапе 2)
   const taskDone = (taskId) => unitsOf(taskId).some((u) => (jget(KEY.units)[u.id] || {}).result === 'yes' || (u.fromLesson && done(u.fromLesson)));
@@ -300,7 +302,8 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         al.textContent = n >= full.length ? full : n > 0 ? full.slice(0, n) + '▍' : '';
       }
       const hint = p.querySelector('.v6-vx-hint');
-      hint.textContent = vx.reduced ? 'выберите задачу вкладкой' : vx.paused ? 'на паузе, пока курсор здесь' : 'наведите, чтобы остановить';
+      const touch = !!(window.matchMedia && matchMedia('(hover: none)').matches);
+      hint.textContent = vx.reduced ? 'выберите задачу вкладкой' : vx.paused ? (touch ? 'на паузе' : 'на паузе, пока курсор здесь') : (touch ? 'нажмите, чтобы остановить' : 'наведите, чтобы остановить');
     });
   }
   function vxStart() {
@@ -406,7 +409,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
     return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Больше, чем задача</h2><p>Две вещи, собранные тем же способом, только крупнее. Одна подскажет, с чего начать. Другая будет считать за вас каждый день.</p></div>
       <div class="v6-more">
         ${card('#brand-stages', false, 'home-brand-stages.webp', 'Первый экран диагностики «Стадии бренда»: вопрос о годовой выручке и пять стадий на выбор', 'бесплатно, для владельца и команды бренда', 'Стадии бренда', 'Тринадцать вопросов, около трёх минут. Покажет, на какой из пяти стадий бренд и какие из 13 направлений отстают. К большинству первых дел уже есть задания. Всё считается в браузере, ответы никуда не уходят.', 'Пройти диагностику →', "V6.open('brand-stages')")}
-        ${card('https://birdtold.ru/demo', true, 'home-birdtold-demo.webp', 'Экран сервиса «Птичка напела»: выручка за неделю и утренние сообщения о том, где теряются деньги', 'продукт агентства madzhitov.ru', 'Птичка напела', 'В задаче вы считаете маржу руками за 45 минут. Птичка делает это каждое утро сама и пишет, где утекают деньги: брендовый трафик падает третий день, предзаказы приняты, но не оплачены, пальто торгуется в минус.', 'Посмотреть демо ↗', '')}
+        ${card('https://birdtold.ru/demo', true, 'home-birdtold-demo.webp', 'Экран сервиса «Птичка напела»: выручка за неделю и утренние сообщения о том, где теряются деньги', 'сервис Руслана Маджитова', 'Птичка напела', 'В задаче вы считаете маржу руками за 45 минут. Птичка делает это каждое утро сама и пишет, где утекают деньги: брендовый трафик падает третий день, предзаказы приняты, но не оплачены, пальто торгуется в минус.', 'Посмотреть демо ↗', '')}
       </div></section>`;
   }
   function authorBlock() {
@@ -445,14 +448,14 @@ ${rv.trim() || '[вставьте отзывы]'}`;
     return `<section class="v6-sec v6-meth2"><div><h2 class="v6-h2">${n} ${plural(n, 'метод', 'метода', 'методов')} под капотом</h2>
         <p>Под задачами лежат методы из книг и исследований. Захотите разобраться, почему задача устроена именно так, откройте карточку метода.</p>
         <p class="v6-meth2-tools">И ${toolCount()} ${plural(toolCount(), 'инструмент', 'инструмента', 'инструментов')}, которые можно забрать сразу: таблицы с формулами, калькуляторы, чек-листы. <button class="v6-link" onclick="V6.ktab('tools')">Инструменты →</button></p>
-        <button class="v6-link" onclick="V6.open('knowledge')">Все методы и словарь мира →</button></div>
+        <button class="v6-link" onclick="V6.open('knowledge')">Все методы и словарь →</button></div>
       <div class="v6-meth2-c">${show.map((c) => `<a class="v6-chip2" href="#fw-${e(c.id)}" onclick="V6.openFw('${e(c.id)}','home'); return false;">${e(c.title)}</a>`).join('')}<span class="v6-chip2 is-more">и ещё ${n - show.length}</span></div></section>`;
   }
   function newsCo() {
     const items = (CHANGELOG || []).slice(0, 3);
     return `<section class="v6-sec v6-newsco"><div><div class="v6-sec-head" style="margin-bottom:16px"><h2 class="v6-h3" style="font-family:var(--font-display);font-weight:800">Что нового</h2><button class="v6-link" onclick="openStaticPage('changelog')">Все изменения →</button></div>
         <ul class="v6-rows v6-news">${items.map((c) => `<li><span class="n">${e(fmtDateRu(c.date))}</span><span style="grid-column:span 2">${e(stripEmoji(c.title))}</span></li>`).join('')}</ul></div>
-      <div class="v6-newsco-r"><p>Если это нужно всей команде, соберём такую же тропу под вашу компанию.</p><button class="v6-link" onclick="V6.open('companies')">Для компаний →</button></div></section>`;
+      <div class="v6-newsco-r"><p>Если это нужно всей команде, соберём такую же программу под вашу компанию.</p><button class="v6-link" onclick="V6.open('companies')">Для компаний →</button></div></section>`;
   }
   function home() {
     setPage(true, null);
@@ -575,6 +578,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
           const ls_ = byNoCode(r.lessons || []).map(lessonOf).filter(Boolean);
           const routes = (typeof ROUTES !== 'undefined' ? ROUTES : []).filter((x) => (r.legacyRoutes || []).includes(x.id));
           const group = r.taskGroup ? D.groups.find((g) => g.id === r.taskGroup) : null;
+          const aiGroup = r.id === 'self' ? D.groups.find((g) => g.id === 'ai') : null;
           const ready = ls_.filter((l) => l.content);
           body = `<div class="v6-role-hero"><div><span class="v6t ${r.state === 'growing' ? 'is-grey' : ''}">${r.state === 'growing' ? 'Роль растёт' : 'Роль'}</span><h1 class="v6-d" style="margin-top:20px !important">${e(r.title)}</h1>
               <p class="v6-lead">${e(r.description)}.</p>${pick}</div>${ART_WEBP.has('role-' + r.id) ? art('role-' + r.id, 'v6-phero-art') : '<div class="v6-ph" aria-hidden="true">[3D: объект роли]</div>'}</div>
@@ -585,6 +589,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
             ${DATA_PATHS[r.taskGroup] ? (() => { const x = dataPath(r.taskGroup); return `<section class="v6-sec"><a class="v6-next v6-dark" href="#path-${x.key}" onclick="V6.${x.key === 'product' ? 'openProductPath' : 'openMarketingPath'}('role'); return false;"><span class="v6-next-in"><span class="v6-next-l">Путь роли · скоро</span><span class="v6-next-t">${e(x.title)}</span><span class="v6-next-p">${r.id === 'project' ? 'Для проджекта главное — этапы «Приоритизация» и «Управление работой».' : x.stages.map((s_, i) => i ? s_.title.toLowerCase() : s_.title).join(', ') + '.'}</span></span><span class="v6b is-accent v6-btn-xl">Открыть путь</span></a></section>`; })() : ''}
             ${r.id === 'owner' ? `<section class="v6-sec"><a class="v6-next v6-dark" href="#brand-stages" onclick="V6.open('brand-stages'); return false;"><span class="v6-next-in"><span class="v6-next-l">Стадии бренда · диагностика за 3 минуты</span><span class="v6-next-t">На какой стадии ваш бренд и что делать первым</span></span>${CHEV}</a></section>` : ''}
             ${group ? `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Задачи роли</h2><p>Направления и задачи уже разложены, к каждой — методы. Короткие способы решения появятся.</p></div></div><div class="v6-dirs">${group.directions.filter((d) => r.id !== 'project' || /prioritize|manage/.test(d.id)).map((d) => `<div class="v6-dir"><h3>${e(d.title)}</h3>${(d.tasks || []).map((t) => `<a class="v6-dr" href="#" onclick="V6.openTask('${e(t.id)}','role'); return false;"><span>${e(t.title)}</span><span class="m${taskReady(t.id) ? '' : ' is-wip'}">${taskReady(t.id) ? taskMins(t.id) : 'скоро'}</span></a>`).join('')}</div>`).join('')}</div></section>` : ''}
+            ${aiGroup ? `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">ИИ-практика</h2><p>Короткие задания для любой работы: трудное письмо, решение, проверка ответа ИИ.</p></div></div><div class="v6-dirs">${aiGroup.directions.map((d) => `<div class="v6-dir"><h3>${e(d.title)}</h3>${(d.tasks || []).map((t) => `<a class="v6-dr" href="#" onclick="V6.openTask('${e(t.id)}','role'); return false;"><span>${e(t.title)}</span><span class="m${taskReady(t.id) ? '' : ' is-wip'}">${taskReady(t.id) ? taskMins(t.id) : 'скоро'}</span></a>`).join('')}</div>`).join('')}</div></section>` : ''}
             ${methodsBlock(r.id, AI_ROLES.includes(r.id) ? 'Методы работы с ИИ' : 'Методы роли')}`;
         }
         document.getElementById('v6-role').innerHTML = body;
@@ -1333,7 +1338,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
     const card = fin ? (() => {
       if (st.result === 'yes') return `<div class="v6-ucard"><span class="v6-pcard-label">Готово</span><h2 class="v6-ucard-t">Получилось. Записано в тетрадь</h2><p>${e(u.result || '')}</p>
           <label class="v6-lnote"><span class="v6-lnote-h"><b>Что вышло</b><span class="v6-meta">в тетрадь</span></span><textarea placeholder="Что получилось, что поправили, что пригодится в следующий раз" oninput="V6.unitNote('${e(id)}', this)">${e(st.note || '')}</textarea></label>
-          <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="V6.showForm('${e(id)}', this)">Показать результат</button><button class="v6b is-soft v6-btn-lg" onclick="V6.open('notebook')">Тетрадь</button><button class="v6b is-soft v6-btn-lg" onclick="V6.openRole('${e(t.group)}','unit')">Другие задачи</button></span>
+          <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="V6.showForm('${e(id)}', this)">Показать результат</button><button class="v6b is-soft v6-btn-lg" onclick="V6.open('notebook')">Тетрадь</button><button class="v6b is-soft v6-btn-lg" onclick="V6.openRole('${e(groupRole(t.group))}','unit')">Другие задачи</button></span>
           <div id="v6-show"></div><p class="v6-meta">Пришлите работу автору. С вашего согласия она попадёт в галерею работ на сайте.</p>${tgOfferBox()}</div>`;
       if (st.result === 'almost') return `<div class="v6-ucard"><span class="v6-pcard-label">Почти</span><h2 class="v6-ucard-t">Частые причины</h2><ul class="v6-ualmost">${(u.almost || []).map((a) => `<li>${e(a)}</li>`).join('')}</ul>
           <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="V6.unitGo('${e(id)}', 0)">Ещё раз</button><button class="v6b is-soft v6-btn-lg" onclick="V6.unitHelp('${e(id)}')">Спросить Алёшу</button><button class="v6b is-soft v6-btn-lg" onclick="V6.unitResult('${e(id)}','yes')">Теперь получилось</button></span></div>`;
@@ -1341,7 +1346,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
           <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="V6.unitResult('${e(id)}','yes')">Да</button><button class="v6b is-soft v6-btn-lg" onclick="V6.unitResult('${e(id)}','almost')">Почти</button><button class="v6b is-soft v6-btn-lg" onclick="V6.unitResult('${e(id)}','no'); V6.unitHelp('${e(id)}')">Нет, помогите</button></span></div>`;
     })() : `<div class="v6-ucard"><span class="v6-pcard-label">Шаг ${i + 1} из ${n}</span><h2 class="v6-ucard-t">${e(s.title)}</h2><p>${e(s.text || '')}</p>${input}${prompt}${checks}
         <button class="v6-note" onclick="V6.unitHelp('${e(id)}')"><span class="v6-ava">А</span><span>Застряли на этом шаге? Спросите Алёшу.</span></button></div>`;
-    box.innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.openRole('${e(t.group)}','unit')">${e((role(t.group) || {}).title || '')}</a><span>/</span><a onclick="V6.openTask('${e(t.id)}','unit')">${e(t.title)}</a><span>/</span><span>Задание</span></nav>
+    box.innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.openRole('${e(groupRole(t.group))}','unit')">${e((role(groupRole(t.group)) || {}).title || '')}</a><span>/</span><a onclick="V6.openTask('${e(t.id)}','unit')">${e(t.title)}</a><span>/</span><span>Задание</span></nav>
       <section class="v6-uhead">${u.review ? '<span class="v6-eyebrow">Черновик на согласовании</span>' : ''}<h1 class="v6-d">${e(u.title)}</h1><p class="v6-phero-lead">${e(u.result || '')}</p>
         <span class="v6-tags">${[u.minutes ? '≈ ' + u.minutes + ' мин' : '', u.level || '', ...(u.tools || []), u.noVpn ? 'без VPN' : ''].filter(Boolean).map((x) => `<span class="v6t is-grey">${e(x)}</span>`).join('')}${(u.needs || []).length ? `<span class="v6t">понадобится: ${e(u.needs.join(', '))}</span>` : ''}</span></section>
       <div class="v6-ugrid"><aside class="v6-lside"><span class="v6-lside-t">Шаги</span><nav class="v6-lsteps">${stepsNav}</nav>
@@ -1588,7 +1593,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       document.getElementById('v6-co').innerHTML = `<section class="v6-phero"><div class="v6-phero-text"><span class="v6-eyebrow">Для компаний</span><h1 class="v6-d">ИИ для вашей команды</h1>
           <p class="v6-phero-lead">Сотрудники учатся на платформе бесплатно, каждый по своей роли. Мы подключаемся, когда нужно быстрее, глубже или под ваши процессы.</p>
           <span class="v6-btns" style="margin-top:28px">${go('hero', 'Обсудить задачу', 'is-accent v6-btn-lg')}</span></div>${art('icon-kompanii', 'v6-phero-art')}</section>
-        <section class="v6-psec"><div class="v6-sec-head"><div><h2 class="v6-psec-h">Три формата</h2><p class="v6-meta">Обучение с ведущим и внедрение: услуги агентства madzhitov.ru.</p></div></div>
+        <section class="v6-psec"><div class="v6-sec-head"><div><h2 class="v6-psec-h">Три формата</h2><p class="v6-meta">Обучение с ведущим и внедрение ведёт Руслан Маджитов с командой.</p></div></div>
           <div class="v6-grid3">
             <div class="v6-task"><span class="v6-meta">Бесплатно</span><h3>Своими силами</h3><p>Отправьте команде ссылку на роль или путь. Каждый проходит задания сам и уносит результат.</p>
               <ul class="v6-co-list"><li>Роли по отделам</li><li>Общий старт для всех</li><li>Без регистрации</li></ul><button class="v6b is-soft is-sm" onclick="V6.open('roles')">Подобрать роли</button></div>

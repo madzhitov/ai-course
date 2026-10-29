@@ -1,0 +1,10 @@
+# Beget (Apache за nginx). Vercel-превью и зеркало GitHub этот файл не читают.
+RewriteEngine On
+
+# www.ai.madzhitov.ru → ai.madzhitov.ru одним прыжком (иначе поисковик видит копию сайта)
+RewriteCond %{HTTP_HOST} ^www\.ai\.madzhitov\.ru$ [NC]
+RewriteRule ^(.*)$ https://ai.madzhitov.ru/$1 [R=301,L]
+
+# Папка без слэша → сразу https со слэшем (Apache сам уводил на http://, получалось два прыжка)
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.*[^/])$ https://ai.madzhitov.ru/$1/ [R=301,L]
