@@ -319,6 +319,11 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     root.addEventListener('mouseleave', () => { vx.paused = root.contains(document.activeElement); vxApply(); });
     root.addEventListener('focusin', () => { vx.paused = true; vxApply(); });
     root.addEventListener('focusout', (ev) => { if (!root.contains(ev.relatedTarget) && !root.matches(':hover')) { vx.paused = false; vxApply(); } });
+    root.addEventListener('click', (ev) => {
+      if (!matchMedia('(hover: none)').matches || ev.target.closest('button, a, input, textarea')) return;
+      vx.paused = !vx.paused;
+      vxApply();
+    });
     if ('IntersectionObserver' in window) new IntersectionObserver((en) => { vx.seen = en[0].isIntersecting; }).observe(root);
     vxApply();
     if (vx.reduced) return;
