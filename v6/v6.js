@@ -267,7 +267,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       <input id="${id}" type="text" placeholder="Опишите задачу своими словами" autocomplete="off">
       <button class="v6b" type="submit">Подобрать</button>
     </form><div class="v6-results" hidden aria-live="polite"></div>`;
-  // ---------- витрина «Вы уносите» на главной (data/home-examples.json — условные примеры, TODO: реальные выходы задач) ----------
+  // ---------- витрина «Вы уносите»: учебные примеры из заданий, данные условные ----------
   let HX = null, hxTab = 'unit';
   const loadHX = () => (HX ? Promise.resolve(HX) : fetch(dataUrl('home-examples.json')).then((r) => (r.ok ? r.json() : { tabs: [] })).catch(() => ({ tabs: [] })).then((d) => { HX = d; return d; }));
   function showOpen(t) {
@@ -281,8 +281,8 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
   function showPanel(t) {
     if (t.type === 'bars') return `<div class="v6-bars">${t.rows.map((r, k) => `<div class="v6-bar${r.negative ? ' is-neg' : ''}"${at(3000 + k * 250)}><span class="v6-bar-h"><b>${e(r.name)}</b><b class="v6-bar-v">${e(r.value)}</b></span><span class="v6-bar-t"><i style="--w:${Number(r.pct) || 0}%"></i></span></div>`).join('')}</div>`;
     if (t.type === 'reviews') return `<div class="v6-show-list">${t.items.map((x, k) => `<div class="v6-show-item"${at(3000 + k * 600)}><span class="v6-show-q"><span class="v6-stars" aria-label="оценка ${x.stars} из 5">${'★'.repeat(x.stars)}${'☆'.repeat(5 - x.stars)}</span><span>«${e(x.quote)}»</span></span><p>${e(x.answer)}</p></div>`).join('')}<p class="v6-meta"${at(4400)}>${e(t.note || '')}</p></div>`;
-    if (t.type === 'resume') return `<div class="v6-show-list"><div class="v6-show-item"${at(3000)}><span class="v6-show-q"><b>${e(t.name)}</b><span>${e(t.role)}</span>${t.pill ? `<span class="v6-pill-s">${e(t.pill)}</span>` : ''}</span><ul>${t.points.map((x, k) => `<li${at(3400 + k * 500)}>${e(x)}</li>`).join('')}</ul></div><p class="v6-meta"${at(4400)}>${e(t.note || '')}</p></div>`;
-    if (t.type === 'contract') return `<div class="v6-show-list"><p class="v6-meta" style="margin:0"${at(3000)}>${e(t.doc || '')}</p>${t.items.map((x, k) => `<div class="v6-show-item"${at(3300 + k * 600)}><span class="v6-show-q"><b>${e(x.where)}</b><span>${e(x.risk)}</span></span><p>${e(x.ask)}</p></div>`).join('')}<p class="v6-meta"${at(4400)}>${e(t.note || '')}</p></div>`;
+    if (t.type === 'listing') return `<div class="v6-show-list"><div class="v6-show-item"${at(3000)}><span class="v6-show-q"><b>${e(t.name)}</b><span>${e(t.role)}</span>${t.pill ? `<span class="v6-pill-s">${e(t.pill)}</span>` : ''}</span><ul>${t.points.map((x, k) => `<li${at(3400 + k * 500)}>${e(x)}</li>`).join('')}</ul></div><p class="v6-meta"${at(4400)}>${e(t.note || '')}</p></div>`;
+    if (t.type === 'report') return `<div class="v6-show-list">${t.items.map((x, k) => `<div class="v6-show-item"${at(3000 + k * 500)}><span class="v6-show-q"><b>${e(x.channel)}</b></span><p>${e(x.action)}</p></div>`).join('')}<p class="v6-meta"${at(4400)}>${e(t.note || '')}</p></div>`;
     return '';
   }
   // ---------- витрина первого экрана: «Вы приносите → Собираем → Вы уносите», 4 задачи по кругу (ТЗ главной v2, этап 1) ----------
@@ -408,7 +408,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
 
   // ---------- главная v2: «Приносите задачу» и «Кто вы?» (задания ролей — из данных) ----------
   function howBlock() {
-    const n = D.units.filter(hasSteps).length;
+    const n = D.units.filter((u) => hasSteps(u) && !u.review).length;
     const card = (ico, t, p, acc) => `<div class="v6-how-c"><span class="v6-how-i${acc ? ' is-acc' : ''}" aria-hidden="true">${ico}</span><h3>${t}</h3><p>${p}</p></div>`;
     return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Приносите задачу.<br>Уносите готовую&nbsp;вещь.</h2><p>Каждая задача собрана заранее. Думать, с чего начать, не нужно: всё уже лежит внутри.</p></div>
       <div class="v6-how">
@@ -421,17 +421,18 @@ ${rv.trim() || '[вставьте отзывы]'}`;
   }
   function whoBlock2() {
     const feat = ((HX && HX.tabs) || []).map((t) => t.unit);
-    const roles = [['seller', 'Маркетплейсы и свои каналы'], ['creator', 'Боты, приложения, агенты'], ['self', 'Еда, дети, поездки, документы'], ['product', 'Исследования, приоритеты, документация']];
+    const roles = [['seller', 'Маркетплейсы и свои каналы'], ['self', 'Еда, дети, поездки, документы'], ['product', 'Исследования, приоритеты, документация']];
     const cards = roles.map(([id, sub]) => {
       const r = role(id); if (!r) return '';
-      const us = r.taskGroup ? D.units.filter((u) => hasSteps(u) && D.tasks[u.task] && D.tasks[u.task].group === r.taskGroup) : [];
+      const us = r.taskGroup ? D.units.filter((u) => hasSteps(u) && !u.review && D.tasks[u.task] && D.tasks[u.task].group === r.taskGroup) : [];
       us.sort((a, b) => ((feat.indexOf(b.id) >= 0) - (feat.indexOf(a.id) >= 0)) || (feat.indexOf(a.id) - feat.indexOf(b.id)));
       const rows = us.slice(0, 3).map((u) => `<a class="v6-who2-t" href="#unit-${e(u.id)}" onclick="V6.openUnit('${e(u.id)}','home-role'); return false;"><span>${e(D.tasks[u.task].title)}</span><span class="v6-meta">${u.minutes ? u.minutes + ' мин' : ''}</span></a>`).join('');
+      if (!rows) return '';
       return `<article class="v6-who2-c"><a class="v6-who2-h" href="#role-${id}" onclick="V6.openRole('${id}','home'); return false;">${ART_WEBP.has('role-' + id) ? `<span class="v6-who2-img"><img src="${artSrc('role-' + id)}" alt="" loading="lazy"></span>` : ''}<b>${e(id === 'product' ? 'Продакт или проджект' : r.title)}</b><span class="v6-meta">${e(sub)}</span></a>
-        <div class="v6-who2-l">${rows || '<span class="v6-meta">Задачи собираются</span>'}</div></article>`;
+        <div class="v6-who2-l">${rows}</div></article>`;
     }).join('');
-    return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Кто вы?</h2><p>Выберите роль: первыми покажем её задачи.</p></div>
-      <div class="v6-who2">${cards}</div><p class="v6-how-f"><button class="v6-link" onclick="V6.open('roles')">Все роли: маркетолог, специалист, владелец бизнеса →</button></p></section>`;
+    return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Больше задач по вашей роли</h2><p>Для себя, продукта и проекта — тоже есть готовые задания. А если хотите собрать бота или приложение, начните с обучения.</p></div>
+      <div class="v6-who2">${cards}</div><p class="v6-how-f"><button class="v6-link" onclick="V6.open('roles')">Все роли и обучение →</button></p></section>`;
   }
 
   // ---------- главная v2, этап 3: «Больше, чем задача» и «Кто это собирает» (тексты из CONTENT.md ТЗ) ----------
@@ -459,7 +460,6 @@ ${rv.trim() || '[вставьте отзывы]'}`;
     const nLessons = [...LESSONS, ...TRACK_LESSONS].filter((l) => l.content).length;
     const nTrails = (D.paths.trails || []).length;
     const big = (img, label, title, text, on) => `<a class="v6-learn-c" href="#" onclick="${on}; return false;"><span class="v6-learn-img"><img src="${artSrc(img)}" alt="" loading="lazy"></span><span class="v6-learn-b"><span class="v6-meta">${label}</span><b>${title}</b><span>${text}</span><span class="v6-learn-go">Идти →</span></span></a>`;
-    const small = (title, text, on) => `<a class="v6-learn-s" href="#" onclick="${on}; return false;"><span><b>${title}</b><span class="v6-meta">${text}</span></span><span class="v6-meta">скоро</span></a>`;
     const trails = (D.paths.trails || []).map((t) => `<a href="#section-${e(t.id)}" onclick="openSection('${e(t.id)}'); return false;">${e(t.title)}</a>`).join('');
     return `<section class="v6-sec"><div class="v6-sec-head"><div><span class="v6-eyebrow">Обучение</span><h2 class="v6-h2" style="margin-top:16px !important">Когда захочется глубже</h2></div><p>Задачи дают результат сегодня. Уроки и пути дают навык: от первых промптов до своих приложений на ИИ. Каждый уровень замыкается Вехой, вещью, которую вы собрали сами.</p></div>
       <div class="v6-learn-facts"><span><b>${nLessons}</b> ${pluralUrok(nLessons)} с практикой</span><span><b>${nTrails}</b> ${plural(nTrails, 'тропинка', 'тропинки', 'тропинок')} по интересам</span><span><b>Алёша</b> объяснит урок на вашем примере</span>
@@ -467,10 +467,6 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       <div class="v6-learn">
         ${big('main-path', 'Для всех', e(D.paths.main.title), 'Начинается с общей базы ИИ: пять уроков. Дальше четыре уровня, от пользователя до инженера.', "V6.openMainPath('home')")}
         ${big('seller-path', 'Продаю онлайн', 'От селлера к бренду', 'Паспорт товара, своя база, P&amp;L магазина. Три этапа, три Вехи.', "V6.openSellerPath('home')")}
-      </div>
-      <div class="v6-learn-row">
-        ${small('Путь продакта', 'исследование, приоритеты, метрики, управление работой', "V6.openProductPath('home')")}
-        ${small('Путь маркетолога', 'аудитория, воронка, контент, измерение эффекта', "V6.openMarketingPath('home')")}
       </div>
       ${trails ? `<p class="v6-roleline" style="margin-top:20px"><span>Тропинки рядом с путём:</span>${trails}</p>` : ''}</section>`;
   }
@@ -503,21 +499,23 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       [...el.children].forEach((n) => { if (n !== pre) n.remove(); });
       pre.removeAttribute('id');
       document.documentElement.classList.remove('not-home'); // неизвестный адрес (#что-то) тоже открывает главную
-      const pn = document.getElementById('v6-pre-n');
-      if (pn) pn.textContent = `${[...LESSONS, ...TRACK_LESSONS].filter((l) => l.content).length} уроков с практикой`;
     } else el = shell(`<div class="v6c" id="v6-home"><div id="v6-strip"></div><section class="v6-hero2">
         <div class="v6-hero2-l">
-          <span class="v6-badge"><b>Бесплатно</b> · на русском · сервисы без VPN</span>
-          <h1 class="v6-d v6-home-h1">Готовые решения для&nbsp;работы и&nbsp;для&nbsp;себя.</h1>
-          <p class="v6-hero2-lead">Выберите задачу, подставьте свои данные и через час заберите результат: таблицу, текст, план или бота. Промпт и чек-лист уже внутри, где нужно, есть и шаблон.</p>
-          <form class="v6-hask" onsubmit="return V6.ask(this)" role="search"><label for="v6-hask-in">Какая у вас задача?</label>
-            <span class="v6-hask-row"><input id="v6-hask-in" type="text" placeholder="например, ответить на 40 отзывов" autocomplete="off"><button class="v6b is-accent" type="submit">Подобрать</button></span></form><div class="v6-results" hidden aria-live="polite"></div>
-          <p class="v6-roleline"><span>Или начните с роли:</span>${[['seller', 'продаю онлайн'], ['creator', 'создаю на ИИ'], ['self', 'для себя'], ['product', 'продакт или проджект']].map(([id, t]) => `<a href="#role-${id}" onclick="V6.openRole('${id}','home'); return false;">${t}</a>`).join('')}</p>
-          <div class="v6-hlearn"><span><b>Или учиться по порядку</b><span class="v6-meta">${[...LESSONS, ...TRACK_LESSONS].filter((l) => l.content).length} уроков с практикой</span></span><span class="v6-btns"><button type="button" class="v6b is-soft is-sm" onclick="openLesson(1)">Начать с урока 1</button><button type="button" class="v6b is-soft is-sm" onclick="V6.open('paths')">Все пути</button></span></div>
+          <span class="v6-badge"><b>Артефакты, а не сертификаты</b></span>
+          <h1 class="v6-d v6-home-h1">ИИ-задания для тех, кто продаёт онлайн</h1>
+          <p class="v6-hero2-lead">Ответы на отзывы, карточки и юнит-экономика на ваших данных за час. Готовый промпт и проверка по чек-листу, в ГигаЧате или Алисе.</p>
+          <a class="v6b is-accent v6-home-start" href="#unit-u-seller-reviews" onclick="V6.openUnit('u-seller-reviews','home-primary'); return false;">Ответить на отзывы за 15 минут</a>
+          <form class="v6-hask" onsubmit="return V6.ask(this)" role="search"><label for="v6-hask-in">или найдите свою задачу</label>
+            <span class="v6-hask-row"><input id="v6-hask-in" type="text" placeholder="например, отзывы" autocomplete="off"><button class="v6b is-soft" type="submit">Найти</button></span></form><div class="v6-results" hidden aria-live="polite"></div>
+          <p class="v6-roleline"><span>Ваша роль:</span><a href="#role-seller" onclick="V6.chooseRole('seller','home'); return false;">продаю онлайн</a><a href="#role-marketing" onclick="V6.chooseRole('marketing','home'); return false;">маркетолог</a></p>
+          <p class="v6-home-facts">Бесплатно · <span id="v6-pre-n">49 заданий</span> · на русском</p>
         </div>
         <div class="v6-show" id="v6-show"></div>
       </section><div id="v6-home-rest"></div></div>`);
     Promise.all([load(), loadHX()]).then(() => {
+      const pn = document.getElementById('v6-pre-n');
+      const nReady = D.units.filter((u) => hasSteps(u) && !u.review).length;
+      if (pn) pn.textContent = `${nReady} ${plural(nReady, 'задание', 'задания', 'заданий')}`;
       const st = homeState();
       track('home-state', { state: st });
       const r = resume();

@@ -922,6 +922,8 @@ body.v6 .lesson-content .v6-page .v6-lsheet .lesson-view a:not(.v6b):not(.v6t) {
 .v6-badge b { color:var(--ink); font-weight:600; }
 body.v6 .lesson-content .v6-page h1.v6-d.v6-home-h1 { font-size:clamp(42px,5.2vw,72px) !important; line-height:1.02 !important; margin:0 !important; hyphens:manual !important; -webkit-hyphens:manual !important; }
 .v6-hero2-lead { margin:0; max-width:520px; font-size:19px; line-height:1.5; color:var(--text-2); }
+.v6-home-start { align-self:flex-start; white-space:normal; text-align:center; padding:12px 24px; }
+.v6-home-facts { margin:0; font-size:14px; color:var(--text-2); }
 .v6-hask { display:flex; flex-direction:column; gap:10px; max-width:560px; }
 .v6-hask label { font-size:14px; font-weight:600; }
 .v6-hask-row { display:flex; gap:6px; background:var(--surface); border-radius:18px; padding:6px; }
@@ -956,6 +958,15 @@ body.v6 .lesson-content .v6-page .v6-show-take { margin:0; font-family:var(--fon
 .v6-show-item ul { padding-left:18px; }
 .v6-stars { font-size:13px; letter-spacing:2px; color:var(--accent); }
 @media (max-width:900px) { .v6-hero2 { grid-template-columns:1fr; padding-top:32px; } }
+@media (max-width:720px) {
+  .v6-hero2 { gap:28px; padding-top:24px; }
+  .v6-hero2-l { gap:18px; }
+  body.v6 .lesson-content .v6-page h1.v6-d.v6-home-h1 { font-size:36px !important; line-height:1.08 !important; }
+  .v6-hero2-lead { font-size:17px; line-height:1.45; }
+  .v6-home-start { width:100%; box-sizing:border-box; font-size:17px; }
+  .v6-hask-row .v6b { padding:0 18px; font-size:16px; }
+  .v6-roleline { gap:8px 12px; }
+}
 /* главная v2: «Приносите задачу» и «Кто вы?» */
 .v6-how { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; }
 .v6-how-c { background:var(--surface); border-radius:24px; padding:22px; display:flex; flex-direction:column; gap:10px; }

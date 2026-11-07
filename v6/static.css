@@ -8,7 +8,9 @@ html:root {
 body { background:#F3F4F7 !important; color:#16161A; font-family:'Golos Text','PT Sans',system-ui,sans-serif !important; }
 .v6s-h { background:#fff; border-bottom:1px solid #E6E7EC; }
 .v6s-in { max-width:1240px; margin:0 auto; padding:0 40px; height:72px; display:flex; align-items:center; gap:32px; box-sizing:border-box; }
-.v6s-logo { display:inline-flex; }
+.v6s-logo { display:inline-flex; flex-direction:column; gap:5px; }
+.v6s-tagline { font-size:12px; font-weight:500; color:var(--text-2, #5A5B63); white-space:nowrap; }
+@media (max-width:600px) { .v6s-tagline { display:none; } }
 .v6s-logo img { height:24px; width:auto; display:block; }
 .v6s-nav { display:flex; gap:24px; margin-left:auto; }
 .v6s-nav a { color:#16161A; text-decoration:none; font-size:17px; }
