@@ -719,7 +719,8 @@ body.v6 .lesson-content .v6-page .v6-ucard-t { font-family:var(--font-display) !
 body.v6 .lesson-content .v6-page .v6-ucard p { margin:0; font-size:19px; line-height:1.55; color:var(--text-2); }
 .v6-uinput { display:flex; flex-direction:column; gap:6px; }
 .v6-uinput input { height:56px; border:0; border-radius:16px; background:var(--ground); padding:0 18px; font:inherit; font-size:18px; color:var(--ink); }
-.v6-uinput input:focus, .v6-nbsearch input:focus { outline:2px solid var(--accent); }
+.v6-uinput textarea { width:100%; box-sizing:border-box; min-height:112px; resize:vertical; border:0; border-radius:16px; background:var(--ground); padding:16px 18px; font:inherit; font-size:18px; line-height:1.5; color:var(--ink); }
+.v6-uinput input:focus, .v6-uinput textarea:focus, .v6-nbsearch input:focus { outline:2px solid var(--accent); }
 .v6-uprompt { background:var(--ground); border-radius:24px; padding:20px 22px; display:flex; flex-direction:column; gap:10px; }
 .v6-uprompt-h { display:flex; justify-content:space-between; align-items:center; gap:12px; }
 .v6-uprompt pre { margin:0; white-space:pre-wrap; font-family:var(--font-mono); font-size:15px; line-height:1.6; color:var(--ink); }
@@ -735,7 +736,7 @@ body.v6 .lesson-content .v6-page .v6-ucard p { margin:0; font-size:19px; line-he
 .v6-showf .v6-showf-ok { flex-direction:row; align-items:center; gap:10px; }
 .v6-showf-hp { position:absolute !important; left:-9999px; width:1px; height:1px; overflow:hidden; }
 body.v6 .v6-showf .v6-showf-msg { margin:0 !important; font-size:14px !important; color:var(--text-3) !important; }
-@media (max-width:900px) { .v6-ugrid { grid-template-columns:1fr; } .v6-ugrid .v6-lside { position:static; } .v6-ucard { padding:28px 22px; border-radius:28px; } }
+@media (max-width:900px) { .v6-ugrid { grid-template-columns:minmax(0,1fr); } .v6-ugrid .v6-lside { position:static; } .v6-ucard { padding:28px 22px; border-radius:28px; } .v6-ucard .v6-btns > .v6b { max-width:100%; white-space:normal; text-align:center; } }
 
 /* ===== тетрадь (Notebook.dc.html) ===== */
 .v6-nbgrid { display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:32px; align-items:start; padding-bottom:112px; }

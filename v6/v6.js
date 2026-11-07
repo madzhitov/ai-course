@@ -5,7 +5,7 @@
    после основного скрипта и до разбора адреса. */
 (function () {
   'use strict';
-  const KEY = { brandStage: 'v6-brand-stage', role: 'v6-role', channels: 'v6-channels', last: 'v6-last-visit', units: 'v6-units', notes: 'v6-notes', dates: 'v6-done-dates', tgOffer: 'v6-tg-offer', checks: 'v6-checks' };
+  const KEY = { brandStage: 'v6-brand-stage', role: 'v6-role', channels: 'v6-channels', last: 'v6-last-visit', activity: 'v6-last-activity', units: 'v6-units', notes: 'v6-notes', dates: 'v6-done-dates', tgOffer: 'v6-tg-offer', checks: 'v6-checks' };
   const jget = (k) => { try { return JSON.parse(ls.get(k) || '{}') || {}; } catch (_) { return {}; } };
   const jset = (k, v) => ls.set(k, JSON.stringify(v));
   const LONG_AWAY_DAYS = 21;
@@ -30,7 +30,8 @@
   const RANK = { e: 0, i: 1, c: 2, p: 4 };
   const rank = (id) => /^\d+$/.test(String(id)) ? 3 : (RANK[String(id)[0]] ?? 5);
   const byNoCode = (ids) => [...ids].sort((a, b) => rank(a) - rank(b));
-  const anyProgress = () => Object.keys(progress || {}).some((k) => progress[k] === true);
+  const lessonProgress = () => Object.keys(progress || {}).some((k) => progress[k] === true);
+  const anyProgress = () => lessonProgress() || Object.keys(jget(KEY.units)).length > 0 || jget(KEY.activity).kind === 'lesson';
 
   // строка списка как в макете: номер · название · справа счётчик/статус; кликается вся строка
   function rowList(items) {
@@ -178,7 +179,23 @@
 
   // ---------- подбор задачи (поиск, без вызова модели) ----------
   function norm(s) { return String(s).toLowerCase().replace(/ё/g, 'е').replace(/[^a-zа-я0-9 ]+/g, ' '); }
-  function stems(s) { return norm(s).split(/\s+/).filter((w) => w.length > 2).map((w) => w.length > 5 ? w.slice(0, w.length - 2) : w); }
+  function stems(s) {
+    const words = norm(s).split(/\s+/).filter((w) => w.length > 2);
+    const meaningful = words.filter((w) => !['хочу', 'нужно', 'нужен', 'сделать', 'написать', 'составить', 'помоги', 'пожалуйста', 'как', 'для', 'мне', 'мой', 'мои'].includes(w));
+    return (meaningful.length ? meaningful : words).map((w) => {
+      const stem = w.length > 4 ? w.replace(/(иями|ами|ями|ого|ему|ому|ыми|ими|ий|ый|ой|ая|яя|ое|ее|ые|ие|ов|ев|ам|ям|ах|ях|ом|ем|ы|и|а|я|у|ю|е|ь)$/, '') : w;
+      return stem.length >= 3 ? stem : w;
+    });
+  }
+  function searchScore(title, query) {
+    const words = stems(title);
+    return query.reduce((n, q) => n + (words.some((w) => w === q || (q.length >= 5 && w.startsWith(q))) ? 1 : 0), 0);
+  }
+  function taskSearchButton(t) {
+    const units = unitsOf(t.id).filter((u) => hasSteps(u) && !u.review);
+    const action = units.length === 1 ? `V6.openUnit('${e(units[0].id)}','search')` : `V6.openTask('${e(t.id)}','search')`;
+    return `<button type="button" onclick="${action}"><span>${e(t.title)}</span><span class="v6-meta">${units.length === 1 ? units[0].minutes + ' мин' : 'задача'}</span></button>`;
+  }
   function ask(formEl) {
     const input = formEl.querySelector('input');
     const q = input.value.trim();
@@ -187,14 +204,14 @@
     if (!D) { load().then(() => ask(formEl)); return false; } // главная рисует форму до загрузки данных
     track('task-ask', { length: q.length });
     const qs = stems(q);
-    const score = (title) => { const t = norm(title); return qs.reduce((n, w) => n + (t.includes(w) ? 1 : 0), 0); };
+    const score = (title) => searchScore(title, qs);
     const items = [];
-    Object.values(D.tasks).forEach((t) => { if (taskReady(t.id)) items.push({ s: score(t.title) + 0.5, html: `<button type="button" onclick="V6.openTask('${e(t.id)}','search')"><span>${e(t.title)}</span><span class="v6t is-sm">задача</span></button>` }); });
+    Object.values(D.tasks).forEach((t) => { if (taskReady(t.id)) items.push({ s: score(t.title) + 0.5, html: taskSearchButton(t) }); });
     [...LESSONS, ...TRACK_LESSONS].filter((l) => l.content).forEach((l) => items.push({ s: score(l.title), html: `<button type="button" onclick="openLesson(${lessonArg(l.id)})"><span>${e(l.title)}</span><span class="v6-meta">урок ${e(l.id)}</span></button>` }));
     const hits = items.filter((x) => x.s >= 1).sort((a, b) => b.s - a.s).slice(0, 6);
     out.hidden = false;
     out.innerHTML = hits.length ? hits.map((x) => x.html).join('')
-      : `<p>Готового пока не нашлось.</p><button type="button" onclick="aleshaToggle()"><span>Спросить Алёшу</span>${CHEV}</button>`;
+      : `<p>По этому запросу пока ничего нет. Можно начать с одной из частых задач:</p>${['u-seller-reviews', 'u-seller-description', 'u-unit-economics-channels'].map((id) => { const u = unitById(id); return `<button type="button" onclick="V6.openUnit('${e(id)}','search-empty')"><span>${e(u.title)}</span><span class="v6-meta">${u.minutes} мин</span></button>`; }).join('')}<button type="button" onclick="aleshaToggle()"><span>Спросить Алёшу</span>${CHEV}</button>`;
     track('search', { results: hits.length ? '1+' : '0' });
     return false;
   }
@@ -217,10 +234,21 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     return 'A';
   }
 
-  function resume() {
+  function resume(lessonsOnly) {
+    if (!lessonsOnly && D) {
+      const last = jget(KEY.activity);
+      const lesson = last.kind === 'lesson' && lessonOf(last.id);
+      if (lesson && lesson.content) return { ...lesson, active: true };
+      const entries = Object.entries(jget(KEY.units)).filter(([id]) => hasSteps(unitById(id)))
+        .sort((a, b) => (Date.parse(b[1].updatedAt || b[1].date) || 0) - (Date.parse(a[1].updatedAt || a[1].date) || 0));
+      const active = entries.find(([, st]) => st.result !== 'yes');
+      const u = active ? unitById(active[0]) : entries.length ? nextUnit(unitById(entries[0][0])) : null;
+      if (u) return { ...u, unit: true, active: !!active, step: active ? Math.min((active[1].step || 0) + 1, u.steps.length) : 1 };
+    }
     const l = resumeLesson();
     return l || lessonOf(1);
   }
+  const resumeAction = (r, from) => r.unit ? `V6.openUnit('${e(r.id)}','${from}')` : `openLesson(${lessonArg(r.id)})`;
   const resumeLabel = (l) => typeof l.id === 'number' ? `Урок ${l.id}. ${l.title}` : l.title;
 
   function nextSellerTask() {
@@ -498,7 +526,10 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       // а «где вы остановились» — тонкой полосой над ним, только у тех, кто уже начинал
       let strip = '';
       const bar = (label, title, btn) => `<div class="v6-resume"><span class="v6-resume-t"><span class="v6-meta">${label}</span><b>${title}</b></span><span class="v6-btns">${btn}</span></div>`;
-      if (st === 'B' || st === 'E') {
+      if (r.unit) {
+        strip = bar(r.active ? `Продолжить · шаг ${r.step} из ${r.steps.length}` : 'Следующее задание', e(r.title),
+          `<button class="v6b is-accent is-sm" onclick="${resumeAction(r, 'home-resume')}">${r.active ? 'Продолжить задание' : 'Начать'}</button>`);
+      } else if (r.active || st === 'B' || st === 'E') {
         const awayWeeks = prevVisit ? Math.floor((Date.now() - new Date(prevVisit).getTime()) / 6048e5) : 0;
         strip = bar(st === 'E' ? `Вас не было ${awayWeeks} ${awayWeeks === 1 ? 'неделю' : awayWeeks < 5 ? 'недели' : 'недель'} · где вы остановились` : 'С возвращением · где вы остановились', e(resumeLabel(r)),
           `<button class="v6b is-accent is-sm" onclick="openLesson(${lArg})">Продолжить урок</button>`);
@@ -585,16 +616,18 @@ ${rv.trim() || '[вставьте отзывы]'}`;
           const group = r.taskGroup ? D.groups.find((g) => g.id === r.taskGroup) : null;
           const aiGroup = r.id === 'self' ? D.groups.find((g) => g.id === 'ai') : null;
           const ready = ls_.filter((l) => l.content);
-          body = `<div class="v6-role-hero"><div><span class="v6t ${r.state === 'growing' ? 'is-grey' : ''}">${r.state === 'growing' ? 'Роль растёт' : 'Роль'}</span><h1 class="v6-d" style="margin-top:20px !important">${e(r.title)}</h1>
+          const roleGroups = [group, aiGroup].filter(Boolean).map((g) => g.id);
+          const roleReady = D.units.filter((u) => hasSteps(u) && !u.review && roleGroups.includes(D.tasks[u.task].group) && (r.id !== 'project' || /prioritize|manage/.test(D.tasks[u.task].direction.id)));
+          const taskBlock = roleReady.length ? `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Готовые задания</h2><p>Готово ${roleReady.length} ${plural(roleReady.length, 'задание', 'задания', 'заданий')}, начать можно сразу. Остальные допишем.</p></div></div><div class="v6-dir">${roleReady.map((u, i) => `${D.tasks[u.task].group === 'ai' && (i === 0 || D.tasks[roleReady[i - 1].task].group !== 'ai') ? '<h3>ИИ-практика</h3>' : ''}<a class="v6-dr" href="#unit-${e(u.id)}" onclick="V6.openUnit('${e(u.id)}','role'); return false;"><span>${unitState(u.id).result === 'yes' ? '✓ ' : ''}${e(u.title)}</span><span class="m">${u.minutes} мин</span></a>`).join('')}</div></section>` : '';
+          body = `<div class="v6-role-hero"><div><span class="v6t ${r.state === 'growing' ? 'is-grey' : ''}">${roleReady.length ? 'Готовые задания' : r.state === 'growing' ? 'Роль растёт' : 'Роль'}</span><h1 class="v6-d" style="margin-top:20px !important">${e(r.title)}</h1>
               <p class="v6-lead">${e(r.description)}.</p>${pick}</div>${ART_WEBP.has('role-' + r.id) ? art('role-' + r.id, 'v6-phero-art') : '<div class="v6-ph" aria-hidden="true">[3D: объект роли]</div>'}</div>
-            ${r.state === 'growing' ? `<section class="v6-sec" style="margin-top:56px"><div class="v6-card"><h2 class="v6-h3">Что уже есть и что будет</h2><p class="v6-lead" style="font-size:18px">Сейчас для этой роли ${ready.length} ${pluralUrok(ready.length)}${routes.length ? ` и ${routes.length === 1 ? 'готовый маршрут' : 'готовые маршруты'}` : ''}. Задачи и короткие задания появятся — роль растёт.</p></div></section>` : ''}
+            ${taskBlock}
+            ${r.state === 'growing' && !roleReady.length ? `<section class="v6-sec" style="margin-top:56px"><div class="v6-card"><h2 class="v6-h3">Что уже есть и что будет</h2><p class="v6-lead" style="font-size:18px">Сейчас для этой роли ${ready.length} ${pluralUrok(ready.length)}${routes.length ? ` и ${routes.length === 1 ? 'готовый маршрут' : 'готовые маршруты'}` : ''}. Задачи и короткие задания появятся — роль растёт.</p></div></section>` : ''}
             ${routes.length ? `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Готовые маршруты</h2></div><div class="v6-grid2">${routes.map((x) => `<div class="v6-task"><h3>${e(stripEmoji(x.title))}</h3><p>${e(x.description || '')}</p><span class="v6-meta">${e(x.meta || '')}</span><button class="v6b is-soft is-sm" onclick="${x.lessons && x.lessons.length ? `openLesson(${lessonArg(x.lessons[0])})` : `openSection('${e(x.section || 'main')}')`}">Начать маршрут</button></div>`).join('')}</div></section>` : ''}
             ${r.id === 'creator' ? `<section class="v6-sec"><div class="v6-dark v6-dark-row"><div><span class="v6-meta">Путь роли</span><h2 class="v6-h2" style="margin-top:12px !important">${e(D.paths.main.title)}</h2><p style="margin-top:12px">Общий старт из пяти уроков, потом четыре уровня. Каждый замыкается Вехой.</p></div><button class="v6b is-accent" onclick="V6.open('paths')">Открыть путь</button></div></section>`
               : `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Уроки роли</h2></div><div class="v6-card"><ul class="v6-steps">${ls_.map((l) => l.content ? `<li class="${done(l.id) ? 'is-done' : ''}"><a onclick="openLesson(${lessonArg(l.id)})"><span class="dot">${done(l.id) ? '✓' : ''}</span><span>${e(l.title)}</span><span class="v6-meta">${l.duration ? l.duration + ' мин' : ''}</span></a></li>` : `<li><span class="row"><span class="dot"></span><span class="v6-meta">${e(l.title)}</span><span class="v6-meta">пишется</span></span></li>`).join('')}</ul></div></section>`}
             ${DATA_PATHS[r.taskGroup] ? (() => { const x = dataPath(r.taskGroup); return `<section class="v6-sec"><a class="v6-next v6-dark" href="#path-${x.key}" onclick="V6.${x.key === 'product' ? 'openProductPath' : 'openMarketingPath'}('role'); return false;"><span class="v6-next-in"><span class="v6-next-l">Путь роли · скоро</span><span class="v6-next-t">${e(x.title)}</span><span class="v6-next-p">${r.id === 'project' ? 'Для проджекта главное — этапы «Приоритизация» и «Управление работой».' : x.stages.map((s_, i) => i ? s_.title.toLowerCase() : s_.title).join(', ') + '.'}</span></span><span class="v6b is-accent v6-btn-xl">Открыть путь</span></a></section>`; })() : ''}
             ${r.id === 'owner' ? `<section class="v6-sec"><a class="v6-next v6-dark" href="#brand-stages" onclick="V6.open('brand-stages'); return false;"><span class="v6-next-in"><span class="v6-next-l">Стадии бренда · диагностика за 3 минуты</span><span class="v6-next-t">На какой стадии ваш бренд и что делать первым</span></span>${CHEV}</a></section>` : ''}
-            ${group ? `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Задачи роли</h2><p>Направления и задачи уже разложены, к каждой — методы. Короткие способы решения появятся.</p></div></div><div class="v6-dirs">${group.directions.filter((d) => r.id !== 'project' || /prioritize|manage/.test(d.id)).map((d) => `<div class="v6-dir"><h3>${e(d.title)}</h3>${(d.tasks || []).map((t) => `<a class="v6-dr" href="#" onclick="V6.openTask('${e(t.id)}','role'); return false;"><span>${e(t.title)}</span><span class="m${taskReady(t.id) ? '' : ' is-wip'}">${taskReady(t.id) ? taskMins(t.id) : 'скоро'}</span></a>`).join('')}</div>`).join('')}</div></section>` : ''}
-            ${aiGroup ? `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">ИИ-практика</h2><p>Короткие задания для любой работы: трудное письмо, решение, проверка ответа ИИ.</p></div></div><div class="v6-dirs">${aiGroup.directions.map((d) => `<div class="v6-dir"><h3>${e(d.title)}</h3>${(d.tasks || []).map((t) => `<a class="v6-dr" href="#" onclick="V6.openTask('${e(t.id)}','role'); return false;"><span>${e(t.title)}</span><span class="m${taskReady(t.id) ? '' : ' is-wip'}">${taskReady(t.id) ? taskMins(t.id) : 'скоро'}</span></a>`).join('')}</div>`).join('')}</div></section>` : ''}
             ${methodsBlock(r.id, AI_ROLES.includes(r.id) ? 'Методы работы с ИИ' : 'Методы роли')}`;
         }
         document.getElementById('v6-role').innerHTML = body;
@@ -663,12 +696,12 @@ ${rv.trim() || '[вставьте отзывы]'}`;
   function pathsPage() {
     shell('<div class="v6c" id="v6-paths"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
     load().then(() => {
-      const r = resume();
+      const r = resume(true);
       const m = D.paths.main;
       const sp = D.paths.rolePaths.find((p) => p.role === 'seller');
       const pp = dataPath('product'), mp = dataPath('marketing');
       const mine = ls.get(KEY.role);
-      const started = anyProgress();
+      const started = lessonProgress();
       const trailWhere = { 'level-1': 'ответвляется после уровня 1', 'common-start': 'сразу после общего старта', 'level-2': 'рядом с уровнем 2' };
       const trailArt = { projects: 'trail-projects', everyday: 'trail-everyday', industry: 'trail-industry', claude: 'trail-claude', vibe: 'trail-vibe' };
       const card = (o) => `<a class="v6-pathc" href="#${o.hash}" onclick="${o.on}; return false;">${art(o.art)}<span class="v6-pathc-in"><span class="v6-pcard-label">${o.label}${o.mine ? ' · <b>ваш</b>' : ''}</span><span class="v6-pathc-t">${e(o.title)}</span><span class="v6-pathc-p">${e(o.text)}</span>
@@ -691,7 +724,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       shell('<div class="v6c" id="v6-pm"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
       load().then(() => {
         track('path-open', { path: 'main', from: from || 'link' });
-        const r = resume();
+        const r = resume(true);
       const lArg = lessonArg(r.id);
       const m = D.paths.main;
       const cnt = (ids) => `${ids.filter(done).length}/${ids.length}`;
@@ -724,8 +757,8 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       const hereLabel = typeof r.id === 'number' ? 'урок ' + r.id : r.title;
         document.getElementById('v6-pm').innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.open('paths')">Обучение</a><span>/</span><span>${e(m.title)}</span></nav>
           <section class="v6-phero" style="padding-top:24px;padding-bottom:56px"><div class="v6-phero-text"><span class="v6-eyebrow">Главный путь · для всех</span><h1 class="v6-d">${e(m.title)}</h1><p class="v6-phero-lead">От первых промптов к своим ИИ-приложениям. Общий старт из пяти уроков, потом четыре уровня. Каждый замыкается Вехой: вещью, собранной своими руками.</p></div>${art('main-path', 'v6-phero-art v6-sp-art')}</section>
-          <section class="v6-psec"><div class="v6-pmain"><div class="v6-pmain-text"><span class="v6-pcard-label">${anyProgress() ? 'Вы здесь, ' + e(hereLabel) : 'Начните с общего старта'}</span><h2 class="v6-pmain-h">${anyProgress() ? 'Продолжить' : 'Первый урок'}</h2><p>${e(r.title || '')}</p>
-              <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="openLesson(${lArg})">${anyProgress() ? 'Продолжить ' + (typeof r.id === 'number' ? 'урок ' + r.id : 'урок') : 'Начать'}</button><button class="v6b is-soft v6-btn-lg" onclick="openSection('main')">Все уроки</button></span></div>
+          <section class="v6-psec"><div class="v6-pmain"><div class="v6-pmain-text"><span class="v6-pcard-label">${lessonProgress() ? 'Вы здесь, ' + e(hereLabel) : 'Начните с общего старта'}</span><h2 class="v6-pmain-h">${lessonProgress() ? 'Продолжить' : 'Первый урок'}</h2><p>${e(r.title || '')}</p>
+              <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="openLesson(${lArg})">${lessonProgress() ? 'Продолжить ' + (typeof r.id === 'number' ? 'урок ' + r.id : 'урок') : 'Начать'}</button><button class="v6b is-soft v6-btn-lg" onclick="openSection('main')">Все уроки</button></span></div>
               <div class="v6-scheme">${scheme()}</div></div>
             <div class="v6-pgrid">
               <article class="v6-card v6-chapter">${head('Общий старт · для всех', isHere(m.commonStart.lessons))}<h3 class="v6-h3">${e(m.commonStart.title)}</h3><p class="v6-chap-desc">${e(m.commonStart.description)}</p>${startRows()}${foot('после урока 5 — развилка', 1)}</article>
@@ -1201,6 +1234,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
     const view = box && box.querySelector('.lesson-view');
     const L = findLesson(id);
     if (!view || !L) return;
+    jset(KEY.activity, { kind: 'lesson', id: L.id });
     load().then(() => {
       if (box.querySelector('.v6-lesson') || !box.contains(view)) return;
       setPage(true, 'paths');
@@ -1269,19 +1303,48 @@ ${rv.trim() || '[вставьте отзывы]'}`;
   // ---------- юнит (Unit.dc.html; data/units.json → template) ----------
   // состояние в браузере: v6-units = { id: { step, inputs: {i: текст}, checks: {i: [bool]}, result: yes|almost|no, date, note } }
   const unitState = (id) => jget(KEY.units)[id] || { step: 0, inputs: {}, checks: {} };
-  const unitSave = (id, st) => { const all = jget(KEY.units); all[id] = st; jset(KEY.units, all); };
+  const unitSave = (id, st) => { const all = jget(KEY.units); st.updatedAt = new Date().toISOString(); all[id] = st; jset(KEY.units, all); jset(KEY.activity, { kind: 'unit', id }); };
   const hasSteps = (u) => u && Array.isArray(u.steps) && u.steps.length > 0;
+  function nextUnit(u) {
+    const candidates = D.units.filter((v) => v.id !== u.id && hasSteps(v) && !v.review);
+    const current = D.tasks[u.task];
+    const pending = (v) => unitState(v.id).result !== 'yes';
+    return candidates.find((v) => v.id === u.next && pending(v))
+      || candidates.find((v) => v.task === u.task && pending(v))
+      || candidates.find((v) => D.tasks[v.task].direction.id === current.direction.id && pending(v))
+      || candidates.find((v) => D.tasks[v.task].group === current.group && pending(v))
+      || candidates.find((v) => v.id === u.next) || candidates[0];
+  }
+  function unitPrompt(u, step, st) {
+    const values = {};
+    u.steps.forEach((s, i) => { if (s.inputKey && typeof st.inputs[i] === 'string' && st.inputs[i].trim()) values[s.inputKey] = st.inputs[i].trim(); });
+    const bindings = step.bindings || {};
+    // Один проход: текст пользователя, похожий на метку, повторно не подставляется.
+    return (step.prompt || '').replace(/\[[^\[\]\n]+\]/g, (slot) => values[bindings[slot]] || slot);
+  }
+  function resultDoor(u) {
+    const group = D.tasks[u.task].group;
+    if (u.autoReport) return `<div class="v6-tdoor"><span>Этот отчёт может приходить сам к утру понедельника.</span><a href="https://birdtold.ru/demo" target="_blank" rel="noopener" onclick="umTrack('bird-door', { from: 'unit-yes', unit: '${e(u.id)}' })">Посмотреть Птичку напела ↗</a></div>`;
+    if (group === 'seller' || group === 'marketing') return `<div class="v6-tdoor"><span>Хотите, чтобы так умел весь отдел?</span><a href="https://t.me/madzhitov" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'unit-yes', unit: '${e(u.id)}' })">Обсудить обучение отдела ↗</a></div>`;
+    return '';
+  }
   function askAlesha(title, question) {
     try { initAlesha({ id: 'v6', title }); } catch (_) {}
     const w = document.getElementById('alesha-widget'); if (w && !w.classList.contains('is-open')) w.classList.add('is-open');
     track('alyosha-open', { from: 'unit' });
     if (question) { try { aleshaAsk(question); } catch (_) {} }
   }
-  function unitInput(id, i, el) { const st = unitState(id); st.inputs[i] = el.value; unitSave(id, st); }
+  function unitInput(id, i, el) {
+    const st = unitState(id); st.inputs[i] = el.value; unitSave(id, st);
+    const u = unitById(id), pre = document.getElementById('v6-up-' + i);
+    if (pre) pre.textContent = unitPrompt(u, u.steps[i], st);
+  }
   function unitCheck(id, i, j, el) { const st = unitState(id); (st.checks[i] = st.checks[i] || [])[j] = el.checked; unitSave(id, st); }
   function unitGo(id, step) { const st = unitState(id); if (step > (st.step || 0)) track('unit-step', { unit: id, step: step + 1 }); st.step = step; unitSave(id, st); renderUnit(id); window.scrollTo({ top: 0 }); }
   function unitResult(id, r) {
-    const st = unitState(id); st.result = r; st.date = new Date().toISOString(); unitSave(id, st);
+    const st = unitState(id);
+    if (st.result === r) { renderUnit(id); return; }
+    st.result = r; st.date = new Date().toISOString(); unitSave(id, st);
     track('unit-result', { unit: id, result: r });
     renderUnit(id);
   }
@@ -1309,14 +1372,13 @@ ${rv.trim() || '[вставьте отзывы]'}`;
         <label><span class="v6-meta">Ссылка на результат, если есть</span><input type="url" name="link" maxlength="500" placeholder="https://"></label>
         <label><span class="v6-meta">Почта или Telegram, чтобы автор мог ответить</span><input type="text" name="contact" maxlength="200" required autocomplete="email" placeholder="name@mail.ru или @name"></label>
         <label class="v6-showf-hp" aria-hidden="true">Не заполняйте<input type="text" name="hp" tabindex="-1" autocomplete="off"></label>
-        <label class="v6-showf-ok"><input type="checkbox" name="publish"><span>Можно показать в галерее работ на сайте</span></label>
         <span class="v6-btns"><button class="v6b" type="submit">Отправить</button><a class="v6-quiet" href="https://t.me/madzhitov" target="_blank" rel="noopener">или написать в Telegram</a></span>
         <p class="v6-meta v6-showf-msg" role="status">Контакт нужен только для ответа.</p></form>`;
     const ta = box.querySelector('textarea'); if (ta) ta.focus();
   }
   function showSend(id, f) {
     const u = unitById(id), msg = f.querySelector('.v6-showf-msg'), b = f.querySelector('button[type=submit]');
-    const body = { unit: id, unitTitle: u ? u.title : '', text: f.text.value, link: f.link.value, contact: f.contact.value, publish: f.publish.checked, hp: f.hp.value };
+    const body = { unit: id, unitTitle: u ? u.title : '', text: f.text.value, link: f.link.value, contact: f.contact.value, publish: false, hp: f.hp.value };
     b.disabled = true; msg.textContent = 'Отправляю…';
     fetch(SHOW_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
       .then((r) => r.json().catch(() => ({})).then((j) => ({ ok: r.ok, j })))
@@ -1337,14 +1399,19 @@ ${rv.trim() || '[вставьте отзывы]'}`;
     const kit = D.resources.filter((r) => resReady(r) && ((r.units || []).includes(u.id) || (u.resources || []).includes(r.id)));
     const stepsNav = u.steps.map((x, k) => { const dn = fin || k < i, cur = !fin && k === i;
       return `<a class="v6-lstep${cur ? ' is-now' : ''}" href="#" onclick="V6.unitGo('${e(id)}', ${k}); return false;"><span class="v6-dotc${dn ? ' is-done' : cur ? ' is-now' : ''}">${dn ? '✓' : ''}</span><span>${e(x.title)}</span></a>`; }).join('');
-    const prompt = s.prompt ? `<div class="v6-uprompt"><div class="v6-uprompt-h"><span class="v6-pcard-label">Промпт</span><button class="v6b is-sm is-soft" onclick="V6.copyText('v6-up-${i}', this)">Скопировать</button></div><pre id="v6-up-${i}">${e(s.prompt)}</pre></div>` : '';
-    const input = s.input != null ? `<label class="v6-uinput"><span class="v6-meta">Ваш вариант</span><input type="text" value="${e(st.inputs[i] || '')}" placeholder="${e(s.input)}" oninput="V6.unitInput('${e(id)}', ${i}, this)"></label>` : '';
+    const prompt = s.prompt ? `<div class="v6-uprompt"><div class="v6-uprompt-h"><span class="v6-pcard-label">Промпт</span><button class="v6b is-sm is-soft" onclick="V6.copyText('v6-up-${i}', this)">Скопировать</button></div><pre id="v6-up-${i}">${e(unitPrompt(u, s, st))}</pre></div>` : '';
+    const input = s.input != null ? `<label class="v6-uinput"><span class="v6-meta">${e(s.inputKey ? s.inputLabel || 'Данные для промпта' : 'Заметка для себя')}</span><textarea rows="3" maxlength="16000" placeholder="${e(s.input)}" oninput="V6.unitInput('${e(id)}', ${i}, this)">${e(st.inputs[i] || '')}</textarea><span class="v6-meta">${s.inputKey ? 'Подставится в промпт задания.' : 'В промпт не подставляется.'} Сохраняется только в этом браузере.</span></label>` : '';
     const checks = s.checklist ? `<div class="v6-uchecks">${s.checklist.map((c, j) => `<label><input type="checkbox" ${(st.checks[i] || [])[j] ? 'checked' : ''} onchange="V6.unitCheck('${e(id)}', ${i}, ${j}, this)"><span>${e(c)}</span></label>`).join('')}</div>` : '';
     const card = fin ? (() => {
-      if (st.result === 'yes') return `<div class="v6-ucard"><span class="v6-pcard-label">Готово</span><h2 class="v6-ucard-t">Получилось. Записано в тетрадь</h2><p>${e(u.result || '')}</p>
+      if (st.result === 'yes') {
+        const next = nextUnit(u);
+        return `<div class="v6-ucard"><span class="v6-pcard-label">Готово · записано в тетрадь</span><h2 class="v6-ucard-t">Следующее по этой теме</h2><p><b>${e(next.title)}</b> · ≈ ${next.minutes} мин</p>
+          ${u.repeat ? '<p class="v6-meta">Повторите это задание через неделю на новых данных.</p>' : ''}
+          <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="V6.openUnit('${e(next.id)}','unit-yes')">Начать следующее задание</button><a class="v6b is-soft v6-btn-lg" href="https://t.me/artefakty_ai" target="_blank" rel="noopener" onclick="umTrack('tg-click', { from: 'unit-yes', unit: '${e(id)}' })">Новые задания и разборы в канале ↗</a><a class="v6b is-soft v6-btn-lg" href="https://t.me/madzhitov" target="_blank" rel="noopener" onclick="umTrack('artifact-submit-click', { from: 'unit', unit: '${e(id)}' })">Показать автору в Telegram ↗</a></span>
           <label class="v6-lnote"><span class="v6-lnote-h"><b>Что вышло</b><span class="v6-meta">в тетрадь</span></span><textarea placeholder="Что получилось, что поправили, что пригодится в следующий раз" oninput="V6.unitNote('${e(id)}', this)">${e(st.note || '')}</textarea></label>
-          <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="V6.showForm('${e(id)}', this)">Показать результат</button><button class="v6b is-soft v6-btn-lg" onclick="V6.open('notebook')">Тетрадь</button><button class="v6b is-soft v6-btn-lg" onclick="V6.openRole('${e(groupRole(t.group))}','unit')">Другие задачи</button></span>
-          <div id="v6-show"></div><p class="v6-meta">Пришлите работу автору. С вашего согласия она попадёт в галерею работ на сайте.</p>${tgOfferBox()}</div>`;
+          <div id="v6-show"></div><p class="v6-meta">Скопируйте результат и напишите автору в Telegram. Публиковать его не будем без отдельного согласования.</p>
+          <button class="v6-link" onclick="V6.open('notebook')">Открыть тетрадь</button>${resultDoor(u)}${tgOfferBox()}</div>`;
+      }
       if (st.result === 'almost') return `<div class="v6-ucard"><span class="v6-pcard-label">Почти</span><h2 class="v6-ucard-t">Частые причины</h2><ul class="v6-ualmost">${(u.almost || []).map((a) => `<li>${e(a)}</li>`).join('')}</ul>
           <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="V6.unitGo('${e(id)}', 0)">Ещё раз</button><button class="v6b is-soft v6-btn-lg" onclick="V6.unitHelp('${e(id)}')">Спросить Алёшу</button><button class="v6b is-soft v6-btn-lg" onclick="V6.unitResult('${e(id)}','yes')">Теперь получилось</button></span></div>`;
       return `<div class="v6-ucard"><span class="v6-pcard-label">Шаг ${n} из ${n} пройден</span><h2 class="v6-ucard-t">Получилось?</h2><p>${e(u.result || '')}</p>
@@ -1367,6 +1434,9 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       load().then(() => {
         const u = unitById(id);
         if (!hasSteps(u)) { const b = document.getElementById('v6-unit'); b.innerHTML = '<h1 class="v6-d" style="padding-top:56px">Задание готовится</h1>'; return; }
+        const st = unitState(id);
+        if (!st.startedAt) st.startedAt = new Date().toISOString();
+        unitSave(id, st);
         track('unit-open', { unit: id, from: from || 'link' });
         renderUnit(id);
       }).catch(() => fail('v6-unit'));
@@ -1447,7 +1517,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       const pill = (f, t) => `<button type="button" class="v6-pill" data-nbf="${f}" aria-pressed="${NB.f === f}" onclick="V6.nbFilter('${f}', this)">${t}</button>`;
       document.getElementById('v6-nb').innerHTML = `<section class="v6-sechero"><div><h1 class="v6-d">Тетрадь</h1><p class="v6-lead">История вашего обучения: пройденные уроки, сделанные задачи и заметки.</p></div><div class="v6-art v6-sec-art" aria-hidden="true"><img src="${artSrc('notebook')}" alt=""></div></section>
         <div class="v6-nbgrid"><div><div class="v6-kfilters" style="margin:32px 0 24px"><label class="v6-nbsearch"><span class="v6-sr">Поиск по тетради</span><input type="search" placeholder="Поиск по заметкам" value="${e(NB.q)}" oninput="V6.nbSearch(this)"></label><div class="v6-pills">${pill('all', 'Всё')}${pill('lesson', 'Уроки')}${pill('unit', 'Задачи')}${pill('check', 'Вехи и проверки')}${pill('alesha', 'С ответом Алёши')}</div></div><div id="v6-nblist"></div></div>
-          <aside class="v6-side" style="padding-top:32px">${r && r.id != null ? `<div class="v6-neigh"><span class="v6-meta">Продолжить</span><a class="v6-neigh-i" href="#" onclick="openLesson(${lessonArg(r.id)}); return false;"><span>${e(r.title || '')}</span><span class="m">→</span></a></div>` : ''}
+          <aside class="v6-side" style="padding-top:32px">${r && r.id != null ? `<div class="v6-neigh"><span class="v6-meta">Продолжить</span><a class="v6-neigh-i" href="#" onclick="${resumeAction(r, 'notebook')}; return false;"><span>${e(r.title || '')}</span><span class="m">→</span></a></div>` : ''}
             <div class="v6-tdoor"><b>Тетрадь только в этом браузере</b><span>Очистка браузера сотрёт записи. Скачайте файл, чтобы не потерять; сохранение через Telegram появится скоро.</span>
               <span class="v6-btns"><button class="v6b is-white is-sm" onclick="V6.nbExport()">Скачать как файл</button><label class="v6b is-sm v6-nbload">Загрузить из файла<input type="file" accept="application/json,.json" onchange="V6.nbImport(this)" hidden></label></span>
               <button class="v6-quiet v6-nbreset" onclick="V6.nbReset()">Очистить всё</button></div></aside></div>`;
@@ -1662,12 +1732,14 @@ ${rv.trim() || '[вставьте отзывы]'}`;
     const r = pct > 85 ? 4 : pct >= 70 ? 3 : pct >= 50 ? 2 : pct >= 30 ? 1 : 0;
     const gap = BSC.rev - r >= 2 ? c.gaps.behind : BSC.rev - r <= -1 ? c.gaps.ahead : c.gaps.sync;
     const weak = BSC.ans.map((v, i) => ({ v, q: Q[i] })).filter((x) => x.v >= 0 && x.v < 2).sort((a, b) => a.v - b.v).slice(0, 3);
+    const consultation = weak.length === 3 ? 'Разобрать три слабых места' : weak.length ? 'Разобрать слабые места' : 'Обсудить следующий шаг';
     const stOf = (id) => S.find((x) => x.id === id);
     box.innerHTML = `<div class="v6-bs-res"><div><span class="v6-meta">Стадия по выручке</span><b>${e(S[BSC.rev].name)}</b><small>${e(S[BSC.rev].revenue)}</small></div><div><span class="v6-meta">Готовность процессов</span><b>${e(S[r].name)}</b><small>${pct}% по 13 направлениям</small></div></div>
       <div class="v6-bs-gap${gap === c.gaps.behind ? ' is-risk' : ''}"><b>${e(gap.label)}</b><p>${e(gap.text)}</p></div>
       <h2 class="v6-h3">Самые слабые места</h2>
       ${weak.length ? `<ul class="v6-bs-weak">${weak.map((x) => { const st = stOf(x.q.stage); return `<li><b>${e(x.q.area)}</b><span>${e(x.q.fix)}</span>${st ? `<button type="button" class="v6-link" onclick="V6.bsGo('${e(st.id)}')">Что делать: стадия «${e(st.name)}» →</button>` : ''}</li>`; }).join('')}</ul>` : '<p>Явных провалов нет. Точную глубину покажет аудит на ваших данных.</p>'}
-      <span class="v6-btns"><button type="button" class="v6b is-accent" onclick="V6.bsGo('${e(S[BSC.rev].id)}')">К делам стадии «${e(S[BSC.rev].name)}»</button><button type="button" class="v6b is-soft" onclick="V6.bsReset()">Пройти заново</button></span>`;
+      <span class="v6-btns"><button type="button" class="v6b is-accent" onclick="V6.bsGo('${e(S[BSC.rev].id)}')">К делам стадии «${e(S[BSC.rev].name)}»</button><button type="button" class="v6b is-soft" onclick="V6.bsReset()">Пройти заново</button></span>
+      <div class="v6-tdoor"><span>Разобрать результат вместе с вашей командой.</span><a href="https://t.me/madzhitov" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'brand-check-result' })">${e(consultation)} ↗</a></div>`;
   }
   function coSystem() {
     open('companies');
