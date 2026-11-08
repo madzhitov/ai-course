@@ -701,6 +701,36 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ai.madzhitov.ru/slovar/sku.html</loc>
+    <lastmod>2026-11-08</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/slovar/buyout.html</loc>
+    <lastmod>2026-11-08</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/slovar/add-to-cart-rate.html</loc>
+    <lastmod>2026-11-08</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/slovar/inventory-turnover.html</loc>
+    <lastmod>2026-11-08</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/slovar/assortment-matrix.html</loc>
+    <lastmod>2026-11-08</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/slovar/reorder-point.html</loc>
+    <lastmod>2026-11-08</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ai.madzhitov.ru/znaniya/</loc>
     <lastmod>2026-11-08</lastmod>
     <priority>0.7</priority>
@@ -792,7 +822,7 @@
   </url>
   <url>
     <loc>https://ai.madzhitov.ru/metody/listing-funnel.html</loc>
-    <lastmod>2026-10-06</lastmod>
+    <lastmod>2026-11-08</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
@@ -1017,7 +1047,7 @@
   </url>
   <url>
     <loc>https://ai.madzhitov.ru/zadaniya/u-seller-funnel.html</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-11-08</lastmod>
     <priority>0.8</priority>
   </url>
   <url>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Точка дозаказа: что это и как применять — Артефакты</title>
+<meta name="description" content="Остаток, при котором пора заказывать новую партию, чтобы товар не закончился, пока она едет. Считают как продажи в день × срок поставки + страховой запас: 20 шт. × 15 дней + 100 = 400 шт.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Точка дозаказа: что это и как применять">
+<meta property="og:description" content="Остаток, при котором пора заказывать новую партию, чтобы товар не закончился, пока она едет. Считают как продажи в день × срок поставки + страховой запас: 20 шт. × 15 дней + 100 = 400 шт.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png?v=27898e84">
+<meta property="og:url" content="https://ai.madzhitov.ru/slovar/reorder-point.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/slovar/reorder-point.html">
+<link rel="preload" href="../v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../v6/fonts/fonts.css?v=0e1f3d7b">
+<link rel="stylesheet" href="../tropa-lesson.css?v=889f3ed1">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+  .st-calc-res { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap:10px; }
+  .st-calc-r { background:#F3F4F7; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); }
+  .st-calc-r b { font-size:24px; line-height:1.15; font-weight:800; color:#16161A; }
+  .st-calc-r.is-main b { font-size:36px; }
+  .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
+  .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"DefinedTerm","name":"Точка дозаказа","alternateName":"reorder point","description":"Остаток, при котором пора заказывать новую партию, чтобы товар не закончился, пока она едет. Считают как продажи в день × срок поставки + страховой запас: 20 шт. × 15 дней + 100 = 400 шт.","url":"https://ai.madzhitov.ru/slovar/reorder-point.html","inDefinedTermSet":"https://ai.madzhitov.ru/slovar/","dateModified":"2026-11-08"}</script>
+<link rel="stylesheet" href="../v6/static.css?v=ace69056">
+<script defer src="../v6/static.js?v=e97e63c9"></script>
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../metody/">Методы</a><a href="../slovar/">Словарь</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../slovar/">Словарь</a></div>
+    <span class="st-eyebrow">Понятие</span><h1 class="st-term-title">Точка дозаказа простыми словами</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-11-08">08.11.2026</time></p><p class="lead">Остаток, при котором пора заказывать новую партию, чтобы товар не закончился, пока она едет. Считают как продажи в день × срок поставки + страховой запас: 20 шт. × 15 дней + 100 = 400 шт.</p><nav class="st-knowledge-trail" aria-label="От понятия к результату"><span aria-current="page"><small>Понять</small><b>Точка дозаказа</b></span><a href="../metody/stock-turnover.html"><small>Применить</small><b>Оборачиваемость и запасы →</b></a><a href="../zadaniya/u-seller-stock.html"><small>Получить результат</small><b>Решение по шагам →</b></a></nav>
+      <h2>Как это работает</h2><p>Умножьте средние продажи в день на срок пополнения и прибавьте страховой запас. Срок учитывайте до момента, когда товар снова доступен для продажи, а не только время в дороге.</p>
+      <section class="st-knowledge-example"><span class="st-eyebrow">Условный пример</span><p>Продажи — 20 штук в день, пополнение занимает 15 дней, страховой запас — 100 штук. Точка дозаказа: 20 × 15 + 100 = 400 штук. Это условный расчёт при стабильных исходных данных.</p></section>
+      <h2>С чем легко перепутать</h2><p>Точка дозаказа отвечает на вопрос «когда», а не «сколько заказать». Учтите уже заказанные партии и обязательства по заказам: повторная закупка без сверки может создать излишек.</p>
+      <h2>Где поможет ИИ</h2><p>ИИ поможет собрать таблицу сроков и проверить расчёт. Прогноз спроса и размер страхового запаса не стоит брать из выдуманных им нормативов.</p>
+      <section class="st-knowledge-brief"><span class="st-eyebrow">Попробуйте на своей задаче</span><p>Ориентир для дозаказа с учётом продаж, срока поставки и страхового запаса.</p><a href="../metody/stock-turnover.html">Разобрать метод: Оборачиваемость и запасы →</a><a href="../kalkulyatory/oborachivaemost-zapasov.html">Посчитать свои числа →</a></section>
+      <h2>По теме</h2><ul><li><a href="../metody/stock-turnover.html">Оборачиваемость и запасы</a></li><li><a href="../metody/abc-xyz.html">ABC / XYZ-анализ</a></li></ul>
+      <h2>Источники</h2><ul><li><a href="https://www.shopify.com/uk/blog/reorder-point" target="_blank" rel="noopener">Shopify: формула точки дозаказа</a></li></ul>
+      <p><a href="../slovar/">Весь словарь</a> · <a href="../znaniya/">Применить знания</a></p>
+    
+  </div>
+</main>
+</body>
+</html>
