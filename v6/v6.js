@@ -56,7 +56,7 @@
     if (typeof fetch !== 'function') return Promise.reject(new Error('no fetch'));
     if (!loading) {
       const get = (f) => fetch(dataUrl(f + '.json')).then((r) => r.ok ? r.json() : Promise.reject(new Error(f + ' ' + r.status)));
-      loading = Promise.all(['roles', 'paths', 'tasks', 'units', 'resources', 'frameworks'].map(get)).then(([roles, paths, tasks, units, resources, frameworks]) => {
+      loading = Promise.all(['roles', 'paths', 'tasks', 'units', 'resources', 'frameworks', 'material-dates'].map(get)).then(([roles, paths, tasks, units, resources, frameworks, dates]) => {
         const allTasks = {};
         tasks.groups.forEach((g) => (g.directions || []).forEach((d) => (d.tasks || []).forEach((t) => {
           allTasks[t.id] = Object.assign({ group: g.id, direction: d }, t);
@@ -65,7 +65,7 @@
         paths.rolePaths.forEach((rp) => (rp.stages || []).forEach((st) => {
           st.tasks = [...new Set((st.steps || []).filter((x) => x.kind === 'unit').map((x) => unitTask(x.ref)).filter(Boolean))];
         }));
-        D = { roles: roles.roles, paths, groups: tasks.groups, units: units.units, tasks: allTasks, resources: resources.resources, fw: frameworks.cards };
+        D = { materialDates: dates.pages, roles: roles.roles, paths, groups: tasks.groups, units: units.units, tasks: allTasks, resources: resources.resources, fw: frameworks.cards };
         return D;
       }).catch((err) => { loading = null; throw err; });
     }
@@ -1263,6 +1263,8 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       view.querySelectorAll('.lcrumb, .lesson-actions').forEach((x) => x.remove());
       const meta = view.querySelector('.lesson-time-meta');
       const tags = meta ? [...meta.querySelectorAll('span:not(.dot)')].map((x) => x.textContent.trim()).filter(Boolean) : [];
+      const modified = D.materialDates[`/lessons/${L.id}.html`]?.modified;
+      if (modified) tags.push('Материал обновлён ' + modified.split('-').reverse().join('.'));
       if (meta) meta.outerHTML = `<div class="v6-ltags">${tags.map((t, i) => `<span class="v6t${/обновлено/.test(t) ? '' : ' is-grey'}">${e(t)}</span>`).join('')}</div>`;
       const toc = view.querySelector('details.lesson-toc');
       const h1 = view.querySelector('h1');

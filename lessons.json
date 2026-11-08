@@ -4,10 +4,11 @@
   "updated": "2026-11-08",
   "total": 144,
   "published": 128,
-  "note": "Даты по урокам не отслеживаются; updated — дата последнего релиза курса (из CHANGELOG).",
+  "note": "modified у урока — дата изменения материала в Git; updated — дата релиза всего сайта.",
   "lessons": [
     {
       "id": 1,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 1,
       "title": "Что такое генеративный ИИ и как он работает",
@@ -18,6 +19,7 @@
     },
     {
       "id": 2,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 1,
       "title": "Семейства LLM: GPT, Claude, Gemini, Llama, Mistral",
@@ -28,6 +30,7 @@
     },
     {
       "id": 3,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 1,
       "title": "Ответственное использование ИИ — риски и как с ними жить",
@@ -38,6 +41,7 @@
     },
     {
       "id": 4,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 1,
       "title": "Основы промпт-инжиниринга",
@@ -48,6 +52,7 @@
     },
     {
       "id": 5,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 1,
       "title": "Продвинутые техники промптов: CoT, ReAct, chaining",
@@ -58,6 +63,7 @@
     },
     {
       "id": 6,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 1,
       "title": "Первое приложение — генерация текста через API",
@@ -68,6 +74,7 @@
     },
     {
       "id": 7,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 1,
       "title": "Чат-приложение с памятью",
@@ -78,6 +85,7 @@
     },
     {
       "id": 8,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 1,
       "title": "Поиск с эмбеддингами (semantic search)",
@@ -88,6 +96,7 @@
     },
     {
       "id": 9,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 1,
       "title": "Генерация изображений",
@@ -98,6 +107,7 @@
     },
     {
       "id": 10,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 1,
       "title": "Low-code приложения с ИИ",
@@ -108,6 +118,7 @@
     },
     {
       "id": 11,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 1,
       "title": "UX для ИИ-приложений",
@@ -118,6 +129,7 @@
     },
     {
       "id": 12,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 1,
       "title": "Безопасность ИИ-приложений",
@@ -128,6 +140,7 @@
     },
     {
       "id": 13,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Function Calling — ИИ вызывает твои функции",
@@ -138,6 +151,7 @@
     },
     {
       "id": 14,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "RAG и векторные БД",
@@ -148,6 +162,7 @@
     },
     {
       "id": 15,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Жизненный цикл GenAI-приложения",
@@ -158,6 +173,7 @@
     },
     {
       "id": 16,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Что такое ИИ-агенты",
@@ -168,6 +184,7 @@
     },
     {
       "id": 17,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Обзор агентских фреймворков",
@@ -178,6 +195,7 @@
     },
     {
       "id": 18,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Паттерны проектирования агентов",
@@ -188,6 +206,7 @@
     },
     {
       "id": 19,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Использование инструментов агентами",
@@ -198,6 +217,7 @@
     },
     {
       "id": 20,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Agentic RAG",
@@ -208,6 +228,7 @@
     },
     {
       "id": 21,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Доверие и безопасность агентов",
@@ -218,6 +239,7 @@
     },
     {
       "id": 22,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Планирование задач агентом",
@@ -228,6 +250,7 @@
     },
     {
       "id": 23,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Мульти-агентные системы",
@@ -238,6 +261,7 @@
     },
     {
       "id": 24,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Метакогниция и саморефлексия агентов",
@@ -248,6 +272,7 @@
     },
     {
       "id": 25,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Контекст-инжиниринг и память агентов",
@@ -258,6 +283,7 @@
     },
     {
       "id": 26,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Microsoft Agent Framework",
@@ -268,6 +294,7 @@
     },
     {
       "id": 27,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Browser-use агенты",
@@ -278,6 +305,7 @@
     },
     {
       "id": 28,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Агентские протоколы (MCP)",
@@ -288,6 +316,7 @@
     },
     {
       "id": 29,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Агенты в продакшене",
@@ -298,6 +327,7 @@
     },
     {
       "id": 30,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 2,
       "title": "Повторение фазы 2: чек-лист агента",
@@ -308,6 +338,7 @@
     },
     {
       "id": 31,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Введение в ИИ как науку",
@@ -318,6 +349,7 @@
     },
     {
       "id": 32,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Символьный ИИ и графы знаний",
@@ -328,6 +360,7 @@
     },
     {
       "id": 33,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Перцептрон — самая простая нейросеть",
@@ -338,6 +371,7 @@
     },
     {
       "id": 34,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Свой framework для нейросетей на NumPy",
@@ -348,6 +382,7 @@
     },
     {
       "id": 35,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Знакомство с PyTorch / TensorFlow",
@@ -358,6 +393,7 @@
     },
     {
       "id": 36,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Введение в компьютерное зрение",
@@ -368,6 +404,7 @@
     },
     {
       "id": 37,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Свёрточные нейросети (CNN)",
@@ -378,6 +415,7 @@
     },
     {
       "id": 38,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Transfer Learning",
@@ -388,6 +426,7 @@
     },
     {
       "id": 39,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Автоэнкодеры",
@@ -398,6 +437,7 @@
     },
     {
       "id": 40,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "GAN — генеративно-состязательные сети",
@@ -408,6 +448,7 @@
     },
     {
       "id": 41,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Object Detection",
@@ -418,6 +459,7 @@
     },
     {
       "id": 42,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Сегментация изображений",
@@ -428,6 +470,7 @@
     },
     {
       "id": 43,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Представление текста (BoW, TF-IDF)",
@@ -438,6 +481,7 @@
     },
     {
       "id": 44,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Эмбеддинги слов (Word2Vec, GloVe)",
@@ -448,6 +492,7 @@
     },
     {
       "id": 45,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Языковое моделирование",
@@ -458,6 +503,7 @@
     },
     {
       "id": 46,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Рекуррентные сети (RNN, LSTM)",
@@ -468,6 +514,7 @@
     },
     {
       "id": 47,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Генеративные сети для текста (seq2seq, attention)",
@@ -478,6 +525,7 @@
     },
     {
       "id": 48,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Трансформеры",
@@ -488,6 +536,7 @@
     },
     {
       "id": 49,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Извлечение сущностей (NER)",
@@ -498,6 +547,7 @@
     },
     {
       "id": 50,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 3,
       "title": "Большие языковые модели изнутри",
@@ -508,6 +558,7 @@
     },
     {
       "id": 51,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 4,
       "title": "Что такое машинное обучение",
@@ -518,6 +569,7 @@
     },
     {
       "id": 52,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 4,
       "title": "История ML",
@@ -528,6 +580,7 @@
     },
     {
       "id": 53,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 4,
       "title": "Этика и справедливость в ML",
@@ -538,6 +591,7 @@
     },
     {
       "id": 54,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 4,
       "title": "Техники ML: train/test/val, метрики, кросс-валидация",
@@ -548,6 +602,7 @@
     },
     {
       "id": 55,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 4,
       "title": "Инструменты регрессии (scikit-learn, pandas)",
@@ -558,6 +613,7 @@
     },
     {
       "id": 56,
+      "modified": "2026-10-29",
       "track": "main",
       "phase": 4,
       "title": "Подготовка и очистка данных",
@@ -728,6 +784,7 @@
     },
     {
       "id": "c1",
+      "modified": "2026-10-29",
       "track": "claude",
       "phase": null,
       "title": "Claude Artifacts — генерация кода и UI прямо в чате",
@@ -738,6 +795,7 @@
     },
     {
       "id": "c2",
+      "modified": "2026-10-29",
       "track": "claude",
       "phase": null,
       "title": "Claude Projects — память и контекст для задач",
@@ -748,6 +806,7 @@
     },
     {
       "id": "c3",
+      "modified": "2026-10-29",
       "track": "claude",
       "phase": null,
       "title": "MCP — Model Context Protocol",
@@ -758,6 +817,7 @@
     },
     {
       "id": "c4",
+      "modified": "2026-10-29",
       "track": "claude",
       "phase": null,
       "title": "Computer Use — Claude управляет компьютером",
@@ -768,6 +828,7 @@
     },
     {
       "id": "c5",
+      "modified": "2026-10-29",
       "track": "claude",
       "phase": null,
       "title": "Claude Code — CLI для разработчиков",
@@ -778,6 +839,7 @@
     },
     {
       "id": "c6",
+      "modified": "2026-10-29",
       "track": "claude",
       "phase": null,
       "title": "Prompt caching — экономим на длинных контекстах",
@@ -788,6 +850,7 @@
     },
     {
       "id": "c7",
+      "modified": "2026-10-29",
       "track": "claude",
       "phase": null,
       "title": "Constitutional AI и safety в Claude",
@@ -798,6 +861,7 @@
     },
     {
       "id": "c8",
+      "modified": "2026-10-29",
       "track": "claude",
       "phase": null,
       "title": "Claude vs GPT vs Gemini: когда что",
@@ -808,6 +872,7 @@
     },
     {
       "id": "c9",
+      "modified": "2026-10-29",
       "track": "claude",
       "phase": null,
       "title": "Claude Skills — пре-настроенные навыки",
@@ -818,6 +883,7 @@
     },
     {
       "id": "p1",
+      "modified": "2026-10-07",
       "track": "projects",
       "phase": null,
       "title": "Telegram-бот для саммари длинных переписок",
@@ -828,6 +894,7 @@
     },
     {
       "id": "p2",
+      "modified": "2026-10-07",
       "track": "projects",
       "phase": null,
       "title": "RAG над своими заметками (Obsidian / Notion)",
@@ -838,6 +905,7 @@
     },
     {
       "id": "p3",
+      "modified": "2026-10-07",
       "track": "projects",
       "phase": null,
       "title": "Свой MCP-сервер: подключаем Claude к Notion / Linear / своему API",
@@ -848,6 +916,7 @@
     },
     {
       "id": "p4",
+      "modified": "2026-10-07",
       "track": "projects",
       "phase": null,
       "title": "Анализ счетов и чеков через Claude Vision: фото → таблица расходов",
@@ -858,6 +927,7 @@
     },
     {
       "id": "p5",
+      "modified": "2026-10-05",
       "track": "projects",
       "phase": null,
       "title": "ИИ-ресёрчер конкурентов с дайджестом на почту",
@@ -868,6 +938,7 @@
     },
     {
       "id": "p6",
+      "modified": "2026-10-07",
       "track": "projects",
       "phase": null,
       "title": "Self-hosted Perplexity: Q&A с поиском по твоим данным",
@@ -878,6 +949,7 @@
     },
     {
       "id": "p7",
+      "modified": "2026-10-07",
       "track": "projects",
       "phase": null,
       "title": "AI-помощник для встреч: транскрипция + summary + задачи в Notion",
@@ -888,6 +960,7 @@
     },
     {
       "id": "p8",
+      "modified": "2026-10-26",
       "track": "projects",
       "phase": null,
       "title": "Анти-спам: AI классифицирует входящие письма и отвечает на простые",
@@ -898,6 +971,7 @@
     },
     {
       "id": "p9",
+      "modified": "2026-10-07",
       "track": "projects",
       "phase": null,
       "title": "Семантический поиск по своему Telegram-каналу или чату",
@@ -908,6 +982,7 @@
     },
     {
       "id": "p10",
+      "modified": "2026-10-07",
       "track": "projects",
       "phase": null,
       "title": "Авто-ревьюер pull request'ов на GitHub",
@@ -918,6 +993,7 @@
     },
     {
       "id": "p11",
+      "modified": "2026-10-07",
       "track": "projects",
       "phase": null,
       "title": "Голосовой AI-ассистент: Whisper + Claude + TTS на твоём железе",
@@ -928,6 +1004,7 @@
     },
     {
       "id": "p12",
+      "modified": "2026-10-07",
       "track": "projects",
       "phase": null,
       "title": "Свой Claude Skill: упаковываем рутинную задачу в навык",
@@ -938,6 +1015,7 @@
     },
     {
       "id": "p13",
+      "modified": "2026-10-26",
       "track": "projects",
       "phase": null,
       "title": "Browser-расширение «AI рядом с текстом»: объяснить, упростить, перевести выделенное",
@@ -948,6 +1026,7 @@
     },
     {
       "id": "p14",
+      "modified": "2026-10-07",
       "track": "projects",
       "phase": null,
       "title": "Локальный AI на Ollama: всё работает на твоём ноутбуке, без облака",
@@ -958,6 +1037,7 @@
     },
     {
       "id": "p15",
+      "modified": "2026-10-07",
       "track": "projects",
       "phase": null,
       "title": "Личный AI-секретарь: автоответы на типовые email + дневной чек-ин",
@@ -968,6 +1048,7 @@
     },
     {
       "id": "p16",
+      "modified": "2026-10-07",
       "track": "projects",
       "phase": null,
       "title": "AI-репетитор Сократическим методом: интерактивная среда для школьника",
@@ -978,6 +1059,7 @@
     },
     {
       "id": "p17",
+      "modified": "2026-10-26",
       "track": "projects",
       "phase": null,
       "title": "Конспект лекции из аудио: Whisper + Claude → структурированный markdown",
@@ -988,6 +1070,7 @@
     },
     {
       "id": "p18",
+      "modified": "2026-10-26",
       "track": "projects",
       "phase": null,
       "title": "Генератор Anki-карточек из PDF учебника для подготовки к экзамену",
@@ -998,6 +1081,7 @@
     },
     {
       "id": "p19",
+      "modified": "2026-10-07",
       "track": "projects",
       "phase": null,
       "title": "TG-бот для саммари длинных чатов на GigaChat (без VPN)",
@@ -1008,6 +1092,7 @@
     },
     {
       "id": "p20",
+      "modified": "2026-10-05",
       "track": "projects",
       "phase": null,
       "title": "AI-помощник продавца Wildberries на YandexGPT",
@@ -1018,6 +1103,7 @@
     },
     {
       "id": "p21",
+      "modified": "2026-10-07",
       "track": "projects",
       "phase": null,
       "title": "Локальный AI-секретарь на Ollama — без облака и подписок",
@@ -1028,6 +1114,7 @@
     },
     {
       "id": "p22",
+      "modified": "2026-10-07",
       "track": "projects",
       "phase": null,
       "title": "RAG для своих документов (госуслуги, медкарта, договоры) на локальных моделях",
@@ -1038,6 +1125,7 @@
     },
     {
       "id": "i1",
+      "modified": "2026-10-07",
       "track": "industry",
       "phase": null,
       "title": "ИИ для юристов: договоры, документы, поиск",
@@ -1048,6 +1136,7 @@
     },
     {
       "id": "i2",
+      "modified": "2026-10-07",
       "track": "industry",
       "phase": null,
       "title": "ИИ для маркетинга: контент, исследование, персонализация",
@@ -1058,6 +1147,7 @@
     },
     {
       "id": "i3",
+      "modified": "2026-10-07",
       "track": "industry",
       "phase": null,
       "title": "ИИ для HR: резюме, найм, обучение",
@@ -1068,6 +1158,7 @@
     },
     {
       "id": "i4",
+      "modified": "2026-10-26",
       "track": "industry",
       "phase": null,
       "title": "ИИ для разработчиков: вне Cursor и Copilot",
@@ -1078,6 +1169,7 @@
     },
     {
       "id": "i5",
+      "modified": "2026-10-07",
       "track": "industry",
       "phase": null,
       "title": "ИИ для финансов: отчёты, анализ, прогнозы",
@@ -1088,6 +1180,7 @@
     },
     {
       "id": "i6",
+      "modified": "2026-10-07",
       "track": "industry",
       "phase": null,
       "title": "ИИ для фэшн-бренда: лукбуки, описания, тон голоса, тренды",
@@ -1098,6 +1191,7 @@
     },
     {
       "id": "i7",
+      "modified": "2026-10-07",
       "track": "industry",
       "phase": null,
       "title": "ИИ для YouTube и видеомейкеров: сценарии, превью, дубляж",
@@ -1108,6 +1202,7 @@
     },
     {
       "id": "i8",
+      "modified": "2026-10-07",
       "track": "industry",
       "phase": null,
       "title": "ИИ для Beauty (визажист, мастер маникюра, парикмахер): соцсети, портфолио, клиенты",
@@ -1118,6 +1213,7 @@
     },
     {
       "id": "i9",
+      "modified": "2026-10-07",
       "track": "industry",
       "phase": null,
       "title": "ИИ для риэлторов и недвижимости: описания, переговоры, документы",
@@ -1128,6 +1224,7 @@
     },
     {
       "id": "i10",
+      "modified": "2026-05-19",
       "track": "industry",
       "phase": null,
       "title": "ИИ для учителей и репетиторов: материалы, проверка работ, индивидуализация",
@@ -1138,6 +1235,7 @@
     },
     {
       "id": "i11",
+      "modified": "2026-10-07",
       "track": "industry",
       "phase": null,
       "title": "ИИ для продакт-менеджеров: исследования, приоритизация, документация",
@@ -1148,6 +1246,7 @@
     },
     {
       "id": "i12",
+      "modified": "2026-10-07",
       "track": "industry",
       "phase": null,
       "title": "ИИ для проджект-менеджеров: планирование, риски, коммуникация",
@@ -1158,6 +1257,7 @@
     },
     {
       "id": "i13",
+      "modified": "2026-08-20",
       "track": "industry",
       "phase": null,
       "title": "Основы маркетинга: воронка, каналы, позиционирование",
@@ -1168,6 +1268,7 @@
     },
     {
       "id": "i14",
+      "modified": "2026-10-07",
       "track": "industry",
       "phase": null,
       "title": "Основы продукта: проблема, гипотеза, метрика",
@@ -1178,6 +1279,7 @@
     },
     {
       "id": "i15",
+      "modified": "2026-10-07",
       "track": "industry",
       "phase": null,
       "title": "Основы процессов: как команда доводит до релиза",
@@ -1188,6 +1290,7 @@
     },
     {
       "id": "e1",
+      "modified": "2026-10-07",
       "track": "everyday",
       "phase": null,
       "title": "Фото холодильника → ужин: знакомство с мультимодальным AI",
@@ -1198,6 +1301,7 @@
     },
     {
       "id": "e2",
+      "modified": "2026-10-07",
       "track": "everyday",
       "phase": null,
       "title": "Помощник родителя: объясни ребёнку и сказка на ночь",
@@ -1208,6 +1312,7 @@
     },
     {
       "id": "e3",
+      "modified": "2026-10-07",
       "track": "everyday",
       "phase": null,
       "title": "Меню недели и список покупок для семьи",
@@ -1218,6 +1323,7 @@
     },
     {
       "id": "e4",
+      "modified": "2026-10-07",
       "track": "everyday",
       "phase": null,
       "title": "Школьник: разбор задачи, флешкарты, проверка эссе",
@@ -1228,6 +1334,7 @@
     },
     {
       "id": "e5",
+      "modified": "2026-10-07",
       "track": "everyday",
       "phase": null,
       "title": "Резюме под вакансию + cover letter + тренажёр собеседования",
@@ -1238,6 +1345,7 @@
     },
     {
       "id": "e6",
+      "modified": "2026-10-07",
       "track": "everyday",
       "phase": null,
       "title": "Карточки товаров для Wildberries / Avito / Ozon по фото",
@@ -1248,6 +1356,7 @@
     },
     {
       "id": "e7",
+      "modified": "2026-10-07",
       "track": "everyday",
       "phase": null,
       "title": "Ответы на отзывы + контент-план для соцсетей",
@@ -1258,6 +1367,7 @@
     },
     {
       "id": "e8",
+      "modified": "2026-10-07",
       "track": "everyday",
       "phase": null,
       "title": "План поездки + переводчик меню по фото в путешествии",
@@ -1268,6 +1378,7 @@
     },
     {
       "id": "e9",
+      "modified": "2026-10-07",
       "track": "everyday",
       "phase": null,
       "title": "Разговорный партнёр на изучаемом языке (voice mode)",
@@ -1278,6 +1389,7 @@
     },
     {
       "id": "e10",
+      "modified": "2026-10-07",
       "track": "everyday",
       "phase": null,
       "title": "Разбор медвыписки, договора, счёта — что я подписываю?",
@@ -1288,6 +1400,7 @@
     },
     {
       "id": "e11",
+      "modified": "2026-10-07",
       "track": "everyday",
       "phase": null,
       "title": "AI без VPN — какие модели работают из коробки",
@@ -1298,6 +1411,7 @@
     },
     {
       "id": "v1",
+      "modified": "2026-05-22",
       "track": "vibe",
       "phase": null,
       "title": "Додзё-кун: вайбкодинг — это боевое искусство, а не дисциплина",
@@ -1308,6 +1422,7 @@
     },
     {
       "id": "v2",
+      "modified": "2026-05-22",
       "track": "vibe",
       "phase": null,
       "title": "Белый пояс: первая ката чистого листа",
@@ -1318,6 +1433,7 @@
     },
     {
       "id": "v3",
+      "modified": "2026-10-07",
       "track": "vibe",
       "phase": null,
       "title": "Выбор оружия: додзё инструментов",
@@ -1328,6 +1444,7 @@
     },
     {
       "id": "v4",
+      "modified": "2026-05-22",
       "track": "vibe",
       "phase": null,
       "title": "Ката тёмного экрана: дебаг вайбом",
@@ -1338,6 +1455,7 @@
     },
     {
       "id": "v5",
+      "modified": "2026-05-22",
       "track": "vibe",
       "phase": null,
       "title": "Главный антипаттерн: не воюй с моделью (айкидо вайбкодинга)",
@@ -1348,6 +1466,7 @@
     },
     {
       "id": "v6",
+      "modified": "2026-05-22",
       "track": "vibe",
       "phase": null,
       "title": "От прототипа к продукту: когда перестать вайбить",
@@ -1358,6 +1477,7 @@
     },
     {
       "id": "v7",
+      "modified": "2026-10-07",
       "track": "vibe",
       "phase": null,
       "title": "Вайб Клод Вам Дам: Claude как сэнсэй (Artifacts, Claude Code в режиме вайба)",
@@ -1368,6 +1488,7 @@
     },
     {
       "id": "v8",
+      "modified": "2026-05-22",
       "track": "vibe",
       "phase": null,
       "title": "Продвинутые ката: Skills, MCP, субагенты как комбо",
@@ -1378,6 +1499,7 @@
     },
     {
       "id": "v9",
+      "modified": "2026-05-22",
       "track": "vibe",
       "phase": null,
       "title": "Спарринг с Claude: итеративный диалог и контекст",
@@ -1388,6 +1510,7 @@
     },
     {
       "id": "v10",
+      "modified": "2026-05-22",
       "track": "vibe",
       "phase": null,
       "title": "Кю/Дан и котоваза: оцени свой пояс",
@@ -1398,6 +1521,7 @@
     },
     {
       "id": "v11",
+      "modified": "2026-10-07",
       "track": "vibe",
       "phase": null,
       "title": "📚 Справочник: основы веба",
@@ -1408,6 +1532,7 @@
     },
     {
       "id": "v12",
+      "modified": "2026-10-07",
       "track": "vibe",
       "phase": null,
       "title": "📚 Справочник: данные и API",
@@ -1418,6 +1543,7 @@
     },
     {
       "id": "v13",
+      "modified": "2026-10-07",
       "track": "vibe",
       "phase": null,
       "title": "📚 Справочник: инструменты разработчика",
@@ -1428,6 +1554,7 @@
     },
     {
       "id": "v14",
+      "modified": "2026-10-07",
       "track": "vibe",
       "phase": null,
       "title": "📚 Справочник: от кода к продукту",
@@ -1438,6 +1565,7 @@
     },
     {
       "id": "v15",
+      "modified": "2026-10-10",
       "track": "vibe",
       "phase": null,
       "title": "📚 Справочник: продвинутые темы",

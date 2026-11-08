@@ -1,0 +1,837 @@
+{
+ "version": 1,
+ "note": "modified — последняя правка материала в Git, checked — явно записанная проверка. Пересборка страниц даты не меняет.",
+ "pages": {
+  "/lessons/1.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/2.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/3.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/4.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/5.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/6.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/7.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/8.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/9.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/10.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/11.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/12.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/13.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/14.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/15.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/16.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/17.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/18.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/19.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/20.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/21.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/22.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/23.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/24.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/25.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/26.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/27.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/28.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/29.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/30.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/31.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/32.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/33.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/34.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/35.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/36.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/37.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/38.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/39.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/40.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/41.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/42.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/43.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/44.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/45.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/46.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/47.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/48.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/49.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/50.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/51.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/52.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/53.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/54.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/55.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/56.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/c1.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/c2.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/c3.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/c4.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/c5.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/c6.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/c7.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/c8.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/c9.html": {
+   "modified": "2026-10-29"
+  },
+  "/lessons/e1.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/e2.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/e4.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/e3.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/e5.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/e6.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/e7.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/e8.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/e9.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/e10.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/e11.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/p1.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/p2.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/p3.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/p4.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/p5.html": {
+   "modified": "2026-10-05"
+  },
+  "/lessons/p6.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/p7.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/p8.html": {
+   "modified": "2026-10-26"
+  },
+  "/lessons/p9.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/p10.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/p11.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/p12.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/p13.html": {
+   "modified": "2026-10-26"
+  },
+  "/lessons/p14.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/p15.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/p16.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/p17.html": {
+   "modified": "2026-10-26"
+  },
+  "/lessons/p18.html": {
+   "modified": "2026-10-26"
+  },
+  "/lessons/p19.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/p20.html": {
+   "modified": "2026-10-05"
+  },
+  "/lessons/p21.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/p22.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/i1.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/i2.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/i3.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/i4.html": {
+   "modified": "2026-10-26"
+  },
+  "/lessons/i5.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/i6.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/i7.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/i8.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/i9.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/i10.html": {
+   "modified": "2026-05-19"
+  },
+  "/lessons/i11.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/i12.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/i13.html": {
+   "modified": "2026-08-20"
+  },
+  "/lessons/i14.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/i15.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/v1.html": {
+   "modified": "2026-05-22"
+  },
+  "/lessons/v2.html": {
+   "modified": "2026-05-22"
+  },
+  "/lessons/v3.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/v4.html": {
+   "modified": "2026-05-22"
+  },
+  "/lessons/v5.html": {
+   "modified": "2026-05-22"
+  },
+  "/lessons/v6.html": {
+   "modified": "2026-05-22"
+  },
+  "/lessons/v7.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/v8.html": {
+   "modified": "2026-05-22"
+  },
+  "/lessons/v9.html": {
+   "modified": "2026-05-22"
+  },
+  "/lessons/v10.html": {
+   "modified": "2026-05-22"
+  },
+  "/lessons/v11.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/v12.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/v13.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/v14.html": {
+   "modified": "2026-10-07"
+  },
+  "/lessons/v15.html": {
+   "modified": "2026-10-10"
+  },
+  "/zadaniya/u-seller-reviews.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-seller-description.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-seller-assistant.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-seller-competitors.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-seller-competitors-pro.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-unit-economics-channels.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-unit-economics-exports.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-seller-pains.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-seller-keywords.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-seller-social.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-seller-repeat.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-seller-stock.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-seller-weekly.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-product-one-page.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-product-north-star.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-project-raci.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-project-premortem.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-marketing-segment.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-marketing-positioning.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-marketing-funnel.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-self-resume.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-self-contract.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-ai-answer-check.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-ai-decision.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-ai-hard-letter.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-ai-html-tool.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-ai-learn-plan.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-ai-routine-brief.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-marketing-channel.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-marketing-offer.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-product-interview.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-seller-assortment-matrix.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-seller-attribution.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-seller-next-channel.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-seller-retention-calendar.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-seller-single-base.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-marketing-ltv-cac.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-product-rice.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-seller-ads-budget.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-seller-funnel.html": {
+   "modified": "2026-10-08"
+  },
+  "/zadaniya/u-seller-pnl.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-seller-marketplace-ads.html": {
+   "modified": "2026-10-09"
+  },
+  "/zadaniya/u-seller-site-traffic.html": {
+   "modified": "2026-10-09"
+  },
+  "/zadaniya/u-seller-questions.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-product-okr.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-product-cohorts.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-product-pmf.html": {
+   "modified": "2026-10-12"
+  },
+  "/zadaniya/u-product-slice.html": {
+   "modified": "2026-10-12"
+  },
+  "/zadaniya/u-product-value.html": {
+   "modified": "2026-10-12"
+  },
+  "/zadaniya/u-marketing-why-buy.html": {
+   "modified": "2026-11-07"
+  },
+  "/zadaniya/u-marketing-entry-points.html": {
+   "modified": "2026-10-26"
+  },
+  "/zadaniya/u-marketing-message-house.html": {
+   "modified": "2026-10-26"
+  },
+  "/zadaniya/u-marketing-copy.html": {
+   "modified": "2026-10-26"
+  },
+  "/zadaniya/u-marketing-hypotheses.html": {
+   "modified": "2026-10-26"
+  },
+  "/metody/aarrr.html": {
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
+  },
+  "/metody/aida.html": {
+   "modified": "2026-10-26",
+   "checked": "2026-10-04"
+  },
+  "/metody/stp.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/4p-7p.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/cjm.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/jtbd.html": {
+   "modified": "2026-10-26",
+   "checked": "2026-10-04"
+  },
+  "/metody/rfm.html": {
+   "modified": "2026-10-06",
+   "checked": "2026-10-04"
+  },
+  "/metody/ltv-cac.html": {
+   "modified": "2026-10-09",
+   "checked": "2026-10-04"
+  },
+  "/metody/ice.html": {
+   "modified": "2026-10-26",
+   "checked": "2026-10-04"
+  },
+  "/metody/see-think-do-care.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/positioning-dunford.html": {
+   "modified": "2026-10-26",
+   "checked": "2026-10-04"
+  },
+  "/metody/messaging-house.html": {
+   "modified": "2026-10-26"
+  },
+  "/metody/storybrand.html": {
+   "modified": "2026-10-26"
+  },
+  "/metody/north-star.html": {
+   "modified": "2026-10-11",
+   "checked": "2026-10-04"
+  },
+  "/metody/growth-loops.html": {
+   "modified": "2026-10-05"
+  },
+  "/metody/flywheel.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/bowtie.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/plg.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/category-entry-points.html": {
+   "modified": "2026-10-26"
+  },
+  "/metody/rule-95-5.html": {
+   "modified": "2026-10-26"
+  },
+  "/metody/incrementality.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/mmm.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/lean-canvas.html": {
+   "modified": "2026-10-11",
+   "checked": "2026-10-04"
+  },
+  "/metody/value-proposition-canvas.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/double-diamond.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/opportunity-solution-tree.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/continuous-discovery.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/pmf-40.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/pre-mortem.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/rice.html": {
+   "modified": "2026-10-26",
+   "checked": "2026-10-04"
+  },
+  "/metody/moscow.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/kano.html": {
+   "modified": "2026-10-11",
+   "checked": "2026-10-04"
+  },
+  "/metody/impact-mapping.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/user-story-mapping.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/heart.html": {
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
+  },
+  "/metody/cohorts.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/hook-model.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/evals.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/okr.html": {
+   "modified": "2026-10-11",
+   "checked": "2026-10-04"
+  },
+  "/metody/raci-daci.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/shape-up.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/minto-pyramid.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/ecom-pnl.html": {
+   "modified": "2026-10-06",
+   "checked": "2026-10-04"
+  },
+  "/metody/unit-economics-sku.html": {
+   "modified": "2026-10-29",
+   "checked": "2026-10-04"
+  },
+  "/metody/contribution-margin-channels.html": {
+   "modified": "2026-10-06",
+   "checked": "2026-10-04"
+  },
+  "/metody/drr-romi.html": {
+   "modified": "2026-10-09",
+   "checked": "2026-10-04"
+  },
+  "/metody/listing-funnel.html": {
+   "modified": "2026-10-06",
+   "checked": "2026-10-04"
+  },
+  "/metody/abc-xyz.html": {
+   "modified": "2026-10-06",
+   "checked": "2026-10-04"
+  },
+  "/metody/assortment-matrix.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/stock-turnover.html": {
+   "modified": "2026-10-06",
+   "checked": "2026-10-04"
+  },
+  "/metody/listing-as-landing.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/reputation-reviews.html": {
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
+  },
+  "/metody/four-part-request.html": {
+   "modified": "2026-10-09",
+   "checked": "2026-10-04"
+  },
+  "/metody/goal-acceptance-criteria.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/reverse-interview.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/dear.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/ai-decision-5-steps.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/edge.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/how-make-better.html": {
+   "modified": "2026-10-05"
+  },
+  "/metody/voice.html": {
+   "modified": "2026-10-26"
+  },
+  "/metody/own-draft.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/idea-batches.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/content-pipeline.html": {
+   "modified": "2026-10-05"
+  },
+  "/metody/verb-or-profession.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/assign-check-repeat.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/progressive-trust.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/rule-1995.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/answer-check.html": {
+   "modified": "2026-10-26"
+  },
+  "/metody/five-roles.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/review-board.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/adversarial-validation.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/hard-reviewer.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/bite.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/ephemeral-html.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/alter.html": {
+   "modified": "2026-10-04"
+  },
+  "/metody/socratic.html": {
+   "modified": "2026-10-04"
+  },
+  "/kalkulyatory/yunit-ekonomika-tovara.html": {
+   "modified": "2026-10-29",
+   "checked": "2026-10-04"
+  },
+  "/kalkulyatory/drr-romi.html": {
+   "modified": "2026-10-09",
+   "checked": "2026-10-04"
+  },
+  "/kalkulyatory/porog-reklamy.html": {
+   "modified": "2026-10-09"
+  },
+  "/kalkulyatory/marzhinalnyy-dohod-kanala.html": {
+   "modified": "2026-10-06",
+   "checked": "2026-10-04"
+  },
+  "/kalkulyatory/ltv-cac.html": {
+   "modified": "2026-10-09",
+   "checked": "2026-10-04"
+  },
+  "/kalkulyatory/oborachivaemost-zapasov.html": {
+   "modified": "2026-10-06",
+   "checked": "2026-10-04"
+  },
+  "/kalkulyatory/rice.html": {
+   "modified": "2026-10-26",
+   "checked": "2026-10-04"
+  },
+  "/kalkulyatory/ice.html": {
+   "modified": "2026-10-26",
+   "checked": "2026-10-04"
+  },
+  "/tools/neyroseti-bez-vpn/": {
+   "modified": "2026-10-27",
+   "checked": "2026-10-26"
+  }
+ }
+}

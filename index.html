@@ -35274,13 +35274,11 @@ function renderLesson(id) {
     ? (writtenIds.length === 1 ? `Урок ${writtenIds[0]}` : `Уроки ${writtenIds[0]}–${writtenIds[writtenIds.length-1]}`)
     : '';
 
-  const courseUpdated = (typeof CHANGELOG !== 'undefined' && CHANGELOG[0]) ? fmtDate(CHANGELOG[0].date) : '';
   const timeMeta = `
     <div class="lesson-time-meta">
       <span><strong>~${lesson.duration} мин</strong> чтения</span>
       <span class="dot"></span>
       <span><strong>30–60 мин</strong> практики</span>
-      ${courseUpdated ? `<span class="dot"></span><span>обновлено <strong>${courseUpdated}</strong></span>` : ''}
     </div>
   `;
 
@@ -37521,6 +37519,15 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-11-08",
+    title: "Даты материалов отдельно от даты релиза",
+    tag: "fix",
+    items: [
+      "Дата обновления урока отражает изменение его текста и справочных значений, а не пересборку сайта.",
+      "На страницах решений, методов и калькуляторов показана дата изменения материала. Проверка источников отмечается отдельно."
+    ]
+  },
   {
     date: "2026-11-08",
     title: "Уроки и решения связаны между собой",
