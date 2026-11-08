@@ -4,9 +4,9 @@
   <circle cx="122" cy="132" r="10" fill="#1F2F5C"/>
   <text x="148" y="141" fill="#1F2F5C" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="26" font-weight="600">Бесплатно · без VPN · на русском</text>
   <text x="114" y="292" fill="#16161A" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="112" font-weight="700" letter-spacing="-3">Артефакты</text>
-  <text x="118" y="370" fill="#16161A" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="40" font-weight="500">ИИ-задания для тех, кто продаёт онлайн</text>
-  <text x="118" y="430" fill="#5A5B63" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="27">Отзывы · карточки товаров · юнит-экономика на ваших данных</text>
+  <text x="118" y="370" fill="#16161A" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="40" font-weight="500">Разберитесь в ИИ. Создайте своё.</text>
+  <text x="118" y="430" fill="#5A5B63" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="27">Знания, навыки и решения — от текста и таблицы до приложения</text>
   <line x1="118" y1="486" x2="1082" y2="486" stroke="#E6E7EC" stroke-width="2"/>
-  <text x="118" y="536" fill="#5A5B63" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="24">49 заданий по шагам · калькуляторы · 128 уроков</text>
+  <text x="118" y="536" fill="#5A5B63" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="24">49 решений по шагам · калькуляторы · 128 уроков</text>
   <text x="1082" y="536" fill="#1F2F5C" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="24" font-weight="600" text-anchor="end">ai.madzhitov.ru</text>
 </svg>

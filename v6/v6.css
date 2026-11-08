@@ -924,6 +924,80 @@ body.v6 .lesson-content .v6-page h1.v6-d.v6-home-h1 { font-size:clamp(42px,5.2vw
 .v6-hero2-lead { margin:0; max-width:520px; font-size:19px; line-height:1.5; color:var(--text-2); }
 .v6-home-start { align-self:flex-start; white-space:normal; text-align:center; padding:12px 24px; }
 .v6-home-facts { margin:0; font-size:14px; color:var(--text-2); }
+/* Главная как мастерская: объяснение, примеры результатов и три самостоятельных входа. */
+.v6-workshop-hero { gap:40px; align-items:center; padding-top:44px; }
+.v6-workshop-hero > .v6-hero2-l { grid-column:1; grid-row:1; }
+.v6-workshop-hero > .v6-home-doors { grid-column:1 / -1; grid-row:2; padding-top:0; }
+.v6-workshop-hero > .v6-workbench { grid-column:2; grid-row:1; }
+body.v6 .lesson-content .v6-page .v6-workshop-hero h1.v6-d.v6-home-h1 { font-size:clamp(34px,3.05vw,44px) !important; line-height:1.1 !important; }
+.v6-workshop-hero h1 span { display:block; }
+.v6-home-meaning { margin:0; max-width:520px; font-size:16px; line-height:1.5; color:var(--text-2); }
+.v6-workshop-hero .v6-hero2-l { gap:20px; }
+.v6-workbench { margin:0; min-width:0; border-radius:32px; padding:24px; background:var(--accent-tint); }
+.v6-workbench figcaption { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; font-size:14px; font-weight:600; color:var(--accent); }
+.v6-workbench figcaption small { font-size:12px; font-weight:400; }
+.v6-workbench-desk { position:relative; height:410px; margin-top:20px; }
+.v6-work-sheet { position:absolute; padding:20px; border:1px solid var(--line); border-radius:8px; background:var(--surface); box-shadow:0 12px 28px #1F2F5C10; box-sizing:border-box; }
+.v6-work-file { display:block; margin-bottom:12px; color:var(--text-2); font:11px var(--font-mono); }
+.v6-work-sheet b { display:block; font-size:17px; line-height:1.25; }
+.v6-work-sheet p { margin:12px 0 0; font-size:13px; line-height:1.55; color:var(--text-2); }
+.v6-work-sheet.is-document { left:6px; top:3px; width:66%; min-height:240px; transform:rotate(-5deg); }
+.v6-work-sheet.is-document i { display:block; height:5px; margin-top:10px; background:var(--ground); width:90%; }
+.v6-work-sheet.is-document i:last-child { width:60%; }
+.v6-work-sheet.is-table { right:0; top:75px; width:77%; transform:rotate(3deg); }
+.v6-work-table { display:grid; grid-template-columns:1fr auto; margin-top:16px; font:11px var(--font-mono); }
+.v6-work-table > * { padding:9px 5px; border-bottom:1px solid var(--line); }
+.v6-work-table strong { background:var(--accent-tint); color:var(--accent); font-weight:500; }
+.v6-work-sheet.is-chat { left:14px; top:226px; width:70%; transform:rotate(-2deg); }
+.v6-work-sheet .v6-work-question { margin-left:22%; padding:7px 10px; border-radius:12px 12px 2px 12px; background:var(--ground); }
+.v6-work-sheet .v6-work-answer { padding:7px 10px; margin-top:7px; border-left:2px solid var(--accent); }
+.v6-workbench-foot { margin:18px 0 0; font-size:13px; line-height:1.5; color:var(--accent); }
+.v6-home-doors { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; padding-top:40px; }
+.v6-home-doors > a { display:flex; flex-direction:column; align-items:flex-start; gap:12px; padding:28px; border-radius:24px; background:var(--surface); color:var(--ink); text-decoration:none !important; border:1px solid transparent; }
+.v6-home-doors > a:hover { border-color:var(--accent); }
+.v6-home-doors > a:focus-visible { outline:3px solid var(--accent); outline-offset:4px; }
+.v6-home-door-kind { font-size:13px; color:var(--text-2); }
+body.v6 .lesson-content .v6-page .v6-home-doors h2 { margin:0 !important; padding:0 !important; border:0 !important; font:800 26px/1.15 var(--font-display) !important; }
+.v6-home-doors p { margin:0; font-size:16px; line-height:1.5; color:var(--text-2); }
+.v6-home-door-go { padding-top:12px; margin-top:auto; font-size:15px; font-weight:600; color:var(--accent); }
+.v6-home-door-go > span { margin-left:6px; }
+.v6-home-solutions .v6-hask { margin-bottom:28px; }
+.v6-home-solutions .v6-show { max-width:760px; }
+@media (max-width:1100px) and (min-width:901px) { .v6-workshop-hero { gap:24px; } .v6-workbench { padding:18px; } .v6-work-sheet { padding:15px; } .v6-work-sheet.is-table { width:90%; } }
+@media (max-width:900px) {
+  #v6-home { display:flex; flex-direction:column; }
+  #v6-strip { order:0; }
+  .v6-workshop-hero { display:contents; }
+  .v6-workshop-hero .v6-hero2-l { order:1; padding-top:24px; }
+  .v6-home-doors { order:2; padding-top:28px; grid-template-columns:1fr; gap:12px; }
+  .v6-workshop-hero > .v6-home-doors { padding-top:28px; }
+  .v6-home-doors > a { padding:22px; gap:8px; }
+  .v6-home-door-go { padding-top:4px; }
+  .v6-workbench { order:3; margin-top:28px; }
+  #v6-home-rest { order:4; }
+}
+@media (max-width:420px) {
+  body.v6 .lesson-content .v6-page .v6-workshop-hero h1.v6-d.v6-home-h1 { font-size:26px !important; }
+  .v6-workshop-hero .v6-hero2-l { gap:16px; }
+  .v6-home-meaning { font-size:15px; }
+  .v6-workbench { padding:18px; border-radius:24px; }
+  .v6-work-sheet { padding:14px; }
+  .v6-work-sheet b { font-size:15px; }
+  .v6-work-sheet.is-document { width:78%; }
+  .v6-work-sheet.is-table { width:94%; top:90px; }
+  .v6-work-sheet.is-chat { width:87%; top:245px; left:0; }
+  .v6-workbench-desk { height:445px; }
+}
+@media (max-width:720px) {
+  .v6-home-doors { gap:10px; padding-top:24px; }
+  .v6-workshop-hero > .v6-home-doors { padding-top:24px; }
+  .v6-home-doors > a { display:grid; grid-template-columns:1fr auto; gap:4px 16px; padding:16px 20px; }
+  .v6-home-door-kind { grid-column:1; font-size:12px; }
+  body.v6 .lesson-content .v6-page .v6-home-doors h2 { grid-column:1; grid-row:2; font-size:22px !important; }
+  .v6-home-doors p { display:none; }
+  .v6-home-door-go { grid-column:2; grid-row:1 / span 2; align-self:center; padding:0; margin:0; font-size:0; }
+  .v6-home-door-go > span { font-size:22px; }
+}
 .v6-hask { display:flex; flex-direction:column; gap:10px; max-width:560px; }
 .v6-hask label { font-size:14px; font-weight:600; }
 .v6-hask-row { display:flex; gap:6px; background:var(--surface); border-radius:18px; padding:6px; }

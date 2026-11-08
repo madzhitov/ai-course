@@ -169,7 +169,7 @@
     f.innerHTML = `<div class="v6f-in">
         <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 895 740" class="v6f-mark" aria-hidden="true" focusable="false"><g transform="translate(0 700) scale(1 -1)" fill="currentColor"><path d="M7.2 0 L319.3 700 L479.5 700 L792.1 0 L622.9 0 L366.1 617.6 L430.4 617.6 L173.6 0 Z"/><path d="M163.9 149.8 L206.4 272.7 L855 272.7 L800 149.8 Z"/></g></svg>
 <div class="v6f-word">Артефакты,<br>а не сертификаты.</div></div>
-        <div><p class="v6f-h">Платформа</p><ul>${a("V6.open('roles')", 'Роли')}${a("V6.open('tasks')", 'Задачи')}${a("V6.open('paths')", 'Обучение')}${a("V6.open('knowledge')", 'Знания')}${a("V6.ktab('tools')", 'Инструменты')}</ul></div>
+        <div><p class="v6f-h">Платформа</p><ul>${a("V6.open('roles')", 'Роли')}${a("V6.open('tasks')", 'Решения')}${a("V6.open('paths')", 'Обучение')}${a("V6.open('knowledge')", 'Знания')}${a("V6.ktab('tools')", 'Инструменты')}</ul></div>
         <div><p class="v6f-h">О проекте</p><ul>${a("openStaticPage('about')", 'Что это')}${a("openStaticPage('howto')", 'Как заниматься')}${a("openStaticPage('changelog')", 'Что нового')}${a("openStaticPage('resources')", 'Источники')}</ul></div>
         <div><p class="v6f-h">Помощь</p><ul>${a("openStaticPage('faq')", 'FAQ')}${a('V6.openDict()', 'Словарь')}<li><a href="/tools/neyroseti-bez-vpn/">Нейросети без VPN</a></li></ul></div>
       </div>
@@ -417,7 +417,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
         ${card('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>', 'Чек-лист', 'Три-пять пунктов, по которым видно, что вышло хорошо.')}
         ${card('А', 'Проверка с Алёшей', 'Если застряли или вышло почти, Алёша подскажет, что поправить. На Вехах проверит работу по критериям.', true)}
       </div>
-      <p class="v6-how-f"><button class="v6b is-soft" onclick="V6.open('tasks')">Все ${n} ${plural(n, 'задание', 'задания', 'заданий')}</button><span class="v6-meta">обычно до часа</span></p></section>`;
+      <p class="v6-how-f"><button class="v6b is-soft" onclick="V6.open('tasks')">Все ${n} ${plural(n, 'решение', 'решения', 'решений')}</button><span class="v6-meta">обычно до часа</span></p></section>`;
   }
   function whoBlock2() {
     const feat = ((HX && HX.tabs) || []).map((t) => t.unit);
@@ -499,23 +499,33 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       [...el.children].forEach((n) => { if (n !== pre) n.remove(); });
       pre.removeAttribute('id');
       document.documentElement.classList.remove('not-home'); // неизвестный адрес (#что-то) тоже открывает главную
-    } else el = shell(`<div class="v6c" id="v6-home"><div id="v6-strip"></div><section class="v6-hero2">
+    } else el = shell(`<div class="v6c" id="v6-home"><div id="v6-strip"></div><section class="v6-hero2 v6-workshop-hero">
         <div class="v6-hero2-l">
-          <span class="v6-badge"><b>Артефакты, а не сертификаты</b></span>
-          <h1 class="v6-d v6-home-h1">ИИ-задания для тех, кто продаёт онлайн</h1>
-          <p class="v6-hero2-lead">Ответы на отзывы, карточки и юнит-экономика на ваших данных за час. Готовый промпт и проверка по чек-листу, в ГигаЧате или Алисе.</p>
-          <a class="v6b is-accent v6-home-start" href="#unit-u-seller-reviews" onclick="V6.openUnit('u-seller-reviews','home-primary'); return false;">Ответить на отзывы за 15 минут</a>
-          <form class="v6-hask" onsubmit="return V6.ask(this)" role="search"><label for="v6-hask-in">или найдите свою задачу</label>
-            <span class="v6-hask-row"><input id="v6-hask-in" type="text" placeholder="например, отзывы" autocomplete="off"><button class="v6b is-soft" type="submit">Найти</button></span></form><div class="v6-results" hidden aria-live="polite"></div>
-          <p class="v6-roleline"><span>Ваша роль:</span><a href="#role-seller" onclick="V6.chooseRole('seller','home'); return false;">продаю онлайн</a><a href="#role-marketing" onclick="V6.chooseRole('marketing','home'); return false;">маркетолог</a></p>
-          <p class="v6-home-facts">Бесплатно · <span id="v6-pre-n">49 заданий</span> · на русском</p>
+          <span class="v6-badge"><b>Знания. Навыки. Артефакты.</b></span>
+          <h1 class="v6-d v6-home-h1"><span>Разберитесь в ИИ.</span><span>Научитесь применять.</span><span>Создайте своё.</span></h1>
+          <p class="v6-hero2-lead">Артефакты — бесплатная платформа, где можно разобраться в ИИ, освоить новый навык и создать полезную вещь на своих данных.</p>
+          <p class="v6-home-meaning">Текст, таблица, план, бот или приложение — результат, которым можно пользоваться. Здесь мы называем его артефактом.</p>
+          <p class="v6-home-facts">На русском · <span id="v6-pre-n">49 готовых решений</span> · Алёша поможет разобраться</p>
         </div>
-        <div class="v6-show" id="v6-show"></div>
+      <nav class="v6-home-doors" aria-label="С чего начать">
+        <a href="#knowledge" onclick="umTrack('home-entry', { intent: 'understand' }); V6.open('knowledge'); return false;"><span class="v6-home-door-kind">Знания</span><h2>Разобраться</h2><p>Как устроен ИИ, что он умеет и как проверять его ответы.</p><span class="v6-home-door-go">Открыть знания <span aria-hidden="true">↗</span></span></a>
+        <a href="#paths" onclick="umTrack('home-entry', { intent: 'learn' }); V6.open('paths'); return false;"><span class="v6-home-door-kind">Навыки</span><h2>Научиться</h2><p>Уроки и практика: от первых запросов до своих приложений.</p><span class="v6-home-door-go">Выбрать обучение <span aria-hidden="true">↗</span></span></a>
+        <a href="#tasks" onclick="umTrack('home-entry', { intent: 'make' }); V6.open('tasks'); return false;"><span class="v6-home-door-kind">Артефакты</span><h2>Сделать</h2><p>Решения по шагам на ваших данных. Промпты, инструменты и проверка результата.</p><span class="v6-home-door-go">Найти решение <span aria-hidden="true">↗</span></span></a>
+      </nav>
+        <figure class="v6-workbench" aria-label="Учебные примеры: план, таблица и помощник">
+          <figcaption><span>Мастерская полезных вещей</span><small>Учебные примеры</small></figcaption>
+          <div class="v6-workbench-desk">
+            <div class="v6-work-sheet is-document"><span class="v6-work-file">Документ</span><b>План исследования</b><p>Что хотим узнать<br>Какие данные собрать<br>Как проверить выводы</p><i></i><i></i><i></i></div>
+            <div class="v6-work-sheet is-table"><span class="v6-work-file">Таблица</span><b>Расчёт на ваших данных</b><div class="v6-work-table"><span>Доход</span><span>ваши данные</span><span>Расходы</span><span>ваши данные</span><strong>Остаток</strong><strong>= доход − расходы</strong></div></div>
+            <div class="v6-work-sheet is-chat"><span class="v6-work-file">Помощник</span><b>Бот по вашим материалам</b><p class="v6-work-question">С чего начать?</p><p class="v6-work-answer">Выберите тему. Разберём её по шагам.</p></div>
+          </div>
+          <p class="v6-workbench-foot">От понятного объяснения к вещи, которую вы сделали сами.</p>
+        </figure>
       </section><div id="v6-home-rest"></div></div>`);
     Promise.all([load(), loadHX()]).then(() => {
       const pn = document.getElementById('v6-pre-n');
       const nReady = D.units.filter((u) => hasSteps(u) && !u.review).length;
-      if (pn) pn.textContent = `${nReady} ${plural(nReady, 'задание', 'задания', 'заданий')}`;
+      if (pn) pn.textContent = `${nReady} готовых ${plural(nReady, 'решение', 'решения', 'решений')}`;
       const st = homeState();
       track('home-state', { state: st });
       const r = resume();
@@ -549,8 +559,8 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       const box = (id) => document.getElementById(id);
       if (!box('v6-home-rest')) return;
       box('v6-strip').innerHTML = strip;
-      box('v6-show').innerHTML = showcase(); vxStart();
-      box('v6-home-rest').innerHTML = tryBlock() + howBlock() + whoBlock2() + learnBlock() + moreBlock() + methodsBlock2() + authorBlock() + newsCo();
+      box('v6-home-rest').innerHTML = `<section class="v6-sec v6-home-solutions"><div class="v6-sec-head"><div><span class="v6-eyebrow">Решения с ИИ</span><h2 class="v6-h2">Что хотите сделать?</h2></div><p>Начните с готового способа. Подставьте свои данные и проверьте результат по чек-листу.</p></div><form class="v6-hask" onsubmit="return V6.ask(this)" role="search"><label for="v6-hask-in">Найдите свою задачу</label><span class="v6-hask-row"><input id="v6-hask-in" type="text" placeholder="например, письмо или план" autocomplete="off"><button class="v6b is-accent" type="submit">Найти</button></span></form><div class="v6-results" hidden aria-live="polite"></div><div class="v6-show" id="v6-show">${showcase()}</div></section>` + howBlock() + tryBlock() + whoBlock2() + learnBlock() + moreBlock() + methodsBlock2() + authorBlock() + newsCo();
+      vxStart();
     }).catch(() => fail('v6-home'));
     return el;
   }
@@ -644,7 +654,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
     load().then(() => {
       const seller = D.groups.find((g) => g.id === 'seller');
       const others = D.groups.filter((g) => g.id !== 'seller');
-      document.getElementById('v6-tasks').innerHTML = `<div class="v6-sechero"><div><h1 class="v6-d">Задачи</h1><p class="v6-lead">С чем приходят. У каждой задачи — готовый результат и способы его получить.</p>${askForm('v6-ask-t')}</div>${art('icon-zadachi', 'v6-icon-art')}</div>
+      document.getElementById('v6-tasks').innerHTML = `<div class="v6-sechero"><div><h1 class="v6-d">Решения с ИИ</h1><p class="v6-lead">Выберите свою задачу. Здесь собраны способы получить результат по шагам: на ваших данных, с промптом и проверкой.</p>${askForm('v6-ask-t')}</div>${art('icon-zadachi', 'v6-icon-art')}</div>
         <section class="v6-sec" style="margin-top:72px"><div class="v6-sec-head"><h2 class="v6-h2">${e(seller.title)}</h2></div>${mapBlock().replace(/^<section class="v6-sec">/, '<div>').replace(/<\/section>$/, '</div>')}</section>
         ${others.map((g) => `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">${e(g.title)}</h2><p>${(g.directions || []).some((d) => (d.tasks || []).some((t) => taskReady(t.id))) ? 'Готовые задачи кликабельны, будущие помечены «скоро».' : 'Задачи разложены, способы решения появятся.'}</p></div></div><div class="v6-dirs">${g.directions.map((d) => `<div class="v6-dir"><h3>${e(d.title)}</h3>${(d.tasks || [{ title: 'Задачи направления' }]).map((t) => (t.id && taskReady(t.id)) ? `<a class="v6-dr" href="#" onclick="V6.openTask('${e(t.id)}','role'); return false;"><span>${taskDone(t.id) ? '✓ ' : ''}${e(t.title)}</span><span class="m">${taskMins(t.id)}</span></a>` : `<span class="v6-dr is-soon"><span>${e(t.title)}</span><span class="m">скоро</span></span>`).join('')}</div>`).join('')}</div></section>`).join('')}`;
     }).catch(() => fail('v6-tasks'));
