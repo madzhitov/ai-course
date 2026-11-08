@@ -657,6 +657,10 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       document.getElementById('v6-tasks').innerHTML = `<div class="v6-sechero"><div><h1 class="v6-d">Решения с ИИ</h1><p class="v6-lead">Выберите свою задачу. Здесь собраны способы получить результат по шагам: на ваших данных, с промптом и проверкой.</p>${askForm('v6-ask-t')}</div>${art('icon-zadachi', 'v6-icon-art')}</div>
         <section class="v6-sec" style="margin-top:72px"><div class="v6-sec-head"><h2 class="v6-h2">${e(seller.title)}</h2></div>${mapBlock().replace(/^<section class="v6-sec">/, '<div>').replace(/<\/section>$/, '</div>')}</section>
         ${others.map((g) => `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">${e(g.title)}</h2><p>${(g.directions || []).some((d) => (d.tasks || []).some((t) => taskReady(t.id))) ? 'Готовые задачи кликабельны, будущие помечены «скоро».' : 'Задачи разложены, способы решения появятся.'}</p></div></div><div class="v6-dirs">${g.directions.map((d) => `<div class="v6-dir"><h3>${e(d.title)}</h3>${(d.tasks || [{ title: 'Задачи направления' }]).map((t) => (t.id && taskReady(t.id)) ? `<a class="v6-dr" href="#" onclick="V6.openTask('${e(t.id)}','role'); return false;"><span>${taskDone(t.id) ? '✓ ' : ''}${e(t.title)}</span><span class="m">${taskMins(t.id)}</span></a>` : `<span class="v6-dr is-soon"><span>${e(t.title)}</span><span class="m">скоро</span></span>`).join('')}</div>`).join('')}</div></section>`).join('')}`;
+      const search = new URLSearchParams(location.search);
+      const field = document.getElementById('v6-ask-t');
+      if (search.has('q') && search.get('q').trim()) { field.value = search.get('q').slice(0, 500); ask(field.form); }
+      else if (search.has('search')) field.focus();
     }).catch(() => fail('v6-tasks'));
   }
   function openTask(id, from) {

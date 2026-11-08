@@ -19,7 +19,7 @@ body { background:#F3F4F7 !important; color:#16161A; font-family:'Golos Text','P
 #lesson-content { max-width:960px !important; padding:40px 40px 72px !important; }
 #lesson-content .lesson-view { max-width:none !important; background:#fff; border-radius:40px; padding:56px 64px; box-sizing:border-box; }
 #lesson-content h1, #lesson-content h2, #lesson-content h3, #lesson-content .lesson-view h3.tl-name {
-  font-family:'Montserrat','Arial Black',sans-serif !important; font-weight:800 !important; letter-spacing:-0.02em !important; color:#16161A !important; }
+  font-family:'Montserrat','Arial Black',sans-serif !important; font-weight:800 !important; letter-spacing:-0.02em !important; color:#16161A !important; hyphens:none; text-wrap:balance; }
 #lesson-content h1 { font-size:clamp(32px,4vw,48px) !important; line-height:1.05 !important; margin:0 0 20px !important; }
 #lesson-content h2 { font-size:28px !important; line-height:1.15 !important; margin:44px 0 14px !important; border:0 !important; padding:0 !important; }
 #lesson-content h3 { font-size:20px !important; margin:28px 0 10px !important; }
@@ -47,3 +47,39 @@ body { background:#F3F4F7 !important; color:#16161A; font-family:'Golos Text','P
 body { display:block !important; grid-template-columns:none !important; }
 .v6s-h { display:block; width:100%; position:relative; z-index:2; }
 .v6s-logo img { width:150px !important; height:24px !important; max-width:none !important; }
+
+/* Единый вход со статичных страниц; слово-марка сохраняется и на телефоне. */
+.v6s-search { margin-left:12px; font-size:15px; font-weight:600; color:#1F2F5C; text-decoration:none; }
+.v6s-search:focus-visible, .st-copy button:focus-visible, .st-primary:focus-visible, .st-unit-card:focus-visible { outline:3px solid #1F2F5C; outline-offset:4px; }
+.st-primary { display:inline-block; padding:14px 22px; background:#1F2F5C; color:#fff !important; border-radius:18px; text-decoration:none; font-size:16px; font-weight:600; }
+.st-copy { position:relative; margin:20px 0; }
+.st-copy button { display:block; margin:0 0 8px auto; padding:10px 16px; border:1px solid #D8DCE5; border-radius:12px; background:#fff; color:#1F2F5C; font:600 14px 'Golos Text',system-ui,sans-serif; cursor:pointer; }
+#lesson-content .st-prompt { white-space:pre-wrap; overflow-wrap:anywhere; padding:20px; line-height:1.6; font-size:14px; }
+.st-lesson-task { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; padding:20px; border-radius:20px; background:#E3E8F2; font-size:16px; line-height:1.5; }
+.st-related { margin-top:36px; }
+.st-neighbors { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-top:36px; }
+.st-neighbors a { display:flex; flex-direction:column; gap:8px; padding:18px; background:#F3F4F7; border-radius:18px; text-decoration:none; line-height:1.4; }
+.st-neighbors small, .st-lesson-list small { color:#5A5B63; font-size:14px; }
+.st-catalog-links { display:flex; flex-wrap:wrap; gap:10px; font-size:15px; line-height:1.6; }
+.st-lesson-list li { margin:12px 0; }
+.st-unit-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+#lesson-content .st-unit-card { display:flex; flex-direction:column; gap:12px; padding:22px; border:1px solid #E6E7EC; border-radius:22px; color:#16161A; text-decoration:none; }
+#lesson-content .st-unit-card:hover { background:#F3F4F7; border-radius:22px; }
+#lesson-content .st-unit-card h3 { margin:0 !important; }
+.st-unit-card > span { font-size:13px; color:#5A5B63; }
+.st-unit-card p { margin:0; font-size:16px; line-height:1.5; color:#5A5B63; }
+.st-unit-card b { margin-top:auto; padding-top:8px; font-size:14px; color:#1F2F5C; }
+.st-table-scroll { overflow-x:auto; margin:24px 0; }
+.st-summary { width:100%; border-collapse:collapse; text-align:left; font-size:15px; line-height:1.5; }
+.st-summary caption { text-align:left; margin-bottom:12px; color:#5A5B63; }
+.st-summary th, .st-summary td { padding:14px 10px; border-bottom:1px solid #E6E7EC; vertical-align:top; }
+.st-summary th { font-weight:600; }
+.st-summary small { display:block; color:#5A5B63; }
+@media (max-width:720px) {
+  .v6s-in { height:auto; min-height:76px; padding:16px 20px; flex-wrap:wrap; gap:14px; }
+  .v6s-nav { order:3; width:100%; justify-content:space-between; margin:0; gap:10px; }
+  .v6s-search { margin-left:auto; }
+  .v6s-h .v6s-logo img { content:normal; width:150px !important; height:24px !important; }
+  .st-unit-grid, .st-neighbors { grid-template-columns:1fr; }
+  .st-summary { min-width:560px; }
+}
