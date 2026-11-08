@@ -35,6 +35,25 @@ body { background:#F3F4F7 !important; color:#16161A; font-family:'Golos Text','P
 .tl-chip[aria-pressed="true"] { background:#16161A !important; color:#fff !important; }
 .tl-row { border-top-color:#E6E7EC !important; }
 .tl-mark { color:#1F2F5C !important; }
+/* Knowledge paths: the three columns describe real steps, not decoration. */
+.st-eyebrow { font:600 12px/1.5 'JetBrains Mono',monospace; letter-spacing:.06em; text-transform:uppercase; color:#56617A; }
+.st-knowledge-trail { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:2px; margin:28px 0; background:#D7DEEB; border:1px solid #D7DEEB; border-radius:18px; overflow:hidden; }
+.st-knowledge-trail > a, .st-knowledge-trail > span { display:flex; flex-direction:column; gap:9px; padding:18px 16px; background:#F3F4F7; min-width:0; text-decoration:none; }
+.st-knowledge-trail [aria-current] { background:#1F2F5C; color:#fff; }
+.st-knowledge-trail small { font-size:12px; line-height:1.4; }
+.st-knowledge-trail b { font-size:15px; line-height:1.45; overflow-wrap:anywhere; }
+#lesson-content .st-knowledge-trail a:hover { background:#E3E8F2; border-radius:0; }
+.st-knowledge-trail a:focus-visible, .st-knowledge-brief a:focus-visible { outline:3px solid #5A76B0; outline-offset:-4px; }
+.st-knowledge-brief, .st-knowledge-example { padding:24px; margin:28px 0; border-radius:20px; background:#E3E8F2; }
+.st-knowledge-example { background:#F3F4F7; border-left:4px solid #1F2F5C; }
+.st-knowledge-brief p, .st-knowledge-example p, .st-knowledge-sample > p { font-size:18px; line-height:1.65; }
+.st-knowledge-brief a { display:block; margin-top:14px; font-weight:600; }
+.st-knowledge-sample { padding:12px 0 24px; border-bottom:1px solid #E6E7EC; }
+@media (max-width:540px) {
+  .st-knowledge-trail { grid-template-columns:1fr; }
+  .st-knowledge-trail > a, .st-knowledge-trail > span { padding:15px 18px; gap:4px; }
+  .st-knowledge-brief, .st-knowledge-example { padding:20px; }
+}
 @media (max-width:720px) {
   .v6s-in { padding:0 20px; height:64px; gap:16px; }
   .v6s-nav { gap:14px; }

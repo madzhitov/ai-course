@@ -566,7 +566,7 @@
    "modified": "2026-10-04"
   },
   "/metody/jtbd.html": {
-   "modified": "2026-10-26",
+   "modified": "2026-11-08",
    "checked": "2026-10-04"
   },
   "/metody/rfm.html": {
@@ -645,7 +645,7 @@
    "modified": "2026-10-04"
   },
   "/metody/rice.html": {
-   "modified": "2026-10-26",
+   "modified": "2026-11-08",
    "checked": "2026-10-04"
   },
   "/metody/moscow.html": {
@@ -692,7 +692,7 @@
    "checked": "2026-10-04"
   },
   "/metody/unit-economics-sku.html": {
-   "modified": "2026-10-29",
+   "modified": "2026-11-08",
    "checked": "2026-10-04"
   },
   "/metody/contribution-margin-channels.html": {
@@ -828,6 +828,15 @@
   "/kalkulyatory/ice.html": {
    "modified": "2026-10-26",
    "checked": "2026-10-04"
+  },
+  "/slovar/segment.html": {
+   "modified": "2026-11-08"
+  },
+  "/slovar/backlog.html": {
+   "modified": "2026-11-08"
+  },
+  "/slovar/unit-economics.html": {
+   "modified": "2026-11-08"
   },
   "/tools/neyroseti-bez-vpn/": {
    "modified": "2026-10-27",
