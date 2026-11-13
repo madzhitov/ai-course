@@ -746,6 +746,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ai.madzhitov.ru/metody/stp.html</loc>
+    <lastmod>2026-11-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ai.madzhitov.ru/metody/jtbd.html</loc>
     <lastmod>2026-11-08</lastmod>
     <priority>0.8</priority>
@@ -782,6 +787,11 @@
   </url>
   <url>
     <loc>https://ai.madzhitov.ru/metody/value-proposition-canvas.html</loc>
+    <lastmod>2026-11-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/metody/continuous-discovery.html</loc>
     <lastmod>2026-11-13</lastmod>
     <priority>0.8</priority>
   </url>

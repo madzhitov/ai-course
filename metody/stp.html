@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STP (сегментация, таргетинг, позиционирование) — Артефакты</title>
+<meta name="description" content="STP (сегментация, таргетинг, позиционирование): Выбрать приоритетный сегмент и сформулировать рабочую гипотезу позиционирования. Когда применять, шаги, пример, частые ошибки.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STP (сегментация, таргетинг, позиционирование)">
+<meta property="og:description" content="STP (сегментация, таргетинг, позиционирование): Выбрать приоритетный сегмент и сформулировать рабочую гипотезу позиционирования. Когда применять, шаги, пример, частые ошибки.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png?v=27898e84">
+<meta property="og:url" content="https://ai.madzhitov.ru/metody/stp.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/metody/stp.html">
+<link rel="preload" href="../v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../v6/fonts/fonts.css?v=0e1f3d7b">
+<link rel="stylesheet" href="../tropa-lesson.css?v=889f3ed1">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+  .st-calc-res { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap:10px; }
+  .st-calc-r { background:#F3F4F7; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); }
+  .st-calc-r b { font-size:24px; line-height:1.15; font-weight:800; color:#16161A; }
+  .st-calc-r.is-main b { font-size:36px; }
+  .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
+  .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"STP (сегментация, таргетинг, позиционирование)","description":"STP (сегментация, таргетинг, позиционирование): Выбрать приоритетный сегмент и сформулировать рабочую гипотезу позиционирования. Когда применять, шаги, пример, частые ошибки.","url":"https://ai.madzhitov.ru/metody/stp.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-11-13"}</script>
+<link rel="stylesheet" href="../v6/static.css?v=ace69056">
+<script defer src="../v6/static.js?v=e97e63c9"></script>
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../metody/">Методы</a><a href="../slovar/">Словарь</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
+    <h1>STP (сегментация, таргетинг, позиционирование)</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-11-13">13.11.2026</time></p>
+    <p class="lead">Выбрать приоритетный сегмент и сформулировать рабочую гипотезу позиционирования.</p>
+    <p class="st-meta">Автор метода: OpenStax</p>
+    
+    <nav class="st-knowledge-trail" aria-label="От сегмента к проверке гипотез"><span aria-current="page"><small>Выбрать сегмент</small><b>STP (сегментация, таргетинг, позиционирование)</b></span><a href="../metody/value-proposition-canvas.html"><small>Сформулировать ценность</small><b>Value Proposition Canvas</b></a><a href="../metody/continuous-discovery.html"><small>Проверять гипотезы с клиентами</small><b>Continuous Discovery и продуктовая тройка</b></a></nav>
+    <h2>Когда применять</h2><ul class="st-list"><li>Когда выбираете, с какой группой клиентов начать</li></ul>
+    <h2>Когда не надо</h2><ul class="st-list"><li>Когда нужно оценить размер рынка или прогноз продаж: для этого нужны отдельные данные.</li></ul>
+    <h2>Шаги</h2><ol class="st-list"><li><strong>Выделите сегменты.</strong> Опишите 2–3 группы по ситуации покупки, потребности и тому, как они решают задачу сейчас. Опирайтесь на заявки, интервью или продажи.</li><li><strong>Выберите первый сегмент.</strong> Сравните выраженность потребности, возможность связаться с покупателями и способность продукта им помочь. Для каждого критерия отметьте, что известно и что нужно проверить.</li><li><strong>Сформулируйте позиционирование.</strong> Назовите покупателя, ситуацию, привычную альтернативу и преимущество, которое продукт может подтвердить. Запишите эту версию как гипотезу.</li></ol>
+    
+    
+    <h2>Пример</h2><p><span class="st-meta">Условный пример. </span>Сервис записи сравнивает независимых мастеров и небольшие салоны. Допустим, команда уже может связаться с салонами и видит в их обращениях повторяющуюся проблему ручных напоминаний. Она начинает с небольших салонов, которые записывают клиентов в чате. Гипотеза позиционирования: сервис записи для небольших салонов, который автоматически напоминает клиентам о визите.</p>
+    <h2>Частые ошибки</h2><ul class="st-list"><li>Группировать клиентов только по возрасту</li><li>Выбирать сегмент по размеру без проверки доступности</li><li>Обещать преимущество без подтверждения</li></ul>
+    <h2>Проверьте себя</h2><p>Выполните шаги на своём продукте и проверьте результат по списку.</p><ul class="st-list"><li>Описаны минимум два сегмента и выбран один</li><li>Выбор опирается на наблюдения и доступ к клиентам</li><li>Названы альтернатива, преимущество и гипотеза для проверки</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
+    <h2>Задания по шагам с этим методом</h2><ul class="st-list"><li><a href="../zadaniya/u-marketing-segment.html">Один сегмент вместо «всех»: кому продаём в первую очередь</a></li></ul>
+    
+    
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://openstax.org/books/principles-marketing/pages/5-6-product-positioning" rel="nofollow noopener" target="_blank">openstax.org</a></li></ul>
+    <div class="pp-open"><a href="../#fw-stp">Открыть в интерактивной версии →</a></div>
+  </div>
+</main>
+</body>
+</html>
