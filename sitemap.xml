@@ -2,12 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ai.madzhitov.ru/</loc>
-    <lastmod>2026-11-08</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://ai.madzhitov.ru/lessons/</loc>
-    <lastmod>2026-11-08</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
@@ -692,7 +692,7 @@
   </url>
   <url>
     <loc>https://ai.madzhitov.ru/slovar/value-proposition.html</loc>
-    <lastmod>2026-11-08</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
@@ -732,7 +732,7 @@
   </url>
   <url>
     <loc>https://ai.madzhitov.ru/znaniya/</loc>
-    <lastmod>2026-11-08</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
@@ -778,6 +778,11 @@
   <url>
     <loc>https://ai.madzhitov.ru/metody/lean-canvas.html</loc>
     <lastmod>2026-10-11</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/metody/value-proposition-canvas.html</loc>
+    <lastmod>2026-11-13</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
@@ -847,7 +852,7 @@
   </url>
   <url>
     <loc>https://ai.madzhitov.ru/metody/</loc>
-    <lastmod>2026-11-08</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
@@ -1122,12 +1127,12 @@
   </url>
   <url>
     <loc>https://ai.madzhitov.ru/zadaniya/</loc>
-    <lastmod>2026-11-08</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ai.madzhitov.ru/slovar/</loc>
-    <lastmod>2026-11-08</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
@@ -1172,17 +1177,17 @@
   </url>
   <url>
     <loc>https://ai.madzhitov.ru/kalkulyatory/</loc>
-    <lastmod>2026-11-08</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ai.madzhitov.ru/instrumenty/</loc>
-    <lastmod>2026-11-08</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ai.madzhitov.ru/stadii-brenda/</loc>
-    <lastmod>2026-11-08</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <priority>0.8</priority>
   </url>
 </urlset>
