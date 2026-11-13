@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Как собрать свой ИИ-сетап: модели, агенты, IDE и ADE — Артефакты</title>
+<meta name="description" content="Сетап Руслана Маджитова: Claude Code, Codex, Orca и Хермес. Сравнение конфигураций, подписки и API, памятка и шаблон своего сетапа.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Как собрать свой ИИ-сетап: модели, агенты, IDE и ADE">
+<meta property="og:description" content="Сетап Руслана Маджитова: Claude Code, Codex, Orca и Хермес. Сравнение конфигураций, подписки и API, памятка и шаблон своего сетапа.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png?v=27898e84">
+<meta property="og:url" content="https://ai.madzhitov.ru/znaniya/ai-setup.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/znaniya/ai-setup.html">
+<link rel="preload" href="../v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../v6/fonts/fonts.css?v=0e1f3d7b">
+<link rel="stylesheet" href="../tropa-lesson.css?v=889f3ed1">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+  .st-calc-res { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap:10px; }
+  .st-calc-r { background:#F3F4F7; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); }
+  .st-calc-r b { font-size:24px; line-height:1.15; font-weight:800; color:#16161A; }
+  .st-calc-r.is-main b { font-size:36px; }
+  .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
+  .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Как собрать свой ИИ-сетап","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"url":"https://ai.madzhitov.ru/znaniya/ai-setup.html","inLanguage":"ru"}</script>
+<link rel="stylesheet" href="../v6/static.css?v=ace69056">
+<script defer src="../v6/static.js?v=e97e63c9"></script>
+<link rel="stylesheet" href="../v6/ai-setup.css?v=fe42bd41"><script defer src="../v6/ai-setup.js?v=cdcf48cc"></script></head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../metody/">Методы</a><a href="../slovar/">Словарь</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../znaniya/">Знания</a></div>
+    <article class="setup-guide">
+  <header class="setup-hero">
+    <p class="st-eyebrow">Из практики автора · с памяткой</p>
+    <h1>Как собрать<br>свой ИИ-сетап</h1>
+    <p class="setup-lead">Модели, агенты, IDE и ADE. Что с чем соединить, где работать и что держать в запасе.</p>
+    <p class="setup-byline">Руслан Маджитов · на основе памятки, собранной с Хермесом<br>Технические источники сверены <time datetime="2026-11-13">13 ноября 2026</time></p>
+    <div class="setup-actions"><a class="setup-button" href="../files/ai-setup.pdf" download>Скачать памятку · PDF</a><a class="setup-text-link" href="#passport">Собрать свой сетап</a></div>
+    <p class="setup-small">В PDF: краткая карта вариантов и шаблон вашей конфигурации.</p>
+  </header>
+
+  <nav class="setup-toc" aria-label="Содержание памятки"><a href="#experience">Мой опыт</a><a href="#layers">Что с чем соединить</a><a href="#setups">Варианты</a><a href="#orca">IDE, ADE и Orca</a><a href="#access">Оплата и резерв</a><a href="#passport">Ваш сетап</a></nav>
+
+  <section id="experience" class="setup-section">
+    <p class="st-eyebrow">01 · Как это устроено у меня</p>
+    <h2>Перепробовал уже прилично</h2>
+    <div class="setup-prose">
+      <p>Родные приложения, редакторы с агентами, разные сборки. А основная работа у меня всё равно в нативках Anthropic и OpenAI. Удобные они. И уже настроены под разные истории и задачи. Когда пробуешь очередную сборку, это особенно чувствуется. Там ещё надо всё устроить под себя.</p>
+      <p>В чате я обсуждаю. Можно покрутить мысль, поспорить, иногда собрать ТЗ. Сам проект делаю уже с агентом в рабочем окружении. Поэтому мне мало знать, какая модель сейчас лучше отвечает. Мне ещё с ней работать, открывать файлы, смотреть изменения.</p>
+      <p>С другими вариантами пока по-разному. Где-то OpenCode может подвести. Где-то VS Code грустный и скучный. Ну вот мне скучный, хотя возможностей там хватает. А где-то до Орки не дорос)))</p>
+      <p>Отдельно живёт Хермес. Он на сервере, модели подключены через OpenRouter, общаемся в том числе в Телеграме. С ним и собрали эту памятку.</p>
+    </div>
+    <p class="setup-small">Это личные впечатления автора. Возможности инструментов разобраны отдельно ниже.</p>
+    <div class="setup-map" aria-label="Текущая конфигурация Руслана">
+      <div class="setup-map-main"><span class="setup-status">Работает · основа</span><h3>Мой Мак</h3><p><strong>Claude Code + Codex</strong><br>Проекты, файлы, реализация и проверка изменений.</p></div>
+      <div class="setup-map-server"><span class="setup-status">Работает · дополнение</span><h3>Сервер</h3><p><strong>Хермес + OpenRouter</strong><br>Агент на сервере. Telegram и десктоп для общения.</p></div>
+      <div class="setup-map-extra"><span class="setup-status setup-status-trial">Пробую по задаче</span><p><strong>Orca, VS Code, OpenCode.</strong> Их роль в повседневной работе ещё складывается. Запасное подключение десктопного Codex через шлюз пока не проверено.</p></div>
+    </div>
+    <p class="setup-small">Конфигурация описана автором на 13 ноября 2026. Это описание опыта, а не результат внешнего аудита его устройств.</p>
+  </section>
+
+  <section id="layers" class="setup-section">
+    <p class="st-eyebrow">02 · Карта понятий</p>
+    <h2>У сетапа несколько слоёв</h2>
+    <p>Сетапом здесь называем вашу рабочую конфигурацию. Одно приложение может объединять несколько слоёв, но при смене инструмента их полезно различать.</p>
+    <dl class="setup-layers">
+      <div><dt><span>01</span>Модель</dt><dd>Обрабатывает контекст и предлагает ответ или действие. Может работать с текстом, изображениями и другими данными, если это поддерживает конкретная модель.<small>Семейства моделей: Claude, GPT, Gemini.</small></dd></div>
+      <div><dt><span>02</span>Агент</dt><dd>Соединяет модель с инструментами и циклом выполнения задачи. Может читать файлы, запускать команды, проверять результат в пределах выданных прав.<small>Claude Code, Codex, OpenCode, Hermes Agent.</small></dd></div>
+      <div><dt><span>03</span>Рабочая среда</dt><dd>Место, где вы видите проект, ставите задачи и проверяете изменения.<small>Родное приложение, редактор с ИИ, IDE или ADE.</small></dd></div>
+      <div><dt><span>04</span>Место выполнения</dt><dd>Компьютер или сервер, на котором запускаются инструменты агента. Модель при этом может работать в облаке.<small>Агент на вашем Маке не означает, что модель тоже локальная.</small></dd></div>
+      <div><dt><span>05</span>Канал общения</dt><dd>Окно приложения, терминал или Telegram. Вид окна сам по себе не говорит, какие действия доступны агенту.<small>В чате тоже могут быть инструменты. «Обсуждать в чате» здесь личный выбор автора.</small></dd></div>
+      <div><dt><span>06</span>Доступ и оплата</dt><dd>Подписка, прямой API или шлюз моделей. Определяют способ подключения, расходы и ограничения.<small>OpenRouter относится к этому слою. Он не заменяет рабочую среду.</small></dd></div>
+    </dl>
+    <details class="setup-details"><summary>Ещё четыре слова, которые пригодятся</summary><dl class="setup-glossary"><dt>API</dt><dd>Интерфейс, через который программа обращается к сервису. Для моделей обычно используется оплата по объёму потребления.</dd><dt>Токен</dt><dd>Единица, на которые модель разбивает данные. Для текста это слово, часть слова или другой фрагмент. Число токенов влияет на размер контекста и счёт.</dd><dt>CLI</dt><dd>Управление программой через командную строку. Один агент может иметь и CLI, и графическое приложение.</dd><dt>Контекст</dt><dd>Информация, доступная модели в текущем запросе: инструкции, переписка, выбранные файлы и результаты инструментов. Содержимое всей папки не попадает туда автоматически.</dd></dl></details>
+  </section>
+
+  <section id="setups" class="setup-section">
+    <p class="st-eyebrow">03 · Выбор под задачу</p>
+    <h2>Какие бывают сетапы</h2>
+    <p>Начните с результата, который нужен вам. Отдельный сервер и несколько агентов полезны тогда, когда для них есть работа.</p>
+    <div class="setup-table-wrap" tabindex="0" role="region" aria-label="Сравнение сетапов, таблицу можно прокрутить по горизонтали">
+      <table class="setup-table"><caption>Варианты можно сочетать. Так получается гибридный сетап.</caption><thead><tr><th scope="col">Вариант</th><th scope="col">Когда подходит</th><th scope="col">Что проверить</th></tr></thead><tbody>
+        <tr><th scope="row">Готовое приложение</th><td>Обсуждение, исследование, подготовка ТЗ. В агентном режиме также выполнение доступных приложению задач.</td><td>Какие файлы и инструменты доступны. Что входит в ваш тариф.</td></tr>
+        <tr><th scope="row">Агент на компьютере</th><td>Работа с локальным проектом, документами, таблицами и кодом.</td><td>Права, зависимости проекта, способ проверки и возврата к предыдущей версии.</td></tr>
+        <tr><th scope="row">Редактор с агентом / IDE</th><td>Нужно видеть файлы, читать изменения и иногда редактировать самостоятельно.</td><td>Удобство редактора, инструменты агента и правила оплаты выбранной интеграции.</td></tr>
+        <tr><th scope="row">Среда управления агентами / ADE</th><td>Есть несколько независимых задач или проектов. Нужен общий обзор работы.</td><td>Разделение рабочих копий, зависимости задач, проверка и объединение результатов.</td></tr>
+        <tr><th scope="row">Агент на сервере</th><td>Нужны фоновые задачи или доступ через мессенджер, когда личный компьютер выключен.</td><td>Что реально выполняется на сервере. Автозапуск, доступы, резервные копии и расходы.</td></tr>
+        <tr><th scope="row">Гибрид</th><td>На компьютере удобно работать с проектом, на сервере есть отдельные фоновые задачи.</td><td>Где хранится актуальный результат и как передаётся контекст между инструментами.</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <section id="orca" class="setup-section">
+    <p class="st-eyebrow">04 · Когда одного окна мало</p>
+    <h2>IDE, ADE и место Orca</h2>
+    <div class="setup-compare">
+      <div><span class="st-eyebrow">IDE · Integrated Development Environment</span><h3>Работа вокруг проекта</h3><p>Файлы, редактор, запуск и отладка рядом. Агент помогает внутри этой среды. VS Code с расширениями можно использовать таким образом.</p><p>Вы видите конкретные изменения и можете вмешаться в реализацию.</p></div>
+      <div><span class="st-eyebrow">ADE · Agent Development Environment</span><h3>Работа вокруг агентов</h3><p>На первом плане задачи и агентные сессии. Нужен обзор того, кто работает, где требуется ваше решение и какой результат уже можно проверить.</p><p>Так описывает себя Orca.</p></div>
+    </div>
+    <p>Граница подвижна. VS Code тоже поддерживает агентные сценарии и параллельную работу. Здесь IDE и ADE обозначают акцент в организации работы, а не строгую классификацию возможностей. <a href="https://code.visualstudio.com/docs/agents/overview">Агенты в VS Code</a>.</p>
+    <h3>Что добавляет Orca</h3>
+    <p>Orca объединяет агентные сессии, терминалы, браузер и рабочие копии проекта. В её описании используется worktree: отдельная рабочая папка связанного Git-репозитория. Это позволяет вести задачи в разных ветках. Объединение изменений и проверка совместимости всё равно остаются отдельным этапом. <a href="https://orca.dev/">Возможности Orca</a>.</p>
+    <aside class="setup-example"><span class="st-eyebrow">Учебный пример · не история автора</span><h3>Три задачи для одного сайта</h3><p>Первый агент меняет форму заявки. Второй пишет справочную страницу. Третий проверяет доступность текущей версии. Задачи достаточно независимы, чтобы начать параллельно.</p><p>После объединения нужны общая проверка и просмотр итогового сайта. Если все три агента одновременно переделывают одну шапку, сначала стоит разделить работу.</p></aside>
+    <p class="setup-author-note">«А где-то до Орки не дорос)))»<span>Руслан · пока пробую, не основной рабочий режим</span></p>
+    <h3>А где здесь OpenCode и Хермес?</h3>
+    <p><strong>OpenCode</strong> даёт выбор провайдера и модели. Удобство конкретной связки зависит и от самой модели, и от того, как работают её инструменты в агенте. Проверяйте чтение файлов, команды и проверку результата на своей задаче. <a href="https://opencode.ai/docs/providers/">Подключение провайдеров OpenCode</a>.</p>
+    <p><strong>Hermes Agent</strong> можно запускать на сервере и подключать к мессенджерам. В моей конфигурации это Хермес с моделями через OpenRouter. Серверная работа продолжается без ноутбука только у тех задач, чьи процессы и необходимые файлы действительно находятся на сервере. <a href="https://hermes-agent.nousresearch.com/docs">Документация Hermes Agent</a>.</p>
+  </section>
+
+  <section id="access" class="setup-section">
+    <p class="st-eyebrow">05 · Что оплачиваете и от чего зависите</p>
+    <h2>Подписка, API и запасной вариант</h2>
+    <p>Когда поставщик меняет условия, сначала определите, что именно перестало подходить: лимит, способ подключения, доступность модели или само приложение. От этого зависит следующий шаг.</p>
+    <div class="setup-table-wrap" tabindex="0" role="region" aria-label="Подписка, прямой API и шлюз моделей">
+      <table class="setup-table"><thead><tr><th scope="col">Подключение</th><th scope="col">Как оплачивается</th><th scope="col">Где ограничения</th></tr></thead><tbody>
+        <tr><th scope="row">Подписка</th><td>Периодическая плата за предусмотренные тарифом приложения и объём использования. Дополнительные расходы зависят от тарифа.</td><td>Лимиты, доступные функции и разрешённые способы использования подписки.</td></tr>
+        <tr><th scope="row">Прямой API</th><td>Обычно по потреблению. Счёт зависит от модели, входа, выхода и дополнительных услуг.</td><td>Квоты, скорость запросов, баланс, доступ к модели и правила провайдера.</td></tr>
+        <tr><th scope="row">Шлюз моделей</th><td>Общий интерфейс и расчёты за выбранные модели. Условия и наценки зависят от сервиса.</td><td>Ограничения шлюза и поставщиков. Совместимость инструментов и доступность конкретной модели.</td></tr>
+      </tbody></table>
+    </div>
+    <p>OpenRouter позволяет обращаться к разным моделям через общий интерфейс. Это удобно для сравнения и замены моделей, но не означает безлимитного или гарантированного доступа. <a href="https://openrouter.ai/docs/faq">Условия и ограничения OpenRouter</a>.</p>
+    <aside class="setup-note"><span class="st-eyebrow">Anthropic · проверено 13.11.2026</span><h3>Подписка и сторонний агент</h3><p>В справке Anthropic API указан как предпочтительный способ подключения сторонних инструментов. Допущенные подключения через подписку могут расходовать отдельные платные кредиты, а не включённый лимит. Условия нужно проверять для конкретной связки. <a href="https://support.claude.com/en/articles/13189465-log-in-to-your-claude-account">Правила подключения</a>.</p><p>Сервер и шлюз сами по себе не отменяют региональную политику поставщика. <a href="https://www.anthropic.com/legal/supported-regions">Поддерживаемые регионы Anthropic</a>.</p></aside>
+    <h3>Три разных резерва</h3>
+    <ol class="setup-reserve"><li><strong>Другое приложение.</strong> Поможет, если неудобен интерфейс. Та же модель и тот же аккаунт могут сохранить прежние лимиты.</li><li><strong>Другой способ подключения.</strong> Например, API вместо подписки. Меняются расчёты и квоты, но зависимость от поставщика модели остаётся.</li><li><strong>Другой поставщик модели.</strong> Снижает зависимость от одной компании. Качество выполнения, совместимость и перенос контекста нужно проверить заново.</li></ol>
+    <p>Claude напрямую и Claude через шлюз всё ещё зависят от Anthropic. Перед переносом сохраните ТЗ, файлы проекта, инструкции, решения и способ проверки. История одного чата не заменяет этого набора.</p>
+  </section>
+
+  <section id="passport" class="setup-section setup-passport">
+    <p class="st-eyebrow">06 · Ваш артефакт</p>
+    <h2>Паспорт моего ИИ-сетапа</h2>
+    <p>Возьмите одну повторяющуюся задачу. Заполните конфигурацию, с которой её можно выполнить и проверить. На выходе будет текстовый файл с вашим основным и запасным вариантом.</p>
+    <p class="setup-small">Поля обрабатываются только в браузере и не отправляются на сервер. Скачайте файл перед закрытием страницы. Ключи и пароли сюда не нужны.</p>
+    <form id="setup-passport" class="setup-form">
+      <label class="setup-full">Задача и ожидаемый результат<textarea name="task" rows="2" placeholder="Например: обновлять страницу проекта и получать проверенное превью"></textarea></label>
+      <label>Основной инструмент<input name="tool" placeholder="Приложение, агент, IDE или ADE"></label>
+      <label>Модель и подключение<input name="model" placeholder="Провайдер, модель, подписка или API"></label>
+      <label>Где выполняется работа<input name="runtime" placeholder="Компьютер, сервер, облачная среда"></label>
+      <label>Где лежат файлы и инструкции<input name="context" placeholder="Папка проекта, репозиторий, документы"></label>
+      <label>Бюджет и лимиты<input name="budget" placeholder="Предельные расходы и что входит в тариф"></label>
+      <label>Запасной вариант<input name="fallback" placeholder="Что заменяете и от кого зависит резерв"></label>
+      <label class="setup-full">Как проверите результат<textarea name="check" rows="2" placeholder="Что должно работать на одной и той же задаче в обоих вариантах"></textarea></label>
+      <label class="setup-full">Что ещё не проверено<textarea name="open" rows="2" placeholder="Отметьте настройки и возможности, которые пока только планируете"></textarea></label>
+      <div class="setup-actions setup-full"><button class="setup-button" type="submit" disabled>Скачать мой сетап · TXT</button><a href="../files/ai-setup.md" download>Памятка и пустой шаблон · Markdown</a></div>
+      <p id="setup-export-status" class="setup-small setup-full" role="status" aria-live="polite"></p>
+    </form>
+    <noscript><p>Для заполнения и выгрузки формы включите JavaScript или <a href="../files/ai-setup.md" download>скачайте пустой шаблон</a>.</p></noscript>
+    <details class="setup-details"><summary>Как испытать резерв на одной задаче</summary><p>Дайте основному и запасному инструменту одинаковое ТЗ и одинаковые исходные файлы в отдельных копиях проекта. Заранее определите, как проверить результат. Сравните готовый результат, время, расходы и объём своих исправлений. Зафиксируйте, что действительно удалось перенести.</p><p>Проверяйте совместимость после смены модели или способа подключения. Наличие пункта в настройках ещё не означает, что ваша задача выполнится целиком.</p></details>
+  </section>
+
+  <footer class="setup-footer"><h2>Что почитать дальше</h2><p><a href="../metody/four-part-request.html">Как составить запрос с контекстом и критериями</a><br><a href="../zadaniya/u-ai-answer-check.html">Как проверить ответ ИИ на своей задаче</a></p><p class="setup-small">Материал описывает способы организации работы. Модельные рейтинги, цены и обещания «лучшего инструмента» в памятку не включены. Ссылки на первоисточники находятся рядом с соответствующими утверждениями.</p><a href="../znaniya/">Вернуться к знаниям</a></footer>
+</article>
+
+    
+  </div>
+</main>
+</body>
+</html>
