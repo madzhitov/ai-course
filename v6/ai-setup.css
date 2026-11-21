@@ -88,3 +88,8 @@ html { scroll-behavior:smooth; scroll-padding-top:24px; }
   .setup-table-wrap { overflow:visible; }
   .setup-table { min-width:0; }
 }
+.setup-grid2 { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:24px; margin:28px 0; }
+.setup-grid2 > div { padding:20px 22px; border:1px solid var(--line, #E6E8EE); border-radius:16px; }
+.setup-grid2 h3 { margin-top:0; }
+.setup-grid2 ol { margin:0; padding-left:20px; }
+@media (max-width: 720px) { .setup-grid2 { grid-template-columns:1fr; } }
