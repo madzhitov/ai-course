@@ -9,7 +9,6 @@
   const jget = (k) => { try { return JSON.parse(ls.get(k) || '{}') || {}; } catch (_) { return {}; } };
   const jset = (k, v) => ls.set(k, JSON.stringify(v));
   const LONG_AWAY_DAYS = 21;
-  const COMPANIES_URL = 'https://madzhitov.ru';
   // ?v=<хеш> из собственного src (ставит stamp_assets.sh): тот же ключ сбрасывает кеш данных
   const VQ = ((document.currentScript && document.currentScript.src.match(/[?&]v=([0-9a-f]+)/)) || [])[1];
   // на проде (DATA_JS из index.html) — сжимаемые копии *.json.js, см. split_lessons.js
@@ -480,6 +479,13 @@ ${rv.trim() || '[вставьте отзывы]'}`;
         <button class="v6-link" onclick="V6.open('knowledge')">Все методы и словарь →</button></div>
       <div class="v6-meth2-c">${show.map((c) => `<a class="v6-chip2" href="#fw-${e(c.id)}" onclick="V6.openFw('${e(c.id)}','home'); return false;">${e(c.title)}</a>`).join('')}<span class="v6-chip2 is-more">и ещё ${n - show.length}</span></div></section>`;
   }
+  // свежая запись «Что нового» сразу под первым экраном: последние 2, если им не больше 30 дней
+  function newsTop() {
+    const fresh = (CHANGELOG || []).filter((c) => (Date.now() - new Date(c.date).getTime()) / 864e5 <= 30).slice(0, 2);
+    if (!fresh.length) return '';
+    const it = (c) => c.link ? `<a href="${e(c.link)}" onclick="umTrack('news-top', { link: '${e(c.link)}' })">${e(stripEmoji(c.title))}</a>` : `<a href="#changelog" onclick="openStaticPage('changelog'); return false;">${e(stripEmoji(c.title))}</a>`;
+    return `<section class="v6-newstop" aria-label="Новое на сайте"><span class="v6-meta">Новое</span>${fresh.map((c) => `<span class="v6-newstop-i">${it(c)}<small>${e(fmtDateRu(c.date))}</small></span>`).join('')}<a class="v6-link" href="#changelog" onclick="openStaticPage('changelog'); return false;">Все изменения →</a></section>`;
+  }
   function newsCo() {
     const items = (CHANGELOG || []).slice(0, 3);
     return `<section class="v6-sec v6-newsco"><div><div class="v6-sec-head" style="margin-bottom:16px"><h2 class="v6-h3" style="font-family:var(--font-display);font-weight:800">Что нового</h2><button class="v6-link" onclick="openStaticPage('changelog')">Все изменения →</button></div>
@@ -559,7 +565,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       const box = (id) => document.getElementById(id);
       if (!box('v6-home-rest')) return;
       box('v6-strip').innerHTML = strip;
-      box('v6-home-rest').innerHTML = `<section class="v6-sec v6-home-solutions"><div class="v6-sec-head"><div><span class="v6-eyebrow">Решения с ИИ</span><h2 class="v6-h2">Что хотите сделать?</h2></div><p>Начните с готового способа. Подставьте свои данные и проверьте результат по чек-листу.</p></div><form class="v6-hask" onsubmit="return V6.ask(this)" role="search"><label for="v6-hask-in">Найдите свою задачу</label><span class="v6-hask-row"><input id="v6-hask-in" type="text" placeholder="например, письмо или план" autocomplete="off"><button class="v6b is-accent" type="submit">Найти</button></span></form><div class="v6-results" hidden aria-live="polite"></div><div class="v6-show" id="v6-show">${showcase()}</div></section>` + howBlock() + tryBlock() + whoBlock2() + learnBlock() + moreBlock() + methodsBlock2() + authorBlock() + newsCo();
+      box('v6-home-rest').innerHTML = newsTop() + `<section class="v6-sec v6-home-solutions"><div class="v6-sec-head"><div><span class="v6-eyebrow">Решения с ИИ</span><h2 class="v6-h2">Что хотите сделать?</h2></div><p>Начните с готового способа. Подставьте свои данные и проверьте результат по чек-листу.</p></div><form class="v6-hask" onsubmit="return V6.ask(this)" role="search"><label for="v6-hask-in">Найдите свою задачу</label><span class="v6-hask-row"><input id="v6-hask-in" type="text" placeholder="например, письмо или план" autocomplete="off"><button class="v6b is-accent" type="submit">Найти</button></span></form><div class="v6-results" hidden aria-live="polite"></div><div class="v6-show" id="v6-show">${showcase()}</div></section>` + howBlock() + tryBlock() + whoBlock2() + learnBlock() + moreBlock() + methodsBlock2() + authorBlock() + newsCo();
       vxStart();
     }).catch(() => fail('v6-home'));
     return el;
@@ -617,7 +623,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
             ${methodsBlock('seller')}
             <section class="v6-sec"><a class="v6-rolepath v6-rolepath-lg" href="#path-seller" onclick="V6.openSellerPath('role'); return false;">${art('seller-path')}<span class="v6-rolepath-in"><span class="v6-pcard-label">Путь роли</span><span class="v6-rolepath-t">${e(sp.title)}</span><span class="v6-rolepath-p">Три этапа: ${sp.stages.map((st) => st.title.toLowerCase()).join(', ')}.</span>
               <span class="v6-tags">${sp.stages.map((st) => `<span class="v6t is-grey">${e(st.title)}</span>`).join('')}</span><span><span class="v6b is-soft v6-btn-lg">Открыть путь</span></span></span></a></section>
-            <section class="v6-sec"><div class="v6-doorbox"><span>Для команд: обучим менеджеров маркетплейсов или внедрим ИИ под ключ.</span><a class="v6b is-soft v6-btn-lg" href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'role-seller' })">Для компаний</a></div></section>`;
+            <section class="v6-sec"><div class="v6-doorbox"><span>Для команд: обучим менеджеров маркетплейсов или внедрим ИИ под ключ.</span><a class="v6b is-soft v6-btn-lg" href="#companies" onclick="umTrack('agency-door', { from: 'role-seller' }); V6.open(\'companies\'); return false;">Для компаний</a></div></section>`;
         } else {
           const ls_ = byNoCode(r.lessons || []).map(lessonOf).filter(Boolean);
           const routes = (typeof ROUTES !== 'undefined' ? ROUTES : []).filter((x) => (r.legacyRoutes || []).includes(x.id));
@@ -698,7 +704,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
           <section class="v6-tsec v6-tbottom"><div class="v6-tmain">${needs.length ? `<div class="v6-needs"><h3>Что понадобится</h3>${needs.map((n) => `<div><span class="v6-needs-dot"></span>${e(n)}</div>`).join('')}</div>` : ''}</div>
             <aside class="v6-side"><button class="v6-note" onclick="umTrack('alyosha-open', { from: 'task' }); aleshaToggle()"><span class="v6-ava">А</span><span>Застряли или не знаете, с чего начать? Спросите, подскажу.</span></button>
               ${neigh.length ? `<div class="v6-neigh"><span class="v6-meta">Соседние задачи</span>${neigh.map((x) => x.status === 'soon' ? `<span class="v6-neigh-i is-soon"><span>${e(x.title)}</span><span class="m">скоро</span></span>` : `<a class="v6-neigh-i" href="#" onclick="V6.openTask('${e(x.id)}','task'); return false;"><span>${e(x.title)}</span><span class="m">${taskMins(x.id) || (taskReady(x.id) ? '' : 'скоро')}</span></a>`).join('')}</div>` : ''}
-              ${door ? `<div class="v6-tdoor"><span>${e(door)}</span><a href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'task' })">Узнать →</a></div>` : ''}
+              ${door ? `<div class="v6-tdoor"><span>${e(door)}</span><a href="#companies" onclick="umTrack('agency-door', { from: 'task' }); V6.open(\'companies\'); return false;">Узнать →</a></div>` : ''}
             </aside></section>`;
       }).catch(() => fail('v6-task'));
     }, 'tasks');
@@ -844,7 +850,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
             <div class="v6-step-b"><span class="v6-step-tags"><span class="v6t is-sm">${e(STEP_KIND[x.kind] || x.kind)}</span>${x.optional ? '<span class="v6-step-s">по желанию</span>' : ''}${!go && !isDone ? '<span class="v6-step-s">скоро</span>' : ''}${go && x.kind === 'framework' && !(fwById(x.ref) || {}).full ? '<span class="v6-step-s">карточка пишется</span>' : ''}</span>${title}${rs.length ? `<span class="v6-rchips">${rs.map(chip).join('')}</span>` : ''}</div>
             <span class="v6-step-m">${x.minutes ? x.minutes + ' мин' : ''}</span></div>`;
         };
-        const door = (st) => { const d = st.milestone && st.milestone.agencyDoor; return d ? `<div class="v6-mdoor"><span>${e(d)}</span><a href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'seller-path' })">Узнать →</a></div>` : ''; };
+        const door = (st) => { const d = st.milestone && st.milestone.agencyDoor; return d ? `<div class="v6-mdoor"><span>${e(d)}</span><a href="#companies" onclick="umTrack('agency-door', { from: 'seller-path' }); V6.open(\'companies\'); return false;">Узнать →</a></div>` : ''; };
         const stage = (st) => {
           const req = st.steps.filter((x) => !x.optional).length, opt = st.steps.length - req;
           const label = st === curStage ? 'вы здесь' : st.steps.every(stepDone) ? 'пройден' : 'дальше';
@@ -1206,7 +1212,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
         box.innerHTML = hero + body + `<div class="v6-fwbody">
           ${links.length ? `<section class="v6-box v6-fwlinks"><h2>Связи</h2><div class="v6-links">${links.map(([k, v]) => `<div><span>${k}</span><span>${v}</span></div>`).join('')}</div></section>` : ''}
           ${!c.full && near.length ? `<section class="v6-tsec" style="padding-bottom:0"><h2 class="v6-h2">Рядом в этом направлении</h2>${fwGrid(near, 'fw')}</section>` : ''}
-          ${c.agencyDoor ? `<div class="v6-doorbox"><span>${e(c.agencyDoor)}</span><a class="v6b is-soft v6-btn-lg" href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'fw' })">Узнать</a></div>` : ''}
+          ${c.agencyDoor ? `<div class="v6-doorbox"><span>${e(c.agencyDoor)}</span><a class="v6b is-soft v6-btn-lg" href="#companies" onclick="umTrack('agency-door', { from: 'fw' }); V6.open(\'companies\'); return false;">Узнать</a></div>` : ''}
         </div>`;
         if (c.full && c.executor && c.executor.defaults) {
           document.querySelectorAll('#v6-calc [data-in]').forEach((el) => { const d = c.executor.defaults[el.dataset.in]; if (d != null) el.value = String(d).replace('.', ','); });
@@ -1597,7 +1603,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
           <div class="v6-ugrid"><aside class="v6-lside"><span class="v6-lside-t">Критерии</span>${(m.rubric || []).map((c) => `<span class="v6-lstep"><span class="v6-mile-dot">${c.must ? '●' : '○'}</span><span>${e(c.criterion)}${c.must ? '' : ' <i>по желанию</i>'}</span></span>`).join('')}<span class="v6-lside-f">● обязательно · ○ по желанию</span></aside>
             <div class="v6-ucard"><span class="v6-pcard-label">Соберите и покажите</span><h2 class="v6-ucard-t">${e(m.title)}</h2><p>Соберите документ по шагам этапа: ${st.steps.filter((x) => !x.optional).map((x) => x.title).join(', ')}. Вставьте его сюда, и Алёша проверит по критериям.</p>
               ${rubricBox('veha:seller-' + n, `Веха: ${m.title}`, m.gives || m.title, m.rubric || [])}
-              ${m.agencyDoor ? `<p class="v6-meta">${e(m.agencyDoor)} · <a href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'veha' })">Узнать</a></p>` : ''}</div></div>`;
+              ${m.agencyDoor ? `<p class="v6-meta">${e(m.agencyDoor)} · <a href="#companies" onclick="umTrack('agency-door', { from: 'veha' }); V6.open(\'companies\'); return false;">Узнать</a></p>` : ''}</div></div>`;
       }).catch(() => fail('v6-veha'));
     }, 'paths');
   }
@@ -1674,37 +1680,100 @@ ${rv.trim() || '[вставьте отзывы]'}`;
 
   // ---------- маршрутизация ----------
   // ---------- Для компаний (Companies.dc.html). Заявки пока ведём на сайт агентства (решение Руслана 05.10), форма — позже ----------
+  // ---------- Для компаний (этап 5 ТЗ 2026-11: g2–g5, g7, g8). Связь — Telegram с готовой первой фразой ----------
+  const TG_URL = 'https://t.me/madzhitov';
+  const CO_PHRASE = 'Здравствуйте, Руслан! Пишу с Артефактов про пилот «Отдел маркетплейсов на ИИ за 4 недели». В отделе ___ человек, продаём на ___.';
+  // блок «написать в Telegram»: фраза текстом, кнопка «Скопировать», ссылка на чат
+  function tgBox(id, phrase, from, dark) {
+    return `<div class="v6-co-tg${dark ? ' is-dark' : ''}"><span class="v6-meta">Первая фраза, можно скопировать</span><p class="v6-co-phrase" id="${id}">${e(phrase)}</p>
+      <span class="v6-btns"><button type="button" class="v6b is-soft is-sm" onclick="V6.copyText('${id}', this); V6.coTrack('co-copy', '${from}')">Скопировать</button><a class="v6b is-accent is-sm" href="${TG_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'companies-${from}' })">Написать в Telegram ↗</a></span></div>`;
+  }
+  function coTrack(n, from) { track(n, { from }); }
   function companiesPage() {
     shell('<div class="v6c" id="v6-co"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
     Promise.all([load(), loadBS()]).then(() => {
-      const go = (from, label, cls) => `<a class="v6b ${cls || ''}" href="${COMPANIES_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'companies-${from}' })">${label}</a>`;
-      const depts = [['Маркетплейсы и e-commerce', 'seller'], ['Маркетинг', 'marketing'], ['Продукт', 'product'], ['Проекты', 'project'], ['HR, финансы, юристы', 'specialist'], ['Руководство', 'owner']];
       const l3 = lessonOf(3);
-      document.getElementById('v6-co').innerHTML = `<section class="v6-phero"><div class="v6-phero-text"><span class="v6-eyebrow">Для компаний</span><h1 class="v6-d">ИИ для вашей команды</h1>
-          <p class="v6-phero-lead">Сотрудники учатся на платформе бесплатно, каждый по своей роли. Мы подключаемся, когда нужно быстрее, глубже или под ваши процессы.</p>
-          <span class="v6-btns" style="margin-top:28px">${go('hero', 'Обсудить задачу', 'is-accent v6-btn-lg')}</span></div>${art('icon-kompanii', 'v6-phero-art')}</section>
-        <section class="v6-psec"><div class="v6-sec-head"><div><h2 class="v6-psec-h">Три формата</h2><p class="v6-meta">Обучение с ведущим и внедрение ведёт Руслан Маджитов с командой.</p></div></div>
-          <div class="v6-grid3">
-            <div class="v6-task"><span class="v6-meta">Бесплатно</span><h3>Своими силами</h3><p>Отправьте команде ссылку на роль или путь. Каждый проходит задания сам и уносит результат.</p>
-              <ul class="v6-co-list"><li>Роли по отделам</li><li>Общий старт для всех</li><li>Без регистрации</li></ul><button class="v6b is-soft is-sm" onclick="V6.open('roles')">Подобрать роли</button></div>
-            <div class="v6-task"><span class="v6-meta">Агентство</span><h3>Обучение с ведущим</h3><p>Задания роли и встречи с ведущим. В конце у отдела есть план применения ИИ.</p>
-              <ul class="v6-co-list"><li>Состав группы, длительность и стоимость обсуждаем под команду</li></ul>${go('training', 'Обсудить обучение', 'is-sm')}</div>
-            <div class="v6-task"><span class="v6-meta">Агентство</span><h3>Внедрение под ключ</h3><p>Автоматизации и отчёты под ваши процессы, когда учиться некогда.</p>
-              <ul class="v6-co-list"><li>Сводный отчёт по каналам</li><li>Автоответы и заявки</li><li><a href="#co-system" onclick="document.getElementById('co-system').scrollIntoView({ behavior: 'smooth' }); return false;">Аудит и внедрение системы бренда ↓</a></li><li>Сроки и цена после разговора</li></ul>${go('implementation', 'Обсудить внедрение', 'is-sm')}</div>
-          </div></section>
-        <section class="v6-psec" id="co-system"><div class="v6-sec-head"><div><h2 class="v6-psec-h">${e(BS.packages.title)}</h2><p class="v6-meta">${e(BS.packages.lead)}</p></div></div>
+      const sp = (D.paths.rolePaths || []).find((x) => x.id === 'seller');
+      const vehi = sp ? sp.stages.map((st) => st.milestone && st.milestone.title).filter(Boolean) : [];
+      const talk = `<a class="v6b is-accent v6-btn-lg" href="#co-talk" onclick="document.getElementById('co-talk').scrollIntoView({ behavior: 'smooth' }); return false;">Обсудить пилот</a>`;
+      document.getElementById('v6-co').innerHTML = `<section class="v6-phero"><div class="v6-phero-text"><span class="v6-eyebrow">Для компаний · пилот</span><h1 class="v6-d">Отдел маркетплейсов на&nbsp;ИИ за&nbsp;4&nbsp;недели</h1>
+          <p class="v6-phero-lead">Группа из 3–6 человек проходит путь продавца на своих товарах. Через месяц у отдела три рабочих процесса с ИИ и замер, сколько часов они возвращают.</p>
+          <p class="v6-co-price"><b>от 45 000 ₽</b> за группу</p>
+          <span class="v6-btns" style="margin-top:20px">${talk}<a class="v6b is-soft v6-btn-lg" href="#co-audit" onclick="V6.open('co-audit'); return false;">Посчитать часы отдела · 10 минут</a></span></div>${art('icon-kompanii', 'v6-phero-art')}</section>
+        <section class="v6-psec"><div class="v6-sec-head"><div><h2 class="v6-psec-h">Как устроен пилот</h2><p class="v6-meta">Ведёт Руслан Маджитов с командой.</p></div></div>
           <ol class="v6-copk">
-            <li class="v6-copk-i is-free"><span class="v6-copk-n">0</span><div class="v6-copk-b"><b>Диагностика стадии</b><p>Пять стадий бренда, 13 вопросов, три самых слабых места и первые дела. Сами, за 3 минуты.</p></div><div class="v6-copk-m"><span class="v6-meta">бесплатно</span><a class="v6b is-soft is-sm" href="#brand-stages" onclick="V6.open('brand-stages'); return false;">Пройти</a></div></li>
-            ${BS.packages.items.map((x, n) => `<li class="v6-copk-i"><span class="v6-copk-n">${n + 1}</span><div class="v6-copk-b"><b>${e(x.name)}</b><p>${e(x.text)}</p><p class="v6-copk-r">${e(x.result)}</p></div><div class="v6-copk-m"><span class="v6-meta">${e(x.time)}</span><small>${e(x.data)}</small>${go('system-' + x.id, 'Обсудить', 'is-sm')}</div></li>`).join('')}
-          </ol></section>
+            <li class="v6-copk-i"><span class="v6-copk-n">0</span><div class="v6-copk-b"><b>Замер рутины</b><p>Отмечаем задачи отдела и часы на каждую. Отсюда видно, где ИИ вернёт больше всего времени, и с чем сравнивать в конце.</p></div><div class="v6-copk-m"><span class="v6-meta">неделя 0</span><a class="v6b is-soft is-sm" href="#co-audit" onclick="V6.open('co-audit'); return false;">Начать сами</a></div></li>
+            ${(vehi.length === 3 ? vehi : ['первая Веха', 'вторая Веха', 'третья Веха']).map((v, i) => `<li class="v6-copk-i"><span class="v6-copk-n">${i + 1}</span><div class="v6-copk-b"><b>Веха «${e(v)}»</b><p>${e(sp && sp.stages[i] ? 'Этап «' + sp.stages[i].title + '» пути «' + sp.title + '», на ваших товарах и данных.' : 'Этап пути продавца на ваших товарах.')}</p></div><div class="v6-copk-m"><span class="v6-meta">неделя ${i + 1}</span></div></li>`).join('')}
+          </ol>
+          <div class="v6-grid3" style="margin-top:28px">
+            <div class="v6-task"><span class="v6-meta">Формат</span><h3>Встречи и чат</h3><p>Старт на 90 минут, три встречи по 60 минут, чат группы между встречами.</p></div>
+            <div class="v6-task"><span class="v6-meta">Данные</span><h3>Остаются у вас</h3><p>Сайт не хранит ваши данные. Тетрадь каждого участника выгружается файлом руководителю.</p></div>
+            <div class="v6-task"><span class="v6-meta">Результат</span><h3>Как поймём, что сработало</h3><p>70% группы сдали три Вехи. Три процесса отдела делаются с ИИ, экономия времени подтверждена замером.</p></div>
+          </div>
+          <p class="v6-meta" style="margin-top:16px">Цена «от 45 000 ₽» — при согласии на обезличенный кейс с цифрами по итогам пилота. Без кейса, для другой роли или большой группы — обсуждаем.</p></section>
+        <section class="v6-sec v6-author" style="margin-bottom:56px"><img class="v6-author-img" src="v6/art/home-author.png" alt="Руслан Маджитов, портрет из точек" loading="lazy" width="520" height="520">
+          <div class="v6-author-t"><h2 class="v6-h2">Кто ведёт</h2>
+            <p>Руслан Маджитов. Двадцать лет делает e-commerce и маркетинг, последние годы вместе с ИИ. Задания Артефактов — то, что он сам делает каждую неделю, разложенное по шагам.</p></div></section>
         <section class="v6-psec"><h2 class="v6-psec-h">Для каких отделов</h2>
-          <div class="v6-grid2" style="margin-top:28px">${depts.map(([t, r]) => `<button type="button" class="v6-role-row has-thumb" onclick="V6.openRole('${r}','companies')">${roleThumb(r)}<span><b>${e(t)}</b><small>роль «${e(roleName(r))}»</small></span>${CHEV}</button>`).join('')}</div></section>
+          <div class="v6-grid2" style="margin-top:28px">${[['Маркетплейсы и e-commerce', 'seller'], ['Маркетинг', 'marketing']].map(([t, r]) => `<button type="button" class="v6-role-row has-thumb" onclick="V6.openRole('${r}','companies')">${roleThumb(r)}<span><b>${e(t)}</b><small>роль «${e(roleName(r))}»</small></span>${CHEV}</button>`).join('')}</div>
+          <p class="v6-meta" style="margin-top:16px">Скоро: продукт, проекты, HR, финансы и юристы, руководство. Пока их задания можно проходить самостоятельно в <a href="#roles" onclick="V6.open('roles'); return false;">ролях</a>.</p></section>
+        <section class="v6-psec"><div class="v6-grid2">
+          <div class="v6-task"><span class="v6-meta">Бесплатно</span><h3>Своими силами</h3><p>Отправьте команде ссылку на роль. Каждый проходит задания сам и уносит результат. Без регистрации.</p><button class="v6b is-soft is-sm" onclick="V6.open('roles')">Подобрать роли</button></div>
+          <div class="v6-task"><span class="v6-meta">Когда учиться некогда</span><h3>Внедрение под ключ</h3><p>Отчёты и автоматизации под ваши процессы делает Руслан Маджитов с командой. Пример — сервис «Птичка напела».</p><a class="v6b is-soft is-sm" href="https://birdtold.ru/demo" target="_blank" rel="noopener" onclick="umTrack('bird-door', { from: 'companies' })">Посмотреть пример ↗</a></div>
+        </div></section>
+        <section class="v6-psec" id="co-system"><details class="v6-co-more"><summary><h2 class="v6-h3">Если нужен разбор бренда, а не обучение</h2><span class="v6-meta">${e(BS.packages.lead)}</span></summary>
+          <ol class="v6-copk" style="margin-top:20px">
+            <li class="v6-copk-i is-free"><span class="v6-copk-n">0</span><div class="v6-copk-b"><b>Диагностика стадии</b><p>Пять стадий бренда, 13 вопросов, три самых слабых места и первые дела. Сами, за 3 минуты.</p></div><div class="v6-copk-m"><span class="v6-meta">бесплатно</span><a class="v6b is-soft is-sm" href="#brand-stages" onclick="V6.open('brand-stages'); return false;">Пройти</a></div></li>
+            ${BS.packages.items.map((x, n) => `<li class="v6-copk-i"><span class="v6-copk-n">${n + 1}</span><div class="v6-copk-b"><b>${e(x.name)}</b><p>${e(x.text)}</p><p class="v6-copk-r">${e(x.result)}</p></div><div class="v6-copk-m"><span class="v6-meta">${e(x.time)}</span><small>${e(x.data)}</small><a class="v6b is-sm" href="${TG_URL}" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'companies-system-${e(x.id)}' })">Обсудить ↗</a></div></li>`).join('')}
+          </ol></details></section>
         <section class="v6-psec"><div class="v6-card v6-co-safe"><span class="v6-meta">Безопасность</span><h2 class="v6-h3">Правила использования ИИ в компании</h2>
           <p>Что можно отправлять в модели, а что нельзя, какие инструменты разрешить и как проверять ответы.</p>
-          <span class="v6-tags">${l3 && l3.content ? `<a class="v6t" href="#lesson-3" onclick="openLesson(3); return false;">Урок для сотрудников · бесплатно</a>` : ''}<span class="v6t is-grey">Правила под вашу компанию · в обучении</span></span></div></section>
-        <section class="v6-sec"><div class="v6-dark v6-companies has-art"><div class="v6-co-art" aria-hidden="true"><img src="${artSrc('companies')}" alt="" loading="lazy"></div><div><span class="v6-meta" style="font-size:17px;color:#C9CACF">Обсудить задачу</span><h2 class="v6-h2" style="margin-top:16px !important">Что хотите изменить в работе команды?</h2></div>
-          <div><p>Расскажите на сайте агентства: какой отдел, какие задачи и что сейчас мешает. Ответим и предложим формат.</p>${go('bottom', 'Перейти на madzhitov.ru', 'is-accent')}</div></div></section>`;
+          <span class="v6-tags">${l3 && l3.content ? `<a class="v6t" href="#lesson-3" onclick="openLesson(3); return false;">Урок для сотрудников · бесплатно</a>` : ''}<span class="v6t is-grey">Правила под вашу компанию · в пилоте</span></span></div></section>
+        <section class="v6-sec" id="co-talk"><div class="v6-dark v6-companies has-art"><div class="v6-co-art" aria-hidden="true"><img src="${artSrc('companies')}" alt="" loading="lazy"></div><div><span class="v6-meta" style="font-size:17px;color:#C9CACF">Обсудить пилот</span><h2 class="v6-h2" style="margin-top:16px !important">Напишите Руслану в Telegram</h2></div>
+          <div><p>Сколько человек в отделе и на каких площадках продаёте. Ответим и предложим состав и даты.</p>${tgBox('co-phrase', CO_PHRASE, 'bottom', true)}</div></div></section>`;
     }).catch(() => fail('v6-co'));
+  }
+  // ---------- ИИ-аудит отдела маркетплейсов (g8): всё в браузере, без контактов и без сохранения ----------
+  let CA = { on: {}, h: {} };
+  function coAuditPage() {
+    shell('<div class="v6c" id="v6-ca"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
+    load().then(() => {
+      track('co-audit-open', {});
+      const units = D.units.filter((u) => u.id.startsWith('u-seller-') && hasSteps(u) && !u.review);
+      const dirTitle = (u) => { for (const g of D.groups) for (const d of g.directions || []) if (String(u.task).startsWith(d.id + '.')) return d.title; return 'Другое'; };
+      const groups = [];
+      units.forEach((u) => { const t = dirTitle(u); let g = groups.find((x) => x.t === t); if (!g) groups.push(g = { t, us: [] }); g.us.push(u); });
+      document.getElementById('v6-ca').innerHTML = `<section class="v6-phero"><div class="v6-phero-text"><span class="v6-eyebrow">Для компаний · аудит</span><h1 class="v6-d">Где ИИ вернёт часы вашему отделу</h1>
+          <p class="v6-phero-lead">Отметьте задачи, которые отдел делает регулярно, и сколько часов в неделю на каждую уходит. Получите карту: что забирает больше всего времени и какое задание это ускоряет.</p>
+          <p class="v6-meta">Всё считается в этом браузере. Ничего не отправляется и не сохраняется.</p></div>${art('icon-kompanii', 'v6-phero-art')}</section>
+        <section class="v6-psec"><form class="v6-ca-form" onsubmit="V6.coAuditRun(); return false;">
+          ${groups.map((g) => `<fieldset class="v6-ca-g"><legend class="v6-h3">${e(g.t)}</legend>${g.us.map((u) => `<div class="v6-ca-row"><label class="v6-ca-l"><input type="checkbox" data-u="${e(u.id)}" ${CA.on[u.id] ? 'checked' : ''} onchange="V6.coAuditSet('${e(u.id)}', this.checked, null)"> <span>${e(u.title)}</span></label>
+            <label class="v6-ca-h"><input type="number" min="0" max="80" step="0.5" inputmode="decimal" value="${CA.h[u.id] || ''}" placeholder="0" aria-label="Часов в неделю: ${e(u.title)}" oninput="V6.coAuditSet('${e(u.id)}', null, this.value)"> <span class="v6-meta">ч в неделю</span></label></div>`).join('')}</fieldset>`).join('')}
+          <button class="v6b is-accent v6-btn-lg" type="submit">Показать карту</button></form>
+          <div id="v6-ca-res" aria-live="polite"></div></section>`;
+    }).catch(() => fail('v6-ca'));
+  }
+  function coAuditSet(id, on, h) {
+    if (on !== null) CA.on[id] = on;
+    if (h !== null) { const v = Math.max(0, Math.min(80, parseFloat(String(h).replace(',', '.')) || 0)); CA.h[id] = v; if (v > 0) { CA.on[id] = true; const cb = document.querySelector(`input[data-u="${id}"]`); if (cb) cb.checked = true; } }
+  }
+  const fmtH = (h) => (h % 1 ? h.toFixed(1).replace('.', ',') : String(h));
+  function coAuditRun() {
+    const box = document.getElementById('v6-ca-res');
+    if (!box) return;
+    const rows = Object.keys(CA.on).filter((id) => CA.on[id]).map((id) => ({ u: unitById(id), h: CA.h[id] || 0 })).filter((x) => x.u).sort((a, b) => b.h - a.h);
+    if (!rows.length) { box.innerHTML = '<p class="v6-lead" style="margin-top:28px">Отметьте хотя бы одну задачу.</p>'; return; }
+    const week = rows.reduce((n, x) => n + x.h, 0);
+    const month = Math.round(week * 52 / 12);
+    const top = rows.filter((x) => x.h > 0).slice(0, 3);
+    track('co-audit-result', { tasks: rows.length, hours: Math.round(week) });
+    const phrase = `Здравствуйте, Руслан! Посчитали на Артефактах: отдел тратит около ${month} ч в месяц на ${rows.length} ${plural(rows.length, 'задачу', 'задачи', 'задач')}${top.length ? ', больше всего — ' + top.map((x) => x.u.title.toLowerCase()).join('; ') : ''}. Хочу обсудить пилот.`;
+    box.innerHTML = `<div class="v6-ca-sum"><div><span class="v6-meta">Сейчас уходит</span><b>${fmtH(week)} ч в неделю</b><small>около ${month} ч в месяц</small></div><div><span class="v6-meta">Задач отмечено</span><b>${rows.length}</b><small>по каждой есть задание по шагам</small></div></div>
+      <h2 class="v6-h3" style="margin-top:32px">Карта: с чего начать</h2>
+      <ol class="v6-ca-map">${rows.map((x) => `<li><span class="v6-ca-hh">${x.h ? fmtH(x.h) + ' ч/нед' : 'часы не указаны'}</span><span><b>${e(x.u.title)}</b><small>${e(x.u.result || '')}</small></span><a class="v6-link" href="#unit-${e(x.u.id)}" onclick="V6.openUnit('${e(x.u.id)}','co-audit'); return false;">Задание · ${x.u.minutes} мин →</a></li>`).join('')}</ol>
+      <p class="v6-meta" style="margin-top:16px">Сколько времени сэкономит ИИ, зависит от ваших данных и процесса. Задание показывает, за сколько минут его проходят по шагам; в пилоте замеряем до и после на ваших задачах.</p>
+      <div class="v6-card" style="margin-top:28px"><h2 class="v6-h3">Разобрать карту с командой</h2><p>Пилот начинается с этого замера. Скопируйте фразу с итогом и отправьте Руслану.</p>${tgBox('ca-phrase', phrase, 'audit')}</div>`;
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   // ---------- Стадии бренда: перенесено из Stage 06.10 (диагностика, пять стадий, метод). Аудит и внедрение — формат «Внедрение» для компаний ----------
   let BS = null;
@@ -1809,11 +1878,11 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       bsCheck();
     }).catch(() => fail('v6-bs'));
   }
-  const PAGES = { roles: rolesPage, tasks: tasksPage, paths: pathsPage, knowledge: knowledgePage, notebook: notebookPage, companies: companiesPage, 'brand-stages': brandStagesPage };
+  const PAGES = { roles: rolesPage, tasks: tasksPage, paths: pathsPage, knowledge: knowledgePage, notebook: notebookPage, companies: companiesPage, 'co-audit': coAuditPage, 'brand-stages': brandStagesPage };
   function open(name) {
     if (name === 'home') { openStaticPage('home'); return; }
     if (name === 'knowledge') { KT = 'fw'; KTERM = ''; }
-    go(name, PAGES[name], name === 'brand-stages' ? 'paths' : name);
+    go(name, PAGES[name], name === 'brand-stages' ? 'paths' : name === 'co-audit' ? 'companies' : name);
   }
   function route(hash) {
     if (PAGES[hash]) { open(hash); return true; }
@@ -1925,5 +1994,5 @@ ${rv.trim() || '[вставьте отзывы]'}`;
     });
   }
 
-  window.V6 = { coSystem, bsRev, bsAns, bsBack, bsReset, bsGo, install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, fwPrint, showTab, tryUpd, tryCopy, tryGo, openKnowledge, openDict, ktab, ksearch, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
+  window.V6 = { coSystem, coTrack, coAuditSet, coAuditRun, bsRev, bsAns, bsBack, bsReset, bsGo, install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, fwPrint, showTab, tryUpd, tryCopy, tryGo, openKnowledge, openDict, ktab, ksearch, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
 })();
