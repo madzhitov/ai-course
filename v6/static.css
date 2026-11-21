@@ -103,3 +103,8 @@ body { display:block !important; grid-template-columns:none !important; }
   .st-unit-grid, .st-neighbors { grid-template-columns:1fr; }
   .st-summary { min-width:560px; }
 }
+
+/* плашка «Если вы в России» под заголовком урока (LESSON_NOTICES в index.html) */
+.lesson-notice { margin: 16px 0 20px; padding: 14px 16px; border-radius: 12px; background: #FFF4E5; border: 1px solid #F2D3A6; font-size: 15px; line-height: 1.5; }
+.lesson-notice b { display: block; margin-bottom: 4px; }
+.lesson-notice p { margin: 6px 0 0; }

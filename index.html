@@ -4513,6 +4513,29 @@ const FACTS = {
 function fillFacts(html) {
   return html.replace(/⟦([\w.]+)⟧/g, (m, k) => (k in FACTS ? FACTS[k] : m));
 }
+// Плашки «если вы в России»: урок → что в нём недоступно из России. Тексты уроков не меняются,
+// плашка встаёт сразу под заголовком (renderLesson на сайте и build_pages.js на статичных страницах).
+// Сверено 21.11.2026; при смене обстоятельств правится здесь, на все уроки сразу.
+const LESSON_NOTICES = {
+  v7: ['claude'], v8: ['claude'], v9: ['claude'],
+  c1: ['claude'], c2: ['claude'], c3: ['claude'], c4: ['claude'], c5: ['claude', 'cursor'], c6: ['claude'], c7: ['claude'], c8: ['claude'], c9: ['claude'],
+  p12: ['claude'], p10: ['claude', 'github'],
+  6: ['openai'], 7: ['openai'], p1: ['openai', 'github'], p2: ['openai'],
+  v11: ['github'], v13: ['github'], v14: ['github'], v15: ['github'],
+  v3: ['cursor'], i4: ['cursor'], 10: ['cursor'], 16: ['cursor'],
+};
+const NOTICE_TEXT = {
+  claude: 'Claude из России официально недоступен: по правилам Anthropic с 12 ноября 2026 года им нельзя пользоваться, находясь в России, в том числе через API и облачные платформы. Приёмы из урока работают и в других агентах: GigaCode CLI, SourceCraft CLI, китайские модели через Cloud.ru.',
+  openai: 'Ключ OpenAI в России не получить: России нет в списке стран OpenAI. Код урока работает с Yandex AI Studio через ту же библиотеку openai, меняются только адрес сервера и ключ. Другой вариант — ГигаЧат API, у него бесплатный пакет для физлиц.',
+  github: 'GitHub, PyPI и npm из России с мая 2026 года открываются с перебоями. Держите копию проекта на SourceCraft или GitVerse: там есть сборки и зеркала пакетов.',
+  cursor: 'Cursor и GitHub Copilot для России закрыты. Похожие возможности есть у GigaCode и SourceCraft Code Assistant, у обоих бесплатные тарифы.',
+};
+function lessonNotice(id, root) {
+  const types = LESSON_NOTICES[id];
+  if (!types) return '';
+  return '<aside class="lesson-notice" role="note"><b>Если вы в России</b>' + types.map(function (t) { return '<p>' + NOTICE_TEXT[t] + '</p>'; }).join('') +
+    '<p><a href="' + (root || '/') + 'znaniya/ai-setup.html#russia">Как собрать рабочий набор на доступных сервисах</a></p></aside>';
+}
 // FACTS:end
 
 // Тексты уроков на проде лежат отдельно: split_lessons.js при деплое выносит их в lessons-content/<id>.html,
@@ -35320,7 +35343,7 @@ function renderLesson(id) {
   let body;
   if (lesson.content) {
     // Inject breadcrumbs + time meta after the first H1 of lesson content
-    body = lesson.content.replace(/(<h1[^>]*>[\s\S]*?<\/h1>)/, `${breadcrumbs}$1${timeMeta}`);
+    body = lesson.content.replace(/(<h1[^>]*>[\s\S]*?<\/h1>)/, `${breadcrumbs}$1${timeMeta}${lessonNotice(lesson.id)}`);
   } else {
     body = `
       ${breadcrumbs}
@@ -37519,6 +37542,15 @@ function fmtDate(isoDate) {
 }
 
 const CHANGELOG = [
+  {
+    date: "2026-11-21",
+    title: "Плашки «Если вы в России» в уроках",
+    tag: "update",
+    link: "/znaniya/ai-setup.html#russia",
+    items: [
+      "В 26 уроках, построенных на Claude, ключе OpenAI, GitHub или Cursor, под заголовком появилась заметка: что из этого недоступно из России и чем заменить."
+    ]
+  },
   {
     date: "2026-11-21",
     title: "Что изменилось за месяц: ноябрь",
