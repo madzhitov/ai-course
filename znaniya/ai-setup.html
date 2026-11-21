@@ -52,7 +52,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Как собрать свой ИИ-сетап","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"url":"https://ai.madzhitov.ru/znaniya/ai-setup.html","inLanguage":"ru"}</script>
 <link rel="stylesheet" href="../v6/static.css?v=ace69056">
 <script defer src="../v6/static.js?v=e97e63c9"></script>
-<link rel="stylesheet" href="../v6/ai-setup.css?v=fe42bd41"><script defer src="../v6/ai-setup.js?v=cdcf48cc"></script></head>
+<link rel="stylesheet" href="../v6/ai-setup.css?v=4aaba7b9"><script defer src="../v6/ai-setup.js?v=cdcf48cc"></script></head>
 <body>
 <header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
   <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../metody/">Методы</a><a href="../slovar/">Словарь</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
@@ -69,7 +69,7 @@
     <p class="setup-small">В PDF: краткая карта вариантов и шаблон вашей конфигурации.</p>
   </header>
 
-  <nav class="setup-toc" aria-label="Содержание памятки"><a href="#experience">Мой опыт</a><a href="#layers">Что с чем соединить</a><a href="#setups">Варианты</a><a href="#orca">IDE, ADE и Orca</a><a href="#access">Оплата и резерв</a><a href="#passport">Ваш сетап</a></nav>
+  <nav class="setup-toc" aria-label="Содержание памятки"><a href="#experience">Мой опыт</a><a href="#layers">Что с чем соединить</a><a href="#setups">Варианты</a><a href="#orca">IDE, ADE и Orca</a><a href="#access">Оплата и резерв</a><a href="#russia">Если вы в России</a><a href="#passport">Ваш сетап</a></nav>
 
   <section id="experience" class="setup-section">
     <p class="st-eyebrow">01 · Как это устроено у меня</p>
@@ -91,6 +91,7 @@
       <div class="setup-map-extra"><span class="setup-status">Работает · проекты</span><p><strong>Orca.</strong> Все проекты веду в ней. Терминал остаётся для души. Запас проверен: Claude, затем Codex, затем OpenRouter.</p></div>
     </div>
     <p class="setup-small">Конфигурация описана автором на 21 ноября 2026. Это описание опыта, а не результат внешнего аудита его устройств.</p>
+    <p class="setup-small">Claude, Codex и OpenRouter Россию официально не обслуживают, поэтому повторить этот сетап получится не у всех. Как собрать похожий на сервисах, которые работают в России, — <a href="#russia">в разделе 06</a>.</p>
   </section>
 
   <section id="layers" class="setup-section">
@@ -152,15 +153,62 @@
         <tr><th scope="row">Шлюз моделей</th><td>Общий интерфейс и расчёты за выбранные модели. Условия и наценки зависят от сервиса.</td><td>Ограничения шлюза и поставщиков. Совместимость инструментов и доступность конкретной модели.</td></tr>
       </tbody></table>
     </div>
-    <p>OpenRouter позволяет обращаться к разным моделям через общий интерфейс. Это удобно для сравнения и замены моделей, но не означает безлимитного или гарантированного доступа. <a href="https://openrouter.ai/docs/faq">Условия и ограничения OpenRouter</a>.</p>
+    <p>OpenRouter позволяет обращаться к разным моделям через общий интерфейс. Это удобно для сравнения и замены моделей, но не означает безлимитного или гарантированного доступа. <a href="https://openrouter.ai/docs/faq">Условия и ограничения OpenRouter</a>. С лета 2026 года, <a href="https://www.comnews.ru/content/246176/2026-07-03/2026-w27/1018/cloudru-dobavil-vneshnie-yazykovye-modeli-servis-foundation-models">по сообщениям прессы</a>, OpenRouter с Россией не работает.</p>
     <aside class="setup-note"><span class="st-eyebrow">Anthropic · проверено 13.11.2026</span><h3>Подписка и сторонний агент</h3><p>В справке Anthropic API указан как предпочтительный способ подключения сторонних инструментов. Допущенные подключения через подписку могут расходовать отдельные платные кредиты, а не включённый лимит. Условия нужно проверять для конкретной связки. <a href="https://support.claude.com/en/articles/13189465-log-in-to-your-claude-account">Правила подключения</a>.</p><p>Сервер и шлюз сами по себе не отменяют региональную политику поставщика. <a href="https://www.anthropic.com/legal/supported-regions">Поддерживаемые регионы Anthropic</a>.</p></aside>
     <h3>Три разных резерва</h3>
     <ol class="setup-reserve"><li><strong>Другое приложение.</strong> Поможет, если неудобен интерфейс. Та же модель и тот же аккаунт могут сохранить прежние лимиты.</li><li><strong>Другой способ подключения.</strong> Например, API вместо подписки. Меняются расчёты и квоты, но зависимость от поставщика модели остаётся.</li><li><strong>Другой поставщик модели.</strong> Снижает зависимость от одной компании. Качество выполнения, совместимость и перенос контекста нужно проверить заново.</li></ol>
     <p>Claude напрямую и Claude через шлюз всё ещё зависят от Anthropic. Перед переносом сохраните ТЗ, файлы проекта, инструкции, решения и способ проверки. История одного чата не заменяет этого набора.</p>
   </section>
 
+  <section id="russia" class="setup-section">
+    <p class="st-eyebrow">06 · Если вы в России</p>
+    <h2>Сетап на российских и китайских сервисах</h2>
+    <p>Claude, ChatGPT и Codex Россию не обслуживают: её нет в списках стран <a href="https://www.anthropic.com/supported-countries">Anthropic</a> и <a href="https://developers.openai.com/api/docs/supported-countries">OpenAI</a>. С лета 2026 года, <a href="https://www.comnews.ru/content/246176/2026-07-03/2026-w27/1018/cloudru-dobavil-vneshnie-yazykovye-modeli-servis-foundation-models">по сообщениям прессы</a>, с Россией перестал работать и OpenRouter. Схему из первого раздела можно собрать на сервисах, которые работают в России официально. Слои те же: чат, агент, API, локальная модель, хранилище кода. Ниже российские и китайские сервисы.</p>
+    <p class="setup-small">Цены и лимиты сверены 21 ноября 2026 года. Тарифы меняются, перед оплатой откройте страницу тарифов по ссылке.</p>
+
+    <h3>Чат: обсудить задачу, собрать ТЗ</h3>
+    <p>Алиса AI и ГигаЧат работают бесплатно, с дневными лимитами. Для обсуждения задачи, черновика ТЗ и разбора текста этого достаточно. У Алисы есть подписка <a href="https://alice.yandex.ru/support/ru/assistant/alice-plus">«Алиса Плюс»</a>. Для компаний Яндекс выпустил <a href="https://yandex.cloud/ru/blog/alice-ai-pro-scale-2026">«Алису AI Про»</a>: её разворачивают в своей инфраструктуре и подключают к внутренним сервисам по протоколу MCP.</p>
+    <p>DeepSeek и Qwen Chat тоже открываются из России и бесплатны. Это зарубежные сервисы: доступ может измениться без предупреждения, рабочие данные компании туда лучше не отправлять.</p>
+
+    <h3>Агент и редактор: работать с проектом</h3>
+    <p><a href="https://gitverse.ru/features/gigacode/">GigaCode</a> от Сбера: плагины для VS Code и JetBrains, агент в терминале GigaCode CLI и приложение GigaCode Desktop. Агент находит файлы, правит код, запускает тесты и делает коммиты. Тариф «Персональный» бесплатный для личного использования, «Бизнес» стоит от 1699 ₽ в месяц за пользователя.</p>
+    <p><a href="https://sourcecraft.dev/portal/docs/ru/sourcecraft/pricing">SourceCraft Code Assistant</a> от Яндекса работает в VS Code, JetBrains и в терминале через SourceCraft CLI. Внутри CLI — открытый агент OpenCode, тот же, что в разделе про IDE выше. Бесплатно 500 нейрокредитов в месяц на организацию и 4000 подсказок автодополнения; платные тарифы от 1190 ₽ в месяц. Агентный режим в терминале — на платных тарифах.</p>
+    <p>Если код писать не хочется, у Яндекса есть <a href="https://yandex.cloud/ru/blog/vibecraft">VibeCraft</a>: сайт или веб-приложение собирается по описанию словами, код лежит в SourceCraft, проект публикуется в Yandex Cloud.</p>
+
+    <h3>API: автоматизации и свои скрипты</h3>
+    <div class="setup-table-wrap" tabindex="0" role="region" aria-label="API российских моделей">
+      <table class="setup-table"><thead><tr><th scope="col">Сервис</th><th scope="col">Что даёт</th><th scope="col">Сколько стоит</th></tr></thead><tbody>
+        <tr><th scope="row"><a href="https://developers.sber.ru/docs/ru/gigachat/tariffs/individual-tariffs">ГигаЧат API</a></th><td>Модели GigaChat. С 1 сентября 2026 года новые клиенты оплачивают их на платформе Cloud.ru.</td><td>Физлицам бесплатный пакет на 12 месяцев: 250 млн токенов Lite, 40 млн Pro, 25 млн Max, один поток запросов. Платные пакеты от 1300 ₽.</td></tr>
+        <tr><th scope="row"><a href="https://aistudio.yandex.ru/docs/ru/ai-studio/pricing">Yandex AI Studio</a></th><td>Алиса AI, YandexGPT и открытые модели Qwen и DeepSeek. <a href="https://yandex.cloud/en/docs/ai-studio/concepts/openai-compatibility">Совместим с OpenAI</a>: в программе под библиотеку openai меняются адрес сервера и ключ.</td><td>По потреблению. Alice AI LLM Flash — 0,1 ₽ за 1000 токенов входа и 0,2 ₽ выхода, Alice AI LLM — 0,5 ₽ и 1,2 ₽.</td></tr>
+        <tr><th scope="row">Cloud.ru Foundation Models</th><td>Больше 20 моделей через один API: GigaChat, Qwen, DeepSeek, GLM, Kimi, MiniMax. Cloud.ru <a href="https://www.comnews.ru/content/246176/2026-07-03/2026-w27/1018/cloudru-dobavil-vneshnie-yazykovye-modeli-servis-foundation-models">предлагает его</a> как замену OpenRouter.</td><td>По потреблению, в рублях за миллион токенов. Например, Kimi K2.6 — 144 ₽ за вход и 595 ₽ за выход без НДС (<a href="https://cdn.cloud.ru/docs/legal/tariffs/evolution/current-version/foundation-models.pdf">тарифы</a>).</td></tr>
+      </tbody></table>
+    </div>
+
+    <h3>Китайские сервисы</h3>
+    <p>DeepSeek, Qwen, GLM, Kimi и MiniMax — сильные модели с открытыми весами и недорогим API. В условиях этих сервисов Россия не запрещена: например, <a href="https://docs.z.ai/legal-agreement/terms-of-use">Z.ai</a> исключает только Иран, КНДР, Кубу, Крым и новые регионы, <a href="https://cdn.deepseek.com/policies/en-US/deepseek-open-platform-terms-of-service.html">DeepSeek</a> — страны под всеобъемлющими санкциями. Работать с ними напрямую мешает оплата: подписки и API продаются за доллары или юани, платят зарубежной картой, Alipay или WeChat Pay (<a href="https://api-docs.deepseek.com/faq">DeepSeek</a>, <a href="https://www.kimi.com/help/kimi-api/api-billing-and-finance">Kimi</a>, <a href="https://docs.z.ai/devpack/faq">Z.ai</a>).</p>
+    <p>Чаты DeepSeek, Qwen Chat и Z.ai, по обзорам, открываются из России и бесплатны. Для обсуждения задачи и черновиков этого хватает. Доступ может пропасть без предупреждения, поэтому рабочие данные туда не отправляйте.</p>
+    <p>Агенты для кода по подписке есть у трёх компаний: <a href="https://www.kimi.com/ru/help/kimi-code/cli-getting-started">Kimi Code</a>, <a href="https://docs.z.ai/devpack/overview">GLM Coding Plan</a> и <a href="https://help.aliyun.com/en/model-studio/coding-plan">Coding Plan от Alibaba</a>. Они работают в терминале, в том числе внутри привычных агентов через совместимый адрес сервера. Открытый <a href="https://qwenlm.github.io/qwen-code-docs/en/users/configuration/auth/">Qwen Code</a> бесплатен, но бесплатную квоту к нему в апреле 2026 года отменили, нужен свой ключ. Без зарубежной карты эти подписки не оплатить.</p>
+    <p>Самый простой путь — российский шлюз с оплатой в рублях. В <a href="https://cdn.cloud.ru/docs/legal/tariffs/evolution/current-version/foundation-models.pdf">Cloud.ru Foundation Models</a> есть DeepSeek, Qwen, GLM, Kimi и MiniMax, в <a href="https://aistudio.yandex.ru/docs/en/ai-studio/concepts/generation/models.html">Yandex AI Studio</a> — Qwen и DeepSeek. Ключ подключается к агенту, который понимает формат OpenAI, например к OpenCode.</p>
+    <aside class="setup-note"><span class="st-eyebrow">Данные · проверено 21.11.2026</span><h3>Где обрабатывается запрос</h3><p>Часть моделей Cloud.ru разворачивает на своих серверах, и запросы не уходят к разработчику. Модели с пометкой «партнёрская модель» работают через сервер зарубежного провайдера (<a href="https://cdn.cloud.ru/docs/legal/tariffs/evolution/current-version/foundation-models.pdf">тарифы</a>). Персональные данные клиентов в зарубежные чаты и API не отправляйте. Для таких задач подойдёт модель, развёрнутая в России, или локальная модель.</p></aside>
+
+    <h3>Локальная модель: когда данные не должны уходить с компьютера</h3>
+    <p>У Сбера модели с открытыми весами под лицензией MIT. Для ноутбука подходит <a href="https://huggingface.co/ai-sage/GigaChat3.1-10B-A1.8B-GGUF">GigaChat 3.1 Lightning</a>: готовая сборка для Ollama и LM Studio. Старшие <a href="https://huggingface.co/collections/ai-sage/gigachat-35">GigaChat 3.5</a> тоже открыты, но им нужен сервер с большой памятью. Открытые веса публикуют и Qwen с DeepSeek. Локальная модель слабее облачной, зато всё остаётся у вас. Перед тем как строить на ней работу, проверьте, что модель у вас скачивается.</p>
+
+    <h3>Хранилище кода и пакеты</h3>
+    <p>С мая 2026 года из России <a href="https://vc.ru/ai/3041157-dostup-k-github-google-i-apple-iz-rossii">хуже открываются GitHub и PyPI</a>. Держите копию проекта на российской площадке, тогда сбой не остановит работу. <a href="https://sourcecraft.dev/portal/docs/ru/sourcecraft/pricing">SourceCraft</a> бесплатно даёт 2 ГБ под репозитории и 1000 минут сборок в месяц. <a href="https://gitverse.ru/">GitVerse</a> импортирует репозитории с GitHub и <a href="https://www.comnews.ru/content/245852/2026-06-16/2026-w25/1018/gitverse-obespechivaet-stabilnyy-dostup-k-paketnym-khranilischam-populyarnykh-yazykov-programmirovaniya">держит зеркала</a> PyPI, npm и Docker Hub.</p>
+
+    <div class="setup-grid2">
+      <div><h3>Минимальный сетап, бесплатно</h3><ol><li>Чат: Алиса AI или ГигаЧат — обсудить и собрать ТЗ.</li><li>Редактор: VS Code с GigaCode на тарифе «Персональный».</li><li>Код: репозиторий на SourceCraft или GitVerse.</li><li>Журнал: текстовый файл в проекте, куда вы и агент записываете, что сделано и что дальше.</li></ol></div>
+      <div><h3>Расширенный сетап</h3><ol><li>Агент в терминале: GigaCode CLI или SourceCraft CLI, в проекте — файл с инструкциями для агента.</li><li>API для автоматизаций: ГигаЧат API или Yandex AI Studio.</li><li>Локальная модель для черновиков с чувствительными данными.</li><li>Код, зеркало пакетов и сборки на одной российской площадке.</li><li>Общий журнал, чтобы любой агент продолжал с места другого.</li></ol></div>
+    </div>
+
+    <h3>Запас в три ступени</h3>
+    <ol class="setup-reserve"><li><strong>Основной агент.</strong> GigaCode, бесплатный личный тариф.</li><li><strong>Второй агент другой компании.</strong> SourceCraft Code Assistant: другой поставщик и другие модели, сбой у одного не останавливает работу.</li><li><strong>Шлюз моделей.</strong> Cloud.ru Foundation Models или каталог Yandex AI Studio: через один API можно переключиться на GigaChat, Qwen, DeepSeek, GLM или Kimi. Оплата в рублях. Для задач с личными данными выбирайте модели, развёрнутые в России.</li></ol>
+    <p>И нулевая ступень на случай, когда нет сети или данные нельзя отправлять наружу: локальная модель. Переносится не история чата, а набор: ТЗ, файлы проекта, инструкции, журнал и способ проверки. Испытайте запасной вариант на одной задаче заранее, а не в день сбоя.</p>
+  </section>
+
   <section id="passport" class="setup-section setup-passport">
-    <p class="st-eyebrow">06 · Ваш артефакт</p>
+    <p class="st-eyebrow">07 · Ваш артефакт</p>
     <h2>Паспорт моего ИИ-сетапа</h2>
     <p>Возьмите одну повторяющуюся задачу. Заполните конфигурацию, с которой её можно выполнить и проверить. На выходе будет текстовый файл с вашим основным и запасным вариантом.</p>
     <p class="setup-small">Поля обрабатываются только в браузере и не отправляются на сервер. Скачайте файл перед закрытием страницы. Ключи и пароли сюда не нужны.</p>
