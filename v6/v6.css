@@ -1342,3 +1342,43 @@ body.v6 .lesson-content .v6-page .v6-author-t a { color:var(--accent); font-weig
 .js #v6-home-rest:empty { min-height:100vh; }
 /* старые ссылки разделов в шапке — только метки для подсветки (setActiveTopNav); старый CSS включал их display:flex !important, и Tab попадал в шесть пустых ссылок */
 .v6h .top-nav-links { display:none !important; }
+
+/* ---------- Для компаний, этап 5: пилот, Telegram с первой фразой, аудит отдела ---------- */
+.v6-co-price { margin:16px 0 0; font-size:18px; color:var(--text-3); }
+.v6-co-price b { font-family:var(--font-display); font-weight:800; font-size:28px; color:var(--ink); }
+.v6-co-tg { display:flex; flex-direction:column; gap:10px; margin-top:16px; padding:16px 18px; border-radius:20px; background:var(--ground, #F3F4F7); }
+.v6-co-tg.is-dark { background:rgba(255,255,255,.08); }
+.v6-co-tg.is-dark .v6-meta { color:#C9CACF; }
+.v6-co-phrase { margin:0; font-size:16px; line-height:1.5; }
+.v6-co-more > summary { cursor:pointer; list-style:none; display:flex; flex-direction:column; gap:6px; padding:20px 0; border-top:1px solid var(--line, #E6E8EE); border-bottom:1px solid var(--line, #E6E8EE); }
+.v6-co-more > summary::-webkit-details-marker { display:none; }
+.v6-co-more > summary .v6-h3 { margin:0; }
+.v6-co-more > summary .v6-h3::after { content:" +"; color:var(--text-3); }
+.v6-co-more[open] > summary .v6-h3::after { content:" −"; }
+.v6-ca-form { display:flex; flex-direction:column; gap:28px; align-items:flex-start; }
+.v6-ca-g { border:0; margin:0; padding:0; width:100%; }
+.v6-ca-g legend { padding:0; margin-bottom:8px; }
+.v6-ca-row { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:12px 0; border-bottom:1px solid var(--line, #E6E8EE); }
+.v6-ca-l { display:flex; gap:10px; align-items:flex-start; cursor:pointer; flex:1; }
+.v6-ca-l input { width:20px; height:20px; margin-top:2px; flex:none; accent-color:var(--accent); }
+.v6-ca-h { display:flex; gap:8px; align-items:center; flex:none; }
+.v6-ca-h input { width:72px; height:40px; padding:0 10px; border:1px solid var(--line, #D6D9E0); border-radius:12px; font:inherit; font-size:16px; }
+.v6-ca-sum { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:16px; margin-top:32px; }
+.v6-ca-sum > div { background:var(--ground, #F3F4F7); border-radius:20px; padding:18px 20px; display:flex; flex-direction:column; gap:4px; }
+.v6-ca-sum b { font-family:var(--font-display); font-weight:800; font-size:26px; }
+.v6-ca-sum small { color:var(--text-3); font-size:14px; }
+.v6-ca-map { list-style:none; margin:12px 0 0; padding:0; }
+.v6-ca-map li { display:grid; grid-template-columns:110px minmax(0, 1fr) auto; gap:16px; align-items:center; padding:14px 0; border-bottom:1px solid var(--line, #E6E8EE); }
+.v6-ca-map li span b { display:block; }
+.v6-ca-map li span small { color:var(--text-3); }
+.v6-ca-hh { font-family:var(--font-display); font-weight:800; }
+@media (max-width: 640px) {
+  .v6-ca-row { flex-direction:column; align-items:flex-start; gap:8px; }
+  .v6-ca-sum { grid-template-columns:1fr; }
+  .v6-ca-map li { grid-template-columns:1fr; gap:6px; }
+}
+.v6-newstop { display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 24px; margin:8px 0 0; padding:16px 20px; border-radius:20px; background:#fff; }
+.v6-newstop-i { display:inline-flex; gap:8px; align-items:baseline; }
+.v6-newstop-i a { color:inherit; font-weight:600; text-decoration:underline !important; text-underline-offset:3px; }
+.v6-newstop-i small { color:var(--text-3); }
+.v6-newstop > .v6-link { margin-left:auto; }
