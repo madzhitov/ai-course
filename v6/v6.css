@@ -1382,3 +1382,5 @@ body.v6 .lesson-content .v6-page .v6-author-t a { color:var(--accent); font-weig
 .v6-newstop-i a { color:inherit; font-weight:600; text-decoration:underline !important; text-underline-offset:3px; }
 .v6-newstop-i small { color:var(--text-3); }
 .v6-newstop > .v6-link { margin-left:auto; }
+.v6-ubuiltin { margin:20px 0 0; padding:14px 18px; border-radius:16px; background:#fff; font-size:15px; line-height:1.5; max-width:760px; }
+.v6-ubuiltin a { color:inherit; text-decoration:underline; text-underline-offset:3px; }
