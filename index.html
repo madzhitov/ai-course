@@ -37523,6 +37523,7 @@ const CHANGELOG = [
     date: "2026-11-21",
     title: "Памятка про ИИ-сетапы",
     tag: "new",
+    link: "/znaniya/ai-setup.html",
     items: [
       "Разобрали, из чего складывается рабочий ИИ-сетап: модели, агенты, IDE и ADE, подписки, API и запасные варианты. Есть личный сетап автора, PDF на три страницы и шаблон, который можно заполнить под себя."
     ]
@@ -38783,7 +38784,7 @@ function renderChangelog() {
     html += `
       <div class="cl-entry">
         <div class="cl-date">${fmtDateRu(entry.date)}</div>
-        <div class="cl-title"><span class="cl-tag ${entry.tag}">${tagLabel}</span>${stripEmoji(entry.title)}</div>
+        <div class="cl-title"><span class="cl-tag ${entry.tag}">${tagLabel}</span>${entry.link ? `<a href="${esc(entry.link)}">${stripEmoji(entry.title)}</a>` : stripEmoji(entry.title)}</div>
         <ul class="cl-items">${entry.items.map(i => `<li>${stripEmoji(i)}</li>`).join('')}</ul>
       </div>
     `;

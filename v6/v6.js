@@ -483,7 +483,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
   function newsCo() {
     const items = (CHANGELOG || []).slice(0, 3);
     return `<section class="v6-sec v6-newsco"><div><div class="v6-sec-head" style="margin-bottom:16px"><h2 class="v6-h3" style="font-family:var(--font-display);font-weight:800">Что нового</h2><button class="v6-link" onclick="openStaticPage('changelog')">Все изменения →</button></div>
-        <ul class="v6-rows v6-news">${items.map((c) => `<li><span class="n">${e(fmtDateRu(c.date))}</span><span style="grid-column:span 2">${e(stripEmoji(c.title))}</span></li>`).join('')}</ul></div>
+        <ul class="v6-rows v6-news">${items.map((c) => `<li><span class="n">${e(fmtDateRu(c.date))}</span><span style="grid-column:span 2">${c.link ? `<a href="${e(c.link)}" style="color:inherit;text-decoration:underline;text-underline-offset:3px">${e(stripEmoji(c.title))}</a>` : e(stripEmoji(c.title))}</span></li>`).join('')}</ul></div>
       <div class="v6-newsco-r"><p>Если это нужно всей команде, соберём такую же программу под вашу компанию.</p><button class="v6-link" onclick="V6.open('companies')">Для компаний →</button></div></section>`;
   }
   function home() {
@@ -1084,6 +1084,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
           <div class="v6-ktabs" role="tablist" aria-label="Разделы знаний">${tab('fw', 'Методы', D.fw.length)}${tab('dict', 'Словарь мира', DICT.terms.length)}${tab('lessons', 'Уроки', nLessons)}${tab('tools', 'Инструменты', toolCount())}</div>
           <div class="v6-kbody">${body}</div></section>
         <section class="v6-psec"><h2 class="v6-psec-h">Ещё в Знаниях</h2><div class="v6-grid2" style="margin-top:28px">
+          <div class="v6-task"><h3>Как собрать свой ИИ-сетап</h3><p>Модели, агенты, IDE и ADE, подписки и запас. Опыт автора, PDF и шаблон своей конфигурации.</p><a class="v6b is-soft is-sm" href="/znaniya/ai-setup.html">Открыть</a></div>
           <div class="v6-task"><h3>Источники</h3><p>Курсы, книги и документация, на которых стоят уроки.</p><button class="v6b is-soft is-sm" onclick="openStaticPage('resources')">Открыть</button></div>
           <div class="v6-task"><h3>Нейросети без VPN</h3><p>Живой список: что работает из России, что бесплатно.</p><a class="v6b is-soft is-sm" href="/tools/neyroseti-bez-vpn/">Открыть</a></div>
         </div></section>`;
