@@ -119,7 +119,7 @@
       const date = new Date(d.checked).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
       box.innerHTML = `<div class="v6-sec-head is-split"><div><h2 class="v6-h2">Бесплатно и без VPN</h2><p>Сервисы, в которых делаются карты. Проверяем раз в месяц: сайт открывается из России, регистрация проходит без VPN.</p></div><p>Проверено ${esc(date)}</p></div>
         <div class="kd-tbl"><table><thead><tr><th>Сервис</th><th>Что умеет</th><th>Сколько бесплатно</th></tr></thead><tbody>${rows.map((s) => `<tr><td><b>${esc(s.name)}</b><small>${esc(s.country)}</small></td><td>${(s.tasks || []).map((t) => `<span class="kd-tag">${esc(t)}</span>`).join(' ')}</td><td>${esc(s.free)}</td></tr>`).join('')}</tbody></table></div>
-        <p class="kd-more"><a class="v6b is-soft" href="/tools/neyroseti-bez-vpn/">Все ${d.services.length} ${plural(d.services.length, 'сервис', 'сервиса', 'сервисов')} с источниками</a></p>`;
+        <p class="kd-more"><a class="v6b is-soft" href="/tools/neyroseti-bez-vpn/">Все сервисы с источниками</a></p>`;
     }).catch(() => { box.remove(); });
   }
 
