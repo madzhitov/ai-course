@@ -44,12 +44,13 @@
   }
 
   function back(c) {
-    let h = `<div class="kd-bt">${esc(c.t)}</div>`;
+    let h = `<div class="kd-scroll"><div class="kd-bt">${esc(c.t)}</div>`;
+    if (c.tools.length) h += `<p class="kd-fw">Где делать: ${esc(c.tools.join(', '))}${c.nv ? ', без VPN' : ''}</p>`;
     if (c.needs.length) h += `<h4>Понадобится</h4><ul>${c.needs.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`;
     h += `<h4>Шаги</h4><ol>${c.steps.map((x) => `<li>${esc(x)}</li>`).join('')}</ol>`;
     if (c.ch.length) h += `<h4>Проверка</h4><ul>${c.ch.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`;
     if (c.fw.length) h += `<p class="kd-fw">Внутри метод: ${c.fw.map((f) => f.page ? `<a href="/metody/${esc(f.id)}.html">${esc(f.t)}</a>` : esc(f.t)).join(', ')}</p>`;
-    h += `<div class="kd-bb"><button type="button" class="is-main" data-kd-open="${esc(c.id)}">Сделать по шагам</button>`;
+    h += `</div><div class="kd-bb"><a class="is-main" href="#unit-${esc(c.id)}" data-kd-open="${esc(c.id)}">Сделать по шагам</a>`;
     if (c.p) h += `<button type="button" data-kd-copy="${esc(c.id)}">Скопировать запрос</button>`;
     if (c.grp === 'seller' || c.grp === 'marketing') h += `<button type="button" data-kd-work="1">Внедрить в работу</button>`;
     return h + '</div>';
@@ -63,7 +64,7 @@
       <div class="kd-in"><div class="kd-face kd-front">
         <div class="kd-row"><span class="kd-min">${c.m}<small>мин</small></span><span class="kd-chips">${c.review ? '<span class="kd-chip is-o">черновик</span>' : ''}${c.nv ? '<span class="kd-chip">без VPN</span>' : ''}<span class="kd-chip is-o">${esc(ROLE[c.grp] || '')}</span></span></div>
         <div class="kd-t">${esc(c.t)}</div><div class="kd-r">${esc(c.r)}</div>
-        <div class="kd-foot"><span>${esc(c.tools.slice(0, 2).join(', '))}</span><b>${c.lv === 'уверенный' ? 'Нужен опыт' : 'С нуля'}</b></div>
+        <div class="kd-foot"><span class="kd-hint">↻ Что внутри</span><a class="kd-go" href="#unit-${esc(c.id)}" data-kd-open="${esc(c.id)}">Открыть →</a></div>
       </div><div class="kd-face kd-back">${back(c)}</div></div></div>`;
   }
 
@@ -123,7 +124,7 @@
 
   function onClick(ev) {
     const t = ev.target;
-    const op = t.closest('[data-kd-open]'); if (op) { ev.stopPropagation(); track('kd-open', { unit: op.dataset.kdOpen, aud }); V6.openUnit(op.dataset.kdOpen, 'home'); return; }
+    const op = t.closest('[data-kd-open]'); if (op) { if (ev.metaKey || ev.ctrlKey || ev.shiftKey) return; ev.preventDefault(); ev.stopPropagation(); track('kd-open', { unit: op.dataset.kdOpen, aud }); V6.openUnit(op.dataset.kdOpen, 'home'); return; }
     const cp = t.closest('[data-kd-copy]'); if (cp) { ev.stopPropagation(); const c = byId(cp.dataset.kdCopy); track('kd-copy', { unit: c.id });
       const done = (txt) => { cp.textContent = txt; setTimeout(() => { cp.textContent = 'Скопировать запрос'; }, 1600); };
       try { navigator.clipboard.writeText(c.p).then(() => done('Скопировано'), () => done('Не вышло, откройте шаги')); } catch (_) { done('Не вышло, откройте шаги'); }
