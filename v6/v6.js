@@ -55,7 +55,7 @@
     if (typeof fetch !== 'function') return Promise.reject(new Error('no fetch'));
     if (!loading) {
       const get = (f) => fetch(dataUrl(f + '.json')).then((r) => r.ok ? r.json() : Promise.reject(new Error(f + ' ' + r.status)));
-      loading = Promise.all(['roles', 'paths', 'tasks', 'units', 'resources', 'frameworks', 'material-dates'].map(get)).then(([roles, paths, tasks, units, resources, frameworks, dates]) => {
+      loading = Promise.all(['roles', 'paths', 'tasks', 'units', 'resources', 'frameworks', 'material-dates', 'koloda'].map(get)).then(([roles, paths, tasks, units, resources, frameworks, dates, koloda]) => {
         const allTasks = {};
         tasks.groups.forEach((g) => (g.directions || []).forEach((d) => (d.tasks || []).forEach((t) => {
           allTasks[t.id] = Object.assign({ group: g.id, direction: d }, t);
@@ -64,7 +64,7 @@
         paths.rolePaths.forEach((rp) => (rp.stages || []).forEach((st) => {
           st.tasks = [...new Set((st.steps || []).filter((x) => x.kind === 'unit').map((x) => unitTask(x.ref)).filter(Boolean))];
         }));
-        D = { materialDates: dates.pages, roles: roles.roles, paths, groups: tasks.groups, units: units.units, tasks: allTasks, resources: resources.resources, fw: frameworks.cards };
+        D = { koloda, materialDates: dates.pages, roles: roles.roles, paths, groups: tasks.groups, units: units.units, tasks: allTasks, resources: resources.resources, fw: frameworks.cards };
         return D;
       }).catch((err) => { loading = null; throw err; });
     }
@@ -505,29 +505,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       [...el.children].forEach((n) => { if (n !== pre) n.remove(); });
       pre.removeAttribute('id');
       document.documentElement.classList.remove('not-home'); // неизвестный адрес (#что-то) тоже открывает главную
-    } else el = shell(`<div class="v6c" id="v6-home"><div id="v6-strip"></div><section class="v6-hero2 v6-workshop-hero">
-        <div class="v6-hero2-l">
-          <span class="v6-badge"><b>Знания. Навыки. Артефакты.</b></span>
-          <h1 class="v6-d v6-home-h1"><span>Разберитесь в ИИ.</span><span>Научитесь применять.</span><span>Создайте своё.</span></h1>
-          <p class="v6-hero2-lead">Артефакты — бесплатная платформа, где можно разобраться в ИИ, освоить новый навык и создать полезную вещь на своих данных.</p>
-          <p class="v6-home-meaning">Текст, таблица, план, бот или приложение — результат, которым можно пользоваться. Здесь мы называем его артефактом.</p>
-          <p class="v6-home-facts">На русском · <span id="v6-pre-n">49 готовых решений</span> · Алёша поможет разобраться</p>
-        </div>
-      <nav class="v6-home-doors" aria-label="С чего начать">
-        <a href="#knowledge" onclick="umTrack('home-entry', { intent: 'understand' }); V6.open('knowledge'); return false;"><span class="v6-home-door-kind">Знания</span><h2>Разобраться</h2><p>Как устроен ИИ, что он умеет и как проверять его ответы.</p><span class="v6-home-door-go">Открыть знания <span aria-hidden="true">↗</span></span></a>
-        <a href="#paths" onclick="umTrack('home-entry', { intent: 'learn' }); V6.open('paths'); return false;"><span class="v6-home-door-kind">Навыки</span><h2>Научиться</h2><p>Уроки и практика: от первых запросов до своих приложений.</p><span class="v6-home-door-go">Выбрать обучение <span aria-hidden="true">↗</span></span></a>
-        <a href="#tasks" onclick="umTrack('home-entry', { intent: 'make' }); V6.open('tasks'); return false;"><span class="v6-home-door-kind">Артефакты</span><h2>Сделать</h2><p>Решения по шагам на ваших данных. Промпты, инструменты и проверка результата.</p><span class="v6-home-door-go">Найти решение <span aria-hidden="true">↗</span></span></a>
-      </nav>
-        <figure class="v6-workbench" aria-label="Учебные примеры: план, таблица и помощник">
-          <figcaption><span>Мастерская полезных вещей</span><small>Учебные примеры</small></figcaption>
-          <div class="v6-workbench-desk">
-            <div class="v6-work-sheet is-document"><span class="v6-work-file">Документ</span><b>План исследования</b><p>Что хотим узнать<br>Какие данные собрать<br>Как проверить выводы</p><i></i><i></i><i></i></div>
-            <div class="v6-work-sheet is-table"><span class="v6-work-file">Таблица</span><b>Расчёт на ваших данных</b><div class="v6-work-table"><span>Доход</span><span>ваши данные</span><span>Расходы</span><span>ваши данные</span><strong>Остаток</strong><strong>= доход − расходы</strong></div></div>
-            <div class="v6-work-sheet is-chat"><span class="v6-work-file">Помощник</span><b>Бот по вашим материалам</b><p class="v6-work-question">С чего начать?</p><p class="v6-work-answer">Выберите тему. Разберём её по шагам.</p></div>
-          </div>
-          <p class="v6-workbench-foot">От понятного объяснения к вещи, которую вы сделали сами.</p>
-        </figure>
-      </section><div id="v6-home-rest"></div></div>`);
+    } else el = shell(`<div class="v6c" id="v6-home"><div id="v6-strip"></div><section class="kd-hero" id="kd-hero"><div><div class="kd-aud" role="group" aria-label="Для кого"><button type="button" data-kd-aud="self" aria-pressed="true">Для себя</button><button type="button" data-kd-aud="teacher" aria-pressed="false">Учителю</button><button type="button" data-kd-aud="student" aria-pressed="false">Учиться с ИИ</button><button type="button" data-kd-aud="work" aria-pressed="false">Для работы</button></div><h1 class="kd-h1" id="kd-h1">Что нужно сделать?</h1><p class="kd-lead" id="kd-lead">Выберите действие и вытяните карту. На каждой готовая вещь, время и сервис без VPN. На обороте шаги, запрос для ИИ и проверка результата.</p><div class="kd-verbs" id="kd-verbs"></div></div><div class="kd-firstbox"><span class="kd-firsttag">Первая карта</span><div id="kd-first"></div><p class="kd-note" id="kd-note"></p></div></section><div id="v6-home-rest"></div></div>`);
     Promise.all([load(), loadHX()]).then(() => {
       const pn = document.getElementById('v6-pre-n');
       const nReady = D.units.filter((u) => hasSteps(u) && !u.review).length;
@@ -565,8 +543,8 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       const box = (id) => document.getElementById(id);
       if (!box('v6-home-rest')) return;
       box('v6-strip').innerHTML = strip;
-      box('v6-home-rest').innerHTML = newsTop() + `<section class="v6-sec v6-home-solutions"><div class="v6-sec-head"><div><span class="v6-eyebrow">Решения с ИИ</span><h2 class="v6-h2">Что хотите сделать?</h2></div><p>Начните с готового способа. Подставьте свои данные и проверьте результат по чек-листу.</p></div><form class="v6-hask" onsubmit="return V6.ask(this)" role="search"><label for="v6-hask-in">Найдите свою задачу</label><span class="v6-hask-row"><input id="v6-hask-in" type="text" placeholder="например, письмо или план" autocomplete="off"><button class="v6b is-accent" type="submit">Найти</button></span></form><div class="v6-results" hidden aria-live="polite"></div><div class="v6-show" id="v6-show">${showcase()}</div></section>` + howBlock() + tryBlock() + whoBlock2() + learnBlock() + moreBlock() + methodsBlock2() + authorBlock() + newsCo();
-      vxStart();
+      box('v6-home-rest').innerHTML = newsTop() + '<div id="kd-rest"></div>' + learnBlock() + authorBlock();
+      if (window.Koloda) Koloda.mount(D, box('kd-rest'));
     }).catch(() => fail('v6-home'));
     return el;
   }

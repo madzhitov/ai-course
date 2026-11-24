@@ -221,6 +221,20 @@
        "title": "Составить план, как разобраться в новой теме"
       }
      ]
+    },
+    {
+     "id": "ai.show",
+     "title": "Показывать",
+     "tasks": [
+      {
+       "id": "ai.show.photo-restore",
+       "title": "Восстановить старое фото"
+      },
+      {
+       "id": "ai.show.presentation",
+       "title": "Собрать презентацию из своих заметок"
+      }
+     ]
     }
    ]
   },
@@ -448,6 +462,23 @@
       {
        "id": "self.docs.contract",
        "title": "Разобрать договор перед подписью"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "teacher",
+   "title": "Учителю",
+   "status": "approved",
+   "directions": [
+    {
+     "id": "teacher.lesson",
+     "title": "Урок",
+     "tasks": [
+      {
+       "id": "teacher.lesson.test",
+       "title": "Составить тест с ключом по теме урока"
       }
      ]
     }

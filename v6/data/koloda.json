@@ -1,0 +1,295 @@
+{
+ "version": "2026-11-24",
+ "note": "Колода решений на главной: действие для каждого задания, пустые слоты «скоро» и аудитории. Раскладку согласует Руслан. Данные заданий — units.json.",
+ "verbs": [
+  {
+   "id": "write",
+   "title": "Написать",
+   "hint": "письма, ответы, тексты"
+  },
+  {
+   "id": "count",
+   "title": "Посчитать",
+   "hint": "деньги, тесты, задачи"
+  },
+  {
+   "id": "find",
+   "title": "Найти и разобраться",
+   "hint": "тема, документ, проверка"
+  },
+  {
+   "id": "invent",
+   "title": "Придумать",
+   "hint": "идеи, песня, тренировка"
+  },
+  {
+   "id": "decide",
+   "title": "Решить и спланировать",
+   "hint": "выбор, план, приоритеты"
+  },
+  {
+   "id": "show",
+   "title": "Показать",
+   "hint": "презентации, картинки, фото"
+  },
+  {
+   "id": "delegate",
+   "title": "Поручить",
+   "hint": "повторяющееся отдать ИИ"
+  }
+ ],
+ "audiences": [
+  {
+   "id": "self",
+   "tab": "Для себя",
+   "h1": "Что нужно сделать?",
+   "lead": "Выберите действие и вытяните карту. На каждой готовая вещь, время и сервис без VPN. На обороте шаги, запрос для ИИ и проверка результата.",
+   "groups": [
+    "ai",
+    "self"
+   ],
+   "first": "u-ai-hard-letter",
+   "verb": "write",
+   "note": "Самое частое, что откладывают: письмо с отказом, напоминанием об оплате или претензией. Двадцать минут, любой чат-ИИ без VPN."
+  },
+  {
+   "id": "teacher",
+   "tab": "Учителю",
+   "h1": "Что нужно к уроку?",
+   "lead": "Планы, тесты, рабочие листы и презентации к уроку за 15–30 минут. В отечественных сервисах, без данных учеников.",
+   "groups": [
+    "teacher"
+   ],
+   "first": "u-teacher-test",
+   "verb": "count",
+   "note": "Тест с ключом — то, что учителя чаще всего просят у ИИ. Два варианта, ключ и самопроверка модели, по вашему учебнику."
+  },
+  {
+   "id": "student",
+   "tab": "Учиться с ИИ",
+   "h1": "Что нужно понять?",
+   "lead": "ИИ как тренер: объясняет, задаёт вопросы, проверяет, как вы поняли. Текст пишете вы, и это по правилам школ и вузов.",
+   "groups": [
+    "student"
+   ],
+   "extra": [
+    "u-ai-learn-plan",
+    "u-ai-answer-check"
+   ],
+   "first": "u-ai-learn-plan",
+   "verb": "find",
+   "note": "План на две недели по любой новой теме: короткие занятия с упражнением и вопросами для самопроверки."
+  },
+  {
+   "id": "work",
+   "tab": "Для работы",
+   "h1": "Что нужно команде?",
+   "lead": "Рабочие процессы с ИИ на ваших данных: отчёты, ответы клиентам, деньги товара, план. Проходите сами или с нами пилотом.",
+   "groups": [
+    "seller",
+    "marketing",
+    "product"
+   ],
+   "first": "u-seller-reviews",
+   "verb": "write",
+   "note": "Проба на рабочей задаче: двадцать ответов на отзывы в голосе бренда за пятнадцать минут. Если так нужно всей команде, следующий шаг — пилот."
+  }
+ ],
+ "units": {
+  "u-seller-reviews": "write",
+  "u-seller-description": "write",
+  "u-seller-assistant": "delegate",
+  "u-seller-competitors": "find",
+  "u-seller-competitors-pro": "delegate",
+  "u-unit-economics-channels": "count",
+  "u-unit-economics-exports": "count",
+  "u-seller-pains": "find",
+  "u-seller-keywords": "find",
+  "u-seller-social": "write",
+  "u-seller-repeat": "write",
+  "u-seller-stock": "count",
+  "u-seller-weekly": "count",
+  "u-product-one-page": "invent",
+  "u-product-north-star": "decide",
+  "u-project-raci": "decide",
+  "u-project-premortem": "decide",
+  "u-marketing-segment": "find",
+  "u-marketing-positioning": "invent",
+  "u-marketing-funnel": "count",
+  "u-self-resume": "write",
+  "u-self-contract": "find",
+  "u-ai-answer-check": "find",
+  "u-ai-decision": "decide",
+  "u-ai-hard-letter": "write",
+  "u-ai-html-tool": "count",
+  "u-ai-learn-plan": "find",
+  "u-ai-routine-brief": "delegate",
+  "u-marketing-channel": "decide",
+  "u-marketing-offer": "write",
+  "u-product-interview": "find",
+  "u-seller-assortment-matrix": "invent",
+  "u-seller-attribution": "find",
+  "u-seller-next-channel": "decide",
+  "u-seller-retention-calendar": "write",
+  "u-seller-single-base": "count",
+  "u-marketing-ltv-cac": "count",
+  "u-product-rice": "decide",
+  "u-seller-ads-budget": "count",
+  "u-seller-funnel": "count",
+  "u-seller-pnl": "count",
+  "u-seller-marketplace-ads": "decide",
+  "u-seller-site-traffic": "decide",
+  "u-seller-questions": "write",
+  "u-product-okr": "decide",
+  "u-product-cohorts": "count",
+  "u-product-pmf": "find",
+  "u-product-slice": "invent",
+  "u-product-value": "find",
+  "u-marketing-why-buy": "find",
+  "u-marketing-entry-points": "find",
+  "u-marketing-message-house": "invent",
+  "u-marketing-copy": "write",
+  "u-marketing-hypotheses": "invent",
+  "u-teacher-test": "count",
+  "u-ai-photo-restore": "show",
+  "u-ai-presentation": "show"
+ },
+ "soon": [
+  {
+   "id": "gap-visual",
+   "verb": "show",
+   "group": "ai",
+   "title": "Картинка по вашему описанию",
+   "result": "Изображение для поста, обложки или открытки с русским текстом и проверка, что на нём нет ошибок.",
+   "where": "Алиса AI, Шедеврум, ГигаЧат"
+  },
+  {
+   "id": "gap-video",
+   "verb": "show",
+   "group": "ai",
+   "title": "Короткий ролик из фото и текста",
+   "result": "Видео на несколько секунд для поздравления или поста из ваших фото и описания.",
+   "where": "ГигаЧат, Алиса AI"
+  },
+  {
+   "id": "gap-song",
+   "verb": "invent",
+   "group": "ai",
+   "title": "Песня-поздравление со своими словами",
+   "result": "Песня с именем и историей человека: текст пишете с ИИ, музыку собирает сервис.",
+   "where": "ГигаЧат, Suno"
+  },
+  {
+   "id": "gap-summary",
+   "verb": "find",
+   "group": "ai",
+   "title": "Пересказ видео или документа",
+   "result": "Видео до 4 часов, статья или PDF на одну страницу: главное, цифры и что из этого следует для вас.",
+   "where": "Яндекс Браузер"
+  },
+  {
+   "id": "gap-t-lesson",
+   "verb": "decide",
+   "group": "teacher",
+   "title": "План урока по теме",
+   "result": "План урока с целями, ходом и заданиями. Факты проверены, данные учеников не нужны.",
+   "where": "ГигаЧат, Алиса AI"
+  },
+  {
+   "id": "gap-t-sheet",
+   "verb": "write",
+   "group": "teacher",
+   "title": "Рабочий лист на три уровня",
+   "result": "Задания по одной теме для сильных, средних и тех, кому нужна поддержка.",
+   "where": "ГигаЧат, Алиса AI"
+  },
+  {
+   "id": "gap-t-slides",
+   "verb": "show",
+   "group": "teacher",
+   "title": "Презентация к уроку",
+   "result": "Структура и тексты слайдов от ИИ, картинки к ним, сборка в сервисе.",
+   "where": "ГигаЧат, Алиса AI"
+  },
+  {
+   "id": "gap-t-check",
+   "verb": "find",
+   "group": "teacher",
+   "title": "Проверка сочинения по критериям",
+   "result": "Замечания по каждому критерию для обезличенной работы. Оценку ставит учитель.",
+   "where": "ГигаЧат, Алиса AI"
+  },
+  {
+   "id": "gap-t-adapt",
+   "verb": "write",
+   "group": "teacher",
+   "title": "Текст под класс или ученика",
+   "result": "Тот же материал проще или подробнее, с сохранением смысла.",
+   "where": "ГигаЧат, Алиса AI"
+  },
+  {
+   "id": "gap-t-prompt",
+   "verb": "delegate",
+   "group": "teacher",
+   "title": "Из чего состоит запрос к ИИ",
+   "result": "Разбор хорошего запроса на части на примере урока и ваш первый запрос по этой схеме.",
+   "where": "любой чат-ИИ"
+  },
+  {
+   "id": "gap-t-parents",
+   "verb": "write",
+   "group": "teacher",
+   "title": "Письмо родителям",
+   "result": "Сообщение о собрании, оценках или поездке: коротко, вежливо, с одной просьбой.",
+   "where": "ГигаЧат, Алиса AI"
+  },
+  {
+   "id": "gap-s-explain",
+   "verb": "find",
+   "group": "student",
+   "title": "Объясни тему и проверь меня",
+   "result": "Объяснение на ваших примерах и вопросы, которые показывают, что вы поняли. Текст пишете сами.",
+   "where": "Алиса AI, DeepSeek"
+  },
+  {
+   "id": "gap-s-course",
+   "verb": "decide",
+   "group": "student",
+   "title": "План и источники для курсовой",
+   "result": "Структура, вопросы к литературе и список, что проверить. Без готового текста.",
+   "where": "Алиса AI, DeepSeek"
+  },
+  {
+   "id": "gap-s-task",
+   "verb": "count",
+   "group": "student",
+   "title": "Разбор задачи по шагам",
+   "result": "Подсказки по одному шагу, чтобы решить самому, а не списать ответ.",
+   "where": "Алиса AI, DeepSeek"
+  },
+  {
+   "id": "gap-s-quiz",
+   "verb": "find",
+   "group": "student",
+   "title": "Пробный тест перед контрольной",
+   "result": "Вопросы по вашему конспекту и разбор ошибок.",
+   "where": "Алиса AI, ГигаЧат"
+  },
+  {
+   "id": "gap-s-rules",
+   "verb": "find",
+   "group": "student",
+   "title": "Как честно указать, что работал с ИИ",
+   "result": "Что требуют правила вуза, как описать помощь ИИ и что видит проверка на заимствования.",
+   "where": "—"
+  },
+  {
+   "id": "gap-s-defense",
+   "verb": "invent",
+   "group": "student",
+   "title": "Тренажёр к защите",
+   "result": "ИИ задаёт вопросы как комиссия, вы отвечаете, он показывает слабые места.",
+   "where": "Алиса AI, ГигаЧат"
+  }
+ ]
+}
