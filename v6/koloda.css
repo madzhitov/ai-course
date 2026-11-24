@@ -101,5 +101,7 @@
 @media (prefers-reduced-motion:reduce){.kd-in,.kd-verb{transition:none}}
 
 /* после общего правила кнопок оборота и ссылок сайта */
-.kd-card .kd-bb a.is-main,.kd-card .kd-bb button.is-main{background:#fff;color:#1F2F5C;border-color:#fff}
-.kd-card .kd-foot a.kd-go{color:var(--accent)}
+body.v6 .kd-card .kd-bb a.is-main,body.v6 .kd-card .kd-bb button.is-main{background:#fff;color:#1F2F5C;border-color:#fff}
+body.v6 .kd-card .kd-bb a{color:#fff}
+body.v6 .kd-card .kd-foot a.kd-go{color:var(--accent)}
+body.v6 .kd-card .kd-fw a{color:#fff;text-decoration:underline}
