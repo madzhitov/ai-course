@@ -4,6 +4,7 @@
 (function () {
   'use strict';
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const plural = (n, one, few, many) => { const x = n % 10, y = n % 100; return x === 1 && y !== 11 ? one : x >= 2 && x <= 4 && (y < 12 || y > 14) ? few : many; };
   const track = (n, d) => { try { umTrack(n, d); } catch (_) {} };
   const ROLE = { ai: 'Для себя', self: 'Для себя', seller: 'Продавцу', marketing: 'Маркетологу', product: 'Продакту', teacher: 'Учителю', student: 'Учиться с ИИ' };
   const WORKROLES = [['all', 'Все'], ['seller', 'Продавцу'], ['marketing', 'Маркетологу'], ['product', 'Продакту']];
@@ -60,7 +61,7 @@
       <div class="kd-row">${svg(c.v)}<span class="kd-min">Скоро</span></div>
       <div class="kd-t">${esc(c.t)}</div><div class="kd-r">${esc(c.r)}</div>
       <div class="kd-foot"><span>${esc(c.w || '')}</span><span>${esc(ROLE[c.grp] || '')}</span></div></div></div></div>`;
-    return `<div class="kd-card${big ? ' is-big' : ''}" data-kd-card="${esc(c.id)}" role="button" tabindex="0" aria-label="${esc(c.t)}, ${c.m} минут. Перевернуть карту">
+    return `<div class="kd-card${big ? ' is-big' : ''}" data-kd-card="${esc(c.id)}" role="button" tabindex="0" aria-label="${esc(c.t)}, ${c.m} ${plural(c.m, 'минута', 'минуты', 'минут')}. Перевернуть карту">
       <div class="kd-in"><div class="kd-face kd-front">
         <div class="kd-row"><span class="kd-min">${c.m}<small>мин</small></span><span class="kd-chips">${c.review ? '<span class="kd-chip is-o">черновик</span>' : ''}${c.nv ? '<span class="kd-chip">без VPN</span>' : ''}<span class="kd-chip is-o">${esc(ROLE[c.grp] || '')}</span></span></div>
         <div class="kd-t">${esc(c.t)}</div><div class="kd-r">${esc(c.r)}</div>
@@ -118,7 +119,7 @@
       const date = new Date(d.checked).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
       box.innerHTML = `<div class="v6-sec-head is-split"><div><h2 class="v6-h2">Бесплатно и без VPN</h2><p>Сервисы, в которых делаются карты. Проверяем раз в месяц: сайт открывается из России, регистрация проходит без VPN.</p></div><p>Проверено ${esc(date)}</p></div>
         <div class="kd-tbl"><table><thead><tr><th>Сервис</th><th>Что умеет</th><th>Сколько бесплатно</th></tr></thead><tbody>${rows.map((s) => `<tr><td><b>${esc(s.name)}</b><small>${esc(s.country)}</small></td><td>${(s.tasks || []).map((t) => `<span class="kd-tag">${esc(t)}</span>`).join(' ')}</td><td>${esc(s.free)}</td></tr>`).join('')}</tbody></table></div>
-        <p class="kd-more"><a class="v6b is-soft" href="/tools/neyroseti-bez-vpn/">Все ${d.services.length} сервисов с источниками</a></p>`;
+        <p class="kd-more"><a class="v6b is-soft" href="/tools/neyroseti-bez-vpn/">Все ${d.services.length} ${plural(d.services.length, 'сервис', 'сервиса', 'сервисов')} с источниками</a></p>`;
     }).catch(() => { box.remove(); });
   }
 
