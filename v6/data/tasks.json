@@ -4,7 +4,7 @@
  "groups": [
   {
    "id": "seller",
-   "title": "Продаю онлайн · P&L-карта",
+   "title": "Продаю онлайн",
    "status": "approved",
    "directions": [
     {
@@ -159,7 +159,7 @@
   },
   {
    "id": "ai",
-   "title": "ИИ-практика · для всех ролей",
+   "title": "Для всех",
    "status": "approved",
    "directions": [
     {
@@ -240,7 +240,7 @@
   },
   {
    "id": "product",
-   "title": "Продакт и проджект",
+   "title": "Продакту и проджекту",
    "status": "approved",
    "directions": [
     {
@@ -340,7 +340,7 @@
   },
   {
    "id": "marketing",
-   "title": "Маркетолог",
+   "title": "Маркетологу",
    "status": "approved",
    "directions": [
     {

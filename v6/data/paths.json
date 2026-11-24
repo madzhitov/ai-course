@@ -11,7 +11,7 @@
     "4",
     "5"
    ],
-   "note": "для всех ролей; после урока 5 развилка",
+   "note": "для всех ролей; после урока 5 выбор направления",
    "title": "База ИИ",
    "description": "Без этого не работают задания ни одной роли."
   },
@@ -584,19 +584,19 @@
   },
   {
    "id": "industry",
-   "title": "Темы под индустрии",
+   "title": "ИИ под профессию",
    "branchAfter": "common-start"
   },
   {
    "id": "claude",
-   "title": "Claude Deep Dive",
+   "title": "Всё про Claude",
    "branchAfter": "level-2"
   },
   {
    "id": "vibe",
    "title": "Вайб Код Вам Дам",
    "branchAfter": null,
-   "note": "отдельный мир, открыт всем"
+   "note": "отдельный курс, открыт всем"
   }
  ],
  "note_chapters": "Главы уровней, их названия и описания уровней — из макета design/reference/screens/Path.dc.html (04.10.2026)."

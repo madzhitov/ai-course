@@ -6,7 +6,7 @@
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const plural = (n, one, few, many) => { const x = n % 10, y = n % 100; return x === 1 && y !== 11 ? one : x >= 2 && x <= 4 && (y < 12 || y > 14) ? few : many; };
   const track = (n, d) => { try { umTrack(n, d); } catch (_) {} };
-  const ROLE = { ai: 'Для себя', self: 'Для себя', seller: 'Продавцу', marketing: 'Маркетологу', product: 'Продакту', teacher: 'Учителю', student: 'Учиться с ИИ' };
+  const ROLE = { ai: 'Для всех', self: 'Для себя', seller: 'Продавцу', marketing: 'Маркетологу', product: 'Продакту', teacher: 'Учителю', student: 'Учиться с ИИ' };
   const WORKROLES = [['all', 'Все'], ['seller', 'Продавцу'], ['marketing', 'Маркетологу'], ['product', 'Продакту']];
   const ICON = {
     write: '<path d="M5 22 20 7l3 3-15 15H5z" fill="currentColor"/>',

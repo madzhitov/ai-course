@@ -116,3 +116,15 @@ body.v6 .kd-promo{display:flex;align-items:center;justify-content:space-between;
 .kd-promo-t b{font:800 22px/1.15 var(--font-display)}
 .kd-promo-t span{color:#C9D1E6;font-size:15px}
 .kd-promo-go{flex:none;background:#fff;color:var(--accent);border-radius:999px;padding:11px 18px;font-weight:700;font-size:14px}
+
+/* Починки после аудита 24.11 */
+body.v6 .kd-promo .kd-promo-t b{color:#fff}
+@media (max-width:520px){
+  .kd-aud{display:flex;flex-wrap:nowrap;overflow-x:auto;max-width:100%;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .kd-aud::-webkit-scrollbar{display:none}
+  .kd-aud button{flex:none;white-space:nowrap}
+  #kd-first{aspect-ratio:auto}
+  #kd-first .kd-card{aspect-ratio:auto;min-height:420px}
+  #kd-first .kd-t{margin-top:24px}
+}
+.kd-hero>div{min-width:0}
