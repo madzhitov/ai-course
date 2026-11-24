@@ -55,7 +55,7 @@
 .kd-fw a{color:#fff}
 .kd-bb{flex:none;display:flex;flex-wrap:wrap;gap:8px;padding:12px 20px 18px;border-top:1px solid rgba(255,255,255,.18)}
 .kd-bb button,.kd-bb a{font:600 13px/1.2 var(--font-body);border-radius:999px;padding:9px 13px;border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;cursor:pointer;text-decoration:none}
-.kd-bb .is-main{background:#fff;color:var(--accent);border-color:#fff}
+
 .kd-card.is-gap{cursor:default}
 .is-gap .kd-front{background:transparent;border:2px dashed var(--accent-mid,#B9C4DD);box-shadow:none}
 .is-gap .kd-min{color:var(--text-3);font-size:18px;letter-spacing:.04em;text-transform:uppercase}
@@ -99,3 +99,7 @@
 @media (max-width:520px){.kd-verbs{grid-template-columns:1fr;min-height:0}.kd-aud button{padding:7px 10px;font-size:13px}
   .kd-grid{grid-template-columns:1fr 1fr;gap:10px}.kd-grid .kd-face{padding:13px;border-radius:16px}.kd-grid .kd-min{font-size:28px}.kd-grid .kd-t{font-size:16px}.kd-grid .kd-r{font-size:13px;-webkit-line-clamp:4}.kd-grid .kd-chips,.kd-grid .kd-hint{display:none}.kd-grid .kd-foot{justify-content:flex-end}}
 @media (prefers-reduced-motion:reduce){.kd-in,.kd-verb{transition:none}}
+
+/* после общего правила кнопок оборота и ссылок сайта */
+.kd-card .kd-bb a.is-main,.kd-card .kd-bb button.is-main{background:#fff;color:#1F2F5C;border-color:#fff}
+.kd-card .kd-foot a.kd-go{color:var(--accent)}
