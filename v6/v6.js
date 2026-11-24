@@ -1349,7 +1349,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
   function resultDoor(u) {
     const group = D.tasks[u.task].group;
     if (u.autoReport) return `<div class="v6-tdoor"><span>Этот отчёт может приходить сам к утру понедельника.</span><a href="https://birdtold.ru/demo" target="_blank" rel="noopener" onclick="umTrack('bird-door', { from: 'unit-yes', unit: '${e(u.id)}' })">Посмотреть Птичку напела ↗</a></div>`;
-    if (group === 'seller' || group === 'marketing') return `<div class="v6-tdoor"><span>Хотите, чтобы так умел весь отдел?</span><a href="https://t.me/madzhitov" target="_blank" rel="noopener" onclick="umTrack('agency-door', { from: 'unit-yes', unit: '${e(u.id)}' })">Обсудить обучение отдела ↗</a></div>`;
+    if (group === 'seller' || group === 'marketing') return `<div class="v6-tdoor"><span>Хотите, чтобы так умел весь отдел?</span><a href="#companies" onclick="umTrack('agency-door', { from: 'unit-yes', unit: '${e(u.id)}' }); V6.open('companies'); return false;">Как устроено обучение отдела →</a></div>`;
     return '';
   }
   function askAlesha(title, question) {
