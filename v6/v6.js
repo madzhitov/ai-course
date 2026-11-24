@@ -127,10 +127,19 @@
     document.querySelectorAll('.v6h-nav a').forEach((a) => a.classList.toggle('is-active', a.dataset.nav === active));
     closeMenu();
   }
+  // Правило (Руслан, 24.11): вкладки, фильтры и режимы внутри одной страницы не сбрасывают прокрутку.
+  // Наверх — только при переходе на другую страницу. go() решает, та же ли это страница.
+  let keepScroll = false, lastRender = null;
   function shell(html) {
     const el = document.getElementById('lesson-content');
+    const y = window.scrollY, keep = keepScroll;
+    keepScroll = false;
+    // держим высоту, пока содержимое догружается, иначе браузер обрежет прокрутку на короткой заглушке
+    if (keep) el.style.minHeight = el.offsetHeight + 'px';
     el.innerHTML = `<div class="v6-page">${html}</div>`;
-    window.scrollTo({ top: 0 });
+    if (!keep) { el.style.minHeight = ''; window.scrollTo({ top: 0 }); return el; }
+    window.scrollTo({ top: y });
+    requestAnimationFrame(() => requestAnimationFrame(() => { window.scrollTo({ top: y }); el.style.minHeight = ''; }));
     return el;
   }
   function fail(slotId) {
@@ -146,6 +155,7 @@
     const fa = document.activeElement;
     if (fa && fa.closest && fa.closest('.v6h, #v6-menu')) fa.blur();
     history.replaceState(null, '', '#' + hash);
+    keepScroll = render === lastRender; lastRender = render;
     render();
   }
   function toggleMenu() {
