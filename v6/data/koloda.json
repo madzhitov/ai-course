@@ -158,7 +158,14 @@
   "u-study-mistake-log": "find",
   "u-study-catch-ai": "find",
   "u-study-own-essay": "write",
-  "u-study-language-talk": "write"
+  "u-study-language-talk": "write",
+  "u-teacher-lesson-plan": "decide",
+  "u-teacher-worksheet": "write",
+  "u-teacher-slides": "show",
+  "u-teacher-essay-check": "find",
+  "u-teacher-adapt": "write",
+  "u-teacher-prompt-parts": "find",
+  "u-teacher-parents": "write"
  },
  "soon": [
   {
@@ -192,62 +199,6 @@
    "title": "Пересказ видео или документа",
    "result": "Видео до 4 часов, статья или PDF на одну страницу: главное, цифры и что из этого следует для вас.",
    "where": "Яндекс Браузер"
-  },
-  {
-   "id": "gap-t-lesson",
-   "verb": "decide",
-   "group": "teacher",
-   "title": "План урока по теме",
-   "result": "План урока с целями, ходом и заданиями. Факты проверены, данные учеников не нужны.",
-   "where": "ГигаЧат, Алиса AI"
-  },
-  {
-   "id": "gap-t-sheet",
-   "verb": "write",
-   "group": "teacher",
-   "title": "Рабочий лист на три уровня",
-   "result": "Задания по одной теме для сильных, средних и тех, кому нужна поддержка.",
-   "where": "ГигаЧат, Алиса AI"
-  },
-  {
-   "id": "gap-t-slides",
-   "verb": "show",
-   "group": "teacher",
-   "title": "Презентация к уроку",
-   "result": "Структура и тексты слайдов от ИИ, картинки к ним, сборка в сервисе.",
-   "where": "ГигаЧат, Алиса AI"
-  },
-  {
-   "id": "gap-t-check",
-   "verb": "find",
-   "group": "teacher",
-   "title": "Проверка сочинения по критериям",
-   "result": "Замечания по каждому критерию для обезличенной работы. Оценку ставит учитель.",
-   "where": "ГигаЧат, Алиса AI"
-  },
-  {
-   "id": "gap-t-adapt",
-   "verb": "write",
-   "group": "teacher",
-   "title": "Текст под класс или ученика",
-   "result": "Тот же материал проще или подробнее, с сохранением смысла.",
-   "where": "ГигаЧат, Алиса AI"
-  },
-  {
-   "id": "gap-t-prompt",
-   "verb": "delegate",
-   "group": "teacher",
-   "title": "Из чего состоит запрос к ИИ",
-   "result": "Разбор хорошего запроса на части на примере урока и ваш первый запрос по этой схеме.",
-   "where": "любой чат-ИИ"
-  },
-  {
-   "id": "gap-t-parents",
-   "verb": "write",
-   "group": "teacher",
-   "title": "Письмо родителям",
-   "result": "Сообщение о собрании, оценках или поездке: коротко, вежливо, с одной просьбой.",
-   "where": "ГигаЧат, Алиса AI"
   },
   {
    "id": "gap-s-explain",

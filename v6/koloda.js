@@ -77,7 +77,7 @@
     q('kd-lead').textContent = a.lead;
     q('kd-verbs').innerHTML = K.verbs.map((v) => {
       const all = CARDS.filter((c) => c.v === v.id && inAud(c)), ready = all.filter((c) => !c.gap).length, soon = all.length - ready;
-      const n = all.length ? (ready ? ready + (soon ? ` + ${soon}` : '') : `${soon} скоро`) : '—';
+      const n = ready ? `${ready} ${plural(ready, 'задание', 'задания', 'заданий')}` : soon ? 'скоро' : '—';
       return `<button type="button" class="kd-verb" data-kd-verb="${v.id}" aria-pressed="${v.id === verb}"${all.length ? '' : ' disabled'}>${svg(v.id)}<span><b>${esc(v.title)}</b><small>${esc(v.hint)}</small></span><span class="kd-vn">${n}</span></button>`;
     }).join('');
     const f = byId(a.first);
@@ -132,6 +132,9 @@
       return; }
     const wk = t.closest('[data-kd-work]'); if (wk) { ev.stopPropagation(); track('agency-door', { from: 'home-deck' }); V6.open('companies'); return; }
     if (t.closest('a')) return;
+    if (onCat(ev)) return;
+    const ob = t.closest('[data-kd-onb]');
+    if (ob) { const seen = ob.dataset.kdOnb === '1'; document.documentElement.classList.toggle('kd-seen', seen); try { localStorage.setItem('kd-seen', seen ? '1' : '0'); } catch (_) {} track('kd-onb', { seen }); return; }
     const au = t.closest('[data-kd-aud]'); if (au) { aud = au.dataset.kdAud; verb = A().verb; wrole = 'all'; try { localStorage.setItem('kd-aud', aud); } catch (_) {} track('kd-aud', { aud }); render(); return; }
     const vb = t.closest('[data-kd-verb]'); if (vb && !vb.disabled) { verb = vb.dataset.kdVerb; track('kd-verb', { verb, aud }); render(); const d = document.getElementById('kd-deck'); if (d) d.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); return; }
     const wr = t.closest('[data-kd-wrole]'); if (wr) { wrole = wr.dataset.kdWrole; render(); return; }
@@ -142,12 +145,64 @@
   }
   let bound = false;
   // Вызывает home() после загрузки данных: заполняет первый экран и добавляет секции ниже.
+  function onbNumbers(D) {
+    const set = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+    const nu = D.units.filter((u) => Array.isArray(u.steps) && u.steps.length).length;
+    set('kd-n-units', `${nu} ${plural(nu, 'задание', 'задания', 'заданий')}`);
+    try {
+      const nl = [...LESSONS, ...TRACK_LESSONS].filter((l) => l.content).length;
+      if (nl) set('kd-n-lessons', `${nl} ${plural(nl, 'урок', 'урока', 'уроков')}`);
+    } catch (_) {}
+    const nm = (D.paths.trails || []).length; set('kd-n-minis', `${nm} ${plural(nm, 'мини-курс', 'мини-курса', 'мини-курсов')}`);
+    set('kd-n-fw', `${D.fw.length} ${plural(D.fw.length, 'метод', 'метода', 'методов')}`);
+    fetch('v6/data/dictionary.json').then((r) => r.ok ? r.json() : null).then((d) => { if (d && d.terms) set('kd-n-terms', `${d.terms.length} ${plural(d.terms.length, 'термин', 'термина', 'терминов')}`); }).catch(() => {});
+  }
   function mount(D, restBox) {
+    onbNumbers(D);
     build(D);
     if (restBox) restBox.insertAdjacentHTML('afterbegin', rest());
     render();
     services();
     if (!bound) { document.addEventListener('click', onClick); document.addEventListener('keydown', onKey); bound = true; }
   }
-  window.Koloda = { mount };
+  // ---------- Каталог «Решений»: поиск и фильтры «для кого» и «что сделать» (прототип модели 25.11) ----------
+  const CAT = { g: 'all', v: 'all', q: '', soon: false };
+  const pl = (n, a, b, c) => { const x = n % 10, y = n % 100; return x === 1 && y !== 11 ? a : x >= 2 && x <= 4 && (y < 12 || y > 14) ? b : c; };
+  let CAT_GROUPS = [];
+  function catList() {
+    const box = document.getElementById('kd-cat-list'); if (!box) return;
+    const q = CAT.q.trim().toLowerCase();
+    const items = CARDS.filter((c) => (CAT.soon || !c.gap) && (CAT.g === 'all' || c.grp === CAT.g) && (CAT.v === 'all' || c.v === CAT.v) && (!q || (c.t + ' ' + (c.r || '')).toLowerCase().includes(q)))
+      .sort((x, y) => (!!x.gap - !!y.gap) || (!!x.review - !!y.review) || ((x.m || 99) - (y.m || 99)));
+    const ready = items.filter((c) => !c.gap).length;
+    const gname = (id) => (CAT_GROUPS.find((g) => g.id === id) || {}).t || '';
+    document.getElementById('kd-cat-found').textContent = ready ? `Найдено ${ready} ${pl(ready, 'задание', 'задания', 'заданий')}` : 'Ничего не нашлось. Попробуйте другое слово или сбросьте фильтры';
+    box.innerHTML = items.map((c) => c.gap
+      ? `<div class="kd-row is-soon"><b>${esc(c.t)}<span class="kd-tag is-o">${esc(gname(c.grp))}</span></b><span class="kd-row-r">${esc(c.r)}</span><span class="kd-row-m">скоро</span></div>`
+      : `<a class="kd-row" href="#unit-${esc(c.id)}" data-kd-open="${esc(c.id)}"><b>${esc(c.t)}${c.review ? '<span class="kd-tag is-o">черновик</span>' : ''}<span class="kd-tag is-o">${esc(gname(c.grp))}</span></b><span class="kd-row-r">${esc(c.r)}</span><span class="kd-row-m">${c.m}<small>мин</small></span></a>`).join('');
+  }
+  function catChips() {
+    const chip = (k, v, t) => `<button type="button" data-kd-cat="${k}" data-v="${esc(v)}" aria-pressed="${CAT[k] === v}">${esc(t)}</button>`;
+    document.getElementById('kd-cat-g').innerHTML = chip('g', 'all', 'Все') + CAT_GROUPS.map((g) => chip('g', g.id, g.t)).join('');
+    document.getElementById('kd-cat-v').innerHTML = chip('v', 'all', 'Всё') + K.verbs.map((x) => chip('v', x.id, x.title)).join('');
+  }
+  // tasksPage() в v6.js рисует первый экран с поиском (#v6-ask-t) и зовёт catalog().
+  function catalog(D, box, field) {
+    build(D);
+    const ORDER = ['ai', 'self', 'teacher', 'student', 'marketing', 'product', 'seller'];
+    CAT_GROUPS = ORDER.map((id) => D.groups.find((g) => g.id === id)).filter(Boolean).map((g) => ({ id: g.id, t: g.title }));
+    box.innerHTML = `<div class="kd-fl"><span class="kd-fl-l">Для кого</span><div class="kd-chiprow" id="kd-cat-g"></div></div>
+      <div class="kd-fl"><span class="kd-fl-l">Что сделать</span><div class="kd-chiprow" id="kd-cat-v"></div></div>
+      <div class="kd-found"><span id="kd-cat-found"></span><label><input type="checkbox" id="kd-cat-soon"${CAT.soon ? ' checked' : ''}> показать, что скоро</label></div>
+      <div class="kd-rows" id="kd-cat-list"></div>`;
+    catChips(); catList();
+    document.getElementById('kd-cat-soon').onchange = (ev) => { CAT.soon = ev.target.checked; catList(); };
+    if (field) { field.value = CAT.q; field.addEventListener('input', () => { CAT.q = field.value; catList(); }); }
+    if (!bound) { document.addEventListener('click', onClick); document.addEventListener('keydown', onKey); bound = true; }
+  }
+  function onCat(ev) {
+    const b = ev.target.closest('[data-kd-cat]'); if (!b) return false;
+    CAT[b.dataset.kdCat] = b.dataset.v; track('kd-cat', { k: b.dataset.kdCat, v: b.dataset.v }); catChips(); catList(); return true;
+  }
+  window.Koloda = { mount, catalog };
 })();
