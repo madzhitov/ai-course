@@ -128,3 +128,46 @@ body.v6 .kd-promo .kd-promo-t b{color:#fff}
   #kd-first .kd-t{margin-top:24px}
 }
 .kd-hero>div{min-width:0}
+
+/* Онбординг «Как тут всё устроено» (прототип модели 25.11). Свёрнутое состояние — класс kd-seen на <html> из v6-boot */
+.kd-onb{padding-top:24px}
+.kd-onb-h{font:900 clamp(26px,3.6vw,40px)/1.05 var(--font-display);letter-spacing:-.025em;margin:0}
+.kd-onb-lead{color:var(--text-2);margin:10px 0 0;max-width:40em}
+.kd-three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+body.v6 .kd-tile{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:18px 20px;text-decoration:none;color:var(--ink);transition:border-color .15s}
+body.v6 .kd-tile:hover{border-color:var(--accent)}
+.kd-tile-k{font:700 12px/1 var(--font-display);letter-spacing:.1em;text-transform:uppercase;color:var(--text-3)}
+.kd-tile b{font:900 22px/1.1 var(--font-display);letter-spacing:-.02em}
+.kd-tile-p{color:var(--text-2);font-size:15px}
+.kd-tile-n{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:4px}
+.kd-tile-n span{font-size:13px;font-weight:600;border-radius:999px;padding:3px 10px;background:var(--accent-tint);color:var(--accent)}
+.kd-tile-go{font-weight:700;font-size:14px;color:var(--accent)}
+.kd-onb-close{margin-top:12px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;font:500 13px/1.2 var(--font-body);color:var(--text-2);cursor:pointer}
+.kd-onb-band{display:none;flex-wrap:wrap;align-items:center;gap:6px 14px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 16px;font-size:14.5px;color:var(--text-2)}
+.kd-onb-band b{color:var(--ink)}
+body.v6 .kd-onb-band a{color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.kd-onb-band button{margin-left:auto;border:1px solid var(--line);background:var(--ground);border-radius:999px;padding:6px 12px;font:500 13px/1.2 var(--font-body);color:var(--text-2);cursor:pointer}
+html.kd-seen .kd-onb-full{display:none}
+html.kd-seen .kd-onb-band{display:flex}
+@media (max-width:960px){.kd-three{grid-template-columns:1fr}}
+@media (max-width:520px){.kd-three{gap:8px}body.v6 .kd-tile{padding:14px 16px;gap:4px}.kd-tile-p,.kd-tile-k{display:none}.kd-tile b{font-size:20px}}
+
+/* Каталог «Решений» */
+.kd-fl{display:flex;flex-direction:column;gap:8px;margin:0 0 12px}
+.kd-fl-l{font:700 12px/1 var(--font-display);letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.kd-chiprow{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.kd-chiprow::-webkit-scrollbar{display:none}
+.kd-chiprow button{flex:none;white-space:nowrap;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 13px;font:500 14px/1.2 var(--font-body);color:var(--ink);cursor:pointer}
+.kd-chiprow button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.kd-found{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:16px 0 10px;color:var(--text-2);font-size:14.5px}
+.kd-found label{display:flex;gap:8px;align-items:center;cursor:pointer}
+.kd-rows{display:grid;gap:8px}
+body.v6 .kd-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;text-decoration:none;color:var(--ink)}
+body.v6 a.kd-row:hover{border-color:var(--accent-mid,#B9C4DD)}
+.kd-row b{font-weight:600}
+.kd-row-r{grid-column:1/2;color:var(--text-2);font-size:14px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.kd-row-m{grid-row:1/3;grid-column:2;text-align:right;font:800 18px/1 var(--font-display);color:var(--accent);font-variant-numeric:tabular-nums;white-space:nowrap}
+.kd-row-m small{display:block;font:500 12px/1.4 var(--font-body);color:var(--text-3)}
+.kd-row.is-soon{opacity:.6;border-style:dashed}
+.kd-tag{display:inline-block;font-size:11.5px;font-weight:600;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:2px}
+.kd-tag.is-o{border:1px solid var(--line);color:var(--text-3)}

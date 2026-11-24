@@ -479,6 +479,52 @@
       {
        "id": "teacher.lesson.test",
        "title": "Составить тест с ключом по теме урока"
+      },
+      {
+       "id": "teacher.lesson.plan",
+       "title": "Составить план урока по теме"
+      },
+      {
+       "id": "teacher.lesson.worksheet",
+       "title": "Сделать рабочий лист на три уровня"
+      },
+      {
+       "id": "teacher.lesson.slides",
+       "title": "Сделать презентацию к уроку"
+      },
+      {
+       "id": "teacher.lesson.adapt",
+       "title": "Упростить или расширить текст под класс"
+      }
+     ]
+    },
+    {
+     "id": "teacher.check",
+     "title": "Проверка",
+     "tasks": [
+      {
+       "id": "teacher.check.essay",
+       "title": "Проверить сочинение по критериям"
+      }
+     ]
+    },
+    {
+     "id": "teacher.communication",
+     "title": "Родители",
+     "tasks": [
+      {
+       "id": "teacher.communication.parents",
+       "title": "Написать сообщение родителям"
+      }
+     ]
+    },
+    {
+     "id": "teacher.ai",
+     "title": "Разобраться в ИИ",
+     "tasks": [
+      {
+       "id": "teacher.ai.prompt",
+       "title": "Понять, из чего состоит хороший запрос к ИИ"
       }
      ]
     }

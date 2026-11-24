@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Рабочий лист на три уровня — Артефакты</title>
+<meta name="description" content="Рабочий лист по одной теме в трёх вариантах: с образцом решения, как в учебнике и на применение. По 4–5 заданий в каждом, примерно на 15 минут, ключ ко всем.… По шагам, промпт внутри, около 25 минут.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Рабочий лист на три уровня">
+<meta property="og:description" content="Рабочий лист по одной теме в трёх вариантах: с образцом решения, как в учебнике и на применение. По 4–5 заданий в каждом, примерно на 15 минут, ключ ко всем.… По шагам, промпт внутри, около 25 минут.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png?v=27898e84">
+<meta property="og:url" content="https://ai.madzhitov.ru/zadaniya/u-teacher-worksheet.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/zadaniya/u-teacher-worksheet.html">
+<link rel="preload" href="../v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../v6/fonts/fonts.css?v=0e1f3d7b">
+<link rel="stylesheet" href="../tropa-lesson.css?v=889f3ed1">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+  .st-calc-res { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap:10px; }
+  .st-calc-r { background:#F3F4F7; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); }
+  .st-calc-r b { font-size:24px; line-height:1.15; font-weight:800; color:#16161A; }
+  .st-calc-r.is-main b { font-size:36px; }
+  .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
+  .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Рабочий лист на три уровня","description":"Рабочий лист по одной теме в трёх вариантах: с образцом решения, как в учебнике и на применение. По 4–5 заданий в каждом, примерно на 15 минут, ключ ко всем.… По шагам, промпт внутри, около 25 минут.","url":"https://ai.madzhitov.ru/zadaniya/u-teacher-worksheet.html","inLanguage":"ru","totalTime":"PT25M","tool":[{"@type":"HowToTool","name":"ГигаЧат"},{"@type":"HowToTool","name":"Алиса AI"},{"@type":"HowToTool","name":"любой чат-ИИ"}],"step":[{"@type":"HowToStep","position":1,"name":"Опишите три уровня","text":"Пока без ИИ. Что делает ученик на каждом уровне. Разница должна быть в сложности, а не в количестве заданий."},{"@type":"HowToStep","position":2,"name":"Соберите лист по своему материалу","text":"Отправьте промпт вместе с параграфом и образцом задания. Делить класс по уровням вы будете сами, в чат фамилии не нужны. Имена учеников, оценки, характеристики и их работы в чат не вставляйте: Минпросвещения не рекомендует загружать данные об учениках в ИИ-сервисы."},{"@type":"HowToStep","position":3,"name":"Решите по заданию из каждого варианта","text":"Без ИИ. Модель ошибается в ключах, а вариант В у неё часто выходит не сложнее варианта Б. Решите по одному заданию каждого уровня и сравните с ключом."},{"@type":"HowToStep","position":4,"name":"Попросите модель проверить лестницу","text":"В том же чате. Просите искать проблемы, а не оценивать лист в целом."},{"@type":"HowToStep","position":5,"name":"Проверьте перед печатью","text":"Лист раздаёте вы. Пройдитесь по списку."}],"dateModified":"2026-11-25"}</script>
+<link rel="stylesheet" href="../v6/static.css?v=4d1de0fc">
+<script defer src="../v6/static.js?v=e97e63c9"></script>
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../zadaniya/">Задания по шагам</a></div>
+    <h1>Рабочий лист на три уровня</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-11-25">25.11.2026</time></p>
+    <p class="lead">Рабочий лист по одной теме в трёх вариантах: с образцом решения, как в учебнике и на применение. По 4–5 заданий в каждом, примерно на 15 минут, ключ ко всем. Задания по вашему материалу</p>
+    <p class="st-meta">около 25 мин · с нуля · без VPN · задача «Сделать рабочий лист на три уровня»</p>
+    <p class="st-meta">Черновик на согласовании: текст может уточняться.</p>
+    
+    <h2>Чем делать</h2><p>ГигаЧат, Алиса AI, любой чат-ИИ</p>
+    <h2>Что подготовить</h2><ul class="st-list"><li>Тема и класс</li><li>Параграф учебника или свой конспект по теме</li><li>Одно-два задания из учебника как образец уровня</li></ul>
+    <p><a class="st-primary" href="../#unit-u-teacher-worksheet">Делать по шагам</a></p>
+    <h2>Шаги</h2>
+    <h3>1. Опишите три уровня</h3><p>Пока без ИИ. Что делает ученик на каждом уровне. Разница должна быть в сложности, а не в количестве заданий.</p>
+    <h3>2. Соберите лист по своему материалу</h3><p>Отправьте промпт вместе с параграфом и образцом задания. Делить класс по уровням вы будете сами, в чат фамилии не нужны. Имена учеников, оценки, характеристики и их работы в чат не вставляйте: Минпросвещения не рекомендует загружать данные об учениках в ИИ-сервисы.</p><div class="st-copy"><button type="button" data-copy="prompt-1" aria-label="Скопировать промпт: Соберите лист по своему материалу">Скопировать</button><pre class="st-prompt" id="prompt-1">Ты помогаешь учителю составить рабочий лист для урока.
+Класс, предмет, тема и уровни: [три уровня].
+Материал урока:
+[вставьте параграф или конспект]
+Образец задания из учебника:
+[вставьте одно-два задания]
+
+Составь рабочий лист в трёх вариантах, по 4–5 заданий в каждом.
+- Вариант А: первое задание с разобранным образцом, дальше такие же, с подсказкой к первому шагу.
+- Вариант Б: задания как в учебнике, без подсказок.
+- Вариант В: применить правило в новой ситуации или объяснить своё решение.
+- Все варианты на одну тему и примерно на 15 минут работы.
+- Формулировки короткие, под возраст. На листе только «Вариант А», «Б», «В», без слов «слабый» и «сильный».
+В конце ключ ко всем заданиям. Правила и факты бери только из материала. Если материала не хватает, скажи об этом, а не придумывай.</pre></div>
+    <h3>3. Решите по заданию из каждого варианта</h3><p>Без ИИ. Модель ошибается в ключах, а вариант В у неё часто выходит не сложнее варианта Б. Решите по одному заданию каждого уровня и сравните с ключом.</p>
+    <h3>4. Попросите модель проверить лестницу</h3><p>В том же чате. Просите искать проблемы, а не оценивать лист в целом.</p><div class="st-copy"><button type="button" data-copy="prompt-3" aria-label="Скопировать промпт: Попросите модель проверить лестницу">Скопировать</button><pre class="st-prompt" id="prompt-3">Проверь свой рабочий лист как строгий методист.
+1) Правда ли каждый следующий вариант сложнее предыдущего? Где нет, покажи.
+2) Есть ли задание, которое не решается по данному материалу?
+3) Верен ли ключ к каждому заданию?
+Выпиши только задания с проблемами и предложи замену. Если проблем нет, так и скажи.</pre></div>
+    <h3>5. Проверьте перед печатью</h3><p>Лист раздаёте вы. Пройдитесь по списку.</p><ul class="st-list"><li>Вы решили по заданию из каждого варианта, ответы совпали с ключом</li><li>Варианты отличаются сложностью, а не числом заданий</li><li>На листе нет слов «слабый» и «сильный»</li><li>В чат не попали имена, оценки и работы учеников</li></ul>
+    <h2>Если получилось почти</h2><ul class="st-list"><li>Вариант В — те же задания, только длиннее. Попросите: «в варианте В ученик применяет правило в новой ситуации или объясняет его, а не делает больше того же»</li><li>Образец в варианте А решает всё за ученика. Попросите: «образец только для первого задания, дальше подсказка к первому шагу, а не решение»</li><li>В задании правило, которого нет в учебнике. Уберите задание или замените формулировкой из учебника</li></ul>
+    
+    <h2>Опирается на методы</h2><p>Задача с критериями приёмки, <a href="../metody/four-part-request.html">Запрос из четырёх частей</a>, Проверка ответа ИИ</p>
+    
+    <section class="st-related"><h2>Продолжить</h2><ul><li><a href="../zadaniya/u-ai-answer-check.html">Проверка ответа ИИ</a> · 25 мин</li></ul><p><a href="https://t.me/artefakty_ai" target="_blank" rel="noopener">Новые решения и разборы в канале Артефактов</a></p></section>
+    <div class="pp-open"><a href="../#unit-u-teacher-worksheet">Пройти с отметками шагов и записью в тетрадь →</a></div>
+  </div>
+</main>
+</body>
+</html>
