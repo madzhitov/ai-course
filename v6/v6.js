@@ -116,6 +116,7 @@
     if (!cards.length) return '';
     return `<section class="v6-sec"><div class="v6-sec-head is-split"><h2 class="v6-h2">${title || 'Методы роли'}</h2><a class="v6-more" href="#knowledge" onclick="V6.openKnowledge('${AI_ROLES.includes(rid) ? 'all' : rid}'); return false;">Все методы роли · ${cards.length} →</a></div>${fwGrid(cards.slice(0, 4), 'role')}</section>`;
   }
+  const pn = (n, a, b, c) => n + ' ' + plural(n, a, b, c);
   const plural = (n, a, b, c) => { const x = n % 10, y = n % 100; return x === 1 && y !== 11 ? a : x >= 2 && x <= 4 && (y < 12 || y > 14) ? b : c; };
   const RES_KIND = { template: 'шаблон', checklist: 'чек-лист', calculator: 'калькулятор', tool: 'инструмент', 'prompt-set': 'промпты' };
   const STEP_KIND = { unit: 'задание', framework: 'метод', page: 'страница' };
@@ -168,9 +169,9 @@
     f.innerHTML = `<div class="v6f-in">
         <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 895 740" class="v6f-mark" aria-hidden="true" focusable="false"><g transform="translate(0 700) scale(1 -1)" fill="currentColor"><path d="M7.2 0 L319.3 700 L479.5 700 L792.1 0 L622.9 0 L366.1 617.6 L430.4 617.6 L173.6 0 Z"/><path d="M163.9 149.8 L206.4 272.7 L855 272.7 L800 149.8 Z"/></g></svg>
 <div class="v6f-word">Артефакты,<br>а не сертификаты.</div></div>
-        <div><p class="v6f-h">Платформа</p><ul>${a("V6.open('roles')", 'Роли')}${a("V6.open('tasks')", 'Решения')}${a("V6.open('paths')", 'Обучение')}${a("V6.open('knowledge')", 'Знания')}${a("V6.ktab('tools')", 'Инструменты')}</ul></div>
+        <div><p class="v6f-h">Платформа</p><ul>${a("V6.open('tasks')", 'Решения')}${a("V6.open('paths')", 'Обучение')}${a("V6.open('knowledge')", 'Знания')}${a("V6.ktab('tools')", 'Инструменты')}</ul></div>
         <div><p class="v6f-h">О проекте</p><ul>${a("openStaticPage('about')", 'Что это')}${a("openStaticPage('howto')", 'Как заниматься')}${a("openStaticPage('changelog')", 'Что нового')}${a("openStaticPage('resources')", 'Источники')}</ul></div>
-        <div><p class="v6f-h">Помощь</p><ul>${a("openStaticPage('faq')", 'FAQ')}${a('V6.openDict()', 'Словарь')}<li><a href="/tools/neyroseti-bez-vpn/">Нейросети без VPN</a></li></ul></div>
+        <div><p class="v6f-h">Помощь</p><ul>${a("openStaticPage('faq')", 'Частые вопросы')}${a('V6.openDict()', 'Словарь')}<li><a href="/tools/neyroseti-bez-vpn/">Нейросети без VPN</a></li></ul></div>
       </div>
       <div class="v6f-bottom"><span>Собирает <a href="https://madzhitov.ru" target="_blank" rel="noopener">Руслан Маджитов</a> · <a href="https://t.me/artefakty_ai" target="_blank" rel="noopener" onclick="umTrack('tg-click', { from: 'footer' })">@artefakty_ai</a></span>
       <a href="#companies" onclick="V6.open('companies'); return false;">Для бизнеса →</a></div>`;
@@ -431,7 +432,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
         <div class="v6-who2-l">${rows}</div></article>`;
     }).join('');
     return `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Больше задач по вашей роли</h2><p>Для себя, продукта и проекта — тоже есть готовые задания. А если хотите собрать бота или приложение, начните с обучения.</p></div>
-      <div class="v6-who2">${cards}</div><p class="v6-how-f"><button class="v6-link" onclick="V6.open('roles')">Все роли и обучение →</button></p></section>`;
+      <div class="v6-who2">${cards}</div><p class="v6-how-f"><button class="v6-link" onclick="V6.open('tasks')">Все решения</button></p></section>`;
   }
 
   // ---------- главная v2, этап 3: «Больше, чем задача» и «Кто это собирает» (тексты из CONTENT.md ТЗ) ----------
@@ -461,13 +462,13 @@ ${rv.trim() || '[вставьте отзывы]'}`;
     const big = (img, label, title, text, on) => `<a class="v6-learn-c" href="#" onclick="${on}; return false;"><span class="v6-learn-img"><img src="${artSrc(img)}" alt="" loading="lazy"></span><span class="v6-learn-b"><span class="v6-meta">${label}</span><b>${title}</b><span>${text}</span><span class="v6-learn-go">Идти →</span></span></a>`;
     const trails = (D.paths.trails || []).map((t) => `<a href="#section-${e(t.id)}" onclick="openSection('${e(t.id)}'); return false;">${e(t.title)}</a>`).join('');
     return `<section class="v6-sec"><div class="v6-sec-head"><div><span class="v6-eyebrow">Обучение</span><h2 class="v6-h2" style="margin-top:16px !important">Когда захочется глубже</h2></div><p>Задачи дают результат сегодня. Уроки и пути дают навык: от первых промптов до своих приложений на ИИ. Каждый уровень замыкается Вехой, вещью, которую вы собрали сами.</p></div>
-      <div class="v6-learn-facts"><span><b>${nLessons}</b> ${pluralUrok(nLessons)} с практикой</span><span><b>${nTrails}</b> ${plural(nTrails, 'тропинка', 'тропинки', 'тропинок')} по интересам</span><span><b>Алёша</b> объяснит урок на вашем примере</span>
+      <div class="v6-learn-facts"><span><b>${nLessons}</b> ${pluralUrok(nLessons)} с практикой</span><span><b>${nTrails}</b> ${plural(nTrails, 'мини-курс', 'мини-курса', 'мини-курсов')} по интересам</span><span><b>Алёша</b> объяснит урок на вашем примере</span>
         <span class="v6-btns"><button class="v6b is-accent" onclick="openLesson(1)">Начать с урока 1</button><button class="v6b is-soft" onclick="V6.ktab('lessons')">Все уроки</button></span></div>
       <div class="v6-learn">
         ${big('main-path', 'Для всех', e(D.paths.main.title), 'Начинается с общей базы ИИ: пять уроков. Дальше четыре уровня, от пользователя до инженера.', "V6.openMainPath('home')")}
         ${big('seller-path', 'Продаю онлайн', 'От селлера к бренду', 'Паспорт товара, своя база, P&amp;L магазина. Три этапа, три Вехи.', "V6.openSellerPath('home')")}
       </div>
-      ${trails ? `<p class="v6-roleline" style="margin-top:20px"><span>Тропинки рядом с путём:</span>${trails}</p>` : ''}</section>`;
+      ${trails ? `<p class="v6-roleline" style="margin-top:20px"><span>Мини-курсы рядом с путём:</span>${trails}</p>` : ''}</section>`;
   }
   function methodsBlock2() {
     const n = D.fw.length;
@@ -526,18 +527,18 @@ ${rv.trim() || '[вставьте отзывы]'}`;
         strip = bar(st === 'E' ? `Вас не было ${awayWeeks} ${awayWeeks === 1 ? 'неделю' : awayWeeks < 5 ? 'недели' : 'недель'} · где вы остановились` : 'С возвращением · где вы остановились', e(resumeLabel(r)),
           `<button class="v6b is-accent is-sm" onclick="openLesson(${lArg})">Продолжить урок</button>`);
       } else if (st === 'C') {
-        strip = bar('Общий старт пройден · уроки 1–5', 'Куда дальше? Дорогу можно сменить в любой момент',
+        strip = bar('Основы пройдены · уроки 1–5', 'Куда дальше? Дорогу можно сменить в любой момент',
           `<button class="v6b is-accent is-sm" onclick="V6.fork('creator')">Создаю на ИИ</button><button class="v6b is-soft is-sm" onclick="V6.fork('seller')">Продаю онлайн</button><button class="v6b is-soft is-sm" onclick="V6.fork('other')">Другая роль</button>`);
       } else if (st === 'D') {
         const rr = role(ls.get(KEY.role)) || role('creator');
         if (rr.id === 'seller') {
           const t = nextSellerTask();
-          strip = t ? bar(`Ваша роль: ${e(rr.title)} · следующая задача${taskMins(t.id) ? ' · ' + taskMins(t.id) : ''}`, e(t.title), `<button class="v6b is-accent is-sm" onclick="V6.openTask('${e(t.id)}','home')">Начать</button><button class="v6b is-soft is-sm" onclick="V6.open('roles')">Сменить роль</button>`)
+          strip = t ? bar(`Ваша роль: ${e(rr.title)} · следующая задача${taskMins(t.id) ? ' · ' + taskMins(t.id) : ''}`, e(t.title), `<button class="v6b is-accent is-sm" onclick="V6.openTask('${e(t.id)}','home')">Начать</button><button class="v6b is-soft is-sm" onclick="V6.open('roles')">Все решения</button>`)
             : bar(`Ваша роль: ${e(rr.title)}`, 'Все готовые задачи роли сделаны', `<button class="v6b is-soft is-sm" onclick="V6.open('notebook')">Тетрадь</button>`);
         } else {
           const nl = byNoCode(rr.lessons || []).map(lessonOf).find((l) => l && l.content && !done(l.id));
-          strip = nl ? bar(`Ваша роль: ${e(rr.title)} · следующий шаг`, e(resumeLabel(nl)), `<button class="v6b is-accent is-sm" onclick="openLesson(${lessonArg(nl.id)})">Начать</button><button class="v6b is-soft is-sm" onclick="V6.open('roles')">Сменить роль</button>`)
-            : bar(`Ваша роль: ${e(rr.title)}`, 'Готовые уроки роли пройдены', `<button class="v6b is-soft is-sm" onclick="V6.open('roles')">Другие роли</button>`);
+          strip = nl ? bar(`Ваша роль: ${e(rr.title)} · следующий шаг`, e(resumeLabel(nl)), `<button class="v6b is-accent is-sm" onclick="openLesson(${lessonArg(nl.id)})">Начать</button><button class="v6b is-soft is-sm" onclick="V6.open('roles')">Все решения</button>`)
+            : bar(`Ваша роль: ${e(rr.title)}`, 'Готовые уроки роли пройдены', `<button class="v6b is-soft is-sm" onclick="V6.open('tasks')">Все решения</button>`);
         }
       }
       const box = (id) => document.getElementById(id);
@@ -612,7 +613,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
           const roleReady = D.units.filter((u) => hasSteps(u) && !u.review && roleGroups.includes(D.tasks[u.task].group) && (r.id !== 'project' || /prioritize|manage/.test(D.tasks[u.task].direction.id)));
           const taskBlock = roleReady.length ? `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Готовые задания</h2><p>Готово ${roleReady.length} ${plural(roleReady.length, 'задание', 'задания', 'заданий')}, начать можно сразу. Остальные допишем.</p></div></div><div class="v6-dir">${roleReady.map((u, i) => `${D.tasks[u.task].group === 'ai' && (i === 0 || D.tasks[roleReady[i - 1].task].group !== 'ai') ? '<h3>ИИ-практика</h3>' : ''}<a class="v6-dr" href="#unit-${e(u.id)}" onclick="V6.openUnit('${e(u.id)}','role'); return false;"><span>${unitState(u.id).result === 'yes' ? '✓ ' : ''}${e(u.title)}</span><span class="m">${u.minutes} мин</span></a>`).join('')}</div></section>` : '';
           body = `<div class="v6-role-hero"><div><span class="v6t ${r.state === 'growing' ? 'is-grey' : ''}">${roleReady.length ? 'Готовые задания' : r.state === 'growing' ? 'Роль растёт' : 'Роль'}</span><h1 class="v6-d" style="margin-top:20px !important">${e(r.title)}</h1>
-              <p class="v6-lead">${e(r.description)}.</p>${pick}</div>${ART_WEBP.has('role-' + r.id) ? art('role-' + r.id, 'v6-phero-art') : '<div class="v6-ph" aria-hidden="true">[3D: объект роли]</div>'}</div>
+              <p class="v6-lead">${e(r.description)}.</p>${pick}</div>${ART_WEBP.has('role-' + r.id) ? art('role-' + r.id, 'v6-phero-art') : ''}</div>
             ${taskBlock}
             ${r.state === 'growing' && !roleReady.length ? `<section class="v6-sec" style="margin-top:56px"><div class="v6-card"><h2 class="v6-h3">Что уже есть и что будет</h2><p class="v6-lead" style="font-size:18px">Сейчас для этой роли ${ready.length} ${pluralUrok(ready.length)}${routes.length ? ` и ${routes.length === 1 ? 'готовый маршрут' : 'готовые маршруты'}` : ''}. Задачи и короткие задания появятся — роль растёт.</p></div></section>` : ''}
             ${routes.length ? `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Готовые маршруты</h2></div><div class="v6-grid2">${routes.map((x) => `<div class="v6-task"><h3>${e(stripEmoji(x.title))}</h3><p>${e(x.description || '')}</p><span class="v6-meta">${e(x.meta || '')}</span><button class="v6b is-soft is-sm" onclick="${x.lessons && x.lessons.length ? `openLesson(${lessonArg(x.lessons[0])})` : `openSection('${e(x.section || 'main')}')`}">Начать маршрут</button></div>`).join('')}</div></section>` : ''}
@@ -645,9 +646,9 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       const secs = others.concat([seller]);
       const secNav = `<nav class="kd-tsecs" aria-label="Разделы решений">${secs.map((g) => `<a href="#tasks" onclick="document.getElementById('tg-${e(g.id)}').scrollIntoView({ behavior: 'smooth' }); return false;">${e(SHORT[g.id] || g.title)}<small>${readyN(g)}</small></a>`).join('')}</nav>
         <a class="kd-promo" href="#home" onclick="V6.open('home'); setTimeout(() => { const d = document.getElementById('kd-deck'); if (d) d.scrollIntoView({ behavior: 'smooth' }); }, 150); return false;"><span class="kd-promo-t"><b>Колода решений</b><span>Те же решения по действиям: написать, посчитать, показать. Выберите, для кого, и вытяните карту.</span></span><span class="kd-promo-go">Открыть колоду →</span></a>`;
-      document.getElementById('v6-tasks').innerHTML = `<div class="v6-sechero"><div><h1 class="v6-d">Решения с ИИ</h1><p class="v6-lead">Выберите свою задачу. Здесь собраны способы получить результат по шагам: на ваших данных, с промптом и проверкой.</p>${askForm('v6-ask-t')}</div>${art('icon-zadachi', 'v6-icon-art')}</div>
+      document.getElementById('v6-tasks').innerHTML = `<div class="v6-sechero"><div><h1 class="v6-d">Решения с ИИ</h1><p class="v6-lead">Выберите свою задачу. Здесь задания по шагам: на ваших данных, с готовым запросом для ИИ и проверкой результата.</p>${askForm('v6-ask-t')}</div>${art('icon-zadachi', 'v6-icon-art')}</div>
         ${secNav}
-        ${others.map((g) => `<section class="v6-sec" id="tg-${e(g.id)}"><div class="v6-sec-head"><div><h2 class="v6-h2">${e(g.title)}</h2><p>${(g.directions || []).some((d) => (d.tasks || []).some((t) => taskReady(t.id))) ? 'Готовые задачи кликабельны, будущие помечены «скоро».' : 'Задачи разложены, способы решения появятся.'}</p></div></div><div class="v6-dirs">${g.directions.map((d) => `<div class="v6-dir"><h3>${e(d.title)}</h3>${(d.tasks || [{ title: 'Задачи направления' }]).map((t) => (t.id && taskReady(t.id)) ? `<a class="v6-dr" href="#" onclick="V6.openTask('${e(t.id)}','role'); return false;"><span>${taskDone(t.id) ? '✓ ' : ''}${e(t.title)}</span><span class="m">${taskMins(t.id)}</span></a>` : `<span class="v6-dr is-soon"><span>${e(t.title)}</span><span class="m">скоро</span></span>`).join('')}</div>`).join('')}</div></section>`).join('')}
+        ${others.map((g) => `<section class="v6-sec" id="tg-${e(g.id)}"><div class="v6-sec-head"><div><h2 class="v6-h2">${e(g.title)}</h2></div></div><div class="v6-dirs">${g.directions.map((d) => `<div class="v6-dir"><h3>${e(d.title)}</h3>${(d.tasks || [{ title: 'Задачи направления' }]).map((t) => (t.id && taskReady(t.id)) ? `<a class="v6-dr" href="#" onclick="V6.openTask('${e(t.id)}','role'); return false;"><span>${taskDone(t.id) ? '✓ ' : ''}${e(t.title)}</span><span class="m">${taskMins(t.id)}</span></a>` : `<span class="v6-dr is-soon"><span>${e(t.title)}</span><span class="m">скоро</span></span>`).join('')}</div>`).join('')}</div></section>`).join('')}
         <section class="v6-sec" id="tg-seller"><div class="v6-sec-head"><h2 class="v6-h2">${e(seller.title)}</h2></div>${mapBlock().replace(/^<section class="v6-sec">/, '<div>').replace(/<\/section>$/, '</div>')}</section>`;
       const search = new URLSearchParams(location.search);
       const field = document.getElementById('v6-ask-t');
@@ -690,7 +691,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
           <section class="v6-tsec v6-tbottom"><div class="v6-tmain">${needs.length ? `<div class="v6-needs"><h3>Что понадобится</h3>${needs.map((n) => `<div><span class="v6-needs-dot"></span>${e(n)}</div>`).join('')}</div>` : ''}</div>
             <aside class="v6-side"><button class="v6-note" onclick="umTrack('alyosha-open', { from: 'task' }); aleshaToggle()"><span class="v6-ava">А</span><span>Застряли или не знаете, с чего начать? Спросите, подскажу.</span></button>
               ${neigh.length ? `<div class="v6-neigh"><span class="v6-meta">Соседние задачи</span>${neigh.map((x) => x.status === 'soon' ? `<span class="v6-neigh-i is-soon"><span>${e(x.title)}</span><span class="m">скоро</span></span>` : `<a class="v6-neigh-i" href="#" onclick="V6.openTask('${e(x.id)}','task'); return false;"><span>${e(x.title)}</span><span class="m">${taskMins(x.id) || (taskReady(x.id) ? '' : 'скоро')}</span></a>`).join('')}</div>` : ''}
-              ${door ? `<div class="v6-tdoor"><span>${e(door)}</span><a href="#companies" onclick="umTrack('agency-door', { from: 'task' }); V6.open(\'companies\'); return false;">Узнать →</a></div>` : ''}
+              ${door ? `<div class="v6-tdoor"><span>${e(door)}</span><a href="#companies" onclick="umTrack('agency-door', { from: 'task' }); V6.open(\'companies\'); return false;">Как обучить команду</a></div>` : ''}
             </aside></section>`;
       }).catch(() => fail('v6-task'));
     }, 'tasks');
@@ -712,12 +713,12 @@ ${rv.trim() || '[вставьте отзывы]'}`;
         <span class="v6-tags">${o.chips.map((c, i) => `<span class="v6t${i || !o.accentFirst ? ' is-grey' : ''}">${e(c)}</span>`).join('')}</span><span class="v6-pathc-go">Открыть путь ${CHEV}</span></span></a>`;
       document.getElementById('v6-paths').innerHTML = `<section class="v6-phero"><div class="v6-phero-text"><span class="v6-eyebrow">Обучение · пути</span><h1 class="v6-d">Всё, что идёт по порядку</h1><p class="v6-phero-lead">Путь — порядок шагов к результату. Главный ведёт к своим ИИ-приложениям, пути ролей — к результату в работе. Выберите тот, что про вас; пройденное засчитывается везде.</p></div>${art('paths-hero', 'v6-phero-art')}</section>
         <section class="v6-psec"><div class="v6-pathgrid">
-          ${card({ hash: 'path-main', on: "V6.openMainPath('paths')", art: 'main-path', label: 'Для всех', title: m.title, text: `Общий старт из ${m.commonStart.lessons.length} уроков и уровни: от первых промптов к своим приложениям.`, chips: [started ? (typeof r.id === 'number' ? 'вы на уроке ' + r.id : 'начат') : 'с нуля', `${m.levels.length} ${plural(m.levels.length, 'уровень', 'уровня', 'уровней')}`, `${m.levels.filter((l) => l.milestone).length} Вехи`], accentFirst: started, mine: mine === 'creator' })}
-          ${card({ hash: 'path-seller', on: "V6.openSellerPath('paths')", art: 'seller-path', label: 'Продаю онлайн', title: sp.title, text: `Три этапа по деньгам: ${sp.stages.map((x) => x.promise).join(', ')}.`, chips: [`${sp.stages.length} этапа`, `${sp.stages.filter((x) => x.milestone).length} Вехи`, `${D.resources.length} полезных вещей`], mine: mine === 'seller' })}
-          ${[[pp, 'V6.openProductPath', mine === 'product' || mine === 'project'], [mp, 'V6.openMarketingPath', mine === 'marketing']].map(([x, fn, isMine]) => card({ hash: 'path-' + x.key, on: `${fn}('paths')`, art: x.art, label: x.label, title: x.title, text: `${x.stages.map((s_, i) => i ? s_.title.toLowerCase() : s_.title).join(', ')}. Задачи и методы уже видны.`, chips: ['скоро', `${x.stages.length} ${plural(x.stages.length, 'этап', 'этапа', 'этапов')}`, `${x.fwCount} методов`], accentFirst: true, mine: isMine })).join('')}
+          ${card({ hash: 'path-main', on: "V6.openMainPath('paths')", art: 'main-path', label: 'Для всех', title: m.title, text: `Основы из ${m.commonStart.lessons.length} уроков и уровни: от первых промптов к своим приложениям.`, chips: [started ? (typeof r.id === 'number' ? 'вы на уроке ' + r.id : 'начат') : 'с нуля', `${m.levels.length} ${plural(m.levels.length, 'уровень', 'уровня', 'уровней')}`, pn(m.levels.filter((l) => l.milestone).length, 'Веха', 'Вехи', 'Вех')], accentFirst: started, mine: mine === 'creator' })}
+          ${card({ hash: 'path-seller', on: "V6.openSellerPath('paths')", art: 'seller-path', label: 'Продаю онлайн', title: sp.title, text: `Три этапа по деньгам: ${sp.stages.map((x) => x.promise).join(', ')}.`, chips: [pn(sp.stages.length, 'этап', 'этапа', 'этапов'), pn(sp.stages.filter((x) => x.milestone).length, 'Веха', 'Вехи', 'Вех'), pn(D.resources.length, 'полезная вещь', 'полезные вещи', 'полезных вещей')], mine: mine === 'seller' })}
+          ${[[pp, 'V6.openProductPath', mine === 'product' || mine === 'project'], [mp, 'V6.openMarketingPath', mine === 'marketing']].map(([x, fn, isMine]) => card({ hash: 'path-' + x.key, on: `${fn}('paths')`, art: x.art, label: x.label, title: x.title, text: `${x.stages.map((s_, i) => i ? s_.title.toLowerCase() : s_.title).join(', ')}. Задачи и методы уже видны.`, chips: ['скоро', `${x.stages.length} ${plural(x.stages.length, 'этап', 'этапа', 'этапов')}`, pn(x.fwCount, 'метод', 'метода', 'методов')], accentFirst: true, mine: isMine })).join('')}
         </div></section>
         <section class="v6-psec"><a class="v6-next v6-dark" href="#brand-stages" onclick="V6.open('brand-stages'); return false;"><span class="v6-next-in"><span class="v6-next-l">Стадии бренда · диагностика за 3 минуты</span><span class="v6-next-t">На какой стадии ваш бренд и что делать первым</span></span>${CHEV}</a></section>
-        <section class="v6-psec"><div class="v6-sec-head"><h2 class="v6-psec-h">Тропинки</h2><p>Короткие ветки рядом с путями. Пройденное засчитывается и в пути, и в роли.</p></div>
+        <section class="v6-psec"><div class="v6-sec-head"><h2 class="v6-psec-h">Мини-курсы</h2><p>Короткие ветки рядом с путями. Пройденное засчитывается и в пути, и в роли.</p></div>
           <div class="v6-trails">${D.paths.trails.map((t) => `<a class="v6-trail" href="#" onclick="openSection('${e(t.id)}'); return false;">${art(trailArt[t.id] || 'trail-projects')}<span class="v6-trail-in"><span class="v6-trail-w">${t.branchAfter ? trailWhere[t.branchAfter] || '' : 'отдельный мир · открыт всем'}</span><span class="v6-trail-t">${e(t.title)}</span></span></a>`).join('')}</div></section>`;
     }).catch(() => fail('v6-paths'));
   }
@@ -753,7 +754,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
         const node = (k, title, meta, ids, key) => { const s = st(ids), tr = br(key);
           return `<li class="v6-rail-n ${s}"><span class="v6-rail-d" aria-hidden="true">${s === 'is-done' ? '✓' : ''}</span><span class="v6-meta">${k}${s === 'is-now' ? ' · вы здесь' : ''}</span><b>${e(title)}</b><span class="v6-rail-m">${meta}</span>${tr.length ? `<span class="v6-rail-br">тропинки: ${tr.map(tl).join(', ')}</span>` : ''}</li>`; };
         const world = D.paths.trails.filter((t) => !t.branchAfter);
-        return `<ol class="v6-rail" aria-label="Схема главного пути">${node('Общий старт', m.commonStart.title, 'для всех ролей', m.commonStart.lessons, 'common-start')}${m.levels.map((lv) => node('Уровень ' + lv.n, lv.title, lv.milestone ? 'веха: ' + e(lv.milestone.title) : 'пишется', lv.lessons, 'level-' + lv.n)).join('')}${world.map((t) => `<li class="v6-rail-n is-world"><span class="v6-rail-d" aria-hidden="true"></span><span class="v6-meta">Отдельный мир</span><b>${tl(t)}</b><span class="v6-rail-m">открыт всем, свои правила</span></li>`).join('')}</ol>`;
+        return `<ol class="v6-rail" aria-label="Схема главного пути">${node('Основы', m.commonStart.title, 'для всех ролей', m.commonStart.lessons, 'common-start')}${m.levels.map((lv) => node('Уровень ' + lv.n, lv.title, lv.milestone ? 'веха: ' + e(lv.milestone.title) : 'пишется', lv.lessons, 'level-' + lv.n)).join('')}${world.map((t) => `<li class="v6-rail-n is-world"><span class="v6-rail-d" aria-hidden="true"></span><span class="v6-meta">Отдельный мир</span><b>${tl(t)}</b><span class="v6-rail-m">открыт всем, свои правила</span></li>`).join('')}</ol>`;
       };
       const trailWhere = { 'level-1': 'ответвляется после уровня 1', 'common-start': 'сразу после общего старта', 'level-2': 'рядом с уровнем 2' };
       const sp = D.paths.rolePaths.find((p) => p.role === 'seller');
@@ -765,7 +766,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
               <span class="v6-btns"><button class="v6b v6-btn-lg" onclick="openLesson(${lArg})">${lessonProgress() ? 'Продолжить ' + (typeof r.id === 'number' ? 'урок ' + r.id : 'урок') : 'Начать'}</button><button class="v6b is-soft v6-btn-lg" onclick="openSection('main')">Все уроки</button></span></div>
               <div class="v6-scheme">${scheme()}</div></div>
             <div class="v6-pgrid">
-              <article class="v6-card v6-chapter">${head('Общий старт · для всех', isHere(m.commonStart.lessons))}<h3 class="v6-h3">${e(m.commonStart.title)}</h3><p class="v6-chap-desc">${e(m.commonStart.description)}</p>${startRows()}${foot('после урока 5 — развилка', 1)}</article>
+              <article class="v6-card v6-chapter">${head('Основы · для всех', isHere(m.commonStart.lessons))}<h3 class="v6-h3">${e(m.commonStart.title)}</h3><p class="v6-chap-desc">${e(m.commonStart.description)}</p>${startRows()}${foot('после урока 5 — развилка', 1)}</article>
               ${m.levels.map(level).join('')}
             </div></section>
           ${methodsBlock('creator', 'Методы работы с ИИ')}`;
@@ -802,7 +803,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
         document.getElementById('v6-pp').innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.open('paths')">Обучение</a><span>/</span><a onclick="V6.openRole('${pp.role}','${key}-path')">${e(role(pp.role).title)}</a><span>/</span><span>${e(pp.title)}</span></nav>
           <section class="v6-phero" style="padding-top:24px;padding-bottom:56px"><div class="v6-phero-text"><span class="v6-eyebrow">Путь роли · ${e(pp.label)}</span><h1 class="v6-d">${e(pp.title)}</h1>
             <p class="v6-phero-lead">${pp.stages.length} ${plural(pp.stages.length, 'этап', 'этапа', 'этапов')} в том порядке, в каком идёт работа: ${pp.stages.map((x) => x.title.toLowerCase()).join(', ')}. Путь собирается: задачи и методы уже здесь, короткие способы и Вехи появятся.</p>
-            <span class="v6-tags"><span class="v6t is-sm">скоро</span><span class="v6t is-sm is-grey">${pp.stages.length} ${plural(pp.stages.length, 'этап', 'этапа', 'этапов')}</span><span class="v6t is-sm is-grey">${pp.fwCount} методов</span></span></div>${art(pp.art, 'v6-phero-art v6-sp-art')}</section>
+            <span class="v6-tags"><span class="v6t is-sm">скоро</span><span class="v6t is-sm is-grey">${pp.stages.length} ${plural(pp.stages.length, 'этап', 'этапа', 'этапов')}</span><span class="v6t is-sm is-grey">${pn(pp.fwCount, 'метод', 'метода', 'методов')}</span></span></div>${art(pp.art, 'v6-phero-art v6-sp-art')}</section>
           <div class="v6-sp-body">
             <section class="v6-prep"><span class="v6-prep-h">Подготовка · ${(sp.prep || []).reduce((n, x) => n + (x.minutes || 0), 0)} минут</span><div class="v6-prep-g">${(sp.prep || []).map((x) => { const go = stepGo(x); const inner = `<span class="v6-prep-l"><span class="v6-dotc"></span><span class="v6-prep-t">${e(x.title)}</span></span><span class="v6-prep-m">${e(STEP_KIND[x.kind] || x.kind)} · ${x.minutes} мин</span>`;
               return go ? `<a class="v6-prep-i" href="#" onclick="${go}; return false;">${inner}</a>` : `<span class="v6-prep-i">${inner}</span>`; }).join('')}</div></section>
@@ -836,7 +837,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
             <div class="v6-step-b"><span class="v6-step-tags"><span class="v6t is-sm">${e(STEP_KIND[x.kind] || x.kind)}</span>${x.optional ? '<span class="v6-step-s">по желанию</span>' : ''}${!go && !isDone ? '<span class="v6-step-s">скоро</span>' : ''}${go && x.kind === 'framework' && !(fwById(x.ref) || {}).full ? '<span class="v6-step-s">карточка пишется</span>' : ''}</span>${title}${rs.length ? `<span class="v6-rchips">${rs.map(chip).join('')}</span>` : ''}</div>
             <span class="v6-step-m">${x.minutes ? x.minutes + ' мин' : ''}</span></div>`;
         };
-        const door = (st) => { const d = st.milestone && st.milestone.agencyDoor; return d ? `<div class="v6-mdoor"><span>${e(d)}</span><a href="#companies" onclick="umTrack('agency-door', { from: 'seller-path' }); V6.open(\'companies\'); return false;">Узнать →</a></div>` : ''; };
+        const door = (st) => { const d = st.milestone && st.milestone.agencyDoor; return d ? `<div class="v6-mdoor"><span>${e(d)}</span><a href="#companies" onclick="umTrack('agency-door', { from: 'seller-path' }); V6.open(\'companies\'); return false;">Как обучить команду</a></div>` : ''; };
         const stage = (st) => {
           const req = st.steps.filter((x) => !x.optional).length, opt = st.steps.length - req;
           const label = st === curStage ? 'вы здесь' : st.steps.every(stepDone) ? 'пройден' : 'дальше';
@@ -852,7 +853,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
           <section class="v6-phero" style="padding-top:24px;padding-bottom:56px"><div class="v6-phero-text"><span class="v6-eyebrow">Путь роли · Продаю онлайн</span><h1 class="v6-d">${e(sp.title)}</h1>
             <p class="v6-phero-lead">Три этапа по деньгам: ${sp.stages.map((x) => x.promise).join(', ')}. Не уроки, а вещи для работы: задания, методы, шаблоны, калькуляторы, чек-листы.</p>
             <a class="v6-link" href="#brand-stages" onclick="V6.open('brand-stages'); return false;">На какой стадии ваш бренд? Диагностика за 3 минуты →</a>
-            <span class="v6-tags"><span class="v6t is-sm">этап ${curStage.n} из ${sp.stages.length}</span><span class="v6t is-sm is-grey">${sp.stages.filter((x) => x.milestone).length} Вехи</span><span class="v6t is-sm is-grey">${D.resources.length} полезных вещей</span></span></div>${art('seller-path', 'v6-phero-art v6-sp-art')}</section>
+            <span class="v6-tags"><span class="v6t is-sm">этап ${curStage.n} из ${sp.stages.length}</span><span class="v6t is-sm is-grey">${pn(sp.stages.filter((x) => x.milestone).length, 'Веха', 'Вехи', 'Вех')}</span><span class="v6t is-sm is-grey">${pn(D.resources.length, 'полезная вещь', 'полезные вещи', 'полезных вещей')}</span></span></div>${art('seller-path', 'v6-phero-art v6-sp-art')}</section>
           <div class="v6-sp-body">
             <section class="v6-prep"><span class="v6-prep-h">Подготовка · ${(sp.prep || []).reduce((n, x) => n + (x.minutes || 0), 0)} минут</span><div class="v6-prep-g">${(sp.prep || []).map((x) => { const go = stepGo(x); const inner = `<span class="v6-prep-l"><span class="v6-dotc">${''}</span><span class="v6-prep-t">${e(x.title)}</span></span><span class="v6-prep-m">${e(STEP_KIND[x.kind] || x.kind)} · ${x.minutes} мин${go ? '' : ' · скоро'}</span>`;
               return go ? `<a class="v6-prep-i" href="#" onclick="${go}; return false;">${inner}</a>` : `<span class="v6-prep-i">${inner}</span>`; }).join('')}</div></section>
@@ -935,7 +936,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       return { n: typeof l.id === 'number' ? String(l.id) : String(i + 1), t: l.title, c: l.content ? (done(l.id) ? 'пройден ✓' : mins(l.id)) : 'пишется', done: done(l.id), on: l.content ? `openLesson(${lessonArg(l.id)})` : null }; };
     const m = D.paths.main;
     const groups = [{ t: 'Главный путь · ' + m.commonStart.title, ids: m.commonStart.lessons }, ...m.levels.map((lv) => ({ t: `Главный путь · уровень ${lv.n} · ${lv.title}`, ids: lv.lessons })),
-      ...(typeof TRACKS !== 'undefined' ? TRACKS : []).map((tr) => ({ t: 'Тропинка · ' + tr.title, ids: TRACK_LESSONS.filter((x) => x.track === tr.id).map((x) => x.id) }))];
+      ...(typeof TRACKS !== 'undefined' ? TRACKS : []).map((tr) => ({ t: 'Мини-курс · ' + tr.title, ids: TRACK_LESSONS.filter((x) => x.track === tr.id).map((x) => x.id) }))];
     const html = groups.map((g) => { const rows = g.ids.map(row).filter(Boolean); return rows.length ? `<details class="v6-lgroup"${q ? ' open' : ''}><summary><span class="v6-fwhead-t">${e(g.t)}</span><span class="v6-meta">${rows.length} ${pluralUrok(rows.length)}</span></summary>${rowList(rows)}</details>` : ''; }).join('');
     box.innerHTML = html || '<p class="v6-lead">Уроков с таким названием нет.</p>';
   }
@@ -1058,7 +1059,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
         const preview = DICT.terms.filter((t) => (t.cards || []).length).slice(0, 6);
         body = `<div class="v6-kfilters"><div class="v6-kf"><span class="v6-meta">Роль</span><div class="v6-pills">${pill('role', '', 'Все')}${roles.map((r) => pill('role', r, e(r === 'all' ? 'ИИ для всех' : roleName(r)))).join('')}</div></div>
             <div class="v6-kf"><label class="v6-meta" for="v6-kf-task">Задача</label><select id="v6-kf-task" class="v6-select" onchange="V6.kf('task', this.value)"><option value="">Все задачи</option>${dirs.map(([id, t]) => `<option value="${e(id)}"${KF.task === id ? ' selected' : ''}>${e(t)}</option>`).join('')}</select></div>
-            <div class="v6-kf"><span class="v6-meta">Индустрия</span><div class="v6-pills">${pill('ind', '', 'Любая')}${IND.map(([v, t]) => pill('ind', v, t)).join('')}</div></div>
+            <div class="v6-kf"><span class="v6-meta">Отрасль</span><div class="v6-pills">${pill('ind', '', 'Любая')}${IND.map(([v, t]) => pill('ind', v, t)).join('')}</div></div>
             <div class="v6-kf"><span class="v6-meta">Метка</span><div class="v6-pills">${pill('label', '', 'Все')}${['база', 'тренд', 'авторский'].map((l) => pill('label', l, l)).join('')}</div></div></div>
           ${start ? `<a class="v6-next v6-dark" style="margin:32px 0 0" href="#fw-${start.id}" onclick="V6.openFw('${start.id}','knowledge'); return false;"><span class="v6-next-in"><span class="v6-next-l">Начните с этого · для всех ролей</span><span class="v6-next-t">${e(start.title)}</span><span class="v6-next-p">Без него не работает ни один промпт в заданиях. Пять минут, и первый ответ ИИ становится рабочим.</span></span><span class="v6b is-accent v6-btn-xl">Открыть</span></a>` : ''}
           <a class="v6-learn-s is-ready" style="margin-top:12px" href="#brand-stages" onclick="V6.open('brand-stages'); return false;"><span><b>Стадии бренда</b><span class="v6-meta">метод для бренда: пять стадий, ловушки, первые дела и диагностика</span></span><span class="v6-meta">открыть →</span></a>
@@ -1069,19 +1070,19 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       } else if (KT === 'tools') {
         body = `<p class="v6-tools-lead">Таблицы с формулами, калькуляторы и чек-листы, которые можно забрать и пользоваться. У каждой вещи видно, к какому заданию она относится. <a href="kalkulyatory/">Все калькуляторы на отдельных страницах</a>.</p><div id="v6-toollist"></div>`;
       } else {
-        body = `<p class="v6-meta" style="margin:0 0 8px">Все уроки по главному пути и Тропинкам. Отметка «пройден» хранится в этом браузере.</p><div id="v6-lessonlist"></div>`;
+        body = `<p class="v6-meta" style="margin:0 0 8px">Все уроки по главному пути и мини-курсам. Отметка «пройден» хранится в этом браузере.</p><div id="v6-lessonlist"></div>`;
       }
       document.getElementById('v6-kn').innerHTML = `<section class="v6-phero"><div class="v6-phero-text"><span class="v6-eyebrow">Знания</span><h1 class="v6-d">Методы, слова и уроки</h1><p class="v6-phero-lead">Методы: как думать о задаче. Словарь: что значит слово. Уроки: почему это работает. Инструменты: что забрать и пользоваться.</p></div>${art('knowledge', 'v6-phero-art')}</section>
         <section class="v6-psec"><form class="v6-ksearch" role="search" onsubmit="return false"><label class="v6-sr" for="v6-kq">Поиск по знаниям</label><input id="v6-kq" type="search" placeholder="Поиск по знаниям: метод, слово, урок" value="${e(KQ)}" oninput="V6.ksearch(this.value)"></form>
           <div class="v6-ktabs" role="tablist" aria-label="Разделы знаний">${tab('fw', 'Методы', D.fw.length)}${tab('dict', 'Словарь', DICT.terms.length)}${tab('lessons', 'Уроки', nLessons)}${tab('tools', 'Инструменты', toolCount())}</div>
           <div class="v6-kbody">${body}</div></section>
         <section class="v6-psec"><h2 class="v6-psec-h">Ещё в Знаниях</h2><div class="v6-grid2" style="margin-top:28px">
-          <div class="v6-task"><h3>Что уже умеет кабинет</h3><p>Встроенный ИИ Wildberries, Ozon и Маркета по 22 задачам продавца: когда его хватит, а когда нужен свой промпт.</p><a class="v6b is-soft is-sm" href="/znaniya/kabinet-ai.html">Открыть</a></div>
-          <div class="v6-task"><h3>ИИ и закон для малого бизнеса</h3><p>Данные покупателей, закон об ИИ, реклама и права на результат. Ссылки на тексты законов и чек-лист.</p><a class="v6b is-soft is-sm" href="/znaniya/ai-law.html">Открыть</a></div>
-          <div class="v6-task"><h3>Что изменилось за месяц</h3><p>Раз в месяц: что поменялось у маркетплейсов и нейросетей и что сделать. Только подтверждённое.</p><a class="v6b is-soft is-sm" href="/izmeneniya/">Открыть</a></div>
-          <div class="v6-task"><h3>Как собрать свой ИИ-сетап</h3><p>Модели, агенты, IDE и ADE, подписки и запас. Опыт автора, PDF и шаблон своей конфигурации.</p><a class="v6b is-soft is-sm" href="/znaniya/ai-setup.html">Открыть</a></div>
+          <div class="v6-task"><h3>Что уже умеет кабинет</h3><p>Встроенный ИИ Wildberries, Ozon и Маркета по 22 задачам продавца: когда его хватит, а когда нужен свой промпт.</p><a class="v6b is-soft is-sm" href="/znaniya/kabinet-ai.html">Читать</a></div>
+          <div class="v6-task"><h3>ИИ и закон для малого бизнеса</h3><p>Данные покупателей, закон об ИИ, реклама и права на результат. Ссылки на тексты законов и чек-лист.</p><a class="v6b is-soft is-sm" href="/znaniya/ai-law.html">Читать</a></div>
+          <div class="v6-task"><h3>Что изменилось за месяц</h3><p>Раз в месяц: что поменялось у маркетплейсов и нейросетей и что сделать. Только подтверждённое.</p><a class="v6b is-soft is-sm" href="/izmeneniya/">Читать</a></div>
+          <div class="v6-task"><h3>Как собрать свой ИИ-сетап</h3><p>Модели, агенты, IDE и ADE, подписки и запас. Опыт автора, PDF и шаблон своей конфигурации.</p><a class="v6b is-soft is-sm" href="/znaniya/ai-setup.html">Читать</a></div>
           <div class="v6-task"><h3>Источники</h3><p>Курсы, книги и документация, на которых стоят уроки.</p><button class="v6b is-soft is-sm" onclick="openStaticPage('resources')">Открыть</button></div>
-          <div class="v6-task"><h3>Нейросети без VPN</h3><p>Живой список: что работает из России, что бесплатно.</p><a class="v6b is-soft is-sm" href="/tools/neyroseti-bez-vpn/">Открыть</a></div>
+          <div class="v6-task"><h3>Нейросети без VPN</h3><p>Живой список: что работает из России, что бесплатно.</p><a class="v6b is-soft is-sm" href="/tools/neyroseti-bez-vpn/">Смотреть список</a></div>
         </div></section>`;
       if (KT === 'fw') fwList(); else if (KT === 'dict') dictList(); else if (KT === 'tools') toolList(); else lessonList();
     }).catch(() => fail('v6-kn'));
@@ -1230,7 +1231,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
       return { label: 'Главный путь', title: 'Уроки', ids: LESSONS.filter((x) => x.phase === L.phase).map((x) => x.id), foot: '' };
     }
     const t = (D.paths.trails || []).find((x) => x.id === L.track);
-    return { label: 'Тропинка', title: t ? t.title : 'Тропинка', ids: TRACK_LESSONS.filter((x) => x.track === L.track).map((x) => x.id), foot: '' };
+    return { label: 'Мини-курс', title: t ? t.title : 'Мини-курс', ids: TRACK_LESSONS.filter((x) => x.track === L.track).map((x) => x.id), foot: '' };
   }
   function lessonDone(id, next) {
     if (!done(id)) { const d = jget(KEY.dates); d[id] = new Date().toISOString(); jset(KEY.dates, d); toggleCompleted(/^\d+$/.test(String(id)) ? Number(id) : id); }
@@ -1334,7 +1335,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
   }
   function resultDoor(u) {
     const group = D.tasks[u.task].group;
-    if (u.autoReport) return `<div class="v6-tdoor"><span>Этот отчёт может приходить сам к утру понедельника.</span><a href="https://birdtold.ru/demo" target="_blank" rel="noopener" onclick="umTrack('bird-door', { from: 'unit-yes', unit: '${e(u.id)}' })">Посмотреть Птичку напела ↗</a></div>`;
+    if (u.autoReport) return `<div class="v6-tdoor"><span>Этот отчёт может приходить сам к утру понедельника.</span><a href="https://birdtold.ru/demo" target="_blank" rel="noopener" onclick="umTrack('bird-door', { from: 'unit-yes', unit: '${e(u.id)}' })">Посмотреть пример: «Птичка напела» ↗</a></div>`;
     if (group === 'seller' || group === 'marketing') return `<div class="v6-tdoor"><span>Хотите, чтобы так умел весь отдел?</span><a href="#companies" onclick="umTrack('agency-door', { from: 'unit-yes', unit: '${e(u.id)}' }); V6.open('companies'); return false;">Как внедрить в работу команды →</a></div>`;
     return '';
   }
@@ -1483,7 +1484,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
     const all = notebookEntries();
     const list = all.filter((x) => (NB.f === 'all' || (NB.f === 'lesson' ? (x.type === 'lesson' || x.type === 'note') : NB.f === 'unit' ? x.type === 'unit' : NB.f === 'alesha' ? !!x.reply : x.type === NB.f)) && (!q || (x.title + ' ' + x.text).toLowerCase().includes(q)));
     const day = (d) => { if (!d) return 'Без даты'; const x = new Date(d), t = new Date(); const diff = Math.floor((new Date(t.toDateString()) - new Date(x.toDateString())) / 864e5); return diff === 0 ? 'Сегодня' : diff === 1 ? 'Вчера' : x.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }); };
-    if (!all.length) { box.innerHTML = `<div class="v6-nbempty"><h2 class="v6-ucard-t">Тетрадь пока пуста</h2><p>Сюда попадают пройденные уроки, сделанные задачи и ваши заметки к урокам.</p><button class="v6b v6-btn-lg" onclick="V6.open('roles')">Выбрать задачу</button></div>`; return; }
+    if (!all.length) { box.innerHTML = `<div class="v6-nbempty"><h2 class="v6-ucard-t">Тетрадь пока пуста</h2><p>Сюда попадают пройденные уроки, сделанные задачи и ваши заметки к урокам.</p><button class="v6b v6-btn-lg" onclick="V6.open('home')">Выбрать задание</button></div>`; return; }
     if (!list.length) { box.innerHTML = `<p class="v6-lead">Ничего не нашлось. <button class="v6-quiet" onclick="V6.askAlesha('Тетрадь', '${e(NB.q).replace(/'/g, '')}')">Спросить Алёшу</button></p>`; return; }
     let last = '';
     box.innerHTML = list.map((x) => { const d = day(x.date), head = d !== last ? `<span class="v6-nbday">${e(d)}</span>` : ''; last = d;
@@ -1515,7 +1516,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
     }).catch(() => alert('Это не файл тетради «Артефактов».'));
   }
   function nbReset() {
-    if (!confirm('Очистить тетрадь в этом браузере? Сотрутся пройденные уроки, сделанные задачи и заметки. Отменить нельзя — сначала можно скачать файл.')) return;
+    if (!confirm('Очистить тетрадь в этом браузере? Сотрутся пройденные уроки, сделанные задания и заметки. Отменить нельзя — сначала можно скачать файл.')) return;
     NB_KEYS().forEach((k) => { try { localStorage.removeItem(k); } catch (_) {} });
     Object.keys(localStorage).filter((k) => k.startsWith('v6-note-')).forEach((k) => { try { localStorage.removeItem(k); } catch (_) {} });
     track('notebook-reset', {});
@@ -1526,7 +1527,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
     load().then(() => {
       const r = resume();
       const pill = (f, t) => `<button type="button" class="v6-pill" data-nbf="${f}" aria-pressed="${NB.f === f}" onclick="V6.nbFilter('${f}', this)">${t}</button>`;
-      document.getElementById('v6-nb').innerHTML = `<section class="v6-sechero"><div><h1 class="v6-d">Тетрадь</h1><p class="v6-lead">История вашего обучения: пройденные уроки, сделанные задачи и заметки.</p></div><div class="v6-art v6-sec-art" aria-hidden="true"><img src="${artSrc('notebook')}" alt=""></div></section>
+      document.getElementById('v6-nb').innerHTML = `<section class="v6-sechero"><div><h1 class="v6-d">Тетрадь</h1><p class="v6-lead">История вашего обучения: пройденные уроки, сделанные задания и заметки.</p></div><div class="v6-art v6-sec-art" aria-hidden="true"><img src="${artSrc('notebook')}" alt=""></div></section>
         <div class="v6-nbgrid"><div><div class="v6-kfilters" style="margin:32px 0 24px"><label class="v6-nbsearch"><span class="v6-sr">Поиск по тетради</span><input type="search" placeholder="Поиск по заметкам" value="${e(NB.q)}" oninput="V6.nbSearch(this)"></label><div class="v6-pills">${pill('all', 'Всё')}${pill('lesson', 'Уроки')}${pill('unit', 'Задачи')}${pill('check', 'Вехи и проверки')}${pill('alesha', 'С ответом Алёши')}</div></div><div id="v6-nblist"></div></div>
           <aside class="v6-side" style="padding-top:32px">${r && r.id != null ? `<div class="v6-neigh"><span class="v6-meta">Продолжить</span><a class="v6-neigh-i" href="#" onclick="${resumeAction(r, 'notebook')}; return false;"><span>${e(r.title || '')}</span><span class="m">→</span></a></div>` : ''}
             <div class="v6-tdoor"><b>Тетрадь только в этом браузере</b><span>Очистка браузера сотрёт записи. Скачайте файл, чтобы не потерять; сохранение через Telegram появится скоро.</span>
@@ -1719,9 +1720,9 @@ ${rv.trim() || '[вставьте отзывы]'}`;
             <p>Руслан Маджитов. 25 лет в e-commerce и ритейле: CMO и e-commerce-директор. Работал с Mixit, HomeMe, Ангстремом, СберЕаптекой. Задания Артефактов — то, что он сам делает каждую неделю, разложенное по шагам.</p></div></section>
         <section class="v6-psec"><h2 class="v6-psec-h">Для каких отделов</h2>
           <div class="v6-grid2" style="margin-top:28px">${[['Маркетплейсы и e-commerce', 'seller'], ['Маркетинг', 'marketing']].map(([t, r]) => `<button type="button" class="v6-role-row has-thumb" onclick="V6.openRole('${r}','companies')">${roleThumb(r)}<span><b>${e(t)}</b><small>роль «${e(roleName(r))}»</small></span>${CHEV}</button>`).join('')}</div>
-          <p class="v6-meta" style="margin-top:16px">Скоро: продукт, проекты, HR, финансы и юристы, руководство. Пока их задания можно проходить самостоятельно в <a href="#roles" onclick="V6.open('roles'); return false;">ролях</a>.</p></section>
+          <p class="v6-meta" style="margin-top:16px">Скоро: продукт, проекты, HR, финансы и юристы, руководство. Пока их задания можно проходить самостоятельно в <a href="#tasks" onclick="V6.open('tasks'); return false;">Решениях</a>.</p></section>
         <section class="v6-psec"><div class="v6-grid2">
-          <div class="v6-task"><span class="v6-meta">Бесплатно</span><h3>Своими силами</h3><p>Отправьте команде ссылку на роль. Каждый проходит задания сам и уносит результат. Без регистрации.</p><button class="v6b is-soft is-sm" onclick="V6.open('roles')">Подобрать роли</button></div>
+          <div class="v6-task"><span class="v6-meta">Бесплатно</span><h3>Своими силами</h3><p>Отправьте команде ссылку на «Решения». Каждый проходит задания сам и уносит результат. Без регистрации.</p><button class="v6b is-soft is-sm" onclick="V6.open('tasks')">Открыть решения</button></div>
           <div class="v6-task"><span class="v6-meta">Когда учиться некогда</span><h3>Внедрение под ключ</h3><p>Отчёты и автоматизации под ваши процессы делает Руслан Маджитов с командой. Пример — сервис «Птичка напела».</p><a class="v6b is-soft is-sm" href="https://birdtold.ru/demo" target="_blank" rel="noopener" onclick="umTrack('bird-door', { from: 'companies' })">Посмотреть пример ↗</a></div>
         </div></section>
         <section class="v6-psec" id="co-system"><details class="v6-co-more"><summary><h2 class="v6-h3">Если нужен разбор бренда, а не обучение</h2><span class="v6-meta">${e(BS.packages.lead)}</span></summary>
@@ -1883,6 +1884,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
   }
   const PAGES = { roles: rolesPage, tasks: tasksPage, paths: pathsPage, knowledge: knowledgePage, notebook: notebookPage, companies: companiesPage, 'co-audit': coAuditPage, 'brand-stages': brandStagesPage };
   function open(name) {
+    if (name === 'roles') name = 'tasks'; // страница «Кто вы?» убрана 24.11: роли — фильтры в «Решениях» и вкладки колоды
     if (name === 'home') { openStaticPage('home'); return; }
     if (name === 'knowledge') { KT = 'fw'; KTERM = ''; }
     go(name, PAGES[name], name === 'brand-stages' ? 'paths' : name === 'co-audit' ? 'companies' : name);
@@ -1916,7 +1918,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
     if (!box || box.querySelector('.v6-first')) return;
     const div = document.createElement('div');
     div.className = 'v6-first';
-    div.innerHTML = `<div><p><b>Вы здесь впервые.</b> Это один из уроков бесплатной платформы «Артефакты».</p><p>Совсем с нуля? Начните с общего старта — пять уроков базы.</p><a onclick="openLesson(1)">Общий старт →</a><a onclick="V6.open('roles')">Подобрать по роли →</a></div><button type="button" aria-label="Закрыть" onclick="this.parentNode.remove()">×</button>`;
+    div.innerHTML = `<div><p><b>Вы здесь впервые.</b> Это один из уроков бесплатной платформы «Артефакты».</p><p>Совсем с нуля? Начните с основ — пять уроков.</p><a onclick="openLesson(1)">Основы →</a><a onclick="V6.open('roles')">Все решения</a></div><button type="button" aria-label="Закрыть" onclick="this.parentNode.remove()">×</button>`;
     box.prepend(div);
     try { sessionStorage.setItem('v6-first-seen', '1'); } catch (_) {}
   }
@@ -1965,7 +1967,7 @@ ${rv.trim() || '[вставьте отзывы]'}`;
     // старые страницы (разделы, словарь, квизы, «Что это» и др.) — в каркас v6: без старой колонки меню, белый лист, крошки.
     // Подменяем отрисовщики, а не openX: квиз перерисовывает себя при повторе.
     const LEGACY = {
-      renderMainSection: ['paths', 'Пути', 'Главный путь'], renderTrackSection: ['paths', 'Пути', 'Тропинка'],
+      renderMainSection: ['paths', 'Пути', 'Главный путь'], renderTrackSection: ['paths', 'Пути', 'Мини-курс'],
       renderQuiz: ['paths', 'Пути', 'Квиз'], renderGlossary: ['knowledge', 'Знания', 'Словарь'],
       renderAbout: [null, '', 'Что это'], renderHowTo: [null, '', 'Как заниматься'], renderFAQ: [null, '', 'Вопросы'],
       renderChangelog: [null, '', 'Что нового'], renderResources: [null, '', 'Источники'], renderArtifacts: [null, '', 'Галерея работ'],
