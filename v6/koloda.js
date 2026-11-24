@@ -102,13 +102,13 @@
         <div><span>2</span><h3>Сделайте на своих данных</h3><p>Шаги, готовый запрос и сервис, который работает без VPN. Подставляете своё.</p></div>
         <div><span>3</span><h3>Проверьте по списку</h3><p>Перед тем как отправить или показать, пройдите проверку с карты: факты, цифры, тон.</p></div></div></section>
       <section class="v6-sec" id="kd-svc"></section>
-      <section class="v6-sec"><div class="kd-work"><div><span class="kd-eye">Для работы · пилот</span><h2>Отдел маркетплейсов на ИИ за 4 недели</h2>
-        <p>Группа из 3–6 человек проходит путь продавца на своих товарах. Через месяц у отдела три рабочих процесса с ИИ и замер, сколько часов они возвращают.</p>
-        <p>Ведёт Руслан Маджитов с командой.</p><div class="kd-price">от 45 000 ₽<small>за группу</small></div>
-        <div class="kd-wb"><button type="button" class="is-main" data-kd-work="1">Как устроен пилот</button></div></div>
-        <ul><li><b>Своими силами, бесплатно</b><span>Отправьте команде ссылку на колоду «Для работы». Каждый проходит карты сам.</span></li>
-        <li><b>Пилот с замером</b><span>Старт 90 минут, три встречи по 60 минут, чат группы. Данные остаются у вас.</span></li>
-        <li><b>Под ключ</b><span>Отчёты и автоматизации под ваши процессы. Пример — <a href="https://birdtold.ru/demo" target="_blank" rel="noopener" onclick="umTrack('bird-door', { from: 'home-deck' })">сервис «Птичка напела»</a>.</span></li></ul></div></section>`;
+      <section class="v6-sec"><div class="kd-work"><div><span class="kd-eye">Для бизнеса</span><h2>ИИ в работе компании</h2>
+        <p>Обучим команду работать с ИИ на своих данных или сделаем под ключ. Ведёт Руслан Маджитов с командой.</p>
+        <div class="kd-wb"><button type="button" class="is-main" data-kd-work="1">Что делаем для бизнеса</button></div></div>
+        <ul><li><b>Обучение команды</b><span>Группа из 3–6 человек за 4 недели осваивает рабочие процессы с ИИ. Замер часов до и после.</span></li>
+        <li><b>Дашборды и отчёты</b><span>Под ваши процессы и данные, под ключ. Пример — <a href="https://birdtold.ru/demo" target="_blank" rel="noopener" onclick="umTrack('bird-door', { from: 'home-deck' })">сервис «Птичка напела»</a>.</span></li>
+        <li><b>Финмодель и юнит-экономика</b><span>P&amp;L, деньги товаров и каналов на ваших данных.</span></li>
+        <li><b>Разбор бренда</b><span>Стадия бренда, слабые места и план на 90 дней.</span></li></ul></div></section>`;
   }
   function services() {
     const box = document.getElementById('kd-svc');

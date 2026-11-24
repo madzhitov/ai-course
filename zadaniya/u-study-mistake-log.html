@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Найти свою ошибку и не повторять её — Артефакты</title>
+<meta name="description" content="Место, где решение пошло не так, тип ошибки и правило, которое её закрывает. Плюс строка в журнал ошибок: через месяц видно, какие ошибки повторяются. По шагам, промпт внутри, около 15 минут.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Найти свою ошибку и не повторять её">
+<meta property="og:description" content="Место, где решение пошло не так, тип ошибки и правило, которое её закрывает. Плюс строка в журнал ошибок: через месяц видно, какие ошибки повторяются. По шагам, промпт внутри, около 15 минут.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png?v=27898e84">
+<meta property="og:url" content="https://ai.madzhitov.ru/zadaniya/u-study-mistake-log.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/zadaniya/u-study-mistake-log.html">
+<link rel="preload" href="../v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../v6/fonts/fonts.css?v=0e1f3d7b">
+<link rel="stylesheet" href="../tropa-lesson.css?v=889f3ed1">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+  .st-calc-res { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap:10px; }
+  .st-calc-r { background:#F3F4F7; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); }
+  .st-calc-r b { font-size:24px; line-height:1.15; font-weight:800; color:#16161A; }
+  .st-calc-r.is-main b { font-size:36px; }
+  .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
+  .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Найти свою ошибку и не повторять её","description":"Место, где решение пошло не так, тип ошибки и правило, которое её закрывает. Плюс строка в журнал ошибок: через месяц видно, какие ошибки повторяются. По шагам, промпт внутри, около 15 минут.","url":"https://ai.madzhitov.ru/zadaniya/u-study-mistake-log.html","inLanguage":"ru","totalTime":"PT15M","tool":[{"@type":"HowToTool","name":"GigaChat"},{"@type":"HowToTool","name":"Алиса AI"},{"@type":"HowToTool","name":"DeepSeek"},{"@type":"HowToTool","name":"Claude"}],"step":[{"@type":"HowToStep","position":1,"name":"Пришлите решение на разбор","text":"Отправьте своё решение целиком. ИИ не исправляет всё сразу, а показывает первое место, где пошло не так, и даёт вам шанс найти ошибку самостоятельно."},{"@type":"HowToStep","position":2,"name":"Запишите строку в журнал","text":"Скопируйте строку в таблицу или заметку. Журнал работает, когда в нём 10–15 строк: видно, что одна и та же ошибка повторяется."},{"@type":"HowToStep","position":3,"name":"Раз в две недели — разбор журнала","text":"Вставьте журнал целиком и попросите найти закономерности."}],"dateModified":"2026-11-24"}</script>
+<link rel="stylesheet" href="../v6/static.css?v=4d1de0fc">
+<script defer src="../v6/static.js?v=e97e63c9"></script>
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../metody/">Методы</a><a href="../slovar/">Словарь</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../zadaniya/">Задания по шагам</a></div>
+    <h1>Найти свою ошибку и не повторять её</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-11-24">24.11.2026</time></p>
+    <p class="lead">Место, где решение пошло не так, тип ошибки и правило, которое её закрывает. Плюс строка в журнал ошибок: через месяц видно, какие ошибки повторяются</p>
+    <p class="st-meta">около 15 мин · с нуля · без VPN · задача «Найти свою ошибку и не повторять её»</p>
+    <p class="st-meta">Черновик на согласовании: текст может уточняться.</p>
+    
+    <h2>Чем делать</h2><p>GigaChat, Алиса AI, DeepSeek, Claude</p>
+    <h2>Что подготовить</h2><ul class="st-list"><li>Ваше решение задачи или контрольной, фото или текст</li><li>Правильный ответ, если он есть</li><li>Таблица или заметка «Журнал ошибок»</li></ul>
+    <p><a class="st-primary" href="../#unit-u-study-mistake-log">Делать по шагам</a></p>
+    <h2>Шаги</h2>
+    <h3>1. Пришлите решение на разбор</h3><p>Отправьте своё решение целиком. ИИ не исправляет всё сразу, а показывает первое место, где пошло не так, и даёт вам шанс найти ошибку самостоятельно.</p><div class="st-copy"><button type="button" data-copy="prompt-0" aria-label="Скопировать промпт: Пришлите решение на разбор">Скопировать</button><pre class="st-prompt" id="prompt-0">Проверь моё решение. Не переписывай его.
+1) Найди первое место, где решение пошло не так, и укажи строку. Попроси меня самого(саму) найти ошибку в этой строке.
+2) Если я не найду с одной попытки — объясни.
+3) Определи тип ошибки: понятие (не понимаю правило), метод (выбрал не тот путь), вычисление, чтение условия, невнимательность.
+4) Если ошибка в понятии или методе — дай одну короткую задачу на это место.
+5) В конце дай строку для журнала: дата | предмет | тема | тип ошибки | что не так | правило, которое запомнить.
+
+Моё решение:
+[вставьте решение]</pre></div>
+    <h3>2. Запишите строку в журнал</h3><p>Скопируйте строку в таблицу или заметку. Журнал работает, когда в нём 10–15 строк: видно, что одна и та же ошибка повторяется.</p>
+    <h3>3. Раз в две недели — разбор журнала</h3><p>Вставьте журнал целиком и попросите найти закономерности.</p><div class="st-copy"><button type="button" data-copy="prompt-2" aria-label="Скопировать промпт: Раз в две недели — разбор журнала">Скопировать</button><pre class="st-prompt" id="prompt-2">Вот мой журнал ошибок. Назови три самых частых типа ошибок и три темы, где я ошибаюсь чаще всего. Для каждой предложи одно короткое упражнение на 10 минут.
+
+[вставьте журнал]</pre></div><ul class="st-list"><li>Строка записана в журнал</li><li>Вы можете своими словами сказать, в чём ошибка</li><li>Задачу на это место решили без подсказки</li></ul>
+    <h2>Если получилось почти</h2><ul class="st-list"><li>ИИ нашёл ошибку там, где её нет. Попросите пересчитать этот шаг кодом или проверьте по учебнику: модель тоже ошибается</li><li>Все ошибки записываются как «невнимательность». Спросите себя: смогу ли объяснить правило? Если нет — это понятие, а не невнимательность</li></ul>
+    
+    <h2>Опирается на методы</h2><p>Проверка ответа ИИ, Режим жёсткого рецензента</p>
+    
+    <section class="st-related"><h2>Продолжить</h2><ul><li><a href="../zadaniya/u-ai-answer-check.html">Проверка ответа ИИ</a> · 25 мин</li></ul><p><a href="https://t.me/artefakty_ai" target="_blank" rel="noopener">Новые решения и разборы в канале Артефактов</a></p></section>
+    <div class="pp-open"><a href="../#unit-u-study-mistake-log">Пройти с отметками шагов и записью в тетрадь →</a></div>
+  </div>
+</main>
+</body>
+</html>

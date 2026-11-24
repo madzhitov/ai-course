@@ -483,6 +483,67 @@
      ]
     }
    ]
+  },
+  {
+   "id": "student",
+   "title": "Учиться с ИИ",
+   "status": "approved",
+   "directions": [
+    {
+     "id": "student.setup",
+     "title": "Настроить",
+     "tasks": [
+      {
+       "id": "student.setup.tutor",
+       "title": "Настроить ИИ как репетитора"
+      }
+     ]
+    },
+    {
+     "id": "student.understand",
+     "title": "Разобраться",
+     "tasks": [
+      {
+       "id": "student.understand.problem",
+       "title": "Разобраться в задаче, не списывая"
+      },
+      {
+       "id": "student.understand.mistakes",
+       "title": "Найти свою ошибку и не повторять её"
+      }
+     ]
+    },
+    {
+     "id": "student.write",
+     "title": "Писать",
+     "tasks": [
+      {
+       "id": "student.write.essay",
+       "title": "Написать сочинение или эссе самому, с ИИ-редактором"
+      }
+     ]
+    },
+    {
+     "id": "student.language",
+     "title": "Язык",
+     "tasks": [
+      {
+       "id": "student.language.talk",
+       "title": "Разговорная практика иностранного языка"
+      }
+     ]
+    },
+    {
+     "id": "student.ai",
+     "title": "Проверять ИИ",
+     "tasks": [
+      {
+       "id": "student.ai.verify",
+       "title": "Поймать ИИ на выдумке"
+      }
+     ]
+    }
+   ]
   }
  ],
  "note_descriptions": "Подзаголовки направлений продавца — из макета design/reference/screens/Role.dc.html (04.10.2026)."
