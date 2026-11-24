@@ -285,6 +285,15 @@
     "i8"
    ],
    "state": "growing"
+  },
+  {
+   "id": "teacher",
+   "title": "Учитель",
+   "description": "Уроки, тесты, рабочие листы",
+   "isNew": true,
+   "taskGroup": "teacher",
+   "lessons": [],
+   "state": "growing"
   }
  ]
 }
