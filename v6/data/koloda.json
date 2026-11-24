@@ -76,9 +76,9 @@
     "u-ai-learn-plan",
     "u-ai-answer-check"
    ],
-   "first": "u-ai-learn-plan",
+   "first": "u-study-hint-ladder",
    "verb": "find",
-   "note": "План на две недели по любой новой теме: короткие занятия с упражнением и вопросами для самопроверки."
+   "note": "Застряли в задаче — ИИ даёт подсказки по ступеням, от вопроса до первого шага. Решаете вы, в конце похожая задача для закрепления."
   },
   {
    "id": "work",
@@ -152,7 +152,13 @@
   "u-marketing-hypotheses": "invent",
   "u-teacher-test": "count",
   "u-ai-photo-restore": "show",
-  "u-ai-presentation": "show"
+  "u-ai-presentation": "show",
+  "u-study-tutor-setup": "delegate",
+  "u-study-hint-ladder": "find",
+  "u-study-mistake-log": "find",
+  "u-study-catch-ai": "find",
+  "u-study-own-essay": "write",
+  "u-study-language-talk": "write"
  },
  "soon": [
   {
@@ -257,14 +263,6 @@
    "group": "student",
    "title": "План и источники для курсовой",
    "result": "Структура, вопросы к литературе и список, что проверить. Без готового текста.",
-   "where": "Алиса AI, DeepSeek"
-  },
-  {
-   "id": "gap-s-task",
-   "verb": "count",
-   "group": "student",
-   "title": "Разбор задачи по шагам",
-   "result": "Подсказки по одному шагу, чтобы решить самому, а не списать ответ.",
    "where": "Алиса AI, DeepSeek"
   },
   {
