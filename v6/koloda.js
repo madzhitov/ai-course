@@ -193,10 +193,10 @@
     CAT_GROUPS = ORDER.map((id) => D.groups.find((g) => g.id === id)).filter(Boolean).map((g) => ({ id: g.id, t: g.title }));
     box.innerHTML = `<div class="kd-fl"><span class="kd-fl-l">Для кого</span><div class="kd-chiprow" id="kd-cat-g"></div></div>
       <div class="kd-fl"><span class="kd-fl-l">Что сделать</span><div class="kd-chiprow" id="kd-cat-v"></div></div>
-      <div class="kd-found"><span id="kd-cat-found"></span><label><input type="checkbox" id="kd-cat-soon"${CAT.soon ? ' checked' : ''}> показать, что скоро</label></div>
+      <div class="kd-found"><span id="kd-cat-found"></span>${K.soon.length ? `<label><input type="checkbox" id="kd-cat-soon"${CAT.soon ? ' checked' : ''}> показать, что скоро</label>` : ''}</div>
       <div class="kd-rows" id="kd-cat-list"></div>`;
     catChips(); catList();
-    document.getElementById('kd-cat-soon').onchange = (ev) => { CAT.soon = ev.target.checked; catList(); };
+    if (document.getElementById('kd-cat-soon')) document.getElementById('kd-cat-soon').onchange = (ev) => { CAT.soon = ev.target.checked; catList(); };
     if (field) { field.value = CAT.q; field.addEventListener('input', () => { CAT.q = field.value; catList(); }); }
     if (!bound) { document.addEventListener('click', onClick); document.addEventListener('keydown', onKey); bound = true; }
   }

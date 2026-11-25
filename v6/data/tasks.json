@@ -572,6 +572,14 @@
       {
        "id": "student.understand.mistakes",
        "title": "Найти свою ошибку и не повторять её"
+      },
+      {
+       "id": "student.understand.explain",
+       "title": "Понять тему и проверить себя"
+      },
+      {
+       "id": "student.understand.quiz",
+       "title": "Пройти пробный тест перед контрольной"
       }
      ]
     },
@@ -582,6 +590,10 @@
       {
        "id": "student.write.essay",
        "title": "Написать сочинение или эссе самому, с ИИ-редактором"
+      },
+      {
+       "id": "student.write.coursework",
+       "title": "Спланировать курсовую"
       }
      ]
     },
@@ -602,6 +614,26 @@
       {
        "id": "student.ai.verify",
        "title": "Поймать ИИ на выдумке"
+      }
+     ]
+    },
+    {
+     "id": "student.defend",
+     "title": "Защищать",
+     "tasks": [
+      {
+       "id": "student.defend.rehearsal",
+       "title": "Подготовиться к защите"
+      }
+     ]
+    },
+    {
+     "id": "student.rules",
+     "title": "Правила",
+     "tasks": [
+      {
+       "id": "student.rules.declare",
+       "title": "Честно указать, что работали с ИИ"
       }
      ]
     }

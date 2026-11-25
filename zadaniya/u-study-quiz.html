@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Пробный тест по своему конспекту — Артефакты</title>
+<meta name="description" content="10 вопросов по вашему конспекту, ваши ответы и разбор каждой ошибки: где ошиблись и что повторить перед контрольной. По шагам, промпт внутри, около 25 минут.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Пробный тест по своему конспекту">
+<meta property="og:description" content="10 вопросов по вашему конспекту, ваши ответы и разбор каждой ошибки: где ошиблись и что повторить перед контрольной. По шагам, промпт внутри, около 25 минут.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png?v=27898e84">
+<meta property="og:url" content="https://ai.madzhitov.ru/zadaniya/u-study-quiz.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/zadaniya/u-study-quiz.html">
+<link rel="preload" href="../v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../v6/fonts/fonts.css?v=0e1f3d7b">
+<link rel="stylesheet" href="../tropa-lesson.css?v=889f3ed1">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+  .st-calc-res { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap:10px; }
+  .st-calc-r { background:#F3F4F7; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); }
+  .st-calc-r b { font-size:24px; line-height:1.15; font-weight:800; color:#16161A; }
+  .st-calc-r.is-main b { font-size:36px; }
+  .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
+  .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Пробный тест по своему конспекту","description":"10 вопросов по вашему конспекту, ваши ответы и разбор каждой ошибки: где ошиблись и что повторить перед контрольной. По шагам, промпт внутри, около 25 минут.","url":"https://ai.madzhitov.ru/zadaniya/u-study-quiz.html","inLanguage":"ru","totalTime":"PT25M","tool":[{"@type":"HowToTool","name":"Алиса AI"},{"@type":"HowToTool","name":"DeepSeek"},{"@type":"HowToTool","name":"ГигаЧат"}],"step":[{"@type":"HowToStep","position":1,"name":"Пришлите материал и попросите тест","text":"Отправьте конспект целиком: тогда вопросы будут по вашей программе, а не по тому, что модель помнит. Файл или фото можно прикрепить в чате."},{"@type":"HowToStep","position":2,"name":"Отвечайте сами","text":"Без конспекта и без подсказок. Если не знаете, так и пишите «не знаю»: это честнее и полезнее угадывания."},{"@type":"HowToStep","position":3,"name":"Разберите ошибки","text":"После десятого вопроса попросите разбор. Сверьте спорные ответы с учебником: модель тоже ошибается."}],"dateModified":"2026-11-25"}</script>
+<link rel="stylesheet" href="../v6/static.css?v=4d1de0fc">
+<script defer src="../v6/static.js?v=e97e63c9"></script>
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../zadaniya/">Задания по шагам</a></div>
+    <h1>Пробный тест по своему конспекту</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-11-25">25.11.2026</time></p>
+    <p class="lead">10 вопросов по вашему конспекту, ваши ответы и разбор каждой ошибки: где ошиблись и что повторить перед контрольной</p>
+    <p class="st-meta">около 25 мин · с нуля · без VPN · задача «Пройти пробный тест перед контрольной»</p>
+    <p class="st-meta">Черновик на согласовании: текст может уточняться.</p>
+    
+    <h2>Чем делать</h2><p>Алиса AI, DeepSeek, ГигаЧат</p>
+    <h2>Что подготовить</h2><ul class="st-list"><li>Конспект, параграф или список тем к контрольной: текст, файл или фото</li></ul>
+    <p><a class="st-primary" href="../#unit-u-study-quiz">Делать по шагам</a></p>
+    <h2>Шаги</h2>
+    <h3>1. Пришлите материал и попросите тест</h3><p>Отправьте конспект целиком: тогда вопросы будут по вашей программе, а не по тому, что модель помнит. Файл или фото можно прикрепить в чате.</p><div class="st-copy"><button type="button" data-copy="prompt-0" aria-label="Скопировать промпт: Пришлите материал и попросите тест">Скопировать</button><pre class="st-prompt" id="prompt-0">Сделай пробный тест по моему конспекту ниже. Только по нему, ничего не добавляй.
+10 вопросов: 4 с выбором ответа, 4 с коротким ответом, 2 на объяснение «почему».
+Задавай по одному и жди моего ответа. Правильные ответы не показывай, пока я не отвечу.
+
+Конспект:
+[вставьте конспект]</pre></div>
+    <h3>2. Отвечайте сами</h3><p>Без конспекта и без подсказок. Если не знаете, так и пишите «не знаю»: это честнее и полезнее угадывания.</p>
+    <h3>3. Разберите ошибки</h3><p>После десятого вопроса попросите разбор. Сверьте спорные ответы с учебником: модель тоже ошибается.</p><div class="st-copy"><button type="button" data-copy="prompt-2" aria-label="Скопировать промпт: Разберите ошибки">Скопировать</button><pre class="st-prompt" id="prompt-2">Разбери мои ответы. Для каждой ошибки: в чём она, какой правильный ответ и где это в конспекте. В конце — три темы, которые стоит повторить, и по одному вопросу на каждую для второй попытки.</pre></div><ul class="st-list"><li>Вы ответили на все 10 вопросов без конспекта</li><li>Каждая ошибка разобрана и сверена с конспектом</li><li>Ошибки записаны в журнал ошибок</li></ul>
+    <h2>Если получилось почти</h2><ul class="st-list"><li>Вопросы слишком лёгкие. Попросите: «сложнее, как на контрольной, с подвохами»</li><li>В вопросе то, чего не было в конспекте. Напишите: «только по моему конспекту» и попросите заменить вопрос</li><li>ИИ засчитал неверный ответ. Проверьте по учебнику и попросите пересчитать</li></ul>
+    
+    <h2>Опирается на методы</h2><p>Проверка ответа ИИ</p>
+    
+    <section class="st-related"><h2>Продолжить</h2><ul><li><a href="../zadaniya/u-ai-answer-check.html">Проверка ответа ИИ</a> · 25 мин</li></ul><p><a href="https://t.me/artefakty_ai" target="_blank" rel="noopener">Новые решения и разборы в канале Артефактов</a></p></section>
+    <div class="pp-open"><a href="../#unit-u-study-quiz">Пройти с отметками шагов и записью в тетрадь →</a></div>
+  </div>
+</main>
+</body>
+</html>
