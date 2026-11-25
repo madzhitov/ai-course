@@ -1389,3 +1389,14 @@ body.v6 .lesson-content .v6-page .v6-author-t a { color:var(--accent); font-weig
 .lesson-notice { margin: 16px 0 20px; padding: 14px 16px; border-radius: 12px; background: #FFF4E5; border: 1px solid #F2D3A6; font-size: 15px; line-height: 1.5; }
 .lesson-notice b { display: block; margin-bottom: 4px; }
 .lesson-notice p { margin: 6px 0 0; }
+
+/* Иллюстрации без коробки (25.11): у картинок свой светлый фон с шумом, на фоне страницы он читался прямоугольником.
+   В шапках разделов плашку убираем, края картинки растворяются маской. Карточки путей и ролей остаются в рамке. */
+.v6-art.v6-phero-art, .v6-art.v6-icon-art, .v6-art.v6-sec-art { background:transparent; border-radius:0; }
+.v6-art.v6-phero-art img, .v6-art.v6-icon-art img, .v6-art.v6-sec-art img {
+  -webkit-mask-image:radial-gradient(ellipse 58% 58% at 50% 52%, #000 58%, transparent 100%);
+  mask-image:radial-gradient(ellipse 58% 58% at 50% 52%, #000 58%, transparent 100%);
+}
+.v6-art.v6-icon-art { width:300px; height:300px; }
+.v6-art.v6-icon-art img { transform:none; object-fit:contain; }
+@media (max-width:720px) { .v6-art.v6-icon-art { width:200px; height:200px; } }

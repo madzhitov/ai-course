@@ -64,6 +64,7 @@
     return `<div class="kd-card${big ? ' is-big' : ''}" data-kd-card="${esc(c.id)}" role="button" tabindex="0" aria-label="${esc(c.t)}, ${c.m} ${plural(c.m, 'минута', 'минуты', 'минут')}. Перевернуть карту">
       <div class="kd-in"><div class="kd-face kd-front">
         <div class="kd-row"><span class="kd-min">${c.m}<small>мин</small></span><span class="kd-chips">${c.review ? '<span class="kd-chip is-o">черновик</span>' : ''}${c.nv ? '<span class="kd-chip">без VPN</span>' : ''}<span class="kd-chip is-o">${esc(ROLE[c.grp] || '')}</span></span></div>
+        <div class="kd-suit">${svg(c.v)}</div>
         <div class="kd-t">${esc(c.t)}</div><div class="kd-r">${esc(c.r)}</div>
         <div class="kd-foot"><span class="kd-hint">↻ Что внутри</span><a class="kd-go" href="#unit-${esc(c.id)}" data-kd-open="${esc(c.id)}">Открыть →</a></div>
       </div><div class="kd-face kd-back">${back(c)}</div></div></div>`;
