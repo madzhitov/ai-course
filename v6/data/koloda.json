@@ -165,41 +165,13 @@
   "u-teacher-essay-check": "find",
   "u-teacher-adapt": "write",
   "u-teacher-prompt-parts": "find",
-  "u-teacher-parents": "write"
+  "u-teacher-parents": "write",
+  "u-ai-picture": "show",
+  "u-ai-short-video": "show",
+  "u-ai-song": "invent",
+  "u-ai-summary": "find"
  },
  "soon": [
-  {
-   "id": "gap-visual",
-   "verb": "show",
-   "group": "ai",
-   "title": "Картинка по вашему описанию",
-   "result": "Изображение для поста, обложки или открытки с русским текстом и проверка, что на нём нет ошибок.",
-   "where": "Алиса AI, Шедеврум, ГигаЧат"
-  },
-  {
-   "id": "gap-video",
-   "verb": "show",
-   "group": "ai",
-   "title": "Короткий ролик из фото и текста",
-   "result": "Видео на несколько секунд для поздравления или поста из ваших фото и описания.",
-   "where": "ГигаЧат, Алиса AI"
-  },
-  {
-   "id": "gap-song",
-   "verb": "invent",
-   "group": "ai",
-   "title": "Песня-поздравление со своими словами",
-   "result": "Песня с именем и историей человека: текст пишете с ИИ, музыку собирает сервис.",
-   "where": "ГигаЧат, Suno"
-  },
-  {
-   "id": "gap-summary",
-   "verb": "find",
-   "group": "ai",
-   "title": "Пересказ видео или документа",
-   "result": "Видео до 4 часов, статья или PDF на одну страницу: главное, цифры и что из этого следует для вас.",
-   "where": "Яндекс Браузер"
-  },
   {
    "id": "gap-s-explain",
    "verb": "find",
