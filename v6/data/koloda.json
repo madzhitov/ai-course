@@ -169,48 +169,12 @@
   "u-ai-picture": "show",
   "u-ai-short-video": "show",
   "u-ai-song": "invent",
-  "u-ai-summary": "find"
+  "u-ai-summary": "find",
+  "u-study-explain": "find",
+  "u-study-coursework": "decide",
+  "u-study-quiz": "find",
+  "u-study-defense": "invent",
+  "u-study-ai-rules": "find"
  },
- "soon": [
-  {
-   "id": "gap-s-explain",
-   "verb": "find",
-   "group": "student",
-   "title": "Объясни тему и проверь меня",
-   "result": "Объяснение на ваших примерах и вопросы, которые показывают, что вы поняли. Текст пишете сами.",
-   "where": "Алиса AI, DeepSeek"
-  },
-  {
-   "id": "gap-s-course",
-   "verb": "decide",
-   "group": "student",
-   "title": "План и источники для курсовой",
-   "result": "Структура, вопросы к литературе и список, что проверить. Без готового текста.",
-   "where": "Алиса AI, DeepSeek"
-  },
-  {
-   "id": "gap-s-quiz",
-   "verb": "find",
-   "group": "student",
-   "title": "Пробный тест перед контрольной",
-   "result": "Вопросы по вашему конспекту и разбор ошибок.",
-   "where": "Алиса AI, ГигаЧат"
-  },
-  {
-   "id": "gap-s-rules",
-   "verb": "find",
-   "group": "student",
-   "title": "Как честно указать, что работал с ИИ",
-   "result": "Что требуют правила вуза, как описать помощь ИИ и что видит проверка на заимствования.",
-   "where": "—"
-  },
-  {
-   "id": "gap-s-defense",
-   "verb": "invent",
-   "group": "student",
-   "title": "Тренажёр к защите",
-   "result": "ИИ задаёт вопросы как комиссия, вы отвечаете, он показывает слабые места.",
-   "where": "Алиса AI, ГигаЧат"
-  }
- ]
+ "soon": []
 }
