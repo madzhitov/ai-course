@@ -8,16 +8,17 @@
   const track = (n, d) => { try { umTrack(n, d); } catch (_) {} };
   const ROLE = { ai: 'Для всех', self: 'Для себя', seller: 'Продавцу', marketing: 'Маркетологу', product: 'Продакту', teacher: 'Учителю', student: 'Учиться с ИИ' };
   const WORKROLES = [['all', 'Все'], ['seller', 'Продавцу'], ['marketing', 'Маркетологу'], ['product', 'Продакту']];
+  // Масти действий: линия 2.2 в цвет текста, сетка 32 (направление Б концепта иллюстраций, 25.11)
   const ICON = {
-    write: '<path d="M5 22 20 7l3 3-15 15H5z" fill="currentColor"/>',
-    count: '<rect x="4" y="4" width="22" height="22" rx="5" fill="currentColor"/><path d="M10 15h10M15 10v10" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>',
-    find: '<circle cx="13" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="3.4"/><path d="m19 19 6 6" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/>',
-    invent: '<path d="M15 3l3.4 7.6L26 12l-6 5.4L21.6 26 15 21.8 8.4 26 10 17.4 4 12l7.6-1.4z" fill="currentColor"/>',
-    decide: '<path d="M15 3 27 15 15 27 3 15z" fill="currentColor"/>',
-    show: '<rect x="3" y="6" width="24" height="16" rx="3" fill="currentColor"/><path d="M15 22v5M10 27h10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>',
-    delegate: '<circle cx="15" cy="15" r="11" fill="currentColor"/><path d="M10 15h10m-4-4 4 4-4 4" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+    write: '<path d="M6 26.5 8 19 21.5 5.5a2.5 2.5 0 0 1 3.5 0l1.5 1.5a2.5 2.5 0 0 1 0 3.5L13 24.5z" stroke-linejoin="round"/><path d="M18.5 8.5l5 5M6 26.5l4.5-1"/>',
+    count: '<rect x="7" y="4" width="18" height="24" rx="4"/><rect x="11" y="8" width="10" height="5" rx="1.5" fill="currentColor" stroke="none"/><g fill="currentColor" stroke="none"><circle cx="12" cy="18" r="1.4"/><circle cx="16" cy="18" r="1.4"/><circle cx="20" cy="18" r="1.4"/><circle cx="12" cy="23" r="1.4"/><circle cx="16" cy="23" r="1.4"/><circle cx="20" cy="23" r="1.4"/></g>',
+    find: '<circle cx="14" cy="14" r="8.5"/><path d="m20.5 20.5 6 6" stroke-width="2.6"/><path d="M10.5 12a4 4 0 0 1 3.5-3" stroke-width="2"/>',
+    invent: '<path d="M16 4a8 8 0 0 0-4.6 14.5c.9.7 1.6 1.7 1.6 2.9V22h6v-.6c0-1.2.7-2.2 1.6-2.9A8 8 0 0 0 16 4z" stroke-linejoin="round"/><path d="M13 25.5h6M14 28.5h4"/>',
+    decide: '<path d="M16 28V15M16 15 8.5 7.5M16 15l7.5-7.5"/><path d="M8 12V7h5M24 12V7h-5" stroke-linejoin="round"/><circle cx="16" cy="15" r="2.2" fill="currentColor" stroke="none"/>',
+    show: '<rect x="4" y="5" width="24" height="16" rx="3"/><path d="M16 21v4M10 28l6-3 6 3" stroke-linejoin="round"/><path d="M9 16l4-4 3 3 5-5" stroke-width="2" stroke-linejoin="round"/>',
+    delegate: '<circle cx="8.5" cy="10" r="3.5"/><circle cx="23.5" cy="10" r="3.5"/><path d="M3.5 24a5 5 0 0 1 10 0M18.5 24a5 5 0 0 1 10 0"/><path d="M12.5 18.5h7m-2.5-2.5 2.5 2.5-2.5 2.5" stroke-width="2" stroke-linejoin="round"/>',
   };
-  const svg = (k) => `<svg viewBox="0 0 30 30" aria-hidden="true" focusable="false">${ICON[k] || ''}</svg>`;
+  const svg = (k) => `<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false">${ICON[k] || ''}</svg>`;
 
   let K = null, CARDS = [], aud = 'self', verb = 'write', wrole = 'all';
   try { const a = localStorage.getItem('kd-aud'); if (a) aud = a; } catch (_) {}
