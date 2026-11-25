@@ -124,7 +124,7 @@ body.v6 .kd-promo .kd-promo-t b{color:#fff}
   .kd-aud::-webkit-scrollbar{display:none}
   .kd-aud button{flex:none;white-space:nowrap}
   #kd-first{aspect-ratio:auto}
-  #kd-first .kd-card{aspect-ratio:auto;min-height:420px}
+  #kd-first .kd-card{aspect-ratio:auto;height:440px}
   #kd-first .kd-t{margin-top:24px}
 }
 .kd-hero>div{min-width:0}
