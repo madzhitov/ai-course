@@ -97,6 +97,10 @@
   const AI_ROLES = ['creator', 'self', 'specialist'];
   const fwSort = (a, b) => (!!b.full - !!a.full) || ((a.firstWaveOrder || 99) - (b.firstWaveOrder || 99)) || a.title.localeCompare(b.title, 'ru');
   const roleName = (id) => id === 'all' ? 'Все роли' : ((role(id) || {}).title || id);
+  // словарь «для кого» в справочнике (26.11): те же слова, что в колоде и каталоге
+  const FW_FOR = { seller: 'Продажи онлайн', marketing: 'Маркетинг', product: 'Продукт и проекты', project: 'Продукт и проекты', owner: 'Для работы', all: 'Для всех' };
+  const fwFor = (rs) => [...new Set((rs || []).map((r) => FW_FOR[r] || roleName(r)))];
+  const fwMatch = (c, r) => !r || (c.roles || []).includes(r) || (c.roles || []).includes('all') || (r === 'product' && (c.roles || []).includes('project'));
   // сначала методы из задач самой роли (у продакта — product.*, а не маркетинговые из первой волны)
   const fwOfRole = (rid) => {
     const grp = (role(rid) || {}).taskGroup;
@@ -108,7 +112,7 @@
   function fwTile(c, from) {
     const req = (c.requires || []).map(fwById).filter(Boolean)[0];
     return `<a class="v6-fw" href="#fw-${e(c.id)}" onclick="V6.openFw('${e(c.id)}','${from}'); return false;">${fwTags(c)}<span class="v6-fw-t">${e(c.title)}</span><span class="v6-fw-p">${e(c.solves)}</span>
-      <span class="v6-fw-m"><span>${(c.roles || []).map(roleName).map(e).join(' · ')}</span>${req ? `<span class="s">сначала: ${e(req.title)}</span>` : ''}${c.full ? '' : '<span class="s">карточка пишется</span>'}</span></a>`;
+      <span class="v6-fw-m"><span>${fwFor(c.roles).map(e).join(' · ')}</span>${req ? `<span class="s">сначала: ${e(req.title)}</span>` : ''}${c.full ? '' : '<span class="s">карточка пишется</span>'}</span></a>`;
   }
   const fwGrid = (cards, from) => `<div class="v6-fwgrid">${cards.map((c) => fwTile(c, from)).join('')}</div>`;
   function methodsBlock(rid, title) {
@@ -702,12 +706,12 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     const box = document.getElementById('v6-fwlist');
     if (!box) return;
     const q = KQ.toLowerCase();
-    const cards = D.fw.filter((c) => (!KF.role || (c.roles || []).includes(KF.role)) && (!KF.label || c.label === KF.label)
+    const cards = D.fw.filter((c) => fwMatch(c, KF.role) && (!KF.label || c.label === KF.label)
       && (!KF.task || [c.task, ...(c.tasks || [])].some((t) => t && String(t).startsWith(KF.task + '.')))
       && (!KF.ind || !(c.industries || []).length || (c.industries || []).some((i) => i === KF.ind || i === 'any'))
       && (!q || has(c.title, q) || has(c.solves, q))).sort(fwSort);
     if (!cards.length) { box.innerHTML = '<p class="v6-lead">Под эти фильтры карточек нет.</p>'; return; }
-    if (KF.role || q) { box.innerHTML = `<div class="v6-fwhead"><span class="v6-fwhead-t">${KF.role ? e(roleName(KF.role)) + ' · в порядке изучения' : 'Найдено'}</span><span class="v6-meta">${cards.length} ${plural(cards.length, 'карточка', 'карточки', 'карточек')}</span></div>${fwGrid(cards, 'knowledge')}`; return; }
+    if (KF.role || q) { box.innerHTML = `<div class="v6-fwhead"><span class="v6-fwhead-t">${KF.role ? e(FW_FOR[KF.role] || roleName(KF.role)) + ' · в порядке изучения' : 'Найдено'}</span><span class="v6-meta">${cards.length} ${plural(cards.length, 'карточка', 'карточки', 'карточек')}</span></div>${fwGrid(cards, 'knowledge')}`; return; }
     const groups = [...new Set(D.fw.map((c) => c.group))];
     box.innerHTML = groups.map((g) => { const cs = cards.filter((c) => c.group === g); return cs.length ? `<div class="v6-fwhead"><span class="v6-fwhead-t">${e(GROUP_T[g] || g)}</span><span class="v6-meta">${cs.length}</span></div>${fwGrid(cs, 'knowledge')}` : ''; }).join('');
   }
@@ -859,7 +863,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     shell('<div class="v6c" id="v6-kn"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
     Promise.all([load(), loadDict()]).then(() => {
       const start = fwById('four-part-request');
-      const roles = ['seller', 'marketing', 'product', 'project', 'owner', 'all'];
+      const roles = ['seller', 'marketing', 'product'];
       const pill = (k, v, t) => `<button type="button" class="v6-pill" data-kf="${k}" data-v="${v}" aria-pressed="${(KF[k] || '') === v}" onclick="V6.kf('${k}','${v}')">${t}</button>`;
       const dirs = D.groups.flatMap((g) => (g.directions || []).filter((d) => D.fw.some((c) => [c.task, ...(c.tasks || [])].some((t) => t && String(t).startsWith(d.id + '.')))).map((d) => [d.id, `${g.title} · ${d.title}`]));
       const tab = (t, title, n) => `<button type="button" role="tab" class="v6-ktab" aria-selected="${KT === t}" onclick="V6.ktab('${t}')">${title}<span class="v6-meta">${n}</span></button>`;
@@ -867,11 +871,11 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       let body = '';
       if (KT === 'fw') {
         const preview = DICT.terms.filter((t) => (t.cards || []).length).slice(0, 6);
-        body = `<div class="v6-kfilters"><div class="v6-kf"><span class="v6-meta">Роль</span><div class="v6-pills">${pill('role', '', 'Все')}${roles.map((r) => pill('role', r, e(r === 'all' ? 'ИИ для всех' : roleName(r)))).join('')}</div></div>
+        body = `<div class="v6-kfilters"><div class="v6-kf"><span class="v6-meta">Для какой работы</span><div class="v6-pills">${pill('role', '', 'Все')}${roles.map((r) => pill('role', r, e(FW_FOR[r]))).join('')}</div></div>
             <div class="v6-kf"><label class="v6-meta" for="v6-kf-task">Задача</label><select id="v6-kf-task" class="v6-select" onchange="V6.kf('task', this.value)"><option value="">Все задачи</option>${dirs.map(([id, t]) => `<option value="${e(id)}"${KF.task === id ? ' selected' : ''}>${e(t)}</option>`).join('')}</select></div>
             <div class="v6-kf"><span class="v6-meta">Отрасль</span><div class="v6-pills">${pill('ind', '', 'Любая')}${IND.map(([v, t]) => pill('ind', v, t)).join('')}</div></div>
             <div class="v6-kf"><span class="v6-meta">Метка</span><div class="v6-pills">${pill('label', '', 'Все')}${['база', 'тренд', 'авторский'].map((l) => pill('label', l, l)).join('')}</div></div></div>
-          ${start ? `<a class="v6-next v6-dark" style="margin:32px 0 0" href="#fw-${start.id}" onclick="V6.openFw('${start.id}','knowledge'); return false;"><span class="v6-next-in"><span class="v6-next-l">Начните с этого · для всех ролей</span><span class="v6-next-t">${e(start.title)}</span><span class="v6-next-p">Без него не работает ни один промпт в заданиях. Пять минут, и первый ответ ИИ становится рабочим.</span></span><span class="v6b is-accent v6-btn-xl">Открыть</span></a>` : ''}
+          ${start ? `<a class="v6-next v6-dark" style="margin:32px 0 0" href="#fw-${start.id}" onclick="V6.openFw('${start.id}','knowledge'); return false;"><span class="v6-next-in"><span class="v6-next-l">Начните с этого · для всех</span><span class="v6-next-t">${e(start.title)}</span><span class="v6-next-p">Без него не работает ни один промпт в заданиях. Пять минут, и первый ответ ИИ становится рабочим.</span></span><span class="v6b is-accent v6-btn-xl">Открыть</span></a>` : ''}
           <a class="v6-learn-s is-ready" style="margin-top:12px" href="#brand-stages" onclick="V6.open('brand-stages'); return false;"><span><b>Стадии бренда</b><span class="v6-meta">метод для бренда: пять стадий, ловушки, первые дела и диагностика</span></span><span class="v6-meta">открыть →</span></a>
           <div id="v6-fwlist"></div>
           ${preview.length ? `<section class="v6-psec"><div class="v6-sec-head"><div><h2 class="v6-psec-h">Словарь</h2><p class="v6-meta">${DICT.terms.length} ${plural(DICT.terms.length, 'термин', 'термина', 'терминов')}${DICT.terms.some((t) => t.en) ? ' · с английским оригиналом' : ''}</p></div><button class="v6-link" onclick="V6.ktab('dict')">Весь словарь →</button></div><div class="v6-termgrid">${preview.map(termRow).join('')}</div></section>` : ''}`;
@@ -980,7 +984,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         const lessons = (c.lessons || []).filter((l) => lessonOf(l));
         const near = D.fw.filter((x) => x.id !== c.id && x.task && x.task === c.task).sort(fwSort).slice(0, 3);
         const hero = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.open('knowledge')">Справочник</a><span>/</span><a onclick="V6.open('knowledge')">Методы</a><span>/</span><span>${e(c.title)}</span></nav>
-          <section class="v6-phero v6-thero"><div class="v6-phero-text"><span class="v6-tags">${c.label ? `<span class="v6t${c.label === 'авторский' ? '' : ' is-grey'}">${e(c.label)}</span>` : ''}${(c.roles || []).map((r) => `<span class="v6t is-grey">${e(roleName(r))}</span>`).join('')}${c.source && c.source.author ? `<span class="v6t is-grey">${e(c.source.author)}</span>` : ''}</span>
+          <section class="v6-phero v6-thero"><div class="v6-phero-text"><span class="v6-tags">${c.label ? `<span class="v6t${c.label === 'авторский' ? '' : ' is-grey'}">${e(c.label)}</span>` : ''}${fwFor(c.roles).map((r) => `<span class="v6t is-grey">${e(r)}</span>`).join('')}${c.source && c.source.author ? `<span class="v6t is-grey">${e(c.source.author)}</span>` : ''}</span>
             <h1 class="v6-d">${e(c.title)}</h1><p class="v6-phero-lead">${e(c.solves)}.</p>${req.length ? `<span class="v6-fw-req">Сначала: ${req.map(fwLink).join(', ')}</span>` : ''}${c.full ? `<span class="v6-btns v6-noprint" style="margin-top:20px"><button class="v6b is-soft" onclick="V6.fwPrint()">Распечатать на A4</button></span>` : ''}</div>${art('fw-card', 'v6-phero-art v6-sp-art')}</section>`;
         let body = '';
         if (c.full) {
