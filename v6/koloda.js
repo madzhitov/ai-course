@@ -39,8 +39,8 @@
   const A = () => K.audiences.find((a) => a.id === aud);
   const byId = (id) => CARDS.find((c) => c.id === id);
   // задания «для всех» (группа ai) видны в каждой аудитории; подуровень работы сужает только рабочие группы
-  function inAud(c, id) {
-    const a = id ? K.audiences.find((x) => x.id === id) : A(), w = id ? 'all' : wrole;
+  function inAud(c, id, wr) {
+    const a = id ? K.audiences.find((x) => x.id === id) : A(), w = id ? (wr || 'all') : wrole;
     if (c.grp === 'ai' || (a.extra || []).includes(c.id)) return a.id !== 'work' || w === 'all';
     if (!a.groups.includes(c.grp)) return false;
     return a.id !== 'work' || w === 'all' || c.grp === w;
@@ -148,7 +148,7 @@
       const done = (txt) => { cp.textContent = txt; setTimeout(() => { cp.textContent = 'Скопировать запрос'; }, 1600); };
       try { navigator.clipboard.writeText(c.p).then(() => done('Скопировано'), () => done('Не вышло, откройте шаги')); } catch (_) { done('Не вышло, откройте шаги'); }
       return; }
-    const all = t.closest('[data-kd-all]'); if (all) { ev.preventDefault(); const g = A().groups; CAT.g = aud === 'all' ? 'all' : g.length === 1 ? g[0] : 'all'; CAT.v = 'all'; track('kd-all', { aud }); V6.open('tasks'); return; }
+    const all = t.closest('[data-kd-all]'); if (all) { ev.preventDefault(); CAT.a = aud; CAT.w = wrole; CAT.v = 'all'; track('kd-all', { aud }); V6.open('tasks'); return; }
     const pk = t.closest('[data-kd-pick]'); if (pk) { const h = document.getElementById('kd-verbs'); if (h) h.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' }); return; }
     const wk = t.closest('[data-kd-work]'); if (wk) { ev.stopPropagation(); track('agency-door', { from: 'home-deck' }); V6.open('companies'); return; }
     if (t.closest('a')) return;
@@ -187,16 +187,15 @@
     if (!bound) { document.addEventListener('click', onClick); document.addEventListener('keydown', onKey); bound = true; }
   }
   // ---------- Каталог «Решений»: поиск и фильтры «для кого» и «что сделать» (прототип модели 25.11) ----------
-  const CAT = { g: 'all', v: 'all', q: '', soon: false };
+  const CAT = { a: 'all', w: 'all', v: 'all', q: '', soon: false };
   const pl = (n, a, b, c) => { const x = n % 10, y = n % 100; return x === 1 && y !== 11 ? a : x >= 2 && x <= 4 && (y < 12 || y > 14) ? b : c; };
-  let CAT_GROUPS = [];
   function catList() {
     const box = document.getElementById('kd-cat-list'); if (!box) return;
     const q = CAT.q.trim().toLowerCase();
-    const items = CARDS.filter((c) => (CAT.soon || !c.gap) && (CAT.g === 'all' || c.grp === CAT.g) && (CAT.v === 'all' || c.v === CAT.v) && (!q || (c.t + ' ' + (c.r || '')).toLowerCase().includes(q)))
+    const items = CARDS.filter((c) => (CAT.soon || !c.gap) && inAud(c, CAT.a, CAT.w) && (CAT.v === 'all' || c.v === CAT.v) && (!q || (c.t + ' ' + (c.r || '')).toLowerCase().includes(q)))
       .sort((x, y) => (!!x.gap - !!y.gap) || (!!x.review - !!y.review) || ((x.m || 99) - (y.m || 99)));
     const ready = items.filter((c) => !c.gap).length;
-    const gname = (id) => (CAT_GROUPS.find((g) => g.id === id) || {}).t || '';
+    const gname = (id) => ROLE[id] || '';
     document.getElementById('kd-cat-found').textContent = ready ? `Найдено ${ready} ${pl(ready, 'задание', 'задания', 'заданий')}` : 'Ничего не нашлось. Попробуйте другое слово или сбросьте фильтры';
     box.innerHTML = items.map((c) => c.gap
       ? `<div class="kd-row is-soon"><b>${esc(c.t)}<span class="kd-tag is-o">${esc(gname(c.grp))}</span></b><span class="kd-row-r">${esc(c.r)}</span><span class="kd-row-m">скоро</span></div>`
@@ -204,15 +203,17 @@
   }
   function catChips() {
     const chip = (k, v, t) => `<button type="button" data-kd-cat="${k}" data-v="${esc(v)}" aria-pressed="${CAT[k] === v}">${esc(t)}</button>`;
-    document.getElementById('kd-cat-g').innerHTML = chip('g', 'all', 'Все') + CAT_GROUPS.map((g) => chip('g', g.id, g.t)).join('');
+    document.getElementById('kd-cat-g').innerHTML = K.audiences.map((a) => chip('a', a.id, a.tab)).join('');
+    const sw = document.getElementById('kd-cat-w');
+    document.getElementById('kd-cat-wrap').hidden = CAT.a !== 'work';
+    sw.innerHTML = WORKROLES.map(([w, n]) => chip('w', w, n)).join('');
     document.getElementById('kd-cat-v').innerHTML = chip('v', 'all', 'Всё') + K.verbs.map((x) => chip('v', x.id, x.title)).join('');
   }
   // tasksPage() в v6.js рисует первый экран с поиском (#v6-ask-t) и зовёт catalog().
   function catalog(D, box, field) {
     build(D);
-    const ORDER = ['ai', 'self', 'teacher', 'student', 'marketing', 'product', 'seller'];
-    CAT_GROUPS = ORDER.map((id) => D.groups.find((g) => g.id === id)).filter(Boolean).map((g) => ({ id: g.id, t: g.title }));
     box.innerHTML = `<div class="kd-fl"><span class="kd-fl-l">Для кого</span><div class="kd-chiprow" id="kd-cat-g"></div></div>
+      <div class="kd-fl is-sub" id="kd-cat-wrap"><span class="kd-fl-l">Какая работа</span><div class="kd-chiprow" id="kd-cat-w"></div></div>
       <div class="kd-fl"><span class="kd-fl-l">Что сделать</span><div class="kd-chiprow" id="kd-cat-v"></div></div>
       <div class="kd-found"><span id="kd-cat-found"></span>${K.soon.length ? `<label><input type="checkbox" id="kd-cat-soon"${CAT.soon ? ' checked' : ''}> показать, что скоро</label>` : ''}</div>
       <div class="kd-rows" id="kd-cat-list"></div>`;
@@ -223,7 +224,8 @@
   }
   function onCat(ev) {
     const b = ev.target.closest('[data-kd-cat]'); if (!b) return false;
-    CAT[b.dataset.kdCat] = b.dataset.v; track('kd-cat', { k: b.dataset.kdCat, v: b.dataset.v }); catChips(); catList(); return true;
+    CAT[b.dataset.kdCat] = b.dataset.v; if (b.dataset.kdCat === 'a') CAT.w = 'all';
+    track('kd-cat', { k: b.dataset.kdCat, v: b.dataset.v }); catChips(); catList(); return true;
   }
   window.Koloda = { mount, catalog };
 })();

@@ -265,3 +265,5 @@ body.v6 .lesson-content h1.kd-h1{font-size:clamp(30px,3.2vw,40px) !important;fon
 .kd-for.is-sub{padding-left:12px;border-left:2px solid rgba(31,47,92,.18);margin-bottom:16px}
 @media (max-width:520px){.kd-for{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -14px 10px;padding:0 14px 2px}.kd-for::-webkit-scrollbar{display:none}.kd-for button{flex:none}.kd-for-l{flex:none}}
 .kd-grid .kd-chip{font-size:10px;padding:4px 6px;letter-spacing:-.01em}
+.kd-fl[hidden]{display:none !important}
+.kd-fl.is-sub{padding-left:12px;border-left:2px solid rgba(31,47,92,.18)}
