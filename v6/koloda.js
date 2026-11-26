@@ -227,5 +227,7 @@
     CAT[b.dataset.kdCat] = b.dataset.v; if (b.dataset.kdCat === 'a') CAT.w = 'all';
     track('kd-cat', { k: b.dataset.kdCat, v: b.dataset.v }); catChips(); catList(); return true;
   }
-  window.Koloda = { mount, catalog };
+  // каталог с заранее выбранной аудиторией и направлением работы (страница «Для работы»)
+  const catFor = (a, w) => { CAT.a = a || 'all'; CAT.w = w || 'all'; CAT.v = 'all'; };
+  window.Koloda = { mount, catalog, catFor };
 })();
