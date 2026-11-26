@@ -189,3 +189,12 @@ body.v6 .kd-onb-h{font-size:clamp(22px,2.2vw,28px)}
 #kd-deck{scroll-margin-top:96px}
 @media (max-width:520px){.kd-grid .kd-suit{display:none}}
 .v6-newstop-i small{white-space:nowrap}
+
+/* Тихая типографика (26.11): колода и онбординг в той же шкале */
+.kd-h1{font-weight:700;font-size:clamp(30px,3.2vw,40px);letter-spacing:-.02em;line-height:1.1}
+.kd-t{font-weight:700}
+.is-big .kd-t{font-size:22px}
+.kd-min{font-weight:800}
+.is-big .kd-min{font-size:44px}
+.kd-verb b{font-weight:700;font-size:16px}
+body.v6 .kd-onb-h{font-weight:700;font-size:clamp(20px,2vw,24px)}
