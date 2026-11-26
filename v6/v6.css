@@ -1426,3 +1426,38 @@ body.v6 .lesson-content .v6-page .v6-ucard-t { font-size:clamp(22px,2vw,26px) !i
 .v6-next-t { font-size:clamp(22px,2.4vw,30px); font-weight:700; }
 body.v6 .lesson-content .v6-page .v6-step-t, .v6-nbitem-t, .v6-nbday, .v6-lside-t, .v6-resume b { font-weight:700; }
 .v6-calc-n { font-size:36px; font-weight:700; }
+
+
+/* ===== Урок как книга (26.11): колонка чтения по центру, поля вместо карточек, один вход к Алёше, заметка в нижней полосе ===== */
+@media (min-width:1101px) {
+  .v6-lgrid { grid-template-columns:200px minmax(0,680px) 220px; justify-content:center; gap:48px; padding-top:48px; }
+  .v6-lside, .v6-lright { top:calc(var(--header) + 24px); }
+}
+@media (max-width:1100px) and (min-width:761px) { .v6-lgrid { grid-template-columns:minmax(0,680px) 220px; justify-content:center; gap:40px; } }
+.v6-lside { background:transparent; padding:0; border-radius:0; }
+.v6-lside-l { padding:0 0 4px; font-size:13px; }
+.v6-lside-t { padding:0 0 12px; font-size:17px; font-weight:700; }
+.v6-lside .v6-lstep { padding:7px 0; border-radius:0; font-size:14px; }
+.v6-lside .v6-lstep.is-now { background:transparent; color:var(--accent); font-weight:600; }
+.v6-lside-f { padding:12px 0 0; }
+.v6-lsheet { background:transparent; padding:0; border-radius:0; }
+body.v6 .lesson-content .v6-lsheet p, body.v6 .lesson-content .v6-lsheet li { font-size:17.5px; line-height:1.72; }
+.v6-lright { gap:20px; }
+body.v6 .lesson-content .v6-ltoc { background:transparent !important; padding:0 !important; border-radius:0 !important; }
+body.v6 .lesson-content .v6-ltoc a { font-size:14px !important; padding:5px 0 !important; }
+.v6-lright .v6-note { background:transparent; border:0; border-left:2px solid var(--accent); border-radius:0; padding:4px 0 4px 12px; box-shadow:none; font-size:14px; color:var(--text-2); text-align:left; }
+.v6-lright .v6-note .v6-ava { width:26px; height:26px; font-size:12px; flex:none; }
+.v6-lnote-btn { margin-left:16px; border:1px solid var(--line); background:var(--surface); border-radius:999px; padding:7px 13px; font:500 14px/1 var(--font-body); color:var(--ink); cursor:pointer; }
+.v6-lnote-btn[aria-expanded="true"] { background:var(--accent-tint); border-color:transparent; }
+.v6-lnote-pop { border-bottom:1px solid var(--line); padding:14px 0; background:var(--surface); }
+.v6-lnote-pop[hidden] { display:none; }
+.v6-lnote-pop .v6-lnote-h { display:flex; gap:10px; align-items:baseline; margin-bottom:8px; font-size:14px; }
+.v6-lnote-pop textarea { width:100%; min-height:96px; border:1px solid var(--line); border-radius:10px; padding:12px; font:inherit; font-size:15px; resize:vertical; background:var(--ground); }
+/* на компьютере Алёша есть в шапке и на полях урока: круглую кнопку не показываем */
+@media (min-width:981px) { body.v6 .alesha-widget.is-lesson:not(.is-open) { display:none !important; } }
+@media (max-width:760px) { .v6-lbar-l .v6-ldots { display:none; } .v6-lnote-btn { margin-left:8px; } }
+/* телефон: в нижней полосе оставляем только кнопку заметки слева; содержание урока затухает, а не режется */
+/* кнопка заметки: на компьютере в нижней полосе, на телефоне в конце урока рядом с Алёшей */
+.v6-lnote-m { display:none; }
+@media (max-width:760px) { .v6-lnote-m { display:inline-block; align-self:flex-start; margin-left:0; } }
+body.v6 .lesson-content .v6-ltoc { -webkit-mask-image:linear-gradient(#000 calc(100% - 40px), transparent); mask-image:linear-gradient(#000 calc(100% - 40px), transparent); padding-bottom:24px !important; }
