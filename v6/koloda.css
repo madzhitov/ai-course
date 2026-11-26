@@ -267,3 +267,11 @@ body.v6 .lesson-content h1.kd-h1{font-size:clamp(30px,3.2vw,40px) !important;fon
 .kd-grid .kd-chip{font-size:10px;padding:4px 6px;letter-spacing:-.01em}
 .kd-fl[hidden]{display:none !important}
 .kd-fl.is-sub{padding-left:12px;border-left:2px solid rgba(31,47,92,.18)}
+
+/* «Решения» одним листом: строки без своих рамок, тонкие линейки между ними (26.11) */
+.kd-rows{display:block;background:var(--surface);border-radius:14px;padding:4px 20px}
+body.v6 .kd-rows>.kd-row{background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:16px 0}
+body.v6 .kd-rows>.kd-row:last-child{border-bottom:0}
+body.v6 .kd-rows>a.kd-row:hover{border-color:var(--line);background:transparent}
+body.v6 .kd-rows>a.kd-row:hover b{color:var(--accent)}
+@media (max-width:520px){.kd-rows{padding:2px 14px}}
