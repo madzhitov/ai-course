@@ -4079,7 +4079,7 @@ footer.site-footer { background:transparent; border:none; padding:0; margin:56px
 </head>
 <!-- class="v6" сразу в разметке: иначе main сначала рисуется со старым отступом под меню и съезжает (CLS), а без JS первый экран без стилей v6 -->
 <body class="v6">
-<script id="v6-boot">/* урок стартует в старом каркасе и включает v6 сам, когда догрузит данные: с ранним v6 был бы лишний рывок */if(/^#lesson-/.test(location.hash))document.body.classList.remove("v6");try{if(localStorage.getItem("kd-seen")==="1")document.documentElement.classList.add("kd-seen")}catch(e){}</script>
+<script id="v6-boot">/* урок стартует в старом каркасе и включает v6 сам, когда догрузит данные: с ранним v6 был бы лишний рывок */if(/^#lesson-/.test(location.hash))document.body.classList.remove("v6");try{if(localStorage.getItem("kd-seen")!=="0")document.documentElement.classList.add("kd-seen")}catch(e){document.documentElement.classList.add("kd-seen")}</script>
 
 <!-- ТРОПА F2: двухстрочная мачта по эталону. Старые секц-ссылки скрыты
      (data-section нужны setActiveTopNav); видимая навигация — в .h-nav. -->

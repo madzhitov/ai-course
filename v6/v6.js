@@ -360,8 +360,9 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       const box = (id) => document.getElementById(id);
       if (!box('v6-home-rest')) return;
       box('v6-strip').innerHTML = strip;
-      box('v6-home-rest').innerHTML = newsTop() + '<div id="kd-rest"></div>' + learnBlock() + authorBlock();
-      if (window.Koloda) Koloda.mount(D, box('kd-rest'));
+      box('v6-home-rest').innerHTML = '<div id="kd-rest"></div>' + learnBlock()
+        + '<div class="kd-aboutzone"><h2 class="v6-h2">Об Артефактах</h2>' + newsTop() + '<div id="kd-about"></div>' + authorBlock() + '</div>';
+      if (window.Koloda) Koloda.mount(D, box('kd-rest'), box('kd-about'));
     }).catch(() => fail('v6-home'));
     return el;
   }
