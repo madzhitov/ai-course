@@ -93,17 +93,27 @@
     const list = CARDS.filter((c) => c.v === verb && inAud(c)).sort((x, y) => (!!x.gap - !!y.gap) || (!!x.review - !!y.review) || x.m - y.m);
     box.innerHTML = `<div class="v6-sec-head is-split"><div><h2 class="v6-h2">${esc(v.title)}</h2><p>${esc(A().tab)} · ${esc(v.hint)}</p></div>
       ${aud === 'work' ? `<div class="kd-filters">${WORKROLES.map(([k, n]) => `<button type="button" data-kd-wrole="${k}" aria-pressed="${k === wrole}">${n}</button>`).join('')}</div>` : ''}</div>
-      <div class="kd-grid">${list.length ? list.map((c) => `<div>${card(c)}</div>`).join('') : '<p class="v6-lead">Для этой аудитории здесь пока нет карт.</p>'}</div>`;
+      <div class="kd-grid">${list.length ? list.map((c) => `<div>${card(c)}</div>`).join('') + backs(list.length) : '<p class="v6-lead">Для этой аудитории здесь пока нет карт.</p>'}</div>`;
+  }
+  // Рубашки добирают неполный ряд: «вся колода аудитории» ведёт в каталог с фильтром, «другое действие» — к выбору действий (26.11)
+  const BACK_ART = { self: 'role-self', teacher: 'role-teacher', student: 'role-student', work: 'role-specialist' };
+  function backs(n) {
+    const k = n >= 4 ? (4 - n % 4) % 4 : 4 - n, a = A();
+    if (!k) return '';
+    const all = CARDS.filter((c) => !c.gap && inAud(c)).length;
+    const others = K.verbs.filter((v) => v.id !== verb && CARDS.some((c) => c.v === v.id && !c.gap && inAud(c))).map((v) => v.title);
+    const one = `<div><a class="kd-cb" href="#tasks" data-kd-all="${esc(aud)}"><b>Вся колода: ${esc(a.tab.toLowerCase())}</b><img src="v6/art/${BACK_ART[aud] || 'home-deck'}.webp" alt="" loading="lazy"><span>${all} ${plural(all, 'задание', 'задания', 'заданий')}</span></a></div>`;
+    const two = others.length ? `<div><button type="button" class="kd-cb" data-kd-pick="1"><b>Другое действие</b><img src="v6/art/home-deck.webp" alt="" loading="lazy"><span>${esc(others.slice(0, 4).join(' · '))}</span></button></div>` : '';
+    return k >= 2 ? one + two : one;
   }
   function render() { renderHero(); renderDeck(); }
 
   function rest() {
-    return `<section class="v6-sec" id="kd-deck"></section>
-      <section class="v6-sec"><div class="v6-sec-head is-split"><h2 class="v6-h2">Как это работает</h2><p>Без регистрации и без оплаты. Всё, что вы делаете, остаётся у вас.</p></div>
-        <div class="kd-steps"><div><span>1</span><h3>Вытяните карту</h3><p>Выберите действие и карту под свою задачу. На ней сказано, что получится и за сколько минут.</p></div>
-        <div><span>2</span><h3>Сделайте на своих данных</h3><p>Шаги, готовый запрос и сервис, который работает без VPN. Подставляете своё.</p></div>
-        <div><span>3</span><h3>Проверьте по списку</h3><p>Перед тем как отправить или показать, пройдите проверку с карты: факты, цифры, тон.</p></div></div></section>
-      <section class="v6-sec" id="kd-svc"></section>
+    return `<section class="v6-sec" id="kd-deck"></section>`;
+  }
+  // Полоса «Об Артефактах» внизу главной: сквозное не мешается с колодой и обучением (26.11)
+  function about() {
+    return `<section class="v6-sec" id="kd-svc"></section>
       <section class="v6-sec"><div class="kd-work"><div><span class="kd-eye">Для бизнеса</span><h2>ИИ в работе компании</h2>
         <p>Обучим команду работать с ИИ на своих данных или сделаем под ключ. Ведёт Руслан Маджитов с командой.</p>
         <div class="kd-wb"><button type="button" class="is-main" data-kd-work="1">Что делаем для бизнеса</button></div></div>
@@ -132,6 +142,8 @@
       const done = (txt) => { cp.textContent = txt; setTimeout(() => { cp.textContent = 'Скопировать запрос'; }, 1600); };
       try { navigator.clipboard.writeText(c.p).then(() => done('Скопировано'), () => done('Не вышло, откройте шаги')); } catch (_) { done('Не вышло, откройте шаги'); }
       return; }
+    const all = t.closest('[data-kd-all]'); if (all) { ev.preventDefault(); const g = A().groups; CAT.g = g.length === 1 ? g[0] : 'all'; CAT.v = 'all'; track('kd-all', { aud }); V6.open('tasks'); return; }
+    const pk = t.closest('[data-kd-pick]'); if (pk) { const h = document.getElementById('kd-verbs'); if (h) h.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' }); return; }
     const wk = t.closest('[data-kd-work]'); if (wk) { ev.stopPropagation(); track('agency-door', { from: 'home-deck' }); V6.open('companies'); return; }
     if (t.closest('a')) return;
     if (onCat(ev)) return;
@@ -159,10 +171,11 @@
     set('kd-n-fw', `${D.fw.length} ${plural(D.fw.length, 'метод', 'метода', 'методов')}`);
     fetch('v6/data/dictionary.json').then((r) => r.ok ? r.json() : null).then((d) => { if (d && d.terms) set('kd-n-terms', `${d.terms.length} ${plural(d.terms.length, 'термин', 'термина', 'терминов')}`); }).catch(() => {});
   }
-  function mount(D, restBox) {
+  function mount(D, restBox, aboutBox) {
     onbNumbers(D);
     build(D);
     if (restBox) restBox.insertAdjacentHTML('afterbegin', rest());
+    if (aboutBox) aboutBox.insertAdjacentHTML('afterbegin', about());
     render();
     services();
     if (!bound) { document.addEventListener('click', onClick); document.addEventListener('keydown', onKey); bound = true; }

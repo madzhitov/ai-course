@@ -1400,3 +1400,29 @@ body.v6 .lesson-content .v6-page .v6-author-t a { color:var(--accent); font-weig
 .v6-art.v6-icon-art { width:300px; height:300px; }
 .v6-art.v6-icon-art img { transform:none; object-fit:contain; }
 @media (max-width:720px) { .v6-art.v6-icon-art { width:200px; height:200px; } }
+
+/* ===== Тихая типографика (26.11, вариант Б): тот же Montserrat, 700 вместо 800–900, шкала 40 / 36 / 28 / 20.
+   Слой в конце файла перекрывает прежние размеры; новые экраны строить сразу на этих значениях. ===== */
+body.v6 .lesson-content .v6-page h1.v6-d,
+body.v6 .lesson-content .v6-phero h1.v6-d,
+body.v6 .lesson-content .v6-thero h1.v6-d,
+body.v6 .lesson-content .v6-page h1.v6-d.v6-home-h1 { font-size:clamp(30px,3.2vw,40px) !important; font-weight:700 !important; line-height:1.1 !important; letter-spacing:-0.02em !important; text-wrap:balance; }
+body.v6 .lesson-content .v6-lsheet h1 { font-size:clamp(28px,2.8vw,36px) !important; font-weight:700 !important; line-height:1.12 !important; letter-spacing:-0.02em !important; text-wrap:balance; hyphens:manual !important; -webkit-hyphens:manual !important; }
+body.v6 .lesson-content .v6-page h2.v6-h2,
+body.v6 .lesson-content .v6-page .v6c:not(#v6-home) h2.v6-h2,
+body.v6 .lesson-content .v6-page h2.v6-pmain-h,
+body.v6 .lesson-content .v6-page h2.v6-psec-h { font-size:clamp(22px,2.2vw,28px) !important; font-weight:700 !important; line-height:1.15 !important; letter-spacing:-0.015em !important; }
+body.v6 .lesson-content .v6-lsheet h2 { font-size:24px !important; font-weight:700 !important; letter-spacing:-0.01em !important; }
+body.v6 .lesson-content .v6-lsheet h3 { font-size:19px !important; font-weight:700 !important; }
+body.v6 .lesson-content .v6-page h3.v6-h3,
+body.v6 .lesson-content .v6-page .v6-task h3,
+body.v6 .lesson-content .v6-page .v6-pcard h3,
+body.v6 .lesson-content .v6-page .v6-way2 h3,
+body.v6 .lesson-content .v6-page .v6-needs h3,
+body.v6 .lesson-content .v6-page .v6-dir h3 { font-size:20px !important; font-weight:700 !important; letter-spacing:-0.01em !important; line-height:1.2 !important; }
+body.v6 .lesson-content .v6-page .v6-ucard-t { font-size:clamp(22px,2vw,26px) !important; font-weight:700 !important; }
+.v6-rolepath-t, .v6-pathc-t, .v6-fwhead-t, .v6-gate-t, .v6-mile-t { font-size:22px; font-weight:700; }
+.v6-trail-t, .v6-fw-t, .v6-prep-h, .v6-kit-h, .v6-soonbox-t, .v6-learn-b b { font-size:19px; font-weight:700; }
+.v6-next-t { font-size:clamp(22px,2.4vw,30px); font-weight:700; }
+body.v6 .lesson-content .v6-page .v6-step-t, .v6-nbitem-t, .v6-nbday, .v6-lside-t, .v6-resume b { font-weight:700; }
+.v6-calc-n { font-size:36px; font-weight:700; }
