@@ -222,7 +222,6 @@ body.v6 .lesson-content .v6-page .kd-aboutzone section.v6-sec,body.v6 .lesson-co
 body.v6 .lesson-content .v6-page a.kd-cb,body.v6 .lesson-content .v6-page a.kd-cb:hover{color:#fff !important;text-decoration:none !important;border:0 !important}
 /* в ряду колоды плашки в одну строку, без плашки аудитории (она уже выбрана) */
 .kd-grid .kd-chips{flex-wrap:nowrap;gap:4px}
-.kd-grid .kd-chips .kd-chip.is-o:last-child{display:none}
 .kd-grid .kd-chip{font-size:10.5px;padding:4px 7px}
 .kd-grid .kd-row{align-items:flex-start}
 /* телефон: действия строкой с прокруткой, без дубля первой карты, рубашки без списка (26.11) */
@@ -254,4 +253,15 @@ body.v6 .lesson-content h1.kd-h1{font-size:clamp(30px,3.2vw,40px) !important;fon
 .kd-grid .kd-front .kd-r{-webkit-line-clamp:6}
 .kd-front .kd-foot{margin-top:auto}
 @media (max-width:520px){.kd-grid .kd-pip{display:none}.kd-grid .kd-front .kd-t{margin-top:10px}}
-.kd-grid .kd-chips .kd-chip.is-o:first-child+.kd-chip:not(.is-o){display:none}
+
+/* Строка «Для кого» под действием (26.11): фильтр, а не первый шаг */
+.kd-for{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin:0 0 10px}
+.kd-for-l{font-size:13px;color:var(--text-3);margin-right:6px}
+.kd-for button{border:1px solid transparent;background:transparent;border-radius:999px;padding:7px 11px;font:500 13.5px/1 var(--font-body);color:var(--text-2);cursor:pointer}
+.kd-for button em{font-style:normal;color:var(--text-3);margin-left:5px;font-variant-numeric:tabular-nums}
+.kd-for button[aria-pressed="true"]{background:var(--surface);border-color:var(--line);color:var(--ink);font-weight:600}
+.kd-for button[disabled]{opacity:.35;cursor:default}
+.kd-for button:focus-visible{outline:3px solid var(--accent-mid,#B9C4DD);outline-offset:2px}
+.kd-for.is-sub{padding-left:12px;border-left:2px solid rgba(31,47,92,.18);margin-bottom:16px}
+@media (max-width:520px){.kd-for{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -14px 10px;padding:0 14px 2px}.kd-for::-webkit-scrollbar{display:none}.kd-for button{flex:none}.kd-for-l{flex:none}}
+.kd-grid .kd-chip{font-size:10px;padding:4px 6px;letter-spacing:-.01em}
