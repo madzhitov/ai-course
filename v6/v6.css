@@ -1471,3 +1471,14 @@ a.v6-next.v6-dark .v6-next-t, .v6-dark.v6-dark-row h2, .v6-dark.v6-dark-row h3 {
 a.v6-next.v6-dark .v6-next-p, .v6-dark.v6-dark-row p { color:var(--text-2) !important; font-size:16px; }
 body.v6 .lesson-content .v6-page a.v6-next.v6-dark:hover { border-left-color:var(--accent); box-shadow:0 8px 24px -16px rgba(31,47,92,.35); }
 body.v6 .v6-pill[aria-pressed="true"]{background:var(--accent) !important;border-color:var(--accent) !important;color:#fff !important}
+
+/* ===== Проход по телефону 26.11 ===== */
+/* «мягкая» кнопка видна на сером фоне: белая с тонкой рамкой (раньше фон совпадал со страницей) */
+.v6b.is-soft { background:var(--surface); border:1px solid var(--line); }
+/* без чёрных плит: блоки-двери («Тетрадь только в этом браузере», «Как обучить команду») — светлые с синей чертой */
+.v6-tdoor { background:var(--surface); color:var(--ink); border-left:3px solid var(--accent); font-size:16px; }
+.v6-tdoor span { color:var(--text-2); }
+body.v6 .lesson-content .v6-page .v6-tdoor a { color:var(--accent); }
+.v6-tdoor .v6b.is-white { background:var(--accent); color:#fff; border:0; }
+.v6-tdoor .v6-nbload { background:var(--surface); color:var(--ink); border:1px solid var(--line); }
+.v6-tdoor .v6-nbreset { color:var(--text-3); }
