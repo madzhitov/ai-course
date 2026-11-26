@@ -43,7 +43,7 @@
   const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
   // иллюстрации v2.1 (3D, фон #F3F4F7) — WebP; ещё не перерисованные — старые SVG (v6-brief/illustrations/handoff-2026-10-04)
   const ART_WEBP = new Set(['icon-roli', 'icon-zadachi', 'icon-puti', 'icon-znaniya', 'icon-kompanii', 'paths-hero', 'knowledge', 'task', 'fw-card',
-    'main-path', 'seller-path', 'product-path', 'marketing-path', 'role-seller', 'role-creator', 'role-self', 'role-product', 'role-project', 'role-marketing', 'role-specialist', 'role-owner',
+    'main-path', 'seller-path', 'product-path', 'marketing-path', 'role-seller', 'role-creator', 'role-self', 'role-product', 'role-project', 'role-marketing', 'role-specialist', 'role-owner', 'role-teacher',
     'trail-projects', 'trail-everyday', 'trail-industry', 'trail-claude', 'trail-vibe', 'companies', 'notebook', 'lesson']);
   const artSrc = (name) => `v6/art/${name}.${ART_WEBP.has(name) ? 'webp' : 'svg'}`;
   const art = (name, cls) => `<div class="v6-art${cls ? ' ' + cls : ''}" aria-hidden="true"><img src="${artSrc(name)}" alt="" loading="lazy"></div>`;
