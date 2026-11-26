@@ -1140,12 +1140,13 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
           <aside class="v6-lside" aria-label="${e(g.title)}"><span class="v6-lside-l">${e(g.label)}</span><span class="v6-lside-t">${e(g.title)}</span><nav class="v6-lsteps">${ids.map(step).join('')}</nav>${g.foot ? `<span class="v6-lside-f">${e(g.foot)}</span>` : ''}</aside>
           <article class="v6-lsheet"></article>
           <aside class="v6-lright">
-            <button class="v6-note" onclick="umTrack('alyosha-open', { from: 'lesson' }); aleshaToggle()"><span class="v6-ava">А</span><span>Застряли или хотите на своём примере? Спросите Алёшу.</span></button>
-            <div class="v6-lnote"><span class="v6-lnote-h"><b>Тетрадь</b><span class="v6-meta">в этом браузере</span></span><label class="v6-sr" for="v6-ln">Заметка к уроку</label><textarea id="v6-ln" placeholder="Мысль, пример из работы, вопрос" oninput="V6.lessonNote(this, '${e(L.id)}')"></textarea></div>
             <div class="v6-ltoc-slot"></div>
+            <button class="v6-note" onclick="umTrack('alyosha-open', { from: 'lesson' }); aleshaToggle()"><span class="v6-ava">А</span><span>Застряли? Алёша объяснит на вашем примере</span></button>
+            <button type="button" class="v6-lnote-btn v6-lnote-m" onclick="const p=document.getElementById('v6-lnote-pop'); p.hidden=!p.hidden; if (!p.hidden) document.getElementById('v6-ln').focus();">Заметка к уроку</button>
           </aside>
         </div>
-        <div class="v6-lbar"><div class="v6c v6-lbar-in"><span class="v6-lbar-l">${pos >= 0 ? `Урок ${pos + 1} из ${ids.length}` : e(g.title)} ${dots}</span>
+        <div class="v6-lbar"><div class="v6-lnote-pop" id="v6-lnote-pop" hidden><div class="v6c"><label class="v6-lnote-h" for="v6-ln"><b>Заметка к уроку</b><span class="v6-meta">сохраняется в «Тетради» в этом браузере</span></label><textarea id="v6-ln" placeholder="Мысль, пример из работы, вопрос" oninput="V6.lessonNote(this, '${e(L.id)}')"></textarea></div></div>
+          <div class="v6c v6-lbar-in"><span class="v6-lbar-l">${pos >= 0 ? `Урок ${pos + 1} из ${ids.length}` : e(g.title)} ${dots}<button type="button" class="v6-lnote-btn" aria-controls="v6-lnote-pop" aria-expanded="false" onclick="const p=document.getElementById('v6-lnote-pop'); p.hidden=!p.hidden; this.setAttribute('aria-expanded', String(!p.hidden)); if (!p.hidden) document.getElementById('v6-ln').focus();">Заметка</button></span>
           <span class="v6-lbar-r">${prev ? `<button class="v6b is-soft v6-btn-lg" onclick="openLesson(${lessonArgOf(prev)})">Назад</button>` : ''}${nextBtn}</span></div></div>`;
       wrap.querySelector('.v6-lsheet').appendChild(view);
       if (toc) { toc.open = true; toc.classList.add('v6-ltoc'); wrap.querySelector('.v6-ltoc-slot').appendChild(toc); }
