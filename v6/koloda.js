@@ -6,8 +6,8 @@
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const plural = (n, one, few, many) => { const x = n % 10, y = n % 100; return x === 1 && y !== 11 ? one : x >= 2 && x <= 4 && (y < 12 || y > 14) ? few : many; };
   const track = (n, d) => { try { umTrack(n, d); } catch (_) {} };
-  const ROLE = { ai: 'Для всех', self: 'Для себя', seller: 'Продавцу', marketing: 'Маркетологу', product: 'Продакту', teacher: 'Учителю', student: 'Учиться с ИИ' };
-  const WORKROLES = [['all', 'Все'], ['seller', 'Продавцу'], ['marketing', 'Маркетологу'], ['product', 'Продакту']];
+  const ROLE = { ai: 'Для всех', self: 'Для себя', seller: 'Продажи онлайн', marketing: 'Маркетинг', product: 'Продукт и проекты', teacher: 'Учителю', student: 'Учёба' };
+  const WORKROLES = [['all', 'Вся работа'], ['seller', 'Продажи онлайн'], ['marketing', 'Маркетинг'], ['product', 'Продукт и проекты']];
   // Масти действий: линия 2.2 в цвет текста, сетка 32 (направление Б концепта иллюстраций, 25.11)
   const ICON = {
     write: '<path d="M6 26.5 8 19 21.5 5.5a2.5 2.5 0 0 1 3.5 0l1.5 1.5a2.5 2.5 0 0 1 0 3.5L13 24.5z" stroke-linejoin="round"/><path d="M18.5 8.5l5 5M6 26.5l4.5-1"/>',
@@ -20,13 +20,13 @@
   };
   const svg = (k) => `<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false">${ICON[k] || ''}</svg>`;
 
-  let K = null, CARDS = [], aud = 'self', verb = 'write', wrole = 'all';
-  try { const a = localStorage.getItem('kd-aud'); if (a) aud = a; } catch (_) {}
+  // Сначала действие, аудитория — фильтр под ним (26.11). Прежний ключ kd-aud не читаем: по умолчанию «Все».
+  let K = null, CARDS = [], aud = 'all', verb = 'write', wrole = 'all';
+  try { const a = localStorage.getItem('kd-aud2'); if (a) aud = a; } catch (_) {}
 
   function build(D) {
     K = D.koloda;
-    if (!K.audiences.some((a) => a.id === aud)) aud = 'self';
-    verb = A().verb;
+    if (!K.audiences.some((a) => a.id === aud)) aud = 'all';
     const real = D.units.filter((u) => Array.isArray(u.steps) && u.steps.length && K.units[u.id]).map((u) => {
       const t = D.tasks[u.task] || {};
       const last = u.steps.map((s) => s.checklist).filter(Boolean).pop() || [];
@@ -38,11 +38,12 @@
   }
   const A = () => K.audiences.find((a) => a.id === aud);
   const byId = (id) => CARDS.find((c) => c.id === id);
-  function inAud(c) {
-    const a = A();
-    if ((a.extra || []).includes(c.id)) return true;
+  // задания «для всех» (группа ai) видны в каждой аудитории; подуровень работы сужает только рабочие группы
+  function inAud(c, id) {
+    const a = id ? K.audiences.find((x) => x.id === id) : A(), w = id ? 'all' : wrole;
+    if (c.grp === 'ai' || (a.extra || []).includes(c.id)) return a.id !== 'work' || w === 'all';
     if (!a.groups.includes(c.grp)) return false;
-    return aud !== 'work' || wrole === 'all' || c.grp === wrole;
+    return a.id !== 'work' || w === 'all' || c.grp === w;
   }
 
   function back(c) {
@@ -57,6 +58,12 @@
     if (c.grp === 'seller' || c.grp === 'marketing') h += `<button type="button" data-kd-work="1">Внедрить в работу</button>`;
     return h + '</div>';
   }
+  // плашки карты: в ряду колоды одна, самая нужная (черновик → аудитория → без VPN); на большой карте все
+  function chips(c, big) {
+    const audChip = aud === 'all' || (aud === 'work' && wrole === 'all') || c.grp === 'ai';
+    const list = [c.review && '<span class="kd-chip is-o">черновик</span>', audChip && `<span class="kd-chip is-o">${esc(ROLE[c.grp] || '')}</span>`, c.nv && '<span class="kd-chip">без VPN</span>'].filter(Boolean);
+    return (big ? list : list.slice(0, 1)).join('');
+  }
   function card(c, big) {
     if (c.gap) return `<div class="kd-card is-gap${big ? ' is-big' : ''}"><div class="kd-in"><div class="kd-face kd-front">
       <div class="kd-row">${svg(c.v)}<span class="kd-min">Скоро</span></div>
@@ -64,7 +71,7 @@
       <div class="kd-foot"><span>${esc(c.w || '')}</span><span>${esc(ROLE[c.grp] || '')}</span></div></div></div></div>`;
     return `<div class="kd-card${big ? ' is-big' : ''}" data-kd-card="${esc(c.id)}" role="button" tabindex="0" aria-label="${esc(c.t)}, ${c.m} ${plural(c.m, 'минута', 'минуты', 'минут')}. Перевернуть карту">
       <div class="kd-in"><div class="kd-face kd-front">
-        <div class="kd-row"><span class="kd-min"><i class="kd-pip">${svg(c.v)}</i>${c.m}<small>мин</small></span><span class="kd-chips">${c.review ? '<span class="kd-chip is-o">черновик</span>' : ''}${c.nv ? '<span class="kd-chip">без VPN</span>' : ''}<span class="kd-chip is-o">${esc(ROLE[c.grp] || '')}</span></span></div>
+        <div class="kd-row"><span class="kd-min"><i class="kd-pip">${svg(c.v)}</i>${c.m}<small>мин</small></span><span class="kd-chips">${chips(c, big)}</span></div>
         <div class="kd-t">${esc(c.t)}</div><div class="kd-r">${esc(c.r)}</div>
         <div class="kd-foot"><span class="kd-hint">↻ Что внутри</span><a class="kd-go" href="#unit-${esc(c.id)}" data-kd-open="${esc(c.id)}">Открыть →</a></div>
       </div><div class="kd-face kd-back">${back(c)}</div></div></div>`;
@@ -73,9 +80,6 @@
   function renderHero() {
     const a = A(), q = (id) => document.getElementById(id);
     if (!q('kd-hero')) return;
-    document.querySelectorAll('[data-kd-aud]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.kdAud === aud)));
-    q('kd-h1').textContent = a.h1;
-    q('kd-lead').textContent = a.lead;
     q('kd-verbs').innerHTML = K.verbs.map((v) => {
       const all = CARDS.filter((c) => c.v === v.id && inAud(c)), ready = all.filter((c) => !c.gap).length, soon = all.length - ready;
       const n = ready ? `${ready} ${plural(ready, 'задание', 'задания', 'заданий')}` : soon ? 'скоро' : '—';
@@ -90,18 +94,21 @@
     if (!box) return;
     const v = K.verbs.find((x) => x.id === verb);
     const list = CARDS.filter((c) => c.v === verb && inAud(c)).sort((x, y) => (!!x.gap - !!y.gap) || (!!x.review - !!y.review) || x.m - y.m);
-    box.innerHTML = `<div class="v6-sec-head is-split"><div><h2 class="v6-h2">${esc(v.title)}</h2><p>${esc(A().tab)} · ${esc(v.hint)}</p></div>
-      ${aud === 'work' ? `<div class="kd-filters">${WORKROLES.map(([k, n]) => `<button type="button" data-kd-wrole="${k}" aria-pressed="${k === wrole}">${n}</button>`).join('')}</div>` : ''}</div>
+    const cnt = (id, w) => CARDS.filter((c) => c.v === verb && !c.gap && (w ? inAud(c, 'work') && (w === 'all' || c.grp === w) : inAud(c, id))).length;
+    const workN = cnt('work');
+    const audRow = `<div class="kd-for" role="group" aria-label="Для кого"><span class="kd-for-l">Для кого:</span>${K.audiences.map((x) => { const n = cnt(x.id); return `<button type="button" data-kd-aud="${x.id}" aria-pressed="${x.id === aud}"${n ? '' : ' disabled'}>${esc(x.tab)}<em>${n}</em></button>`; }).join('')}</div>`;
+    const subRow = aud === 'work' && workN > 6 ? `<div class="kd-for is-sub" role="group" aria-label="Какая работа"><span class="kd-for-l">Какая работа:</span>${WORKROLES.map(([w, n]) => { const c = cnt('work', w); return `<button type="button" data-kd-wrole="${w}" aria-pressed="${w === wrole}"${c ? '' : ' disabled'}>${n}<em>${c}</em></button>`; }).join('')}</div>` : '';
+    box.innerHTML = `<div class="v6-sec-head"><div><h2 class="v6-h2">${esc(v.title)}</h2><p>${esc(v.hint)}</p></div></div>${audRow}${subRow}
       <div class="kd-grid">${list.length ? list.map((c) => `<div>${card(c)}</div>`).join('') + backs(list.length) : '<p class="v6-lead">Для этой аудитории здесь пока нет карт.</p>'}</div>`;
   }
   // Рубашки добирают неполный ряд: «вся колода аудитории» ведёт в каталог с фильтром, «другое действие» — к выбору действий (26.11)
-  const BACK_ART = { self: 'role-self', teacher: 'role-teacher', student: 'role-student', work: 'role-specialist' };
+  const BACK_ART = { all: 'home-deck', self: 'role-self', teacher: 'role-teacher', student: 'role-student', work: 'role-specialist' };
   function backs(n) {
     const k = n >= 4 ? (4 - n % 4) % 4 : 4 - n, a = A();
     if (!k) return '';
     const all = CARDS.filter((c) => !c.gap && inAud(c)).length;
     const others = K.verbs.filter((v) => v.id !== verb && CARDS.some((c) => c.v === v.id && !c.gap && inAud(c))).map((v) => v.title);
-    const one = `<div><a class="kd-cb" href="#tasks" data-kd-all="${esc(aud)}"><b>Вся колода: ${esc(a.tab.toLowerCase())}</b><img src="v6/art/${BACK_ART[aud] || 'home-deck'}.webp" alt="" loading="lazy"><span>${all} ${plural(all, 'задание', 'задания', 'заданий')}</span></a></div>`;
+    const one = `<div><a class="kd-cb" href="#tasks" data-kd-all="${esc(aud)}"><b>${aud === 'all' ? 'Весь каталог' : 'Вся колода: ' + esc(a.tab.toLowerCase())}</b><img src="v6/art/${BACK_ART[aud] || 'home-deck'}.webp" alt="" loading="lazy"><span>${all} ${plural(all, 'задание', 'задания', 'заданий')}</span></a></div>`;
     const two = others.length ? `<div><button type="button" class="kd-cb" data-kd-pick="1"><b>Другое действие</b><img src="v6/art/home-deck.webp" alt="" loading="lazy"><span>${esc(others.slice(0, 4).join(' · '))}</span></button></div>` : '';
     return k >= 2 ? one + two : one;
   }
@@ -141,14 +148,14 @@
       const done = (txt) => { cp.textContent = txt; setTimeout(() => { cp.textContent = 'Скопировать запрос'; }, 1600); };
       try { navigator.clipboard.writeText(c.p).then(() => done('Скопировано'), () => done('Не вышло, откройте шаги')); } catch (_) { done('Не вышло, откройте шаги'); }
       return; }
-    const all = t.closest('[data-kd-all]'); if (all) { ev.preventDefault(); const g = A().groups; CAT.g = g.length === 1 ? g[0] : 'all'; CAT.v = 'all'; track('kd-all', { aud }); V6.open('tasks'); return; }
+    const all = t.closest('[data-kd-all]'); if (all) { ev.preventDefault(); const g = A().groups; CAT.g = aud === 'all' ? 'all' : g.length === 1 ? g[0] : 'all'; CAT.v = 'all'; track('kd-all', { aud }); V6.open('tasks'); return; }
     const pk = t.closest('[data-kd-pick]'); if (pk) { const h = document.getElementById('kd-verbs'); if (h) h.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' }); return; }
     const wk = t.closest('[data-kd-work]'); if (wk) { ev.stopPropagation(); track('agency-door', { from: 'home-deck' }); V6.open('companies'); return; }
     if (t.closest('a')) return;
     if (onCat(ev)) return;
     const ob = t.closest('[data-kd-onb]');
     if (ob) { const seen = ob.dataset.kdOnb === '1'; document.documentElement.classList.toggle('kd-seen', seen); try { localStorage.setItem('kd-seen', seen ? '1' : '0'); } catch (_) {} track('kd-onb', { seen }); return; }
-    const au = t.closest('[data-kd-aud]'); if (au) { aud = au.dataset.kdAud; verb = A().verb; wrole = 'all'; try { localStorage.setItem('kd-aud', aud); } catch (_) {} track('kd-aud', { aud }); render(); return; }
+    const au = t.closest('[data-kd-aud]'); if (au && !au.disabled) { aud = au.dataset.kdAud; wrole = 'all'; try { localStorage.setItem('kd-aud2', aud); } catch (_) {} track('kd-aud', { aud }); render(); return; }
     const vb = t.closest('[data-kd-verb]'); if (vb && !vb.disabled) { verb = vb.dataset.kdVerb; track('kd-verb', { verb, aud }); render(); const d = document.getElementById('kd-deck'); if (d) d.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); return; }
     const wr = t.closest('[data-kd-wrole]'); if (wr) { wrole = wr.dataset.kdWrole; render(); return; }
     const c = t.closest('[data-kd-card]'); if (c) { c.classList.toggle('is-flip'); if (c.classList.contains('is-flip')) track('kd-flip', { unit: c.dataset.kdCard }); }
