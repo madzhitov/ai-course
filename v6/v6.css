@@ -1461,3 +1461,13 @@ body.v6 .lesson-content .v6-ltoc a { font-size:14px !important; padding:5px 0 !i
 .v6-lnote-m { display:none; }
 @media (max-width:760px) { .v6-lnote-m { display:inline-block; align-self:flex-start; margin-left:0; } }
 body.v6 .lesson-content .v6-ltoc { -webkit-mask-image:linear-gradient(#000 calc(100% - 40px), transparent); mask-image:linear-gradient(#000 calc(100% - 40px), transparent); padding-bottom:24px !important; }
+
+/* ===== Разделы на один лист (26.11): тёмные плиты-ссылки становятся светлыми строками с синей чертой ===== */
+body.v6 .lesson-content .v6-page a.v6-next.v6-dark,
+.v6-dark.v6-dark-row { background:var(--surface) !important; color:var(--ink) !important; border-left:3px solid var(--accent); border-radius:12px; padding:24px 28px; }
+a.v6-next.v6-dark::before, .v6-dark.v6-dark-row::before { display:none; }
+a.v6-next.v6-dark .v6-next-l, .v6-dark.v6-dark-row .v6-meta { color:var(--text-3) !important; }
+a.v6-next.v6-dark .v6-next-t, .v6-dark.v6-dark-row h2, .v6-dark.v6-dark-row h3 { color:var(--ink) !important; font-size:clamp(20px,2vw,24px); }
+a.v6-next.v6-dark .v6-next-p, .v6-dark.v6-dark-row p { color:var(--text-2) !important; font-size:16px; }
+body.v6 .lesson-content .v6-page a.v6-next.v6-dark:hover { border-left-color:var(--accent); box-shadow:0 8px 24px -16px rgba(31,47,92,.35); }
+body.v6 .v6-pill[aria-pressed="true"]{background:var(--accent) !important;border-color:var(--accent) !important;color:#fff !important}
