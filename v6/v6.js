@@ -43,7 +43,7 @@
   const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
   // иллюстрации v2.1 (3D, фон #F3F4F7) — WebP; ещё не перерисованные — старые SVG (v6-brief/illustrations/handoff-2026-10-04)
   const ART_WEBP = new Set(['icon-roli', 'icon-zadachi', 'icon-puti', 'icon-znaniya', 'icon-kompanii', 'paths-hero', 'knowledge', 'task', 'fw-card',
-    'main-path', 'seller-path', 'product-path', 'marketing-path', 'role-seller', 'role-creator', 'role-self', 'role-product', 'role-project', 'role-marketing', 'role-specialist', 'role-owner', 'role-teacher',
+    'main-path', 'seller-path', 'product-path', 'marketing-path', 'role-seller', 'role-creator', 'role-self', 'role-product', 'role-project', 'role-marketing', 'role-specialist', 'role-owner', 'role-teacher', 'role-student',
     'trail-projects', 'trail-everyday', 'trail-industry', 'trail-claude', 'trail-vibe', 'companies', 'notebook', 'lesson']);
   const artSrc = (name) => `v6/art/${name}.${ART_WEBP.has(name) ? 'webp' : 'svg'}`;
   const art = (name, cls) => `<div class="v6-art${cls ? ' ' + cls : ''}" aria-hidden="true"><img src="${artSrc(name)}" alt="" loading="lazy"></div>`;
@@ -72,7 +72,8 @@
   }
   const role = (id) => D.roles.find((r) => r.id === id);
   // У группы «ИИ-практика» своей роли нет: её задания живут в роли «Для себя»
-  const groupRole = (g) => (role(g) ? g : g === 'ai' ? 'self' : '');
+  // группа задания → страница аудитории (26.11): рабочие группы ведут в «Для работы»
+  const groupRole = (g) => ({ seller: 'work', marketing: 'work', product: 'work', teacher: 'teacher', student: 'student', self: 'self', ai: 'self' }[g] || '');
   const unitsOf = (taskId) => D.units.filter((u) => u.task === taskId);
   // задача «сделана» в 1а = пройден урок-основа хотя бы одного способа (юниты появятся на этапе 2)
   const taskDone = (taskId) => unitsOf(taskId).some((u) => (jget(KEY.units)[u.id] || {}).result === 'yes' || (u.fromLesson && done(u.fromLesson)));
@@ -302,7 +303,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         <span class="v6-btns"><button class="v6b is-accent" onclick="openLesson(1)">Начать с урока 1</button><button class="v6b is-soft" onclick="V6.ktab('lessons')">Все уроки</button></span></div>
       <div class="v6-learn">
         ${big('main-path', 'Для всех', e(D.paths.main.title), 'Начинается с общей базы ИИ: пять уроков. Дальше четыре уровня, от пользователя до инженера.', "V6.openMainPath('home')")}
-        ${big('seller-path', 'Продаю онлайн', 'От селлера к бренду', 'Паспорт товара, своя база, P&amp;L магазина. Три этапа, три Вехи.', "V6.openSellerPath('home')")}
+        ${big('seller-path', 'Продажи онлайн', 'От селлера к бренду', 'Паспорт товара, своя база, P&amp;L магазина. Три этапа, три Вехи.', "V6.openSellerPath('home')")}
       </div>
       ${trails ? `<p class="v6-roleline" style="margin-top:20px"><span>Мини-курсы рядом с путём:</span>${trails}</p>` : ''}</section>`;
   }
@@ -388,7 +389,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     load().then(() => {
       document.getElementById('v6-roles').innerHTML = `<div class="v6-sechero"><div><h1 class="v6-d">Кто вы?</h1>
           <p class="v6-lead">Выберите роль — покажем задачи и путь под неё. Сменить можно в любой момент.</p></div>${art('icon-roli', 'v6-icon-art')}</div>
-        <div class="v6-grid2" style="margin-top:40px">${D.roles.map((r) => `<button type="button" class="v6-role-row has-thumb" onclick="V6.chooseRole('${r.id}','roles')">${roleThumb(r.id)}<span><b>${e(r.title)} ${r.isNew ? '<span class="v6t is-sm">новое</span>' : r.state === 'growing' ? '<span class="v6t is-sm is-grey">роль растёт</span>' : ''}</b><small>${e(r.description)}</small></span>${CHEV}</button>`).join('')}</div>`;
+        <div class="v6-grid2" style="margin-top:40px">${D.roles.filter((r) => !r.alias).map((r) => `<button type="button" class="v6-role-row has-thumb" onclick="V6.chooseRole('${r.id}','roles')">${roleThumb(r.id)}<span><b>${e(r.title)} ${r.isNew ? '<span class="v6t is-sm">новое</span>' : r.state === 'growing' ? '<span class="v6t is-sm is-grey">роль растёт</span>' : ''}</b><small>${e(r.description)}</small></span>${CHEV}</button>`).join('')}</div>`;
     }).catch(() => fail('v6-roles'));
   }
   function mapBlock() {
@@ -398,7 +399,40 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         <div class="v6-dir-rows">${d.tasks.map((t) => t.status === 'soon' ? `<span class="v6-dr is-soon"><span>${e(t.title)}</span><span class="m">скоро</span></span>`
           : `<a class="v6-dr" href="#" onclick="V6.openTask('${e(t.id)}','role'); return false;"><span>${taskDone(t.id) ? '✓ ' : ''}${e(t.title)}</span><span class="m${taskReady(t.id) ? '' : ' is-wip'}">${taskReady(t.id) ? taskMins(t.id) : 'скоро'}</span></a>`).join('')}</div></div>`).join('')}</div></section>`;
   }
+  // Страница «Для работы» (26.11): направления — продажи онлайн, маркетинг, продукт и проекты; в каждом задания, путь и методы
+  const WORK_SUBS = [['seller', 'Продажи онлайн'], ['marketing', 'Маркетинг'], ['product', 'Продукт и проекты']];
+  function openWork(subId, from) {
+    go('role-work', () => {
+      shell('<div class="v6c" id="v6-role"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
+      load().then(() => {
+        const r = role('work'), mine = ls.get(KEY.role);
+        const sp = D.paths.rolePaths.find((x) => x.role === 'seller');
+        const pathOf = { seller: sp && [sp.title, "V6.openSellerPath('work')"], marketing: [DATA_PATHS.marketing.title, "V6.openMarketingPath('work')"], product: [DATA_PATHS.product.title, "V6.openProductPath('work')"] };
+        const row = (u) => `<a class="v6-dr" href="#unit-${e(u.id)}" onclick="V6.openUnit('${e(u.id)}','work'); return false;"><span>${unitState(u.id).result === 'yes' ? '✓ ' : ''}${e(u.title)}${u.review ? ' <span class="v6-meta">· черновик</span>' : ''}</span><span class="m">${u.minutes} мин</span></a>`;
+        const unitsOf = (g) => D.units.filter((u) => hasSteps(u) && D.tasks[u.task] && D.tasks[u.task].group === g).sort((a, b) => (!!a.review - !!b.review) || a.minutes - b.minutes);
+        const secs = WORK_SUBS.map(([g, t]) => {
+          const us = unitsOf(g), p = pathOf[g], isMine = mine === g || (g === 'product' && mine === 'project');
+          return `<section class="v6-sec" id="work-${g}"><div class="v6-sec-head is-split"><div><h2 class="v6-h2">${t}${isMine ? ' <span class="v6t is-grey">ваше</span>' : ''}</h2><p>${us.length} ${plural(us.length, 'задание', 'задания', 'заданий')} на ваших данных</p></div>
+            <span class="v6-btns">${p ? `<button class="v6b is-soft" onclick="${p[1]}">${e(p[0])}</button>` : ''}<button class="v6b is-soft" onclick="V6.openKnowledge('${g}')">Методы</button>${isMine ? '' : `<button class="v6b is-soft" onclick="V6.chooseRole('${g}','work')">Это про меня</button>`}</span></div>
+            <div class="v6-dir">${us.slice(0, 5).map(row).join('')}</div>${us.length > 5 ? `<p style="margin-top:12px"><a class="v6-link" href="#tasks" onclick="if (window.Koloda) Koloda.catFor('work','${g}'); V6.open('tasks'); return false;">Все ${us.length} ${plural(us.length, 'задание', 'задания', 'заданий')}: ${t.toLowerCase()}</a></p>` : ''}</section>`;
+        }).join('');
+        const common = unitsOf('ai');
+        document.getElementById('v6-role').innerHTML = `<div class="v6-role-hero"><div><span class="v6t">Для работы</span><h1 class="v6-d" style="margin-top:20px !important">${e(r.title)}</h1>
+            <p class="v6-lead">${e(r.description)}: задания на ваших данных, пути и методы.</p>
+            <p class="v6-btns" style="margin-top:20px">${WORK_SUBS.map(([g, t]) => `<a class="v6b is-soft" href="#work-${g}" onclick="document.getElementById('work-${g}').scrollIntoView({behavior:'smooth'}); return false;">${t}</a>`).join('')}</p></div>${art('role-specialist', 'v6-phero-art')}</div>
+          ${secs}
+          <section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Для всех профессий</h2><p>Письма, решения, проверка ответов ИИ: пригодится в любой работе.</p></div></div><div class="v6-dir">${common.map(row).join('')}</div></section>
+          ${methodsBlock(subId || 'owner', 'Методы для работы')}`;
+        const at = subId && document.getElementById('work-' + subId);
+        if (at && at.scrollIntoView) at.scrollIntoView();
+      }).catch(() => fail('v6-role'));
+    }, 'roles');
+  }
   function openRole(id, from) {
+    // старые роли: адреса и выбор «Это про меня» ведут на аудитории; таблица постоянная, чтобы работала до загрузки данных
+    const ALIAS = { seller: 'work', marketing: 'work', product: 'work', project: 'work', owner: 'work', specialist: 'work', creator: 'main' };
+    if (ALIAS[id] === 'main') { openMainPath(from); return; }
+    if (id === 'work' || ALIAS[id] === 'work') { openWork(id === 'work' ? null : (id === 'project' ? 'product' : (WORK_SUBS.some((x) => x[0] === id) ? id : null)), from); return; }
     go('role-' + id, () => {
       shell('<div class="v6c" id="v6-role"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
       load().then(() => {
@@ -428,21 +462,22 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
           const ls_ = byNoCode(r.lessons || []).map(lessonOf).filter(Boolean);
           const routes = (typeof ROUTES !== 'undefined' ? ROUTES : []).filter((x) => (r.legacyRoutes || []).includes(x.id));
           const group = r.taskGroup ? D.groups.find((g) => g.id === r.taskGroup) : null;
-          const aiGroup = r.id === 'self' ? D.groups.find((g) => g.id === 'ai') : null;
+          const aiGroup = ['self', 'teacher', 'student'].includes(r.id) ? D.groups.find((g) => g.id === 'ai') : null;
           const ready = ls_.filter((l) => l.content);
           const roleGroups = [group, aiGroup].filter(Boolean).map((g) => g.id);
           const roleReady = D.units.filter((u) => hasSteps(u) && !u.review && roleGroups.includes(D.tasks[u.task].group) && (r.id !== 'project' || /prioritize|manage/.test(D.tasks[u.task].direction.id)));
           // черновики роли (review: true): готовых нет, но открыть уже можно — говорим честно, а не «появятся»
-          const roleDrafts = roleReady.length ? [] : D.units.filter((u) => hasSteps(u) && u.review && roleGroups.includes(D.tasks[u.task].group));
+          // свои задания на проверке показываем всегда и первыми: общие «для всех» не должны их прятать (26.11)
+          const roleDrafts = D.units.filter((u) => hasSteps(u) && u.review && group && D.tasks[u.task].group === group.id);
           const draftBlock = roleDrafts.length ? `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Задания на проверке</h2><p>${roleDrafts.length} ${plural(roleDrafts.length, 'задание', 'задания', 'заданий')} с пометкой «черновик»: их уже можно открыть и пройти, мы проверяем их на живых примерах.</p></div></div><div class="v6-dir">${roleDrafts.map((u) => `<a class="v6-dr" href="#unit-${e(u.id)}" onclick="V6.openUnit('${e(u.id)}','role'); return false;"><span>${unitState(u.id).result === 'yes' ? '✓ ' : ''}${e(u.title)}</span><span class="m">${u.minutes} мин</span></a>`).join('')}</div></section>` : '';
-          const taskBlock = roleReady.length ? `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Готовые задания</h2><p>Готово ${roleReady.length} ${plural(roleReady.length, 'задание', 'задания', 'заданий')}, начать можно сразу. Остальные допишем.</p></div></div><div class="v6-dir">${roleReady.map((u, i) => `${D.tasks[u.task].group === 'ai' && (i === 0 || D.tasks[roleReady[i - 1].task].group !== 'ai') ? '<h3>ИИ-практика</h3>' : ''}<a class="v6-dr" href="#unit-${e(u.id)}" onclick="V6.openUnit('${e(u.id)}','role'); return false;"><span>${unitState(u.id).result === 'yes' ? '✓ ' : ''}${e(u.title)}</span><span class="m">${u.minutes} мин</span></a>`).join('')}</div></section>` : '';
+          const taskBlock = roleReady.length ? `<section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">${roleReady.some((u) => group && D.tasks[u.task].group === group.id) ? 'Готовые задания' : 'Пригодится всем'}</h2><p>Готово ${roleReady.length} ${plural(roleReady.length, 'задание', 'задания', 'заданий')}, начать можно сразу.</p></div></div><div class="v6-dir">${roleReady.map((u, i) => `${D.tasks[u.task].group === 'ai' && (i === 0 || D.tasks[roleReady[i - 1].task].group !== 'ai') ? '<h3>ИИ-практика</h3>' : ''}<a class="v6-dr" href="#unit-${e(u.id)}" onclick="V6.openUnit('${e(u.id)}','role'); return false;"><span>${unitState(u.id).result === 'yes' ? '✓ ' : ''}${e(u.title)}</span><span class="m">${u.minutes} мин</span></a>`).join('')}</div></section>` : '';
           body = `<div class="v6-role-hero"><div><span class="v6t ${r.state === 'growing' ? 'is-grey' : ''}">${roleReady.length ? 'Готовые задания' : roleDrafts.length ? 'Задания на проверке' : r.state === 'growing' ? 'Роль растёт' : 'Роль'}</span><h1 class="v6-d" style="margin-top:20px !important">${e(r.title)}</h1>
               <p class="v6-lead">${e(r.description)}.</p>${pick}</div>${ART_WEBP.has('role-' + r.id) ? art('role-' + r.id, 'v6-phero-art') : ''}</div>
-            ${taskBlock}${draftBlock}
+            ${draftBlock}${taskBlock}
             ${r.state === 'growing' && !roleReady.length && !roleDrafts.length ? `<section class="v6-sec" style="margin-top:56px"><div class="v6-card"><h2 class="v6-h3">Что уже есть и что будет</h2><p class="v6-lead" style="font-size:18px">Сейчас для этой роли ${ready.length} ${pluralUrok(ready.length)}${routes.length ? ` и ${routes.length === 1 ? 'готовый маршрут' : 'готовые маршруты'}` : ''}. Задачи и короткие задания появятся — роль растёт.</p></div></section>` : ''}
             ${routes.length ? `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Готовые маршруты</h2></div><div class="v6-grid2">${routes.map((x) => `<div class="v6-task"><h3>${e(stripEmoji(x.title))}</h3><p>${e(x.description || '')}</p><span class="v6-meta">${e(x.meta || '')}</span><button class="v6b is-soft is-sm" onclick="${x.lessons && x.lessons.length ? `openLesson(${lessonArg(x.lessons[0])})` : `openSection('${e(x.section || 'main')}')`}">Начать маршрут</button></div>`).join('')}</div></section>` : ''}
             ${r.id === 'creator' ? `<section class="v6-sec"><div class="v6-dark v6-dark-row"><div><span class="v6-meta">Путь роли</span><h2 class="v6-h2" style="margin-top:12px !important">${e(D.paths.main.title)}</h2><p style="margin-top:12px">Общий старт из пяти уроков, потом четыре уровня. Каждый замыкается Вехой.</p></div><button class="v6b is-accent" onclick="V6.open('paths')">Открыть путь</button></div></section>`
-              : `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Уроки роли</h2></div><div class="v6-card"><ul class="v6-steps">${ls_.map((l) => l.content ? `<li class="${done(l.id) ? 'is-done' : ''}"><a onclick="openLesson(${lessonArg(l.id)})"><span class="dot">${done(l.id) ? '✓' : ''}</span><span>${e(l.title)}</span><span class="v6-meta">${l.duration ? l.duration + ' мин' : ''}</span></a></li>` : `<li><span class="row"><span class="dot"></span><span class="v6-meta">${e(l.title)}</span><span class="v6-meta">пишется</span></span></li>`).join('')}</ul></div></section>`}
+              : !ls_.length ? '' : `<section class="v6-sec"><div class="v6-sec-head"><h2 class="v6-h2">Уроки роли</h2></div><div class="v6-card"><ul class="v6-steps">${ls_.map((l) => l.content ? `<li class="${done(l.id) ? 'is-done' : ''}"><a onclick="openLesson(${lessonArg(l.id)})"><span class="dot">${done(l.id) ? '✓' : ''}</span><span>${e(l.title)}</span><span class="v6-meta">${l.duration ? l.duration + ' мин' : ''}</span></a></li>` : `<li><span class="row"><span class="dot"></span><span class="v6-meta">${e(l.title)}</span><span class="v6-meta">пишется</span></span></li>`).join('')}</ul></div></section>`}
             ${DATA_PATHS[r.taskGroup] ? (() => { const x = dataPath(r.taskGroup); return `<section class="v6-sec"><a class="v6-next v6-dark" href="#path-${x.key}" onclick="V6.${x.key === 'product' ? 'openProductPath' : 'openMarketingPath'}('role'); return false;"><span class="v6-next-in"><span class="v6-next-l">Путь роли · скоро</span><span class="v6-next-t">${e(x.title)}</span><span class="v6-next-p">${r.id === 'project' ? 'Для проджекта главное — этапы «Приоритизация» и «Управление работой».' : x.stages.map((s_, i) => i ? s_.title.toLowerCase() : s_.title).join(', ') + '.'}</span></span><span class="v6b is-accent v6-btn-xl">Открыть путь</span></a></section>`; })() : ''}
             ${r.id === 'owner' ? `<section class="v6-sec"><a class="v6-next v6-dark" href="#brand-stages" onclick="V6.open('brand-stages'); return false;"><span class="v6-next-in"><span class="v6-next-l">Стадии бренда · диагностика за 3 минуты</span><span class="v6-next-t">На какой стадии ваш бренд и что делать первым</span></span>${CHEV}</a></section>` : ''}
             ${methodsBlock(r.id, AI_ROLES.includes(r.id) ? 'Методы работы с ИИ' : 'Методы роли')}`;
@@ -493,7 +528,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
             ${ready ? `<span><button class="v6b v6-btn-lg ${i ? 'is-soft' : ''}" onclick="${hasSteps(u) ? `V6.openUnit('${e(u.id)}','task')` : `openLesson(${lessonArg(u.fromLesson)})`}">${(unitState(u.id).result === 'yes') ? 'Открыть ещё раз' : 'Начать'}</button></span>` : ''}</article>`;
         };
         // Крошки по группе задачи: раньше здесь всегда стоял «Продаю онлайн», и у задач продакта и маркетолога путь был неверный.
-        const roleLabel = { seller: 'Продаю онлайн', product: 'Продакт', marketing: 'Маркетолог', self: 'Для себя' }[t.group];
+        const roleLabel = { seller: 'Продажи онлайн', product: 'Продукт и проекты', marketing: 'Маркетинг', self: 'Для себя' }[t.group];
         const back = roleLabel ? `V6.chooseRole('${e(t.group)}','task')` : `V6.open('tasks')`;
         box.innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="${back}">${e(roleLabel || 'Задачи')}</a><span>/</span><a onclick="${back}">${e(t.direction.title)}</a><span>/</span><span>Задача</span></nav>
           <section class="v6-phero v6-thero"><div class="v6-phero-text"><h1 class="v6-d">${e(t.title)}</h1>
@@ -528,7 +563,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       document.getElementById('v6-paths').innerHTML = `<section class="v6-phero"><div class="v6-phero-text"><span class="v6-eyebrow">Обучение · пути</span><h1 class="v6-d">Всё, что идёт по порядку</h1><p class="v6-phero-lead">Путь — порядок шагов к результату. Главный ведёт к своим ИИ-приложениям, пути ролей — к результату в работе. Выберите тот, что про вас; пройденное засчитывается везде.</p></div>${art('paths-hero', 'v6-phero-art')}</section>
         <section class="v6-psec"><div class="v6-pathgrid">
           ${card({ hash: 'path-main', on: "V6.openMainPath('paths')", art: 'main-path', label: 'Для всех', title: m.title, text: `Основы из ${m.commonStart.lessons.length} уроков и уровни: от первых промптов к своим приложениям.`, chips: [started ? (typeof r.id === 'number' ? 'вы на уроке ' + r.id : 'начат') : 'с нуля', `${m.levels.length} ${plural(m.levels.length, 'уровень', 'уровня', 'уровней')}`, pn(m.levels.filter((l) => l.milestone).length, 'Веха', 'Вехи', 'Вех')], accentFirst: started, mine: mine === 'creator' })}
-          ${card({ hash: 'path-seller', on: "V6.openSellerPath('paths')", art: 'seller-path', label: 'Продаю онлайн', title: sp.title, text: `Три этапа по деньгам: ${sp.stages.map((x) => x.promise).join(', ')}.`, chips: [pn(sp.stages.length, 'этап', 'этапа', 'этапов'), pn(sp.stages.filter((x) => x.milestone).length, 'Веха', 'Вехи', 'Вех'), pn(D.resources.length, 'полезная вещь', 'полезные вещи', 'полезных вещей')], mine: mine === 'seller' })}
+          ${card({ hash: 'path-seller', on: "V6.openSellerPath('paths')", art: 'seller-path', label: 'Продажи онлайн', title: sp.title, text: `Три этапа по деньгам: ${sp.stages.map((x) => x.promise).join(', ')}.`, chips: [pn(sp.stages.length, 'этап', 'этапа', 'этапов'), pn(sp.stages.filter((x) => x.milestone).length, 'Веха', 'Вехи', 'Вех'), pn(D.resources.length, 'полезная вещь', 'полезные вещи', 'полезных вещей')], mine: mine === 'seller' })}
           ${[[pp, 'V6.openProductPath', mine === 'product' || mine === 'project'], [mp, 'V6.openMarketingPath', mine === 'marketing']].map(([x, fn, isMine]) => card({ hash: 'path-' + x.key, on: `${fn}('paths')`, art: x.art, label: x.label, title: x.title, text: `${x.stages.map((s_, i) => i ? s_.title.toLowerCase() : s_.title).join(', ')}. Задачи и методы уже видны.`, chips: ['скоро', `${x.stages.length} ${plural(x.stages.length, 'этап', 'этапа', 'этапов')}`, pn(x.fwCount, 'метод', 'метода', 'методов')], accentFirst: true, mine: isMine })).join('')}
         </div></section>
         <section class="v6-psec"><a class="v6-next v6-dark" href="#brand-stages" onclick="V6.open('brand-stages'); return false;"><span class="v6-next-in"><span class="v6-next-l">Стадии бренда · диагностика за 3 минуты</span><span class="v6-next-t">На какой стадии ваш бренд и что делать первым</span></span>${CHEV}</a></section>
@@ -591,9 +626,9 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
   // ---------- пути продакта и маркетолога: каркас из данных (tasks.json · группа роли + фреймворки) ----------
   // этапы = направления задач роли; шаги = задачи; «методы этапа» = карточки с task или alsoIn этого направления
   const DATA_PATHS = {
-    product: { group: 'product', title: 'Путь продакта', label: 'Продакт и проджект', role: 'product', lessonRoles: ['product', 'project'], art: 'product-path',
+    product: { group: 'product', title: 'Путь продакта', label: 'Продукт и проекты', role: 'product', lessonRoles: ['product', 'project'], art: 'product-path',
       both: /prioritize|manage/, note: 'Проджект идёт по этапам «Приоритизация» и «Управление работой».' },
-    marketing: { group: 'marketing', title: 'Путь маркетолога', label: 'Маркетолог', role: 'marketing', lessonRoles: ['marketing'], art: 'marketing-path',
+    marketing: { group: 'marketing', title: 'Путь маркетолога', label: 'Маркетинг', role: 'marketing', lessonRoles: ['marketing'], art: 'marketing-path',
       note: 'В этапы встроены методы из e-commerce: ДРР и ROMI, маржинальный доход по каналам, ассортиментная матрица, репутация и отзывы.' },
   };
   function dataPath(key) {
@@ -663,8 +698,8 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         };
         const groups = [['Шаблоны', ['template']], ['Чек-листы', ['checklist']], ['Калькуляторы', ['calculator']], ['Инструменты', ['tool']], ['Промпты', ['prompt-set']]]
           .map(([t, kinds]) => [t, D.resources.filter((r) => kinds.includes(r.kind) && (r.roles || []).includes('seller'))]).filter(([, rs]) => rs.length);
-        document.getElementById('v6-sp').innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.open('paths')">Обучение</a><span>/</span><a onclick="V6.chooseRole('seller','seller-path')">Продаю онлайн</a><span>/</span><span>${e(sp.title)}</span></nav>
-          <section class="v6-phero" style="padding-top:24px;padding-bottom:56px"><div class="v6-phero-text"><span class="v6-eyebrow">Путь роли · Продаю онлайн</span><h1 class="v6-d">${e(sp.title)}</h1>
+        document.getElementById('v6-sp').innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.open('paths')">Обучение</a><span>/</span><a onclick="V6.openRole('seller','seller-path')">Продажи онлайн</a><span>/</span><span>${e(sp.title)}</span></nav>
+          <section class="v6-phero" style="padding-top:24px;padding-bottom:56px"><div class="v6-phero-text"><span class="v6-eyebrow">Для работы · Продажи онлайн</span><h1 class="v6-d">${e(sp.title)}</h1>
             <p class="v6-phero-lead">Три этапа по деньгам: ${sp.stages.map((x) => x.promise).join(', ')}. Не уроки, а вещи для работы: задания, методы, шаблоны, калькуляторы, чек-листы.</p>
             <a class="v6-link" href="#brand-stages" onclick="V6.open('brand-stages'); return false;">На какой стадии ваш бренд? Диагностика за 3 минуты →</a>
             <span class="v6-tags"><span class="v6t is-sm">этап ${curStage.n} из ${sp.stages.length}</span><span class="v6t is-sm is-grey">${pn(sp.stages.filter((x) => x.milestone).length, 'Веха', 'Вехи', 'Вех')}</span><span class="v6t is-sm is-grey">${pn(D.resources.length, 'полезная вещь', 'полезные вещи', 'полезных вещей')}</span></span></div>${art('seller-path', 'v6-phero-art v6-sp-art')}</section>

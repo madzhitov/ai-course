@@ -1,6 +1,6 @@
 {
  "version": "2026-10-04",
- "note": "lessons — уроки из инвентаризации, где роль основная или дополнительная. legacyRoutes — старые Маршруты, которые переезжают в роль",
+ "note": "lessons — уроки из инвентаризации, где роль основная или дополнительная. legacyRoutes — старые Маршруты, которые переезжают в роль 26.11: на сайте четыре аудитории (self, work, teacher, student); роли с alias ведут на work или на главный путь (creator), их записи хранят уроки и выбор «Это про меня».",
  "roles": [
   {
    "id": "seller",
@@ -21,7 +21,8 @@
     "e6",
     "e7"
    ],
-   "state": "full"
+   "state": "full",
+   "alias": "work"
   },
   {
    "id": "creator",
@@ -155,7 +156,8 @@
     "v14",
     "v15"
    ],
-   "state": "full"
+   "state": "full",
+   "alias": "main"
   },
   {
    "id": "self",
@@ -201,7 +203,8 @@
     "i14",
     "i15"
    ],
-   "state": "growing"
+   "state": "growing",
+   "alias": "work"
   },
   {
    "id": "project",
@@ -218,7 +221,8 @@
     "i14",
     "i15"
    ],
-   "state": "growing"
+   "state": "growing",
+   "alias": "work"
   },
   {
    "id": "marketing",
@@ -237,7 +241,8 @@
     "i13",
     "e7"
    ],
-   "state": "growing"
+   "state": "growing",
+   "alias": "work"
   },
   {
    "id": "specialist",
@@ -262,7 +267,8 @@
     "i10",
     "e5"
    ],
-   "state": "growing"
+   "state": "growing",
+   "alias": "work"
   },
   {
    "id": "owner",
@@ -284,14 +290,70 @@
     "i5",
     "i8"
    ],
-   "state": "growing"
+   "state": "growing",
+   "alias": "work"
   },
   {
    "id": "teacher",
-   "title": "Учитель",
+   "title": "Учителю",
    "description": "Уроки, тесты, рабочие листы",
    "isNew": true,
    "taskGroup": "teacher",
+   "lessons": [],
+   "state": "growing"
+  },
+  {
+   "id": "work",
+   "title": "Для работы",
+   "description": "Продажи онлайн, маркетинг, продукт и проекты",
+   "isNew": true,
+   "taskGroup": null,
+   "subs": [
+    "seller",
+    "marketing",
+    "product"
+   ],
+   "lessons": [
+    "p5",
+    "p20",
+    "i2",
+    "i6",
+    "i13",
+    "e6",
+    "e7",
+    "p9",
+    "i7",
+    "c2",
+    "p7",
+    "i11",
+    "i14",
+    "i15",
+    "i12",
+    "10",
+    "p1",
+    "p4",
+    "p8",
+    "p15",
+    "p19",
+    "i3",
+    "i5",
+    "i8",
+    "p2",
+    "p12",
+    "p16",
+    "i1",
+    "i9",
+    "i10",
+    "e5"
+   ],
+   "state": "full"
+  },
+  {
+   "id": "student",
+   "title": "Учёба",
+   "description": "ИИ как репетитор, а не решебник",
+   "isNew": true,
+   "taskGroup": "student",
    "lessons": [],
    "state": "growing"
   }

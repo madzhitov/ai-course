@@ -4,7 +4,7 @@
  "groups": [
   {
    "id": "seller",
-   "title": "Продаю онлайн",
+   "title": "Продажи онлайн",
    "status": "approved",
    "directions": [
     {
@@ -256,7 +256,7 @@
   },
   {
    "id": "product",
-   "title": "Продакту и проджекту",
+   "title": "Продукт и проекты",
    "status": "approved",
    "directions": [
     {
@@ -356,7 +356,7 @@
   },
   {
    "id": "marketing",
-   "title": "Маркетологу",
+   "title": "Маркетинг",
    "status": "approved",
    "directions": [
     {
@@ -548,7 +548,7 @@
   },
   {
    "id": "student",
-   "title": "Учиться с ИИ",
+   "title": "Учёба",
    "status": "approved",
    "directions": [
     {
