@@ -1091,6 +1091,36 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ai.madzhitov.ru/pochitat/agent-roles.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/pochitat/subagents.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/pochitat/memory.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/pochitat/batch-images.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/pochitat/safety.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/pochitat/creative-stack-2026.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ai.madzhitov.ru/metody/aarrr.html</loc>
     <lastmod>2026-10-04</lastmod>
     <priority>0.8</priority>
@@ -1657,12 +1687,12 @@
   </url>
   <url>
     <loc>https://ai.madzhitov.ru/zadaniya/u-ai-short-video.html</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-27</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ai.madzhitov.ru/zadaniya/u-ai-song.html</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-27</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
@@ -1757,6 +1787,106 @@
   </url>
   <url>
     <loc>https://ai.madzhitov.ru/zadaniya/u-teacher-parents.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-ai-style-series.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-ai-character-sheet.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-ai-character-talk.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-seller-infographic-card.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-seller-product-video.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-ai-stories.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-ai-cover.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-ai-clip-6.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-ai-photo-alive.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-ai-icons.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-ai-cartoon-60.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-seller-ad-campaign.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-ai-hero-clip.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-pro-project-rules.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-pro-session-log.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-pro-subagent-brief.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-pro-split-parallel.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-pro-reviewer-role.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-pro-backup-rollback.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/zadaniya/u-seller-site-leaks.html</loc>
     <lastmod>2026-11-27</lastmod>
     <priority>0.8</priority>
   </url>

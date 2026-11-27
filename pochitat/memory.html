@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Память между сессиями: как агент не начинает с нуля — Артефакты</title>
+<meta name="description" content="Четыре места, где у меня живёт память агентов: журнал сессий, Каркас, правила проекта и память самого агента. Что куда писать и как это повторить.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Память между сессиями: как агент не начинает с нуля">
+<meta property="og:description" content="Четыре места, где у меня живёт память агентов: журнал сессий, Каркас, правила проекта и память самого агента. Что куда писать и как это повторить.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png?v=adc3cbdf">
+<meta property="og:url" content="https://ai.madzhitov.ru/pochitat/memory.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/pochitat/memory.html">
+<link rel="preload" href="../v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../v6/fonts/fonts.css?v=0e1f3d7b">
+<link rel="stylesheet" href="../tropa-lesson.css?v=889f3ed1">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+  .st-calc-res { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap:10px; }
+  .st-calc-r { background:#F3F4F7; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); }
+  .st-calc-r b { font-size:24px; line-height:1.15; font-weight:800; color:#16161A; }
+  .st-calc-r.is-main b { font-size:36px; }
+  .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
+  .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+  .st-checked { white-space:nowrap; }
+  .st-quote { margin:12px 0 18px; padding:2px 0 2px 16px; border-left:3px solid var(--line, #E6E8EE); }
+  .st-quote p { margin:0 0 6px; }
+  .st-quote footer { font-size:14px; color:var(--muted); }
+  .st-read-cover { width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:14px; margin-bottom:8px; }
+  .st-read-body table { border-collapse:collapse; width:100%; font-size:15px; }
+  .st-read-body th, .st-read-body td { border-bottom:1px solid var(--line, #E6E8EE); padding:8px 10px; text-align:left; vertical-align:top; }
+  .st-read-body blockquote { margin:16px 0; padding-left:16px; border-left:3px solid var(--line, #E6E8EE); color:var(--muted); }
+  .st-read-body pre { white-space:pre-wrap; background:var(--bg-code); border-radius:14px; padding:14px; font-size:14px; }
+  .st-read-body img { max-width:100%; height:auto; border-radius:14px; }
+</style>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"Память между сессиями: как агент не начинает с нуля","description":"Четыре места, где у меня живёт память агентов: журнал сессий, Каркас, правила проекта и память самого агента. Что куда писать и как это повторить.","url":"https://ai.madzhitov.ru/pochitat/memory.html","inLanguage":"ru","author":{"@type":"Person","@id":"https://madzhitov.ru/#ruslan","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"datePublished":"2026-11-27","isAccessibleForFree":true,"isPartOf":{"@type":"CreativeWorkSeries","name":"Как я работаю с ИИ"},"position":4,"dateModified":"2026-11-27"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Артефакты","item":"https://ai.madzhitov.ru/"},{"@type":"ListItem","position":2,"name":"Почитать","item":"https://ai.madzhitov.ru/pochitat/"},{"@type":"ListItem","position":3,"name":"Память между сессиями: как агент не начинает с нуля","item":"https://ai.madzhitov.ru/pochitat/memory.html"}]}]</script>
+<link rel="stylesheet" href="../v6/static.css?v=6d6945c5">
+<style>@media (max-width:720px){.v6s-nav{flex-wrap:wrap;justify-content:flex-start;gap:6px 16px}}</style>
+<script defer src="../v6/static.js?v=e97e63c9"></script>
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../pochitat/">Почитать</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../pochitat/">Почитать</a></div>
+    <span class="st-eyebrow">Разбор · Как я работаю с ИИ · №4 · 7 минут · проверено 27.11.2026</span><h1>Память между сессиями: как агент не начинает с нуля</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-11-27">27.11.2026</time> · <span class="st-checked">Проверено: <time datetime="2026-11-27">27.11.2026</time></span></p><p class="lead">Четыре места, где у меня живёт память агентов: журнал сессий, Каркас, правила проекта и память самого агента. Что куда писать и как это повторить.</p>
+      <div class="st-read-body"><p>Агент не помнит вчерашний разговор. Закрыл окно, и всё, что вы обсуждали, пропало. Новая сессия начинается с вопроса «расскажите о проекте», и полчаса уходит на то, чтобы вернуть агента туда, где вы остановились.</p>
+<p>У меня агентов три: Claude Code и Codex на Маке, Хермес на сервере. Они работают по очереди в одних и тех же проектах. Если бы каждый помнил только своё, они бы постоянно переделывали чужую работу. Поэтому память у нас общая и лежит в файлах. Мест четыре, у каждого своя задача.</p>
+<h2 id="1-журнал-сессий-где-остановились">1. Журнал сессий: где остановились</h2>
+<p>Это главное. В конце каждой содержательной сессии агент пишет запись в журнал проекта. Короткую, на 5–10 строк, в строгом формате:</p>
+<pre><code>## 2026-11-26 · Code · 00:08
+
+**Делал:** что сделано, 1–3 предложения.
+
+**Остановился на:** конкретная точка возврата: коммит, файл, недоделанная мысль.
+
+**Дальше:** с чего начнётся следующая сессия.
+
+**Развилка/мысль:** идея, которую не время делать, или второй путь, который тоже жив.
+
+**Блокеры:** что ждёт других людей или сервисов.</code></pre>
+<p>Два последних поля можно опустить, если сказать нечего.</p>
+<p>Самое ценное поле «Остановился на». Там якорь, пересказ не нужен: «всё на проде, точка отката такая-то», «ветка такая-то ждёт моего да», «13 из 29 картинок готовы». Следующий агент читает его первым и продолжает.</p>
+<p>Второе по ценности «Развилка/мысль». Это то, что обычно теряется: «можно сделать вот так, но решили иначе», «вот это стоит проверить через месяц». Например, в записи от 25 ноября там лежит план проверки монетизации через четыре недели. Без журнала эта мысль осталась бы в закрытом окне.</p>
+<p>Важная деталь: агент пишет запись сам, не дожидаясь просьбы. Большинство сессий заканчиваются тем, что я просто закрываю окно. Если ждать команды «запиши», половины записей не будет. В правилах так и сказано: закончил большой блок или я сказал «на сегодня всё», значит пиши.</p>
+<p>Журналы лежат в отдельном репозитории, общем для всех проектов. В папке проекта их нет. Так их видят все три агента и сайт Каркаса.</p>
+<h2 id="2-каркас-что-ждёт-меня">2. Каркас: что ждёт меня</h2>
+<p>Каркас это мой единый список дел. Сайт с паролем, открывается с телефона. Данные лежат в том же репозитории, что и журналы: у каждого проекта файл <code>actions.md</code>.</p>
+<p>Правило простое: всё, что требует меня, агент пишет строкой туда. Решение, доступ, оплата, действие руками, встреча. Формат строки:</p>
+<pre><code>- [ ] [P1] Что сделать, коротко, с глаголом 📅2026-12-01 #тег</code></pre>
+<p><code>[P1]</code> значит срочно и важно, <code>[P2]</code> важно, без пометки можно потом. Сделано отмечается галочкой и датой.</p>
+<p>Почему не в чате и не в журнале? Потому что чат закроется, а журнал я не читаю каждый день. Если агенту нужно моё «да» на ветку, а он написал об этом только в чате, ветка будет висеть неделю. На вопрос «что на мне?» агент собирает все открытые <code>[P1]</code> и задачи со сроком на ближайшие семь дней из всех проектов.</p>
+<p>Шаги, которые агент сделает сам, туда не идут. Их место в поле «Дальше» журнала.</p>
+<h2 id="3-правила-проекта-как-здесь-принято">3. Правила проекта: как здесь принято</h2>
+<p>Это файл с правилами, который агент читает в начале каждой сессии. У Claude Code он называется <code>CLAUDE.md</code>, у Codex и многих других агентов <code>AGENTS.md</code>. У меня это один файл, а второе имя просто ссылка на него. Так правила не расходятся.</p>
+<p>Что в нём лежит:</p>
+<ul><li>где живёт код и куда его нельзя класть. У меня всё только в рабочей папке, никогда в папке, которая синхронизируется с облаком;</li><li>как работать с git: каждая задача в своей ветке, пуш в конце сессии, в основную ветку только с моего согласия;</li><li>где ключи и что с ними нельзя делать;</li><li>куда писать журнал и задачи для меня;</li><li>роли агентов и когда их звать.</li></ul>
+<p>Правила пишутся коротко и в повелительном наклонении. Агенту не нужна история, ему нужно «делай так, не делай так». Историю, почему правило появилось, я держу отдельно, в файле решений: номер, решение, почему. Например, «серверы хранят только копии» с датой и случаем, после которого так решили.</p>
+<p>Правила у меня двух уровней: общие для всех проектов и свои в каждом проекте. Общие лежат в отдельном репозитории с историей, а в привычных местах стоят ссылки на них. Если правило поменялось, это коммит с объяснением.</p>
+<h2 id="4-память-агента-уроки-на-будущее">4. Память агента: уроки на будущее</h2>
+<p>Четвёртое место нужно для уроков. Когда я поправил агента и это стоит помнить всегда, он записывает короткий файл в свою память. Формат такой: правило одной строкой, потом «почему» со случаем и датой, потом «как применять».</p>
+<p>Что там у меня лежит, например:</p>
+<ul><li><strong>Числа со склонением.</strong> «31 сервис», «5 заданий». Перед показом проверить поиском по коду.</li><li><strong>Каждый новый блок смотреть на скриншоте.</strong> После случая, когда отступы заголовков не сработали, а проверка была только текстовой.</li><li><strong>«Делай сам» не выключает запросы разрешений.</strong> Предупредить сразу, иначе сессия молча стоит часами.</li><li><strong>Опыты на проде только после свежей копии.</strong> После того как удалились данные. Подробно об этом в тексте про безопасность.</li><li><strong>Не соглашаться по умолчанию.</strong> Давать объективную оценку с доводами.</li></ul>
+<p>Случай с датой важнее самого правила. Правило «смотри на скриншоте» звучит как банальность. «06.10 подзаголовки прилипли к блокам, проверка была только текстовой, заметил я сам» объясняет агенту, зачем это делать и где именно ошибка случится снова.</p>
+<h2 id="что-куда-одной-таблицей">Что куда, одной таблицей</h2>
+<div class="st-table-scroll"><table><thead><tr><th scope="col">Что</th><th scope="col">Где</th><th scope="col">Кто читает</th></tr></thead><tbody><tr><td>Где остановились, что дальше</td><td>журнал сессий</td><td>следующий агент</td></tr><tr><td>Что нужно от меня</td><td>Каркас, <code>actions.md</code></td><td>я, с телефона</td></tr><tr><td>Как здесь работать</td><td><code>CLAUDE.md</code> / <code>AGENTS.md</code></td><td>каждый агент в начале сессии</td></tr><tr><td>Чему научились на ошибках</td><td>память агента</td><td>этот агент в любом проекте</td></tr></tbody></table></div>
+<p>Знания, которые копятся годами (исследования, разборы, заметки), у меня живут ещё в одной вики. Но состояние проектов я туда не пишу: оно меняется каждый день, его место в Каркасе.</p>
+<h2 id="как-повторить-у-себя">Как повторить у себя</h2>
+<ol><li>Создайте в проекте файл <code>AGENTS.md</code>. Начните с пяти правил: где код, как называть ветки, что нельзя без вашего согласия, куда писать журнал, что считать готовым.</li><li>Заведите файл <code>sessions.md</code> с форматом выше. Новые записи сверху.</li><li>Добавьте в правила строку: «в конце каждой содержательной сессии пиши запись в sessions.md, не дожидаясь просьбы».</li><li>Заведите отдельный список «нужно от меня». Хватит одного файла с чекбоксами.</li><li>Каждый раз, когда поправляете агента второй раз за одно и то же, просите записать это правилом с датой и случаем.</li><li>Через неделю откройте новую сессию со словами «прочитай журнал и продолжи». Посмотрите, с какого места агент начнёт.</li></ol>
+<p>Всё это обычные текстовые файлы. Их читает любой агент, который видит файлы проекта, в том числе GigaCode и SourceCraft Code Assistant, которые работают из России. В обычном чате можно вставлять журнал первым сообщением.</p>
+<h2 id="попробуйте-сами">Попробуйте сами</h2>
+<p>Задание <a href="/#unit-u-pro-session-log">«Вести журнал сессий»</a> и задание <a href="/#unit-u-pro-project-rules">«Собрать правила проекта для агента»</a>.</p></div>
+      <nav class="st-neighbors" aria-label="Серия «Как я работаю с ИИ»"><a href="../pochitat/subagents.html"><small>Предыдущий в серии</small><span>Субагенты: как я делю работу между несколькими агентами</span></a><a href="../pochitat/batch-images.html"><small>Следующий в серии</small><span>32 иллюстрации за ночь: пакетная генерация через Codex</span></a></nav><p><a href="../pochitat/">Все тексты</a></p>
+    
+  </div>
+</main>
+</body>
+</html>

@@ -6,7 +6,7 @@
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const plural = (n, one, few, many) => { const x = n % 10, y = n % 100; return x === 1 && y !== 11 ? one : x >= 2 && x <= 4 && (y < 12 || y > 14) ? few : many; };
   const track = (n, d) => { try { umTrack(n, d); } catch (_) {} };
-  const ROLE = { ai: 'Для всех', self: 'Для себя', seller: 'Продажи онлайн', marketing: 'Маркетинг', product: 'Продукт и проекты', teacher: 'Учителю', student: 'Учёба' };
+  const ROLE = { ai: 'Для всех', self: 'Для себя', seller: 'Продажи онлайн', marketing: 'Маркетинг', product: 'Продукт и проекты', teacher: 'Учителю', student: 'Учёба', pro: 'Продвинутым' };
   const WORKROLES = [['all', 'Вся работа'], ['seller', 'Продажи онлайн'], ['marketing', 'Маркетинг'], ['product', 'Продукт и проекты']];
   // Масти действий: линия 2.2 в цвет текста, сетка 32 (направление Б концепта иллюстраций, 25.11)
   const ICON = {

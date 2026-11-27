@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>32 иллюстрации за ночь: пакетная генерация через Codex — Артефакты</title>
+<meta name="description" content="Как я переделал весь набор картинок сайта из керамики в пластилин: проба, ТЗ, образцы стиля, пакетный прогон агентом и отбор.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="32 иллюстрации за ночь: пакетная генерация через Codex">
+<meta property="og:description" content="Как я переделал весь набор картинок сайта из керамики в пластилин: проба, ТЗ, образцы стиля, пакетный прогон агентом и отбор.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png?v=adc3cbdf">
+<meta property="og:url" content="https://ai.madzhitov.ru/pochitat/batch-images.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/pochitat/batch-images.html">
+<link rel="preload" href="../v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../v6/fonts/fonts.css?v=0e1f3d7b">
+<link rel="stylesheet" href="../tropa-lesson.css?v=889f3ed1">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+  .st-calc-res { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap:10px; }
+  .st-calc-r { background:#F3F4F7; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); }
+  .st-calc-r b { font-size:24px; line-height:1.15; font-weight:800; color:#16161A; }
+  .st-calc-r.is-main b { font-size:36px; }
+  .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
+  .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+  .st-checked { white-space:nowrap; }
+  .st-quote { margin:12px 0 18px; padding:2px 0 2px 16px; border-left:3px solid var(--line, #E6E8EE); }
+  .st-quote p { margin:0 0 6px; }
+  .st-quote footer { font-size:14px; color:var(--muted); }
+  .st-read-cover { width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:14px; margin-bottom:8px; }
+  .st-read-body table { border-collapse:collapse; width:100%; font-size:15px; }
+  .st-read-body th, .st-read-body td { border-bottom:1px solid var(--line, #E6E8EE); padding:8px 10px; text-align:left; vertical-align:top; }
+  .st-read-body blockquote { margin:16px 0; padding-left:16px; border-left:3px solid var(--line, #E6E8EE); color:var(--muted); }
+  .st-read-body pre { white-space:pre-wrap; background:var(--bg-code); border-radius:14px; padding:14px; font-size:14px; }
+  .st-read-body img { max-width:100%; height:auto; border-radius:14px; }
+</style>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"32 иллюстрации за ночь: пакетная генерация через Codex","description":"Как я переделал весь набор картинок сайта из керамики в пластилин: проба, ТЗ, образцы стиля, пакетный прогон агентом и отбор.","url":"https://ai.madzhitov.ru/pochitat/batch-images.html","inLanguage":"ru","author":{"@type":"Person","@id":"https://madzhitov.ru/#ruslan","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"datePublished":"2026-11-27","isAccessibleForFree":true,"isPartOf":{"@type":"CreativeWorkSeries","name":"Как я работаю с ИИ"},"position":5,"dateModified":"2026-11-27"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Артефакты","item":"https://ai.madzhitov.ru/"},{"@type":"ListItem","position":2,"name":"Почитать","item":"https://ai.madzhitov.ru/pochitat/"},{"@type":"ListItem","position":3,"name":"32 иллюстрации за ночь: пакетная генерация через Codex","item":"https://ai.madzhitov.ru/pochitat/batch-images.html"}]}]</script>
+<link rel="stylesheet" href="../v6/static.css?v=6d6945c5">
+<style>@media (max-width:720px){.v6s-nav{flex-wrap:wrap;justify-content:flex-start;gap:6px 16px}}</style>
+<script defer src="../v6/static.js?v=e97e63c9"></script>
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../pochitat/">Почитать</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../pochitat/">Почитать</a></div>
+    <span class="st-eyebrow">Разбор · Как я работаю с ИИ · №5 · 7 минут · проверено 27.11.2026</span><h1>32 иллюстрации за ночь: пакетная генерация через Codex</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-11-27">27.11.2026</time> · <span class="st-checked">Проверено: <time datetime="2026-11-27">27.11.2026</time></span></p><p class="lead">Как я переделал весь набор картинок сайта из керамики в пластилин: проба, ТЗ, образцы стиля, пакетный прогон агентом и отбор.</p>
+      <div class="st-read-body"><p>На сайте Артефактов 29 иллюстраций: белые фигурки-камешки с двумя глазами-точками, книги, лестницы, пакеты. Всё белое и светло-серое, ровно один предмет тёмно-синий. В октябре они были из глянцевой керамики, я генерировал их сам, по одной, а агент вырезал фон.</p>
+<p>25 ноября 2026 я решил попробовать пластилин. К утру 26-го весь набор был на сайте, плюс три новые сцены. Рисовал Codex, по одной картинке за вызов, пока я спал. Расскажу, как это устроено и где были грабли.</p>
+<h2 id="с-чего-началось-керамика-и-вырезание-фона">С чего началось: керамика и вырезание фона</h2>
+<p>Старый набор генерировался на светлом фоне. Потом фон надо было убрать, чтобы картинка встала на любую подложку сайта. Для этого у агента был скрипт: нейросеть для масок <code>isnet</code> из библиотеки <code>rembg</code> находит объект, а тень добирается отдельно, по тому, насколько пиксель темнее фона рядом с объектом.</p>
+<p>Работало почти везде. Кроме двух лестниц: белые ступени на светлом фоне маска теряла, лестница разваливалась на куски. Эти две картинки так и стояли невырезанными.</p>
+<h2 id="решение-и-риск">Решение и риск</h2>
+<p>Пластилин теплее керамики: матовый, мягкий. Сайту про то, что вы делаете своими руками, это подходит. Но агент сразу назвал риск: пластилин читается как детский сад. На сайте есть раздел для бизнеса, финмодели и юнит-экономика, и фигурки с отпечатками пальцев рядом с «цена по запросу» могут его удешевить.</p>
+<p>Поэтому выбрали середину: мягкий пластилин без отпечатков и бликов, с прежней палитрой.</p>
+<h2 id="тз-на-одну-страницу">ТЗ на одну страницу</h2>
+<p>Агент собрал папку и положил в неё ТЗ. В папке:</p>
+<ul><li><code>originals/</code>: 29 нынешних картинок в PNG, до вырезания фона. Их прикладывать к каждому запросу;</li><li><code>new/</code>: сюда класть результат с тем же именем файла;</li><li><code>TZ.md</code>: порядок, промпт, список файлов с указанием, где каждая картинка стоит на сайте.</li></ul>
+<p>Промпт был один на всех, менялся только исходник:</p>
+<pre><code>Recreate the attached image with the same composition, the same objects and the same camera angle. Change only the material: everything is made of smooth soft plasticine (modeling clay), matte surface with a subtle handmade softness, slightly rounded edges, no fingerprints, no glossy highlights. Keep the colors: white and pale cool grey plasticine, exactly one accent object in deep ink blue (#1F2F5C). Figurines keep two tiny black bead eyes, no mouths, no arms, no legs. Soft studio light from top left, soft contact shadow under the objects. Transparent background, PNG. No text, no letters, no logos, no people.</code></pre>
+<p>Отдельной строкой то, чего не допускать: яркие цвета, вид детской игрушки, отпечатки, трещины, глянец, текст, логотипы, люди, руки.</p>
+<p>И правила формата: широкие картинки 3:2, около 1536×1024, иконки квадратные 1024×1024. Одна картинка стоит на тёмном блоке, её делать на почти чёрном фоне <code>#0B0B0D</code>, не прозрачной.</p>
+<h2 id="проба-три-картинки">Проба: три картинки</h2>
+<p>Прежде чем гнать весь набор, проба на трёх картинках: фигурка с пакетом, книги и лестница. Лестница специально: это главная проверка, ведь керамическую вырезать не удалось.</p>
+<p>Пробу я делал сам в ChatGPT, в одном чате, чтобы фигурки вышли одинаковыми по материалу и свету. Агент ставил каждую картинку на настоящую шапку раздела рядом с керамикой и показывал мне.</p>
+<p>Первая вышла хорошо по материалу и плохо по цвету: белый ушёл в тёплый серо-бежевый, фигурка на холодном фоне сайта смотрелась грязной. Помогла одна фраза в том же чате:</p>
+<pre><code>Make the white plasticine pure bright snow-white with a slightly cool tone, not beige, not grey, not cream. Keep everything else the same.</code></pre>
+<p>Белый стал чистым. Агент проверил это цифрами: в среднем 231–234 по каналам, с лёгким холодным оттенком. Лестница с прозрачным фоном пришла сразу цельной: ни коробки вокруг, ни ореола. Вырезать стало нечего, проблема двух лестниц закрылась сама.</p>
+<p>Эти две картинки, пакет и книги, стали образцами стиля для всех остальных.</p>
+<h2 id="пакет-codex-рисует-сам">Пакет: Codex рисует сам</h2>
+<p>Дальше я собирался прогонять оставшиеся 26 картинок руками, пачками по семь. Агент уже разложил их по папкам. И тут выяснилось, что Codex умеет генерировать картинки сам, через встроенный инструмент генерации изображений по моей подписке ChatGPT. Ручная работа стала не нужна.</p>
+<p>Агент написал скрипт, который идёт по папке <code>originals/</code> и на каждую картинку делает один вызов Codex. В каждый вызов уходят три картинки: исходник и два одобренных образца. В тексте задания:</p>
+<ul><li>создать ровно одну картинку и сохранить её в <code>new/</code> с именем исходника, другие файлы не трогать;</li><li>повторить композицию исходника и сменить только материал;</li><li>материал, белый, синий, свет и тень взять в точности как у образцов;</li><li>формат подставляется сам: скрипт смотрит размер исходника, квадрат он или нет;</li><li>фон прозрачный, у тёмной картинки почти чёрный.</li></ul>
+<p>После каждого вызова скрипт проверяет, что файл появился и не пустой. Если нет, пишет «FAIL» и имя. Уже готовые картинки пропускает, поэтому прогон можно перезапускать с любого места.</p>
+<p>Одна картинка занимала 1–2 минуты. Весь набор прошёл за ночь.</p>
+<h2 id="отбор">Отбор</h2>
+<p>Агент собрал все картинки на общие листы и проверил по трём вопросам: белый без бежа, синий предмет ровно один, иконки квадратные. Перегонять не пришлось ни одну.</p>
+<p>Дальше второй скрипт поставил набор на сайт с одинаковым кадрированием: предмет с тенью занимает 74% кадра по большей стороне. Иначе одни фигурки выглядели бы крупнее других. Картинки сохранены в WebP, весь набор на сайте весит 1,3 МБ. Полные PNG, 30 МБ, лежат только у меня локально, в git ушли сжатые копии на 2 МБ.</p>
+<p>Перед выкладкой копия прода, после выкладки запись в журнал. Следующей ночью Codex так же дорисовал три новые сцены: учителя с глобусом у парты, студента в шапочке выпускника на книгах и карты веером. Итого 32 картинки.</p>
+<h2 id="что-я-из-этого-вынес">Что я из этого вынес</h2>
+<p>Пакетная генерация держится на трёх вещах.</p>
+<p><strong>Один утверждённый образец.</strong> Пока нет картинки, которую вы одобрили глазами, гнать пакет нельзя. Все ошибки размножатся на 30 штук.</p>
+<p><strong>Одно задание, один файл.</strong> Если попросить семь картинок за раз, генератор может склеить их в одно изображение или потерять стиль к пятой. Поэтому даже в ручных пачках я писал «строго по одной картинке за ответ, не объединяй». Одна картинка на вызов и проверка, что файл появился, закрывают этот риск.</p>
+<p><strong>Отбор листами.</strong> 30 картинок по одной не просмотришь честно. На одном листе сразу видно, у кого поплыл цвет.</p>
+<h2 id="как-повторить-у-себя">Как повторить у себя</h2>
+<ol><li>Сделайте одну картинку руками и добейтесь, чтобы она нравилась. Это образец.</li><li>Напишите ТЗ на страницу: промпт, чего не допускать, форматы, список файлов и где каждый будет стоять.</li><li>Положите исходники и образец в одну папку, результат в другую, с теми же именами.</li><li>Прогоните пробу на трёх самых трудных картинках. Простые пройдут и так.</li><li>Пакет запускайте по одной картинке за вызов, с образцом в каждом вызове.</li><li>Смотрите результат листами и перегоняйте только неудачные.</li></ol>
+<p>Codex и ChatGPT из России официально не работают, OpenAI не обслуживает Россию. Без VPN ту же схему можно пройти в Алисе AI или ГигаЧате вручную: один чат, образец в начале, по одной картинке. Если сервис не отдаёт прозрачный фон, просите ровный серый, у меня в ТЗ был <code>#9A9CA3</code>. На белом фоне белые фигурки потом не вырезаются.</p>
+<h2 id="попробуйте-сами">Попробуйте сами</h2>
+<p>Задание <a href="/#unit-u-ai-picture">«Картинка с надписью по вашему описанию»</a> научит делать одну картинку. Как разложить большую работу на пачки и поручения, в задании <a href="/#unit-u-pro-split-parallel">«Разбить задачу на параллельные части»</a>.</p></div>
+      <nav class="st-neighbors" aria-label="Серия «Как я работаю с ИИ»"><a href="../pochitat/memory.html"><small>Предыдущий в серии</small><span>Память между сессиями: как агент не начинает с нуля</span></a><a href="../pochitat/safety.html"><small>Следующий в серии</small><span>Безопасность и откат: что я делаю, чтобы агент не сломал прод</span></a></nav><p><a href="../pochitat/">Все тексты</a></p>
+    
+  </div>
+</main>
+</body>
+</html>

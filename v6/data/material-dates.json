@@ -561,10 +561,10 @@
    "modified": "2026-11-27"
   },
   "/zadaniya/u-ai-short-video.html": {
-   "modified": "2026-11-25"
+   "modified": "2026-11-27"
   },
   "/zadaniya/u-ai-song.html": {
-   "modified": "2026-11-25"
+   "modified": "2026-11-27"
   },
   "/zadaniya/u-ai-summary.html": {
    "modified": "2026-11-27"
@@ -621,6 +621,66 @@
    "modified": "2026-11-27"
   },
   "/zadaniya/u-teacher-parents.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-ai-style-series.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-ai-character-sheet.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-ai-character-talk.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-seller-infographic-card.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-seller-product-video.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-ai-stories.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-ai-cover.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-ai-clip-6.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-ai-photo-alive.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-ai-icons.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-ai-cartoon-60.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-seller-ad-campaign.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-ai-hero-clip.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-pro-project-rules.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-pro-session-log.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-pro-subagent-brief.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-pro-split-parallel.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-pro-reviewer-role.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-pro-backup-rollback.html": {
+   "modified": "2026-11-27"
+  },
+  "/zadaniya/u-seller-site-leaks.html": {
    "modified": "2026-11-27"
   },
   "/metody/aarrr.html": {
@@ -1347,7 +1407,26 @@
    "modified": "2026-11-21",
    "checked": "2026-11-13"
   },
-  "undefined": {},
+  "/pochitat/agent-roles.html": {
+   "modified": "2026-11-27",
+   "checked": "2026-11-27"
+  },
+  "/pochitat/subagents.html": {
+   "modified": "2026-11-27",
+   "checked": "2026-11-27"
+  },
+  "/pochitat/memory.html": {
+   "modified": "2026-11-27",
+   "checked": "2026-11-27"
+  },
+  "/pochitat/batch-images.html": {
+   "modified": "2026-11-27",
+   "checked": "2026-11-27"
+  },
+  "/pochitat/safety.html": {
+   "modified": "2026-11-27",
+   "checked": "2026-11-27"
+  },
   "/znaniya/ai-law.html": {
    "modified": "2026-11-21",
    "checked": "2026-11-21"
@@ -1359,6 +1438,10 @@
   "/izmeneniya/": {
    "modified": "2026-11-21",
    "checked": "2026-11-21"
+  },
+  "/pochitat/creative-stack-2026.html": {
+   "modified": "2026-11-27",
+   "checked": "2026-11-27"
   }
  }
 }

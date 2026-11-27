@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Безопасность и откат: что я делаю, чтобы агент не сломал прод</title>
+<meta name="description" content="Копия перед каждой выкладкой, ключи в одном хранилище, на сервере только копии. И два случая, после которых эти правила стали жёсткими.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Безопасность и откат: что я делаю, чтобы агент не сломал прод">
+<meta property="og:description" content="Копия перед каждой выкладкой, ключи в одном хранилище, на сервере только копии. И два случая, после которых эти правила стали жёсткими.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png?v=adc3cbdf">
+<meta property="og:url" content="https://ai.madzhitov.ru/pochitat/safety.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/pochitat/safety.html">
+<link rel="preload" href="../v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../v6/fonts/fonts.css?v=0e1f3d7b">
+<link rel="stylesheet" href="../tropa-lesson.css?v=889f3ed1">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+  .st-calc-res { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap:10px; }
+  .st-calc-r { background:#F3F4F7; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); }
+  .st-calc-r b { font-size:24px; line-height:1.15; font-weight:800; color:#16161A; }
+  .st-calc-r.is-main b { font-size:36px; }
+  .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
+  .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+  .st-checked { white-space:nowrap; }
+  .st-quote { margin:12px 0 18px; padding:2px 0 2px 16px; border-left:3px solid var(--line, #E6E8EE); }
+  .st-quote p { margin:0 0 6px; }
+  .st-quote footer { font-size:14px; color:var(--muted); }
+  .st-read-cover { width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:14px; margin-bottom:8px; }
+  .st-read-body table { border-collapse:collapse; width:100%; font-size:15px; }
+  .st-read-body th, .st-read-body td { border-bottom:1px solid var(--line, #E6E8EE); padding:8px 10px; text-align:left; vertical-align:top; }
+  .st-read-body blockquote { margin:16px 0; padding-left:16px; border-left:3px solid var(--line, #E6E8EE); color:var(--muted); }
+  .st-read-body pre { white-space:pre-wrap; background:var(--bg-code); border-radius:14px; padding:14px; font-size:14px; }
+  .st-read-body img { max-width:100%; height:auto; border-radius:14px; }
+</style>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"Безопасность и откат: что я делаю, чтобы агент не сломал прод","description":"Копия перед каждой выкладкой, ключи в одном хранилище, на сервере только копии. И два случая, после которых эти правила стали жёсткими.","url":"https://ai.madzhitov.ru/pochitat/safety.html","inLanguage":"ru","author":{"@type":"Person","@id":"https://madzhitov.ru/#ruslan","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"datePublished":"2026-11-27","isAccessibleForFree":true,"isPartOf":{"@type":"CreativeWorkSeries","name":"Как я работаю с ИИ"},"position":6,"dateModified":"2026-11-27"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Артефакты","item":"https://ai.madzhitov.ru/"},{"@type":"ListItem","position":2,"name":"Почитать","item":"https://ai.madzhitov.ru/pochitat/"},{"@type":"ListItem","position":3,"name":"Безопасность и откат: что я делаю, чтобы агент не сломал прод","item":"https://ai.madzhitov.ru/pochitat/safety.html"}]}]</script>
+<link rel="stylesheet" href="../v6/static.css?v=6d6945c5">
+<style>@media (max-width:720px){.v6s-nav{flex-wrap:wrap;justify-content:flex-start;gap:6px 16px}}</style>
+<script defer src="../v6/static.js?v=e97e63c9"></script>
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../pochitat/">Почитать</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../pochitat/">Почитать</a></div>
+    <span class="st-eyebrow">Разбор · Как я работаю с ИИ · №6 · 7 минут · проверено 27.11.2026</span><h1>Безопасность и откат: что я делаю, чтобы агент не сломал прод</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-11-27">27.11.2026</time> · <span class="st-checked">Проверено: <time datetime="2026-11-27">27.11.2026</time></span></p><p class="lead">Копия перед каждой выкладкой, ключи в одном хранилище, на сервере только копии. И два случая, после которых эти правила стали жёсткими.</p>
+      <div class="st-read-body"><p>Агент работает быстро. Ошибается тоже быстро. Одна команда с пустой переменной стирает данные за секунду, и никакой «корзины» на сервере нет. Поэтому я не пытаюсь сделать агента безошибочным. Я делаю так, чтобы любую его ошибку можно было откатить за минуты.</p>
+<p>Правил у меня четыре. Каждое появилось после конкретного случая.</p>
+<h2 id="правило-1-копия-прода-перед-каждой-выкладкой">Правило 1. Копия прода перед каждой выкладкой</h2>
+<p>Перед тем как выкатить сайт, выпускающий агент делает полную копию того, что сейчас на сервере, и кладёт её рядом с проектом. Имя с датой и временем, например <code>.backup-prod-20261127-1032</code>. Это точка отката. Если после выкладки что-то не так, копия возвращается на сервер той же командой в обратную сторону.</p>
+<p>Номер копии попадает в журнал сессии. Вот как это выглядит в записи:</p>
+<blockquote><p>Выкатил, на проде всё на месте. Копия прода перед выкаткой <code>.backup-prod-20261127-1032</code>. Оба репозитория совпадают с продом, ветки удалены.</p></blockquote>
+<p>Вторая половина правила: прод выкатывается только из основной ветки. Был у меня случай, когда агент выпускал прод из цепочки рабочих веток. Основная ветка отстала от прода на две с половиной недели. Если бы кто-то запушил в неё, прод пересобрался бы из неё, другой сборкой. С тех пор: выкатил прод не из основной ветки, значит сразу влей туда то же самое.</p>
+<p>И третья: в каждом проекте с выкладкой есть файл <code>docs/deploy.md</code>. В нём сказано, где крутится проект, как выкатить его заново с нуля, какие нужны ключи и как откатить. Нет раздела про откат, значит выпускающий не начинает.</p>
+<h2 id="правило-2-ключи-в-одном-хранилище">Правило 2. Ключи в одном хранилище</h2>
+<p>Все ключи и пароли лежат у меня в одной папке-хранилище на компьютере. Это единственный оригинал. В проектах лежат копии.</p>
+<p>Для хранилища есть маленькая команда:</p>
+<ul><li><code>vault status</code> показывает, какие <code>.env</code> в проектах не сохранены или отличаются от хранилища;</li><li><code>vault save Проект</code> сохраняет <code>.env</code> проекта в хранилище;</li><li><code>vault restore Проект</code> разворачивает ключи в свежую копию проекта.</li></ul>
+<p>Порядок, когда появился новый ключ: положить в <code>.env</code> проекта, сохранить в хранилище, добавить имя переменной в <code>.env.example</code>.</p>
+<p>В git никогда не попадают <code>.env</code> и файлы с ключами. В репозитории только <code>.env.example</code> с именами переменных без значений и <code>docs/env.md</code>: какой ключ зачем нужен и где его получить. Агенту запрещено печатать значения ключей в чат, логи, коммиты и описания изменений. Проверяющий первым делом ищет ключи в диффе.</p>
+<h2 id="правило-3-на-сервере-только-копия">Правило 3. На сервере только копия</h2>
+<p>Это правило я выучил дорого.</p>
+<p>6 ноября 2026 хостинг, на котором жили мои сайты, перестал отдавать доступ. Сервер вроде отвечал, но вместо одного личного кабинета висела заглушка «домен не прилинкован», сертификат слетел. SSH-ключ мой больше не принимался, пароль тоже. Панель папку не отдавала. После нескольких попыток подключения соединение стало сразу закрываться. Поддержка молчала.</p>
+<p>Что я потерял:</p>
+<ul><li>серверный файл с ключами одного из сервисов. Часть ключей жила только там, копий не было;</li><li>заявки, которые копились на сервере в файле, и планы клиентов в кабинете. Тоже без копий.</li></ul>
+<p>Код уцелел, потому что он был в git. Всё остальное пришлось собирать заново: ключи перевыпускать, сервисы переподключать. Я переехал на свой сервер в России и записал решение: серверы хранят только копии.</p>
+<p>Что это значит на деле:</p>
+<ul><li>код на сервер только из git;</li><li>ключи на сервер только из хранилища;</li><li>данные, которые копит сервер (заявки, базы, журналы), регулярно копируются за пределы сервера. Как и куда, записано в <code>docs/</code> проекта. На новом сервере ночная копия настроена сразу при установке.</li></ul>
+<p>Проверка простая: если сервер завтра исчезнет, смогу ли я поднять всё на другом за вечер? Если нет, значит что-то живёт только там.</p>
+<h2 id="правило-4-опыты-на-проде-только-после-свежей-копии">Правило 4. Опыты на проде только после свежей копии</h2>
+<p>20 ноября 2026 агент проверял права доступа в трекере задач Vikunja, который крутится у меня на сервере. Проверял на проде: создал временного пользователя, посмотрел, что тот видит, и собрался его удалить.</p>
+<p>Id пользователя для удаления агент доставал из таблицы, которую печатает утилита Vikunja. Разбирал её по символу <code>|</code>. А таблица рисуется другим символом, <code>│</code>, похожим с виду. Id получился пустым. Команда удаления с пустым id удалила пользователя номер 1. Это был мой аккаунт администратора. Каскадом ушли все мои проекты, задачи, комментарии и файлы.</p>
+<p>Спас дамп базы, снятый в 04:04. Из него всё восстановили встроенной командой восстановления.</p>
+<p>Выводы, которые теперь записаны в память агента:</p>
+<ul><li>перед любым опытом на боевых данных сначала свежая копия. А лучше отдельный тестовый экземпляр;</li><li>удаление только по id, проверенному на непустоту и совпадение с логином. В скрипте это одна строка: <code>[ -n &quot;$ID&quot; ] &amp;&amp; [ &quot;$ID&quot; != 1 ]</code>;</li><li>таблицы, которые рисует утилита, не разбирать «на глаз» по символам. Брать машинный вывод, если он есть.</li></ul>
+<h2 id="что-агенту-запрещено-без-моего-да">Что агенту запрещено без моего «да»</h2>
+<p>Сводный список из правил всех проектов:</p>
+<ul><li>влить в основную ветку и выкатить прод;</li><li>менять ключи на проде без копии в хранилище;</li><li>удалять что-то на сервере и ставить опыты на боевых данных;</li><li>работать с кодом вне рабочей папки, особенно в папке, которая синхронизируется с облаком;</li><li>печатать ключи куда-либо;</li><li>тратить деньги и писать настоящим людям.</li></ul>
+<p>Всё остальное агент делает сам, в своей ветке. Ветка ничего не ломает, пока её не влили.</p>
+<h2 id="как-повторить-у-себя">Как повторить у себя</h2>
+<ol><li>Перед каждой выкладкой копируйте то, что сейчас в проде, в папку с датой в имени. Запишите имя копии туда, где его найдёт следующий человек или агент.</li><li>Напишите <code>docs/deploy.md</code>: где крутится, как выкатить, как откатить. Попробуйте откат один раз заранее, пока ничего не горит.</li><li>Соберите все ключи в одно место. Положите в проект <code>.env.example</code> без значений и проверьте, что <code>.env</code> в <code>.gitignore</code>.</li><li>Задайте себе вопрос про сервер: что на нём есть, чего нет больше нигде? Начните копировать это наружу по расписанию.</li><li>Перед опытами на проде снимите дамп. В скриптах удаления проверяйте, что переменная не пустая.</li><li>Пропишите агенту список «только с моего да» в правилах проекта.</li></ol>
+<h2 id="попробуйте-сами">Попробуйте сами</h2>
+<p>Задание <a href="/#unit-u-pro-backup-rollback">«Копия и план отката перед изменением»</a>: соберёте с ИИ чек-лист копии и отката под свой проект и проверите его на маленьком изменении.</p></div>
+      <nav class="st-neighbors" aria-label="Серия «Как я работаю с ИИ»"><a href="../pochitat/batch-images.html"><small>Предыдущий в серии</small><span>32 иллюстрации за ночь: пакетная генерация через Codex</span></a></nav><p><a href="../pochitat/">Все тексты</a></p>
+    
+  </div>
+</main>
+</body>
+</html>

@@ -73,7 +73,7 @@
   const role = (id) => D.roles.find((r) => r.id === id);
   // У группы «ИИ-практика» своей роли нет: её задания живут в роли «Для себя»
   // группа задания → страница аудитории (26.11): рабочие группы ведут в «Для работы»
-  const groupRole = (g) => ({ seller: 'work', marketing: 'work', product: 'work', teacher: 'teacher', student: 'student', self: 'self', ai: 'self' }[g] || '');
+  const groupRole = (g) => ({ seller: 'work', marketing: 'work', product: 'work', teacher: 'teacher', student: 'student', self: 'self', ai: 'self', pro: 'work' }[g] || '');
   const unitsOf = (taskId) => D.units.filter((u) => u.task === taskId);
   // задача «сделана» в 1а = пройден урок-основа хотя бы одного способа (юниты появятся на этапе 2)
   const taskDone = (taskId) => unitsOf(taskId).some((u) => (jget(KEY.units)[u.id] || {}).result === 'yes' || (u.fromLesson && done(u.fromLesson)));

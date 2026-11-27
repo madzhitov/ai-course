@@ -64,6 +64,14 @@
       {
        "id": "seller.listing.funnel",
        "title": "Найти, где карточка теряет покупателей"
+      },
+      {
+       "id": "seller.listing.infographic",
+       "title": "Сделать карточку товара с инфографикой"
+      },
+      {
+       "id": "seller.listing.video",
+       "title": "Сделать рекламный ролик товара"
       }
      ],
      "description": "Одно описание для всех каналов"
@@ -87,6 +95,14 @@
       {
        "id": "seller.promo.attribution",
        "title": "Понять, какие каналы находят покупателя, а какие закрывают"
+      },
+      {
+       "id": "seller.promo.creative-campaign",
+       "title": "Собрать креативы для рекламной кампании товара"
+      },
+      {
+       "id": "seller.promo.site-leaks",
+       "title": "Найти, где сайт теряет деньги"
       }
      ],
      "description": "Реклама на площадке и трафик на сайт"
@@ -249,6 +265,46 @@
       {
        "id": "ai.show.song",
        "title": "Сделать песню-поздравление"
+      },
+      {
+       "id": "ai.show.style-series",
+       "title": "Сделать серию иллюстраций в одном стиле"
+      },
+      {
+       "id": "ai.show.character-sheet",
+       "title": "Нарисовать лист персонажа"
+      },
+      {
+       "id": "ai.show.character-talk",
+       "title": "Оживить персонажа с репликой"
+      },
+      {
+       "id": "ai.show.stories",
+       "title": "Сделать серию сторис"
+      },
+      {
+       "id": "ai.show.cover",
+       "title": "Сделать обложку и превью видео"
+      },
+      {
+       "id": "ai.show.clip",
+       "title": "Сделать клип на песню"
+      },
+      {
+       "id": "ai.show.photo-alive",
+       "title": "Увеличить и оживить старое фото"
+      },
+      {
+       "id": "ai.show.icons",
+       "title": "Сделать набор иконок"
+      },
+      {
+       "id": "ai.show.cartoon",
+       "title": "Сделать мини-мультфильм"
+      },
+      {
+       "id": "ai.show.hero-clip",
+       "title": "Сделать клип с героем"
       }
      ]
     }
@@ -634,6 +690,72 @@
       {
        "id": "student.rules.declare",
        "title": "Честно указать, что работали с ИИ"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "pro",
+   "title": "Продвинутым",
+   "status": "approved",
+   "directions": [
+    {
+     "id": "pro.setup",
+     "title": "Настройка агента",
+     "description": "Правила проекта для агента",
+     "tasks": [
+      {
+       "id": "pro.setup.rules",
+       "title": "Написать правила проекта для агента"
+      }
+     ]
+    },
+    {
+     "id": "pro.memory",
+     "title": "Память",
+     "description": "Продолжать с места, где остановились",
+     "tasks": [
+      {
+       "id": "pro.memory.log",
+       "title": "Вести журнал сессий"
+      }
+     ]
+    },
+    {
+     "id": "pro.agents",
+     "title": "Несколько агентов",
+     "description": "Поручения, субагенты, параллельная работа",
+     "tasks": [
+      {
+       "id": "pro.agents.brief",
+       "title": "Поручить задачу субагенту и проверить отчёт"
+      },
+      {
+       "id": "pro.agents.split",
+       "title": "Разбить задачу на параллельные части"
+      }
+     ]
+    },
+    {
+     "id": "pro.roles",
+     "title": "Роли",
+     "description": "Проверка чужой работы до выкладки",
+     "tasks": [
+      {
+       "id": "pro.roles.reviewer",
+       "title": "Настроить роль проверяющего"
+      }
+     ]
+    },
+    {
+     "id": "pro.safety",
+     "title": "Безопасность",
+     "description": "Копия, откат, защита данных",
+     "tasks": [
+      {
+       "id": "pro.safety.rollback",
+       "title": "Сделать копию и план отката"
       }
      ]
     }

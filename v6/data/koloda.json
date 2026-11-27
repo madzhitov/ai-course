@@ -51,7 +51,8 @@
     "marketing",
     "product",
     "teacher",
-    "student"
+    "student",
+    "pro"
    ],
    "first": "u-ai-hard-letter",
    "verb": "write",
@@ -78,7 +79,8 @@
    "groups": [
     "seller",
     "marketing",
-    "product"
+    "product",
+    "pro"
    ],
    "first": "u-seller-reviews",
    "verb": "write",
@@ -192,7 +194,27 @@
   "u-study-coursework": "decide",
   "u-study-quiz": "find",
   "u-study-defense": "invent",
-  "u-study-ai-rules": "find"
+  "u-study-ai-rules": "find",
+  "u-ai-style-series": "show",
+  "u-ai-character-sheet": "show",
+  "u-ai-character-talk": "show",
+  "u-seller-infographic-card": "show",
+  "u-seller-product-video": "show",
+  "u-ai-stories": "show",
+  "u-ai-cover": "show",
+  "u-ai-clip-6": "show",
+  "u-ai-photo-alive": "show",
+  "u-ai-icons": "show",
+  "u-ai-cartoon-60": "show",
+  "u-seller-ad-campaign": "show",
+  "u-ai-hero-clip": "show",
+  "u-pro-project-rules": "delegate",
+  "u-pro-session-log": "delegate",
+  "u-pro-subagent-brief": "delegate",
+  "u-pro-split-parallel": "delegate",
+  "u-pro-reviewer-role": "delegate",
+  "u-pro-backup-rollback": "delegate",
+  "u-seller-site-leaks": "delegate"
  },
  "soon": []
 }

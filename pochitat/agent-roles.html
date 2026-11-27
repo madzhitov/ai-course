@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Роли агентов: проверяющий, тестировщик, выпускающий — Артефакты</title>
+<meta name="description" content="Как я раздал агентам три роли и где провёл черту: что агент делает сам, а где ждёт моего «да».">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Роли агентов: проверяющий, тестировщик, выпускающий">
+<meta property="og:description" content="Как я раздал агентам три роли и где провёл черту: что агент делает сам, а где ждёт моего «да».">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png?v=adc3cbdf">
+<meta property="og:url" content="https://ai.madzhitov.ru/pochitat/agent-roles.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/pochitat/agent-roles.html">
+<link rel="preload" href="../v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../v6/fonts/fonts.css?v=0e1f3d7b">
+<link rel="stylesheet" href="../tropa-lesson.css?v=889f3ed1">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+  .st-calc-res { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap:10px; }
+  .st-calc-r { background:#F3F4F7; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); }
+  .st-calc-r b { font-size:24px; line-height:1.15; font-weight:800; color:#16161A; }
+  .st-calc-r.is-main b { font-size:36px; }
+  .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
+  .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+  .st-checked { white-space:nowrap; }
+  .st-quote { margin:12px 0 18px; padding:2px 0 2px 16px; border-left:3px solid var(--line, #E6E8EE); }
+  .st-quote p { margin:0 0 6px; }
+  .st-quote footer { font-size:14px; color:var(--muted); }
+  .st-read-cover { width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:14px; margin-bottom:8px; }
+  .st-read-body table { border-collapse:collapse; width:100%; font-size:15px; }
+  .st-read-body th, .st-read-body td { border-bottom:1px solid var(--line, #E6E8EE); padding:8px 10px; text-align:left; vertical-align:top; }
+  .st-read-body blockquote { margin:16px 0; padding-left:16px; border-left:3px solid var(--line, #E6E8EE); color:var(--muted); }
+  .st-read-body pre { white-space:pre-wrap; background:var(--bg-code); border-radius:14px; padding:14px; font-size:14px; }
+  .st-read-body img { max-width:100%; height:auto; border-radius:14px; }
+</style>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"Роли агентов: проверяющий, тестировщик, выпускающий","description":"Как я раздал агентам три роли и где провёл черту: что агент делает сам, а где ждёт моего «да».","url":"https://ai.madzhitov.ru/pochitat/agent-roles.html","inLanguage":"ru","author":{"@type":"Person","@id":"https://madzhitov.ru/#ruslan","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"datePublished":"2026-11-27","isAccessibleForFree":true,"isPartOf":{"@type":"CreativeWorkSeries","name":"Как я работаю с ИИ"},"position":2,"dateModified":"2026-11-27"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Артефакты","item":"https://ai.madzhitov.ru/"},{"@type":"ListItem","position":2,"name":"Почитать","item":"https://ai.madzhitov.ru/pochitat/"},{"@type":"ListItem","position":3,"name":"Роли агентов: проверяющий, тестировщик, выпускающий","item":"https://ai.madzhitov.ru/pochitat/agent-roles.html"}]}]</script>
+<link rel="stylesheet" href="../v6/static.css?v=6d6945c5">
+<style>@media (max-width:720px){.v6s-nav{flex-wrap:wrap;justify-content:flex-start;gap:6px 16px}}</style>
+<script defer src="../v6/static.js?v=e97e63c9"></script>
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../pochitat/">Почитать</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../pochitat/">Почитать</a></div>
+    <span class="st-eyebrow">Разбор · Как я работаю с ИИ · №2 · 7 минут · проверено 27.11.2026</span><h1>Роли агентов: проверяющий, тестировщик, выпускающий</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-11-27">27.11.2026</time> · <span class="st-checked">Проверено: <time datetime="2026-11-27">27.11.2026</time></span></p><p class="lead">Как я раздал агентам три роли и где провёл черту: что агент делает сам, а где ждёт моего «да».</p>
+      <div class="st-read-body"><p>Агент, который сам написал код, плохо его проверяет. Он помнит, что хотел сделать, и видит это в своём коде, даже когда там написано другое. У людей так же. Поэтому у меня работу проверяет другой агент, с чистой головой и с отдельной инструкцией.</p>
+<p>Ролей три: проверяющий, тестировщик и выпускающий. Каждая описана в коротком файле на страницу. Файлы лежат в общей папке с правилами, и любой агент может их прочитать. Скажу «тестировщик, проверь», и агент открывает файл тестировщика и работает по нему.</p>
+<h2 id="почему-я-до-этого-дошёл">Почему я до этого дошёл</h2>
+<p>27 ноября 2026 агент сделал мне новую функцию во внутреннем инструменте для задач: кнопку «Добавить» для направлений. Сам написал автотест, тест прошёл. Я нажал кнопку, и она увела меня на главную. Причина была в вёрстке: кнопка с атрибутом <code>name=&quot;action&quot;</code> затеняла адрес формы. Автотест ни разу не нажимал кнопку. Он звал сервер напрямую, и сервер, конечно, отвечал правильно.</p>
+<p>Тогда я и спросил агента, почему он развивает проект не так, как у нас расписано в системе. С тех пор правило такое: перед словами «выкатываем?» должны быть отчёты проверяющего и тестировщика. И запускает их отдельный агент. Тот, кто писал код, себя не проверяет.</p>
+<h2 id="проверяющий">Проверяющий</h2>
+<p>Читает чужую работу и ничего не чинит.</p>
+<p>Он запускается по будням утром сам, по расписанию. Берёт список веток, которые ещё не влиты в основную. По каждой смотрит дифф и последнюю запись журнала проекта, чтобы понимать, что ветка обещала сделать.</p>
+<p>Ищет то, что сломает прод или данные:</p>
+<ul><li>ключи, токены и пароли в коде;</li><li>ошибки в логике, которые видно по коду, забытую отладку;</li><li>расхождение между тем, что обещано в журнале, и тем, что сделано;</li><li>нарушения общих правил: работу вне рабочей папки, выкладку не из основной ветки, ключ, который живёт только на сервере.</li></ul>
+<p>Стиль и мелочи он не трогает. На каждую ветку пишет вердикт из трёх вариантов: «можно вливать», «есть вопросы», «нельзя вливать». К вердикту от одного до пяти пунктов с файлом и строкой. Если нужен я, проверяющий добавляет строку в мой список дел. Чинит автор ветки.</p>
+<p>Запреты у него жёсткие: не менять файлы проектов, не коммитить, не вливать, не запускать сборки. Сборки уже работа тестировщика.</p>
+<h2 id="тестировщик">Тестировщик</h2>
+<p>Доказывает, что ветка работает. На слово не верит.</p>
+<p>Запускается по команде, моей или другого агента. Сначала выясняет, что проверять: тему ветки, журнал, README. Потом запускает только те проверки, которые есть в самом проекте: типы, линтер, тесты, сборку. Если проверок нет, так и пишет. Придумывать свои ему нельзя.</p>
+<p>Второе, ради чего он появился: смотреть глазами. Поднять страницу, пройти главный сценарий нажатиями, сделать снимки на ширине телефона и компьютера. У меня это 390 и 1440 пикселей. В октябре на одной странице подзаголовки прилипли к блокам выше: инлайн-отступ у заголовков на сайте не работал, его перебивало общее правило стилей. Текстовая проверка прошла, заметил я сам. С тех пор каждый новый блок смотрим на скриншоте.</p>
+<p>Третье: сравнить с основной веткой. Если та же команда падает и там, это старая проблема, ветка не виновата.</p>
+<p>Тестировщик тоже ничего не чинит. Нашёл ошибку, описал, вернул автору. И ещё: при проверке нельзя тратить платные API и писать настоящим людям.</p>
+<p>Отчёт короткий: вердикт «работает», «работает с замечаниями» или «не работает», дальше каждая команда одной строкой, что видел глазами, где снимки, что не проверено и почему.</p>
+<h2 id="выпускающий">Выпускающий</h2>
+<p>Он единственный трогает прод. И только после моего явного «да, выкатывай» в этом чате и про этот проект.</p>
+<p>Порядок у него такой:</p>
+<ol><li>Читает инструкцию по выкладке в проекте. В ней сказано, где крутится сайт, как его выкатить, какие нужны ключи и как откатить. Если инструкции нет или в ней нет отката, он останавливается, составляет инструкцию по факту и ждёт моего «да» уже на неё.</li><li>Выкатывает только из основной ветки, из чистой копии, где нет незакоммиченных правок.</li><li>Перед выкладкой записывает, что сейчас в проде. Это точка отката.</li><li>Выкатывает ровно той командой, что в инструкции.</li><li>Открывает живой сайт и проходит главный сценарий. Не работает, значит сразу откат, разбор потом.</li><li>Пишет в журнал, что выкатил, какой коммит и где точка отката. Выпущенную ветку удаляет.</li></ol>
+<h2 id="что-агенту-можно-без-спроса">Что агенту можно без спроса</h2>
+<p>Здесь легко ошибиться в обе стороны. Если спрашивать на каждый шаг, я весь день жму «да». Если не спрашивать нигде, однажды проснёшься с пустой базой.</p>
+<p>Без спроса у меня можно:</p>
+<ul><li>создать ветку и работать в ней;</li><li>коммитить по ходу и пушить свою ветку в конце сессии;</li><li>запускать сборку и тесты проекта;</li><li>писать в журнал сессий и в мой список дел;</li><li>решать спорные места в тексте по безопасному варианту: факты сверять по источникам, а всё, что касается детей и закона, решать в сторону осторожности.</li></ul>
+<p>Последний пункт появился 27 ноября. Агент принёс мне на вычитку 28 черновиков заданий и вопросы по каждому спорному месту. Я ответил: «давай без вычитки, действуй по нашей системе: проверка, тесты, после вердикт и деплой по моему ДА». Вычитывать 30 заданий я не хочу, это моё время. Решения по фактам я доверяю агенту, себе оставляю последнее слово перед выкладкой.</p>
+<p>Только с моим «да»:</p>
+<ul><li>влить ветку в основную;</li><li>выкатить прод;</li><li>поменять ключи на сервере;</li><li>удалить что-то на проде или поставить опыт на боевых данных;</li><li>всё, что стоит денег или уходит людям: письма, сообщения, платные вызовы.</li></ul>
+<h2 id="одна-ловушка">Одна ловушка</h2>
+<p>Фраза «делай сам, без подтверждения» не выключает запросы разрешений в приложении. 27 сентября я оставил агента на «автономную» работу. Из 5,5 часа он 4 часа 47 минут ждал моего клика на 44 запроса. Работы было минут на 45. Один запуск превью простоял 3 часа 28 минут. Я думал, что он работает.</p>
+<p>Теперь правило: если я говорю «делай сам», агент сразу отвечает одной строкой, что приложение всё равно будет спрашивать разрешения, и чтобы правда идти без меня, нужно сменить режим разрешений. Это решаю я.</p>
+<h2 id="как-повторить-у-себя">Как повторить у себя</h2>
+<ol><li>Заведите в проекте папку с ролями и положите туда три файла: <code>reviewer.md</code>, <code>tester.md</code>, <code>deployer.md</code>. Каждый на страницу. В каждом три раздела: порядок работы, чего не делать, формат отчёта.</li><li>Самое важное в каждой роли раздел «чего не делать». Проверяющий не меняет файлы, тестировщик не чинит, выпускающий не выкатывает без «да».</li><li>Пропишите в правилах проекта, что перед выкладкой нужны отчёты двух ролей и что их запускает отдельный агент.</li><li>Составьте свой список «можно без спроса» и «только с да». Начните строго, потом ослабляйте по опыту.</li><li>Заведите инструкцию по выкладке с разделом про откат. Без неё выпускающий не начинает.</li></ol>
+<p>Claude Code и Codex из России официально не работают. Роли при этом от инструмента не зависят: это обычные текстовые файлы, их поймёт любой агент, который читает файлы проекта, например GigaCode или SourceCraft Code Assistant.</p>
+<h2 id="попробуйте-сами">Попробуйте сами</h2>
+<p>Задание <a href="/#unit-u-pro-reviewer-role">«Настроить роль проверяющего»</a>: напишете инструкцию проверяющему и прогоните её на своём изменении.</p></div>
+      <nav class="st-neighbors" aria-label="Серия «Как я работаю с ИИ»"><a href="../znaniya/ai-setup.html"><small>Предыдущий в серии</small><span>Как собрать свой ИИ-сетап</span></a><a href="../pochitat/subagents.html"><small>Следующий в серии</small><span>Субагенты: как я делю работу между несколькими агентами</span></a></nav><p><a href="../pochitat/">Все тексты</a></p>
+    
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Субагенты: как я делю работу между несколькими агентами — Артефакты</title>
+<meta name="description" content="Когда задачу стоит дробить, как написать поручение, чтобы отчёт можно было проверить, и как свести три отчёта в один. На примере вычитки 28 заданий.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Субагенты: как я делю работу между несколькими агентами">
+<meta property="og:description" content="Когда задачу стоит дробить, как написать поручение, чтобы отчёт можно было проверить, и как свести три отчёта в один. На примере вычитки 28 заданий.">
+<meta property="og:image" content="https://ai.madzhitov.ru/og-default.png?v=adc3cbdf">
+<meta property="og:url" content="https://ai.madzhitov.ru/pochitat/subagents.html">
+<meta property="og:site_name" content="Артефакты">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ai.madzhitov.ru/pochitat/subagents.html">
+<link rel="preload" href="../v6/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../v6/fonts/fonts.css?v=0e1f3d7b">
+<link rel="stylesheet" href="../tropa-lesson.css?v=889f3ed1">
+<script data-goatcounter="https://mltply.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="6f3f68ad-05ae-459c-a066-ac47b39d266e" data-domains="ai.madzhitov.ru"></script>
+<style>
+  body { padding-top: 0 !important; background: var(--bg) !important; }
+  #lesson-content { position: static !important; margin: 0 auto !important; max-width: 860px !important; padding: 26px clamp(18px,5vw,40px) 72px !important; }
+  .pp-open { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); }
+  .pp-open a { display:inline-block; background:var(--accent); color:#fff; padding:11px 18px; border-radius:11px; text-decoration:none; font-weight:600; }
+  .st-crumb { font-size:14px; color:var(--muted); margin-bottom:12px; }
+  .st-crumb a { color:var(--muted); }
+  .st-meta { font-size:15px; color:var(--muted); }
+  .st-prompt { white-space:pre-wrap; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:14px; background:var(--bg-code); border-radius:14px; padding:16px; }
+  .st-list li { margin-bottom:6px; }
+  .st-term { padding:12px 0; border-bottom:1px solid var(--line); }
+  .st-term b { font-size:18px; }
+  .st-term .en { color:var(--muted); font-size:15px; margin-left:8px; }
+  .st-term p { margin:4px 0 0; }
+  .st-calc { background:var(--bg-card, #fff); border:2px solid #1F2F5C; border-radius:24px; padding:24px; margin:24px 0 8px; }
+  .st-calc-in { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap:14px; }
+  .st-calc-in label { display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:15px; color:var(--muted); }
+  .st-calc-in span { display:flex; align-items:center; gap:8px; height:52px; padding:0 14px; border-radius:14px; background:#F3F4F7; }
+  .st-calc-in input { flex:1; min-width:0; border:0; background:transparent; font:inherit; font-size:19px; font-weight:600; color:var(--text, #16161A); outline:none; }
+  .st-calc-in span:focus-within { box-shadow:0 0 0 2px #1F2F5C; }
+  .st-calc-in i { font-style:normal; color:var(--muted); }
+  .st-calc-out { margin-top:16px; background:#F3F4F7; border-radius:18px; padding:18px 20px; display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .st-calc-out b { font-size:40px; line-height:1.1; font-weight:800; color:#16161A; }
+  .st-calc-f { font-size:14px; color:var(--muted); margin:10px 0 0; }
+  .st-calc-res { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap:10px; }
+  .st-calc-r { background:#F3F4F7; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); }
+  .st-calc-r b { font-size:24px; line-height:1.15; font-weight:800; color:#16161A; }
+  .st-calc-r.is-main b { font-size:36px; }
+  .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
+  .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+  .st-checked { white-space:nowrap; }
+  .st-quote { margin:12px 0 18px; padding:2px 0 2px 16px; border-left:3px solid var(--line, #E6E8EE); }
+  .st-quote p { margin:0 0 6px; }
+  .st-quote footer { font-size:14px; color:var(--muted); }
+  .st-read-cover { width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:14px; margin-bottom:8px; }
+  .st-read-body table { border-collapse:collapse; width:100%; font-size:15px; }
+  .st-read-body th, .st-read-body td { border-bottom:1px solid var(--line, #E6E8EE); padding:8px 10px; text-align:left; vertical-align:top; }
+  .st-read-body blockquote { margin:16px 0; padding-left:16px; border-left:3px solid var(--line, #E6E8EE); color:var(--muted); }
+  .st-read-body pre { white-space:pre-wrap; background:var(--bg-code); border-radius:14px; padding:14px; font-size:14px; }
+  .st-read-body img { max-width:100%; height:auto; border-radius:14px; }
+</style>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"Субагенты: как я делю работу между несколькими агентами","description":"Когда задачу стоит дробить, как написать поручение, чтобы отчёт можно было проверить, и как свести три отчёта в один. На примере вычитки 28 заданий.","url":"https://ai.madzhitov.ru/pochitat/subagents.html","inLanguage":"ru","author":{"@type":"Person","@id":"https://madzhitov.ru/#ruslan","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"datePublished":"2026-11-27","isAccessibleForFree":true,"isPartOf":{"@type":"CreativeWorkSeries","name":"Как я работаю с ИИ"},"position":3,"dateModified":"2026-11-27"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Артефакты","item":"https://ai.madzhitov.ru/"},{"@type":"ListItem","position":2,"name":"Почитать","item":"https://ai.madzhitov.ru/pochitat/"},{"@type":"ListItem","position":3,"name":"Субагенты: как я делю работу между несколькими агентами","item":"https://ai.madzhitov.ru/pochitat/subagents.html"}]}]</script>
+<link rel="stylesheet" href="../v6/static.css?v=6d6945c5">
+<style>@media (max-width:720px){.v6s-nav{flex-wrap:wrap;justify-content:flex-start;gap:6px 16px}}</style>
+<script defer src="../v6/static.js?v=e97e63c9"></script>
+</head>
+<body>
+<header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../pochitat/">Почитать</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+<main class="lesson-content" id="lesson-content">
+  <div class="lesson-view">
+    <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../pochitat/">Почитать</a></div>
+    <span class="st-eyebrow">Разбор · Как я работаю с ИИ · №3 · 7 минут · проверено 27.11.2026</span><h1>Субагенты: как я делю работу между несколькими агентами</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-11-27">27.11.2026</time> · <span class="st-checked">Проверено: <time datetime="2026-11-27">27.11.2026</time></span></p><p class="lead">Когда задачу стоит дробить, как написать поручение, чтобы отчёт можно было проверить, и как свести три отчёта в один. На примере вычитки 28 заданий.</p>
+      <div class="st-read-body"><p>Субагент это агент, которого запускает другой агент. Главный агент пишет ему поручение, тот работает отдельно, в своём контексте, и возвращает отчёт. Главный видит только отчёт. Всех файлов, которые субагент прочитал, он не видит.</p>
+<p>Отсюда и польза, и риск. Польза: можно запустить троих сразу, и каждый внимательно посмотрит свой кусок. Риск: субагент знает ровно то, что написано в поручении, и пишет отчёт таким же уверенным тоном, даже когда ошибся.</p>
+<h2 id="кейс-28-заданий-за-одну-ночь">Кейс: 28 заданий за одну ночь</h2>
+<p>В ночь на 27 ноября 2026 у меня на сайте было 28 черновиков заданий: 11 для учёбы, 8 для учителей и 9 для себя и маркетологов. Все с пометкой «черновик», их нужно было вычитать до выпуска. Одному агенту это долго. К концу длинной сессии контекст забит, и последние задания он смотрит хуже первых.</p>
+<p>Главный агент запустил трёх проверяющих параллельно, по одному на группу:</p>
+<ul><li>«Учёба», 11 заданий;</li><li>«Учителю», 8 заданий;</li><li>«Для себя» и маркетинг, 9 заданий.</li></ul>
+<p>Два задания, ролик и песню, специально не трогали: их собирались переписать после конференции AI Journey, где ждали новые возможности ГигаЧата.</p>
+<p>Каждый проверяющий проверял факты о сервисах по свежим источникам в сети, промпты, примеры и язык. Файлы менять было запрещено, только отчёт.</p>
+<p>Что нашли:</p>
+<ul><li>Claude стоял в шести заданиях «Учёбы» с пометкой «без VPN». Из России он недоступен. Убрали.</li><li>В примере для учителя тема «Строение цветка» стояла в 7 классе. По программе это 6 класс.</li><li>Пример по химии был неверен по школьному правилу.</li><li>Задание про гипотезы ссылалось на калькулятор ICE. На сайте есть только калькулятор RICE.</li><li>Промпт просил «дай ссылку». ИИ в таких случаях выдумывает адреса. Теперь промпт просит назвать официальный сайт, который человек проверит сам.</li><li>Около 30 повторов вида «…, а не …», тире-вставки и канцелярит.</li></ul>
+<p>Всего 53 правки. Плюс пять вопросов, которые проверяющие отдали на решение автору. Например, проверка сочинений у учителя: по сентябрьским рекомендациям Минпросвещения 2026 года работы учеников в ИИ-сервисы загружать не стоит. Задание переделали на образец: свой текст учителя или пример из материалов ФИПИ для экспертов.</p>
+<h2 id="свести-три-отчёта">Свести три отчёта</h2>
+<p>Отчёты сводил главный агент, и всё подряд он вносить не стал.</p>
+<p>Два проверяющих разошлись про ГигаЧат: один нашёл подтверждение, что он делает презентации до 10 слайдов, второй не нашёл. Агент цифру убрал и оставил указание, где эта функция в ГигаЧате. Про калькулятор ICE он проверил сам, открыл данные сайта: да, есть только RICE. Каждую правку из отчётов он сверял с файлом, прежде чем внести.</p>
+<p>Потом сборка, тесты (прошли 36 из 36), пять заданий открыты в браузере на ширине телефона. Метку «черновик» сняли с 28 заданий, на прод выкатили утром после моего «да», с копией прода перед выкладкой.</p>
+<h2 id="когда-дробить-а-когда-нет">Когда дробить, а когда нет</h2>
+<p>Дробить стоит, когда:</p>
+<ul><li>части не зависят друг от друга: у каждой свои файлы, свои задания, свой раздел;</li><li>работа однотипная и её много: вычитать, сверить, найти;</li><li>нужен свежий взгляд, который не знает, как задумывал автор;</li><li>отчёты можно свести по одному формату.</li></ul>
+<p>Не стоит, когда:</p>
+<ul><li>части правят одни и те же файлы. Два агента в одном файле перетрут работу друг друга;</li><li>задача на пару шагов и цель уже известна. Поручение и разбор отчёта займут больше времени, чем сама работа;</li><li>нужен один целостный текст или решение. Пять кусков от пяти авторов потом склеивать дольше.</li></ul>
+<p>И помните про деньги. Три агента сразу тратят токены сразу у трёх.</p>
+<h2 id="как-писать-поручение">Как писать поручение</h2>
+<p>Субагент знает только то, что вы написали. Я пишу поручение как коллеге, который пришёл со стороны и ничего не знает о проекте. Вот из чего состояло поручение проверяющему «Учёбы»:</p>
+<ol><li><strong>Кто ты и где.</strong> «Ты редактор и фактчекер курса „Артефакты&quot;: практические задания по ИИ для русскоязычных пользователей в РФ. Сегодня 2026-11-27».</li><li><strong>Что именно и где лежит.</strong> Задания с id, которые начинаются на <code>u-study-</code>, их 11, путь к файлу.</li><li><strong>Запрет.</strong> «Файлы не меняй, только отчёт». Так три агента не мешают друг другу и главному.</li><li><strong>Для кого.</strong> Школьники и студенты. Идея раздела: ИИ как репетитор, который не решает за ученика.</li><li><strong>Что проверить, по пунктам.</strong> Факты о сервисах веб-поиском по свежим источникам, «не по памяти». Промпты. Примеры по предмету. Язык. Этику учёбы. Ссылки между заданиями.</li><li><strong>Известная ловушка.</strong> «Claude из РФ без VPN недоступен: если он стоит в задании без VPN, это ошибка».</li><li><strong>Формат ответа.</strong> Правки списком JSON: id, путь к полю, точный старый текст, новый текст, почему одной фразой, тип правки. «Только правки, в которых уверен». Отдельно раздел «решить автору».</li></ol>
+<p>От формата зависит, можно ли отчёт проверить. Если каждая правка содержит точный старый текст, главный агент может механически найти её в файле и проверить. Если отчёт написан свободной прозой, свести три таких отчёта почти нельзя.</p>
+<h2 id="как-проверять-отчёт">Как проверять отчёт</h2>
+<p>Отчёт субагента нельзя принимать на веру. Я держу четыре проверки:</p>
+<ul><li><strong>Старый текст совпадает с файлом?</strong> Если нет, субагент читал не то или выдумал.</li><li><strong>У факта есть источник?</strong> Особенно у фактов про доступ из России, цены и возраст.</li><li><strong>Два отчёта противоречат друг другу?</strong> Тогда выбирать осторожный вариант или убирать спорную цифру.</li><li><strong>Правка не ломает соседнее?</strong> Например, подстановку в промпте, на которую ссылается следующий шаг.</li></ul>
+<p>Правка не прошла проверку, значит её не вносят. Даже «с оговоркой».</p>
+<h2 id="как-повторить-у-себя">Как повторить у себя</h2>
+<ol><li>Возьмите работу, которую много раз делали руками: вычитку, сверку, поиск по документам. Разбейте её на две-три части без общих файлов.</li><li>Напишите одно поручение по шаблону выше и размножьте его, меняя только кусок «что именно».</li><li>Запретите субагентам менять файлы. Пусть присылают правки в одном формате.</li><li>Сведите отчёты сами или поручите главному агенту с теми же четырьмя проверками.</li><li>Внесите только проверенное, прогоните тесты и посмотрите результат глазами.</li></ol>
+<p>Субагенты есть в Claude Code и Codex, но оба из России официально не работают. Сбер заявлял поддержку субагентов в агентном режиме GigaCode. Если агента с субагентами нет, схему можно повторить вручную: три отдельных чата, одно поручение, сводите вы сами.</p>
+<h2 id="попробуйте-сами">Попробуйте сами</h2>
+<p>Задание <a href="/#unit-u-pro-subagent-brief">«Поручить часть работы субагенту и проверить отчёт»</a>. А чтобы научиться резать задачу на части, задание <a href="/#unit-u-pro-split-parallel">«Разбить задачу на параллельные части»</a>.</p></div>
+      <nav class="st-neighbors" aria-label="Серия «Как я работаю с ИИ»"><a href="../pochitat/agent-roles.html"><small>Предыдущий в серии</small><span>Роли агентов: проверяющий, тестировщик, выпускающий</span></a><a href="../pochitat/memory.html"><small>Следующий в серии</small><span>Память между сессиями: как агент не начинает с нуля</span></a></nav><p><a href="../pochitat/">Все тексты</a></p>
+    
+  </div>
+</main>
+</body>
+</html>

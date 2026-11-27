@@ -35821,7 +35821,7 @@ function initAlesha(lesson) {
   }
 
   // Greeting + 3 suggestions
-  aleshaAddMsg('bot', `Привет! Я Алёша. Помогу разобраться с уроком «${lesson.title}». Спроси что угодно.`);
+  aleshaAddMsg('bot', lesson.id === 'v6' ? `Привет! Я Алёша. Помогу с темой «${lesson.title}». Спрашивайте.` : `Привет! Я Алёша. Помогу разобраться с уроком «${lesson.title}». Спроси что угодно.`);
   const suggestions = [
     'Объясни проще',
     'Ещё пример',
