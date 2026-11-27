@@ -30,7 +30,7 @@
     const real = D.units.filter((u) => Array.isArray(u.steps) && u.steps.length && K.units[u.id]).map((u) => {
       const t = D.tasks[u.task] || {};
       const last = u.steps.map((s) => s.checklist).filter(Boolean).pop() || [];
-      return { id: u.id, v: K.units[u.id], grp: t.group, t: u.title, r: u.result, m: u.minutes, lv: u.level, tools: u.tools || [], nv: !!u.noVpn, needs: u.needs || [],
+      return { id: u.id, tk: u.task, v: K.units[u.id], grp: t.group, t: u.title, r: u.result, m: u.minutes, lv: u.level, tools: u.tools || [], nv: !!u.noVpn, needs: u.needs || [],
         steps: u.steps.map((s) => s.title), p: (u.steps.find((s) => s.prompt) || {}).prompt, ch: last.slice(0, 3), review: !!u.review,
         fw: (u.basedOn || []).map((id) => D.fw.find((c) => c.id === id)).filter(Boolean).map((c) => ({ id: c.id, t: c.title, page: !!c.full })) };
     });
@@ -115,29 +115,35 @@
   function render() { renderHero(); renderDeck(); }
 
   function rest() {
-    return `<section class="v6-sec" id="kd-deck"></section>`;
+    return `<section class="v6-sec" id="kd-deck"></section><section class="v6-sec" id="kd-pres-home"></section>`;
+  }
+  function presetsHome() {
+    const box = document.getElementById('kd-pres-home'); if (!box) return;
+    const tiles = presetTiles(''); if (!tiles) { box.remove(); return; }
+    box.innerHTML = `<div class="v6-sec-head is-split"><div><h2 class="v6-h2">Подборки решений</h2><p>${((K && K.presets) || []).filter((p) => presetCount(p)).length} готовых наборов: новое, креатив, короткие задания, для своей работы.</p></div><a class="v6-link" href="#tasks" data-kd-all="all">Все ${CARDS.filter((c) => !c.gap).length} ${pl(CARDS.filter((c) => !c.gap).length, 'задание', 'задания', 'заданий')} →</a></div><div class="kd-pres">${tiles}</div>`;
   }
   // Полоса «Об Артефактах» внизу главной: сквозное не мешается с колодой и обучением (26.11)
   function about() {
     return `<section class="v6-sec" id="kd-svc"></section>
       <section class="v6-sec"><div class="kd-work"><div><span class="kd-eye">Для бизнеса</span><h2>ИИ в работе компании</h2>
         <p>Обучим команду работать с ИИ на своих данных или сделаем под ключ. Ведёт Руслан Маджитов с командой.</p>
-        <div class="kd-wb"><button type="button" class="is-main" data-kd-work="1">Что делаем для бизнеса</button></div></div>
-        <ul><li><b>Обучение команды</b><span>Группа из 3–6 человек за 4 недели осваивает рабочие процессы с ИИ. Замер часов до и после.</span></li>
-        <li><b>Дашборды и отчёты</b><span>Под ваши процессы и данные, под ключ. Пример — <a href="https://birdtold.ru/demo" target="_blank" rel="noopener" onclick="umTrack('bird-door', { from: 'home-deck' })">сервис «Птичка напела»</a>.</span></li>
-        <li><b>Финмодель и юнит-экономика</b><span>P&amp;L, деньги товаров и каналов на ваших данных.</span></li>
-        <li><b>Разбор бренда</b><span>Стадия бренда, слабые места и план на 90 дней.</span></li></ul></div></section>`;
+        <div class="kd-wb"><button type="button" class="is-main" data-kd-work="1">Что делаем для бизнеса</button><a href="#companies-sample" onclick="V6.open('companies-sample'); return false;">Образец разбора</a></div></div>
+        <ul class="kd-wl">${[['co-leaks', 'Где сайт теряет деньги', 'Разбор сайта или магазина: воронка, карточки, цены, видимость в ответах ИИ. Выводы письменно, с первым шагом.'],
+          ['co-system', 'Обучение команды', 'Группа из 3–6 человек за 4 недели осваивает рабочие процессы с ИИ. Замер часов до и после.'],
+          ['co-system', 'Дашборды и отчёты', 'Под ваши процессы и данные, под ключ. Пример: сервис «Птичка напела».'],
+          ['co-system', 'Финмодель и юнит-экономика', 'P&amp;L, деньги товаров и каналов на ваших данных.'],
+          ['co-system', 'Разбор бренда', 'Стадия бренда, слабые места и план на 90 дней.']].map(([id, t, x]) => `<li><a href="#companies" data-kd-co="${id}"><b>${t}</b><span>${x}</span><i>Подробнее →</i></a></li>`).join('')}</ul></div></section>`;
   }
   function services() {
     const box = document.getElementById('kd-svc');
     if (!box || typeof fetch !== 'function') return;
-    const pick = ['Алиса AI', 'ГигаЧат', 'Шедеврум', 'DeepSeek', 'Suno', 'Gamma'];
+    const pick = ['Алиса AI', 'ГигаЧат', 'DeepSeek', 'Qwen Chat', 'Suno', 'Gamma'];
     fetch('/tools/neyroseti-bez-vpn/data.json').then((r) => r.ok ? r.json() : Promise.reject()).then((d) => {
       const rows = d.services.filter((s) => pick.includes(s.name) && s.vpn === 'yes');
       const date = new Date(d.checked).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
       box.innerHTML = `<div class="v6-sec-head is-split"><div><h2 class="v6-h2">Бесплатно и без VPN</h2><p>Сервисы, в которых делаются карты. Проверяем раз в месяц: сайт открывается из России, регистрация проходит без VPN.</p></div><p>Проверено ${esc(date)}</p></div>
         <div class="kd-tbl"><table><thead><tr><th>Сервис</th><th>Что умеет</th><th>Сколько бесплатно</th></tr></thead><tbody>${rows.map((s) => `<tr><td><b>${esc(s.name)}</b><small>${esc(s.country)}</small></td><td>${(s.tasks || []).map((t) => `<span class="kd-tag">${esc(t)}</span>`).join(' ')}</td><td>${esc(s.free)}</td></tr>`).join('')}</tbody></table></div>
-        <p class="kd-more"><a class="v6b is-soft" href="/tools/neyroseti-bez-vpn/">Все сервисы с источниками</a></p>`;
+        <p class="kd-more"><a class="v6b is-soft" href="/tools/neyroseti-bez-vpn/">Все сервисы с источниками</a><a class="v6b is-soft" href="#resources" onclick="openStaticPage('resources'); return false;">Источники уроков</a></p>`;
     }).catch(() => { box.remove(); });
   }
 
@@ -148,7 +154,12 @@
       const done = (txt) => { cp.textContent = txt; setTimeout(() => { cp.textContent = 'Скопировать запрос'; }, 1600); };
       try { navigator.clipboard.writeText(c.p).then(() => done('Скопировано'), () => done('Не вышло, откройте шаги')); } catch (_) { done('Не вышло, откройте шаги'); }
       return; }
-    const all = t.closest('[data-kd-all]'); if (all) { ev.preventDefault(); CAT.a = aud; CAT.w = wrole; CAT.v = 'all'; CAT.l = 'all'; track('kd-all', { aud }); V6.open('tasks'); return; }
+    const co = t.closest('[data-kd-co]'); if (co) { ev.preventDefault(); track('kd-co', { to: co.dataset.kdCo }); V6.open('companies');
+      const go = (n) => { const el = document.getElementById(co.dataset.kdCo); if (el) scrollToEl(el); else if (n) setTimeout(() => go(n - 1), 150); }; setTimeout(() => go(20), 50); return; }
+    const pre = t.closest('[data-kd-preset]'); if (pre) { ev.preventDefault(); const onCat = !!document.getElementById('kd-cat-list'); applyPreset(onCat ? pre.dataset.kdPreset : (CAT.p = '', pre.dataset.kdPreset));
+      track('kd-preset', { id: pre.dataset.kdPreset, from: onCat ? 'catalog' : 'home' });
+      if (onCat) { catChips(); catList(); const f = document.getElementById('v6-ask-t'); if (f) f.value = ''; } else V6.open('tasks'); return; }
+    const all = t.closest('[data-kd-all]'); if (all) { ev.preventDefault(); CAT.a = aud; CAT.w = wrole; CAT.v = 'all'; CAT.l = 'all'; CAT.p = ''; track('kd-all', { aud }); V6.open('tasks'); return; }
     const pk = t.closest('[data-kd-pick]'); if (pk) { const h = document.getElementById('kd-verbs'); if (h) h.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' }); return; }
     const wk = t.closest('[data-kd-work]'); if (wk) { ev.stopPropagation(); track('agency-door', { from: 'home-deck' }); V6.open('companies'); return; }
     if (t.closest('a')) return;
@@ -168,13 +179,13 @@
   function onbNumbers(D) {
     const set = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
     const nu = D.units.filter((u) => Array.isArray(u.steps) && u.steps.length).length;
-    set('kd-n-units', `${nu} ${plural(nu, 'задание', 'задания', 'заданий')}`);
+    set('kd-n-units', `${nu} ${plural(nu, 'задание', 'задания', 'заданий')}`); set('kd-b-units', `${nu} ${plural(nu, 'решение', 'решения', 'решений')}`);
     try {
       const nl = [...LESSONS, ...TRACK_LESSONS].filter((l) => l.content).length;
-      if (nl) set('kd-n-lessons', `${nl} ${plural(nl, 'урок', 'урока', 'уроков')}`);
+      if (nl) { set('kd-n-lessons', `${nl} ${plural(nl, 'урок', 'урока', 'уроков')}`); set('kd-b-lessons', `${nl} ${plural(nl, 'урок', 'урока', 'уроков')}`); }
     } catch (_) {}
     const nm = (D.paths.trails || []).length; set('kd-n-minis', `${nm} ${plural(nm, 'мини-курс', 'мини-курса', 'мини-курсов')}`);
-    set('kd-n-fw', `${D.fw.length} ${plural(D.fw.length, 'метод', 'метода', 'методов')}`);
+    set('kd-n-fw', `${D.fw.length} ${plural(D.fw.length, 'метод', 'метода', 'методов')}`); set('kd-b-fw', `${D.fw.length} ${plural(D.fw.length, 'метод', 'метода', 'методов')} и словарь`);
     fetch('v6/data/dictionary.json').then((r) => r.ok ? r.json() : null).then((d) => { if (d && d.terms) set('kd-n-terms', `${d.terms.length} ${plural(d.terms.length, 'термин', 'термина', 'терминов')}`); }).catch(() => {});
   }
   function mount(D, restBox, aboutBox) {
@@ -182,23 +193,37 @@
     build(D);
     if (restBox) restBox.insertAdjacentHTML('afterbegin', rest());
     if (aboutBox) aboutBox.insertAdjacentHTML('afterbegin', about());
-    render();
+    render(); presetsHome();
     services();
     if (!bound) { document.addEventListener('click', onClick); document.addEventListener('keydown', onKey); bound = true; }
   }
   // ---------- Каталог «Решений»: поиск и фильтры «для кого» и «что сделать» (прототип модели 25.11) ----------
-  const CAT = { a: 'all', w: 'all', v: 'all', l: 'all', q: '', soon: false };
+  const CAT = { a: 'all', w: 'all', v: 'all', l: 'all', p: '', q: '', soon: false };
+  const scrollToEl = (el) => { if (!el) return; const h = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header')) || 72; window.scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + window.scrollY - h - 16) }); };
+  // Подборки (27.11): плашки-пресеты на главной и над фильтрами каталога. Данные — koloda.json → presets.
+  const PRESET = (id) => ((K && K.presets) || []).find((x) => x.id === id);
+  const inPreset = (c, p) => !p || (p.ids ? p.ids.includes(c.id) : p.tasks ? p.tasks.some((t) => (c.tk || '').startsWith(t)) : p.max ? c.m <= p.max : p.level ? c.lv === p.level : p.a ? inAud(c, p.a, p.w || 'all') : true);
+  const presetCount = (p) => CARDS.filter((c) => !c.gap && inPreset(c, p)).length;
+  function presetTiles(on) {
+    return ((K && K.presets) || []).map((p) => { const n = presetCount(p); if (!n) return '';
+      return `<a class="kd-pre${on === p.id ? ' is-on' : ''}" href="#tasks" data-kd-preset="${esc(p.id)}" aria-pressed="${on === p.id}"><span class="kd-pre-img"><img src="v6/art/${esc(p.art)}.webp" alt="" loading="lazy"></span><span class="kd-pre-b"><span class="kd-pre-n">${n} ${pl(n, 'задание', 'задания', 'заданий')}</span><b>${esc(p.title)}</b><span class="kd-pre-l">${esc(p.lead)}</span></span></a>`; }).join('');
+  }
+  function applyPreset(id) {
+    const p = PRESET(id); CAT.a = 'all'; CAT.w = 'all'; CAT.v = 'all'; CAT.l = 'all'; CAT.q = ''; CAT.p = p && CAT.p !== id ? id : '';
+  }
   // уровни заданий (units.json → level); «продвинутый» добавлен 27.11 под серию про агентов
   const LEVELS = [['all', 'Любой'], ['с нуля', 'С нуля'], ['уверенный', 'Уверенный'], ['продвинутый', 'Продвинутый']];
   const pl = (n, a, b, c) => { const x = n % 10, y = n % 100; return x === 1 && y !== 11 ? a : x >= 2 && x <= 4 && (y < 12 || y > 14) ? b : c; };
   function catList() {
     const box = document.getElementById('kd-cat-list'); if (!box) return;
     const q = CAT.q.trim().toLowerCase();
-    const items = CARDS.filter((c) => (CAT.soon || !c.gap) && inAud(c, CAT.a, CAT.w) && (CAT.v === 'all' || c.v === CAT.v) && (CAT.l === 'all' || (!c.gap && c.lv === CAT.l)) && (!q || (c.t + ' ' + (c.r || '')).toLowerCase().includes(q)))
+    const items = CARDS.filter((c) => (CAT.soon || !c.gap) && inAud(c, CAT.a, CAT.w) && (CAT.v === 'all' || c.v === CAT.v) && (CAT.l === 'all' || (!c.gap && c.lv === CAT.l)) && (!CAT.p || (!c.gap && inPreset(c, PRESET(CAT.p)))) && (!q || (c.t + ' ' + (c.r || '')).toLowerCase().includes(q)))
       .sort((x, y) => (!!x.gap - !!y.gap) || (!!x.review - !!y.review) || ((x.m || 99) - (y.m || 99)));
     const ready = items.filter((c) => !c.gap).length;
     const gname = (id) => ROLE[id] || '';
-    document.getElementById('kd-cat-found').textContent = ready ? `Найдено ${ready} ${pl(ready, 'задание', 'задания', 'заданий')}` : 'Ничего не нашлось. Попробуйте другое слово или сбросьте фильтры';
+    const pr = PRESET(CAT.p);
+    document.getElementById('kd-cat-found').innerHTML = (ready ? `Найдено ${ready} ${pl(ready, 'задание', 'задания', 'заданий')}` : 'Ничего не нашлось. Попробуйте другое слово или сбросьте фильтры')
+      + (pr ? ` · подборка «${esc(pr.title)}» <button type="button" class="kd-pre-x" data-kd-preset="${esc(pr.id)}">сбросить</button>` : '');
     box.innerHTML = items.map((c) => c.gap
       ? `<div class="kd-row is-soon"><b>${esc(c.t)}<span class="kd-tag is-o">${esc(gname(c.grp))}</span></b><span class="kd-row-r">${esc(c.r)}</span><span class="kd-row-m">скоро</span></div>`
       : `<a class="kd-row" href="#unit-${esc(c.id)}" data-kd-open="${esc(c.id)}"><b>${esc(c.t)}${c.review ? '<span class="kd-tag is-o">черновик</span>' : ''}<span class="kd-tag is-o">${esc(gname(c.grp))}</span>${c.lv && c.lv !== 'с нуля' ? `<span class="kd-tag is-lv">${esc(c.lv)}</span>` : ''}</b><span class="kd-row-r">${esc(c.r)}</span><span class="kd-row-m">${c.m}<small>мин</small></span></a>`).join('');
@@ -211,18 +236,22 @@
     sw.innerHTML = WORKROLES.map(([w, n]) => chip('w', w, n)).join('');
     document.getElementById('kd-cat-v').innerHTML = chip('v', 'all', 'Всё') + K.verbs.map((x) => chip('v', x.id, x.title)).join('');
     document.getElementById('kd-cat-l').innerHTML = LEVELS.map(([l, t]) => chip('l', l, t)).join('');
+    const pb = document.getElementById('kd-cat-p'); if (pb) pb.innerHTML = presetTiles(CAT.p);
     document.querySelectorAll('#kd-cat-l [data-v]').forEach((b) => { b.disabled = b.dataset.v !== 'all' && !CARDS.some((c) => !c.gap && c.lv === b.dataset.v); });
   }
   // tasksPage() в v6.js рисует первый экран с поиском (#v6-ask-t) и зовёт catalog().
   function catalog(D, box, field) {
     build(D);
-    box.innerHTML = `<div class="kd-fl"><span class="kd-fl-l">Для кого</span><div class="kd-chiprow" id="kd-cat-g"></div></div>
+    box.innerHTML = `<div class="kd-pres-h"><h2 class="v6-h2">Подборки</h2><p>С чего начать: готовые наборы заданий. Или настройте фильтры ниже.</p></div>
+      <div class="kd-pres" id="kd-cat-p"></div>
+      <div class="kd-fl"><span class="kd-fl-l">Для кого</span><div class="kd-chiprow" id="kd-cat-g"></div></div>
       <div class="kd-fl is-sub" id="kd-cat-wrap"><span class="kd-fl-l">Какая работа</span><div class="kd-chiprow" id="kd-cat-w"></div></div>
       <div class="kd-fl"><span class="kd-fl-l">Что сделать</span><div class="kd-chiprow" id="kd-cat-v"></div></div>
       <div class="kd-fl"><span class="kd-fl-l">Уровень</span><div class="kd-chiprow" id="kd-cat-l"></div></div>
       <div class="kd-found"><span id="kd-cat-found"></span>${K.soon.length ? `<label><input type="checkbox" id="kd-cat-soon"${CAT.soon ? ' checked' : ''}> показать, что скоро</label>` : ''}</div>
       <div class="kd-rows" id="kd-cat-list"></div>`;
     catChips(); catList();
+    if (CAT.p) setTimeout(() => scrollToEl(document.getElementById('kd-cat-p')), 0);
     if (document.getElementById('kd-cat-soon')) document.getElementById('kd-cat-soon').onchange = (ev) => { CAT.soon = ev.target.checked; catList(); };
     if (field) { field.value = CAT.q; field.addEventListener('input', () => { CAT.q = field.value; catList(); }); }
     if (!bound) { document.addEventListener('click', onClick); document.addEventListener('keydown', onKey); bound = true; }
@@ -233,6 +262,6 @@
     track('kd-cat', { k: b.dataset.kdCat, v: b.dataset.v }); catChips(); catList(); return true;
   }
   // каталог с заранее выбранной аудиторией и направлением работы (страница «Для работы»)
-  const catFor = (a, w) => { CAT.a = a || 'all'; CAT.w = w || 'all'; CAT.v = 'all'; CAT.l = 'all'; };
+  const catFor = (a, w) => { CAT.a = a || 'all'; CAT.w = w || 'all'; CAT.v = 'all'; CAT.l = 'all'; CAT.p = ''; };
   window.Koloda = { mount, catalog, catFor };
 })();

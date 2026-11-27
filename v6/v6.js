@@ -44,7 +44,7 @@
   // иллюстрации v2.1 (3D, фон #F3F4F7) — WebP; ещё не перерисованные — старые SVG (v6-brief/illustrations/handoff-2026-10-04)
   const ART_WEBP = new Set(['icon-roli', 'icon-zadachi', 'icon-puti', 'icon-znaniya', 'icon-kompanii', 'paths-hero', 'knowledge', 'task', 'fw-card',
     'main-path', 'seller-path', 'product-path', 'marketing-path', 'role-seller', 'role-creator', 'role-self', 'role-product', 'role-project', 'role-marketing', 'role-specialist', 'role-owner', 'role-teacher', 'role-student',
-    'trail-projects', 'trail-everyday', 'trail-industry', 'trail-claude', 'trail-vibe', 'companies', 'notebook', 'lesson']);
+    'trail-projects', 'trail-everyday', 'trail-industry', 'trail-claude', 'trail-vibe', 'companies', 'notebook', 'lesson', 'home-deck']);
   const artSrc = (name) => `v6/art/${name}.${ART_WEBP.has(name) ? 'webp' : 'svg'}`;
   const art = (name, cls) => `<div class="v6-art${cls ? ' ' + cls : ''}" aria-hidden="true"><img src="${artSrc(name)}" alt="" loading="lazy"></div>`;
 
@@ -307,6 +307,16 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       </div>
       ${trails ? `<p class="v6-roleline" style="margin-top:20px"><span>Мини-курсы рядом с путём:</span>${trails}</p>` : ''}</section>`;
   }
+  // Новое (27.11): одна строка в полосе наверху главной — свежая запись «Что нового» за 14 дней; в полосе и в развёрнутом онбординге
+  function newsBand() {
+    const a = document.getElementById('kd-news'); if (!a) return;
+    const c = (CHANGELOG || []).find((x) => (Date.now() - new Date(x.date).getTime()) / 864e5 <= 14);
+    if (!c) { a.hidden = true; return; }
+    a.innerHTML = `<span class="kd-news-k">Новое · ${e(fmtDateRu(c.date))}</span><span class="kd-news-t">${e(stripEmoji(c.title))}</span>`;
+    a.href = c.link || '#changelog';
+    a.onclick = (ev) => { umTrack('news-top', { link: c.link || 'changelog' }); if (!c.link) { ev.preventDefault(); openStaticPage('changelog'); } };
+    a.hidden = false;
+  }
   // свежая запись «Что нового» сразу под первым экраном: последние 2, если им не больше 30 дней
   function newsTop() {
     const fresh = (CHANGELOG || []).filter((c) => (Date.now() - new Date(c.date).getTime()) / 864e5 <= 30).slice(0, 2);
@@ -327,7 +337,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       [...el.children].forEach((n) => { if (n !== pre) n.remove(); });
       pre.removeAttribute('id');
       document.documentElement.classList.remove('not-home'); // неизвестный адрес (#что-то) тоже открывает главную
-    } else el = shell(`<div class="v6c" id="v6-home"><div id="v6-strip"></div><section class="kd-onb" id="kd-onb" aria-label="Как тут всё устроено"><div class="kd-onb-full"><h2 class="kd-onb-h">Как тут всё устроено</h2><p class="kd-onb-lead">Бесплатная платформа про ИИ в работе и учёбе. Три раздела: выберите, с чего начать, или вытяните задание ниже.</p><div class="kd-three"><a class="kd-tile" href="#tasks" onclick="V6.open('tasks'); return false;"><span class="kd-tile-k">Сделать</span><b>Решения</b><span class="kd-tile-p">Задания по шагам на ваших данных: письмо, расчёт, план, презентация. Результат за 15–60 минут.</span><span class="kd-tile-n"><span id="kd-n-units">задания по шагам</span></span><span class="kd-tile-go">Найти задание</span></a><a class="kd-tile" href="#paths" onclick="V6.open('paths'); return false;"><span class="kd-tile-k">Научиться</span><b>Обучение</b><span class="kd-tile-p">Путь от первых запросов до своих приложений и короткие мини-курсы по темам.</span><span class="kd-tile-n"><span id="kd-n-lessons">уроки</span><span id="kd-n-minis">мини-курсы</span></span><span class="kd-tile-go">Начать учиться</span></a><a class="kd-tile" href="#knowledge" onclick="V6.open('knowledge'); return false;"><span class="kd-tile-k">Разобраться</span><b>Справочник</b><span class="kd-tile-p">Методы, термины, инструменты и сервисы, которые работают без VPN.</span><span class="kd-tile-n"><span id="kd-n-fw">методы</span><span id="kd-n-terms">термины</span></span><span class="kd-tile-go">Открыть справочник</span></a></div><button type="button" class="kd-onb-close" data-kd-onb="1">Понятно, свернуть</button></div><div class="kd-onb-band"><span><b>Артефакты</b> — бесплатно, на русском, без регистрации. Три раздела:</span><a href="#tasks" onclick="V6.open('tasks'); return false;">решения</a><a href="#paths" onclick="V6.open('paths'); return false;">обучение</a><a href="#knowledge" onclick="V6.open('knowledge'); return false;">справочник</a><button type="button" data-kd-onb="0">Как тут всё устроено</button></div></section><section class="kd-hero" id="kd-hero"><div><h1 class="kd-h1" id="kd-h1">Что нужно сделать?</h1><p class="kd-lead" id="kd-lead">Выберите действие и вытяните карту. На каждой готовая вещь, время и сервис без VPN. На обороте шаги, запрос для ИИ и проверка результата.</p><div class="kd-verbs" id="kd-verbs"></div></div><div class="kd-firstbox"><span class="kd-firsttag">Первая карта</span><div id="kd-first"></div><p class="kd-note" id="kd-note"></p></div></section><div id="v6-home-rest"></div></div>`);
+    } else el = shell(`<div class="v6c" id="v6-home"><div id="v6-strip"></div><section class="kd-onb" id="kd-onb" aria-label="Как тут всё устроено"><div class="kd-onb-full"><h2 class="kd-onb-h">Как тут всё устроено</h2><p class="kd-onb-lead">Бесплатная платформа про ИИ в работе и учёбе. Три раздела: выберите, с чего начать, или вытяните задание ниже.</p><div class="kd-three"><a class="kd-tile" href="#tasks" onclick="V6.open('tasks'); return false;"><span class="kd-tile-k">Сделать</span><b>Решения</b><span class="kd-tile-p">Задания по шагам на ваших данных: письмо, расчёт, план, презентация. Результат за 15–60 минут.</span><span class="kd-tile-n"><span id="kd-n-units">задания по шагам</span></span><span class="kd-tile-go">Найти задание</span></a><a class="kd-tile" href="#paths" onclick="V6.open('paths'); return false;"><span class="kd-tile-k">Научиться</span><b>Обучение</b><span class="kd-tile-p">Путь от первых запросов до своих приложений и короткие мини-курсы по темам.</span><span class="kd-tile-n"><span id="kd-n-lessons">уроки</span><span id="kd-n-minis">мини-курсы</span></span><span class="kd-tile-go">Начать учиться</span></a><a class="kd-tile" href="#knowledge" onclick="V6.open('knowledge'); return false;"><span class="kd-tile-k">Разобраться</span><b>Справочник</b><span class="kd-tile-p">Методы, термины, инструменты и сервисы, которые работают без VPN.</span><span class="kd-tile-n"><span id="kd-n-fw">методы</span><span id="kd-n-terms">термины</span></span><span class="kd-tile-go">Открыть справочник</span></a></div><button type="button" class="kd-onb-close" data-kd-onb="1">Понятно, свернуть</button></div><div class="kd-onb-band"><span><b>Артефакты</b> — бесплатно, на русском, без регистрации:</span><a href="#tasks" onclick="V6.open('tasks'); return false;"><span id="kd-b-units">решения</span></a><a href="#paths" onclick="V6.open('paths'); return false;"><span id="kd-b-lessons">обучение</span></a><a href="#knowledge" onclick="V6.open('knowledge'); return false;"><span id="kd-b-fw">справочник</span></a><a href="#reads" onclick="V6.open('reads'); return false;">почитать</a><a class="kd-news" id="kd-news" hidden></a><button type="button" data-kd-onb="0">Как тут всё устроено</button></div></section><section class="kd-hero" id="kd-hero"><div><h1 class="kd-h1" id="kd-h1">Что нужно сделать?</h1><p class="kd-lead" id="kd-lead">Выберите действие и вытяните карту. На каждой готовая вещь, время и сервис без VPN. На обороте шаги, запрос для ИИ и проверка результата.</p><div class="kd-verbs" id="kd-verbs"></div></div><div class="kd-firstbox"><span class="kd-firsttag">Первая карта</span><div id="kd-first"></div><p class="kd-note" id="kd-note"></p></div></section><div id="v6-home-rest"></div></div>`);
     load().then(() => {
       const pn = document.getElementById('v6-pre-n');
       const nReady = D.units.filter((u) => hasSteps(u) && !u.review).length;
@@ -366,9 +376,9 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       if (!box('v6-home-rest')) return;
       box('v6-strip').innerHTML = strip;
       box('v6-home-rest').innerHTML = '<div id="kd-rest"></div>' + `<div class="v6x-homedoor">${xDoor('setup', 'Не знаете, с какого сервиса начать?', 'Мой ИИ-сетап за 5 минут: четыре вопроса, два сервиса и три первых задания', 'home')}</div>` + learnBlock()
-        + '<div class="kd-aboutzone"><h2 class="v6-h2">Об Артефактах</h2>' + newsTop() + '<div id="v6-reads-home"></div><div id="kd-about"></div>' + authorBlock() + '</div>';
+        + '<div class="kd-aboutzone"><h2 class="v6-h2">Об Артефактах</h2>' + '<div id="v6-reads-home"></div><div id="kd-about"></div>' + authorBlock() + '</div>';
       if (window.Koloda) Koloda.mount(D, box('kd-rest'), box('kd-about'));
-      readsHome();
+      readsHome(); newsBand();
     }).catch(() => fail('v6-home'));
     return el;
   }
@@ -497,7 +507,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
   function tasksPage() {
     shell('<div class="v6c" id="v6-tasks"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
     load().then(() => {
-      document.getElementById('v6-tasks').innerHTML = `<div class="v6-sechero"><div><h1 class="v6-d">Решения</h1><p class="v6-lead">Задания по шагам на ваших данных, с готовым запросом для ИИ и проверкой. Начните вводить или выберите фильтр.</p>${askForm('v6-ask-t')}</div>${art('icon-zadachi', 'v6-icon-art')}</div>
+      document.getElementById('v6-tasks').innerHTML = `<div class="v6-sechero"><div><h1 class="v6-d">Решения</h1><p class="v6-lead">${(() => { const n = D.units.filter((u) => (u.steps || []).length).length; return `${n} ${plural(n, 'задание', 'задания', 'заданий')}`; })()} по шагам на ваших данных, с готовым запросом для ИИ и проверкой. Выберите подборку, фильтр или опишите задачу.</p>${askForm('v6-ask-t')}</div>${art('icon-zadachi', 'v6-icon-art')}</div>
         <section class="v6-sec" id="kd-cat"></section>`;
       if (window.Koloda) Koloda.catalog(D, document.getElementById('kd-cat'), document.getElementById('v6-ask-t'));
       const search = new URLSearchParams(location.search);
@@ -943,7 +953,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
   }
   const READ_KIND = { series: 'Серия', guide: 'Гайд', review: 'Обзор', digest: 'Дайджест' };
   // обложка: cover из данных, иначе пластилиновая картинка по смыслу текста или по формату
-  const READ_ART = { 'ai-setup': 'trail-claude', 'ai-law': 'knowledge', 'kabinet-ai': 'seller-path' };
+  const READ_ART = { 'ai-setup': 'trail-claude', 'ai-law': 'knowledge', 'kabinet-ai': 'seller-path', 'agent-roles': 'role-owner', subagents: 'role-project', memory: 'notebook', 'batch-images': 'home-deck', safety: 'role-specialist', 'creative-stack-2026': 'trail-projects', izmeneniya: 'task' };
   const READ_KIND_ART = { series: 'trail-vibe', guide: 'knowledge', review: 'fw-card', digest: 'task' };
   const readCover = (r) => r.cover ? (/[/.]/.test(r.cover) ? r.cover : artSrc(r.cover)) : artSrc(READ_ART[r.id] || READ_KIND_ART[r.kind] || 'lesson');
   const readLive = (r) => !!r.url;
@@ -980,7 +990,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       const top = list.filter(readLive).sort(readNewest).slice(0, 3);
       if (!box) return;
       if (!top.length) { box.remove(); return; }
-      box.innerHTML = `<section class="v6-sec v6-readshelf"><div class="v6-sec-head is-split"><div><h3 class="v6-h3">Почитать</h3><p>Свежие тексты: гайды, обзоры и серия «Как я работаю с ИИ».</p></div><a class="v6-link" href="#reads" onclick="V6.open('reads'); return false;">Все материалы →</a></div><div class="v6-readgrid">${top.map((r) => readCard(r, 'home')).join('')}</div></section>`;
+      box.innerHTML = `<section class="v6-sec v6-readshelf"><div class="v6-sec-head is-split"><div><h3 class="v6-h3">Почитать</h3><p>Свежие тексты: гайды, обзоры и серия «Как я работаю с ИИ».</p></div><a class="v6-link" href="#reads" onclick="V6.open('reads'); return false;">Все ${list.filter(readLive).length} ${plural(list.filter(readLive).length, 'текст', 'текста', 'текстов')} →</a></div><div class="v6-readgrid">${top.map((r) => readCard(r, 'home')).join('')}</div></section>`;
     }).catch(() => { const box = document.getElementById('v6-reads-home'); if (box) box.remove(); });
   }
 

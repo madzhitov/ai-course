@@ -277,3 +277,44 @@ body.v6 .kd-rows>.kd-row:last-child{border-bottom:0}
 body.v6 .kd-rows>a.kd-row:hover{border-color:var(--line);background:transparent}
 body.v6 .kd-rows>a.kd-row:hover b{color:var(--accent)}
 @media (max-width:520px){.kd-rows{padding:2px 14px}}
+
+/* ===== 27.11 вечер: подборки-плашки, полоса «Новое», кликабельные услуги, воздух между блоками ===== */
+.kd-pres{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(230px,100%),1fr));gap:16px}
+.kd-pres-h{margin:0 0 16px}.kd-pres-h p{color:var(--text-2);margin:6px 0 0}
+#kd-cat-p{margin-bottom:32px}
+.kd-pre{display:grid;grid-template-rows:auto 1fr;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px;text-decoration:none;color:var(--ink);transition:border-color .15s}
+.kd-pre:hover{border-color:var(--accent)}
+.kd-pre.is-on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.kd-pre-img{display:block;background:var(--ground);border-radius:8px;aspect-ratio:16/10;overflow:hidden}
+.kd-pre-img img{width:100%;height:100%;object-fit:contain;display:block}
+.kd-pre-b{display:grid;gap:4px;padding:12px 8px 8px}
+.kd-pre-n{font-size:12.5px;color:var(--text-3)}
+.kd-pre-b b{font:700 17px/1.25 var(--font-display)}
+.kd-pre-l{font-size:14px;line-height:1.4;color:var(--text-2)}
+.kd-pre-x{border:0;background:none;color:var(--accent);text-decoration:underline;cursor:pointer;font:inherit;padding:0}
+@media (max-width:760px){.kd-pres{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.kd-pre-img{aspect-ratio:4/3}.kd-pre-l{display:none}.kd-pre-b b{font-size:15px}}
+/* полоса «Новое» в строке онбординга */
+.kd-news{display:inline-flex;align-items:baseline;gap:8px;margin-left:auto;padding:6px 12px;border-radius:8px;background:var(--accent-tint);color:var(--ink);text-decoration:none;font-size:14px;max-width:100%;min-width:0}
+.kd-news[hidden]{display:none!important}
+.kd-news-k{font-weight:600;color:var(--accent);white-space:nowrap}
+.kd-news-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.kd-news:hover .kd-news-t{text-decoration:underline}
+@media (max-width:760px){.kd-news{margin-left:0;order:-1;width:100%}}
+/* услуги для бизнеса — плашки-ссылки */
+.kd-wl a{display:grid;gap:4px;color:inherit;text-decoration:none;height:100%}
+.kd-wl li{transition:border-color .15s}
+.kd-wl li:hover{border-color:var(--accent)}
+.kd-wl a i{font-style:normal;font-size:13px;color:var(--accent);margin-top:4px}
+.kd-wb{display:flex;flex-wrap:wrap;gap:10px}
+/* воздух: сервисы, бизнес, автор не слипаются */
+#kd-about{display:grid;gap:56px}
+.kd-aboutzone{gap:56px}
+.kd-more{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:24px 0 0}
+body.v6 .kd-onb-band a.kd-news{text-decoration:none;font-weight:400;color:var(--ink)}
+.v6x-homedoor{margin-top:32px}
+.kd-wb a{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:12px 18px;font:600 14px/1.2 var(--font-body);text-decoration:none}
+.kd-wb a:hover{border-color:var(--accent)}
+@media (max-width:760px){.kd-news{flex-wrap:wrap;gap:2px 8px}.kd-news-t{white-space:normal}}
+.kd-pre-b b{text-wrap:balance}.kd-pre-l{text-wrap:pretty}
+.kd-pre-n,.kd-news-k,#kd-cat-found{font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){.kd-pre,.kd-wl li{transition:none}}

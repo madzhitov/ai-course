@@ -1,6 +1,6 @@
 {
  "version": "2026-11-24",
- "note": "Колода решений на главной: действие для каждого задания, пустые слоты «скоро» и аудитории. Раскладку согласует Руслан. Данные заданий — units.json. Ось «для кого» (26.11): сначала действие, аудитория — фильтр под ним; «Все» по умолчанию; задания группы ai видны в каждой аудитории.",
+ "note": "Колода решений на главной: действие для каждого задания, пустые слоты «скоро» и аудитории. Раскладку согласует Руслан. Данные заданий — units.json. Ось «для кого» (26.11): сначала действие, аудитория — фильтр под ним; «Все» по умолчанию; задания группы ai видны в каждой аудитории. Пресеты (27.11): подборки-плашки на главной и в каталоге; new — список ids, обновлять при выпуске.",
  "verbs": [
   {
    "id": "write",
@@ -216,5 +216,115 @@
   "u-pro-backup-rollback": "delegate",
   "u-seller-site-leaks": "delegate"
  },
- "soon": []
+ "soon": [],
+ "presets": [
+  {
+   "id": "new",
+   "title": "Новое",
+   "lead": "Что вышло за последние две недели",
+   "art": "home-deck",
+   "ids": [
+    "u-pro-project-rules",
+    "u-pro-session-log",
+    "u-pro-subagent-brief",
+    "u-pro-split-parallel",
+    "u-pro-reviewer-role",
+    "u-pro-backup-rollback",
+    "u-ai-style-series",
+    "u-ai-character-sheet",
+    "u-ai-character-talk",
+    "u-seller-infographic-card",
+    "u-seller-product-video",
+    "u-ai-stories",
+    "u-ai-cover",
+    "u-ai-clip-6",
+    "u-ai-photo-alive",
+    "u-ai-icons",
+    "u-ai-cartoon-60",
+    "u-seller-ad-campaign",
+    "u-ai-hero-clip",
+    "u-ai-short-video",
+    "u-ai-song",
+    "u-seller-site-leaks",
+    "u-study-tutor-setup",
+    "u-study-hint-ladder",
+    "u-study-mistake-log",
+    "u-study-own-essay",
+    "u-study-language-talk",
+    "u-study-catch-ai",
+    "u-study-explain",
+    "u-study-coursework",
+    "u-study-quiz",
+    "u-study-defense",
+    "u-study-ai-rules",
+    "u-teacher-lesson-plan",
+    "u-teacher-worksheet",
+    "u-teacher-slides",
+    "u-teacher-essay-check",
+    "u-teacher-adapt",
+    "u-teacher-prompt-parts",
+    "u-teacher-parents",
+    "u-teacher-test",
+    "u-ai-photo-restore",
+    "u-ai-presentation",
+    "u-ai-picture",
+    "u-ai-summary"
+   ]
+  },
+  {
+   "id": "creative",
+   "title": "Креатив с ИИ",
+   "lead": "Иллюстрации, персонажи, ролики, клипы и мультфильмы",
+   "art": "trail-projects",
+   "tasks": [
+    "ai.show.",
+    "seller.listing.infographic",
+    "seller.listing.video",
+    "seller.promo.creative-campaign"
+   ]
+  },
+  {
+   "id": "quick",
+   "title": "За 15 минут",
+   "lead": "Короткие задания, чтобы попробовать",
+   "art": "trail-everyday",
+   "max": 15
+  },
+  {
+   "id": "pro",
+   "title": "Продвинутым",
+   "lead": "Агенты, субагенты, правила проекта, откат",
+   "art": "trail-claude",
+   "level": "продвинутый"
+  },
+  {
+   "id": "seller",
+   "title": "Продажи онлайн",
+   "lead": "Карточки, отзывы, цены, юнит-экономика",
+   "art": "seller-path",
+   "a": "work",
+   "w": "seller"
+  },
+  {
+   "id": "teacher",
+   "title": "Учителю",
+   "lead": "Уроки, тесты, рабочие листы, письма родителям",
+   "art": "role-teacher",
+   "a": "teacher"
+  },
+  {
+   "id": "student",
+   "title": "Учёба",
+   "lead": "ИИ как репетитор, а не решебник",
+   "art": "role-student",
+   "a": "student"
+  },
+  {
+   "id": "self",
+   "title": "Для себя",
+   "lead": "Письма, документы, фото, решения",
+   "art": "role-self",
+   "a": "self"
+  }
+ ]
 }
