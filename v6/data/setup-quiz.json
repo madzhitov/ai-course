@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "note": "«Мой ИИ-сетап за 5 минут» (v6/setup-quiz.js). Сервисы — по имени из tools/neyroseti-bez-vpn/data.json: оттуда берутся доступ, бесплатный лимит и дата проверки. Задания — id из units.json без review. Код в адресе: #setup-<задача><устройство><бюджет><доступ>, например #setup-tc0n.",
+  "guide": "/znaniya/ai-setup.html",
+  "services": "tools/neyroseti-bez-vpn/data.json",
+  "questions": [
+    { "id": "task", "title": "Что хотите делать с ИИ чаще всего?", "hint": "Выберите главное. Остальное добавите потом." },
+    { "id": "device", "title": "Где будете работать?", "options": [
+      { "code": "p", "title": "В основном на телефоне" },
+      { "code": "c", "title": "На компьютере" }
+    ] },
+    { "id": "budget", "title": "Сколько готовы платить в месяц?", "options": [
+      { "code": "0", "title": "Ничего, только бесплатно" },
+      { "code": "1", "title": "До 2000 ₽" },
+      { "code": "2", "title": "Больше 2000 ₽" }
+    ] },
+    { "id": "access", "title": "Как с доступом?", "options": [
+      { "code": "n", "title": "Только то, что работает без VPN" },
+      { "code": "y", "title": "VPN есть" }
+    ] }
+  ],
+  "tasks": [
+    { "code": "t", "title": "Тексты и письма", "tag": "текст", "services": ["Алиса AI", "ГигаЧат"], "backup": "DeepSeek",
+      "units": ["u-ai-hard-letter", "u-ai-answer-check", "u-ai-routine-brief"] },
+    { "code": "s", "title": "Учёба", "tag": "текст", "services": ["ГигаЧат", "Алиса AI"], "backup": "DeepSeek",
+      "units": ["u-study-tutor-setup", "u-study-hint-ladder", "u-study-catch-ai"] },
+    { "code": "d", "title": "Документы и решения", "tag": "документы", "services": ["Алиса AI", "ГигаЧат"], "backup": "Qwen Chat",
+      "units": ["u-ai-summary", "u-self-contract", "u-ai-decision"] },
+    { "code": "i", "title": "Картинки, фото, презентации", "tag": "картинки", "services": ["ГигаЧат", "Шедеврум"], "backup": "Алиса AI",
+      "units": ["u-ai-picture", "u-ai-photo-restore", "u-ai-presentation"] },
+    { "code": "m", "title": "Продажи и маркетинг", "tag": "текст", "services": ["ГигаЧат", "Алиса AI"], "backup": "DeepSeek",
+      "units": ["u-seller-reviews", "u-seller-description", "u-marketing-offer"] },
+    { "code": "k", "title": "Свои мини-программы и код", "tag": "код", "services": ["DeepSeek", "GigaCode"], "backup": "SourceCraft Code Assistant",
+      "phone": { "services": ["DeepSeek", "Qwen Chat"], "backup": "ГигаЧат", "note": "Редакторы кода и плагины к ним работают на компьютере. С телефона пишите код в чате, а запускайте потом на компьютере." },
+      "units": ["u-ai-html-tool", "u-ai-routine-brief", "u-ai-answer-check"] },
+    { "code": "e", "title": "Преподавание", "tag": "текст", "services": ["ГигаЧат", "Алиса AI"], "backup": "DeepSeek",
+      "units": ["u-teacher-lesson-plan", "u-teacher-test", "u-teacher-parents"] }
+  ],
+  "device": {
+    "p": "На телефоне удобно говорить голосом: в приложении Алиса AI есть режим «Поговорить». Длинный текст проще вставить с компьютера.",
+    "c": "На компьютере держите оба сервиса открытыми во вкладках: спорный ответ одного сразу проверяйте другим."
+  },
+  "budget": {
+    "0": "Бесплатных лимитов хватит на все три задания. Лимит кончился — переходите на запасной сервис.",
+    "1": "Платить пока не обязательно. Если упрётесь в лимиты, оплатите российской картой: {paid}.",
+    "2": "Больше 2000 ₽ в месяц здесь потратить почти не на что: в нашем списке сервисов без VPN российской картой оплачиваются только сервисы Яндекса и помощники для кода. Из вашего набора: {paid}.",
+    "none": "У этих сервисов платного тарифа нет или он не нужен: работайте на бесплатном."
+  },
+  "paid": {
+    "Алиса AI": "«Алиса Плюс» за 199 ₽ в месяц поверх Яндекс Плюс, с ней приоритет в часы пик",
+    "Шедеврум": "Шедеврум Про за 100 ₽ в месяц при Яндекс Плюс",
+    "SourceCraft Code Assistant": "SourceCraft Code Assistant, платно от 1190 ₽ в месяц",
+    "GigaCode": "GigaCode: тариф «Персональный» бесплатный, платить не за что"
+  },
+  "access": {
+    "n": "Российские сервисы с апреля 2026 могут не пускать с включённым VPN. Если не открывается, выключите его.",
+    "y": "С VPN откроются ещё и сервисы с оговорками: {partial}. ChatGPT, Claude и Gemini не советуем даже с VPN: компании сами закрыли Россию, а посредники, которые продают к ним доступ за рубли, нарушают их правила."
+  }
+}
