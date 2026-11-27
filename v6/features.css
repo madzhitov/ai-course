@@ -1,0 +1,49 @@
+/* Фичи-модули v6: «Мой ИИ-сетап» (setup-quiz.js) и «Найди выдумку» (fake-hunt.js). Подключается из v6.js по требованию. */
+.v6x-head { padding-top:40px; max-width:820px; }
+.v6x-head .v6-lead { margin-top:16px; }
+#v6x-setup, #v6x-fake { margin:32px 0 72px; max-width:820px; }
+.v6x-card { background:var(--surface); border-radius:var(--r-md); padding:32px 36px; display:flex; flex-direction:column; gap:14px; }
+.v6x-q { font-family:var(--font-display); font-weight:800; font-size:clamp(24px,3vw,32px); line-height:1.15; letter-spacing:-.01em; margin:0; }
+.v6x-h3 { font-family:var(--font-display); font-weight:800; font-size:20px; margin:12px 0 0; }
+.v6x-prog { display:flex; gap:6px; }
+.v6x-prog span { flex:1; height:4px; border-radius:2px; background:var(--line); }
+.v6x-prog span.is-done { background:var(--accent); }
+.v6x-prog span.is-now { background:var(--accent-tint); box-shadow:inset 0 0 0 1px var(--accent); }
+.v6x-opts { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px; margin-top:6px; }
+.v6x-opt { min-height:56px; padding:12px 18px; border-radius:var(--r-sm); border:1px solid var(--line); background:var(--surface); color:var(--ink); font:inherit; font-size:17px; text-align:left; cursor:pointer; }
+.v6x-opt:hover { border-color:var(--accent); }
+.v6x-opt[aria-pressed="true"] { background:var(--accent-tint); border-color:var(--accent); }
+.v6x-back { align-self:flex-start; margin-top:4px; }
+.v6x-svcs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:6px; }
+.v6x-svc { background:var(--ground); border-radius:var(--r-sm); padding:16px 18px; display:flex; flex-direction:column; gap:6px; min-width:0; }
+.v6x-svc b { font-size:19px; }
+.v6x-svc b a { color:inherit; text-decoration:none; }
+.v6x-svc p { font-size:15px; line-height:1.45; color:var(--text-2); margin:0; overflow-wrap:anywhere; }
+.v6x-tips { margin:4px 0 0; padding-left:20px; display:flex; flex-direction:column; gap:8px; font-size:17px; line-height:1.5; }
+.v6x-units { list-style:none; margin:0 !important; padding:0 !important; display:flex; flex-direction:column; gap:8px; counter-reset:u; }
+.v6x-units li { counter-increment:u; }
+.v6x-units li > a, .v6x-units li > span { display:flex; flex-direction:column; gap:4px; padding:14px 16px 14px 52px; border-radius:var(--r-sm); border:1px solid var(--line); color:inherit; text-decoration:none; position:relative; }
+.v6x-units li > a::before { content:counter(u); position:absolute; left:16px; top:14px; width:24px; height:24px; border-radius:50%; background:var(--accent-tint); color:var(--accent); font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center; }
+.v6x-units li > span { padding-left:16px; }
+.v6x-units li > a:hover { border-color:var(--accent); }
+.v6x-res .v6-btns { flex-wrap:wrap; }
+.v6x-msg:empty { display:none; }
+.v6x-ask { margin:0; display:flex; flex-direction:column; gap:4px; font-size:19px; font-weight:600; line-height:1.4; }
+.v6x-answer { background:var(--ground); border-radius:var(--r-sm); padding:18px 20px; display:flex; flex-direction:column; gap:8px; }
+.v6x-lines { display:flex; flex-direction:column; gap:2px; font-size:18px; line-height:1.55; }
+.v6x-phrase { display:block; padding:4px 6px; margin:0 -6px; width:calc(100% + 12px); border:0; border-radius:4px; background:transparent; color:inherit; font:inherit; text-align:left; cursor:pointer; -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+.v6x-phrase:not(:disabled):hover, .v6x-phrase:focus-visible { background:var(--accent-tint); outline:none; }
+.v6x-phrase:disabled { cursor:default; }
+.v6x-phrase.is-wrong { background:#FBE3E1; color:#8A1C12; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; }
+.v6x-phrase.is-miss { background:var(--line); }
+.v6x-why { border-left:3px solid var(--accent); padding:4px 0 4px 16px; font-size:17px; line-height:1.55; }
+.v6x-why p { margin:8px 0 0; }
+.v6x-homedoor { margin:24px 0 0; }
+@media (max-width:720px) {
+  .v6x-head { padding-top:24px; }
+  .v6x-card { padding:22px 18px; }
+  .v6x-svcs { grid-template-columns:1fr; }
+  .v6x-opts { grid-template-columns:1fr; }
+  .v6x-res .v6-btns .v6b { width:100%; white-space:normal; }
+  .v6x-lines { font-size:17px; }
+}

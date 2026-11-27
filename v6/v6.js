@@ -365,7 +365,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       const box = (id) => document.getElementById(id);
       if (!box('v6-home-rest')) return;
       box('v6-strip').innerHTML = strip;
-      box('v6-home-rest').innerHTML = '<div id="kd-rest"></div>' + learnBlock()
+      box('v6-home-rest').innerHTML = '<div id="kd-rest"></div>' + `<div class="v6x-homedoor">${xDoor('setup', 'Не знаете, с какого сервиса начать?', 'Мой ИИ-сетап за 5 минут: четыре вопроса, два сервиса и три первых задания', 'home')}</div>` + learnBlock()
         + '<div class="kd-aboutzone"><h2 class="v6-h2">Об Артефактах</h2>' + newsTop() + '<div id="v6-reads-home"></div><div id="kd-about"></div>' + authorBlock() + '</div>';
       if (window.Koloda) Koloda.mount(D, box('kd-rest'), box('kd-about'));
       readsHome();
@@ -927,7 +927,8 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
           ${KT === 'lessons' ? '' : `<div class="v6-ktabs" role="tablist" aria-label="Разделы справочника">${tab('fw', 'Методы', D.fw.length)}${tab('dict', 'Словарь', DICT.terms.length)}${tab('tools', 'Инструменты', toolCount())}</div>`}
           <div class="v6-kbody">${body}</div></section>
         <section class="v6-psec"><a class="v6-learn-s is-ready" href="#reads" onclick="V6.open('reads'); return false;"><span><b>Почитать</b><span class="v6-meta">лонгриды: ИИ-сетап, ИИ и закон, что умеет кабинет маркетплейса, что изменилось за месяц</span></span><span class="v6-meta">открыть полку →</span></a>
-          <p class="v6-roleline"><span>Ещё:</span><a href="#resources" onclick="openStaticPage('resources'); return false;">Источники уроков</a><a href="/tools/neyroseti-bez-vpn/">Нейросети без VPN</a></p></section>`;
+          <p class="v6-roleline"><span>Ещё:</span><a href="#resources" onclick="openStaticPage('resources'); return false;">Источники уроков</a><a href="/tools/neyroseti-bez-vpn/">Нейросети без VPN</a></p></section>
+        <section class="v6-psec" style="padding-top:0">${xDoor('setup', 'Мой ИИ-сетап за 5 минут', 'четыре вопроса, два сервиса и три первых задания', 'knowledge')}${xDoor('fake', 'Найди выдумку', 'пять ответов ИИ, в каждом одна ошибка: найдите её', 'knowledge')}</section>`;
       if (KT === 'fw') fwList(); else if (KT === 'dict') dictList(); else if (KT === 'tools') toolList(); else lessonList();
     }).catch(() => fail('v6-kn'));
   }
@@ -1231,6 +1232,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
   }
   function resultDoor(u) {
     const group = D.tasks[u.task].group;
+    if (u.id === 'u-study-catch-ai' || u.id === 'u-ai-answer-check') return xDoor('fake', 'Найди выдумку', 'потренируйтесь ещё: пять ответов ИИ, в каждом одна ошибка', 'unit-' + u.id);
     if (u.autoReport) return `<div class="v6-tdoor"><span>Этот отчёт может приходить сам к утру понедельника.</span><a href="https://birdtold.ru/demo" target="_blank" rel="noopener" onclick="umTrack('bird-door', { from: 'unit-yes', unit: '${e(u.id)}' })">Посмотреть пример: «Птичка напела» ↗</a></div>`;
     if (group === 'seller' || group === 'marketing') return `<div class="v6-tdoor"><span>Хотите, чтобы так умел весь отдел?</span><a href="#companies" onclick="umTrack('agency-door', { from: 'unit-yes', unit: '${e(u.id)}' }); V6.open('companies'); return false;">Как внедрить в работу команды →</a></div>`;
     return '';
@@ -1432,7 +1434,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       const pill = (f, t) => `<button type="button" class="v6-pill" data-nbf="${f}" aria-pressed="${NB.f === f}" onclick="V6.nbFilter('${f}', this)">${t}</button>`;
       document.getElementById('v6-nb').innerHTML = `<section class="v6-sechero"><div><h1 class="v6-d">Тетрадь</h1><p class="v6-lead">История вашего обучения: пройденные уроки, сделанные задания и заметки.</p></div><div class="v6-art v6-sec-art" aria-hidden="true"><img src="${artSrc('notebook')}" alt=""></div></section>
         <div class="v6-nbgrid"><div><div class="v6-kfilters" style="margin:32px 0 24px"><label class="v6-nbsearch"><span class="v6-sr">Поиск по тетради</span><input type="search" placeholder="Поиск по заметкам" value="${e(NB.q)}" oninput="V6.nbSearch(this)"></label><div class="v6-pills">${pill('all', 'Всё')}${pill('lesson', 'Уроки')}${pill('unit', 'Задачи')}${pill('check', 'Вехи и проверки')}${pill('alesha', 'С ответом Алёши')}</div></div><div id="v6-nblist"></div></div>
-          <aside class="v6-side" style="padding-top:32px">${r && r.id != null ? `<div class="v6-neigh"><span class="v6-meta">Продолжить</span><a class="v6-neigh-i" href="#" onclick="${resumeAction(r, 'notebook')}; return false;"><span>${e(r.title || '')}</span><span class="m">→</span></a></div>` : ''}
+          <aside class="v6-side" style="padding-top:32px">${xDoor('setup', 'Мой ИИ-сетап за 5 минут', 'два сервиса, запасной и три первых задания', 'notebook')}${r && r.id != null ? `<div class="v6-neigh"><span class="v6-meta">Продолжить</span><a class="v6-neigh-i" href="#" onclick="${resumeAction(r, 'notebook')}; return false;"><span>${e(r.title || '')}</span><span class="m">→</span></a></div>` : ''}
             <div class="v6-tdoor"><b>Тетрадь только в этом браузере</b><span>Очистка браузера сотрёт записи. Скачайте файл, чтобы не потерять; сохранение через Telegram появится скоро.</span>
               <span class="v6-btns"><button class="v6b is-white is-sm" onclick="V6.nbExport()">Скачать как файл</button><label class="v6b is-sm v6-nbload">Загрузить из файла<input type="file" accept="application/json,.json" onchange="V6.nbImport(this)" hidden></label></span>
               <button class="v6-quiet v6-nbreset" onclick="V6.nbReset()">Очистить всё</button></div></aside></div>`;
@@ -1785,6 +1787,23 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       bsCheck();
     }).catch(() => fail('v6-bs'));
   }
+  // ---------- фичи-модули: v6/setup-quiz.js (#setup), v6/fake-hunt.js (#fake) ----------
+  // Модуль грузится по требованию и регистрирует себя через V6.ext(name, { render(box, ctx) }).
+  const EXT = {}, EXT_FILE = { setup: 'setup-quiz', fake: 'fake-hunt' };
+  const ext = (name, mod) => { EXT[name] = mod; };
+  const extJs = (name) => EXT[name] ? Promise.resolve() : new Promise((ok, no) => {
+    const s = document.createElement('script'); s.src = `v6/${EXT_FILE[name]}.js${VQ ? '?v=' + VQ : ''}`; s.onload = ok; s.onerror = no; document.head.appendChild(s);
+  });
+  function openX(name, arg, from) {
+    if (!EXT_FILE[name]) return;
+    if (!document.getElementById('v6x-css')) { const l = document.createElement('link'); l.id = 'v6x-css'; l.rel = 'stylesheet'; l.href = 'v6/features.css' + (VQ ? '?v=' + VQ : ''); document.head.appendChild(l); }
+    go(name + (arg ? '-' + arg : ''), () => {
+      shell('<div class="v6c" id="v6-x"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
+      Promise.all([load(), extJs(name)]).then(() => EXT[name].render(document.getElementById('v6-x'), { D, arg: arg || '', from: from || 'link', dataUrl, track, esc: e, plural }))
+        .catch(() => fail('v6-x'));
+    }, 'knowledge');
+  }
+  const xDoor = (name, title, text, from) => `<a class="v6-learn-s is-ready" href="#${name}" onclick="V6.openX('${name}','','${from}'); return false;"><span><b>${title}</b><span class="v6-meta">${text}</span></span><span class="v6-meta">открыть →</span></a>`;
   const PAGES = { roles: rolesPage, tasks: tasksPage, paths: pathsPage, knowledge: knowledgePage, notebook: notebookPage, reads: readsPage, companies: companiesPage, 'co-audit': coAuditPage, 'brand-stages': brandStagesPage };
   function open(name) {
     if (name === 'roles') name = 'tasks'; // страница «Кто вы?» убрана 24.11: роли — фильтры в «Решениях» и вкладки колоды
@@ -1808,6 +1827,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     m = hash.match(/^unit-([a-z0-9-]+)$/); if (m) { openUnit(m[1], 'link'); return true; }
     m = hash.match(/^veha-seller-(\d)$/); if (m) { openVeha(m[1], 'link'); return true; }
     m = hash.match(/^res-([a-z0-9-]+)$/); if (m) { openRes(m[1], 'link'); return true; }
+    m = hash.match(/^(setup|fake)(?:-([a-z0-9]+))?$/); if (m) { openX(m[1], m[2], 'link'); return true; }
     return false;
   }
 
@@ -1902,5 +1922,5 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     });
   }
 
-  window.V6 = { coSystem, coTrack, coAuditSet, coAuditRun, bsRev, bsAns, bsBack, bsReset, bsGo, install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, fwPrint, openKnowledge, openDict, ktab, ksearch, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
+  window.V6 = { ext, openX, coSystem, coTrack, coAuditSet, coAuditRun, bsRev, bsAns, bsBack, bsReset, bsGo, install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, fwPrint, openKnowledge, openDict, ktab, ksearch, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
 })();
