@@ -82,7 +82,7 @@ html { scroll-behavior:smooth; scroll-padding-top:24px; }
 }
 @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
 @media print {
-  .v6s-h,.setup-toc,.setup-actions,.setup-form { display:none; }
+  .setup-toc,.setup-actions,.setup-form { display:none; }
   #lesson-content:has(.setup-guide),#lesson-content:has(.setup-guide) .lesson-view { padding:0 !important; max-width:none !important; }
   .setup-section { break-inside:auto; }
   .setup-table-wrap { overflow:visible; }

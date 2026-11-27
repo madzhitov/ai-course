@@ -178,7 +178,7 @@
 
   function footer() {
     const f = document.getElementById('site-footer');
-    if (!f) return;
+    if (!f || f.querySelector('.v6f-in')) return; // подвал уже в разметке из v6/shell/footer.html
     f.className = 'site-footer v6 v6f';
     const a = (on, t) => `<li><a onclick="${on}; return false;" href="#">${t}</a></li>`;
     f.innerHTML = `<div class="v6f-in">
