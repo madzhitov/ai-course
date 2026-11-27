@@ -1201,7 +1201,14 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     if (pre) pre.textContent = unitPrompt(u, u.steps[i], st);
   }
   function unitCheck(id, i, j, el) { const st = unitState(id); (st.checks[i] = st.checks[i] || [])[j] = el.checked; unitSave(id, st); }
-  function unitGo(id, step) { const st = unitState(id); if (step > (st.step || 0)) track('unit-step', { unit: id, step: step + 1 }); st.step = step; unitSave(id, st); renderUnit(id); window.scrollTo({ top: 0 }); }
+  function unitGo(id, step) { const st = unitState(id); if (step > (st.step || 0)) track('unit-step', { unit: id, step: step + 1 }); st.step = step; unitSave(id, st); renderUnit(id); unitScrollToStep(); }
+  // Правило (Руслан, 27.11): «Готово, дальше» и «Назад» не бросают наверх страницы, а ставят к карточке шага.
+  function unitScrollToStep() {
+    const g = document.querySelector('#v6-unit .v6-ugrid'); if (!g) return;
+    const h = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header')) || 72;
+    const top = g.getBoundingClientRect().top + window.scrollY - h - 16;
+    window.scrollTo({ top: Math.max(0, top) });
+  }
   function unitResult(id, r) {
     const st = unitState(id);
     if (st.result === r) { renderUnit(id); return; }
