@@ -1,6 +1,6 @@
 {
   "title": "Какие нейросети работают в России без VPN",
-  "checked": "2026-10-26",
+  "checked": "2026-11-27",
   "description": "Живой список нейросетей, которые открываются из России без VPN: для текста, картинок, видео, музыки, презентаций и кода. Что бесплатно и что можно оплатить российской картой. Сверяем раз в месяц.",
   "lead": "Сервисы уходят и приходят, поэтому сверяем список раз в месяц: по официальным страницам и свежим новостям, у каждого сервиса есть источники. Зарубежные сайты у отдельных провайдеров могут грузиться нестабильно. А российские сервисы с апреля 2026 могут не пускать с включённым VPN: для них его лучше выключить.",
   "blocked_lead": "Эти сервисы Россию не обслуживают: закрыли её сами компании.",
@@ -25,13 +25,13 @@
       "name": "ГигаЧат", "url": "https://giga.chat/", "company": "Сбер", "country": "Россия",
       "tasks": ["текст", "поиск", "документы", "код", "картинки", "видео", "презентации"],
       "vpn": "yes", "vpn_note": "",
-      "free": "Бесплатно, с дневными лимитами. Картинки Kandinsky 6.0 без лимита. Видео со звуком (речь, музыка, шумы) на Kandinsky 6.0 Video: до 5 секунд, до Full HD, с дневным лимитом. Презентации до 10 слайдов со скачиванием в PPTX.",
+      "free": "Бесплатно, с дневными лимитами. Картинки и видео со звуком — на Kandinsky 6.5: ролики до 10 секунд, до 2K, во вкладке «Видео». Презентации до 10 слайдов со скачиванием в PPTX.",
       "free_yes": true, "pay": "n/a",
       "russian": "Полностью на русском, модель заточена под русский.",
       "sources": [
-        {"url": "https://t-j.ru/news/kandinsky-6-sound/", "date": "2026-10-06", "what": "Kandinsky 6.0 Video со звуком бесплатно в ГигаЧате, до 5 секунд, SD/HD/Full HD"},
-        {"url": "https://www.iphones.ru/iNotes/v-gigachate-poyavilas-besplatnaya-generaciya-video-so-zvukom-v-full-hd", "date": "2026-10-06", "what": "бесплатная генерация видео со звуком в Full HD"},
-        {"url": "https://ppc.world/news/gigachat-ot-sbera-nauchilsya-sozdavat-video-so-zvukom-v-full-hd-besplatno/", "date": "2026-10-06", "what": "ГигаЧат научился делать видео со звуком"}
+        {"url": "https://ai.cnews.ru/news/line/2026-11-26_sber_predstavil_novoe", "date": "2026-11-26", "what": "Kandinsky 6.5 Image и Video уже в ГигаЧате, видео до 10 секунд, до 2K"},
+        {"url": "https://www.iphones.ru/iNotes/sber-obnovil-kandinsky-neyroset-teper-delaet-10-sekundnye-video-s-neskolkimi-geroyami-i-sohranyaet-ih-vneshnost", "date": "2026-11-26", "what": "10-секундные видео с несколькими героями, улучшен звук"},
+        {"url": "https://t-j.ru/news/kandinsky-6-sound/", "date": "2026-10-06", "what": "видео со звуком бесплатно в ГигаЧате (на версии 6.0)"}
       ]
     },
     {
@@ -137,7 +137,7 @@
       "name": "Ideogram", "url": "https://ideogram.ai/", "company": "Ideogram AI", "country": "Канада",
       "tasks": ["картинки"],
       "vpn": "yes", "vpn_note": "",
-      "free": "30 бесплатных кредитов в неделю, только при входе через Google, Apple или Microsoft. При регистрации по почте бесплатных кредитов нет. Картинки на бесплатном тарифе публичные. Plus от $15/мес при оплате за год ($20 помесячно).",
+      "free": "30 бесплатных кредитов в неделю, только если вы зарегистрировались через Google или Apple. При входе через Microsoft или по почте бесплатных кредитов нет. Картинки на бесплатном тарифе публичные. Plus от $15/мес при оплате за год ($20 помесячно).",
       "free_yes": true, "pay": "no",
       "russian": "Интерфейс английский. Короткие русские надписи на картинках выходят лучше длинных.",
       "sources": [
@@ -210,7 +210,7 @@
       "name": "Suno", "url": "https://suno.com/", "company": "Suno", "country": "США",
       "tasks": ["музыка"],
       "vpn": "yes", "vpn_note": "",
-      "free": "50 кредитов в день — около 10 песен. С сентября 2026 бесплатно можно скачать не больше 7 треков за всё время. Только для личного использования.",
+      "free": "50 кредитов в день — около 10 песен, модель v6-mini. Скачивать песни новым пользователям почти нельзя: пробные скачивания дают лишь изредка. Только для личного использования.",
       "free_yes": true, "pay": "no",
       "russian": "Поёт на русском, бывают ошибки в ударениях.",
       "sources": [
@@ -233,7 +233,7 @@
       "name": "Yandex SpeechKit", "url": "https://aistudio.yandex.ru/ru/ai-speech", "company": "Яндекс", "country": "Россия",
       "tasks": ["озвучка"],
       "vpn": "yes", "vpn_note": "",
-      "free": "Бесплатного тарифа нет. Стартовый грант новым клиентам Yandex Cloud сейчас не выдают, оплата сразу за символы. Сервис входит в Yandex AI Studio, новичку неудобно.",
+      "free": "Бесплатного тарифа нет. Новым клиентам Yandex Cloud снова дают стартовый грант — от 4000 ₽ на 60 дней, если привязать карту при создании платёжного аккаунта. Сервис входит в Yandex AI Studio, новичку неудобно.",
       "free_yes": false, "pay": "yes",
       "russian": "Много русских голосов.",
       "sources": [
@@ -278,11 +278,13 @@
     {
       "name": "Claude и Claude Code", "url": "https://claude.ai/", "company": "Anthropic", "country": "США",
       "tasks": ["текст"], "vpn": "no",
-      "vpn_note": "России нет в списке поддерживаемых стран Anthropic. В мае и октябре 2026 компания массово блокировала аккаунты пользователей из России.",
+      "vpn_note": "России нет в списке поддерживаемых стран Anthropic, а политика от 12 ноября 2026 отдельно запрещает Claude компаниям под российским контролем. В мае, октябре и ноябре 2026 компания массово блокировала аккаунты пользователей из России.",
       "free": "", "free_yes": false, "pay": "no", "russian": "",
       "sources": [
-        {"url": "https://www.anthropic.com/supported-countries", "date": "2026-10", "what": "России нет в списке стран"},
-        {"url": "https://novayagazeta.eu/articles/2026/10/02/polzovateli-claude-iz-rossii-i-gonkonga-pozhalovalis-na-blokirovki-akkauntov-posle-podkliucheniia-cherez-vpn-news", "date": "2026-10-02", "what": "с 1 октября 2026 россияне получают письма о блокировке аккаунтов Claude"}
+        {"url": "https://www.anthropic.com/supported-countries", "date": "2026-11", "what": "России нет в списке стран; запрет для компаний под контролем из неподдерживаемых стран"},
+        {"url": "https://novayagazeta.eu/articles/2026/10/02/polzovateli-claude-iz-rossii-i-gonkonga-pozhalovalis-na-blokirovki-akkauntov-posle-podkliucheniia-cherez-vpn-news", "date": "2026-10-02", "what": "с 1 октября 2026 россияне получают письма о блокировке аккаунтов Claude"},
+        {"url": "https://www.kommersant.ru/doc/9094999", "date": "2026-11-11", "what": "с 12 ноября Claude закрыт для организаций под российским контролем"},
+        {"url": "https://finance.rambler.ru/business/57407061-rossiyskie-polzovateli-claude-stolknulis-s-novoy-volnoy-blokirovok/", "date": "2026-11-12", "what": "новая волна блокировок и проверок личности у россиян"}
       ]
     },
     {
@@ -298,7 +300,7 @@
     {
       "name": "Microsoft Copilot", "url": "https://copilot.microsoft.com/", "company": "Microsoft", "country": "США",
       "tasks": ["текст"], "vpn": "no",
-      "vpn_note": "Microsoft закрыла Россию и по IP, и по региону аккаунта.",
+      "vpn_note": "Microsoft не открывает Copilot в России.",
       "free": "", "free_yes": false, "pay": "no", "russian": "",
       "sources": [{"url": "https://learn.microsoft.com/ru-ru/answers/questions/2353481/copilot", "date": "2025-01-16", "what": "поддержка Microsoft: Copilot в России недоступен"}]
     },
@@ -328,14 +330,19 @@
       "tasks": ["картинки"], "vpn": "no",
       "vpn_note": "Без зарубежного IP сайт не пускает к входу; бесплатного тарифа нет, а оплатить из России нельзя.",
       "free": "", "free_yes": false, "pay": "no", "russian": "",
-      "sources": [{"url": "https://practicum.yandex.ru/blog/kak-polzovatsya-neyrosetyu-midjourey/", "date": "2026-07-15", "what": "бесплатного тарифа нет, из России не оплатить"}]
+      "sources": [
+        {"url": "https://practicum.yandex.ru/blog/kak-polzovatsya-neyrosetyu-midjourey/", "date": "2026-10-06", "what": "бесплатного тарифа нет, из России не оплатить"}
+      ]
     },
     {
       "name": "Runway", "url": "https://runway.com/", "company": "Runway", "country": "США",
       "tasks": ["видео"], "vpn": "no",
-      "vpn_note": "Официально Россию не поддерживает, сайт из России может не открыться.",
+      "vpn_note": "Отдельного запрета для России у Runway нет, но оплатить из России нельзя, а сайт из России может не открыться.",
       "free": "", "free_yes": false, "pay": "no", "russian": "",
-      "sources": [{"url": "https://practicum.yandex.ru/blog/neyroset-runway/", "date": "2026-09-24", "what": "сайт из России может не открыться без VPN"}]
+      "sources": [
+        {"url": "https://practicum.yandex.ru/blog/neyroset-runway/", "date": "2026-09-24", "what": "сайт из России может не открыться, нужна зарубежная карта"},
+        {"url": "https://runway.com/terms-of-use", "date": "2026-10-23", "what": "условия запрещают только страны под эмбарго США, Россия не названа"}
+      ]
     },
     {
       "name": "ElevenLabs", "url": "https://elevenlabs.io/", "company": "ElevenLabs", "country": "США",
