@@ -366,8 +366,9 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       if (!box('v6-home-rest')) return;
       box('v6-strip').innerHTML = strip;
       box('v6-home-rest').innerHTML = '<div id="kd-rest"></div>' + learnBlock()
-        + '<div class="kd-aboutzone"><h2 class="v6-h2">Об Артефактах</h2>' + newsTop() + '<div id="kd-about"></div>' + authorBlock() + '</div>';
+        + '<div class="kd-aboutzone"><h2 class="v6-h2">Об Артефактах</h2>' + newsTop() + '<div id="v6-reads-home"></div><div id="kd-about"></div>' + authorBlock() + '</div>';
       if (window.Koloda) Koloda.mount(D, box('kd-rest'), box('kd-about'));
+      readsHome();
     }).catch(() => fail('v6-home'));
     return el;
   }
@@ -521,7 +522,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         const way = (u, i) => {
           const meta = [u.minutes ? `≈ ${u.minutes} мин` : '', u.level || '', ...(u.tools || []), u.noVpn ? 'без VPN' : ''].filter(Boolean);
           const ready = hasSteps(u) || (u.fromLesson && lessonOf(u.fromLesson) && lessonOf(u.fromLesson).content);
-          const label = us.length > 1 ? (u.level === 'уверенный' ? 'Продвинутый' : 'Простой') : 'Способ';
+          const label = us.length > 1 ? ({ 'уверенный': 'Уверенный', 'продвинутый': 'Продвинутый' }[u.level] || 'Простой') : 'Способ';
           return `<article class="v6-way2${ready ? '' : ' is-soon'}"><span class="v6-pcard-label">${label}${ready ? '' : ' · скоро'}</span><h3>${e(u.title)}</h3>
             <p>${hasSteps(u) ? `${u.steps.length} ${plural(u.steps.length, 'шаг', 'шага', 'шагов')}${u.fromLesson && lessonOf(u.fromLesson) ? ` · подробнее в уроке <a href="#lesson-${e(u.fromLesson)}" onclick="openLesson(${lessonArg(u.fromLesson)}); return false;">«${e(lessonOf(u.fromLesson).title.split(':')[0])}»</a>` : ''}` : ready ? `По уроку ${e(u.fromLesson)}: ${e(lessonOf(u.fromLesson).title)}` : 'Этот способ готовится.'}</p>
             ${meta.length ? `<div class="v6-tags">${meta.map((m) => `<span class="v6t">${e(m)}</span>`).join('')}</div>` : ''}
@@ -925,16 +926,61 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         <section class="v6-psec"><form class="v6-ksearch" role="search" onsubmit="return false"><label class="v6-sr" for="v6-kq">${KT === 'lessons' ? 'Поиск по урокам' : 'Поиск по справочнику'}</label><input id="v6-kq" type="search" placeholder="${KT === 'lessons' ? 'Поиск по урокам' : 'Поиск: метод, термин, инструмент'}" value="${e(KQ)}" oninput="V6.ksearch(this.value)"></form>
           ${KT === 'lessons' ? '' : `<div class="v6-ktabs" role="tablist" aria-label="Разделы справочника">${tab('fw', 'Методы', D.fw.length)}${tab('dict', 'Словарь', DICT.terms.length)}${tab('tools', 'Инструменты', toolCount())}</div>`}
           <div class="v6-kbody">${body}</div></section>
-        <section class="v6-psec"><h2 class="v6-psec-h">Ещё в справочнике</h2><div class="v6-grid2" style="margin-top:28px">
-          <div class="v6-task"><h3>Что уже умеет кабинет</h3><p>Встроенный ИИ Wildberries, Ozon и Маркета по 22 задачам продавца: когда его хватит, а когда нужен свой промпт.</p><a class="v6b is-soft is-sm" href="/znaniya/kabinet-ai.html">Читать</a></div>
-          <div class="v6-task"><h3>ИИ и закон для малого бизнеса</h3><p>Данные покупателей, закон об ИИ, реклама и права на результат. Ссылки на тексты законов и чек-лист.</p><a class="v6b is-soft is-sm" href="/znaniya/ai-law.html">Читать</a></div>
-          <div class="v6-task"><h3>Что изменилось за месяц</h3><p>Раз в месяц: что поменялось у маркетплейсов и нейросетей и что сделать. Только подтверждённое.</p><a class="v6b is-soft is-sm" href="/izmeneniya/">Читать</a></div>
-          <div class="v6-task"><h3>Как собрать свой ИИ-сетап</h3><p>Модели, агенты, IDE и ADE, подписки и запас. Опыт автора, PDF и шаблон своей конфигурации.</p><a class="v6b is-soft is-sm" href="/znaniya/ai-setup.html">Читать</a></div>
-          <div class="v6-task"><h3>Источники</h3><p>Курсы, книги и документация, на которых стоят уроки.</p><button class="v6b is-soft is-sm" onclick="openStaticPage('resources')">Открыть</button></div>
-          <div class="v6-task"><h3>Нейросети без VPN</h3><p>Живой список: что работает из России, что бесплатно.</p><a class="v6b is-soft is-sm" href="/tools/neyroseti-bez-vpn/">Смотреть список</a></div>
-        </div></section>`;
+        <section class="v6-psec"><a class="v6-learn-s is-ready" href="#reads" onclick="V6.open('reads'); return false;"><span><b>Почитать</b><span class="v6-meta">лонгриды: ИИ-сетап, ИИ и закон, что умеет кабинет маркетплейса, что изменилось за месяц</span></span><span class="v6-meta">открыть полку →</span></a>
+          <p class="v6-roleline"><span>Ещё:</span><a href="#resources" onclick="openStaticPage('resources'); return false;">Источники уроков</a><a href="/tools/neyroseti-bez-vpn/">Нейросети без VPN</a></p></section>`;
       if (KT === 'fw') fwList(); else if (KT === 'dict') dictList(); else if (KT === 'tools') toolList(); else lessonList();
     }).catch(() => fail('v6-kn'));
+  }
+
+  // ---------- Почитать: полка лонгридов (v6/data/reads.json; сами тексты — статические страницы) ----------
+  let READS = null;
+  function loadReads() {
+    if (READS) return Promise.resolve(READS);
+    if (typeof fetch !== 'function') return Promise.reject(new Error('no fetch'));
+    return fetch(dataUrl('reads.json')).then((r) => r.ok ? r.json() : Promise.reject(new Error('reads ' + r.status)))
+      .then((d) => (READS = (d.reads || []).filter((x) => x && x.id && x.title)));
+  }
+  const READ_KIND = { series: 'Серия', guide: 'Гайд', review: 'Обзор', digest: 'Дайджест' };
+  // обложка: cover из данных, иначе пластилиновая картинка по смыслу текста или по формату
+  const READ_ART = { 'ai-setup': 'trail-claude', 'ai-law': 'knowledge', 'kabinet-ai': 'seller-path' };
+  const READ_KIND_ART = { series: 'trail-vibe', guide: 'knowledge', review: 'fw-card', digest: 'task' };
+  const readCover = (r) => r.cover ? (/[/.]/.test(r.cover) ? r.cover : artSrc(r.cover)) : artSrc(READ_ART[r.id] || READ_KIND_ART[r.kind] || 'lesson');
+  const readLive = (r) => !!r.url;
+  const readNewest = (a, b) => String(b.date || '').localeCompare(String(a.date || ''));
+  function readCard(r, from) {
+    const soon = !readLive(r);
+    const label = r.kind === 'series' ? e(r.series || 'Серия') + (r.order ? ' · №' + e(r.order) : '') : e(READ_KIND[r.kind] || 'Текст');
+    const meta = [r.minutes ? pn(r.minutes, 'минута', 'минуты', 'минут') + ' чтения' : '', soon ? 'скоро' : r.checked ? 'проверено ' + fmtDateRu(r.checked) : ''].filter(Boolean);
+    const inner = `<span class="v6-readc-img"><img src="${e(readCover(r))}" alt="" loading="lazy"></span><span class="v6-readc-in"><span class="v6-pcard-label">${label}</span><span class="v6-readc-t">${e(r.title)}</span>${r.lead && !soon ? `<span class="v6-readc-p">${e(r.lead)}</span>` : ''}<span class="v6-readc-m">${meta.map(e).join(' · ')}</span></span>`;
+    return soon ? `<div class="v6-readc is-soon">${inner}</div>`
+      : `<a class="v6-readc" href="${e(r.url)}" onclick="try { umTrack('read-open', { id: '${e(r.id)}', from: '${from}' }); } catch (_) {}">${inner}</a>`;
+  }
+  function readsPage() {
+    shell(`<div class="v6c" id="v6-reads"><p class="v6-lead">Загружаю…</p></div>`);
+    loadReads().then((list) => {
+      const box = document.getElementById('v6-reads');
+      if (!box) return;
+      const series = list.filter((r) => r.kind === 'series').sort((a, b) => (a.order || 99) - (b.order || 99));
+      const groups = [
+        [series.length ? series[0].series || 'Серия' : '', 'Как устроена работа над этим сайтом: инструменты, агенты, проверка результата. Читайте по порядку.', series],
+        ['Гайды', 'Тема целиком: что говорит закон, что умеет сервис, с чего начать.', list.filter((r) => r.kind === 'guide').sort(readNewest)],
+        ['Обзоры', 'Сервисы под одну задачу рядом: что умеют, где слабы, что выбрать.', list.filter((r) => r.kind === 'review').sort(readNewest)],
+        ['Что изменилось', 'Раз в месяц: что поменялось у сервисов и что с этим сделать.', list.filter((r) => r.kind === 'digest').sort(readNewest)],
+      ].filter((g) => g[2].length);
+      const n = list.filter(readLive).length;
+      box.innerHTML = `<section class="v6-phero"><div class="v6-phero-text"><span class="v6-eyebrow">Почитать <span>${n} ${plural(n, 'текст', 'текста', 'текстов')}</span></span><h1 class="v6-d">Почитать</h1><p class="v6-phero-lead">Гайды, обзоры и серия «Как я работаю с ИИ». У каждого текста указан срок чтения и дата, когда проверяли факты.</p></div>${art('lesson', 'v6-phero-art')}</section>
+        ${groups.map(([t, p, items]) => `<section class="v6-psec"><div class="v6-sec-head"><div><h2 class="v6-psec-h">${e(t)}</h2><p>${e(p)}</p></div></div><div class="v6-readgrid">${items.map((r) => readCard(r, 'reads')).join('')}</div></section>`).join('')}`;
+    }).catch(() => fail('v6-reads'));
+  }
+  // главная, блок «Об Артефактах»: три свежих текста
+  function readsHome() {
+    loadReads().then((list) => {
+      const box = document.getElementById('v6-reads-home');
+      const top = list.filter(readLive).sort(readNewest).slice(0, 3);
+      if (!box) return;
+      if (!top.length) { box.remove(); return; }
+      box.innerHTML = `<section class="v6-sec v6-readshelf"><div class="v6-sec-head is-split"><div><h3 class="v6-h3">Почитать</h3><p>Свежие тексты: гайды, обзоры и серия «Как я работаю с ИИ».</p></div><a class="v6-link" href="#reads" onclick="V6.open('reads'); return false;">Все материалы →</a></div><div class="v6-readgrid">${top.map((r) => readCard(r, 'home')).join('')}</div></section>`;
+    }).catch(() => { const box = document.getElementById('v6-reads-home'); if (box) box.remove(); });
   }
 
   // ---------- карточка фреймворка (CardSku.dc.html, CardPrompt.dc.html) ----------
@@ -1739,7 +1785,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       bsCheck();
     }).catch(() => fail('v6-bs'));
   }
-  const PAGES = { roles: rolesPage, tasks: tasksPage, paths: pathsPage, knowledge: knowledgePage, notebook: notebookPage, companies: companiesPage, 'co-audit': coAuditPage, 'brand-stages': brandStagesPage };
+  const PAGES = { roles: rolesPage, tasks: tasksPage, paths: pathsPage, knowledge: knowledgePage, notebook: notebookPage, reads: readsPage, companies: companiesPage, 'co-audit': coAuditPage, 'brand-stages': brandStagesPage };
   function open(name) {
     if (name === 'roles') name = 'tasks'; // страница «Кто вы?» убрана 24.11: роли — фильтры в «Решениях» и вкладки колоды
     if (name === 'home') { openStaticPage('home'); return; }

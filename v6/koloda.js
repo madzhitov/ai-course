@@ -148,7 +148,7 @@
       const done = (txt) => { cp.textContent = txt; setTimeout(() => { cp.textContent = 'Скопировать запрос'; }, 1600); };
       try { navigator.clipboard.writeText(c.p).then(() => done('Скопировано'), () => done('Не вышло, откройте шаги')); } catch (_) { done('Не вышло, откройте шаги'); }
       return; }
-    const all = t.closest('[data-kd-all]'); if (all) { ev.preventDefault(); CAT.a = aud; CAT.w = wrole; CAT.v = 'all'; track('kd-all', { aud }); V6.open('tasks'); return; }
+    const all = t.closest('[data-kd-all]'); if (all) { ev.preventDefault(); CAT.a = aud; CAT.w = wrole; CAT.v = 'all'; CAT.l = 'all'; track('kd-all', { aud }); V6.open('tasks'); return; }
     const pk = t.closest('[data-kd-pick]'); if (pk) { const h = document.getElementById('kd-verbs'); if (h) h.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' }); return; }
     const wk = t.closest('[data-kd-work]'); if (wk) { ev.stopPropagation(); track('agency-door', { from: 'home-deck' }); V6.open('companies'); return; }
     if (t.closest('a')) return;
@@ -187,19 +187,21 @@
     if (!bound) { document.addEventListener('click', onClick); document.addEventListener('keydown', onKey); bound = true; }
   }
   // ---------- Каталог «Решений»: поиск и фильтры «для кого» и «что сделать» (прототип модели 25.11) ----------
-  const CAT = { a: 'all', w: 'all', v: 'all', q: '', soon: false };
+  const CAT = { a: 'all', w: 'all', v: 'all', l: 'all', q: '', soon: false };
+  // уровни заданий (units.json → level); «продвинутый» добавлен 27.11 под серию про агентов
+  const LEVELS = [['all', 'Любой'], ['с нуля', 'С нуля'], ['уверенный', 'Уверенный'], ['продвинутый', 'Продвинутый']];
   const pl = (n, a, b, c) => { const x = n % 10, y = n % 100; return x === 1 && y !== 11 ? a : x >= 2 && x <= 4 && (y < 12 || y > 14) ? b : c; };
   function catList() {
     const box = document.getElementById('kd-cat-list'); if (!box) return;
     const q = CAT.q.trim().toLowerCase();
-    const items = CARDS.filter((c) => (CAT.soon || !c.gap) && inAud(c, CAT.a, CAT.w) && (CAT.v === 'all' || c.v === CAT.v) && (!q || (c.t + ' ' + (c.r || '')).toLowerCase().includes(q)))
+    const items = CARDS.filter((c) => (CAT.soon || !c.gap) && inAud(c, CAT.a, CAT.w) && (CAT.v === 'all' || c.v === CAT.v) && (CAT.l === 'all' || (!c.gap && c.lv === CAT.l)) && (!q || (c.t + ' ' + (c.r || '')).toLowerCase().includes(q)))
       .sort((x, y) => (!!x.gap - !!y.gap) || (!!x.review - !!y.review) || ((x.m || 99) - (y.m || 99)));
     const ready = items.filter((c) => !c.gap).length;
     const gname = (id) => ROLE[id] || '';
     document.getElementById('kd-cat-found').textContent = ready ? `Найдено ${ready} ${pl(ready, 'задание', 'задания', 'заданий')}` : 'Ничего не нашлось. Попробуйте другое слово или сбросьте фильтры';
     box.innerHTML = items.map((c) => c.gap
       ? `<div class="kd-row is-soon"><b>${esc(c.t)}<span class="kd-tag is-o">${esc(gname(c.grp))}</span></b><span class="kd-row-r">${esc(c.r)}</span><span class="kd-row-m">скоро</span></div>`
-      : `<a class="kd-row" href="#unit-${esc(c.id)}" data-kd-open="${esc(c.id)}"><b>${esc(c.t)}${c.review ? '<span class="kd-tag is-o">черновик</span>' : ''}<span class="kd-tag is-o">${esc(gname(c.grp))}</span></b><span class="kd-row-r">${esc(c.r)}</span><span class="kd-row-m">${c.m}<small>мин</small></span></a>`).join('');
+      : `<a class="kd-row" href="#unit-${esc(c.id)}" data-kd-open="${esc(c.id)}"><b>${esc(c.t)}${c.review ? '<span class="kd-tag is-o">черновик</span>' : ''}<span class="kd-tag is-o">${esc(gname(c.grp))}</span>${c.lv && c.lv !== 'с нуля' ? `<span class="kd-tag is-lv">${esc(c.lv)}</span>` : ''}</b><span class="kd-row-r">${esc(c.r)}</span><span class="kd-row-m">${c.m}<small>мин</small></span></a>`).join('');
   }
   function catChips() {
     const chip = (k, v, t) => `<button type="button" data-kd-cat="${k}" data-v="${esc(v)}" aria-pressed="${CAT[k] === v}">${esc(t)}</button>`;
@@ -208,6 +210,8 @@
     document.getElementById('kd-cat-wrap').hidden = CAT.a !== 'work';
     sw.innerHTML = WORKROLES.map(([w, n]) => chip('w', w, n)).join('');
     document.getElementById('kd-cat-v').innerHTML = chip('v', 'all', 'Всё') + K.verbs.map((x) => chip('v', x.id, x.title)).join('');
+    document.getElementById('kd-cat-l').innerHTML = LEVELS.map(([l, t]) => chip('l', l, t)).join('');
+    document.querySelectorAll('#kd-cat-l [data-v]').forEach((b) => { b.disabled = b.dataset.v !== 'all' && !CARDS.some((c) => !c.gap && c.lv === b.dataset.v); });
   }
   // tasksPage() в v6.js рисует первый экран с поиском (#v6-ask-t) и зовёт catalog().
   function catalog(D, box, field) {
@@ -215,6 +219,7 @@
     box.innerHTML = `<div class="kd-fl"><span class="kd-fl-l">Для кого</span><div class="kd-chiprow" id="kd-cat-g"></div></div>
       <div class="kd-fl is-sub" id="kd-cat-wrap"><span class="kd-fl-l">Какая работа</span><div class="kd-chiprow" id="kd-cat-w"></div></div>
       <div class="kd-fl"><span class="kd-fl-l">Что сделать</span><div class="kd-chiprow" id="kd-cat-v"></div></div>
+      <div class="kd-fl"><span class="kd-fl-l">Уровень</span><div class="kd-chiprow" id="kd-cat-l"></div></div>
       <div class="kd-found"><span id="kd-cat-found"></span>${K.soon.length ? `<label><input type="checkbox" id="kd-cat-soon"${CAT.soon ? ' checked' : ''}> показать, что скоро</label>` : ''}</div>
       <div class="kd-rows" id="kd-cat-list"></div>`;
     catChips(); catList();
@@ -228,6 +233,6 @@
     track('kd-cat', { k: b.dataset.kdCat, v: b.dataset.v }); catChips(); catList(); return true;
   }
   // каталог с заранее выбранной аудиторией и направлением работы (страница «Для работы»)
-  const catFor = (a, w) => { CAT.a = a || 'all'; CAT.w = w || 'all'; CAT.v = 'all'; };
+  const catFor = (a, w) => { CAT.a = a || 'all'; CAT.w = w || 'all'; CAT.v = 'all'; CAT.l = 'all'; };
   window.Koloda = { mount, catalog, catFor };
 })();
