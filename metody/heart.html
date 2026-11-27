@@ -48,18 +48,29 @@
   .st-calc-r.is-main b { font-size:36px; }
   .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
   .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+  .st-checked { white-space:nowrap; }
+  .st-quote { margin:12px 0 18px; padding:2px 0 2px 16px; border-left:3px solid var(--line, #E6E8EE); }
+  .st-quote p { margin:0 0 6px; }
+  .st-quote footer { font-size:14px; color:var(--muted); }
+  .st-read-cover { width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:14px; margin-bottom:8px; }
+  .st-read-body table { border-collapse:collapse; width:100%; font-size:15px; }
+  .st-read-body th, .st-read-body td { border-bottom:1px solid var(--line, #E6E8EE); padding:8px 10px; text-align:left; vertical-align:top; }
+  .st-read-body blockquote { margin:16px 0; padding-left:16px; border-left:3px solid var(--line, #E6E8EE); color:var(--muted); }
+  .st-read-body pre { white-space:pre-wrap; background:var(--bg-code); border-radius:14px; padding:14px; font-size:14px; }
+  .st-read-body img { max-width:100%; height:auto; border-radius:14px; }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"HEART","description":"HEART: Выбрать метрики опыта по пяти осям: удовлетворённость, вовлечённость, принятие, удержание, успешность задач. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.","url":"https://ai.madzhitov.ru/metody/heart.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-04"}</script>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"HEART","description":"HEART: Выбрать метрики опыта по пяти осям: удовлетворённость, вовлечённость, принятие, удержание, успешность задач. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.","url":"https://ai.madzhitov.ru/metody/heart.html","inLanguage":"ru","author":{"@type":"Person","@id":"https://madzhitov.ru/#ruslan","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-04"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Артефакты","item":"https://ai.madzhitov.ru/"},{"@type":"ListItem","position":2,"name":"Методы","item":"https://ai.madzhitov.ru/metody/"},{"@type":"ListItem","position":3,"name":"HEART","item":"https://ai.madzhitov.ru/metody/heart.html"}]}]</script>
 <link rel="stylesheet" href="../v6/static.css?v=6d6945c5">
+<style>@media (max-width:720px){.v6s-nav{flex-wrap:wrap;justify-content:flex-start;gap:6px 16px}}</style>
 <script defer src="../v6/static.js?v=e97e63c9"></script>
 </head>
 <body>
 <header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
-  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../pochitat/">Почитать</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
 <main class="lesson-content" id="lesson-content">
   <div class="lesson-view">
     <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
-    <h1>HEART</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-10-04">04.10.2026</time></p>
+    <h1>HEART</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-10-04">04.10.2026</time> · <span class="st-checked">Проверено: <time datetime="2026-10-04">04.10.2026</time></span></p>
     <p class="lead">Выбрать метрики опыта по пяти осям: удовлетворённость, вовлечённость, принятие, удержание, успешность задач.</p>
     <p class="st-meta">Автор метода: Google (Керри Родден, Хилари Хатчинсон, Синь Фу), Measuring the User Experience on a Large Scale: User-Centered Metrics for Web Applications (CHI 2010)</p>
     
@@ -72,9 +83,9 @@
     <h2>Частые ошибки</h2><ul class="st-list"><li>Молча пропустить оси, не решив явно, нужны ли они для вашего продукта</li><li>Считать общие счётчики (визиты, число активных) вместо долей и средних на пользователя</li><li>Составлять метрики до целей: тогда они ни с чем не связаны</li><li>Делать выводы о редизайне сразу после запуска, пока люди привыкают к новому</li><li>Не проверять, что события действительно логируются, а боты исключены</li></ul>
     <h2>Проверьте себя</h2><p>Составьте набор метрик HEART для своего продукта или функции: таблица по пяти осям (цель, сигнал, метрика, источник) и решение, которое вы будете принимать по этим цифрам.</p><ul class="st-list"><li>Рассмотрены все пять осей, пропуск оси объяснён</li><li>У каждой метрики есть цель и сигнал, а не только формула</li><li>Счётчики, которые растут вместе с базой, заменены долями, процентами или средними на пользователя</li><li>Указано, что считается «принял» и в каком окне считается удержание</li><li>Названо решение, которое изменится, если метрика пойдёт вверх или вниз (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
     
-    <h2>Рядом</h2><p><a href="../metody/north-star.html">North Star Metric</a>, <a href="../metody/aarrr.html">AARRR (пиратские метрики)</a>, <a href="../metody/okr.html">OKR</a></p>
+    <h2>Рядом</h2><p><a href="../metody/north-star.html">North Star Metric</a>, <a href="../metody/cohorts.html">Когортный анализ</a>, <a href="../metody/aarrr.html">AARRR (пиратские метрики)</a>, <a href="../metody/okr.html">OKR</a></p>
     
-    <h2>Источники</h2><ul class="st-list"><li><a href="https://research.google/pubs/measuring-the-user-experience-on-a-large-scale-user-centered-metrics-for-web-applications/" rel="nofollow noopener" target="_blank">research.google</a></li><li><a href="https://research.google.com/pubs/archive/36299.pdf" rel="nofollow noopener" target="_blank">research.google.com</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://research.google/pubs/measuring-the-user-experience-on-a-large-scale-user-centered-metrics-for-web-applications/" rel="nofollow noopener" target="_blank">research.google</a></li><li><a href="https://research.google.com/pubs/archive/36299.pdf" rel="nofollow noopener" target="_blank">research.google.com</a></li></ul>
     <div class="pp-open"><a href="../#fw-heart">Открыть с готовым запросом и проверкой Алёши →</a></div>
   </div>
 </main>

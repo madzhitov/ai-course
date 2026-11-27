@@ -48,18 +48,29 @@
   .st-calc-r.is-main b { font-size:36px; }
   .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
   .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+  .st-checked { white-space:nowrap; }
+  .st-quote { margin:12px 0 18px; padding:2px 0 2px 16px; border-left:3px solid var(--line, #E6E8EE); }
+  .st-quote p { margin:0 0 6px; }
+  .st-quote footer { font-size:14px; color:var(--muted); }
+  .st-read-cover { width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:14px; margin-bottom:8px; }
+  .st-read-body table { border-collapse:collapse; width:100%; font-size:15px; }
+  .st-read-body th, .st-read-body td { border-bottom:1px solid var(--line, #E6E8EE); padding:8px 10px; text-align:left; vertical-align:top; }
+  .st-read-body blockquote { margin:16px 0; padding-left:16px; border-left:3px solid var(--line, #E6E8EE); color:var(--muted); }
+  .st-read-body pre { white-space:pre-wrap; background:var(--bg-code); border-radius:14px; padding:14px; font-size:14px; }
+  .st-read-body img { max-width:100%; height:auto; border-radius:14px; }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Lean Canvas","description":"Lean Canvas: Уместить идею продукта на одной странице и найти самые рискованные допущения до разработки. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.","url":"https://ai.madzhitov.ru/metody/lean-canvas.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-11"}</script>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"Lean Canvas","description":"Lean Canvas: Уместить идею продукта на одной странице и найти самые рискованные допущения до разработки. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.","url":"https://ai.madzhitov.ru/metody/lean-canvas.html","inLanguage":"ru","author":{"@type":"Person","@id":"https://madzhitov.ru/#ruslan","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-11"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Артефакты","item":"https://ai.madzhitov.ru/"},{"@type":"ListItem","position":2,"name":"Методы","item":"https://ai.madzhitov.ru/metody/"},{"@type":"ListItem","position":3,"name":"Lean Canvas","item":"https://ai.madzhitov.ru/metody/lean-canvas.html"}]}]</script>
 <link rel="stylesheet" href="../v6/static.css?v=6d6945c5">
+<style>@media (max-width:720px){.v6s-nav{flex-wrap:wrap;justify-content:flex-start;gap:6px 16px}}</style>
 <script defer src="../v6/static.js?v=e97e63c9"></script>
 </head>
 <body>
 <header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
-  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../pochitat/">Почитать</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
 <main class="lesson-content" id="lesson-content">
   <div class="lesson-view">
     <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
-    <h1>Lean Canvas</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-10-11">11.10.2026</time></p>
+    <h1>Lean Canvas</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-10-11">11.10.2026</time> · <span class="st-checked">Проверено: <time datetime="2026-10-04">04.10.2026</time></span></p>
     <p class="lead">Уместить идею продукта на одной странице и найти самые рискованные допущения до разработки.</p>
     <p class="st-meta">Автор метода: Эш Мауриа, Running Lean</p>
     
@@ -72,9 +83,9 @@
     <h2>Частые ошибки</h2><ul class="st-list"><li>Писать в блоке клиентов «все, кому нужна запись» вместо узкого сегмента</li><li>Считать заполненный холст готовым планом и не отмечать, что в нём гипотезы</li><li>Перечислять в ценностном предложении функции, а не выгоду для человека</li><li>Расписывать в «решении» подробный список функций вместо самого простого варианта на каждую проблему</li><li>Заполнять холст один раз и не возвращаться после разговоров с клиентами</li></ul>
     <h2>Проверьте себя</h2><p>Заполните Lean Canvas для своей идеи или продукта, отметьте, где факты, а где гипотезы, и выберите два самых рискованных допущения с планом проверки на неделю.</p><ul class="st-list"><li>Заполнены все девять блоков (пустое неочевидное преимущество допустимо, если честно так и записано)</li><li>Клиентский сегмент узкий и конкретный, не «все»</li><li>Факты и гипотезы отмечены раздельно</li><li>Названы два-три рискованных допущения и для каждого проверка, которую можно сделать за неделю</li><li>Ценностное предложение умещается в одну фразу и говорит о выгоде, а не о функциях (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
     <h2>Задания по шагам с этим методом</h2><ul class="st-list"><li><a href="../zadaniya/u-product-one-page.html">Идея на одной странице: проблема, гипотеза, порог провала</a></li><li><a href="../zadaniya/u-product-pmf.html">Проверка, нужен ли продукт рынку: опрос и удержание</a></li></ul>
-    <h2>Рядом</h2><p><a href="../metody/value-proposition-canvas.html">Value Proposition Canvas</a>, <a href="../metody/jtbd.html">JTBD (работа, которую нанимают)</a></p>
+    <h2>Рядом</h2><p><a href="../metody/value-proposition-canvas.html">Value Proposition Canvas</a>, <a href="../metody/jtbd.html">JTBD (работа, которую нанимают)</a>, <a href="../metody/opportunity-solution-tree.html">Opportunity Solution Tree</a></p>
     
-    <h2>Источники</h2><ul class="st-list"><li><a href="https://bmtoolbox.net/tools/lean-canvas/" rel="nofollow noopener" target="_blank">bmtoolbox.net</a></li><li><a href="https://ashmaurya.com/blog/what-is-lean-canvas" rel="nofollow noopener" target="_blank">ashmaurya.com</a></li><li><a href="https://ashmaurya.com/blog/why-lean-canvas-versus-business-model-canvas" rel="nofollow noopener" target="_blank">ashmaurya.com</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://bmtoolbox.net/tools/lean-canvas/" rel="nofollow noopener" target="_blank">bmtoolbox.net</a></li><li><a href="https://ashmaurya.com/blog/what-is-lean-canvas" rel="nofollow noopener" target="_blank">ashmaurya.com</a></li><li><a href="https://ashmaurya.com/blog/why-lean-canvas-versus-business-model-canvas" rel="nofollow noopener" target="_blank">ashmaurya.com</a></li></ul>
     <div class="pp-open"><a href="../#fw-lean-canvas">Открыть с готовым запросом и проверкой Алёши →</a></div>
   </div>
 </main>

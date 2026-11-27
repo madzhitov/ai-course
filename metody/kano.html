@@ -48,18 +48,29 @@
   .st-calc-r.is-main b { font-size:36px; }
   .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
   .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+  .st-checked { white-space:nowrap; }
+  .st-quote { margin:12px 0 18px; padding:2px 0 2px 16px; border-left:3px solid var(--line, #E6E8EE); }
+  .st-quote p { margin:0 0 6px; }
+  .st-quote footer { font-size:14px; color:var(--muted); }
+  .st-read-cover { width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:14px; margin-bottom:8px; }
+  .st-read-body table { border-collapse:collapse; width:100%; font-size:15px; }
+  .st-read-body th, .st-read-body td { border-bottom:1px solid var(--line, #E6E8EE); padding:8px 10px; text-align:left; vertical-align:top; }
+  .st-read-body blockquote { margin:16px 0; padding-left:16px; border-left:3px solid var(--line, #E6E8EE); color:var(--muted); }
+  .st-read-body pre { white-space:pre-wrap; background:var(--bg-code); border-radius:14px; padding:14px; font-size:14px; }
+  .st-read-body img { max-width:100%; height:auto; border-radius:14px; }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Модель Кано","description":"Модель Кано: Разделить функции на обязательные, линейные и восхищающие, чтобы вкладываться туда, где это заметят. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.","url":"https://ai.madzhitov.ru/metody/kano.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-11"}</script>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"Модель Кано","description":"Модель Кано: Разделить функции на обязательные, линейные и восхищающие, чтобы вкладываться туда, где это заметят. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.","url":"https://ai.madzhitov.ru/metody/kano.html","inLanguage":"ru","author":{"@type":"Person","@id":"https://madzhitov.ru/#ruslan","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-11"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Артефакты","item":"https://ai.madzhitov.ru/"},{"@type":"ListItem","position":2,"name":"Методы","item":"https://ai.madzhitov.ru/metody/"},{"@type":"ListItem","position":3,"name":"Модель Кано","item":"https://ai.madzhitov.ru/metody/kano.html"}]}]</script>
 <link rel="stylesheet" href="../v6/static.css?v=6d6945c5">
+<style>@media (max-width:720px){.v6s-nav{flex-wrap:wrap;justify-content:flex-start;gap:6px 16px}}</style>
 <script defer src="../v6/static.js?v=e97e63c9"></script>
 </head>
 <body>
 <header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
-  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../pochitat/">Почитать</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
 <main class="lesson-content" id="lesson-content">
   <div class="lesson-view">
     <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
-    <h1>Модель Кано</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-10-11">11.10.2026</time></p>
+    <h1>Модель Кано</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-10-11">11.10.2026</time> · <span class="st-checked">Проверено: <time datetime="2026-10-04">04.10.2026</time></span></p>
     <p class="lead">Разделить функции на обязательные, линейные и восхищающие, чтобы вкладываться туда, где это заметят.</p>
     <p class="st-meta">Автор метода: Нориаки Кано с соавторами, Attractive Quality and Must-Be Quality (статья, Journal of the Japanese Society for Quality Control)</p>
     
@@ -72,9 +83,9 @@
     <h2>Частые ошибки</h2><ul class="st-list"><li>Спрашивать только «хотите ли вы эту функцию»: так не отличить обязательное от восхищающего</li><li>Опрашивать коллег или всех подряд, а не людей из целевого сегмента</li><li>Считать категорию вечной: через год то, что восхищало, может стать обязательным</li><li>Делать вывод по одному-двум ответам, не глядя на разброс</li><li>Вкладываться в восхищающие функции, не закрыв обязательные</li></ul>
     <h2>Проверьте себя</h2><p>Выберите пять-восемь функций своего продукта, составьте анкету Кано, опросите хотя бы пятерых людей из одного сегмента (в крайнем случае разберите уже собранные отзывы) и пришлите таблицу: функция, категории по ответам, ваше решение.</p><ul class="st-list"><li>На каждую функцию есть пара вопросов: «если есть» и «если нет»</li><li>Респонденты из одного целевого сегмента, это указано</li><li>Для каждой функции показано распределение ответов по категориям, а не только вывод</li><li>Для каждой функции есть решение (сделать, улучшить, добавить как приятный бонус, отложить)</li><li>Отмечены функции с разделённым мнением и объяснено, что это может значить (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
     <h2>Задания по шагам с этим методом</h2><ul class="st-list"><li><a href="../zadaniya/u-product-slice.html">Карта пользовательского пути и нарезка на релизы</a></li></ul>
-    <h2>Рядом</h2><p><a href="../metody/rice.html">RICE</a>, <a href="../metody/jtbd.html">JTBD (работа, которую нанимают)</a></p>
+    <h2>Рядом</h2><p><a href="../metody/rice.html">RICE</a>, <a href="../metody/moscow.html">MoSCoW</a>, <a href="../metody/jtbd.html">JTBD (работа, которую нанимают)</a></p>
     
-    <h2>Источники</h2><ul class="st-list"><li><a href="https://en.wikipedia.org/wiki/Kano_model" rel="nofollow noopener" target="_blank">en.wikipedia.org</a></li><li><a href="https://en.wikipedia.org/wiki/Noriaki_Kano" rel="nofollow noopener" target="_blank">en.wikipedia.org</a></li><li><a href="https://www.semanticscholar.org/paper/Attractive-Quality-and-Must-Be-Quality-Kano-Seraku/b87d1ccf62791b914e2d1950729f2171369be429" rel="nofollow noopener" target="_blank">semanticscholar.org</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://en.wikipedia.org/wiki/Kano_model" rel="nofollow noopener" target="_blank">en.wikipedia.org</a></li><li><a href="https://en.wikipedia.org/wiki/Noriaki_Kano" rel="nofollow noopener" target="_blank">en.wikipedia.org</a></li><li><a href="https://www.semanticscholar.org/paper/Attractive-Quality-and-Must-Be-Quality-Kano-Seraku/b87d1ccf62791b914e2d1950729f2171369be429" rel="nofollow noopener" target="_blank">semanticscholar.org</a></li></ul>
     <div class="pp-open"><a href="../#fw-kano">Открыть с готовым запросом и проверкой Алёши →</a></div>
   </div>
 </main>

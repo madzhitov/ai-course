@@ -48,18 +48,29 @@
   .st-calc-r.is-main b { font-size:36px; }
   .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
   .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+  .st-checked { white-space:nowrap; }
+  .st-quote { margin:12px 0 18px; padding:2px 0 2px 16px; border-left:3px solid var(--line, #E6E8EE); }
+  .st-quote p { margin:0 0 6px; }
+  .st-quote footer { font-size:14px; color:var(--muted); }
+  .st-read-cover { width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:14px; margin-bottom:8px; }
+  .st-read-body table { border-collapse:collapse; width:100%; font-size:15px; }
+  .st-read-body th, .st-read-body td { border-bottom:1px solid var(--line, #E6E8EE); padding:8px 10px; text-align:left; vertical-align:top; }
+  .st-read-body blockquote { margin:16px 0; padding-left:16px; border-left:3px solid var(--line, #E6E8EE); color:var(--muted); }
+  .st-read-body pre { white-space:pre-wrap; background:var(--bg-code); border-radius:14px; padding:14px; font-size:14px; }
+  .st-read-body img { max-width:100%; height:auto; border-radius:14px; }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"North Star Metric","description":"North Star Metric: Выбрать одну метрику, которая показывает, сколько ценности клиенты получают от продукта, и собрать вокруг неё команду. Когда применять, шаги, пример, частые ошибки, готовый запрос к","url":"https://ai.madzhitov.ru/metody/north-star.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-11"}</script>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"North Star Metric","description":"North Star Metric: Выбрать одну метрику, которая показывает, сколько ценности клиенты получают от продукта, и собрать вокруг неё команду. Когда применять, шаги, пример, частые ошибки, готовый запрос к","url":"https://ai.madzhitov.ru/metody/north-star.html","inLanguage":"ru","author":{"@type":"Person","@id":"https://madzhitov.ru/#ruslan","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-11"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Артефакты","item":"https://ai.madzhitov.ru/"},{"@type":"ListItem","position":2,"name":"Методы","item":"https://ai.madzhitov.ru/metody/"},{"@type":"ListItem","position":3,"name":"North Star Metric","item":"https://ai.madzhitov.ru/metody/north-star.html"}]}]</script>
 <link rel="stylesheet" href="../v6/static.css?v=6d6945c5">
+<style>@media (max-width:720px){.v6s-nav{flex-wrap:wrap;justify-content:flex-start;gap:6px 16px}}</style>
 <script defer src="../v6/static.js?v=e97e63c9"></script>
 </head>
 <body>
 <header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
-  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../pochitat/">Почитать</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
 <main class="lesson-content" id="lesson-content">
   <div class="lesson-view">
     <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
-    <h1>North Star Metric</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-10-11">11.10.2026</time></p>
+    <h1>North Star Metric</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-10-11">11.10.2026</time> · <span class="st-checked">Проверено: <time datetime="2026-10-04">04.10.2026</time></span></p>
     <p class="lead">Выбрать одну метрику, которая показывает, сколько ценности клиенты получают от продукта, и собрать вокруг неё команду.</p>
     <p class="st-meta">Автор метода: Шон Эллис популяризировал понятие (Hacking Growth, 2017, с Морганом Брауном); фреймворк описан Amplitude в The North Star Playbook (Джон Катлер и соавторы), The North Star Playbook (Amplitude)</p>
     
@@ -72,9 +83,9 @@
     <h2>Частые ошибки</h2><ul class="st-list"><li>Выбрать активных пользователей, регистрации или выручку: первые две тщеславные, третья запаздывает</li><li>Взять метрику, которую можно двигать напрямую, не принося клиенту пользы</li><li>Назначить сразу несколько главных метрик, и они начинают конфликтовать</li><li>Выбрать метрику в одиночку и не обсудить с командой, чья работа должна её двигать</li><li>Считать метрику вечной и не пересматривать при смене стратегии</li></ul>
     <h2>Проверьте себя</h2><p>Выберите North Star Metric для своего продукта: пришлите определение игры, фразу о ценности, трёх-пяти кандидатов с проверкой по чек-листу, выбранную метрику и три-пять входных метрик.</p><ul class="st-list"><li>Метрика связана с ценностью для клиента и объяснена его словами</li><li>Проверено не меньше трёх кандидатов, и по каждому видны ответы на вопросы чек-листа</li><li>Выбрана одна метрика и объяснено, почему она не тщеславная и не запаздывающая</li><li>Есть входные метрики (на старте три-пять), и у каждой понятно, работа какой команды её двигает</li><li>Указано, какие данные нужно начать собирать, и кто будет следить за метрикой (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
     <h2>Задания по шагам с этим методом</h2><ul class="st-list"><li><a href="../zadaniya/u-product-north-star.html">Главная метрика и контр-метрика с формулой</a></li><li><a href="../zadaniya/u-product-okr.html">Цели и ключевые результаты на квартал</a></li><li><a href="../zadaniya/u-product-cohorts.html">Удержание по когортам в таблице</a></li></ul>
-    <h2>Рядом</h2><p><a href="../metody/okr.html">OKR</a>, <a href="../metody/heart.html">HEART</a>, <a href="../metody/aarrr.html">AARRR (пиратские метрики)</a></p>
+    <h2>Рядом</h2><p><a href="../metody/okr.html">OKR</a>, <a href="../metody/heart.html">HEART</a>, <a href="../metody/aarrr.html">AARRR (пиратские метрики)</a>, <a href="../metody/cohorts.html">Когортный анализ</a></p>
     <h2>Уроки</h2><ul class="st-list"><li><a href="../lessons/i14.html">Основы продукта: проблема, гипотеза, метрика</a></li></ul>
-    <h2>Источники</h2><ul class="st-list"><li><a href="https://info.amplitude.com/rs/138-CDN-550/images/Amplitude-The-North-Star-Playbook.pdf" rel="nofollow noopener" target="_blank">info.amplitude.com</a></li><li><a href="https://andrewclark.co.uk/product-book-summaries/hacking-growth" rel="nofollow noopener" target="_blank">andrewclark.co.uk</a></li><li><a href="https://magazine.startus.cc/sean-ellis-on-the-backbone-of-successful-growth-teams-the-north-star-metric/" rel="nofollow noopener" target="_blank">magazine.startus.cc</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://info.amplitude.com/rs/138-CDN-550/images/Amplitude-The-North-Star-Playbook.pdf" rel="nofollow noopener" target="_blank">info.amplitude.com</a></li><li><a href="https://andrewclark.co.uk/product-book-summaries/hacking-growth" rel="nofollow noopener" target="_blank">andrewclark.co.uk</a></li><li><a href="https://magazine.startus.cc/sean-ellis-on-the-backbone-of-successful-growth-teams-the-north-star-metric/" rel="nofollow noopener" target="_blank">magazine.startus.cc</a></li></ul>
     <div class="pp-open"><a href="../#fw-north-star">Открыть с готовым запросом и проверкой Алёши →</a></div>
   </div>
 </main>

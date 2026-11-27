@@ -48,18 +48,29 @@
   .st-calc-r.is-main b { font-size:36px; }
   .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
   .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+  .st-checked { white-space:nowrap; }
+  .st-quote { margin:12px 0 18px; padding:2px 0 2px 16px; border-left:3px solid var(--line, #E6E8EE); }
+  .st-quote p { margin:0 0 6px; }
+  .st-quote footer { font-size:14px; color:var(--muted); }
+  .st-read-cover { width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:14px; margin-bottom:8px; }
+  .st-read-body table { border-collapse:collapse; width:100%; font-size:15px; }
+  .st-read-body th, .st-read-body td { border-bottom:1px solid var(--line, #E6E8EE); padding:8px 10px; text-align:left; vertical-align:top; }
+  .st-read-body blockquote { margin:16px 0; padding-left:16px; border-left:3px solid var(--line, #E6E8EE); color:var(--muted); }
+  .st-read-body pre { white-space:pre-wrap; background:var(--bg-code); border-radius:14px; padding:14px; font-size:14px; }
+  .st-read-body img { max-width:100%; height:auto; border-radius:14px; }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Оборачиваемость и запасы","description":"Оборачиваемость и запасы: Понять, на сколько дней продаж хватит остатка, и решить, когда и сколько дозаказывать. Когда применять, шаги, пример, частые ошибки, калькулятор.","url":"https://ai.madzhitov.ru/metody/stock-turnover.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-06"}</script>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"Оборачиваемость и запасы","description":"Оборачиваемость и запасы: Понять, на сколько дней продаж хватит остатка, и решить, когда и сколько дозаказывать. Когда применять, шаги, пример, частые ошибки, калькулятор.","url":"https://ai.madzhitov.ru/metody/stock-turnover.html","inLanguage":"ru","author":{"@type":"Person","@id":"https://madzhitov.ru/#ruslan","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-06"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Артефакты","item":"https://ai.madzhitov.ru/"},{"@type":"ListItem","position":2,"name":"Методы","item":"https://ai.madzhitov.ru/metody/"},{"@type":"ListItem","position":3,"name":"Оборачиваемость и запасы","item":"https://ai.madzhitov.ru/metody/stock-turnover.html"}]}]</script>
 <link rel="stylesheet" href="../v6/static.css?v=6d6945c5">
+<style>@media (max-width:720px){.v6s-nav{flex-wrap:wrap;justify-content:flex-start;gap:6px 16px}}</style>
 <script defer src="../v6/static.js?v=e97e63c9"></script>
 </head>
 <body>
 <header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
-  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../pochitat/">Почитать</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
 <main class="lesson-content" id="lesson-content">
   <div class="lesson-view">
     <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
-    <h1>Оборачиваемость и запасы</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-10-06">06.10.2026</time></p>
+    <h1>Оборачиваемость и запасы</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-10-06">06.10.2026</time> · <span class="st-checked">Проверено: <time datetime="2026-10-04">04.10.2026</time></span></p>
     <p class="lead">Понять, на сколько дней продаж хватит остатка, и решить, когда и сколько дозаказывать.</p><p class="st-meta">Понятия по теме: <a href="../slovar/inventory-turnover.html">Оборачиваемость</a> · <a href="../slovar/reorder-point.html">Точка дозаказа</a></p>
     <p class="st-meta">Автор метода: общепринятая практика управления запасами</p>
     
@@ -72,9 +83,9 @@
     <h2>Частые ошибки</h2><ul class="st-list"><li>Брать продажи за один день или за день акции</li><li>Считать остаток без товара в пути или, наоборот, считать его дважды</li><li>Не вычитать время пополнения и страховой запас</li><li>Путать оборачиваемость в днях и в оборотах</li><li>Смотреть только на количество, а не на деньги в запасе</li></ul>
     <h2>Проверьте себя</h2><p>Посчитайте оборачиваемость трёх своих товаров и для одного из них назначьте дату следующего заказа.</p><ul class="st-list"><li>Взяты реальные остатки и продажи по трём товарам</li><li>Оборачиваемость посчитана в днях, период продаж назван</li><li>Для одного товара указано время пополнения и дата заказа</li><li>Посчитаны деньги в запасе хотя бы по одному товару (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
     <h2>Задания по шагам с этим методом</h2><ul class="st-list"><li><a href="../zadaniya/u-seller-stock.html">План остатков и заказа на все каналы</a></li></ul>
-    <h2>Рядом</h2><p><a href="../metody/abc-xyz.html">ABC / XYZ-анализ</a>, <a href="../metody/unit-economics-sku.html">Юнит-экономика SKU</a>, <a href="../metody/contribution-margin-channels.html">Маржинальный доход по каналам</a></p>
+    <h2>Рядом</h2><p><a href="../metody/abc-xyz.html">ABC / XYZ-анализ</a>, <a href="../metody/unit-economics-sku.html">Юнит-экономика SKU</a>, <a href="../metody/contribution-margin-channels.html">Маржинальный доход по каналам</a>, <a href="../metody/assortment-matrix.html">Ассортиментная матрица и ценовая лестница</a></p>
     
-    <h2>Источники</h2><ul class="st-list"><li><a href="https://postavleno.ru/blog/oborachivaemost-tovara-na-wb-i-ozon/" rel="nofollow noopener" target="_blank">postavleno.ru</a></li><li><a href="https://en.wikipedia.org/wiki/Inventory_turnover" rel="nofollow noopener" target="_blank">en.wikipedia.org</a></li><li><a href="https://en.wikipedia.org/wiki/Reorder_point" rel="nofollow noopener" target="_blank">en.wikipedia.org</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://postavleno.ru/blog/oborachivaemost-tovara-na-wb-i-ozon/" rel="nofollow noopener" target="_blank">postavleno.ru</a></li><li><a href="https://en.wikipedia.org/wiki/Inventory_turnover" rel="nofollow noopener" target="_blank">en.wikipedia.org</a></li><li><a href="https://en.wikipedia.org/wiki/Reorder_point" rel="nofollow noopener" target="_blank">en.wikipedia.org</a></li></ul>
     <div class="pp-open"><a href="../#fw-stock-turnover">Открыть с калькулятором и проверкой Алёши →</a></div>
   </div>
 </main>

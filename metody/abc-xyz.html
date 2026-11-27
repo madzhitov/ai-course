@@ -48,18 +48,29 @@
   .st-calc-r.is-main b { font-size:36px; }
   .st-calc-fx { margin-top:14px; border-top:1px solid var(--line, #E6E8EE); padding-top:10px; font-size:15px; }
   .st-calc-fx ul { margin:4px 0 0; padding-left:18px; }
+  .st-checked { white-space:nowrap; }
+  .st-quote { margin:12px 0 18px; padding:2px 0 2px 16px; border-left:3px solid var(--line, #E6E8EE); }
+  .st-quote p { margin:0 0 6px; }
+  .st-quote footer { font-size:14px; color:var(--muted); }
+  .st-read-cover { width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:14px; margin-bottom:8px; }
+  .st-read-body table { border-collapse:collapse; width:100%; font-size:15px; }
+  .st-read-body th, .st-read-body td { border-bottom:1px solid var(--line, #E6E8EE); padding:8px 10px; text-align:left; vertical-align:top; }
+  .st-read-body blockquote { margin:16px 0; padding-left:16px; border-left:3px solid var(--line, #E6E8EE); color:var(--muted); }
+  .st-read-body pre { white-space:pre-wrap; background:var(--bg-code); border-radius:14px; padding:14px; font-size:14px; }
+  .st-read-body img { max-width:100%; height:auto; border-radius:14px; }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"ABC / XYZ-анализ","description":"ABC / XYZ-анализ: Разложить ассортимент по вкладу в выручку и стабильности спроса и выбрать политику запасов для каждой группы. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.","url":"https://ai.madzhitov.ru/metody/abc-xyz.html","inLanguage":"ru","author":{"@type":"Person","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-06"}</script>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"ABC / XYZ-анализ","description":"ABC / XYZ-анализ: Разложить ассортимент по вкладу в выручку и стабильности спроса и выбрать политику запасов для каждой группы. Когда применять, шаги, пример, частые ошибки, готовый запрос к ИИ.","url":"https://ai.madzhitov.ru/metody/abc-xyz.html","inLanguage":"ru","author":{"@type":"Person","@id":"https://madzhitov.ru/#ruslan","name":"Руслан Маджитов","url":"https://madzhitov.ru"},"isPartOf":{"@type":"WebSite","name":"Артефакты","url":"https://ai.madzhitov.ru/"},"dateModified":"2026-10-06"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Артефакты","item":"https://ai.madzhitov.ru/"},{"@type":"ListItem","position":2,"name":"Методы","item":"https://ai.madzhitov.ru/metody/"},{"@type":"ListItem","position":3,"name":"ABC / XYZ-анализ","item":"https://ai.madzhitov.ru/metody/abc-xyz.html"}]}]</script>
 <link rel="stylesheet" href="../v6/static.css?v=6d6945c5">
+<style>@media (max-width:720px){.v6s-nav{flex-wrap:wrap;justify-content:flex-start;gap:6px 16px}}</style>
 <script defer src="../v6/static.js?v=e97e63c9"></script>
 </head>
 <body>
 <header class="v6s-h"><div class="v6s-in"><a class="v6s-logo" href="../" aria-label="Артефакты · Знания и решения с ИИ, на главную"><img src="../v6/brand/lockup.svg" alt="Артефакты" width="150" height="24"><span class="v6s-tagline">Знания и решения с ИИ</span></a>
-  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
+  <nav class="v6s-nav" aria-label="Разделы"><a href="../zadaniya/">Решения</a><a href="../lessons/">Обучение</a><a href="../znaniya/">Справочник</a><a href="../pochitat/">Почитать</a><a href="../#notebook">Тетрадь</a><a href="../#companies">Для бизнеса</a></nav><a class="v6s-search" href="../?search=1#tasks" aria-label="Найти решение">Поиск</a></div></header>
 <main class="lesson-content" id="lesson-content">
   <div class="lesson-view">
     <div class="st-crumb"><a href="../">Артефакты</a> · <a href="../metody/">Методы</a></div>
-    <h1>ABC / XYZ-анализ</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-10-06">06.10.2026</time></p>
+    <h1>ABC / XYZ-анализ</h1><p class="st-meta st-dates">Материал обновлён <time datetime="2026-10-06">06.10.2026</time> · <span class="st-checked">Проверено: <time datetime="2026-10-04">04.10.2026</time></span></p>
     <p class="lead">Разложить ассортимент по вкладу в выручку и стабильности спроса и выбрать политику запасов для каждой группы.</p><p class="st-meta">Понятия по теме: <a href="../slovar/sku.html">SKU</a> · <a href="../slovar/assortment-matrix.html">Ассортиментная матрица</a></p>
     <p class="st-meta">Автор метода: ABC: Х. Форд Дики, General Electric; XYZ: единого автора нет</p>
     
@@ -72,9 +83,9 @@
     <h2>Частые ошибки</h2><ul class="st-list"><li>Считать ABC по штукам вместо выручки или маржинального дохода</li><li>Считать XYZ по двум-трём точкам данных</li><li>Не отделять новинки и сезонные товары</li><li>Считать границы 80/95 и 10/25 законом, а не удобной договорённостью</li><li>Выкидывать группу C, не проверив, не нужна ли она для полноты ассортимента</li></ul>
     <h2>Проверьте себя</h2><p>Проведите ABC/XYZ по своему ассортименту и напишите политику закупки для двух самых важных ячеек матрицы.</p><ul class="st-list"><li>Использован реальный ассортимент не меньше десяти товаров</li><li>ABC посчитан по выручке или марже с накопительной долей</li><li>XYZ посчитан по продажам по месяцам, границы названы</li><li>Есть матрица и политика минимум для двух ячеек</li><li>Новинки и сезонные товары учтены отдельно (по желанию)</li></ul><p class="st-meta">В интерактивной версии работу сверит ИИ-наставник Алёша.</p>
     <h2>Задания по шагам с этим методом</h2><ul class="st-list"><li><a href="../zadaniya/u-seller-stock.html">План остатков и заказа на все каналы</a></li><li><a href="../zadaniya/u-seller-assortment-matrix.html">Ассортиментная матрица и ценовая лестница</a></li></ul>
-    <h2>Рядом</h2><p><a href="../metody/stock-turnover.html">Оборачиваемость и запасы</a>, <a href="../metody/unit-economics-sku.html">Юнит-экономика SKU</a></p>
+    <h2>Рядом</h2><p><a href="../metody/assortment-matrix.html">Ассортиментная матрица и ценовая лестница</a>, <a href="../metody/stock-turnover.html">Оборачиваемость и запасы</a>, <a href="../metody/unit-economics-sku.html">Юнит-экономика SKU</a></p>
     
-    <h2>Источники</h2><ul class="st-list"><li><a href="https://en.wikipedia.org/wiki/ABC_analysis" rel="nofollow noopener" target="_blank">en.wikipedia.org</a></li><li><a href="https://www.cin7.com/industry-terms/inventory-classification/" rel="nofollow noopener" target="_blank">cin7.com</a></li><li><a href="https://www.moysklad.ru/poleznoe/shkola-torgovli/xyz-analiz/" rel="nofollow noopener" target="_blank">moysklad.ru</a></li><li><a href="https://ouci.dntb.gov.ua/en/works/408pAWy4/" rel="nofollow noopener" target="_blank">ouci.dntb.gov.ua</a></li></ul><p class="st-meta">Сверено с источниками 04.10.2026</p>
+    <h2>Источники</h2><ul class="st-list"><li><a href="https://en.wikipedia.org/wiki/ABC_analysis" rel="nofollow noopener" target="_blank">en.wikipedia.org</a></li><li><a href="https://www.cin7.com/industry-terms/inventory-classification/" rel="nofollow noopener" target="_blank">cin7.com</a></li><li><a href="https://www.moysklad.ru/poleznoe/shkola-torgovli/xyz-analiz/" rel="nofollow noopener" target="_blank">moysklad.ru</a></li><li><a href="https://ouci.dntb.gov.ua/en/works/408pAWy4/" rel="nofollow noopener" target="_blank">ouci.dntb.gov.ua</a></li></ul>
     <div class="pp-open"><a href="../#fw-abc-xyz">Открыть с готовым запросом и проверкой Алёши →</a></div>
   </div>
 </main>

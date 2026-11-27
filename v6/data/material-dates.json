@@ -635,10 +635,12 @@
    "modified": "2026-11-13"
   },
   "/metody/4p-7p.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/cjm.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/jtbd.html": {
    "modified": "2026-11-08",
@@ -657,45 +659,56 @@
    "checked": "2026-10-04"
   },
   "/metody/see-think-do-care.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/positioning-dunford.html": {
    "modified": "2026-10-26",
    "checked": "2026-10-04"
   },
   "/metody/messaging-house.html": {
-   "modified": "2026-10-26"
+   "modified": "2026-10-26",
+   "checked": "2026-10-04"
   },
   "/metody/storybrand.html": {
-   "modified": "2026-10-26"
+   "modified": "2026-10-26",
+   "checked": "2026-10-04"
   },
   "/metody/north-star.html": {
    "modified": "2026-10-11",
    "checked": "2026-10-04"
   },
   "/metody/growth-loops.html": {
-   "modified": "2026-10-05"
+   "modified": "2026-10-05",
+   "checked": "2026-10-04"
   },
   "/metody/flywheel.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/bowtie.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/plg.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/category-entry-points.html": {
-   "modified": "2026-10-26"
+   "modified": "2026-10-26",
+   "checked": "2026-10-04"
   },
   "/metody/rule-95-5.html": {
-   "modified": "2026-10-26"
+   "modified": "2026-10-26",
+   "checked": "2026-10-04"
   },
   "/metody/incrementality.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/mmm.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/lean-canvas.html": {
    "modified": "2026-10-11",
@@ -706,62 +719,75 @@
    "checked": "2026-11-13"
   },
   "/metody/double-diamond.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/opportunity-solution-tree.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/continuous-discovery.html": {
    "modified": "2026-11-13"
   },
   "/metody/pmf-40.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/pre-mortem.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/rice.html": {
    "modified": "2026-11-08",
    "checked": "2026-10-04"
   },
   "/metody/moscow.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/kano.html": {
    "modified": "2026-10-11",
    "checked": "2026-10-04"
   },
   "/metody/impact-mapping.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/user-story-mapping.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/heart.html": {
    "modified": "2026-10-04",
    "checked": "2026-10-04"
   },
   "/metody/cohorts.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/hook-model.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/evals.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/okr.html": {
    "modified": "2026-10-11",
    "checked": "2026-10-04"
   },
   "/metody/raci-daci.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/shape-up.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/minto-pyramid.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/ecom-pnl.html": {
    "modified": "2026-10-06",
@@ -788,14 +814,16 @@
    "checked": "2026-10-04"
   },
   "/metody/assortment-matrix.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/stock-turnover.html": {
    "modified": "2026-10-06",
    "checked": "2026-10-04"
   },
   "/metody/listing-as-landing.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/reputation-reviews.html": {
    "modified": "2026-10-04",
@@ -806,73 +834,95 @@
    "checked": "2026-10-04"
   },
   "/metody/goal-acceptance-criteria.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/reverse-interview.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/dear.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/ai-decision-5-steps.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/edge.html": {
    "modified": "2026-10-04"
   },
   "/metody/how-make-better.html": {
-   "modified": "2026-10-05"
+   "modified": "2026-10-05",
+   "checked": "2026-10-04"
   },
   "/metody/voice.html": {
-   "modified": "2026-10-26"
+   "modified": "2026-10-26",
+   "checked": "2026-10-04"
   },
   "/metody/own-draft.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/idea-batches.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/content-pipeline.html": {
-   "modified": "2026-10-05"
+   "modified": "2026-10-05",
+   "checked": "2026-10-04"
   },
   "/metody/verb-or-profession.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/assign-check-repeat.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/progressive-trust.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/rule-1995.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/answer-check.html": {
-   "modified": "2026-10-26"
+   "modified": "2026-10-26",
+   "checked": "2026-10-04"
   },
   "/metody/five-roles.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/review-board.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/adversarial-validation.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/hard-reviewer.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/bite.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/ephemeral-html.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/alter.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/metody/socratic.html": {
-   "modified": "2026-10-04"
+   "modified": "2026-10-04",
+   "checked": "2026-10-04"
   },
   "/kalkulyatory/yunit-ekonomika-tovara.html": {
    "modified": "2026-10-29",
@@ -905,20 +955,20 @@
    "modified": "2026-10-26",
    "checked": "2026-10-04"
   },
-  "/slovar/segment.html": {
-   "modified": "2026-11-08"
-  },
-  "/slovar/backlog.html": {
-   "modified": "2026-11-08"
-  },
-  "/slovar/unit-economics.html": {
-   "modified": "2026-11-08"
-  },
   "/slovar/cac.html": {
    "modified": "2026-11-08"
   },
   "/slovar/ltv.html": {
    "modified": "2026-11-08"
+  },
+  "/slovar/pnl.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/roi.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/romi.html": {
+   "modified": "2026-10-05"
   },
   "/slovar/drr.html": {
    "modified": "2026-11-08"
@@ -926,33 +976,389 @@
   "/slovar/contribution-margin.html": {
    "modified": "2026-11-08"
   },
-  "/slovar/value-proposition.html": {
-   "modified": "2026-11-13"
+  "/slovar/inventory-turnover.html": {
+   "modified": "2026-11-08"
+  },
+  "/slovar/payback.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/unit-economics.html": {
+   "modified": "2026-11-08"
+  },
+  "/slovar/attribution.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/incrementality.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/category.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/cohort.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/mental-availability.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/churn.html": {
+   "modified": "2026-10-05"
   },
   "/slovar/positioning.html": {
    "modified": "2026-11-08"
   },
+  "/slovar/segment.html": {
+   "modified": "2026-11-08"
+  },
+  "/slovar/category-entry-points.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/retention.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/value-proposition.html": {
+   "modified": "2026-11-13"
+  },
   "/slovar/sku.html": {
-   "modified": "2026-11-08"
-  },
-  "/slovar/buyout.html": {
-   "modified": "2026-11-08"
-  },
-  "/slovar/add-to-cart-rate.html": {
-   "modified": "2026-11-08"
-  },
-  "/slovar/inventory-turnover.html": {
    "modified": "2026-11-08"
   },
   "/slovar/assortment-matrix.html": {
    "modified": "2026-11-08"
   },
+  "/slovar/buyout.html": {
+   "modified": "2026-11-08"
+  },
+  "/slovar/product-card.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/add-to-cart-rate.html": {
+   "modified": "2026-11-08"
+  },
   "/slovar/reorder-point.html": {
    "modified": "2026-11-08"
+  },
+  "/slovar/price-ladder.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/discovery.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/mvp.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/north-star.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/pmf.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/backlog.html": {
+   "modified": "2026-11-08"
+  },
+  "/slovar/hypothesis.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/release.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/feature.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/task-horizon.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/jagged-frontier.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/context.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/harness.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/shadow-ai.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/sycophancy.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/evals.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/ai.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/dl.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/genai.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/llm.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/ml.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/param.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/token.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/attention.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/bpe.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/embedding-model.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/knowledge-cutoff.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/moe.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/multimodal.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/reasoning-model.html": {
+   "modified": "2026-10-07"
+  },
+  "/slovar/rlhf.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/context-window.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/freq-penalty.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/max-tokens.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/seed.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/stop.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/temperature.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/top-p.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/cot.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/few-shot.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/map-reduce.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/prompt.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/prompt-chaining.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/react.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/self-consistency.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/structured-output.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/system-prompt.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/tot.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/user-prompt.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/zero-shot.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/bias.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/hallucination.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/lost-in-the-middle.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/stateless.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/conversation-history.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/sliding-window.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/summary-memory.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/vector-memory.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/ann.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/bm25.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/chunk.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/cosine.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/embedding.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/hybrid-search.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/knn.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/rag.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/reranking.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/vector-db.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/mcp.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/tool-use.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/agent.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/lmsys.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/mmlu.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/pareto.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/ttft.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/defense-in-depth.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/hitl.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/jailbreak.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/moderation.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/prompt-injection.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/red-team.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/152fz.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/dpa.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/ai-act.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/gdpr.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/high-risk-ai.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/pii.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/api.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/api-key.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/endpoint.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/exp-backoff.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/finish-reason.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/rate-limit.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/sdk.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/streaming.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/chroma.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/langchain.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/ollama.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/qdrant.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/streamlit.html": {
+   "modified": "2026-10-05"
+  },
+  "/slovar/tiktoken.html": {
+   "modified": "2026-10-05"
   },
   "/tools/neyroseti-bez-vpn/": {
    "modified": "2026-10-27",
    "checked": "2026-10-26"
+  },
+  "/znaniya/ai-setup.html": {
+   "modified": "2026-11-21",
+   "checked": "2026-11-13"
+  },
+  "undefined": {},
+  "/znaniya/ai-law.html": {
+   "modified": "2026-11-21",
+   "checked": "2026-11-21"
+  },
+  "/znaniya/kabinet-ai.html": {
+   "modified": "2026-11-21",
+   "checked": "2026-11-21"
+  },
+  "/izmeneniya/": {
+   "modified": "2026-11-21",
+   "checked": "2026-11-21"
   }
  }
 }
