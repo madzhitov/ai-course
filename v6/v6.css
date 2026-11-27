@@ -1404,3 +1404,39 @@ body.v6 .lesson-content .v6-page a.v6-readc:hover .v6-readc-t { color:var(--acce
 body.v6 .lesson-content .v6-page .v6-readc.is-soon { background:transparent; border:1.5px dashed var(--line); }
 .v6-readc.is-soon .v6-readc-img { opacity:.45; }
 .v6-readshelf .v6-sec-head { margin-bottom:24px; }
+/* ---------- «Где сайт теряет деньги» и образец разбора (#co-leaks, #companies-sample) ---------- */
+.v6-leaks { display:grid; grid-template-columns:minmax(0, 3fr) minmax(0, 2fr); gap:40px; align-items:start; }
+.v6-leaks p { margin:12px 0 0; }
+.v6-leaks-l { list-style:none; margin:20px 0 0; padding:0; display:flex; flex-direction:column; gap:12px; counter-reset:lk; }
+.v6-leaks-l li { display:grid; grid-template-columns:28px 1fr; column-gap:12px; counter-increment:lk; }
+.v6-leaks-l li::before { content:counter(lk); grid-row:span 2; width:28px; height:28px; border-radius:50%; background:var(--ground, #F3F4F7); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; }
+.v6-leaks-l span { color:var(--text-2); font-size:16px; }
+.v6-smp-note { margin:16px 0 0; padding:12px 16px; border-radius:10px; background:#F6E7DD; color:#5A2A0A; font-size:16px; }
+.v6-smp-facts { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:16px; }
+.v6-smp-facts > div { background:var(--surface); border-radius:12px; padding:18px 20px; display:flex; flex-direction:column; gap:4px; }
+.v6-smp-facts b { font-size:17px; line-height:1.4; }
+.v6-smp-sum { list-style:none; margin:24px 0 0; padding:0; display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:16px; }
+.v6-smp-sum .v6-card { padding:24px; display:flex; flex-direction:column; gap:10px; }
+.v6-smp-sum p { margin:0; }
+.v6-smp-sum small { color:var(--text-3); font-size:14px; line-height:1.45; }
+.v6-smp-sh { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; gap:8px; }
+.v6-smp-sh b { font-size:18px; }
+.v6-smp-st { display:inline-flex; align-items:center; min-height:26px; padding:0 10px; border-radius:var(--r-pill, 999px); font-size:13px; font-weight:600; white-space:nowrap; }
+.v6-smp-st.is-ok { background:#DDEFE3; color:#1E5B33; }
+.v6-smp-st.is-check { background:#F6E7DD; color:#8A3A0C; }
+.v6-smp-b { margin-top:16px; }
+.v6-smp-b h3 { margin-top:6px !important; }
+.v6-smp-rows { list-style:none; margin:16px 0 0; padding:0; }
+.v6-smp-rows li { display:grid; grid-template-columns:120px minmax(0, 1fr) minmax(0, 1fr); gap:16px; align-items:start; padding:16px 0; border-top:1px solid var(--line, #E4E6EB); }
+.v6-smp-rows p { margin:0; }
+.v6-smp-do { display:flex; flex-direction:column; gap:8px; font-size:15px; }
+.v6-smp-do > span { display:flex; flex-direction:column; gap:2px; }
+.v6-smp-mini textarea { min-height:72px; }
+.v6-smp-mini p { margin:10px 0 16px; }
+@media (max-width:900px) {
+  .v6-leaks, .v6-smp-sum { grid-template-columns:minmax(0, 1fr); }
+  .v6-smp-facts { grid-template-columns:1fr 1fr; }
+  .v6-smp-rows li { grid-template-columns:1fr; gap:8px; }
+  .v6-smp-rows .v6-smp-st { justify-self:start; }
+}
+@media (max-width:520px) { .v6-smp-facts { grid-template-columns:minmax(0, 1fr); } .v6-leaks { gap:20px; padding:22px 18px; } .v6-leaks .v6-btns .v6b { white-space:normal; height:auto; min-height:44px; text-align:left; } }
