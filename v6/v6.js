@@ -1547,6 +1547,7 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       document.getElementById('v6-co').innerHTML = `<section class="v6-phero"><div class="v6-phero-text"><span class="v6-eyebrow">Для бизнеса</span><h1 class="v6-d">ИИ в работе компании</h1>
           <p class="v6-phero-lead">Обучим команду работать с ИИ на своих данных или сделаем под ключ: дашборды и отчёты, финмодель и юнит-экономику, разбор бренда. Ведёт Руслан Маджитов с командой.</p>
           <span class="v6-btns" style="margin-top:20px">${talk}<a class="v6b is-soft v6-btn-lg" href="#co-audit" onclick="V6.open('co-audit'); return false;">Посчитать часы отдела · 10 минут</a></span></div>${art('icon-kompanii', 'v6-phero-art')}</section>
+        ${leaksBlock()}
         <section class="v6-psec"><h2 class="v6-psec-h">Что делаем</h2>
           <div class="v6-grid2" style="margin-top:28px">
             <div class="v6-task"><span class="v6-meta">Цена по запросу</span><h3>Обучение команды</h3><p>Группа из 3–6 человек за 4 недели осваивает рабочие процессы с ИИ на своих данных. Замер часов до и после.</p><a class="v6b is-soft is-sm" href="#co-pilot" onclick="document.getElementById('co-pilot').scrollIntoView({ behavior: 'smooth' }); return false;">Как устроено</a></div>
@@ -1593,6 +1594,120 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
         <section class="v6-sec" id="co-talk"><div class="v6-dark v6-companies has-art"><div class="v6-co-art" aria-hidden="true"><img src="${artSrc('companies')}" alt="" loading="lazy"></div><div><span class="v6-meta" style="font-size:17px;color:#C9CACF">Обсудить задачу</span><h2 class="v6-h2" style="margin-top:16px !important">Напишите Руслану в Telegram</h2></div>
           <div><p>Расскажите о компании и задаче. Ответим и предложим формат и сроки.</p>${tgBox('co-phrase', CO_PHRASE, 'bottom', true)}</div></div></section>`;
     }).catch(() => fail('v6-co'));
+  }
+  // ---------- Услуга «Где сайт теряет деньги» и образец разбора (вектор 2 плана 27.11). Бренд «Сонный лён» и цифры вымышлены ----------
+  const LEAKS_UNIT = 'u-seller-site-leaks';
+  const LEAKS_PHRASE = 'Здравствуйте, Руслан! Пишу с Артефактов. Интересует разбор «Где сайт теряет деньги». Сайт: ___. Что продаём и кому: ___.';
+  const LEAKS_PARTS = [
+    ['Воронка и оформление заказа', 'Где покупатель уходит между карточкой и оплатой, особенно с телефона.'],
+    ['Карточки товаров', 'Отвечают ли они на вопросы о размере, составе, уходе, доставке и возврате.'],
+    ['Цены против конкурентов', 'Снимок цен ваших ходовых товаров и тех же у конкурентов. Собирает наш Парсер цен.'],
+    ['Видимость бренда в ответах ИИ', 'Называют ли вас Алиса AI, ГигаЧат и DeepSeek, когда покупатель просит совета. Проверяет наш GEO-сервис.'],
+    ['Стадия бренда', 'Что чинить сейчас, а до чего бизнес ещё не дорос. По методу Системы Стейдж.'],
+  ];
+  function leaksSelfLink(from) {
+    const u = unitById(LEAKS_UNIT);
+    return u ? `<a class="v6b is-soft is-sm" href="#unit-${LEAKS_UNIT}" onclick="V6.openUnit('${LEAKS_UNIT}','${from}'); return false;">Самопроверка сами · ${u.minutes} мин</a>` : '';
+  }
+  function leaksBlock() {
+    return `<section class="v6-psec" id="co-leaks"><div class="v6-card v6-leaks"><div><span class="v6-meta">Разбор · цена по запросу</span><h2 class="v6-h2" style="margin-top:10px !important">Где сайт теряет деньги</h2>
+        <p>Разбираем ваш сайт или интернет-магазин и пишем выводы. У каждой находки статус «подтверждено» или «проверить на ваших данных», первый шаг и кто его делает. В конце план на 30 дней.</p>
+        <ol class="v6-leaks-l">${LEAKS_PARTS.map(([t, x]) => `<li><b>${e(t)}</b><span>${e(x)}</span></li>`).join('')}</ol>
+        <span class="v6-btns" style="margin-top:20px"><a class="v6b is-accent is-sm" href="#companies-sample" onclick="V6.open('companies-sample'); return false;">Образец разбора</a>${leaksSelfLink('companies')}</span></div>
+      <div><p class="v6-meta">Ведёт Руслан Маджитов с командой. Срок и стоимость зависят от размера сайта и числа каналов.</p>${tgBox('co-leaks-phrase', LEAKS_PHRASE, 'leaks')}</div></div></section>`;
+  }
+  const SMP = {
+    facts: [['Что продают', 'Постельное бельё и пледы из льна'], ['Каналы', 'Свой сайт и Ozon'], ['Сайт за месяц', '38 000 визитов, 72% с телефона'], ['Заказы с сайта', 'около 300 в месяц, средний чек 7 900 ₽']],
+    summary: [
+      ['Оформление заказа на телефоне', 'Обязательная регистрация и 11 полей. С телефона покупают 0,5% посетителей, с компьютера 1,6%. Если мобильная конверсия дойдёт до 0,8%, это около 80 заказов и 650 тыс. ₽ выручки в месяц.', 'ok', 'Проблема видна на сайте. Оценка денег: 27 360 мобильных визитов × (0,8% − 0,5%) × 7 900 ₽.'],
+      ['Цена без объяснения', 'Три из пяти ходовых комплектов дороже двух главных конкурентов на 18–25%, а карточка не говорит, за что доплата.', 'ok', 'Цены сняты 25.11. Сколько заказов теряется из-за цены, покажет тест на двух карточках.'],
+      ['Ответы ИИ советуют других', 'На 9 вопросов покупателя в трёх ИИ-сервисах бренд назван один раз, двух конкурентов назвали 6 раз.', 'check', 'Ответы меняются от раза к разу. Нужен повторный замер через неделю.'],
+    ],
+    blocks: [
+      { t: 'Воронка и оформление заказа', src: 'Яндекс Метрика за 3 месяца, Вебвизор, проход покупки с телефона', rows: [
+        ['ok', 'Регистрация обязательна до оплаты, в форме 11 полей. Путь от карточки до оплаты занимает 4,5 минуты.', 'Гостевой заказ и 6 полей вместо 11', 'подрядчик сайта, 2–3 дня'],
+        ['ok', 'Цена доставки появляется только на третьем шаге оформления. В 4 из 10 записей Вебвизора покупатель закрывает страницу именно здесь.', 'Показать доставку в корзине и в карточке', 'подрядчик сайта'],
+        ['check', 'По цели «корзина → оплата» корзину бросают 78% мобильных покупателей. Цель настроена в июле, данных мало.', 'Сверить с заказами в CRM за тот же период', 'маркетолог'],
+      ] },
+      { t: 'Карточки товаров', src: '60 карточек сайта, отзывы на Ozon', rows: [
+        ['ok', 'В 34 из 60 карточек нет плотности ткани и усадки после стирки. Это самые частые вопросы в отзывах на Ozon.', 'Блок «состав и уход» в шаблоне карточки', 'контент-менеджер, неделя'],
+        ['ok', 'Фото в карточке на телефоне грузятся 4–6 секунд.', 'Сжать фото, перевести в WebP', 'подрядчик сайта'],
+        ['check', 'Таблица размеров открывается на отдельной странице. Сколько людей не возвращается с неё, неизвестно.', 'Цель в Метрике на переход к таблице', 'маркетолог'],
+      ] },
+      { t: 'Цены против конкурентов', src: 'Парсер цен: 5 ходовых товаров × 3 конкурента, снимок 25.11', rows: [
+        ['ok', 'Три комплекта дороже конкурентов А и Б на 18–25%. Разница в ткани и пошиве есть, но на странице про неё ни слова.', 'Строка «почему дороже» в трёх карточках', 'бренд-менеджер'],
+        ['ok', 'На Ozon тот же комплект на 900 ₽ дешевле, чем на своём сайте.', 'Решить, где цена ниже и что сайт даёт взамен', 'собственник'],
+        ['check', 'Конкурент А меняет цены раз в 1–2 недели. По одному снимку ритм не понять.', 'Ежедневный снимок цен 4 недели', 'мы, Парсер цен'],
+      ] },
+      { t: 'Видимость бренда в ответах ИИ', src: 'GEO-сервис: 9 вопросов покупателя в Алисе AI, ГигаЧате и DeepSeek', rows: [
+        ['check', 'Бренд назван 1 раз из 9, конкуренты А и Б 6 раз.', 'Повторить замер через неделю', 'мы, GEO-сервис'],
+        ['ok', 'Ответы ссылаются на обзоры и Яндекс Маркет. Бренда там нет, а на сайте нет страницы «как выбрать льняное бельё».', 'Страница-гид на сайте и карточка бренда на Маркете', 'маркетолог'],
+      ] },
+      { t: 'Стадия бренда', src: 'Диагностика по методу Системы Стейдж, интервью с собственником', rows: [
+        ['ok', 'По выручке «Проверка спроса», около 55 млн ₽ в год с Ozon. Процессы на 38%: нет единой базы покупателей, повторные покупки не считают, поставки планируют на глаз.', 'Рекламу пока не наращивать, сначала свести базу', 'собственник с маркетологом'],
+        ['check', 'Доля повторных покупок неизвестна: заказы сайта и Ozon лежат в разных местах.', 'Выгрузить заказы за год и свести по телефону', 'маркетолог, 2 дня'],
+      ] },
+    ],
+    plan: [
+      ['Неделя 1', 'Гостевой заказ, 6 полей, доставка в корзине', 'Мобильная конверсия: было 0,5%, ориентир 0,8%'],
+      ['Неделя 2', 'Блок «состав и уход» в 10 ходовых карточках, строка «почему дороже» в трёх дорогих', 'Переход из карточки в корзину по этим 10 товарам'],
+      ['Неделя 3', 'Страница-гид «как выбрать льняное бельё», решение по цене на сайте и Ozon', 'Повторный замер в ответах ИИ через 4 недели'],
+      ['Неделя 4', 'Свести заказы сайта и Ozon, посчитать повторные покупки', 'Доля повторных покупок: первая честная цифра'],
+    ],
+  };
+  const smpSt = (s) => `<span class="v6-smp-st is-${s}">${s === 'ok' ? 'подтверждено' : 'проверить'}</span>`;
+  function companiesSamplePage() {
+    shell('<div class="v6c" id="v6-smp"><p class="v6-lead" style="padding-top:56px">Загружается…</p></div>');
+    load().then(() => {
+      track('co-sample-open', {});
+      document.getElementById('v6-smp').innerHTML = `<nav class="v6-crumbs" aria-label="Где вы"><a onclick="V6.open('companies')">Для бизнеса</a><span>/</span><span>Образец разбора</span></nav>
+        <section class="v6-sechero" style="padding-top:24px"><div><span class="v6-eyebrow">Образец · бренд вымышленный</span><h1 class="v6-d">Где сайт «Сонного льна» теряет деньги</h1>
+          <p class="v6-lead">Так выглядит отчёт по услуге «Где сайт теряет деньги». Ход разбора, статусы и план такие же, как в настоящем отчёте.</p>
+          <p class="v6-smp-note"><b>Это пример.</b> Бренд «Сонный лён» и все цифры на странице придуманы, совпадения случайны.</p></div></section>
+        <section class="v6-sec"><div class="v6-smp-facts">${SMP.facts.map(([k, v]) => `<div><span class="v6-meta">${e(k)}</span><b>${e(v)}</b></div>`).join('')}</div></section>
+        <section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Резюме</h2><p>Три места, где сайт теряет больше всего денег.</p></div></div>
+          <ol class="v6-smp-sum">${SMP.summary.map(([t, x, s, why]) => `<li class="v6-card"><div class="v6-smp-sh"><b>${e(t)}</b>${smpSt(s)}</div><p>${e(x)}</p><small>${e(why)}</small></li>`).join('')}</ol>
+          <p class="v6-meta" style="margin-top:12px">«Подтверждено» значит, что находку видно на сайте или в цифрах. «Проверить» значит, что для вывода нужны ещё данные, и сказано какие.</p></section>
+        <section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">Находки по блокам</h2></div></div>
+          ${SMP.blocks.map((b, i) => `<div class="v6-card v6-smp-b"><span class="v6-meta">0${i + 1} · ${e(b.src)}</span><h3 class="v6-h3">${e(b.t)}</h3>
+            <ul class="v6-smp-rows">${b.rows.map(([s, x, step, who]) => `<li>${smpSt(s)}<p>${e(x)}</p><div class="v6-smp-do"><span><span class="v6-meta">Первый шаг</span>${e(step)}</span><span><span class="v6-meta">Кто делает</span>${e(who)}</span></div></li>`).join('')}</ul></div>`).join('')}</section>
+        <section class="v6-sec"><div class="v6-sec-head"><div><h2 class="v6-h2">План на 30 дней</h2><p>Не больше одного-двух дел в неделю. У каждого есть цифра, по которой видно, сработало ли.</p></div></div>
+          <ol class="v6-copk">${SMP.plan.map(([w, x, m], i) => `<li class="v6-copk-i"><span class="v6-copk-n">${i + 1}</span><div class="v6-copk-b"><b>${e(x)}</b><p class="v6-copk-r">${e(m)}</p></div><div class="v6-copk-m"><span class="v6-meta">${e(w)}</span></div></li>`).join('')}</ol>
+          <p class="v6-meta" style="margin-top:16px">В разбор не вошли реклама, техническое SEO и ассортимент: это отдельные задачи. Если по ходу видно проблему там, она попадает в отчёт со статусом «проверить».</p></section>
+        <section class="v6-sec" id="smp-mini"><div class="v6-card v6-smp-mini"><span class="v6-meta">Бесплатно · мини-разбор с Алёшей</span><h2 class="v6-h3">Опишите бизнес одной фразой</h2>
+          <p>Алёша не видит ваш сайт и цифры. Он назовёт места, где такой бизнес обычно теряет деньги, и что проверить у себя первым. Это гипотезы для самопроверки, не разбор.</p>
+          <label class="v6-uinput"><span class="v6-meta">Что продаёте, где и кому</span><textarea id="v6-smp-biz" rows="2" maxlength="400" placeholder="Например: детская одежда из хлопка, свой сайт и Wildberries, средний чек 3 500 ₽"></textarea><span class="v6-meta">Текст уйдёт Алёше. Не пишите туда пароли и данные покупателей.</span></label>
+          <span class="v6-btns" style="margin-top:16px"><button type="button" class="v6b is-accent" onclick="V6.smpAsk()">Получить мини-разбор</button><button type="button" class="v6b is-soft" onclick="V6.smpCopy(this)">Скопировать запрос</button>${leaksSelfLink('co-sample')}</span>
+          <p class="v6-meta" id="v6-smp-hint" aria-live="polite"></p></div></section>
+        <section class="v6-sec" id="smp-talk"><div class="v6-dark v6-companies has-art"><div class="v6-co-art" aria-hidden="true"><img src="${artSrc('companies')}" alt="" loading="lazy"></div><div><span class="v6-meta" style="font-size:17px;color:#C9CACF">Разбор вашего сайта</span><h2 class="v6-h2" style="margin-top:16px !important">Такой же отчёт на ваших данных</h2></div>
+          <div><p>Напишите Руслану в Telegram: сайт, что продаёте и кому. Ответим и предложим срок и стоимость.</p>${tgBox('smp-phrase', LEAKS_PHRASE, 'sample', true)}</div></div></section>`;
+    }).catch(() => fail('v6-smp'));
+  }
+  function smpQuery() {
+    const el = document.getElementById('v6-smp-biz');
+    const biz = el ? el.value.trim() : '';
+    if (!biz) return '';
+    return `Мой бизнес: ${biz}\nСделай мини-разбор в духе услуги «Где сайт теряет деньги». Назови 3 места, где такой бизнес обычно теряет деньги на сайте: воронка и оформление заказа, карточки товаров, цены против конкурентов, видимость в ответах ИИ. Для каждого места: что проверить у себя, какую цифру посмотреть и первый шаг. Моих данных ты не видел, поэтому всё помечай статусом «проверить». Коротко и по делу, без общих советов.`;
+  }
+  function smpNeed() {
+    const h = document.getElementById('v6-smp-hint'), el = document.getElementById('v6-smp-biz');
+    if (h) h.textContent = 'Сначала опишите бизнес одной фразой.';
+    if (el) el.focus();
+  }
+  function smpCopy(btn) {
+    const q = smpQuery();
+    if (!q) { smpNeed(); return false; }
+    const h = document.getElementById('v6-smp-hint');
+    try { navigator.clipboard.writeText(q).then(() => { if (btn) { btn.textContent = 'Скопировано'; setTimeout(() => { btn.textContent = 'Скопировать запрос'; }, 1600); } if (h) h.textContent = 'Запрос скопирован. Вставьте его в Алису AI, ГигаЧат или окно Алёши.'; }); } catch (_) {}
+    track('co-sample-copy', {});
+    return true;
+  }
+  function smpAsk() {
+    const q = smpQuery();
+    if (!q) { smpNeed(); return; }
+    track('co-sample-ask', {});
+    if (!document.getElementById('alesha-widget') || typeof aleshaAsk !== 'function') { smpCopy(null); return; }
+    askAlesha('Мини-разбор бизнеса', q);
   }
   // ---------- ИИ-аудит отдела маркетплейсов (g8): всё в браузере, без контактов и без сохранения ----------
   let CA = { on: {}, h: {} };
@@ -1739,12 +1854,12 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
       bsCheck();
     }).catch(() => fail('v6-bs'));
   }
-  const PAGES = { roles: rolesPage, tasks: tasksPage, paths: pathsPage, knowledge: knowledgePage, notebook: notebookPage, companies: companiesPage, 'co-audit': coAuditPage, 'brand-stages': brandStagesPage };
+  const PAGES = { roles: rolesPage, tasks: tasksPage, paths: pathsPage, knowledge: knowledgePage, notebook: notebookPage, companies: companiesPage, 'co-audit': coAuditPage, 'companies-sample': companiesSamplePage, 'brand-stages': brandStagesPage };
   function open(name) {
     if (name === 'roles') name = 'tasks'; // страница «Кто вы?» убрана 24.11: роли — фильтры в «Решениях» и вкладки колоды
     if (name === 'home') { openStaticPage('home'); return; }
     if (name === 'knowledge') { KT = 'fw'; KTERM = ''; }
-    go(name, PAGES[name], name === 'brand-stages' ? 'paths' : name === 'co-audit' ? 'companies' : name);
+    go(name, PAGES[name], name === 'brand-stages' ? 'paths' : name === 'co-audit' || name === 'companies-sample' ? 'companies' : name);
   }
   function route(hash) {
     if (PAGES[hash]) { open(hash); return true; }
@@ -1856,5 +1971,5 @@ const roleThumb = (id) => { const n = 'role-' + id; return ART_WEBP.has(n) ? `<s
     });
   }
 
-  window.V6 = { coSystem, coTrack, coAuditSet, coAuditRun, bsRev, bsAns, bsBack, bsReset, bsGo, install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, fwPrint, openKnowledge, openDict, ktab, ksearch, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
+  window.V6 = { coSystem, coTrack, smpAsk, smpCopy, coAuditSet, coAuditRun, bsRev, bsAns, bsBack, bsReset, bsGo, install, route, open, lessonDone, lessonNote, openRes, resCheck, funnel, openVeha, rubricRun, rubricSave, openUnit, unitGo, unitInput, unitCheck, unitResult, unitNote, unitHelp, askAlesha, copyText, showForm, showSend, tgLater, nbFilter, nbSearch, nbExport, nbImport, nbReset, openTask, openRole, openSellerPath, openMainPath, openProductPath, openMarketingPath, openFw, fwPrint, openKnowledge, openDict, ktab, ksearch, kf, calc, copyPrompt, chooseRole, fork, ask, channels, toggleMenu, closeMenu };
 })();
