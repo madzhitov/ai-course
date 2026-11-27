@@ -318,3 +318,5 @@ body.v6 .kd-onb-band a.kd-news{text-decoration:none;font-weight:400;color:var(--
 .kd-pre-b b{text-wrap:balance}.kd-pre-l{text-wrap:pretty}
 .kd-pre-n,.kd-news-k,#kd-cat-found{font-variant-numeric:tabular-nums}
 @media (prefers-reduced-motion:reduce){.kd-pre,.kd-wl li{transition:none}}
+/* элементы сетки «Об Артефактах» не растягиваются по широкой таблице сервисов (min-width:auto у grid-элементов); таблица скроллится внутри .kd-tbl */
+#kd-about > *, .kd-aboutzone > *, .kd-work > * { min-width:0; }

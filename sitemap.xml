@@ -1301,6 +1301,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://ai.madzhitov.ru/metody/raci-daci.html</loc>
+    <lastmod>2026-10-04</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://ai.madzhitov.ru/metody/minto-pyramid.html</loc>
     <lastmod>2026-10-04</lastmod>
     <priority>0.6</priority>
@@ -1368,6 +1373,11 @@
   <url>
     <loc>https://ai.madzhitov.ru/metody/answer-check.html</loc>
     <lastmod>2026-10-26</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ai.madzhitov.ru/metody/review-board.html</loc>
+    <lastmod>2026-10-04</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
