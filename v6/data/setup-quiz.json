@@ -1,7 +1,7 @@
 {
   "version": 1,
   "note": "«Мой ИИ-сетап за 5 минут» (v6/setup-quiz.js). Сервисы — по имени из tools/neyroseti-bez-vpn/data.json: оттуда берутся доступ, бесплатный лимит и дата проверки. Задания — id из units.json без review. Код в адресе: #setup-<задача><устройство><бюджет><доступ>, например #setup-tc0n.",
-  "guide": "/znaniya/ai-setup.html",
+  "guide": "/pochitat/ai-setup.html",
   "services": "tools/neyroseti-bez-vpn/data.json",
   "questions": [
     { "id": "task", "title": "Что хотите делать с ИИ чаще всего?", "hint": "Выберите главное. Остальное добавите потом." },

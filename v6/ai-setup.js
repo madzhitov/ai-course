@@ -13,7 +13,7 @@
     event.preventDefault();
     const text = 'Паспорт моего ИИ-сетапа\n\n' + fields.map(([name, label]) =>
       label + '\n' + (form.elements[name].value.trim() || 'Не заполнено')
-    ).join('\n\n') + '\n\nАртефакты · https://ai.madzhitov.ru/znaniya/ai-setup.html\n';
+    ).join('\n\n') + '\n\nАртефакты · https://ai.madzhitov.ru/pochitat/ai-setup.html\n';
     const url = URL.createObjectURL(new Blob(['\uFEFF', text], { type: 'text/plain;charset=utf-8' }));
     const link = document.createElement('a');
     link.href = url;

@@ -11,7 +11,8 @@
    "order": 1,
    "checked": "2026-11-13",
    "date": "2026-11-21",
-   "url": "/znaniya/ai-setup.html"
+   "url": "/pochitat/ai-setup.html",
+   "cover": "v6/art/trail-claude.webp"
   },
   {
    "id": "agent-roles",
@@ -23,7 +24,8 @@
    "order": 2,
    "checked": "2026-11-27",
    "date": "2026-11-27",
-   "url": "/pochitat/agent-roles.html"
+   "url": "/pochitat/agent-roles.html",
+   "cover": "v6/art/role-owner.webp"
   },
   {
    "id": "subagents",
@@ -35,7 +37,8 @@
    "order": 3,
    "checked": "2026-11-27",
    "date": "2026-11-27",
-   "url": "/pochitat/subagents.html"
+   "url": "/pochitat/subagents.html",
+   "cover": "v6/art/role-project.webp"
   },
   {
    "id": "memory",
@@ -47,7 +50,8 @@
    "order": 4,
    "checked": "2026-11-27",
    "date": "2026-11-27",
-   "url": "/pochitat/memory.html"
+   "url": "/pochitat/memory.html",
+   "cover": "v6/art/notebook.webp"
   },
   {
    "id": "batch-images",
@@ -59,7 +63,8 @@
    "order": 5,
    "checked": "2026-11-27",
    "date": "2026-11-27",
-   "url": "/pochitat/batch-images.html"
+   "url": "/pochitat/batch-images.html",
+   "cover": "v6/art/home-deck.webp"
   },
   {
    "id": "safety",
@@ -71,7 +76,8 @@
    "order": 6,
    "checked": "2026-11-27",
    "date": "2026-11-27",
-   "url": "/pochitat/safety.html"
+   "url": "/pochitat/safety.html",
+   "cover": "v6/art/role-specialist.webp"
   },
   {
    "id": "ai-law",
@@ -81,7 +87,8 @@
    "kind": "guide",
    "checked": "2026-11-21",
    "date": "2026-11-21",
-   "url": "/znaniya/ai-law.html"
+   "url": "/pochitat/ai-law.html",
+   "cover": "v6/art/knowledge.webp"
   },
   {
    "id": "kabinet-ai",
@@ -91,7 +98,8 @@
    "kind": "review",
    "checked": "2026-11-21",
    "date": "2026-11-21",
-   "url": "/znaniya/kabinet-ai.html"
+   "url": "/pochitat/kabinet-ai.html",
+   "cover": "v6/art/seller-path.webp"
   },
   {
    "id": "izmeneniya",
@@ -101,7 +109,8 @@
    "kind": "digest",
    "checked": "2026-11-21",
    "date": "2026-11-21",
-   "url": "/izmeneniya/"
+   "url": "/izmeneniya/",
+   "cover": "v6/art/task.webp"
   },
   {
    "id": "creative-stack-2026",
@@ -111,7 +120,8 @@
    "kind": "guide",
    "checked": "2026-11-27",
    "date": "2026-11-27",
-   "url": "/pochitat/creative-stack-2026.html"
+   "url": "/pochitat/creative-stack-2026.html",
+   "cover": "v6/art/trail-projects.webp"
   }
  ]
 }
